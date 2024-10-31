@@ -22,23 +22,43 @@ export const drawUTurnArrowWithCtx = (ctx: CanvasRenderingContext2D) => (options
     ...options
   }
 
-  const arrowHeadHeight = lineWidth * 2.4;
-  const pLineLength = arrowHeadHeight / 1.75;
+  const arrowHeadHeight = lineWidth * 1.4;
+  const pLineLength = arrowHeadHeight;
 
-  const longLegFrom = rotatePoint({ x: center.x, y: center.y - spacing }, center, angle);
-  const longLegTo = rotatePoint({ x: center.x + upDistance, y: center.y - spacing}, center, angle);
+  const longLegFrom = rotatePoint({ 
+    x: center.x, 
+    y: center.y - spacing 
+  }, center, angle);
 
-  const shortLegFrom = rotatePoint({ x: center.x + upDistance, y: center.y + spacing }, center, angle);
-  const shortLegTo = rotatePoint({ x: center.x + upDistance - downDistance, y: center.y + spacing }, center, angle);
+  const longLegTo = rotatePoint({ 
+    x: center.x + upDistance, 
+    y: center.y - spacing
+  }, center, angle);
 
-  const arcCenter = rotatePoint({ x: center.x + upDistance, y: center.y }, center, angle);
+  const shortLegFrom = rotatePoint({ 
+    x: center.x + upDistance, 
+    y: center.y + spacing 
+  }, center, angle);
+  const shortLegTo = rotatePoint({ 
+    x: center.x + upDistance - downDistance + arrowHeadHeight, 
+    y: center.y + spacing 
+  }, center, angle);
+
+  const arcCenter = rotatePoint({ 
+    x: center.x + upDistance, 
+    y: center.y 
+  }, center, angle);
 
   const epiCenter = {
     x: shortLegTo.x + pLineLength * Math.cos(angle),
     y: shortLegTo.y + pLineLength * Math.sin(angle),
   }
 
-  const trianglePt1 = rotatePoint({ x: center.x + upDistance - downDistance - pLineLength, y: center.y + spacing }, center, angle);
+  const trianglePt1 = rotatePoint({ 
+    x: center.x + upDistance - downDistance, 
+    y: center.y + spacing 
+  }, center, angle
+  );
 
   const trianglePt2 = {
     x: epiCenter.x + pLineLength * Math.cos(angle + Math.PI / 2),
