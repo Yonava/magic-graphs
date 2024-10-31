@@ -47,7 +47,7 @@
     drawUTurnArrow({
       color: colors.BLUE_500,
       upDistance: 100,
-      downDistance: 1000,
+      downDistance: 100,
       spacing: 20,
       center: { x: 600, y: 100 },
       lineWidth: 10,
