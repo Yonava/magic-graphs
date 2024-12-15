@@ -2,6 +2,8 @@ import type { GNode } from "@graph/types";
 import type { BaseGraph } from "@graph/base";
 import type { GraphMouseEvent } from "@graph/base/types";
 import type { NodeAnchor } from "@graph/plugins/anchors/types";
+import { ref } from "vue";
+import { useTheme } from "@graph/themes/useTheme";
 
 /**
  * interactive allows users to create, edit and delete nodes and edges
@@ -38,11 +40,24 @@ export const useInteractive = (graph: BaseGraph) => {
     return true;
   };
 
-  const handleEdgeCreation = (fromNode: GNode, anchor: NodeAnchor) => {
+  const getNodeFromDroppedAnchor = (anchor: NodeAnchor) => {
     const itemStack = graph.getSchemaItemsByCoordinates(anchor);
-    const toNodeSchema = itemStack.findLast((item) => item.graphType === "node");
-    if (!toNodeSchema) return;
-    const toNode = graph.getNode(toNodeSchema.id);
+    const nodeSchema = itemStack.findLast((item) => item.graphType === "node");
+    if (!nodeSchema) return;
+    const node = graph.getNode(nodeSchema.id);
+    return node;
+  };
+
+  const anchorBeingDragged = ref<NodeAnchor>()
+
+  const nodeAnchorDragStart = (parentNode: GNode, anchor: NodeAnchor) => {
+    anchorBeingDragged.value = anchor
+  }
+
+  const handleEdgeCreation = (fromNode: GNode, anchor: NodeAnchor) => {
+    anchorBeingDragged.value = undefined
+
+    const toNode = getNodeFromDroppedAnchor(anchor);    
     if (!toNode) return;
 
     const canCreateEdge = doesEdgeConformToRules(fromNode, toNode);
@@ -55,9 +70,19 @@ export const useInteractive = (graph: BaseGraph) => {
     });
   };
 
+
+  const animateToNode = () => {
+    if (!anchorBeingDragged.value) return
+    const toNode = getNodeFromDroppedAnchor(anchorBeingDragged.value);
+    if (!toNode) return;
+    // modify node here
+  };
+
   const activate = () => {
     graph.subscribe("onDblClick", handleNodeCreation);
     graph.subscribe("onNodeAnchorDrop", handleEdgeCreation);
+    graph.subscribe("onNodeAnchorDragStart", nodeAnchorDragStart);
+    graph.subscribe("onMouseMove", animateToNode);
     graph.settings.value.nodeAnchors = true;
     graph.settings.value.edgeLabelsEditable = true;
   };
@@ -65,6 +90,8 @@ export const useInteractive = (graph: BaseGraph) => {
   const deactivate = () => {
     graph.unsubscribe("onDblClick", handleNodeCreation);
     graph.unsubscribe("onNodeAnchorDrop", handleEdgeCreation);
+    graph.unsubscribe("onNodeAnchorDragStart", nodeAnchorDragStart);
+    graph.unsubscribe("onMouseMove", animateToNode);
     graph.settings.value.nodeAnchors = false;
     graph.settings.value.edgeLabelsEditable = false;
   };
