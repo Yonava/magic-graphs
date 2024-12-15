@@ -1,8 +1,10 @@
-import type { GNode } from "@graph/types";
+import { ref } from "vue";
+import type { GNode, SchemaItem } from "@graph/types";
 import type { BaseGraph } from "@graph/base";
 import type { GraphMouseEvent } from "@graph/base/types";
 import type { NodeAnchor } from "@graph/plugins/anchors/types";
-import { ref } from "vue";
+import { generateId } from '@utils/id';
+import { circle } from "@shape/circle";
 
 /**
  * interactive allows users to create, edit and delete nodes and edges
@@ -69,12 +71,37 @@ export const useInteractive = (graph: BaseGraph) => {
     });
   };
 
-
   const animateToNode = () => {
     if (!anchorBeingDragged.value) return
     const toNode = getNodeFromDroppedAnchor(anchorBeingDragged.value);
-    if (!toNode) return;
-    // modify node here
+    if (!toNode) return
+
+    const hoverEffectAlreadyPresent = graph.aggregator.value.some(item => item.graphType === 'node-hover-effect')
+    if (hoverEffectAlreadyPresent) return
+
+    const { x, y } = toNode
+
+    const toNodeShape = graph.aggregator.value.find(item => item.id === toNode.id)
+    if (!toNodeShape) return
+    const toNodePriority = toNodeShape.priority
+    const circleTemplate = {
+      at: { x, y },
+      radius: graph.getTheme('nodeSize', toNode) + 10,
+      color: graph.getTheme('nodeColor', toNode),
+    }
+    const nodeHoverEffectShape = circle(circleTemplate)
+    const nodeHoverEffectSchema: SchemaItem = {
+      id: generateId(),
+      graphType: 'node-hover-effect',
+      shape: nodeHoverEffectShape,
+      priority: toNodePriority - 0.1,
+    }
+
+    const instertIntoAggregator = (aggregator: SchemaItem[]) => {
+      aggregator.push(nodeHoverEffectSchema)
+      return aggregator
+    }
+    graph.updateAggregator.push(instertIntoAggregator)
   };
 
   const activate = () => {

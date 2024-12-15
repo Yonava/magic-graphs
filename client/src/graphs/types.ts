@@ -78,6 +78,7 @@ type BaseGraphTypes = 'node' | 'edge'
 type MarqueeGraphTypes = 'marquee-box' | 'encapsulated-node-box'
 type NodeAnchorGraphTypes = 'node-anchor' | 'link-preview'
 type AnnotationGraphTypes = 'annotation'
+type InteractiveGraphTypes = 'node-hover-effect'
 
 /**
  * an item that can be fed into the `aggregator` in order to be rendered on the canvas
@@ -90,7 +91,7 @@ export type SchemaItem = {
   /**
    * the type of graph data this schema item represents (node, edge, etc.)
    */
-  graphType: BaseGraphTypes | NodeAnchorGraphTypes | MarqueeGraphTypes | AnnotationGraphTypes,
+  graphType: BaseGraphTypes | NodeAnchorGraphTypes | MarqueeGraphTypes | AnnotationGraphTypes | InteractiveGraphTypes,
   /**
    * determines the order in which this schema item is rendered
    * on the canvas. The lower the number, the higher the priority, the higher the priority,
