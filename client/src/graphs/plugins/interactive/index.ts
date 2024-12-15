@@ -3,7 +3,6 @@ import type { BaseGraph } from "@graph/base";
 import type { GraphMouseEvent } from "@graph/base/types";
 import type { NodeAnchor } from "@graph/plugins/anchors/types";
 import { ref } from "vue";
-import { useTheme } from "@graph/themes/useTheme";
 
 /**
  * interactive allows users to create, edit and delete nodes and edges
