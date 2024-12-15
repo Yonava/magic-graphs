@@ -87,7 +87,7 @@ export const useInteractive = (graph: BaseGraph) => {
     const circleTemplate = {
       at: { x, y },
       radius: graph.getTheme('nodeSize', toNode) + 10,
-      color: graph.getTheme('nodeColor', toNode),
+      color: graph.getTheme('nodeBorderColor', toNode) + '75',
     }
     const nodeHoverEffectShape = circle(circleTemplate)
     const nodeHoverEffectSchema: SchemaItem = {
@@ -97,6 +97,7 @@ export const useInteractive = (graph: BaseGraph) => {
       priority: toNodePriority - 0.1,
     }
 
+    // function above needs to be called inside of below and return just aggregator if it doesnt need to be drawn
     const instertIntoAggregator = (aggregator: SchemaItem[]) => {
       aggregator.push(nodeHoverEffectSchema)
       return aggregator
