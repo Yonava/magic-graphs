@@ -1,6 +1,6 @@
 import type { Graph } from "@graph/types";
 import { useGraph } from "@graph/useGraph";
-import type { BoundingBox, Coordinate } from "@shape/types";
+import type { BoundingBox } from "@shape/types";
 import { getCtx } from "@utils/ctx";
 import { onMounted, onUnmounted, ref } from "vue";
 import { getEncapsulatedNodeBox } from "@graph/plugins/marquee/helpers";
@@ -39,16 +39,6 @@ export const useTemplateThumbnails = (graph: Graph) => {
   
     return dataURL;
   };
-  
-  const normalizeNodes = <T extends Coordinate>(nodes: T[]) => {
-    const minX = Math.min(...nodes.map(node => node.x));
-    const minY = Math.min(...nodes.map(node => node.y));
-  
-    nodes.forEach(node => {
-      node.x -= minX;
-      node.y -= minY;
-    });
-  }
 
   const updateProductThumbnails = async () => {
     tempCanvas.value.width = 5000;
@@ -83,7 +73,6 @@ export const useTemplateThumbnails = (graph: Graph) => {
 
   return {
     createImageFromCanvasRegion,
-    normalizeNodes,
 
     productTemplates,
   };
