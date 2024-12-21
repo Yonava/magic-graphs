@@ -7,7 +7,7 @@ import { getEncapsulatedNodeBox } from "@graph/plugins/marquee/helpers";
 import { products } from "@utils/product";
 import type { GraphTemplate } from "./types";
 
-export const useProductThumbnails = (graph: Graph) => {
+export const useTemplateThumbnails = (graph: Graph) => {
   const tempCanvas = ref(document.createElement("canvas"));
   const tempGraph = useGraph(tempCanvas);
 

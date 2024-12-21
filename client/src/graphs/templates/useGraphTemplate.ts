@@ -7,13 +7,13 @@ import {
 } from "./helpers";
 import { generateId } from "@utils/id";
 import { useLocalStorage } from "@vueuse/core";
-import {  useProductThumbnails } from "./useGraphSnapshot";
+import {  useTemplateThumbnails } from "./useTemplateThumbnails";
 import { getEncapsulatedNodeBox } from "@graph/plugins/marquee/helpers";
 
 export const useGraphTemplate = (graph: Graph) => {
   const userTemplates = useLocalStorage<GraphTemplate[]>("graph-templates", []);
 
-  const { productTemplates, createImageFromCanvasRegion } = useProductThumbnails(graph);
+  const { productTemplates, createImageFromCanvasRegion } = useTemplateThumbnails(graph);
 
   const templates = computed(() => [
     ...userTemplates.value, // user templates first so easier to find
