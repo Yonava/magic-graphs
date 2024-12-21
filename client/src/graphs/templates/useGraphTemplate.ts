@@ -7,7 +7,7 @@ import {
 } from "./helpers";
 import { generateId } from "@utils/id";
 import { useLocalStorage } from "@vueuse/core";
-import {  useTemplateThumbnails } from "./useTemplateThumbnails";
+import { useTemplateThumbnails } from "./useTemplateThumbnails";
 import { getEncapsulatedNodeBox } from "@graph/plugins/marquee/helpers";
 
 export const useGraphTemplate = (graph: Graph) => {

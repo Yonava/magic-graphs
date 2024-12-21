@@ -1,5 +1,5 @@
 import type { GEdge, GNode, Graph } from "@graph/types";
-import type { BoundingBox, Coordinate } from "@shape/types";
+import type { BoundingBox } from "@shape/types";
 import { computed, onUnmounted, ref } from "vue";
 import { useGraph } from "@graph/useGraph";
 import { getEncapsulatedNodeBox } from "@graph/plugins/marquee/helpers";
@@ -7,21 +7,9 @@ import { getCtx } from "@utils/ctx";
 
 export const useSnapshot = (graph: Graph) => {
   return (graphState: { nodes: GNode[]; edges: GEdge[] }) => {
-    const snapshot = ref<string>();
     const tempCanvas = ref(document.createElement("canvas"));
     const tempGraph = useGraph(tempCanvas);
-
-    const normalizeNodes = <T extends Coordinate>(nodes: T[]) => {
-      const minX = Math.min(...nodes.map((node) => node.x));
-      const minY = Math.min(...nodes.map((node) => node.y));
-
-      nodes.forEach((node) => {
-        node.x -= minX;
-        node.y -= minY;
-      });
-
-      return nodes;
-    };
+    const snapshot = ref<string>();
 
     const createImageFromCanvasRegion = (
       canvas: HTMLCanvasElement,
@@ -52,25 +40,26 @@ export const useSnapshot = (graph: Graph) => {
       return dataURL;
     };
 
-    const takeSnapshot = () => {
-      const { nodes, edges } = graphState;
-      const normalizedGraphState = {
-        nodes: normalizeNodes(nodes),
-        edges,
-      };
-
-      tempGraph.load(normalizedGraphState);
+    const takeSnapshot = async () => {
+      tempCanvas.value.width = 5000;
+      tempCanvas.value.height = 5000;
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      
+      tempGraph.load(graphState);
       tempGraph.themeName.value = graph.themeName.value;
+      await new Promise((resolve) => setTimeout(resolve, 50)); // gives time to load in new graph
 
       const boundingBox = getEncapsulatedNodeBox(
         tempGraph.nodes.value,
         tempGraph
       );
 
-      snapshot.value = createImageFromCanvasRegion(
+     snapshot.value = createImageFromCanvasRegion(
         tempCanvas.value,
         boundingBox
       );
+      tempCanvas.value.width = 0;
+      tempCanvas.value.height = 0;
     };
 
     takeSnapshot();
