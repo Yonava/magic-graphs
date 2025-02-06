@@ -2,8 +2,8 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import type { Ref } from 'vue';
 import { getCtx } from '@utils/ctx';
 
-const MIN_SCALE = 0.5;
-const MAX_SCALE = 5;
+export const MIN_SCALE = 0.5;
+export const MAX_SCALE = 5;
 
 export function usePinchToZoom(canvasRef: Ref<HTMLCanvasElement | undefined | null>) {
   const scale = ref(1);
@@ -26,6 +26,7 @@ export function usePinchToZoom(canvasRef: Ref<HTMLCanvasElement | undefined | nu
     zoomOrigin.value.y = cursorY - (cursorY - zoomOrigin.value.y) * (newScale / scale.value);
 
     scale.value = newScale;
+    console.log(zoomOrigin.value)
     applyZoom();
   };
 
