@@ -15,7 +15,7 @@ export const DFS = `const visited = new Set()
     const children = graph[node]
     children.forEach(child => helper(child))
   }
-  helper('A)`;
+  helper('A')`;
 
 export const WEIGHTED_BFS = `const visited = new Set()
   const q = ['A']
