@@ -46,7 +46,9 @@ export const useAnnotations = (graph: BaseGraph) => {
   /**
    * starts drawing from the current mouse position
    */
-  const startDrawing = ({ coords }: GraphMouseEvent) => {
+  const startDrawing = ({ coords, event }: GraphMouseEvent) => {
+    if (event.button !== 0) return;
+
     isDrawing.value = true;
     lastPoint.value = coords;
     batch.value = [coords];

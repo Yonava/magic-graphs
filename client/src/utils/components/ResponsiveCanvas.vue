@@ -9,12 +9,15 @@
   import CoordinateIndicator from "./CoordinateIndicator.vue";
   import { useCanvasCoords } from "./useCanvasCoord";
   import { usePinchToZoom } from "./usePinchToZoom";
-import { useStorePanZoomState } from "./useStorePanZoomState";
+  import { useStorePanZoomState } from "./useStorePanZoomState";
+  import { useCanvasCamera } from "./useCanvasCamera";
 
   const canvasWidth = ref(0);
   const canvasHeight = ref(0);
 
   const loading = ref(true);
+
+  useCanvasCamera();
 
   const mainCanvasRef = ref<HTMLCanvasElement>();
   const bgCanvas = ref<HTMLCanvasElement>();
@@ -184,7 +187,7 @@ import { useStorePanZoomState } from "./useStorePanZoomState";
     ></div>
 
     <canvas
-      :ref="(emitRef as any)"
+      :ref="emitRef as any"
       :width="canvasWidth"
       :height="canvasHeight"
       :class="[`w-[${canvasWidth}px]`, `h-[${canvasHeight}px]`]"
