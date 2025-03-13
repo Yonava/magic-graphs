@@ -11,7 +11,9 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "format": "prettier --write .",
-    "format-code-only": "prettier --write \"src/**/*.{js,ts,vue}\""
+    "format-code-only": "prettier --write \"src/**/*.{js,ts,vue}\"",
+    "lint": "eslint \"**/*.{vue,ts,html}\"",
+    "lint:fix": "eslint \"**/*.{vue,ts,html}\" --fix"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.2",
