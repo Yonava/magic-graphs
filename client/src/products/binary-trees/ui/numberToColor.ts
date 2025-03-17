@@ -8,7 +8,7 @@ type Options = {
   /**
    * the range of numbers to interpolate between.
    */
-  range: [number, number];
+  range: readonly [number, number];
   /**
    * the range of colors to interpolate between.
    * if only a single color is provided, the color will be interpolated between the provided color

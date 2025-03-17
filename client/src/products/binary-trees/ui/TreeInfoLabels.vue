@@ -20,9 +20,8 @@
 
   const definitions = {
     balanceFactor:
-      'The balance factor of a node is the height of its right subtree minus the height of its left subtree.',
-    height:
-      'The height of a node is the number of edges on the longest path from the node to a leaf.',
+      'The height of a nodes right subtree minus the height of its left subtree.',
+    height: 'The number of edges on the longest path from itself to a leaf.',
   };
 </script>
 

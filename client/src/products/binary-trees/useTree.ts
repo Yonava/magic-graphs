@@ -9,14 +9,14 @@ import { graphToAVL } from './tree/graphToAVL';
 export const useTree = (graph: Graph) => {
   const tree = new AVLTree();
 
-  const { undoStack, undo, redo } = useTreeHistory(graph, tree);
+  const { undoStack, undo, redo } = useTreeHistory(graph);
 
   const mapNodeIds = <T>(getter: (node: TreeNode) => T) => {
     const nodes = graph.nodes.value;
     return nodes.reduce<Map<GNode['id'], T>>((acc, node) => {
       const tNode = tree.getNode(Number(node.id));
       if (!tNode) return acc;
-      acc.set(node.id, getter(tNode));
+      acc.set(node.id, getter(tNode) - 1);
       return acc;
     }, new Map());
   };
