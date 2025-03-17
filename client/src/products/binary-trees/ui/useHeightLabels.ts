@@ -22,7 +22,16 @@ export const useHeightLabels = (graph: Graph, tree: TreeControls) => {
   const colorGetter = (nodeId: GNode['id']) =>
     mapColor.value(nodeIdToHeight.value.get(nodeId) ?? 0);
 
-  const { label, unlabel } = useNodeLabel(graph, nodeIdToHeight);
+  // super workaround for the avl tree storing heights starting at 1
+  const nodeIdToHeightMinus1 = computed(() => {
+    const outMap = new Map<string, number>()
+    for (const [key, val] of nodeIdToHeight.value) {
+      outMap.set(key, val - 1)
+    }
+    return outMap
+  })
+
+  const { label, unlabel } = useNodeLabel(graph, nodeIdToHeightMinus1);
   const { color, uncolor } = useNodeColor(graph, colorGetter);
 
   const activate = () => {

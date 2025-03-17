@@ -16,7 +16,7 @@ export const useTree = (graph: Graph) => {
     return nodes.reduce<Map<GNode['id'], T>>((acc, node) => {
       const tNode = tree.getNode(Number(node.id));
       if (!tNode) return acc;
-      acc.set(node.id, getter(tNode) - 1);
+      acc.set(node.id, getter(tNode));
       return acc;
     }, new Map());
   };
