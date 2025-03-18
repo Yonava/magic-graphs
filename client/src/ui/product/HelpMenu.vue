@@ -19,13 +19,12 @@
   };
 
   onClickOutside(dialogContent, () => {
-    if (showDialog.value) {
-      isClosingByClickOutside.value = true;
-      showDialog.value = false;
-      setTimeout(() => {
-        isClosingByClickOutside.value = false;
-      }, 1);
-    }
+    if (!showDialog.value) return;
+    isClosingByClickOutside.value = true;
+    showDialog.value = false;
+    setTimeout(() => {
+      isClosingByClickOutside.value = false;
+    }, 1);
   });
 </script>
 
