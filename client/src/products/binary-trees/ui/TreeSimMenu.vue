@@ -3,16 +3,36 @@
   import GButton from '@ui/graph/button/GButton.vue';
   import GWell from '@ui/graph/GWell.vue';
   import { useTreeTraceExplainer } from './useTreeTraceExplainer';
+  import { ref } from 'vue';
 
   const props = defineProps<{
     controls: TreeSim;
   }>();
 
+  // animationCooldown prevents the glitchy effect that happens when
+  // you skip back and forth before a tree animation sequence has completed
+  const animationCooldown = ref(false);
+
+  const startCooldown = () => {
+    animationCooldown.value = true;
+    setTimeout(() => (animationCooldown.value = false), 1000);
+  };
+
+  const prev = () => {
+    startCooldown();
+    props.controls.prev();
+  };
+
+  const next = () => {
+    startCooldown();
+    props.controls.next();
+  };
+
   const explainer = useTreeTraceExplainer();
 </script>
 
 <template>
-  <div class="">
+  <div>
     <div>
       <h1 class="mb-2 font-bold text-2xl">
         {{ explainer ?? 'N/A' }}
@@ -24,17 +44,18 @@
         class="rounded-lg flex gap-2 p-2"
       >
         <GButton
-          @click="props.controls.prev"
+          @click="prev"
           tertiary
-          :disabled="props.controls.step.value === 0"
+          :disabled="props.controls.step.value === 0 || animationCooldown"
         >
           <- prev
         </GButton>
         <GButton
-          @click="props.controls.next"
+          @click="next"
           tertiary
           :disabled="
-            props.controls.trace.value.length - 1 === props.controls.step.value
+            props.controls.trace.value.length - 1 ===
+              props.controls.step.value || animationCooldown
           "
         >
           next ->

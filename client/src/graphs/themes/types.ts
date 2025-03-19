@@ -79,8 +79,8 @@ export type GraphTheme = BaseGraphTheme &
 export type GraphThemeRaw = {
   // nodeText and edgeText are special cases which must remain as getters
   [K in keyof GraphTheme]: K extends 'nodeText' | 'edgeText'
-    ? GraphTheme[K]
-    : UnwrapMaybeGetter<GraphTheme[K]>;
+  ? GraphTheme[K]
+  : UnwrapMaybeGetter<GraphTheme[K]>;
 };
 
 /**
@@ -91,11 +91,11 @@ export type MaybeGetterOrVoid<T> = MaybeGetter<
   MaybeGetterParams<T>
 >;
 
-type WrapWithNodeGetter<T extends Record<string, any>> = {
+type WrapWithNodeGetter<T extends Record<string, unknown>> = {
   [K in keyof T]: NodeGetterOrValue<T[K]>;
 };
 
-type WrapWithEdgeGetter<T extends Record<string, any>> = {
+type WrapWithEdgeGetter<T extends Record<string, unknown>> = {
   [K in keyof T]: EdgeGetterOrValue<T[K]>;
 };
 

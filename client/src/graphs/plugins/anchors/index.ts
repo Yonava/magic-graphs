@@ -9,7 +9,6 @@ import { generateId } from '@utils/id';
 import { circle, line } from '@shapes';
 import { MOUSE_BUTTONS } from "@graph/global";
 
-
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
  * when hovered over.

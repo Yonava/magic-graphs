@@ -23,7 +23,7 @@ export const NON_COLOR_THEMES: NonColorGraphThemes = {
   nodeSize: 35,
   nodeBorderWidth: 8,
   nodeTextSize: 24,
-  // Math.ceil(Math.sqrt(nodeSize) * 2)
+  // 35 for node size
   nodeAnchorRadius: Math.ceil(Math.sqrt(35) * 2),
   edgeWidth: 10,
   edgeTextSize: 20,

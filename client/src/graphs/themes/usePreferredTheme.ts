@@ -3,7 +3,6 @@ import { useDark } from '@vueuse/core';
 import type { BaseGraph } from '@graph/base';
 import { useLocalStorage } from '@vueuse/core';
 import type { GraphThemeName } from '.';
-import type { Graph } from '@graph/types';
 
 export type PreferredGraphTheme = GraphThemeName | 'auto';
 
