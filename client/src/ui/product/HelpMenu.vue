@@ -8,14 +8,24 @@
 
   const showDialog = ref(false);
   const dialogContent = ref();
-
-  onClickOutside(dialogContent, () => {
-    showDialog.value = false;
-  });
+  const isClosingByClickOutside = ref(false);
 
   const toggleDialog = () => {
+    if (isClosingByClickOutside.value) {
+      isClosingByClickOutside.value = false;
+      return;
+    }
     showDialog.value = !showDialog.value;
   };
+
+  onClickOutside(dialogContent, () => {
+    if (!showDialog.value) return;
+    isClosingByClickOutside.value = true;
+    showDialog.value = false;
+    setTimeout(() => {
+      isClosingByClickOutside.value = false;
+    }, 1);
+  });
 </script>
 
 <template>
@@ -25,7 +35,6 @@
   >
     <CIcon icon="help"></CIcon>
   </GButton>
-
   <GDialog v-model:visible="showDialog">
     <div ref="dialogContent">
       <HelpContent />
