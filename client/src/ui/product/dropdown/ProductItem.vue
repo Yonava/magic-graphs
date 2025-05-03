@@ -45,7 +45,10 @@
   );
 
   const allowGoWithGraph = computed(() => {
-    const goWithGraph = props.product.menu.allowGoWithGraph ?? true;
+    const goWithGraph =
+      typeof props.product.menu.allowGoWithGraph === 'function'
+        ? props.product.menu.allowGoWithGraph(graph.value)
+        : (props.product.menu.allowGoWithGraph ?? true);
     return !isExternal(props.product) && goWithGraph;
   });
 </script>

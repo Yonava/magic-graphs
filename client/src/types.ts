@@ -5,6 +5,7 @@ import type { ProductCategory } from '@utils/product';
 import type { GraphTemplate } from '@graph/templates/types';
 import type { SimulationGuard } from '@ui/product/sim/guard';
 
+type AllowGoWithGraph = boolean | ((graph: Graph) => boolean);
 /**
  * options for exposing a product to the product dropdown menu
  */
@@ -28,7 +29,7 @@ export type ProductDropdownInfo = {
   /**
    * whether the product allows transfer of graphs between products
    */
-  allowGoWithGraph?: boolean;
+  allowGoWithGraph?: AllowGoWithGraph;
 };
 
 /**
