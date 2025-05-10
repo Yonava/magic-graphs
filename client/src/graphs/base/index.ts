@@ -266,6 +266,14 @@ export const useBaseGraph = (
   updateAggregator.push(liftHoveredNodeToTop);
 
   /**
+   * Sets the current hovered node (e.g. when adding a new node)
+   * @param node - the node to set as hovered
+   */
+  const setCurrHoveredNode = (node: GNode | undefined) => {
+    currHoveredNode = node;
+  };
+
+  /**
    * load a graph state into the graph
    * @param graphState - the graph state to load (nodes and edges)
    */
@@ -354,6 +362,7 @@ export const useBaseGraph = (
      * a mapping of all graph events to a set of their callback functions
      */
     eventBus,
+    setCurrHoveredNode,
     subscribe,
     unsubscribe,
     emit,
