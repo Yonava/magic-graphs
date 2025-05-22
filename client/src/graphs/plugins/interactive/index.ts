@@ -13,7 +13,13 @@ export const useInteractive = (graph: BaseGraph) => {
 
     const nodeAdded = graph.addNode(coords);
     if (!nodeAdded) return;
-    setTimeout(() => graph.updateGraphAtMousePosition(event), 10);
+    setTimeout(() => {
+      graph.updateGraphAtMousePosition(event);
+
+      // The cursor is now hovering this new node
+      graph.setCurrHoveredNode(nodeAdded satisfies GNode);
+      graph.emit('onNodeHoverChange', nodeAdded satisfies GNode, undefined);
+    }, 10);
   };
 
   const doesEdgeConformToRules = (fromNode: GNode, toNode: GNode) => {
