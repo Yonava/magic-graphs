@@ -1,7 +1,6 @@
 import type { Graph } from '@graph/types';
 import { TUTORIAL_THEME_ID } from '@graph/tutorials/types';
 import { type TutorialStep } from '@graph/tutorials/types';
-import { GRAPH_BUTTON_ID } from '@graph/buttons/types';
 import { useTheme } from '@graph/themes/useTheme';
 import { PURPLE_700, RED_700 } from '@colors';
 

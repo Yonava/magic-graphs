@@ -1,10 +1,10 @@
 import { drawLineWithCtx } from '@shape/line/draw';
 import { drawTriangleWithCtx } from '@shape/triangle/draw';
-import { ARROW_DEFAULTS } from '.';
-import type { Arrow } from '.';
+import { ARROW_SCHEMA_DEFAULTS } from '.';
+import type { ArrowSchema } from '.';
 import type { LineSchema } from '@shape/line';
 
-export const drawArrowWithCtx = (options: Arrow) => {
+export const drawArrowWithCtx = (options: ArrowSchema) => {
   const {
     start,
     end,
@@ -15,7 +15,7 @@ export const drawArrowWithCtx = (options: Arrow) => {
     arrowHeadSize,
     arrowHeadShape,
   } = {
-    ...ARROW_DEFAULTS,
+    ...ARROW_SCHEMA_DEFAULTS,
     ...options,
   };
 

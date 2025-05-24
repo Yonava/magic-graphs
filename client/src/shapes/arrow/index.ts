@@ -1,7 +1,7 @@
 import { generateId } from '@utils/id';
 import { LINE_SCHEMA_DEFAULTS } from '@shape/line';
 import type { LineSchema } from '@shape/line';
-import type { Shape, Coordinate } from '@shape/types';
+import type { Shape, Coordinate, ShapeFactory } from '@shape/types';
 import { drawArrowWithCtx } from './draw';
 import {
   arrowHitbox,
@@ -19,7 +19,7 @@ import {
 import { getFullTextArea } from '@shape/text';
 import { getArrowHeadSize } from '@shape/helpers';
 
-export type Arrow = LineSchema & {
+export type ArrowSchema = LineSchema & {
   arrowHeadSize?: (width: number) => {
     arrowHeadHeight: number;
     perpLineLength: number;
@@ -27,12 +27,12 @@ export type Arrow = LineSchema & {
   arrowHeadShape?: (at: Coordinate, height: number, width: number) => Shape;
 };
 
-export const ARROW_DEFAULTS = {
+export const ARROW_SCHEMA_DEFAULTS = {
   ...LINE_SCHEMA_DEFAULTS,
   arrowHeadSize: getArrowHeadSize,
 } as const;
 
-export const arrow = (options: Arrow): Shape => {
+export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   if (options.width && options.width < 0) {
     throw new Error('width must be positive');
   }

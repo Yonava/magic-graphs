@@ -5,11 +5,11 @@ import {
   circleEfficientHitbox,
 } from '@shape/circle/hitbox';
 import type { Coordinate } from '@shape/types';
-import type { Circle } from '@shape/circle';
+import type { CircleSchema } from '@shape/circle';
 import { circleTextHitbox } from '@shape/circle/text';
 
 describe('circleHitbox', () => {
-  const testCircle: Circle = {
+  const testCircle: CircleSchema = {
     at: { x: 50, y: 50 },
     radius: 20,
     stroke: { width: 4, color: 'black' },
@@ -39,7 +39,7 @@ describe('circleHitbox', () => {
 });
 
 describe('getCircleBoundingBox', () => {
-  const testCircle: Circle = {
+  const testCircle: CircleSchema = {
     at: { x: 50, y: 50 },
     radius: 20,
     stroke: { width: 4, color: 'black' },
@@ -56,7 +56,7 @@ describe('getCircleBoundingBox', () => {
 });
 
 describe('circleEfficientHitbox', () => {
-  const testCircle: Circle = {
+  const testCircle: CircleSchema = {
     at: { x: 50, y: 50 },
     radius: 20,
     stroke: { width: 4, color: 'black' },
@@ -102,7 +102,7 @@ describe('circleEfficientHitbox', () => {
 });
 
 describe('circleTextHitbox', () => {
-  const testCircle: Circle = {
+  const testCircle: CircleSchema = {
     at: { x: 50, y: 50 },
     radius: 20,
     textArea: {

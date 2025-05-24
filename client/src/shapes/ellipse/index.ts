@@ -20,7 +20,7 @@ import {
 import { generateId } from '@utils/id';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
-import { CIRCLE_DEFAULTS } from '@shape/circle';
+import { CIRCLE_SCHEMA_DEFAULTS } from '@shape/circle';
 
 export type Ellipse = {
   id?: string;
@@ -32,7 +32,7 @@ export type Ellipse = {
   textArea?: TextAreaNoLocation;
 };
 
-export const ELLIPSE_DEFAULTS = CIRCLE_DEFAULTS;
+export const ELLIPSE_DEFAULTS = CIRCLE_SCHEMA_DEFAULTS;
 
 export const ellipse = (options: Ellipse): Shape => {
   if (options.radiusX < 0 || options.radiusY < 0) {

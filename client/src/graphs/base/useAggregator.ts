@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import type { Aggregator, UpdateAggregator } from '@graph/types';
 import type { Emitter as GraphEventEmitter } from '@graph/events';
@@ -32,6 +32,8 @@ export const useAggregator = ({ canvas, emit }: UseAggregatorOptions) => {
     );
     const beforeLastEdge = aggregator.value.slice(0, indexOfLastEdge + 1);
     const afterLastEdge = aggregator.value.slice(indexOfLastEdge + 1);
+
+    // console.log(aggregator.value.length)
 
     for (const item of beforeLastEdge) {
       item.shape.drawShape(ctx);

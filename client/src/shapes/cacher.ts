@@ -1,6 +1,6 @@
 import type { ShapeFactory } from "./types"
 
-type WithId<T> = T & {
+export type WithId<T> = T & {
   /**
    * optimized shapes require a unique id to track them across renders
    */
@@ -43,22 +43,28 @@ export const initShapeCache = () => {
     return {
       ...shape,
       draw: (ctx) => {
-        const serializedSchema = serializeSchema(schema)
-        const hasChanged = hasSchemaChanged(id, serializedSchema)
+        const boundingBox = shape.getBoundingBox()
 
-        if (hasChanged || !canvasCache.has(id)) {
-          const offscreen = document.createElement('canvas');
-          offscreen.width = ctx.canvas.width;
-          offscreen.height = ctx.canvas.height;
-          const offscreenCtx = offscreen.getContext('2d')!;
-          shape.draw(offscreenCtx)
-          canvasCache.set(id, offscreen)
-          cache.set(id, serializedSchema)
-        }
+        // console.log(id)
 
-        const cachedCanvas = canvasCache.get(id)
-        if (!cachedCanvas) throw new Error('no cached canvas')
-        ctx.drawImage(cachedCanvas, 0, 0)
+        // const serializedSchema = serializeSchema(schema)
+        // const hasChanged = hasSchemaChanged(id, serializedSchema)
+
+        // if (hasChanged || !canvasCache.has(id)) {
+        // const offscreen = document.createElement('canvas');
+        // offscreen.width = ctx.canvas.width;
+        // offscreen.height = ctx.canvas.height;
+        // const offscreenCtx = offscreen.getContext('2d')!;
+        // shape.draw(offscreenCtx)
+        // canvasCache.set(id, offscreen)
+        // cache.set(id, serializedSchema)
+        // }
+
+        // const cachedCanvas = canvasCache.get(id)
+        // if (!cachedCanvas) throw new Error('no cached canvas')
+        // ctx.drawImage(cachedCanvas, 0, 0)
+
+        shape.draw(ctx)
       },
       drawShape: (ctx) => {
         shape.drawShape(ctx)

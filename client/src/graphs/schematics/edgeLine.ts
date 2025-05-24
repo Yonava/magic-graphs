@@ -7,6 +7,7 @@ import { SEQ } from './edgeSeq';
 import { getMapper, inRange } from './utils';
 import { animateInTextArea, animateOutTextArea } from './edgeTextArea';
 import type { LineSchema } from '@shape/line';
+import type { WithId } from '@shape/cacher';
 
 const { interpolate, normalize } = gsap.utils;
 const EASING = EASING_FUNCTIONS['in-out'];
@@ -37,11 +38,11 @@ const animateOutLineBody =
       };
     };
 
-const inLine = (progress: number) => (lineSchema: LineSchema) => {
+const inLine = (progress: number, shapes: ShapeResolverOptions['shapes']) => (lineSchema: WithId<LineSchema>) => {
   const percent = normalize(0, DURATION_MS, progress);
 
   if (inRange(SEQ.IN.BODY[0], SEQ.IN.BODY[1], percent)) {
-    return line({
+    return shapes.line({
       ...lineSchema,
       ...animateInLineBody(progress)(lineSchema),
       textArea: undefined,
@@ -49,17 +50,17 @@ const inLine = (progress: number) => (lineSchema: LineSchema) => {
   }
 
   if (inRange(SEQ.IN.TEXT_AREA[0], SEQ.IN.TEXT_AREA[1], percent)) {
-    return line({
+    return shapes.line({
       ...lineSchema,
       textArea: animateInTextArea(progress)(lineSchema.textArea),
     });
   }
 
-  return line(lineSchema);
+  return shapes.line(lineSchema);
 };
 
-const outLine = (progress: number) => (lineSchema: LineSchema) => {
-  return line({
+const outLine = (progress: number, shapes: ShapeResolverOptions['shapes']) => (lineSchema: WithId<LineSchema>) => {
+  return shapes.line({
     ...lineSchema,
     ...animateOutLineBody(progress)(lineSchema),
     textArea: animateOutTextArea(progress)(lineSchema.textArea),
@@ -67,15 +68,15 @@ const outLine = (progress: number) => (lineSchema: LineSchema) => {
 };
 
 export const edgeLine =
-  ({ controller, id }: ShapeResolverOptions) =>
-    (lineSchema: LineSchema) => {
-      const { itemsAnimatingIn, itemsAnimatingOut } = controller;
+  ({ animationController, shapes }: ShapeResolverOptions) =>
+    (lineSchema: WithId<LineSchema>) => {
+      const { itemsAnimatingIn, itemsAnimatingOut } = animationController;
 
-      const inProgress = itemsAnimatingIn.get(id);
+      const inProgress = itemsAnimatingIn.get(lineSchema.id);
       if (inProgress !== undefined) return inLine(inProgress)(lineSchema);
 
-      const outProgress = itemsAnimatingOut.get(id);
+      const outProgress = itemsAnimatingOut.get(lineSchema.id);
       if (outProgress !== undefined) return outLine(outProgress)(lineSchema);
 
-      return line(lineSchema);
+      return shapes.line(lineSchema);
     };

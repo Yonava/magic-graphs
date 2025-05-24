@@ -1,6 +1,6 @@
 import { type Coordinate, type GradientStop } from '@shape/types';
 import { LINE_SCHEMA_DEFAULTS } from './line';
-import type { Arrow } from './arrow';
+import type { ArrowSchema } from './arrow';
 import tinycolor from 'tinycolor2';
 
 /**
@@ -106,7 +106,7 @@ export const getLargestAngularSpace = (
  */
 
 export const getArrowHeadSize = (
-  arrowWidth: Arrow['width'] = LINE_SCHEMA_DEFAULTS.width,
+  arrowWidth: ArrowSchema['width'] = LINE_SCHEMA_DEFAULTS.width,
 ) => {
   const arrowHeadHeight = arrowWidth * 2.5;
   const perpLineLength = arrowHeadHeight / 1.75;
@@ -124,7 +124,7 @@ export const getArrowHeadSize = (
  */
 
 export const calculateArrowHeadCorners = (
-  options: Required<Pick<Arrow, 'start' | 'end' | 'width' | 'arrowHeadSize'>>,
+  options: Required<Pick<ArrowSchema, 'start' | 'end' | 'width' | 'arrowHeadSize'>>,
 ) => {
   const { start, end, width, arrowHeadSize } = options;
 

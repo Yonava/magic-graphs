@@ -1,9 +1,9 @@
 import type { Coordinate, BoundingBox } from '@shape/types';
-import type { Circle } from '@shape/circle';
+import type { CircleSchema } from '@shape/circle';
 import { STROKE_DEFAULTS } from '@shape/types';
 import { rectEfficientHitbox } from '@shape/rect/hitbox';
 
-export const circleHitbox = (circle: Circle) => (point: Coordinate) => {
+export const circleHitbox = (circle: CircleSchema) => (point: Coordinate) => {
   const dx = point.x - circle.at.x;
   const dy = point.y - circle.at.y;
 
@@ -17,7 +17,7 @@ export const circleHitbox = (circle: Circle) => (point: Coordinate) => {
   return dx ** 2 + dy ** 2 <= radiusWithStroke ** 2;
 };
 
-export const getCircleBoundingBox = (circle: Circle) => () => {
+export const getCircleBoundingBox = (circle: CircleSchema) => () => {
   const { at, radius } = circle;
 
   const { width: borderWidth } = {
@@ -35,7 +35,7 @@ export const getCircleBoundingBox = (circle: Circle) => () => {
   };
 };
 
-export const circleEfficientHitbox = (circle: Circle) => {
+export const circleEfficientHitbox = (circle: CircleSchema) => {
   const circleBoundingBox = getCircleBoundingBox(circle)();
 
   const isInRectEfficientHitbox = rectEfficientHitbox(circleBoundingBox);

@@ -67,7 +67,7 @@ const outUTurn = (progress: number) => (uturnSchema: UTurnSchema) => {
 };
 
 export const edgeUTurn =
-  ({ controller, id }: ShapeResolverOptions) =>
+  ({ animationController: controller, id }: ShapeResolverOptions) =>
     (uturnSchema: UTurnSchema) => {
       const { itemsAnimatingIn, itemsAnimatingOut } = controller;
 

@@ -29,6 +29,7 @@ import type { GraphAtMousePosition, HistoryOption } from './types';
 import { useGraphCursor } from './useGraphCursor';
 import { getCanvasCoords } from '@utils/components/useCanvasCoord';
 import { useAnimationController } from '@graph/animationController';
+import { useOptimizedShapes } from '@shapes';
 import { usePluginHoldController } from './usePluginHold';
 export const useBaseGraph = (
   canvas: Ref<HTMLCanvasElement | undefined | null>,
@@ -124,24 +125,26 @@ export const useBaseGraph = (
     useAggregator({ canvas, emit });
 
   const animationController = useAnimationController();
+  const shapes = useOptimizedShapes()
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
-    const edgeOptions = {
+    const options = {
       edges,
       getNode,
       getEdge,
       getTheme,
       settings,
       animationController,
+      shapes,
     };
 
     const edgeSchemaItems = edges.value
-      .map((edge) => getEdgeSchematic(edge, edgeOptions))
+      .map((edge) => getEdgeSchematic(edge, options))
       .filter(Boolean)
       .map((item, i) => ({ ...item, priority: i * 10 })) as SchemaItem[];
 
     const nodeSchemaItems = nodes.value
-      .map((node) => getNodeSchematic(node, getTheme, animationController))
+      .map((node) => getNodeSchematic(node, options))
       .filter(Boolean)
       .map((item, i) => ({ ...item, priority: i * 10 + 1000 })) as SchemaItem[];
 
@@ -363,6 +366,7 @@ export const useBaseGraph = (
 
     animationController,
     pluginHoldController,
+    shapes,
 
     baseTheme: computed(() => THEMES[themeName.value]),
     themeName,
