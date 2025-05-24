@@ -1,4 +1,3 @@
-import { uturn } from '@shapes';
 import type { UTurnSchema } from '@shape/uturn';
 import gsap from 'gsap';
 import { EASING_FUNCTIONS } from '@utils/animate';
@@ -7,6 +6,7 @@ import type { ShapeResolverOptions } from './types';
 import { SEQ } from './uturnSeq';
 import { getMapper, inRange } from './utils';
 import { animateInTextArea, animateOutTextArea } from './edgeTextArea';
+import type { WithId } from '@shape/cacher';
 
 const { interpolate, normalize } = gsap.utils;
 const EASING = EASING_FUNCTIONS['in-out'];
@@ -37,11 +37,11 @@ const animateOutUTurnBody =
       };
     };
 
-const inUTurn = (progress: number) => (uturnSchema: UTurnSchema) => {
+const inUTurn = (progress: number, shapes: ShapeResolverOptions['shapes']) => (uturnSchema: WithId<UTurnSchema>) => {
   const percent = normalize(0, DURATION_MS, progress);
 
   if (inRange(SEQ.IN.BODY[0], SEQ.IN.BODY[1], percent)) {
-    return uturn({
+    return shapes.uturn({
       ...uturnSchema,
       ...animateInUTurnBody(progress)(uturnSchema),
       textArea: undefined,
@@ -49,17 +49,17 @@ const inUTurn = (progress: number) => (uturnSchema: UTurnSchema) => {
   }
 
   if (inRange(SEQ.IN.TEXT_AREA[0], SEQ.IN.TEXT_AREA[1], percent)) {
-    return uturn({
+    return shapes.uturn({
       ...uturnSchema,
       textArea: animateInTextArea(progress)(uturnSchema.textArea),
     });
   }
 
-  return uturn(uturnSchema);
+  return shapes.uturn(uturnSchema);
 };
 
-const outUTurn = (progress: number) => (uturnSchema: UTurnSchema) => {
-  return uturn({
+const outUTurn = (progress: number, shapes: ShapeResolverOptions['shapes']) => (uturnSchema: WithId<UTurnSchema>) => {
+  return shapes.uturn({
     ...uturnSchema,
     ...animateOutUTurnBody(progress)(uturnSchema),
     textArea: animateOutTextArea(progress)(uturnSchema.textArea),
@@ -67,15 +67,15 @@ const outUTurn = (progress: number) => (uturnSchema: UTurnSchema) => {
 };
 
 export const edgeUTurn =
-  ({ animationController: controller, id }: ShapeResolverOptions) =>
-    (uturnSchema: UTurnSchema) => {
-      const { itemsAnimatingIn, itemsAnimatingOut } = controller;
+  ({ animationController, shapes }: ShapeResolverOptions) =>
+    (uturnSchema: WithId<UTurnSchema>) => {
+      const { itemsAnimatingIn, itemsAnimatingOut } = animationController;
 
-      const inProgress = itemsAnimatingIn.get(id);
-      if (inProgress !== undefined) return inUTurn(inProgress)(uturnSchema);
+      const inProgress = itemsAnimatingIn.get(uturnSchema.id);
+      if (inProgress !== undefined) return inUTurn(inProgress, shapes)(uturnSchema);
 
-      const outProgress = itemsAnimatingOut.get(id);
-      if (outProgress !== undefined) return outUTurn(outProgress)(uturnSchema);
+      const outProgress = itemsAnimatingOut.get(uturnSchema.id);
+      if (outProgress !== undefined) return outUTurn(outProgress, shapes)(uturnSchema);
 
-      return uturn(uturnSchema);
+      return shapes.uturn(uturnSchema);
     };

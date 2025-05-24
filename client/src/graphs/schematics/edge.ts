@@ -121,6 +121,7 @@ export const getEdgeSchematic = (
 
   if (isSelfDirected) {
     const shape = uturn({
+      id: edge.id,
       spacing: edgeWidth * 1.2,
       at: { x: from.x, y: from.y },
       upDistance,

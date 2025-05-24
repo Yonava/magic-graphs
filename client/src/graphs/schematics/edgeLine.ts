@@ -1,4 +1,3 @@
-import { line } from '@shapes';
 import gsap from 'gsap';
 import { EASING_FUNCTIONS } from '@utils/animate';
 import { DURATION_MS } from '@graph/animationController';
@@ -73,10 +72,10 @@ export const edgeLine =
       const { itemsAnimatingIn, itemsAnimatingOut } = animationController;
 
       const inProgress = itemsAnimatingIn.get(lineSchema.id);
-      if (inProgress !== undefined) return inLine(inProgress)(lineSchema);
+      if (inProgress !== undefined) return inLine(inProgress, shapes)(lineSchema);
 
       const outProgress = itemsAnimatingOut.get(lineSchema.id);
-      if (outProgress !== undefined) return outLine(outProgress)(lineSchema);
+      if (outProgress !== undefined) return outLine(outProgress, shapes)(lineSchema);
 
       return shapes.line(lineSchema);
     };
