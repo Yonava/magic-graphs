@@ -8,12 +8,12 @@ import {
 } from '@shape/text';
 import { rotatePoint } from '@shape/helpers';
 import { rectHitbox } from '@shape/rect/hitbox';
-import { UTURN_DEFAULTS } from '.';
-import type { UTurn } from '.';
+import { UTURN_SCHEMA_DEFAULTS } from '.';
+import type { UTurnSchema } from '.';
 
-export const getTextAreaLocationOnUTurn = (uturn: UTurn) => {
+export const getTextAreaLocationOnUTurn = (uturn: UTurnSchema) => {
   const { at, upDistance, rotation, textArea, spacing, lineWidth } = {
-    ...UTURN_DEFAULTS,
+    ...UTURN_SCHEMA_DEFAULTS,
     ...uturn,
   };
 
@@ -41,7 +41,7 @@ export const getTextAreaLocationOnUTurn = (uturn: UTurn) => {
   };
 };
 
-export const uturnTextHitbox = (uturn: UTurn) => {
+export const uturnTextHitbox = (uturn: UTurnSchema) => {
   if (!uturn.textArea) return;
 
   const location = getTextAreaLocationOnUTurn(uturn);
@@ -58,7 +58,7 @@ export const uturnTextHitbox = (uturn: UTurn) => {
   return (point: Coordinate) => isInTextHitbox(point);
 };
 
-export const drawTextAreaMatteOnUTurn = (uturn: UTurn) => {
+export const drawTextAreaMatteOnUTurn = (uturn: UTurnSchema) => {
   if (!uturn.textArea) return;
 
   const location = getTextAreaLocationOnUTurn(uturn);
@@ -68,7 +68,7 @@ export const drawTextAreaMatteOnUTurn = (uturn: UTurn) => {
   return (ctx: CanvasRenderingContext2D) => drawMatte(ctx);
 };
 
-export const drawTextOnUTurn = (uturn: UTurn) => {
+export const drawTextOnUTurn = (uturn: UTurnSchema) => {
   if (!uturn.textArea) return;
 
   const location = getTextAreaLocationOnUTurn(uturn);
@@ -78,7 +78,7 @@ export const drawTextOnUTurn = (uturn: UTurn) => {
   return (ctx: CanvasRenderingContext2D) => drawText(ctx);
 };
 
-export const drawTextAreaOnUTurn = (uturn: UTurn) => {
+export const drawTextAreaOnUTurn = (uturn: UTurnSchema) => {
   const drawMatte = drawTextAreaMatteOnUTurn(uturn);
   const drawText = drawTextOnUTurn(uturn);
 

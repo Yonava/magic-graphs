@@ -1,6 +1,6 @@
 import { TEXT_DEFAULTS } from '@shape/types';
 import type { Coordinate } from '@shape/types';
-import type { Rect } from '@shape/rect';
+import type { RectSchema } from '@shape/rect';
 import {
   drawTextWithTextArea,
   drawTextMatteWithTextArea,
@@ -8,10 +8,10 @@ import {
   getFullTextArea,
 } from '@shape/text';
 import { rectHitbox } from '@shape/rect/hitbox';
-import { RECT_DEFAULTS } from '.';
+import { RECT_SCHEMA_DEFAULTS } from '.';
 
-export const getTextAreaLocationOnRect = (rect: Rect) => {
-  const { at, width, height, textArea } = { ...RECT_DEFAULTS, ...rect };
+export const getTextAreaLocationOnRect = (rect: RectSchema) => {
+  const { at, width, height, textArea } = { ...RECT_SCHEMA_DEFAULTS, ...rect };
 
   if (!textArea) throw new Error('no text area provided');
 
@@ -37,7 +37,7 @@ export const getTextAreaLocationOnRect = (rect: Rect) => {
  * @param point - the point to check if it is in the rect
  * @returns a function that checks if the point is in the rect
  */
-export const rectTextHitbox = (rect: Rect) => {
+export const rectTextHitbox = (rect: RectSchema) => {
   if (!rect.textArea) return;
 
   const location = getTextAreaLocationOnRect(rect);
@@ -54,7 +54,7 @@ export const rectTextHitbox = (rect: Rect) => {
   return (point: Coordinate) => isInTextHitbox(point);
 };
 
-export const drawTextAreaMatteOnRect = (rect: Rect) => {
+export const drawTextAreaMatteOnRect = (rect: RectSchema) => {
   if (!rect.textArea) return;
 
   const location = getTextAreaLocationOnRect(rect);
@@ -64,7 +64,7 @@ export const drawTextAreaMatteOnRect = (rect: Rect) => {
   return (ctx: CanvasRenderingContext2D) => drawMatte(ctx);
 };
 
-export const drawTextOnRect = (rect: Rect) => {
+export const drawTextOnRect = (rect: RectSchema) => {
   if (!rect.textArea) return;
 
   const location = getTextAreaLocationOnRect(rect);
@@ -74,7 +74,7 @@ export const drawTextOnRect = (rect: Rect) => {
   return (ctx: CanvasRenderingContext2D) => drawText(ctx);
 };
 
-export const drawTextAreaOnRect = (rect: Rect) => {
+export const drawTextAreaOnRect = (rect: RectSchema) => {
   const drawMatte = drawTextAreaMatteOnRect(rect);
   const drawText = drawTextOnRect(rect);
 

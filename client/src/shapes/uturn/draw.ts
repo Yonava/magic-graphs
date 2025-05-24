@@ -1,12 +1,12 @@
 import { rotatePoint } from '@shape/helpers';
 import { drawLineWithCtx } from '@shape/line/draw';
-import { UTURN_DEFAULTS } from '.';
-import type { UTurn } from '.';
+import { UTURN_SCHEMA_DEFAULTS } from '.';
+import type { UTurnSchema } from '.';
 import { drawArrowWithCtx } from '@shape/arrow/draw';
 import { getColorAtPercentage } from '@shape/helpers';
 import type { GradientStop } from '@shape/types';
 
-export const drawUTurnWithCtx = (options: UTurn) => {
+export const drawUTurnWithCtx = (options: UTurnSchema) => {
   const {
     spacing,
     at,
@@ -19,7 +19,7 @@ export const drawUTurnWithCtx = (options: UTurn) => {
     arrowHeadSize,
     gradientStops,
   } = {
-    ...UTURN_DEFAULTS,
+    ...UTURN_SCHEMA_DEFAULTS,
     ...options,
   };
 

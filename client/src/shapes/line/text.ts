@@ -1,6 +1,6 @@
 import { TEXT_DEFAULTS } from '@shape/types';
 import type { Coordinate } from '@shape/types';
-import type { Line } from '@shape/line';
+import type { LineSchema } from '@shape/line';
 import {
   drawTextWithTextArea,
   drawTextMatteWithTextArea,
@@ -9,11 +9,11 @@ import {
 } from '@shape/text';
 import { rectHitbox } from '@shape/rect/hitbox';
 import { getAngle } from '@shape/helpers';
-import { LINE_DEFAULTS } from '.';
+import { LINE_SCHEMA_DEFAULTS } from '.';
 
-export const getTextAreaLocationOnLine = (line: Line) => {
+export const getTextAreaLocationOnLine = (line: LineSchema) => {
   const { textOffsetFromCenter, start, end, textArea } = {
-    ...LINE_DEFAULTS,
+    ...LINE_SCHEMA_DEFAULTS,
     ...line,
   };
 
@@ -46,7 +46,7 @@ export const getTextAreaLocationOnLine = (line: Line) => {
  * @param point - the point to check if it is in the line
  * @returns a function that checks if the point is in the line
  */
-export const lineTextHitbox = (line: Line) => {
+export const lineTextHitbox = (line: LineSchema) => {
   if (!line.textArea) return;
 
   const location = getTextAreaLocationOnLine(line);
@@ -63,7 +63,7 @@ export const lineTextHitbox = (line: Line) => {
   return (point: Coordinate) => isInTextHitbox(point);
 };
 
-export const drawTextAreaMatteOnLine = (line: Line) => {
+export const drawTextAreaMatteOnLine = (line: LineSchema) => {
   if (!line.textArea) return;
 
   const location = getTextAreaLocationOnLine(line);
@@ -73,7 +73,7 @@ export const drawTextAreaMatteOnLine = (line: Line) => {
   return (ctx: CanvasRenderingContext2D) => drawMatte(ctx);
 };
 
-export const drawTextOnLine = (line: Line) => {
+export const drawTextOnLine = (line: LineSchema) => {
   if (!line.textArea) return;
 
   const location = getTextAreaLocationOnLine(line);
@@ -83,7 +83,7 @@ export const drawTextOnLine = (line: Line) => {
   return (ctx: CanvasRenderingContext2D) => drawText(ctx);
 };
 
-export const drawTextAreaOnLine = (line: Line) => {
+export const drawTextAreaOnLine = (line: LineSchema) => {
   const drawMatte = drawTextAreaMatteOnLine(line);
   const drawText = drawTextOnLine(line);
 

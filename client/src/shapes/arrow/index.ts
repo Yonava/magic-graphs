@@ -1,6 +1,6 @@
 import { generateId } from '@utils/id';
-import { LINE_DEFAULTS } from '@shape/line';
-import type { Line } from '@shape/line';
+import { LINE_SCHEMA_DEFAULTS } from '@shape/line';
+import type { LineSchema } from '@shape/line';
 import type { Shape, Coordinate } from '@shape/types';
 import { drawArrowWithCtx } from './draw';
 import {
@@ -19,7 +19,7 @@ import {
 import { getFullTextArea } from '@shape/text';
 import { getArrowHeadSize } from '@shape/helpers';
 
-export type Arrow = Line & {
+export type Arrow = LineSchema & {
   arrowHeadSize?: (width: number) => {
     arrowHeadHeight: number;
     perpLineLength: number;
@@ -28,7 +28,7 @@ export type Arrow = Line & {
 };
 
 export const ARROW_DEFAULTS = {
-  ...LINE_DEFAULTS,
+  ...LINE_SCHEMA_DEFAULTS,
   arrowHeadSize: getArrowHeadSize,
 } as const;
 

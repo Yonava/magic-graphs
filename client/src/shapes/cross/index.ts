@@ -5,7 +5,7 @@ import {
   getCrossBoundingBox,
 } from './hitbox';
 import { drawCrossWithCtx } from './draw';
-import { LINE_DEFAULTS } from '@shape/line';
+import { LINE_SCHEMA_DEFAULTS } from '@shape/line';
 import { generateId } from '@utils/id';
 
 export type Cross = {
@@ -21,7 +21,7 @@ export type Cross = {
 export const CROSS_DEFAULTS = {
   rotation: 0,
   color: 'black',
-  lineWidth: LINE_DEFAULTS.width,
+  lineWidth: LINE_SCHEMA_DEFAULTS.width,
   borderRadius: 0,
 } as const;
 

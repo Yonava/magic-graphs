@@ -1,10 +1,10 @@
-import { LINE_DEFAULTS } from '.';
-import type { Line } from '.';
+import { LINE_SCHEMA_DEFAULTS } from '.';
+import type { LineSchema } from '.';
 
 export const drawLineWithCtx =
-  (line: Line) => (ctx: CanvasRenderingContext2D) => {
+  (line: LineSchema) => (ctx: CanvasRenderingContext2D) => {
     const { start, end, width, color, dash, gradientStops } = {
-      ...LINE_DEFAULTS,
+      ...LINE_SCHEMA_DEFAULTS,
       ...line,
     };
 

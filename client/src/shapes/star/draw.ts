@@ -1,9 +1,9 @@
-import { STAR_DEFAULTS } from '.';
-import type { Star } from '.';
+import { STAR_SCHEMA_DEFAULTS } from '.';
+import type { StarSchema } from '.';
 
-export const drawStarWithCtx = (options: Star) => {
+export const drawStarWithCtx = (options: StarSchema) => {
   const { at, color, innerRadius, outerRadius, rotation, points } = {
-    ...STAR_DEFAULTS,
+    ...STAR_SCHEMA_DEFAULTS,
     ...options,
   };
 

@@ -1,7 +1,7 @@
 import type { Ref } from 'vue';
 import type { Collaborator, CollaboratorMap } from '@graph/collab/types';
 import colors from '@colors';
-import { rect, type Rect } from '@shape/rect';
+import { rect, type RectSchema } from '@shape/rect';
 import { circle, type Circle } from '@shape/circle';
 
 export const collabTagShapes = (collaborator: Collaborator) => {
@@ -23,7 +23,7 @@ export const collabTagShapes = (collaborator: Collaborator) => {
   const height = 20;
   const topLeftOffset = 10;
 
-  const tag: Rect = {
+  const tag: RectSchema = {
     at: {
       x: x - width - topLeftOffset,
       y: y - height - topLeftOffset,

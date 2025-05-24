@@ -1,10 +1,10 @@
-import { RECT_DEFAULTS } from '.';
-import type { Rect } from '.';
+import { RECT_SCHEMA_DEFAULTS } from '.';
+import type { RectSchema } from '.';
 
 export const drawRectWithCtx =
-  (options: Rect) => (ctx: CanvasRenderingContext2D) => {
+  (options: RectSchema) => (ctx: CanvasRenderingContext2D) => {
     const { at, width, height, color, borderRadius, rotation, stroke } = {
-      ...RECT_DEFAULTS,
+      ...RECT_SCHEMA_DEFAULTS,
       ...options,
     };
 

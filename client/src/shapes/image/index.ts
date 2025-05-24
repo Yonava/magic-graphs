@@ -13,7 +13,7 @@ import {
   getTextAreaLocationOnImage,
   imageTextHitbox,
 } from './text';
-import { RECT_DEFAULTS } from '@shape/rect';
+import { RECT_SCHEMA_DEFAULTS } from '@shape/rect';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 import colors from '@utils/colors';
@@ -32,7 +32,7 @@ export type Image = {
 };
 
 export const IMAGE_DEFAULTS = {
-  ...RECT_DEFAULTS,
+  ...RECT_SCHEMA_DEFAULTS,
   color: colors.TRANSPARENT,
 } as const;
 

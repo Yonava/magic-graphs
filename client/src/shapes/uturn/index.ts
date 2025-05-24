@@ -3,6 +3,7 @@ import type {
   Coordinate,
   GradientStop,
   Shape,
+  ShapeFactory,
   TextAreaNoLocation,
 } from '@shape/types';
 import { drawUTurnWithCtx } from './draw';
@@ -22,7 +23,7 @@ import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 import { getArrowHeadSize } from '@shape/helpers';
 
-export type UTurn = {
+export type UTurnSchema = {
   id?: string;
   at: Coordinate;
   spacing: number;
@@ -40,13 +41,13 @@ export type UTurn = {
   gradientStops?: GradientStop[];
 };
 
-export const UTURN_DEFAULTS = {
+export const UTURN_SCHEMA_DEFAULTS = {
   color: 'black',
   arrowHeadSize: getArrowHeadSize,
   gradientStops: [] as GradientStop[],
 } as const;
 
-export const uturn = (options: UTurn): Shape => {
+export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   if (options.downDistance < 0) {
     throw new Error('downDistance must be positive');
   }

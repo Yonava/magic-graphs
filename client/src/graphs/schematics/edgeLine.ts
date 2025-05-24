@@ -6,38 +6,38 @@ import type { ShapeResolverOptions } from './types';
 import { SEQ } from './edgeSeq';
 import { getMapper, inRange } from './utils';
 import { animateInTextArea, animateOutTextArea } from './edgeTextArea';
-import type { Line } from '@shape/line';
+import type { LineSchema } from '@shape/line';
 
 const { interpolate, normalize } = gsap.utils;
 const EASING = EASING_FUNCTIONS['in-out'];
 
 const animateInLineBody =
   (progress: number) =>
-  (lineSchema: Line): Partial<Line> => {
-    const mapper = getMapper(...SEQ.IN.BODY);
-    const percentage = EASING(mapper(progress));
+    (lineSchema: LineSchema): Partial<LineSchema> => {
+      const mapper = getMapper(...SEQ.IN.BODY);
+      const percentage = EASING(mapper(progress));
 
-    const interpolateWidth = interpolate(0, lineSchema.width);
+      const interpolateWidth = interpolate(0, lineSchema.width);
 
-    return {
-      width: interpolateWidth(percentage),
+      return {
+        width: interpolateWidth(percentage),
+      };
     };
-  };
 
 const animateOutLineBody =
   (progress: number) =>
-  (lineSchema: Line): Partial<Line> => {
-    const mapper = getMapper(0, 1);
-    const percentage = EASING(mapper(progress));
+    (lineSchema: LineSchema): Partial<LineSchema> => {
+      const mapper = getMapper(0, 1);
+      const percentage = EASING(mapper(progress));
 
-    const interpolateWidth = interpolate(lineSchema.width, 0);
+      const interpolateWidth = interpolate(lineSchema.width, 0);
 
-    return {
-      width: interpolateWidth(percentage),
+      return {
+        width: interpolateWidth(percentage),
+      };
     };
-  };
 
-const inLine = (progress: number) => (lineSchema: Line) => {
+const inLine = (progress: number) => (lineSchema: LineSchema) => {
   const percent = normalize(0, DURATION_MS, progress);
 
   if (inRange(SEQ.IN.BODY[0], SEQ.IN.BODY[1], percent)) {
@@ -58,7 +58,7 @@ const inLine = (progress: number) => (lineSchema: Line) => {
   return line(lineSchema);
 };
 
-const outLine = (progress: number) => (lineSchema: Line) => {
+const outLine = (progress: number) => (lineSchema: LineSchema) => {
   return line({
     ...lineSchema,
     ...animateOutLineBody(progress)(lineSchema),
@@ -68,14 +68,14 @@ const outLine = (progress: number) => (lineSchema: Line) => {
 
 export const edgeLine =
   ({ controller, id }: ShapeResolverOptions) =>
-  (lineSchema: Line) => {
-    const { itemsAnimatingIn, itemsAnimatingOut } = controller;
+    (lineSchema: LineSchema) => {
+      const { itemsAnimatingIn, itemsAnimatingOut } = controller;
 
-    const inProgress = itemsAnimatingIn.get(id);
-    if (inProgress !== undefined) return inLine(inProgress)(lineSchema);
+      const inProgress = itemsAnimatingIn.get(id);
+      if (inProgress !== undefined) return inLine(inProgress)(lineSchema);
 
-    const outProgress = itemsAnimatingOut.get(id);
-    if (outProgress !== undefined) return outLine(outProgress)(lineSchema);
+      const outProgress = itemsAnimatingOut.get(id);
+      if (outProgress !== undefined) return outLine(outProgress)(lineSchema);
 
-    return line(lineSchema);
-  };
+      return line(lineSchema);
+    };

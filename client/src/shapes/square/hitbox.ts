@@ -1,5 +1,5 @@
 import type { Coordinate, BoundingBox } from '@shape/types';
-import { SQUARE_DEFAULTS, type Square } from '.';
+import { SQUARE_DEFAULTS, type SquareSchema } from '.';
 import {
   rectHitbox,
   rectEfficientHitbox,
@@ -10,7 +10,7 @@ import {
  * @param point - the point to check if it is in the square
  * @returns a function that checks if the point is in the square
  */
-export const squareHitbox = (square: Square) => {
+export const squareHitbox = (square: SquareSchema) => {
   const { at, size, borderRadius, rotation, stroke } = {
     ...SQUARE_DEFAULTS,
     ...square,
@@ -27,7 +27,7 @@ export const squareHitbox = (square: Square) => {
   return (point: Coordinate) => isInRect(point);
 };
 
-export const getSquareBoundingBox = (square: Square) => {
+export const getSquareBoundingBox = (square: SquareSchema) => {
   return getRectBoundingBox({
     at: square.at,
     width: square.size,
@@ -35,7 +35,7 @@ export const getSquareBoundingBox = (square: Square) => {
   });
 };
 
-export const squareEfficientHitbox = (square: Square) => {
+export const squareEfficientHitbox = (square: SquareSchema) => {
   const isInRectEfficientHitbox = rectEfficientHitbox({
     at: square.at,
     width: square.size,

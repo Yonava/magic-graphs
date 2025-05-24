@@ -1,12 +1,12 @@
 import { rotatePoint } from '@shape/helpers';
 import type { Coordinate, BoundingBox } from '@shape/types';
 import { lineHitbox } from '@shape/line/hitbox';
-import type { UTurn } from '.';
+import type { UTurnSchema } from '.';
 import { rectEfficientHitbox } from '@shape/rect/hitbox';
 import { arrowHitbox } from '@shape/arrow/hitbox';
 import { circleHitbox } from '@shape/circle/hitbox';
 
-export const uturnHitbox = (uturn: UTurn) => {
+export const uturnHitbox = (uturn: UTurnSchema) => {
   const { spacing, at, downDistance, upDistance, lineWidth, rotation } = uturn;
 
   const longLegFrom = rotatePoint(
@@ -73,7 +73,7 @@ export const uturnHitbox = (uturn: UTurn) => {
     isInLine(point) || isInArrow(point) || isInUTurn(point);
 };
 
-export const getUturnBoundingBox = (uturn: UTurn) => () => {
+export const getUturnBoundingBox = (uturn: UTurnSchema) => () => {
   const { spacing, at, upDistance, rotation, lineWidth } = uturn;
 
   const end = rotatePoint(
@@ -97,7 +97,7 @@ export const getUturnBoundingBox = (uturn: UTurn) => () => {
   };
 };
 
-export const uturnEfficientHitbox = (uturn: UTurn) => {
+export const uturnEfficientHitbox = (uturn: UTurnSchema) => {
   const uturnBoundingBox = getUturnBoundingBox(uturn)();
 
   const isInRectEfficientHitbox = rectEfficientHitbox(uturnBoundingBox);

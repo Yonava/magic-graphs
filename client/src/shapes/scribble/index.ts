@@ -1,4 +1,4 @@
-import type { Coordinate, Shape } from '@shape/types';
+import type { Coordinate, ShapeFactory } from '@shape/types';
 import { drawScribbleWithCtx } from './draw';
 import {
   scribbleHitbox,
@@ -7,7 +7,7 @@ import {
 } from './hitbox';
 import { generateId } from '@utils/id';
 
-export type Scribble = {
+export type ScribbleSchema = {
   id?: string;
   type: 'draw' | 'erase';
   color?: string;
@@ -22,7 +22,7 @@ export const SCRIBBLE_DEFAULTS = {
 
 export const ERASER_BRUSH_WEIGHT = 50;
 
-export const scribble = (options: Scribble): Shape => {
+export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
   if (options.points.length < 1) {
     throw new Error('not enough points to draw scribble');
   }

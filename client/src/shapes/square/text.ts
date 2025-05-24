@@ -1,6 +1,6 @@
 import { TEXT_DEFAULTS } from '@shape/types';
 import type { Coordinate } from '@shape/types';
-import type { Square } from '@shape/square';
+import type { SquareSchema } from '@shape/square';
 import {
   drawTextWithTextArea,
   drawTextMatteWithTextArea,
@@ -9,7 +9,7 @@ import {
 } from '@shape/text';
 import { rectHitbox } from '@shape/rect/hitbox';
 
-export const getTextAreaLocationOnSquare = (square: Square) => {
+export const getTextAreaLocationOnSquare = (square: SquareSchema) => {
   const { at, size, textArea } = square;
 
   if (!textArea) throw new Error('no text area provided');
@@ -36,7 +36,7 @@ export const getTextAreaLocationOnSquare = (square: Square) => {
  * @param point - the point to check if it is in the square
  * @returns a function that checks if the point is in the square
  */
-export const squareTextHitbox = (square: Square) => {
+export const squareTextHitbox = (square: SquareSchema) => {
   if (!square.textArea) return;
 
   const location = getTextAreaLocationOnSquare(square);
@@ -53,7 +53,7 @@ export const squareTextHitbox = (square: Square) => {
   return (point: Coordinate) => isInTextHitbox(point);
 };
 
-export const drawTextAreaMatteOnSquare = (square: Square) => {
+export const drawTextAreaMatteOnSquare = (square: SquareSchema) => {
   if (!square.textArea) return;
 
   const location = getTextAreaLocationOnSquare(square);
@@ -63,7 +63,7 @@ export const drawTextAreaMatteOnSquare = (square: Square) => {
   return (ctx: CanvasRenderingContext2D) => drawMatte(ctx);
 };
 
-export const drawTextOnSquare = (square: Square) => {
+export const drawTextOnSquare = (square: SquareSchema) => {
   if (!square.textArea) return;
 
   const location = getTextAreaLocationOnSquare(square);
@@ -73,7 +73,7 @@ export const drawTextOnSquare = (square: Square) => {
   return (ctx: CanvasRenderingContext2D) => drawText(ctx);
 };
 
-export const drawTextAreaOnSquare = (square: Square) => {
+export const drawTextAreaOnSquare = (square: SquareSchema) => {
   const drawMatte = drawTextAreaMatteOnSquare(square);
   const drawText = drawTextOnSquare(square);
 

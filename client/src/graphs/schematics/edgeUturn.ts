@@ -1,5 +1,5 @@
 import { uturn } from '@shapes';
-import type { UTurn } from '@shape/uturn';
+import type { UTurnSchema } from '@shape/uturn';
 import gsap from 'gsap';
 import { EASING_FUNCTIONS } from '@utils/animate';
 import { DURATION_MS } from '@graph/animationController';
@@ -13,31 +13,31 @@ const EASING = EASING_FUNCTIONS['in-out'];
 
 const animateInUTurnBody =
   (progress: number) =>
-  (uturnSchema: UTurn): Partial<UTurn> => {
-    const mapper = getMapper(...SEQ.IN.BODY);
-    const percentage = EASING(mapper(progress));
+    (uturnSchema: UTurnSchema): Partial<UTurnSchema> => {
+      const mapper = getMapper(...SEQ.IN.BODY);
+      const percentage = EASING(mapper(progress));
 
-    const interpolateWidth = interpolate(0.00001, uturnSchema.lineWidth);
+      const interpolateWidth = interpolate(0.00001, uturnSchema.lineWidth);
 
-    return {
-      lineWidth: interpolateWidth(percentage),
+      return {
+        lineWidth: interpolateWidth(percentage),
+      };
     };
-  };
 
 const animateOutUTurnBody =
   (progress: number) =>
-  (uturnSchema: UTurn): Partial<UTurn> => {
-    const mapper = getMapper(0, 1);
-    const percentage = EASING(mapper(progress));
+    (uturnSchema: UTurnSchema): Partial<UTurnSchema> => {
+      const mapper = getMapper(0, 1);
+      const percentage = EASING(mapper(progress));
 
-    const interpolateWidth = interpolate(uturnSchema.lineWidth, 0.00001);
+      const interpolateWidth = interpolate(uturnSchema.lineWidth, 0.00001);
 
-    return {
-      lineWidth: interpolateWidth(percentage),
+      return {
+        lineWidth: interpolateWidth(percentage),
+      };
     };
-  };
 
-const inUTurn = (progress: number) => (uturnSchema: UTurn) => {
+const inUTurn = (progress: number) => (uturnSchema: UTurnSchema) => {
   const percent = normalize(0, DURATION_MS, progress);
 
   if (inRange(SEQ.IN.BODY[0], SEQ.IN.BODY[1], percent)) {
@@ -58,7 +58,7 @@ const inUTurn = (progress: number) => (uturnSchema: UTurn) => {
   return uturn(uturnSchema);
 };
 
-const outUTurn = (progress: number) => (uturnSchema: UTurn) => {
+const outUTurn = (progress: number) => (uturnSchema: UTurnSchema) => {
   return uturn({
     ...uturnSchema,
     ...animateOutUTurnBody(progress)(uturnSchema),
@@ -68,14 +68,14 @@ const outUTurn = (progress: number) => (uturnSchema: UTurn) => {
 
 export const edgeUTurn =
   ({ controller, id }: ShapeResolverOptions) =>
-  (uturnSchema: UTurn) => {
-    const { itemsAnimatingIn, itemsAnimatingOut } = controller;
+    (uturnSchema: UTurnSchema) => {
+      const { itemsAnimatingIn, itemsAnimatingOut } = controller;
 
-    const inProgress = itemsAnimatingIn.get(id);
-    if (inProgress !== undefined) return inUTurn(inProgress)(uturnSchema);
+      const inProgress = itemsAnimatingIn.get(id);
+      if (inProgress !== undefined) return inUTurn(inProgress)(uturnSchema);
 
-    const outProgress = itemsAnimatingOut.get(id);
-    if (outProgress !== undefined) return outUTurn(outProgress)(uturnSchema);
+      const outProgress = itemsAnimatingOut.get(id);
+      if (outProgress !== undefined) return outUTurn(outProgress)(uturnSchema);
 
-    return uturn(uturnSchema);
-  };
+      return uturn(uturnSchema);
+    };

@@ -1,6 +1,6 @@
-import type { Rect } from '@shape/rect';
+import type { RectSchema } from '@shape/rect';
 
-export type BoundingBox = Pick<Rect, 'at' | 'width' | 'height'>;
+export type BoundingBox = Pick<RectSchema, 'at' | 'width' | 'height'>;
 
 export type BoundingBoxCorners = {
   topLeft: Coordinate;
@@ -175,3 +175,8 @@ export type GradientStop = {
    */
   color: string;
 };
+
+/**
+ * the process all schemas go through to become shapes
+ */
+export type ShapeFactory<T> = (schema: T) => Shape

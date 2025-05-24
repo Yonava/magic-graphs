@@ -2,7 +2,7 @@ import { generateId } from '@utils/id';
 import type {
   Coordinate,
   GradientStop,
-  Shape,
+  ShapeFactory,
   Stroke,
   TextAreaNoLocation,
 } from '@shape/types';
@@ -19,7 +19,7 @@ import {
 } from './hitbox';
 import { drawTriangleWithCtx } from './draw';
 
-export type Triangle = {
+export type TriangleSchema = {
   id?: string;
   pointA: Coordinate;
   pointB: Coordinate;
@@ -30,11 +30,11 @@ export type Triangle = {
   gradientStops?: GradientStop[];
 };
 
-export const TRIANGLE_DEFAULTS = {
+export const TRIANGLE_SCHEMA_DEFAULTS = {
   color: 'black',
 } as const;
 
-export const triangle = (options: Triangle): Shape => {
+export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const drawShape = drawTriangleWithCtx(options);
   const shapeHitbox = triangleHitbox(options);
   const textHitbox = triangleTextHitbox(options);

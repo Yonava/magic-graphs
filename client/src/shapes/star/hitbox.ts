@@ -1,8 +1,8 @@
 import type { Coordinate, BoundingBox } from '@shape/types';
-import type { Star } from '.';
+import type { StarSchema } from '.';
 import { rotatePoint } from '@shape/helpers';
 
-const getStarPoints = (star: Star): Coordinate[] => {
+const getStarPoints = (star: StarSchema): Coordinate[] => {
   const { at, innerRadius, outerRadius, points = 5, rotation = 0 } = star;
   const vertices: Coordinate[] = [];
 
@@ -47,13 +47,13 @@ const isPointInPolygon = (
 };
 
 export const starHitbox =
-  (star: Star) =>
-  (point: Coordinate): boolean => {
-    const vertices = getStarPoints(star);
-    return isPointInPolygon(point, vertices);
-  };
+  (star: StarSchema) =>
+    (point: Coordinate): boolean => {
+      const vertices = getStarPoints(star);
+      return isPointInPolygon(point, vertices);
+    };
 
-export const getStarBoundingBox = (star: Star) => (): BoundingBox => {
+export const getStarBoundingBox = (star: StarSchema) => (): BoundingBox => {
   const { at, outerRadius } = star;
   const size = outerRadius * 2;
   return {
@@ -64,13 +64,13 @@ export const getStarBoundingBox = (star: Star) => (): BoundingBox => {
 };
 
 export const starEfficientHitbox =
-  (star: Star) =>
-  (boxToCheck: BoundingBox): boolean => {
-    const bb = getStarBoundingBox(star)();
-    return (
-      boxToCheck.at.x < bb.at.x + bb.width &&
-      boxToCheck.at.x + boxToCheck.width > bb.at.x &&
-      boxToCheck.at.y < bb.at.y + bb.height &&
-      boxToCheck.at.y + boxToCheck.height > bb.at.y
-    );
-  };
+  (star: StarSchema) =>
+    (boxToCheck: BoundingBox): boolean => {
+      const bb = getStarBoundingBox(star)();
+      return (
+        boxToCheck.at.x < bb.at.x + bb.width &&
+        boxToCheck.at.x + boxToCheck.width > bb.at.x &&
+        boxToCheck.at.y < bb.at.y + bb.height &&
+        boxToCheck.at.y + boxToCheck.height > bb.at.y
+      );
+    };

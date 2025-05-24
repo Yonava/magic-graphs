@@ -3,7 +3,7 @@
   import { useDark, useWindowSize } from '@vueuse/core';
   import ResponsiveCanvas from '@utils/components/ResponsiveCanvas.vue';
   import colors from '@colors';
-  import { useOptimizedShapes } from '@shape/useOptimizedShapes';
+  import { useOptimizedShapes } from '@shapes';
   import type { Shape } from '@shape/types';
   import { getCtx } from '@utils/ctx';
   import ShapePlaygroundToolbar from './Toolbar.vue';
@@ -21,20 +21,21 @@
     () => (isDark.value ? colors.GRAY_200 : colors.GRAY_700) + '15',
   );
 
-  const { optimizedSquare } = useOptimizedShapes();
+  const { square } = useOptimizedShapes();
 
   const draw = () => {
     const ctx = getCtx(canvas);
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     items.value = [];
 
-    const square = optimizedSquare({
-      id: 'test',
-      at: { x: 100, y: 100 },
-      size: 30,
-    });
-
-    items.value.push(square);
+    items.value.push(
+      square({
+        id: 'test',
+        color: 'red',
+        at: { x: 100, y: 100 },
+        size: 30,
+      }),
+    );
 
     items.value.forEach((item) => item.draw(ctx));
   };

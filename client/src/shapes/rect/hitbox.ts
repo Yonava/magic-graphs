@@ -1,6 +1,6 @@
 import type { Coordinate, BoundingBox } from '@shape/types';
-import type { Rect } from '.';
-import { RECT_DEFAULTS } from '.';
+import type { RectSchema } from '.';
+import { RECT_SCHEMA_DEFAULTS } from '.';
 import { circleHitbox } from '@shape/circle/hitbox';
 import { rotatePoint } from '@shape/helpers';
 
@@ -8,9 +8,9 @@ import { rotatePoint } from '@shape/helpers';
  * @param point - the point to check if it is in the rotated rectangle
  * @returns a function that checks if the point is in the rotated rectangle with rounded corners
  */
-export const rectHitbox = (rectangle: Rect) => (point: Coordinate) => {
+export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
   const { at, width, height, borderRadius, rotation, stroke } = {
-    ...RECT_DEFAULTS,
+    ...RECT_SCHEMA_DEFAULTS,
     ...rectangle,
   };
 
@@ -89,7 +89,7 @@ export const rectHitbox = (rectangle: Rect) => (point: Coordinate) => {
   );
 };
 
-export const getRectBoundingBox = (rectangle: Rect) => () => {
+export const getRectBoundingBox = (rectangle: RectSchema) => () => {
   const { at, width, height } = rectangle;
 
   return {
@@ -100,7 +100,7 @@ export const getRectBoundingBox = (rectangle: Rect) => () => {
 };
 
 export const rectEfficientHitbox =
-  (rectangle: Rect) => (boxToCheck: BoundingBox) => {
+  (rectangle: RectSchema) => (boxToCheck: BoundingBox) => {
     const {
       at: shapeAt,
       width: shapeWidth,
