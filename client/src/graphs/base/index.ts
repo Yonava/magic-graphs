@@ -31,6 +31,7 @@ import { getCanvasCoords } from '@utils/components/useCanvasCoord';
 import { useAnimationController } from '@graph/animationController';
 import { useOptimizedShapes } from '@shapes';
 import { usePluginHoldController } from './usePluginHold';
+
 export const useBaseGraph = (
   canvas: Ref<HTMLCanvasElement | undefined | null>,
   startupSettings: Partial<GraphSettings> = {},
