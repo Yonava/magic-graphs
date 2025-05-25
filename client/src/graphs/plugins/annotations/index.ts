@@ -4,7 +4,6 @@ import type { BaseGraph } from '@graph/base';
 import type { GraphMouseEvent } from '@graph/base/types';
 import type { Coordinate } from '@shape/types';
 import { generateId } from '@utils/id';
-import { shapes } from '@shapes';
 import colors from '@utils/colors';
 import type { Color } from '@utils/colors';
 import { BRUSH_WEIGHTS, COLORS } from './constants';
@@ -72,7 +71,7 @@ export const useAnnotations = (graph: BaseGraph) => {
       })();
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
-        const shape = shapes.scribble(scribble);
+        const shape = graph.shapes.scribble(scribble);
         return shape.efficientHitbox(eraserBoundingBox);
       });
 
@@ -102,7 +101,7 @@ export const useAnnotations = (graph: BaseGraph) => {
       })();
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
-        const shape = shapes.scribble(scribble);
+        const shape = graph.shapes.scribble(scribble);
         return shape.efficientHitbox(eraserBoundingBox);
       });
 
@@ -183,7 +182,8 @@ export const useAnnotations = (graph: BaseGraph) => {
     if (!isActive.value) return aggregator;
 
     if (isErasing.value && graph.canvasHovered.value) {
-      const eraserCursor = shapes.circle({
+      const eraserCursor = graph.shapes.circle({
+        id: 'annotation-eraser-cursor',
         at: graph.graphAtMousePosition.value.coords,
         radius: ERASER_BRUSH_RADIUS,
         color: colors.TRANSPARENT,
@@ -194,13 +194,14 @@ export const useAnnotations = (graph: BaseGraph) => {
       });
 
       aggregator.push({
-        graphType: 'annotation',
+        graphType: 'annotation-eraser',
         id: eraserCursor.id,
         shape: eraserCursor,
         priority: 5050,
       });
     } else if (batch.value.length > 0 && isDrawing.value) {
-      const incompleteScribble = shapes.scribble({
+      const incompleteScribble = graph.shapes.scribble({
+        id: 'incomplete-annotation',
         type: 'draw',
         points: batch.value,
         color: selectedColor.value,
@@ -214,7 +215,8 @@ export const useAnnotations = (graph: BaseGraph) => {
         priority: 5001,
       });
     } else if (isLaserPointing.value && graph.canvasHovered.value) {
-      const laserPointerCursor = shapes.circle({
+      const laserPointerCursor = graph.shapes.circle({
+        id: 'laser-pointer-cursor',
         at: graph.graphAtMousePosition.value.coords,
         radius: selectedBrushWeight.value,
         color: selectedColor.value,
@@ -233,7 +235,7 @@ export const useAnnotations = (graph: BaseGraph) => {
       aggregator.push({
         graphType: 'annotation',
         id: scribble.id,
-        shape: shapes.scribble({
+        shape: graph.shapes.scribble({
           ...scribble,
           color: scribble.color + (isErased ? '50' : ''),
         }),

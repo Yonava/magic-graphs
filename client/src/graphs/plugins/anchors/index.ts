@@ -6,7 +6,6 @@ import type { SchemaItem, GNode } from '@graph/types';
 import type { GraphFocusPlugin } from '@graph/plugins/focus';
 import type { NodeAnchor } from '@graph/plugins/anchors/types';
 import { generateId } from '@utils/id';
-import { circle, line } from '@shapes';
 import { MOUSE_BUTTONS } from "@graph/global";
 
 /**
@@ -67,6 +66,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
         id === currentDraggingAnchor.value?.id;
 
       const circleTemplate = {
+        id,
         at: { x, y },
         radius,
         color: isHoveredOrDragged ? focusColor : color,
@@ -80,7 +80,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
         circleTemplate.at.y = currentDraggingAnchor.value.y;
       }
 
-      const nodeAnchorShape = circle(circleTemplate);
+      const nodeAnchorShape = graph.shapes.circle(circleTemplate);
 
       anchorSchemas.push({
         id: anchor.id,
@@ -168,7 +168,8 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
       currentDraggingAnchor.value,
     );
 
-    const shape = line({
+    const shape = graph.shapes.line({
+      id: 'link-preview',
       start,
       end,
       color,
