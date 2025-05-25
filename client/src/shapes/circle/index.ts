@@ -44,9 +44,7 @@ export const circle: ShapeFactory<CircleSchema> = (options) => {
   const shapeHitbox = circleHitbox(options);
   const textHitbox = circleTextHitbox(options);
   const efficientHitbox = circleEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getCircleBoundingBox(options);
 
@@ -71,7 +69,7 @@ export const circle: ShapeFactory<CircleSchema> = (options) => {
   };
 
   return {
-    id: generateId(),
+    id: options.id ?? generateId(),
     name: 'circle',
 
     draw,

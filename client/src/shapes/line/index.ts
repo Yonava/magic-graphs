@@ -55,9 +55,7 @@ export const line: ShapeFactory<LineSchema> = (options) => {
   const shapeHitbox = lineHitbox(options);
   const textHitbox = lineTextHitbox(options);
   const efficientHitbox = lineEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getLineBoundingBox(options);
 

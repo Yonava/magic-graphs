@@ -1,4 +1,4 @@
-import type { Coordinate, Shape, TextAreaNoLocation } from '@shape/types';
+import type { Coordinate, ShapeFactory, TextAreaNoLocation } from '@shape/types';
 import { generateId } from '@utils/id';
 import { drawImageWithCtx } from './draw';
 import {
@@ -18,7 +18,7 @@ import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 import colors from '@utils/colors';
 
-export type Image = {
+export type ImageSchema = {
   id?: string;
   at: Coordinate;
   width: number;
@@ -31,17 +31,12 @@ export type Image = {
   textArea?: TextAreaNoLocation;
 };
 
-export const IMAGE_DEFAULTS = {
+export const IMAGE_SCHEMA_DEFAULTS = {
   ...RECT_SCHEMA_DEFAULTS,
   color: colors.TRANSPARENT,
 } as const;
 
-/**
- * Creates an image shape. Rectangle options are used for size and a background
- * color, defaulting to transparent.
- * @throws {Error} If width or height are negative
- */
-export const image = (options: Image): Shape => {
+export const image: ShapeFactory<ImageSchema> = (options) => {
   if (options.width < 0 || options.height < 0) {
     throw new Error('width and height must be positive');
   }
@@ -77,6 +72,7 @@ export const image = (options: Image): Shape => {
   return {
     id: options.id ?? generateId(),
     name: 'image',
+
     draw,
     drawShape,
     drawTextArea,

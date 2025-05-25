@@ -35,18 +35,13 @@ export type SquareSchema = {
 
 export const SQUARE_DEFAULTS = RECT_SCHEMA_DEFAULTS;
 
-/**
- * squares use rect default values
- */
 export const square: ShapeFactory<SquareSchema> = (options) => {
   const drawShape = drawSquareWithCtx(options);
 
   const shapeHitbox = squareHitbox(options);
   const textHitbox = squareTextHitbox(options);
   const efficientHitbox = squareEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getSquareBoundingBox(options);
 

@@ -42,9 +42,7 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   const shapeHitbox = arrowHitbox(options);
   const textHitbox = arrowTextHitbox(options);
   const efficientHitbox = arrowEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getArrowBoundingBox(options);
 

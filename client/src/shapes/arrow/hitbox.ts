@@ -102,18 +102,22 @@ export const getArrowBoundingBox = (arrow: ArrowSchema) => () => {
 
 export const arrowEfficientHitbox = (arrow: ArrowSchema) => {
   const isInLineEfficientHitbox = lineEfficientHitbox(arrow);
+
   const { start, end, width, arrowHeadSize } = {
     ...ARROW_SCHEMA_DEFAULTS,
     ...arrow,
   };
+
   const arrowHeadTriangle = calculateArrowHeadCorners({
     start,
     end,
     width,
     arrowHeadSize,
   });
+
   const isInArrowHeadEfficientHitbox =
     triangleEfficientHitbox(arrowHeadTriangle);
+
   return (boxToCheck: BoundingBox) =>
     isInLineEfficientHitbox(boxToCheck) ||
     isInArrowHeadEfficientHitbox(boxToCheck);

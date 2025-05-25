@@ -1,9 +1,9 @@
 import type { Coordinate, BoundingBox } from '@shape/types';
-import type { Ellipse } from '@shape/ellipse';
+import type { EllipseSchema } from '@shape/ellipse';
 import { STROKE_DEFAULTS } from '@shape/types';
 import { rectEfficientHitbox } from '@shape/rect/hitbox';
 
-export const ellipseHitbox = (ellipse: Ellipse) => (point: Coordinate) => {
+export const ellipseHitbox = (ellipse: EllipseSchema) => (point: Coordinate) => {
   const dx = point.x - ellipse.at.x;
   const dy = point.y - ellipse.at.y;
 
@@ -21,7 +21,7 @@ export const ellipseHitbox = (ellipse: Ellipse) => (point: Coordinate) => {
   return inEllipse;
 };
 
-export const getEllipseBoundingBox = (ellipse: Ellipse) => () => {
+export const getEllipseBoundingBox = (ellipse: EllipseSchema) => () => {
   const { at, radiusX, radiusY } = ellipse;
 
   const { width: borderWidth } = {
@@ -39,7 +39,7 @@ export const getEllipseBoundingBox = (ellipse: Ellipse) => () => {
   };
 };
 
-export const ellipseEfficientHitbox = (ellipse: Ellipse) => {
+export const ellipseEfficientHitbox = (ellipse: EllipseSchema) => {
   const ellipseBoundingBox = getEllipseBoundingBox(ellipse)();
 
   const isInRectEfficientHitbox = rectEfficientHitbox(ellipseBoundingBox);

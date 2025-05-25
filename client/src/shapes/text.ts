@@ -54,7 +54,7 @@ export const drawTextWithTextArea =
     const { width, descent, height } = getTextAreaDimension({
       ...textArea,
       at,
-    } as DeepRequired<TextArea>);
+    });
 
     ctx.fillText(content, at.x + width / 2, at.y + height / 2 + descent / 4);
   };

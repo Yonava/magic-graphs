@@ -1,10 +1,10 @@
 import { drawRectWithCtx } from '@shape/rect/draw';
-import { IMAGE_DEFAULTS, type Image } from '.';
+import { IMAGE_SCHEMA_DEFAULTS, type ImageSchema } from '.';
 import { getOrLoadImage } from './cache';
 
-export const drawImageWithCtx = (options: Image) => {
+export const drawImageWithCtx = (options: ImageSchema) => {
   const { src, onLoad, onLoadError, ...rectOptions } = {
-    ...IMAGE_DEFAULTS,
+    ...IMAGE_SCHEMA_DEFAULTS,
     ...options,
   };
   const { width, height, at, rotation } = rectOptions;

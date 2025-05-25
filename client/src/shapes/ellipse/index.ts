@@ -2,7 +2,7 @@ import type {
   Coordinate,
   Stroke,
   TextAreaNoLocation,
-  Shape,
+  ShapeFactory,
 } from '@shape/types';
 import { drawEllipseWithCtx } from '@shape/ellipse/draw';
 import {
@@ -22,7 +22,7 @@ import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 import { CIRCLE_SCHEMA_DEFAULTS } from '@shape/circle';
 
-export type Ellipse = {
+export type EllipseSchema = {
   id?: string;
   at: Coordinate;
   radiusX: number;
@@ -32,9 +32,9 @@ export type Ellipse = {
   textArea?: TextAreaNoLocation;
 };
 
-export const ELLIPSE_DEFAULTS = CIRCLE_SCHEMA_DEFAULTS;
+export const ELLIPSE_SCHEMA_DEFAULTS = CIRCLE_SCHEMA_DEFAULTS;
 
-export const ellipse = (options: Ellipse): Shape => {
+export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   if (options.radiusX < 0 || options.radiusY < 0) {
     throw new Error('radius must be positive');
   }
@@ -44,9 +44,7 @@ export const ellipse = (options: Ellipse): Shape => {
   const shapeHitbox = ellipseHitbox(options);
   const textHitbox = ellipseTextHitbox(options);
   const efficientHitbox = ellipseEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getEllipseBoundingBox(options);
 
@@ -71,7 +69,7 @@ export const ellipse = (options: Ellipse): Shape => {
   };
 
   return {
-    id: generateId(),
+    id: options.id ?? generateId(),
     name: 'ellipse',
 
     draw,

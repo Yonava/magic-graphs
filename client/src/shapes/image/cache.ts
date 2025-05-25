@@ -1,4 +1,4 @@
-interface ImageCacheEntry {
+type ImageCacheEntry = {
   image: HTMLImageElement | null;
   loading: boolean;
   error: boolean;
@@ -6,10 +6,15 @@ interface ImageCacheEntry {
 
 const imageCache = new Map<string, ImageCacheEntry>();
 
+type LoadImageOptions = {
+  onLoad: () => void;
+  onLoadError: () => void
+}
+
 export const getOrLoadImage = (
   src: string,
-  options?: { onLoad?: () => void; onLoadError?: () => void },
-): ImageCacheEntry => {
+  options?: Partial<LoadImageOptions>,
+) => {
   if (imageCache.has(src)) {
     return imageCache.get(src)!;
   }
@@ -19,19 +24,23 @@ export const getOrLoadImage = (
     loading: true,
     error: false,
   };
+
   imageCache.set(src, cacheEntry);
 
   const img = new Image();
+
   img.onload = () => {
     cacheEntry.image = img;
     cacheEntry.loading = false;
     options?.onLoad?.();
   };
+
   img.onerror = () => {
     cacheEntry.loading = false;
     cacheEntry.error = true;
     options?.onLoadError?.();
   };
+
   img.src = src;
 
   return cacheEntry;

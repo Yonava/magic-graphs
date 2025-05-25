@@ -19,10 +19,6 @@ export const STAR_SCHEMA_DEFAULTS = {
   rotation: 0,
 } as const;
 
-/**
- * Creates a star shape
- * @throws {Error} If points < 3, innerRadius >= outerRadius, or negative radius values
- */
 export const star: ShapeFactory<StarSchema> = (options) => {
   const drawShape = drawStarWithCtx(options);
   const shapeHitbox = starHitbox(options);
