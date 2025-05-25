@@ -21,7 +21,7 @@
     () => (isDark.value ? colors.GRAY_200 : colors.GRAY_700) + '15',
   );
 
-  const { square } = useOptimizedShapes();
+  const { square, image } = useOptimizedShapes();
 
   const draw = () => {
     const ctx = getCtx(canvas);
@@ -29,11 +29,21 @@
     items.value = [];
 
     items.value.push(
+      image({
+        id: 'yona',
+        at: { x: 100, y: 100 },
+        height: 200,
+        width: 200,
+        src: 'https://avatars.githubusercontent.com/u/76519301?s=48&v=4',
+      }),
+    );
+
+    items.value.push(
       square({
         id: 'test',
         color: 'red',
         at: { x: 100, y: 100 },
-        size: 30,
+        size: 3,
       }),
     );
 

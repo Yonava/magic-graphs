@@ -45,9 +45,7 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
   const shapeHitbox = imageHitbox(options);
   const textHitbox = imageTextHitbox(options);
   const efficientHitbox = imageEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
   const getBoundingBox = getImageBoundingBox(options);
 
   const drawTextArea = drawTextAreaOnImage(options);

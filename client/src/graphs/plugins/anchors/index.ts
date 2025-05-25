@@ -65,7 +65,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
         id === hoveredNodeAnchorId.value ||
         id === currentDraggingAnchor.value?.id;
 
-      const circleTemplate = {
+      const nodeAnchorSchema = {
         id,
         at: { x, y },
         radius,
@@ -76,11 +76,11 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
         currentDraggingAnchor.value &&
         currentDraggingAnchor.value.direction === anchor.direction
       ) {
-        circleTemplate.at.x = currentDraggingAnchor.value.x;
-        circleTemplate.at.y = currentDraggingAnchor.value.y;
+        nodeAnchorSchema.at.x = currentDraggingAnchor.value.x;
+        nodeAnchorSchema.at.y = currentDraggingAnchor.value.y;
       }
 
-      const nodeAnchorShape = graph.shapes.circle(circleTemplate);
+      const nodeAnchorShape = graph.shapes.circle(nodeAnchorSchema);
 
       anchorSchemas.push({
         id: anchor.id,

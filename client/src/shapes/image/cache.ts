@@ -11,13 +11,11 @@ type LoadImageOptions = {
   onLoadError: () => void
 }
 
-export const getOrLoadImage = (
+export const loadImage = async (
   src: string,
-  options?: Partial<LoadImageOptions>,
-) => {
-  if (imageCache.has(src)) {
-    return imageCache.get(src)!;
-  }
+  options: Partial<LoadImageOptions>,
+) => new Promise<ImageCacheEntry>((res) => {
+  if (imageCache.has(src)) res(imageCache.get(src)!)
 
   const cacheEntry: ImageCacheEntry = {
     image: null,
@@ -32,16 +30,16 @@ export const getOrLoadImage = (
   img.onload = () => {
     cacheEntry.image = img;
     cacheEntry.loading = false;
-    options?.onLoad?.();
+    options.onLoad?.();
+    res(cacheEntry)
   };
 
   img.onerror = () => {
     cacheEntry.loading = false;
     cacheEntry.error = true;
-    options?.onLoadError?.();
+    options.onLoadError?.();
+    res(cacheEntry)
   };
 
   img.src = src;
-
-  return cacheEntry;
-};
+})
