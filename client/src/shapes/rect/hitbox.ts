@@ -1,4 +1,4 @@
-import type { Coordinate, BoundingBox } from '@shape/types';
+import { type Coordinate, type BoundingBox, STROKE_DEFAULTS } from '@shape/types';
 import type { RectSchema } from '.';
 import { RECT_SCHEMA_DEFAULTS } from '.';
 import { circleHitbox } from '@shape/circle/hitbox';
@@ -90,12 +90,16 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
 };
 
 export const getRectBoundingBox = (rectangle: RectSchema) => () => {
-  const { at, width, height } = rectangle;
+  const { at, width, height, stroke } = rectangle;
+  const { width: strokeWidth } = stroke ?? STROKE_DEFAULTS
 
   return normalizeBoundingBox({
-    at,
-    width,
-    height,
+    at: {
+      x: at.x - strokeWidth / 2,
+      y: at.y - strokeWidth / 2,
+    },
+    width: width + strokeWidth,
+    height: height + strokeWidth,
   });
 };
 

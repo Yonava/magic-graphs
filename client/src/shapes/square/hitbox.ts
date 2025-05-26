@@ -11,34 +11,29 @@ import {
  * @returns a function that checks if the point is in the square
  */
 export const squareHitbox = (square: SquareSchema) => {
-  const { at, size, borderRadius, rotation, stroke } = {
+  const { size, ...rest } = {
     ...SQUARE_DEFAULTS,
     ...square,
   };
   const isInRect = rectHitbox({
-    at,
+    ...rest,
     width: size,
     height: size,
-    borderRadius,
-    rotation,
-    stroke,
   });
 
   return (point: Coordinate) => isInRect(point);
 };
 
 export const getSquareBoundingBox = (square: SquareSchema) => getRectBoundingBox({
-  at: square.at,
+  ...square,
   width: square.size,
   height: square.size,
 });
 
 export const squareEfficientHitbox = (square: SquareSchema) => {
-  const isInRectEfficientHitbox = rectEfficientHitbox({
-    at: square.at,
-    width: square.size,
-    height: square.size,
-  });
+  const squareBoundingBox = getSquareBoundingBox(square)();
+
+  const isInRectEfficientHitbox = rectEfficientHitbox(squareBoundingBox);
 
   return (boxToCheck: BoundingBox) => isInRectEfficientHitbox(boxToCheck);
 };

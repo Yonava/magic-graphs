@@ -9,6 +9,7 @@ import type { GraphMouseEvent } from '@graph/base/types';
 import type { GraphFocusPlugin } from '../focus';
 import { getEncapsulatedNodeBox } from './helpers';
 import { MOUSE_BUTTONS } from "@graph/global";
+import { normalizeBoundingBox } from '@shape/helpers';
 
 export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   const marqueeBox = ref<BoundingBox | undefined>();
@@ -135,7 +136,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const id = 'marquee-box'
     const shape = graph.shapes.rect({
       id,
-      ...box,
+      ...normalizeBoundingBox(box),
       color: graph.getTheme("marqueeSelectionBoxColor"),
       stroke: {
         color: graph.getTheme("marqueeSelectionBoxBorderColor"),
