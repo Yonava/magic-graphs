@@ -2,6 +2,7 @@ import type { Coordinate, BoundingBox } from '@shape/types';
 import type { CircleSchema } from '@shape/circle';
 import { STROKE_DEFAULTS } from '@shape/types';
 import { rectEfficientHitbox } from '@shape/rect/hitbox';
+import { normalizeBoundingBox } from '@shape/helpers';
 
 export const circleHitbox = (circle: CircleSchema) => (point: Coordinate) => {
   const dx = point.x - circle.at.x;
@@ -25,14 +26,14 @@ export const getCircleBoundingBox = (circle: CircleSchema) => () => {
     ...circle.stroke,
   };
 
-  return {
+  return normalizeBoundingBox({
     at: {
       x: at.x - (radius + borderWidth / 2),
       y: at.y - (radius + borderWidth / 2),
     },
     width: 2 * (radius + borderWidth / 2),
     height: 2 * (radius + borderWidth / 2),
-  };
+  });
 };
 
 export const circleEfficientHitbox = (circle: CircleSchema) => {

@@ -2,6 +2,7 @@ import type { Coordinate, BoundingBox } from '@shape/types';
 import { LINE_SCHEMA_DEFAULTS } from '.';
 import type { LineSchema } from '.';
 import { rectEfficientHitbox } from '@shape/rect/hitbox';
+import { normalizeBoundingBox } from '@shape/helpers';
 
 /**
  * @param point - the point to check if it is in the line
@@ -51,14 +52,14 @@ export const getLineBoundingBox = (line: LineSchema) => () => {
   const maxX = Math.max(start.x, end.x) + width / 2;
   const maxY = Math.max(start.y, end.y) + width / 2;
 
-  return {
+  return normalizeBoundingBox({
     at: {
       x: minX,
       y: minY,
     },
     width: maxX - minX,
     height: maxY - minY,
-  };
+  });
 };
 
 export const lineEfficientHitbox = (line: LineSchema) => {

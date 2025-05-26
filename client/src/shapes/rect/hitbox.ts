@@ -2,7 +2,7 @@ import type { Coordinate, BoundingBox } from '@shape/types';
 import type { RectSchema } from '.';
 import { RECT_SCHEMA_DEFAULTS } from '.';
 import { circleHitbox } from '@shape/circle/hitbox';
-import { rotatePoint } from '@shape/helpers';
+import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 
 /**
  * @param point - the point to check if it is in the rotated rectangle
@@ -92,11 +92,11 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
 export const getRectBoundingBox = (rectangle: RectSchema) => () => {
   const { at, width, height } = rectangle;
 
-  return {
+  return normalizeBoundingBox({
     at,
     width,
     height,
-  };
+  });
 };
 
 export const rectEfficientHitbox =

@@ -10,7 +10,7 @@ import { drawUTurnWithCtx } from './draw';
 import {
   uturnHitbox,
   uturnEfficientHitbox,
-  getUturnBoundingBox,
+  getUTurnBoundingBox,
 } from './hitbox';
 import {
   drawTextAreaMatteOnUTurn,
@@ -65,7 +65,7 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
     return textHitbox?.(point) || shapeHitbox(point);
   };
 
-  const getBoundingBox = getUturnBoundingBox(options);
+  const getBoundingBox = getUTurnBoundingBox(options);
 
   const drawTextArea = drawTextAreaOnUTurn(options);
 

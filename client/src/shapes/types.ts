@@ -79,7 +79,8 @@ export type Shape = {
   efficientHitbox: (boxToCheck: BoundingBox) => boolean;
 
   /**
-   * returns the top left and bottom right corners of the bounding box as Coordinates
+   * returns the coordinates of the top-left corner along with the width and height
+   * of the area comprising the bounding box
    */
   getBoundingBox: () => BoundingBox;
 

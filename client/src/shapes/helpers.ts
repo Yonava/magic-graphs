@@ -1,4 +1,4 @@
-import { type Coordinate, type GradientStop } from '@shape/types';
+import { type BoundingBox, type Coordinate, type GradientStop } from '@shape/types';
 import { LINE_SCHEMA_DEFAULTS } from './line';
 import type { ArrowSchema } from './arrow';
 import tinycolor from 'tinycolor2';
@@ -170,8 +170,6 @@ export const calculateArrowHeadCorners = (
 export const angleDifference = (angleA: number, angleB: number) =>
   Math.abs(Math.atan2(Math.sin(angleA - angleB), Math.cos(angleA - angleB)));
 
-type GradientStops = GradientStop[];
-
 /**
  * interpolates between two colors using tinycolor at a given ratio
  *
@@ -202,7 +200,7 @@ const interpolateColor = (color1: string, color2: string, ratio: number) => {
  * @returns The color at the specified percentage as a hex string
  */
 export const getColorAtPercentage = (
-  gradient: GradientStops,
+  gradient: GradientStop[],
   percentage: number,
 ) => {
   if (gradient.length === 0) {
@@ -229,3 +227,20 @@ export const getColorAtPercentage = (
 
   return interpolateColor(lowerStop.color, upperStop.color, ratio);
 };
+
+/**
+ * returns a bounding box with non-negative width and height by adjusting the `at` coordinate
+ * to ensure it represents the top-left corner.
+ *
+ * @example
+ * const res = normalizeBoundingBox({ at: { x: 10, y: 10 }, width: -5, height: 10 });
+ * console.log(res); // { at: { x: 5, y: 10 }, width: 5, height: 10 }
+ */
+export const normalizeBoundingBox = (bb: BoundingBox): BoundingBox => ({
+  at: {
+    x: bb.at.x + (bb.width < 0 ? bb.width : 0),
+    y: bb.at.y + (bb.height < 0 ? bb.height : 0)
+  },
+  width: Math.abs(bb.width),
+  height: Math.abs(bb.height),
+})

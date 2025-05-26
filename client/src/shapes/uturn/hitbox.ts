@@ -1,4 +1,4 @@
-import { rotatePoint } from '@shape/helpers';
+import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 import type { Coordinate, BoundingBox } from '@shape/types';
 import { lineHitbox } from '@shape/line/hitbox';
 import type { UTurnSchema } from '.';
@@ -73,7 +73,7 @@ export const uturnHitbox = (uturn: UTurnSchema) => {
     isInLine(point) || isInArrow(point) || isInUTurn(point);
 };
 
-export const getUturnBoundingBox = (uturn: UTurnSchema) => () => {
+export const getUTurnBoundingBox = (uturn: UTurnSchema) => () => {
   const { spacing, at, upDistance, rotation, lineWidth } = uturn;
 
   const end = rotatePoint(
@@ -90,15 +90,15 @@ export const getUturnBoundingBox = (uturn: UTurnSchema) => () => {
   const maxX = Math.max(at.x, end.x) + lineWidth / 2 + spacing;
   const maxY = Math.max(at.y, end.y) + lineWidth / 2 + spacing;
 
-  return {
+  return normalizeBoundingBox({
     at: { x: minX, y: minY },
     width: maxX - minX,
     height: maxY - minY,
-  };
+  });
 };
 
 export const uturnEfficientHitbox = (uturn: UTurnSchema) => {
-  const uturnBoundingBox = getUturnBoundingBox(uturn)();
+  const uturnBoundingBox = getUTurnBoundingBox(uturn)();
 
   const isInRectEfficientHitbox = rectEfficientHitbox(uturnBoundingBox);
 

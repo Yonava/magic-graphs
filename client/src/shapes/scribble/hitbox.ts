@@ -3,6 +3,7 @@ import { SCRIBBLE_DEFAULTS, type ScribbleSchema } from '.';
 import { rectEfficientHitbox, rectHitbox } from '@shape/rect/hitbox';
 import { lineEfficientHitbox } from '@shape/line/hitbox';
 import { circleEfficientHitbox, circleHitbox } from '@shape/circle/hitbox';
+import { normalizeBoundingBox } from '@shape/helpers';
 
 /**
  * @param point - the point to check if it is in the scribble bounding box
@@ -61,14 +62,14 @@ export const getScribbleBoundingBox = (scribble: ScribbleSchema) => () => {
     if (point.y > maxY) maxY = point.y;
   }
 
-  return {
+  return normalizeBoundingBox({
     at: {
       x: minX,
       y: minY,
     },
     width: maxX - minX,
     height: maxY - minY,
-  };
+  });
 };
 
 export const scribbleEfficientHitbox =

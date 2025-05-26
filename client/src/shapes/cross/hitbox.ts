@@ -1,3 +1,4 @@
+import { normalizeBoundingBox } from '@shape/helpers';
 import { CROSS_SCHEMA_DEFAULTS } from '.';
 import type { CrossSchema } from '.';
 import { rectHitbox, rectEfficientHitbox } from '@shape/rect/hitbox';
@@ -37,14 +38,14 @@ export const crossHitbox = (cross: CrossSchema) => {
 export const getCrossBoundingBox = (cross: CrossSchema) => () => {
   const { at, size } = cross;
 
-  return {
+  return normalizeBoundingBox({
     at: {
       x: at.x - size / 2,
       y: at.y - size / 2,
     },
     width: size,
     height: size,
-  };
+  });
 };
 
 export const crossEfficientHitbox = (cross: CrossSchema) => {

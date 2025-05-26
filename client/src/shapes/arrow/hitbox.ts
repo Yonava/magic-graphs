@@ -10,7 +10,7 @@ import {
   triangleEfficientHitbox,
   triangleHitbox,
 } from '@shape/triangle/hitbox';
-import { calculateArrowHeadCorners } from '@shape/helpers';
+import { calculateArrowHeadCorners, normalizeBoundingBox } from '@shape/helpers';
 
 export const arrowHitbox = (arrow: ArrowSchema) => {
   const { start, end, width, arrowHeadSize, arrowHeadShape } = {
@@ -90,14 +90,14 @@ export const getArrowBoundingBox = (arrow: ArrowSchema) => () => {
     arrowHeadTriangle.pointC.y,
   );
 
-  return {
+  return normalizeBoundingBox({
     at: {
       x: minX,
       y: minY,
     },
     width: maxX - minX,
     height: maxY - minY,
-  };
+  });
 };
 
 export const arrowEfficientHitbox = (arrow: ArrowSchema) => {

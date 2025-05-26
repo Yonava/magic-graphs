@@ -27,13 +27,11 @@ export const squareHitbox = (square: SquareSchema) => {
   return (point: Coordinate) => isInRect(point);
 };
 
-export const getSquareBoundingBox = (square: SquareSchema) => {
-  return getRectBoundingBox({
-    at: square.at,
-    width: square.size,
-    height: square.size,
-  });
-};
+export const getSquareBoundingBox = (square: SquareSchema) => getRectBoundingBox({
+  at: square.at,
+  width: square.size,
+  height: square.size,
+});
 
 export const squareEfficientHitbox = (square: SquareSchema) => {
   const isInRectEfficientHitbox = rectEfficientHitbox({

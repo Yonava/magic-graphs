@@ -153,6 +153,10 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
 
   const addMarqueeBoxToAggregator = (aggregator: Aggregator) => {
     if (!marqueeBox.value) return aggregator;
+
+    const { width, height } = marqueeBox.value
+    if (width === 0 && height == 0) return aggregator
+
     const selectionBoxSchemaItem = getMarqueeBoxSchema(marqueeBox.value);
     aggregator.push(selectionBoxSchemaItem);
     return aggregator;

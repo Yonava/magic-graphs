@@ -39,7 +39,7 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const shapeHitbox = triangleHitbox(options);
   const textHitbox = triangleTextHitbox(options);
   const efficientHitbox = triangleEfficientHitbox(options);
-  const hitbox = shapeHitbox // text not implemented yet
+  const hitbox = shapeHitbox;
 
   const getBoundingBox = getTriangleBoundingBox(options);
 

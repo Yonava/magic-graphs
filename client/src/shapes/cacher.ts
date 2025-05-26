@@ -57,7 +57,7 @@ export const initShapeCache = () => {
       draw: (ctx) => {
         const boundingBox = shape.getBoundingBox()
 
-        report.add(id)
+        report.add(`${boundingBox.width} ${boundingBox.height}`)
 
         // const serializedSchema = serializeSchema(schema)
         // const hasChanged = hasSchemaChanged(id, serializedSchema)
