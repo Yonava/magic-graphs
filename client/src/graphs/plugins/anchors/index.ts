@@ -5,10 +5,7 @@ import type { GraphMouseEvent } from '@graph/base/types';
 import type { SchemaItem, GNode } from '@graph/types';
 import type { GraphFocusPlugin } from '@graph/plugins/focus';
 import type { NodeAnchor } from '@graph/plugins/anchors/types';
-import { generateId } from '@utils/id';
-import { circle, line } from '@shapes';
 import { MOUSE_BUTTONS } from "@graph/global";
-
 
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
@@ -67,7 +64,8 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
         id === hoveredNodeAnchorId.value ||
         id === currentDraggingAnchor.value?.id;
 
-      const circleTemplate = {
+      const nodeAnchorSchema = {
+        id,
         at: { x, y },
         radius,
         color: isHoveredOrDragged ? focusColor : color,
@@ -77,11 +75,11 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
         currentDraggingAnchor.value &&
         currentDraggingAnchor.value.direction === anchor.direction
       ) {
-        circleTemplate.at.x = currentDraggingAnchor.value.x;
-        circleTemplate.at.y = currentDraggingAnchor.value.y;
+        nodeAnchorSchema.at.x = currentDraggingAnchor.value.x;
+        nodeAnchorSchema.at.y = currentDraggingAnchor.value.y;
       }
 
-      const nodeAnchorShape = circle(circleTemplate);
+      const nodeAnchorShape = graph.shapes.circle(nodeAnchorSchema);
 
       anchorSchemas.push({
         id: anchor.id,
@@ -117,27 +115,31 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     nodeAnchors.value = (
       [
         {
+          id: 'n-anchor',
           x: node.x,
           y: node.y - offset,
           direction: 'north',
         },
         {
+          id: 'e-anchor',
           x: node.x + offset,
           y: node.y,
           direction: 'east',
         },
         {
+          id: 's-anchor',
           x: node.x,
           y: node.y + offset,
           direction: 'south',
         },
         {
+          id: 'w-anchor',
           x: node.x - offset,
           y: node.y,
           direction: 'west',
         },
       ] as const
-    ).map((anchor) => ({ ...anchor, id: generateId() }));
+    )
   };
 
   /**
@@ -169,7 +171,8 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
       currentDraggingAnchor.value,
     );
 
-    const shape = line({
+    const shape = graph.shapes.line({
+      id: 'link-preview',
       start,
       end,
       color,

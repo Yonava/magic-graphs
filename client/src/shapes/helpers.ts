@@ -1,10 +1,10 @@
-import { type Coordinate, type GradientStop } from '@shape/types';
-import { LINE_DEFAULTS } from './line';
-import type { Arrow } from './arrow';
+import { type BoundingBox, type Coordinate, type GradientStop } from '@shape/types';
+import { LINE_SCHEMA_DEFAULTS } from './line';
+import type { ArrowSchema } from './arrow';
 import tinycolor from 'tinycolor2';
 
 /**
- * @description rotates a point around a center point by a given angle in radians
+ * rotates a point around a center point by a given angle in radians
  *
  * @param pointToRotate - the point that is to be rotated
  * @param centerPoint - the point that the pointToRotate will rotate around
@@ -28,7 +28,7 @@ export const rotatePoint = (
 };
 
 /**
- * @description same as rotatePoint but modifies the pointToRotate in place as opposed to returning a new point object
+ * same as rotatePoint but modifies the pointToRotate in place as opposed to returning a new point object
  *
  * @param pointToRotate - the point that is to be rotated
  * @param centerPoint - the point that the pointToRotate will rotate around
@@ -49,7 +49,7 @@ export const rotatePointInPlace = (
 };
 
 /**
- * @description calculates the angle between two points in radians
+ * calculates the angle between two points in radians
  *
  * @param point1 - the first point
  * @param point2 - the second point
@@ -62,7 +62,7 @@ export const getAngle = (point1: Coordinate, point2: Coordinate) => {
 };
 
 /**
- * @description calculates the midpoint of the largest angular between a center point and a list of points
+ * calculates the midpoint of the largest angular between a center point and a list of points
  *
  * @param center - the center point
  * @param points - the list of points
@@ -99,14 +99,14 @@ export const getLargestAngularSpace = (
 };
 
 /**
- * @description calculates the height and base width of the arrow's head based on the width of the arrow shaft
+ * calculates the height and base width of the arrow's head based on the width of the arrow shaft
  *
  * @param arrowWidth - the width of the arrow shaft
  * @returns the arrowhead height and the arrowhead base length
  */
 
 export const getArrowHeadSize = (
-  arrowWidth: Arrow['width'] = LINE_DEFAULTS.width,
+  arrowWidth: ArrowSchema['width'] = LINE_SCHEMA_DEFAULTS.width,
 ) => {
   const arrowHeadHeight = arrowWidth * 2.5;
   const perpLineLength = arrowHeadHeight / 1.75;
@@ -117,14 +117,14 @@ export const getArrowHeadSize = (
 };
 
 /**
- * @description generates a triangle object from the arrow tip
+ * generates a triangle object from the arrow tip
  *
  * @param options the arrow
  * @returns the triangle that makes up the arrow tip
  */
 
 export const calculateArrowHeadCorners = (
-  options: Required<Pick<Arrow, 'start' | 'end' | 'width' | 'arrowHeadSize'>>,
+  options: Required<Pick<ArrowSchema, 'start' | 'end' | 'width' | 'arrowHeadSize'>>,
 ) => {
   const { start, end, width, arrowHeadSize } = options;
 
@@ -161,7 +161,8 @@ export const calculateArrowHeadCorners = (
 };
 
 /**
- * Calculates the difference between two angles in radians.
+ * calculates the difference between two angles in radians.
+ *
  * @param angleA The first angle in radians.
  * @param angleB The second angle in radians.
  * @returns The difference between the two angles in radians.
@@ -169,10 +170,9 @@ export const calculateArrowHeadCorners = (
 export const angleDifference = (angleA: number, angleB: number) =>
   Math.abs(Math.atan2(Math.sin(angleA - angleB), Math.cos(angleA - angleB)));
 
-type GradientStops = GradientStop[];
-
 /**
- * Interpolates between two colors using tinycolor at a given ratio
+ * interpolates between two colors using tinycolor at a given ratio
+ *
  * @param color1 - The first color (any format supported by tinycolor)
  * @param color2 - The second color
  * @param ratio - The ratio to interpolate (0 to 1)
@@ -193,13 +193,14 @@ const interpolateColor = (color1: string, color2: string, ratio: number) => {
 };
 
 /**
- * Finds the color at a specific percentage in a gradient
+ * finds the color at a specific percentage in a gradient
+ *
  * @param gradient - The array of gradient stops
  * @param percentage - The distance along the gradient (0 to 1) to calculate the color for
  * @returns The color at the specified percentage as a hex string
  */
 export const getColorAtPercentage = (
-  gradient: GradientStops,
+  gradient: GradientStop[],
   percentage: number,
 ) => {
   if (gradient.length === 0) {
@@ -226,3 +227,20 @@ export const getColorAtPercentage = (
 
   return interpolateColor(lowerStop.color, upperStop.color, ratio);
 };
+
+/**
+ * returns a bounding box with non-negative width and height by adjusting the `at` coordinate
+ * to ensure it represents the top-left corner.
+ *
+ * @example
+ * const res = normalizeBoundingBox({ at: { x: 10, y: 10 }, width: -5, height: 10 });
+ * console.log(res); // { at: { x: 5, y: 10 }, width: 5, height: 10 }
+ */
+export const normalizeBoundingBox = (bb: BoundingBox): BoundingBox => ({
+  at: {
+    x: bb.at.x + (bb.width < 0 ? bb.width : 0),
+    y: bb.at.y + (bb.height < 0 ? bb.height : 0)
+  },
+  width: Math.abs(bb.width),
+  height: Math.abs(bb.height),
+})

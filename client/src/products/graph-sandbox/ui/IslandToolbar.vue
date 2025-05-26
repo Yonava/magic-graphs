@@ -10,7 +10,7 @@
   import CollaborativeSessionMenu from './CollaborativeSessionMenu.vue';
   import TreeShapeMenu from './TreeShapeMenu.vue';
   import { useAutoTree } from './tree/useTreeShaper';
-  import TemplateMenu from '@graph/templates/ui/TemplateMenu.vue';
+  // import TemplateMenu from '@graph/templates/ui/TemplateMenu.vue';
 
   const tutorial = useGraphTutorial(graph.value, [
     {
@@ -32,7 +32,7 @@
       isActive: isActive,
     } = graph.value.annotation;
 
-    isActive.value ? deactivate() : activate();
+    (isActive.value ? deactivate : activate)();
     graph.value.canvasFocused.value = true;
   };
 
@@ -147,13 +147,13 @@
         />
       </TreeShapeMenu>
 
-      <TemplateMenu v-slot="{ toggle, isOpen }">
+      <!-- <TemplateMenu v-slot="{ toggle, isOpen }">
         <GToolbarButton
           @click="toggle"
           :active="isOpen"
           :icon="isOpen ? 'plus-box' : 'plus-box-outline'"
         />
-      </TemplateMenu>
+      </TemplateMenu> -->
     </ToolbarButtonGroup>
   </GToolbar>
 </template>

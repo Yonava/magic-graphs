@@ -3,13 +3,13 @@ import type { Aggregator } from '@graph/types';
 import { useTheme } from '@graph/themes/useTheme';
 import { MARQUEE_CONSTANTS } from '@graph/plugins/marquee/types';
 import colors from '@colors';
-import { rect } from '@shapes';
 import type { BoundingBox, Coordinate } from '@shape/types';
 import type { BaseGraph } from '@graph/base';
 import type { GraphMouseEvent } from '@graph/base/types';
 import type { GraphFocusPlugin } from '../focus';
 import { getEncapsulatedNodeBox } from './helpers';
 import { MOUSE_BUTTONS } from "@graph/global";
+import { normalizeBoundingBox } from '@shape/helpers';
 
 export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   const marqueeBox = ref<BoundingBox | undefined>();
@@ -133,8 +133,10 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   const getMarqueeBoxSchema = (box: BoundingBox) => {
-    const shape = rect({
-      ...box,
+    const id = 'marquee-box'
+    const shape = graph.shapes.rect({
+      id,
+      ...normalizeBoundingBox(box),
       color: graph.getTheme("marqueeSelectionBoxColor"),
       stroke: {
         color: graph.getTheme("marqueeSelectionBoxBorderColor"),
@@ -143,7 +145,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     });
 
     return {
-      id: "marquee-box",
+      id,
       graphType: "marquee-box",
       shape,
       priority: Infinity,
@@ -152,13 +154,19 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
 
   const addMarqueeBoxToAggregator = (aggregator: Aggregator) => {
     if (!marqueeBox.value) return aggregator;
+
+    const { width, height } = marqueeBox.value
+    if (width === 0 || height === 0) return aggregator
+
     const selectionBoxSchemaItem = getMarqueeBoxSchema(marqueeBox.value);
     aggregator.push(selectionBoxSchemaItem);
     return aggregator;
   };
 
   const getEncapsulatedNodeBoxSchema = (box: BoundingBox) => {
-    const shape = rect({
+    const id = "encapsulated-node-box"
+    const shape = graph.shapes.rect({
+      id,
       ...box,
       color: graph.getTheme("marqueeEncapsulatedNodeBoxColor"),
       stroke: {
@@ -168,7 +176,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     });
 
     return {
-      id: "encapsulated-node-box",
+      id,
       graphType: "encapsulated-node-box",
       shape,
       priority: Infinity,
@@ -177,10 +185,15 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
 
   const addEncapsulatedNodeBoxToAggregator = (aggregator: Aggregator) => {
     if (!encapsulatedNodeBox.value) return aggregator;
-    const selectionAreaSchemaItem = getEncapsulatedNodeBoxSchema(
+
+    const { width, height } = encapsulatedNodeBox.value
+    if (width === 0 || height === 0) return aggregator
+
+    const nodeBoxSchema = getEncapsulatedNodeBoxSchema(
       encapsulatedNodeBox.value,
     );
-    aggregator.push(selectionAreaSchemaItem);
+
+    aggregator.push(nodeBoxSchema);
     return aggregator;
   };
 

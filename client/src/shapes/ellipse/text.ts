@@ -1,6 +1,6 @@
 import { TEXT_DEFAULTS } from '@shape/types';
 import type { Coordinate } from '@shape/types';
-import type { Ellipse } from '@shape/ellipse';
+import type { EllipseSchema } from '@shape/ellipse';
 import {
   drawTextWithTextArea,
   drawTextMatteWithTextArea,
@@ -8,10 +8,10 @@ import {
   getFullTextArea,
 } from '@shape/text';
 import { rectHitbox } from '@shape/rect/hitbox';
-import { ELLIPSE_DEFAULTS } from '.';
+import { ELLIPSE_SCHEMA_DEFAULTS } from '.';
 
-export const getTextAreaLocationOnEllipse = (ellipse: Ellipse) => {
-  const { at, textArea } = { ...ELLIPSE_DEFAULTS, ...ellipse };
+export const getTextAreaLocationOnEllipse = (ellipse: EllipseSchema) => {
+  const { at, textArea } = { ...ELLIPSE_SCHEMA_DEFAULTS, ...ellipse };
 
   if (!textArea) throw new Error('no text area provided');
 
@@ -29,12 +29,12 @@ export const getTextAreaLocationOnEllipse = (ellipse: Ellipse) => {
 };
 
 /**
- * @description checks if the point is in the text label of the ellipse
+ * if the point is in the text label of the ellipse
  *
  * @param point - the point to check if it is in the ellipse
  * @returns a function that checks if the point is in the ellipse
  */
-export const ellipseTextHitbox = (ellipse: Ellipse) => {
+export const ellipseTextHitbox = (ellipse: EllipseSchema) => {
   if (!ellipse.textArea) return;
 
   const location = getTextAreaLocationOnEllipse(ellipse);
@@ -51,7 +51,7 @@ export const ellipseTextHitbox = (ellipse: Ellipse) => {
   return (point: Coordinate) => isInTextHitbox(point);
 };
 
-export const drawTextAreaMatteOnEllipse = (ellipse: Ellipse) => {
+export const drawTextAreaMatteOnEllipse = (ellipse: EllipseSchema) => {
   if (!ellipse.textArea) return;
 
   const location = getTextAreaLocationOnEllipse(ellipse);
@@ -61,7 +61,7 @@ export const drawTextAreaMatteOnEllipse = (ellipse: Ellipse) => {
   return (ctx: CanvasRenderingContext2D) => drawMatte(ctx);
 };
 
-export const drawTextOnEllipse = (ellipse: Ellipse) => {
+export const drawTextOnEllipse = (ellipse: EllipseSchema) => {
   if (!ellipse.textArea) return;
 
   const location = getTextAreaLocationOnEllipse(ellipse);
@@ -71,7 +71,7 @@ export const drawTextOnEllipse = (ellipse: Ellipse) => {
   return (ctx: CanvasRenderingContext2D) => drawText(ctx);
 };
 
-export const drawTextAreaOnEllipse = (ellipse: Ellipse) => {
+export const drawTextAreaOnEllipse = (ellipse: EllipseSchema) => {
   const drawMatte = drawTextAreaMatteOnEllipse(ellipse);
   const drawText = drawTextOnEllipse(ellipse);
 

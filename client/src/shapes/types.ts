@@ -1,6 +1,6 @@
-import type { Rect } from '@shape/rect';
+import type { RectSchema } from '@shape/rect';
 
-export type BoundingBox = Pick<Rect, 'at' | 'width' | 'height'>;
+export type BoundingBox = Pick<RectSchema, 'at' | 'width' | 'height'>;
 
 export type BoundingBoxCorners = {
   topLeft: Coordinate;
@@ -79,7 +79,8 @@ export type Shape = {
   efficientHitbox: (boxToCheck: BoundingBox) => boolean;
 
   /**
-   * returns the top left and bottom right corners of the bounding box as Coordinates
+   * returns the coordinates of the top-left corner along with the width and height
+   * of the area comprising the bounding box
    */
   getBoundingBox: () => BoundingBox;
 
@@ -175,3 +176,8 @@ export type GradientStop = {
    */
   color: string;
 };
+
+/**
+ * the process all schemas go through to become shapes
+ */
+export type ShapeFactory<T> = (schema: T) => Shape

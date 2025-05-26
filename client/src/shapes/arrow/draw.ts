@@ -1,10 +1,10 @@
 import { drawLineWithCtx } from '@shape/line/draw';
 import { drawTriangleWithCtx } from '@shape/triangle/draw';
-import { ARROW_DEFAULTS } from '.';
-import type { Arrow } from '.';
-import type { Line } from '@shape/line';
+import { ARROW_SCHEMA_DEFAULTS } from '.';
+import type { ArrowSchema } from '.';
+import type { LineSchema } from '@shape/line';
 
-export const drawArrowWithCtx = (options: Arrow) => {
+export const drawArrowWithCtx = (options: ArrowSchema) => {
   const {
     start,
     end,
@@ -15,7 +15,7 @@ export const drawArrowWithCtx = (options: Arrow) => {
     arrowHeadSize,
     arrowHeadShape,
   } = {
-    ...ARROW_DEFAULTS,
+    ...ARROW_SCHEMA_DEFAULTS,
     ...options,
   };
 
@@ -40,7 +40,7 @@ export const drawArrowWithCtx = (options: Arrow) => {
     dash,
     gradientStops,
   };
-  const drawShaft = drawLineWithCtx(shaft as Line);
+  const drawShaft = drawLineWithCtx(shaft as LineSchema);
 
   const trianglePtA = end;
 
@@ -57,14 +57,14 @@ export const drawArrowWithCtx = (options: Arrow) => {
   const drawHead = arrowHeadShape
     ? arrowHeadShape(end, arrowHeadHeight, perpLineLength).draw
     : drawTriangleWithCtx({
-        pointA: trianglePtA,
-        pointB: trianglePtB,
-        pointC: trianglePtC,
-        color:
-          gradientStops && gradientStops.length
-            ? gradientStops.at(-1)?.color
-            : color,
-      });
+      pointA: trianglePtA,
+      pointB: trianglePtB,
+      pointC: trianglePtC,
+      color:
+        gradientStops && gradientStops.length
+          ? gradientStops.at(-1)?.color
+          : color,
+    });
 
   return (ctx: CanvasRenderingContext2D) => {
     drawShaft(ctx);

@@ -1,9 +1,10 @@
 import type { Coordinate, BoundingBox } from '@shape/types';
-import type { Ellipse } from '@shape/ellipse';
+import type { EllipseSchema } from '@shape/ellipse';
 import { STROKE_DEFAULTS } from '@shape/types';
 import { rectEfficientHitbox } from '@shape/rect/hitbox';
+import { normalizeBoundingBox } from '@shape/helpers';
 
-export const ellipseHitbox = (ellipse: Ellipse) => (point: Coordinate) => {
+export const ellipseHitbox = (ellipse: EllipseSchema) => (point: Coordinate) => {
   const dx = point.x - ellipse.at.x;
   const dy = point.y - ellipse.at.y;
 
@@ -21,7 +22,7 @@ export const ellipseHitbox = (ellipse: Ellipse) => (point: Coordinate) => {
   return inEllipse;
 };
 
-export const getEllipseBoundingBox = (ellipse: Ellipse) => () => {
+export const getEllipseBoundingBox = (ellipse: EllipseSchema) => () => {
   const { at, radiusX, radiusY } = ellipse;
 
   const { width: borderWidth } = {
@@ -29,17 +30,17 @@ export const getEllipseBoundingBox = (ellipse: Ellipse) => () => {
     ...ellipse.stroke,
   };
 
-  return {
+  return normalizeBoundingBox({
     at: {
       x: at.x - (radiusX + borderWidth / 2),
       y: at.y - (radiusY + borderWidth / 2),
     },
     width: 2 * radiusX + borderWidth,
     height: 2 * radiusY + borderWidth,
-  };
+  });
 };
 
-export const ellipseEfficientHitbox = (ellipse: Ellipse) => {
+export const ellipseEfficientHitbox = (ellipse: EllipseSchema) => {
   const ellipseBoundingBox = getEllipseBoundingBox(ellipse)();
 
   const isInRectEfficientHitbox = rectEfficientHitbox(ellipseBoundingBox);

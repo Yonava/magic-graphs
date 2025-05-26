@@ -1,9 +1,9 @@
-import { CIRCLE_DEFAULTS } from '@shape/circle';
-import type { Circle } from '@shape/circle';
+import { CIRCLE_SCHEMA_DEFAULTS } from '@shape/circle';
+import type { CircleSchema } from '@shape/circle';
 
 export const drawCircleWithCtx =
-  (options: Circle) => (ctx: CanvasRenderingContext2D) => {
-    const { at, radius, color, stroke } = { ...CIRCLE_DEFAULTS, ...options };
+  (options: CircleSchema) => (ctx: CanvasRenderingContext2D) => {
+    const { at, radius, color, stroke } = { ...CIRCLE_SCHEMA_DEFAULTS, ...options };
 
     ctx.beginPath();
     ctx.arc(at.x, at.y, radius, 0, 2 * Math.PI);

@@ -1,15 +1,9 @@
-import type { Coordinate, Shape } from '@shape/types';
+import type { Coordinate, ShapeFactory } from '@shape/types';
 import { generateId } from '@utils/id';
 import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';
 import { drawStarWithCtx } from './draw';
 
-export const STAR_DEFAULTS = {
-  color: 'black',
-  points: 5,
-  rotation: 0,
-} as const;
-
-export type Star = {
+export type StarSchema = {
   id?: string;
   at: Coordinate;
   color?: string;
@@ -19,11 +13,13 @@ export type Star = {
   points?: number;
 };
 
-/**
- * Creates a star shape
- * @throws {Error} If points < 3, innerRadius >= outerRadius, or negative radius values
- */
-export const star = (options: Star): Shape => {
+export const STAR_SCHEMA_DEFAULTS = {
+  color: 'black',
+  points: 5,
+  rotation: 0,
+} as const;
+
+export const star: ShapeFactory<StarSchema> = (options) => {
   const drawShape = drawStarWithCtx(options);
   const shapeHitbox = starHitbox(options);
   const hitbox = shapeHitbox;
@@ -33,6 +29,7 @@ export const star = (options: Star): Shape => {
   return {
     id: options.id ?? generateId(),
     name: 'star',
+
     draw: drawShape,
     drawShape,
     hitbox,

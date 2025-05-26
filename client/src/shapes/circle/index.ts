@@ -2,7 +2,7 @@ import type {
   Coordinate,
   Stroke,
   TextAreaNoLocation,
-  Shape,
+  ShapeFactory,
 } from '@shape/types';
 import { drawCircleWithCtx } from '@shape/circle/draw';
 import {
@@ -21,7 +21,7 @@ import { generateId } from '@utils/id';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 
-export type Circle = {
+export type CircleSchema = {
   id?: string;
   at: Coordinate;
   radius: number;
@@ -30,11 +30,11 @@ export type Circle = {
   textArea?: TextAreaNoLocation;
 };
 
-export const CIRCLE_DEFAULTS = {
+export const CIRCLE_SCHEMA_DEFAULTS = {
   color: 'black',
 } as const;
 
-export const circle = (options: Circle): Shape => {
+export const circle: ShapeFactory<CircleSchema> = (options) => {
   if (options.radius < 0) {
     throw new Error('radius must be positive');
   }
@@ -44,9 +44,7 @@ export const circle = (options: Circle): Shape => {
   const shapeHitbox = circleHitbox(options);
   const textHitbox = circleTextHitbox(options);
   const efficientHitbox = circleEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getCircleBoundingBox(options);
 
@@ -71,7 +69,7 @@ export const circle = (options: Circle): Shape => {
   };
 
   return {
-    id: generateId(),
+    id: options.id ?? generateId(),
     name: 'circle',
 
     draw,

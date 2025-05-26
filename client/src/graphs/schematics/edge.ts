@@ -6,11 +6,11 @@ import { GOLDEN_RATIO } from '@utils/math';
 import { edgeArrow } from './edgeArrow';
 import { edgeLine } from './edgeLine';
 import { edgeUTurn } from './edgeUturn';
-import type { ShapeResolverOptions } from './types';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE = 2;
 
 type PropsNeededFromGraph =
+  | 'shapes'
   | 'edges'
   | 'getNode'
   | 'getEdge'
@@ -24,14 +24,9 @@ export const getEdgeSchematic = (
 ): Omit<SchemaItem, 'priority'> | undefined => {
   const { displayEdgeLabels, isGraphDirected } = graph.settings.value;
 
-  const edgeShapeOptions: ShapeResolverOptions = {
-    id: edge.id,
-    controller: graph.animationController,
-  };
-
-  const arrow = edgeArrow(edgeShapeOptions);
-  const line = edgeLine(edgeShapeOptions);
-  const uturn = edgeUTurn(edgeShapeOptions);
+  const arrow = edgeArrow(graph);
+  const line = edgeLine(graph);
+  const uturn = edgeUTurn(graph);
 
   const [from, to] = getConnectedNodes(edge.id, graph);
   const edgesAlongPath = getEdgesAlongPath(from.id, to.id, graph);
@@ -126,6 +121,7 @@ export const getEdgeSchematic = (
 
   if (isSelfDirected) {
     const shape = uturn({
+      id: edge.id,
       spacing: edgeWidth * 1.2,
       at: { x: from.x, y: from.y },
       upDistance,
@@ -155,6 +151,7 @@ export const getEdgeSchematic = (
 
   if (!isGraphDirected) {
     const shape = line({
+      id: edge.id,
       start: edgeStart,
       end: edgeEnd,
       width: edgeWidth,
@@ -172,6 +169,7 @@ export const getEdgeSchematic = (
   // const edgeTextAdjustment = fromNodeSize >= 50 ? 0.9 : (fromNodeSize >= 25 ? 1 : 1.3)
 
   const shape = arrow({
+    id: edge.id,
     start: edgeStart,
     end: edgeEnd,
     width: edgeWidth,

@@ -1,14 +1,15 @@
 import type { Coordinate, BoundingBox } from '@shape/types';
-import { SCRIBBLE_DEFAULTS, type Scribble } from '.';
+import { SCRIBBLE_DEFAULTS, type ScribbleSchema } from '.';
 import { rectEfficientHitbox, rectHitbox } from '@shape/rect/hitbox';
 import { lineEfficientHitbox } from '@shape/line/hitbox';
 import { circleEfficientHitbox, circleHitbox } from '@shape/circle/hitbox';
+import { normalizeBoundingBox } from '@shape/helpers';
 
 /**
  * @param point - the point to check if it is in the scribble bounding box
  * @returns a function that checks if the point is in the scribble bounding box
  */
-export const scribbleHitbox = (scribble: Scribble) => (point: Coordinate) => {
+export const scribbleHitbox = (scribble: ScribbleSchema) => (point: Coordinate) => {
   const { type, points, brushWeight } = { ...SCRIBBLE_DEFAULTS, ...scribble };
 
   if (type === 'erase') return false;
@@ -46,7 +47,7 @@ export const scribbleHitbox = (scribble: Scribble) => (point: Coordinate) => {
   return false;
 };
 
-export const getScribbleBoundingBox = (scribble: Scribble) => () => {
+export const getScribbleBoundingBox = (scribble: ScribbleSchema) => () => {
   const { points } = scribble;
 
   let minX = points[0].x;
@@ -61,18 +62,18 @@ export const getScribbleBoundingBox = (scribble: Scribble) => () => {
     if (point.y > maxY) maxY = point.y;
   }
 
-  return {
+  return normalizeBoundingBox({
     at: {
       x: minX,
       y: minY,
     },
     width: maxX - minX,
     height: maxY - minY,
-  };
+  });
 };
 
 export const scribbleEfficientHitbox =
-  (scribble: Scribble) => (boxToCheck: BoundingBox) => {
+  (scribble: ScribbleSchema) => (boxToCheck: BoundingBox) => {
     if (scribble.type === 'erase') return false;
 
     const { at, width, height } = getScribbleBoundingBox(scribble)();

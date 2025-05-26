@@ -1,6 +1,6 @@
 import type {
   Coordinate,
-  Shape,
+  ShapeFactory,
   Stroke,
   TextAreaNoLocation,
 } from '@shape/types';
@@ -20,9 +20,9 @@ import {
 import { generateId } from '@utils/id';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
-import { RECT_DEFAULTS } from '@shape/rect';
+import { RECT_SCHEMA_DEFAULTS } from '@shape/rect';
 
-export type Square = {
+export type SquareSchema = {
   id?: string;
   at: Coordinate;
   size: number;
@@ -33,20 +33,15 @@ export type Square = {
   rotation?: number;
 };
 
-export const SQUARE_DEFAULTS = RECT_DEFAULTS;
+export const SQUARE_DEFAULTS = RECT_SCHEMA_DEFAULTS;
 
-/**
- * squares use rect default values
- */
-export const square = (options: Square): Shape => {
+export const square: ShapeFactory<SquareSchema> = (options) => {
   const drawShape = drawSquareWithCtx(options);
 
   const shapeHitbox = squareHitbox(options);
   const textHitbox = squareTextHitbox(options);
   const efficientHitbox = squareEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getSquareBoundingBox(options);
 

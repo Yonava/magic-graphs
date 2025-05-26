@@ -1,7 +1,7 @@
 import { generateId } from '@utils/id';
-import { LINE_DEFAULTS } from '@shape/line';
-import type { Line } from '@shape/line';
-import type { Shape, Coordinate } from '@shape/types';
+import { LINE_SCHEMA_DEFAULTS } from '@shape/line';
+import type { LineSchema } from '@shape/line';
+import type { Shape, Coordinate, ShapeFactory } from '@shape/types';
 import { drawArrowWithCtx } from './draw';
 import {
   arrowHitbox,
@@ -19,7 +19,7 @@ import {
 import { getFullTextArea } from '@shape/text';
 import { getArrowHeadSize } from '@shape/helpers';
 
-export type Arrow = Line & {
+export type ArrowSchema = LineSchema & {
   arrowHeadSize?: (width: number) => {
     arrowHeadHeight: number;
     perpLineLength: number;
@@ -27,12 +27,12 @@ export type Arrow = Line & {
   arrowHeadShape?: (at: Coordinate, height: number, width: number) => Shape;
 };
 
-export const ARROW_DEFAULTS = {
-  ...LINE_DEFAULTS,
+export const ARROW_SCHEMA_DEFAULTS = {
+  ...LINE_SCHEMA_DEFAULTS,
   arrowHeadSize: getArrowHeadSize,
 } as const;
 
-export const arrow = (options: Arrow): Shape => {
+export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   if (options.width && options.width < 0) {
     throw new Error('width must be positive');
   }
@@ -42,9 +42,7 @@ export const arrow = (options: Arrow): Shape => {
   const shapeHitbox = arrowHitbox(options);
   const textHitbox = arrowTextHitbox(options);
   const efficientHitbox = arrowEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getArrowBoundingBox(options);
 

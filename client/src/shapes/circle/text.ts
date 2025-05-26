@@ -1,6 +1,6 @@
 import { TEXT_DEFAULTS } from '@shape/types';
 import type { Coordinate } from '@shape/types';
-import type { Circle } from '@shape/circle';
+import type { CircleSchema } from '@shape/circle';
 import {
   drawTextWithTextArea,
   drawTextMatteWithTextArea,
@@ -8,10 +8,10 @@ import {
   getFullTextArea,
 } from '@shape/text';
 import { rectHitbox } from '@shape/rect/hitbox';
-import { CIRCLE_DEFAULTS } from '.';
+import { CIRCLE_SCHEMA_DEFAULTS } from '.';
 
-export const getTextAreaLocationOnCircle = (circle: Circle) => {
-  const { at, textArea } = { ...CIRCLE_DEFAULTS, ...circle };
+export const getTextAreaLocationOnCircle = (circle: CircleSchema) => {
+  const { at, textArea } = { ...CIRCLE_SCHEMA_DEFAULTS, ...circle };
 
   if (!textArea) throw new Error('no text area provided');
 
@@ -34,7 +34,7 @@ export const getTextAreaLocationOnCircle = (circle: Circle) => {
  * @param point - the point to check if it is in the circle
  * @returns a function that checks if the point is in the circle
  */
-export const circleTextHitbox = (circle: Circle) => {
+export const circleTextHitbox = (circle: CircleSchema) => {
   if (!circle.textArea) return;
 
   const location = getTextAreaLocationOnCircle(circle);
@@ -51,7 +51,7 @@ export const circleTextHitbox = (circle: Circle) => {
   return (point: Coordinate) => isInTextHitbox(point);
 };
 
-export const drawTextAreaMatteOnCircle = (circle: Circle) => {
+export const drawTextAreaMatteOnCircle = (circle: CircleSchema) => {
   if (!circle.textArea) return;
 
   const location = getTextAreaLocationOnCircle(circle);
@@ -61,7 +61,7 @@ export const drawTextAreaMatteOnCircle = (circle: Circle) => {
   return (ctx: CanvasRenderingContext2D) => drawMatte(ctx);
 };
 
-export const drawTextOnCircle = (circle: Circle) => {
+export const drawTextOnCircle = (circle: CircleSchema) => {
   if (!circle.textArea) return;
 
   const location = getTextAreaLocationOnCircle(circle);
@@ -71,7 +71,7 @@ export const drawTextOnCircle = (circle: Circle) => {
   return (ctx: CanvasRenderingContext2D) => drawText(ctx);
 };
 
-export const drawTextAreaOnCircle = (circle: Circle) => {
+export const drawTextAreaOnCircle = (circle: CircleSchema) => {
   const drawMatte = drawTextAreaMatteOnCircle(circle);
   const drawText = drawTextOnCircle(circle);
 

@@ -3,7 +3,7 @@ import type { Ref } from 'vue';
 import colors from '@colors';
 import type { Coordinate, Shape } from '@shape/types';
 import { circle } from '@shapes';
-import type { Circle } from '@shape/circle';
+import type { CircleSchema } from '@shape/circle';
 import { getCtx } from '@utils/ctx';
 import { debounce } from '@utils/debounce';
 
@@ -76,14 +76,14 @@ export const useHeatmap = (
       heatmapMode.value === 'precise'
         ? drawItems.value.findLast((item) => item.shapeHitbox(coords))
         : drawItems.value.findLast((item) =>
-            item.efficientHitbox({ at: coords, width: 1, height: 1 }),
-          );
+          item.efficientHitbox({ at: coords, width: 1, height: 1 }),
+        );
 
     const textHit = drawItems.value.findLast((item) =>
       item.textHitbox?.(coords),
     );
 
-    const circleSchema: Circle = {
+    const circleSchema: CircleSchema = {
       at: coords,
       radius: 2,
       color: MISS_COLOR + opacityStr.value,

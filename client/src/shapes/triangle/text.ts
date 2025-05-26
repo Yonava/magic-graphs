@@ -1,6 +1,6 @@
 import { TEXT_DEFAULTS } from '@shape/types';
 import type { Coordinate } from '@shape/types';
-import type { Triangle } from '@shape/triangle';
+import type { TriangleSchema } from '@shape/triangle';
 import {
   drawTextWithTextArea,
   drawTextMatteWithTextArea,
@@ -8,11 +8,11 @@ import {
   getFullTextArea,
 } from '@shape/text';
 import { rectHitbox } from '@shape/rect/hitbox';
-import { TRIANGLE_DEFAULTS } from '.';
+import { TRIANGLE_SCHEMA_DEFAULTS } from '.';
 
-export const getTextAreaLocationOnTriangle = (triangle: Triangle) => {
+export const getTextAreaLocationOnTriangle = (triangle: TriangleSchema) => {
   const { pointA, pointB, pointC, textArea } = {
-    ...TRIANGLE_DEFAULTS,
+    ...TRIANGLE_SCHEMA_DEFAULTS,
     ...triangle,
   };
 
@@ -40,7 +40,7 @@ export const getTextAreaLocationOnTriangle = (triangle: Triangle) => {
  * @param point - the point to check if it is in the triangle
  * @returns a function that checks if the point is in the triangle
  */
-export const triangleTextHitbox = (triangle: Triangle) => {
+export const triangleTextHitbox = (triangle: TriangleSchema) => {
   if (!triangle.textArea) return;
 
   const location = getTextAreaLocationOnTriangle(triangle);
@@ -57,7 +57,7 @@ export const triangleTextHitbox = (triangle: Triangle) => {
   return (point: Coordinate) => isInTextHitbox(point);
 };
 
-export const drawTextAreaMatteOnTriangle = (triangle: Triangle) => {
+export const drawTextAreaMatteOnTriangle = (triangle: TriangleSchema) => {
   if (!triangle.textArea) return;
 
   const location = getTextAreaLocationOnTriangle(triangle);
@@ -67,7 +67,7 @@ export const drawTextAreaMatteOnTriangle = (triangle: Triangle) => {
   return (ctx: CanvasRenderingContext2D) => drawMatte(ctx);
 };
 
-export const drawTextOnTriangle = (triangle: Triangle) => {
+export const drawTextOnTriangle = (triangle: TriangleSchema) => {
   if (!triangle.textArea) return;
 
   const location = getTextAreaLocationOnTriangle(triangle);
@@ -77,7 +77,7 @@ export const drawTextOnTriangle = (triangle: Triangle) => {
   return (ctx: CanvasRenderingContext2D) => drawText(ctx);
 };
 
-export const drawTextAreaOnTriangle = (triangle: Triangle) => {
+export const drawTextAreaOnTriangle = (triangle: TriangleSchema) => {
   const drawMatte = drawTextAreaMatteOnTriangle(triangle);
   const drawText = drawTextOnTriangle(triangle);
 

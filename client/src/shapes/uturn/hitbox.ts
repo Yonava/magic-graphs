@@ -1,12 +1,12 @@
-import { rotatePoint } from '@shape/helpers';
+import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 import type { Coordinate, BoundingBox } from '@shape/types';
 import { lineHitbox } from '@shape/line/hitbox';
-import type { UTurn } from '.';
+import type { UTurnSchema } from '.';
 import { rectEfficientHitbox } from '@shape/rect/hitbox';
 import { arrowHitbox } from '@shape/arrow/hitbox';
 import { circleHitbox } from '@shape/circle/hitbox';
 
-export const uturnHitbox = (uturn: UTurn) => {
+export const uturnHitbox = (uturn: UTurnSchema) => {
   const { spacing, at, downDistance, upDistance, lineWidth, rotation } = uturn;
 
   const longLegFrom = rotatePoint(
@@ -73,7 +73,7 @@ export const uturnHitbox = (uturn: UTurn) => {
     isInLine(point) || isInArrow(point) || isInUTurn(point);
 };
 
-export const getUturnBoundingBox = (uturn: UTurn) => () => {
+export const getUTurnBoundingBox = (uturn: UTurnSchema) => () => {
   const { spacing, at, upDistance, rotation, lineWidth } = uturn;
 
   const end = rotatePoint(
@@ -90,15 +90,15 @@ export const getUturnBoundingBox = (uturn: UTurn) => () => {
   const maxX = Math.max(at.x, end.x) + lineWidth / 2 + spacing;
   const maxY = Math.max(at.y, end.y) + lineWidth / 2 + spacing;
 
-  return {
+  return normalizeBoundingBox({
     at: { x: minX, y: minY },
     width: maxX - minX,
     height: maxY - minY,
-  };
+  });
 };
 
-export const uturnEfficientHitbox = (uturn: UTurn) => {
-  const uturnBoundingBox = getUturnBoundingBox(uturn)();
+export const uturnEfficientHitbox = (uturn: UTurnSchema) => {
+  const uturnBoundingBox = getUTurnBoundingBox(uturn)();
 
   const isInRectEfficientHitbox = rectEfficientHitbox(uturnBoundingBox);
 

@@ -1,4 +1,4 @@
-import type { Image } from '.';
+import type { ImageSchema } from '.';
 import {
   drawTextAreaOnRect,
   drawTextAreaMatteOnRect,
@@ -7,7 +7,7 @@ import {
   rectTextHitbox,
 } from '@shape/rect/text';
 
-export const getTextAreaLocationOnImage = (image: Image) => {
+export const getTextAreaLocationOnImage = (image: ImageSchema) => {
   return getTextAreaLocationOnRect(image);
 };
 
@@ -17,25 +17,25 @@ export const getTextAreaLocationOnImage = (image: Image) => {
  * @param point - the point to check if it is in the image
  * @returns a function that checks if the point is in the image
  */
-export const imageTextHitbox = (image: Image) => {
+export const imageTextHitbox = (image: ImageSchema) => {
   if (!image.textArea) return;
 
   return rectTextHitbox(image);
 };
 
-export const drawTextAreaMatteOnImage = (image: Image) => {
+export const drawTextAreaMatteOnImage = (image: ImageSchema) => {
   if (!image.textArea) return;
 
   return drawTextAreaMatteOnRect(image);
 };
 
-export const drawTextOnImage = (image: Image) => {
+export const drawTextOnImage = (image: ImageSchema) => {
   if (!image.textArea) return;
 
   return drawTextOnRect(image);
 };
 
-export const drawTextAreaOnImage = (image: Image) => {
+export const drawTextAreaOnImage = (image: ImageSchema) => {
   if (!image.textArea) return;
 
   return drawTextAreaOnRect(image);

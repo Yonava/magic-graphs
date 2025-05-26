@@ -1,5 +1,6 @@
-import { CROSS_DEFAULTS } from '.';
-import type { Cross } from '.';
+import { normalizeBoundingBox } from '@shape/helpers';
+import { CROSS_SCHEMA_DEFAULTS } from '.';
+import type { CrossSchema } from '.';
 import { rectHitbox, rectEfficientHitbox } from '@shape/rect/hitbox';
 import type { Coordinate, BoundingBox } from '@shape/types';
 
@@ -7,9 +8,9 @@ import type { Coordinate, BoundingBox } from '@shape/types';
  * @param point - the point to check if it is in the cross
  * @returns a function that checks if the point is in the cross
  */
-export const crossHitbox = (cross: Cross) => {
+export const crossHitbox = (cross: CrossSchema) => {
   const { at, size, rotation, lineWidth, borderRadius } = {
-    ...CROSS_DEFAULTS,
+    ...CROSS_SCHEMA_DEFAULTS,
     ...cross,
   };
 
@@ -34,20 +35,20 @@ export const crossHitbox = (cross: Cross) => {
     horizontalHitbox(point) || verticalHitbox(point);
 };
 
-export const getCrossBoundingBox = (cross: Cross) => () => {
+export const getCrossBoundingBox = (cross: CrossSchema) => () => {
   const { at, size } = cross;
 
-  return {
+  return normalizeBoundingBox({
     at: {
       x: at.x - size / 2,
       y: at.y - size / 2,
     },
     width: size,
     height: size,
-  };
+  });
 };
 
-export const crossEfficientHitbox = (cross: Cross) => {
+export const crossEfficientHitbox = (cross: CrossSchema) => {
   const crossBoundingBox = getCrossBoundingBox(cross)();
 
   const isInRectEfficientHitbox = rectEfficientHitbox(crossBoundingBox);

@@ -7,9 +7,9 @@ import {
 import { type Coordinate } from '@shape/types';
 import { getTextAreaLocationOnLine } from '@shape/line/text';
 import { rectHitbox } from '@shape/rect/hitbox';
-import type { Arrow } from '.';
+import type { ArrowSchema } from '.';
 
-export const getTextAreaLocationOnArrow = (arrow: Arrow) => {
+export const getTextAreaLocationOnArrow = (arrow: ArrowSchema) => {
   const { textArea } = arrow;
 
   if (!textArea) throw new Error('no text area provided');
@@ -17,7 +17,7 @@ export const getTextAreaLocationOnArrow = (arrow: Arrow) => {
   return getTextAreaLocationOnLine(arrow);
 };
 
-export const arrowTextHitbox = (arrow: Arrow) => {
+export const arrowTextHitbox = (arrow: ArrowSchema) => {
   if (!arrow.textArea) return;
 
   const location = getTextAreaLocationOnArrow(arrow);
@@ -34,7 +34,7 @@ export const arrowTextHitbox = (arrow: Arrow) => {
   return (point: Coordinate) => isInText(point);
 };
 
-export const drawTextAreaMatteOnArrow = (arrow: Arrow) => {
+export const drawTextAreaMatteOnArrow = (arrow: ArrowSchema) => {
   if (!arrow.textArea) return;
 
   const location = getTextAreaLocationOnArrow(arrow);
@@ -44,7 +44,7 @@ export const drawTextAreaMatteOnArrow = (arrow: Arrow) => {
   return (ctx: CanvasRenderingContext2D) => drawMatte(ctx);
 };
 
-export const drawTextOnArrow = (arrow: Arrow) => {
+export const drawTextOnArrow = (arrow: ArrowSchema) => {
   if (!arrow.textArea) return;
 
   const location = getTextAreaLocationOnArrow(arrow);
@@ -54,7 +54,7 @@ export const drawTextOnArrow = (arrow: Arrow) => {
   return (ctx: CanvasRenderingContext2D) => drawText(ctx);
 };
 
-export const drawTextAreaOnArrow = (arrow: Arrow) => {
+export const drawTextAreaOnArrow = (arrow: ArrowSchema) => {
   const drawMatte = drawTextAreaMatteOnArrow(arrow);
   const drawText = drawTextOnArrow(arrow);
 

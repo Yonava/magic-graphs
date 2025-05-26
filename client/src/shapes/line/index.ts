@@ -1,7 +1,7 @@
 import type {
   Coordinate,
   GradientStop,
-  Shape,
+  ShapeFactory,
   TextAreaNoLocation,
 } from '@shape/types';
 import { drawLineWithCtx } from './draw';
@@ -17,7 +17,7 @@ import { generateId } from '@utils/id';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 
-export type Line = {
+export type LineSchema = {
   id?: string;
   start: Coordinate;
   end: Coordinate;
@@ -37,7 +37,7 @@ export type Line = {
   gradientStops?: GradientStop[];
 };
 
-export const LINE_DEFAULTS = {
+export const LINE_SCHEMA_DEFAULTS = {
   width: 10,
   textOffsetFromCenter: 0,
   color: 'black',
@@ -45,7 +45,7 @@ export const LINE_DEFAULTS = {
   gradientStops: [],
 } as const;
 
-export const line = (options: Line): Shape => {
+export const line: ShapeFactory<LineSchema> = (options) => {
   if (options.width && options.width < 0) {
     throw new Error('lineWidth must be positive');
   }
@@ -55,9 +55,7 @@ export const line = (options: Line): Shape => {
   const shapeHitbox = lineHitbox(options);
   const textHitbox = lineTextHitbox(options);
   const efficientHitbox = lineEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getLineBoundingBox(options);
 

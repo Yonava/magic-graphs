@@ -10,6 +10,7 @@ import { scribble as scribbleAPI } from './scribble';
 import { ellipse as ellipseAPI } from './ellipse';
 import { star as starAPI } from './star';
 import { image as imageAPI } from './image';
+import { initShapeCache } from './cacher';
 
 export const line = lineAPI;
 export const arrow = arrowAPI;
@@ -37,4 +38,22 @@ export const shapes = {
   ellipse,
   star,
   image,
-};
+} as const;
+
+export const useOptimizedShapes = () => {
+  const toOptimized = initShapeCache()
+  return {
+    arrow: toOptimized(arrow),
+    circle: toOptimized(circle),
+    line: toOptimized(line),
+    rect: toOptimized(rect),
+    square: toOptimized(square),
+    triangle: toOptimized(triangle),
+    uturn: toOptimized(uturn),
+    cross: toOptimized(cross),
+    scribble: toOptimized(scribble),
+    ellipse: toOptimized(ellipse),
+    star: toOptimized(star),
+    image: toOptimized(image),
+  } satisfies Record<keyof typeof shapes, ReturnType<typeof toOptimized<any>>>
+}

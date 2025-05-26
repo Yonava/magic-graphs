@@ -1,21 +1,22 @@
-import type { ThemeGetter } from '@graph/themes/getThemeResolver';
 import type { GNode, SchemaItem } from '@graph/types';
-import { square } from '@shapes';
 import colors from '@colors';
-import type { GraphAnimationController } from '@graph/animationController';
 import { nodeCircle } from './nodeCircle';
+import type { BaseGraph } from '@graph/base';
 
 export type SupportedNodeShapes = 'circle' | 'square';
 
+type PropsNeededFromGraph =
+  | 'shapes'
+  | 'getTheme'
+  | 'animationController';
+
 export const getNodeSchematic = (
   node: GNode,
-  getTheme: ThemeGetter,
-  animationController: GraphAnimationController,
+  graph: Pick<BaseGraph, PropsNeededFromGraph>,
 ): Omit<SchemaItem, 'priority'> | undefined => {
-  const circle = nodeCircle({
-    controller: animationController,
-    id: node.id,
-  });
+
+  const circle = nodeCircle(graph);
+  const { getTheme } = graph
 
   const color = getTheme('nodeColor', node);
   const borderColor = getTheme('nodeBorderColor', node);
@@ -27,6 +28,7 @@ export const getNodeSchematic = (
   const shape = getTheme('nodeShape', node);
 
   const circleShape = circle({
+    id: node.id,
     at: {
       x: node.x,
       y: node.y,
@@ -48,7 +50,8 @@ export const getNodeSchematic = (
     },
   });
 
-  const squareShape = square({
+  const squareShape = graph.shapes.square({
+    id: node.id,
     at: {
       x: node.x - size,
       y: node.y - size,

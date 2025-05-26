@@ -1,14 +1,14 @@
-import type { Coordinate, Shape } from '@shape/types';
+import type { Coordinate, ShapeFactory } from '@shape/types';
 import {
   crossHitbox,
   crossEfficientHitbox,
   getCrossBoundingBox,
 } from './hitbox';
 import { drawCrossWithCtx } from './draw';
-import { LINE_DEFAULTS } from '@shape/line';
+import { LINE_SCHEMA_DEFAULTS } from '@shape/line';
 import { generateId } from '@utils/id';
 
-export type Cross = {
+export type CrossSchema = {
   id?: string;
   at: Coordinate;
   size: number;
@@ -18,14 +18,14 @@ export type Cross = {
   borderRadius?: number;
 };
 
-export const CROSS_DEFAULTS = {
+export const CROSS_SCHEMA_DEFAULTS = {
   rotation: 0,
   color: 'black',
-  lineWidth: LINE_DEFAULTS.width,
+  lineWidth: LINE_SCHEMA_DEFAULTS.width,
   borderRadius: 0,
 } as const;
 
-export const cross = (options: Cross): Shape => {
+export const cross: ShapeFactory<CrossSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {
     throw new Error('lineWidth must be positive');
   }
@@ -33,25 +33,19 @@ export const cross = (options: Cross): Shape => {
   const drawShape = drawCrossWithCtx(options);
   const shapeHitbox = crossHitbox(options);
   const efficientHitbox = crossEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return shapeHitbox(point); // text not implemented yet
-  };
 
   const getBoundingBox = getCrossBoundingBox(options);
-
-  const draw = (ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx);
-  };
 
   return {
     id: options.id ?? generateId(),
     name: 'cross',
 
-    draw,
+    draw: drawShape,
     drawShape,
 
+    hitbox: shapeHitbox,
     shapeHitbox,
-    hitbox,
+
     efficientHitbox,
     getBoundingBox,
   };

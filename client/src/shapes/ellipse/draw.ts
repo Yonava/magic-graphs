@@ -1,10 +1,10 @@
-import { ELLIPSE_DEFAULTS } from '@shape/ellipse';
-import type { Ellipse } from '@shape/ellipse';
+import { ELLIPSE_SCHEMA_DEFAULTS } from '@shape/ellipse';
+import type { EllipseSchema } from '@shape/ellipse';
 
 export const drawEllipseWithCtx =
-  (options: Ellipse) => (ctx: CanvasRenderingContext2D) => {
+  (options: EllipseSchema) => (ctx: CanvasRenderingContext2D) => {
     const { at, radiusX, radiusY, color, stroke } = {
-      ...ELLIPSE_DEFAULTS,
+      ...ELLIPSE_SCHEMA_DEFAULTS,
       ...options,
     };
 

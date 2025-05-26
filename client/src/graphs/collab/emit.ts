@@ -69,14 +69,14 @@ export const useSocketEmitters = (
 
   const startEmitting = () => {
     for (const [event, handler] of Object.entries(eventHandlers.value)) {
-      // @ts-ignore ts cant handle Object.entries return type
+      // @ts-expect-error ts cant handle Object.entries return type
       graph.value?.subscribe(event, handler);
     }
   };
 
   const stopEmitting = () => {
     for (const [event, handler] of Object.entries(eventHandlers.value)) {
-      // @ts-ignore ts cant handle Object.entries return type
+      // @ts-expect-error ts cant handle Object.entries return type
       graph.value?.unsubscribe(event, handler);
     }
   };

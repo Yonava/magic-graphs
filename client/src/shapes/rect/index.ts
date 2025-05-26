@@ -2,7 +2,7 @@ import type {
   TextAreaNoLocation,
   Stroke,
   Coordinate,
-  Shape,
+  ShapeFactory,
 } from '@shape/types';
 import { rectHitbox, rectEfficientHitbox, getRectBoundingBox } from './hitbox';
 import { drawRectWithCtx } from './draw';
@@ -17,7 +17,7 @@ import { generateId } from '@utils/id';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 
-export type Rect = {
+export type RectSchema = {
   id?: string;
   at: Coordinate;
   width: number;
@@ -29,13 +29,13 @@ export type Rect = {
   rotation?: number;
 };
 
-export const RECT_DEFAULTS = {
+export const RECT_SCHEMA_DEFAULTS = {
   color: 'black',
   borderRadius: 0,
   rotation: 0,
 } as const;
 
-export const rect = (options: Rect): Shape => {
+export const rect: ShapeFactory<RectSchema> = (options) => {
   if (options.borderRadius && options.borderRadius < 0) {
     throw new Error('borderRadius must be positive');
   }
@@ -45,9 +45,7 @@ export const rect = (options: Rect): Shape => {
   const shapeHitbox = rectHitbox(options);
   const textHitbox = rectTextHitbox(options);
   const efficientHitbox = rectEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return textHitbox?.(point) || shapeHitbox(point);
-  };
+  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getRectBoundingBox(options);
 

@@ -1,7 +1,8 @@
 import type { Coordinate, BoundingBox } from '@shape/types';
-import type { Triangle } from '.';
+import type { TriangleSchema } from '.';
 import { rectEfficientHitbox } from '@shape/rect/hitbox';
 import { lineHitbox } from '@shape/line/hitbox';
+import { normalizeBoundingBox } from '@shape/helpers';
 
 /**
  * uses barycentric coordinate system for triangles. dont ask me, im not that smart.
@@ -10,7 +11,7 @@ import { lineHitbox } from '@shape/line/hitbox';
   @param {Coordinate} point - the point to check if it is in the triangle
   @returns a function that checks if the point is in the triangle
 */
-export const triangleHitbox = (triangle: Triangle) => (point: Coordinate) => {
+export const triangleHitbox = (triangle: TriangleSchema) => (point: Coordinate) => {
   const { pointA: a, pointB: b, pointC: c, stroke } = triangle;
 
   if (stroke) {
@@ -41,7 +42,7 @@ export const triangleHitbox = (triangle: Triangle) => (point: Coordinate) => {
   return isInsideTriangle;
 };
 
-export const getTriangleBoundingBox = (triangle: Triangle) => () => {
+export const getTriangleBoundingBox = (triangle: TriangleSchema) => () => {
   const { pointA: a, pointB: b, pointC: c } = triangle;
 
   const minX = Math.min(a.x, b.x, c.x);
@@ -49,14 +50,14 @@ export const getTriangleBoundingBox = (triangle: Triangle) => () => {
   const maxX = Math.max(a.x, b.x, c.x);
   const maxY = Math.max(a.y, b.y, c.y);
 
-  return {
+  return normalizeBoundingBox({
     at: { x: minX, y: minY },
     width: maxX - minX,
     height: maxY - minY,
-  };
+  });
 };
 
-export const triangleEfficientHitbox = (triangle: Triangle) => {
+export const triangleEfficientHitbox = (triangle: TriangleSchema) => {
   const triangleBoundingBox = getTriangleBoundingBox(triangle)();
 
   const isInRectEfficientHitbox = rectEfficientHitbox(triangleBoundingBox);

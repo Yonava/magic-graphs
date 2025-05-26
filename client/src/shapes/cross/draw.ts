@@ -1,8 +1,8 @@
-import { CROSS_DEFAULTS } from '.';
-import type { Cross } from '.';
+import { CROSS_SCHEMA_DEFAULTS } from '.';
+import type { CrossSchema } from '.';
 import { drawRectWithCtx } from '@shape/rect/draw';
 
-export const drawCrossWithCtx = (options: Cross) => {
+export const drawCrossWithCtx = (options: CrossSchema) => {
   const {
     at: crossAt,
     size,
@@ -11,7 +11,7 @@ export const drawCrossWithCtx = (options: Cross) => {
     lineWidth,
     borderRadius,
   } = {
-    ...CROSS_DEFAULTS,
+    ...CROSS_SCHEMA_DEFAULTS,
     ...options,
   };
 
