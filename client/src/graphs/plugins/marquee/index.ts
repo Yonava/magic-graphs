@@ -180,10 +180,15 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
 
   const addEncapsulatedNodeBoxToAggregator = (aggregator: Aggregator) => {
     if (!encapsulatedNodeBox.value) return aggregator;
-    const selectionAreaSchemaItem = getEncapsulatedNodeBoxSchema(
+
+    const { width, height } = encapsulatedNodeBox.value
+    if (width === 0 && height === 0) return aggregator
+
+    const nodeBoxSchema = getEncapsulatedNodeBoxSchema(
       encapsulatedNodeBox.value,
     );
-    aggregator.push(selectionAreaSchemaItem);
+
+    aggregator.push(nodeBoxSchema);
     return aggregator;
   };
 

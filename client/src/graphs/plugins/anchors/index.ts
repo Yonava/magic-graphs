@@ -5,7 +5,6 @@ import type { GraphMouseEvent } from '@graph/base/types';
 import type { SchemaItem, GNode } from '@graph/types';
 import type { GraphFocusPlugin } from '@graph/plugins/focus';
 import type { NodeAnchor } from '@graph/plugins/anchors/types';
-import { generateId } from '@utils/id';
 import { MOUSE_BUTTONS } from "@graph/global";
 
 /**
@@ -116,27 +115,31 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     nodeAnchors.value = (
       [
         {
+          id: 'n-anchor',
           x: node.x,
           y: node.y - offset,
           direction: 'north',
         },
         {
+          id: 'e-anchor',
           x: node.x + offset,
           y: node.y,
           direction: 'east',
         },
         {
+          id: 's-anchor',
           x: node.x,
           y: node.y + offset,
           direction: 'south',
         },
         {
+          id: 'w-anchor',
           x: node.x - offset,
           y: node.y,
           direction: 'west',
         },
       ] as const
-    ).map((anchor) => ({ ...anchor, id: generateId() }));
+    )
   };
 
   /**

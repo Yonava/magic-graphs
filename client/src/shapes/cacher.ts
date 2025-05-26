@@ -19,6 +19,16 @@ type DJB2Hash = ReturnType<typeof djb2Hasher>
 
 const serializeSchema = (schema: unknown) => djb2Hasher(JSON.stringify(schema))
 
+const useLog = (frequencyMs = 1000, resetReportAfterLogging = true) => {
+  const report = new Set<string>()
+  const logReport = () => {
+    console.log(Array.from(report))
+    if (resetReportAfterLogging) report.clear()
+  }
+  setInterval(logReport, frequencyMs)
+  return report
+}
+
 /**
  * provides a wrapper around magic shapes that
  * increases shape rendering performance
@@ -37,6 +47,8 @@ export const initShapeCache = () => {
     return cachedSchema !== serializedSchema
   }
 
+  const report = useLog()
+
   return <T>(factory: ShapeFactory<T>): ShapeFactory<WithId<T>> => (schema) => {
     const shape = factory(schema)
     const { id } = shape
@@ -45,7 +57,7 @@ export const initShapeCache = () => {
       draw: (ctx) => {
         const boundingBox = shape.getBoundingBox()
 
-        // console.log(id)
+        report.add(id)
 
         // const serializedSchema = serializeSchema(schema)
         // const hasChanged = hasSchemaChanged(id, serializedSchema)
