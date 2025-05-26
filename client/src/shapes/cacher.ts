@@ -1,3 +1,4 @@
+import { djb2Hasher, type DJB2Hash } from "@utils/hashing"
 import type { Shape, ShapeFactory } from "./types"
 
 export type WithId<T> = T & {
@@ -6,16 +7,6 @@ export type WithId<T> = T & {
    */
   id: string
 }
-
-const djb2Hasher = (str: string) => {
-  let hash = 5381;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) + hash) + str.charCodeAt(i);
-  }
-  return hash >>> 0;
-}
-
-type DJB2Hash = ReturnType<typeof djb2Hasher>
 
 const serializeSchema = (schema: unknown) => djb2Hasher(JSON.stringify(schema))
 
@@ -36,8 +27,6 @@ export const initShapeCache = () => {
     const cachedSchema = cache.get(schemaId)
     return cachedSchema !== serializedSchema
   }
-
-  // const report = useLog()
 
   return <T>(factory: ShapeFactory<T>): ShapeFactory<WithId<T>> => (schema) => {
     const shape = factory(schema)
