@@ -1,4 +1,4 @@
-import type { ShapeFactory } from "./types"
+import type { Shape, ShapeFactory } from "./types"
 
 export type WithId<T> = T & {
   /**
@@ -18,16 +18,6 @@ const djb2Hasher = (str: string) => {
 type DJB2Hash = ReturnType<typeof djb2Hasher>
 
 const serializeSchema = (schema: unknown) => djb2Hasher(JSON.stringify(schema))
-
-const useLog = (frequencyMs = 1000, resetReportAfterLogging = true) => {
-  const report = new Set<string>()
-  const logReport = () => {
-    console.log(Array.from(report))
-    if (resetReportAfterLogging) report.clear()
-  }
-  setInterval(logReport, frequencyMs)
-  return report
-}
 
 /**
  * provides a wrapper around magic shapes that
@@ -51,35 +41,34 @@ export const initShapeCache = () => {
 
   return <T>(factory: ShapeFactory<T>): ShapeFactory<WithId<T>> => (schema) => {
     const shape = factory(schema)
-    const { id } = shape
+
+    const drawWithCache: (fn: Shape['draw']) => Shape['draw'] = (drawFn) => (ctx) => {
+      const boundingBox = shape.getBoundingBox()
+      const serializedSchema = serializeSchema(schema)
+      const hasChanged = hasSchemaChanged(schema.id, serializedSchema)
+
+      if (hasChanged || !canvasCache.has(schema.id)) {
+        const offscreen = document.createElement('canvas')
+        offscreen.width = boundingBox.width
+        offscreen.height = boundingBox.height
+        const offscreenCtx = offscreen.getContext('2d')!
+        offscreenCtx.save()
+        offscreenCtx.translate(-boundingBox.at.x, -boundingBox.at.y)
+        drawFn(offscreenCtx)
+        offscreenCtx.restore()
+        canvasCache.set(schema.id, offscreen)
+        cache.set(schema.id, serializedSchema)
+      }
+
+      const cachedCanvas = canvasCache.get(schema.id)
+      if (!cachedCanvas) throw new Error('no cached canvas')
+      ctx.drawImage(cachedCanvas, boundingBox.at.x, boundingBox.at.y)
+    }
+
     return {
       ...shape,
-      draw: (ctx) => {
-        const boundingBox = shape.getBoundingBox()
-        const serializedSchema = serializeSchema(schema)
-        const hasChanged = hasSchemaChanged(id, serializedSchema)
-
-        if (hasChanged || !canvasCache.has(id)) {
-          const offscreen = document.createElement('canvas')
-          offscreen.width = boundingBox.width
-          offscreen.height = boundingBox.height
-          const offscreenCtx = offscreen.getContext('2d')!
-          offscreenCtx.save()
-          offscreenCtx.translate(-boundingBox.at.x, -boundingBox.at.y)
-          shape.draw(offscreenCtx)
-          offscreenCtx.restore()
-          canvasCache.set(id, offscreen)
-          cache.set(id, serializedSchema)
-        }
-
-        const cachedCanvas = canvasCache.get(id)
-        if (!cachedCanvas) throw new Error('no cached canvas')
-        ctx.drawImage(cachedCanvas, boundingBox.at.x, boundingBox.at.y)
-      },
-
-      drawShape: (ctx) => {
-        shape.drawShape(ctx)
-      },
+      draw: drawWithCache(shape.draw),
+      drawShape: drawWithCache(shape.drawShape),
     }
   }
 }
