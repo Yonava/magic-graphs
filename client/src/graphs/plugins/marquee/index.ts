@@ -155,7 +155,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     if (!marqueeBox.value) return aggregator;
 
     const { width, height } = marqueeBox.value
-    if (width === 0 && height == 0) return aggregator
+    if (width === 0 || height === 0) return aggregator
 
     const selectionBoxSchemaItem = getMarqueeBoxSchema(marqueeBox.value);
     aggregator.push(selectionBoxSchemaItem);
@@ -186,7 +186,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     if (!encapsulatedNodeBox.value) return aggregator;
 
     const { width, height } = encapsulatedNodeBox.value
-    if (width === 0 && height === 0) return aggregator
+    if (width === 0 || height === 0) return aggregator
 
     const nodeBoxSchema = getEncapsulatedNodeBoxSchema(
       encapsulatedNodeBox.value,

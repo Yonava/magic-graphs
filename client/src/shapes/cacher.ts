@@ -47,7 +47,7 @@ export const initShapeCache = () => {
     return cachedSchema !== serializedSchema
   }
 
-  const report = useLog()
+  // const report = useLog()
 
   return <T>(factory: ShapeFactory<T>): ShapeFactory<WithId<T>> => (schema) => {
     const shape = factory(schema)
@@ -56,28 +56,27 @@ export const initShapeCache = () => {
       ...shape,
       draw: (ctx) => {
         const boundingBox = shape.getBoundingBox()
+        const serializedSchema = serializeSchema(schema)
+        const hasChanged = hasSchemaChanged(id, serializedSchema)
 
-        report.add(`${boundingBox.width} ${boundingBox.height}`)
+        if (hasChanged || !canvasCache.has(id)) {
+          const offscreen = document.createElement('canvas')
+          offscreen.width = boundingBox.width
+          offscreen.height = boundingBox.height
+          const offscreenCtx = offscreen.getContext('2d')!
+          offscreenCtx.save()
+          offscreenCtx.translate(-boundingBox.at.x, -boundingBox.at.y)
+          shape.draw(offscreenCtx)
+          offscreenCtx.restore()
+          canvasCache.set(id, offscreen)
+          cache.set(id, serializedSchema)
+        }
 
-        // const serializedSchema = serializeSchema(schema)
-        // const hasChanged = hasSchemaChanged(id, serializedSchema)
-
-        // if (hasChanged || !canvasCache.has(id)) {
-        // const offscreen = document.createElement('canvas');
-        // offscreen.width = ctx.canvas.width;
-        // offscreen.height = ctx.canvas.height;
-        // const offscreenCtx = offscreen.getContext('2d')!;
-        // shape.draw(offscreenCtx)
-        // canvasCache.set(id, offscreen)
-        // cache.set(id, serializedSchema)
-        // }
-
-        // const cachedCanvas = canvasCache.get(id)
-        // if (!cachedCanvas) throw new Error('no cached canvas')
-        // ctx.drawImage(cachedCanvas, 0, 0)
-
-        shape.draw(ctx)
+        const cachedCanvas = canvasCache.get(id)
+        if (!cachedCanvas) throw new Error('no cached canvas')
+        ctx.drawImage(cachedCanvas, boundingBox.at.x, boundingBox.at.y)
       },
+
       drawShape: (ctx) => {
         shape.drawShape(ctx)
       },
