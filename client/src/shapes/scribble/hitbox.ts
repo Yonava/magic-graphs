@@ -19,8 +19,8 @@ export const scribbleHitbox =
 
     const isInRectHitbox = rectHitbox({
       at,
-      width: Math.max(width, 10), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
-      height: Math.max(height, 10), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
+      width: Math.max(width, brushWeight), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
+      height: Math.max(height, brushWeight), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
     });
 
     if (!isInRectHitbox(point)) return false;
