@@ -11,36 +11,36 @@ import { normalizeBoundingBox } from '@shape/helpers';
   @param {Coordinate} point - the point to check if it is in the triangle
   @returns a function that checks if the point is in the triangle
 */
-export const triangleHitbox = (triangle: TriangleSchema) => (point: Coordinate) => {
-  const { pointA: a, pointB: b, pointC: c, stroke } = triangle;
+export const triangleHitbox =
+  (triangle: TriangleSchema) => (point: Coordinate) => {
+    const { pointA: a, pointB: b, pointC: c, stroke } = triangle;
 
-  if (stroke) {
+    const { x, y } = point;
+    const area =
+      0.5 * (-b.y * c.x + a.y * (-b.x + c.x) + a.x * (b.y - c.y) + b.x * c.y);
+    const s =
+      (1 / (2 * area)) *
+      (a.y * c.x - a.x * c.y + (c.y - a.y) * x + (a.x - c.x) * y);
+    const t =
+      (1 / (2 * area)) *
+      (a.x * b.y - a.y * b.x + (a.y - b.y) * x + (b.x - a.x) * y);
+    const isInsideTriangle = s > 0 && t > 0 && 1 - s - t > 0;
+
+    if (!stroke) {
+      return isInsideTriangle;
+    }
+
     const edge1 = { start: a, end: b, width: stroke.width };
     const edge2 = { start: b, end: c, width: stroke.width };
     const edge3 = { start: c, end: a, width: stroke.width };
 
-    return (
+    const isOnStroke =
       lineHitbox(edge1)(point) ||
       lineHitbox(edge2)(point) ||
-      lineHitbox(edge3)(point)
-    );
-  }
+      lineHitbox(edge3)(point);
 
-  const { x, y } = point;
-
-  const area =
-    0.5 * (-b.y * c.x + a.y * (-b.x + c.x) + a.x * (b.y - c.y) + b.x * c.y);
-  const s =
-    (1 / (2 * area)) *
-    (a.y * c.x - a.x * c.y + (c.y - a.y) * x + (a.x - c.x) * y);
-  const t =
-    (1 / (2 * area)) *
-    (a.x * b.y - a.y * b.x + (a.y - b.y) * x + (b.x - a.x) * y);
-
-  const isInsideTriangle = s > 0 && t > 0 && 1 - s - t > 0;
-
-  return isInsideTriangle;
-};
+    return isInsideTriangle || isOnStroke;
+  };
 
 export const getTriangleBoundingBox = (triangle: TriangleSchema) => () => {
   const { pointA: a, pointB: b, pointC: c } = triangle;

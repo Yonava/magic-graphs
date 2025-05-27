@@ -9,26 +9,24 @@ import type { Coordinate, BoundingBox } from '@shape/types';
  * @returns a function that checks if the point is in the cross
  */
 export const crossHitbox = (cross: CrossSchema) => {
-  const { at, size, rotation, lineWidth, borderRadius } = {
+  const { at, size, lineWidth, ...rest } = {
     ...CROSS_SCHEMA_DEFAULTS,
     ...cross,
   };
-
   const halfLineWidth = lineWidth / 2;
 
   const horizontalHitbox = rectHitbox({
+    ...rest,
     at: { x: at.x - size / 2, y: at.y - halfLineWidth },
     width: size,
     height: lineWidth,
-    rotation,
-    borderRadius,
   });
+
   const verticalHitbox = rectHitbox({
+    ...rest,
     at: { x: at.x - halfLineWidth, y: at.y - size / 2 },
     width: lineWidth,
     height: size,
-    rotation,
-    borderRadius,
   });
 
   return (point: Coordinate) =>
