@@ -9,46 +9,50 @@ import { normalizeBoundingBox } from '@shape/helpers';
  * @param point - the point to check if it is in the scribble bounding box
  * @returns a function that checks if the point is in the scribble bounding box
  */
-export const scribbleHitbox = (scribble: ScribbleSchema) => (point: Coordinate) => {
-  const { type, points, brushWeight } = { ...SCRIBBLE_DEFAULTS, ...scribble };
+export const scribbleHitbox =
+  (scribble: ScribbleSchema) => (point: Coordinate) => {
+    const { type, points, brushWeight } = { ...SCRIBBLE_DEFAULTS, ...scribble };
 
-  if (type === 'erase') return false;
+    if (type === 'erase') return false;
 
-  const { at, width, height } = getScribbleBoundingBox(scribble)(); // first check boundingbox for efficiency
+    const { at, width, height } = getScribbleBoundingBox(scribble)(); // first check boundingbox for efficiency
 
-  const isInRectHitbox = rectHitbox({
-    at,
-    width: Math.max(width, 10), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
-    height: Math.max(height, 10), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
-  });
-
-  if (!isInRectHitbox(point)) return false;
-
-  if (points.length === 1) {
-    if (circleHitbox({ at: points[0], radius: brushWeight })(point))
-      return true;
-  }
-
-  for (let i = 0; i < points.length - 1; i++) {
-    const scribbleSegment = {
-      start: points[i],
-      end: points[i + 1],
-    };
-
-    const isInLineEfficientHitbox = lineEfficientHitbox(scribbleSegment)({
-      at: point,
-      width: 1,
-      height: 1,
+    const isInRectHitbox = rectHitbox({
+      at,
+      width: Math.max(width, brushWeight), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
+      height: Math.max(height, brushWeight), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
     });
 
-    if (isInLineEfficientHitbox) return true;
-  }
+    if (!isInRectHitbox(point)) return false;
 
-  return false;
-};
+    if (points.length === 1) {
+      if (circleHitbox({ at: points[0], radius: brushWeight })(point))
+        return true;
+    }
+
+    for (let i = 0; i < points.length - 1; i++) {
+      const scribbleSegment = {
+        start: points[i],
+        end: points[i + 1],
+      };
+
+      const isInLineEfficientHitbox = lineEfficientHitbox(scribbleSegment)({
+        at: point,
+        width: 1,
+        height: 1,
+      });
+
+      if (isInLineEfficientHitbox) return true;
+    }
+
+    return false;
+  };
 
 export const getScribbleBoundingBox = (scribble: ScribbleSchema) => () => {
-  const { points } = scribble;
+  const { points, brushWeight } = {
+    ...SCRIBBLE_DEFAULTS,
+    ...scribble,
+  };
 
   let minX = points[0].x;
   let minY = points[0].y;
@@ -64,11 +68,11 @@ export const getScribbleBoundingBox = (scribble: ScribbleSchema) => () => {
 
   return normalizeBoundingBox({
     at: {
-      x: minX,
-      y: minY,
+      x: minX - brushWeight / 2,
+      y: minY - brushWeight / 2,
     },
-    width: maxX - minX,
-    height: maxY - minY,
+    width: maxX - minX + brushWeight,
+    height: maxY - minY + brushWeight,
   });
 };
 
