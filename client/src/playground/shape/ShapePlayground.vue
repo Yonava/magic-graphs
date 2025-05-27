@@ -3,7 +3,7 @@
   import { useDark, useWindowSize } from '@vueuse/core';
   import ResponsiveCanvas from '@utils/components/ResponsiveCanvas.vue';
   import colors from '@colors';
-  import { useOptimizedShapes, square } from '@shapes';
+  import { useOptimizedShapes, square, triangle } from '@shapes';
   import type { Shape } from '@shape/types';
   import { getCtx } from '@utils/ctx';
   import ShapePlaygroundToolbar from './Toolbar.vue';
@@ -32,6 +32,20 @@
         color: 'transparent',
         at: { x: 300, y: 300 },
         size: -200,
+        stroke: {
+          color: 'purple',
+          width: 15,
+        },
+      }),
+    );
+
+    items.value.push(
+      triangle({
+        id: 'test2',
+        color: 'yellow',
+        pointA: { x: 500, y: 500 },
+        pointB: { x: 600, y: 500 },
+        pointC: { x: 500, y: 600 },
         stroke: {
           color: 'purple',
           width: 15,
