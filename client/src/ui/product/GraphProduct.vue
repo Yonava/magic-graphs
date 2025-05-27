@@ -64,25 +64,24 @@
   useGraphProduct(props.graph);
 
   const graphDragging = ref(false);
-  const computedGraphPointerEvents = computed(() =>
+
+  const pointerEvents = computed(() =>
     graphDragging.value ? 'pointer-events-none' : '',
   );
+
+  const startGraphDrag = () => (graphDragging.value = true);
+  const stopGraphDrag = () => (graphDragging.value = false);
 
   onMounted(() => {
     emit('graph-ref', graphEl.value);
 
-    props.graph.subscribe('onMouseDown', () => {
-      graphDragging.value = true;
-    });
-
-    props.graph.subscribe('onMouseUp', () => {
-      graphDragging.value = false;
-    });
+    props.graph.subscribe('onMouseDown', startGraphDrag);
+    props.graph.subscribe('onMouseUp', stopGraphDrag);
   });
 
   onUnmounted(() => {
-    props.graph.unsubscribe('onMouseDown', () => {});
-    props.graph.unsubscribe('onMouseUp', () => {});
+    props.graph.unsubscribe('onMouseDown', startGraphDrag);
+    props.graph.unsubscribe('onMouseUp', stopGraphDrag);
   });
 </script>
 
@@ -92,152 +91,132 @@
     :graph="graph"
   />
 
-  <div
-    :class="[
-      'absolute',
-      'top-6',
-      'w-full',
-      'flex',
-      'flex-col',
-      'justify-center',
-      'items-center',
-      'gap-2',
-      computedGraphPointerEvents,
-    ]"
-  >
-    <template v-if="runningSimulation">
-      <slot name="top-center-sim"></slot>
-    </template>
-
-    <template v-else>
-      <slot name="top-center"></slot>
-    </template>
-  </div>
-
-  <div
-    :class="[
-      'absolute',
-      'grid',
-      'place-items-center',
-      'left-4',
-      'top-0',
-      'h-full',
-      'max-w-96',
-      computedGraphPointerEvents,
-    ]"
-  >
+  <div :class="[pointerEvents]">
     <div
-      class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
+      :class="[
+        'absolute',
+        'top-6',
+        'w-full',
+        'flex',
+        'flex-col',
+        'justify-center',
+        'items-center',
+        'gap-2',
+      ]"
     >
       <template v-if="runningSimulation">
-        <slot name="center-left-sim"></slot>
+        <slot name="top-center-sim"></slot>
       </template>
 
       <template v-else>
-        <slot name="center-left"></slot>
+        <slot name="top-center"></slot>
       </template>
     </div>
-  </div>
 
-  <div
-    :class="[
-      'absolute',
-      'grid',
-      'place-items-center',
-      'right-4',
-      'top-0',
-      'h-full',
-      'max-w-96',
-      computedGraphPointerEvents,
-    ]"
-  >
     <div
-      class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
+      :class="[
+        'absolute',
+        'grid',
+        'place-items-center',
+        'left-4',
+        'top-0',
+        'h-full',
+        'max-w-96',
+      ]"
     >
+      <div
+        class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
+      >
+        <template v-if="runningSimulation">
+          <slot name="center-left-sim"></slot>
+        </template>
+
+        <template v-else>
+          <slot name="center-left"></slot>
+        </template>
+      </div>
+    </div>
+
+    <div
+      :class="[
+        'absolute',
+        'grid',
+        'place-items-center',
+        'right-4',
+        'top-0',
+        'h-full',
+        'max-w-96',
+      ]"
+    >
+      <div
+        class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
+      >
+        <template v-if="runningSimulation">
+          <slot name="center-right-sim"></slot>
+        </template>
+
+        <template v-else>
+          <slot name="center-right"></slot>
+        </template>
+      </div>
+    </div>
+
+    <div :class="['absolute', 'top-6', 'left-6']">
+      <ProductDropdown />
+    </div>
+
+    <div :class="['absolute', 'top-6', 'right-6']">
       <template v-if="runningSimulation">
-        <slot name="center-right-sim"></slot>
+        <slot name="top-right-sim">
+          <StopSimButton @click="stopSimulation" />
+        </slot>
       </template>
 
       <template v-else>
-        <slot name="center-right"></slot>
+        <slot name="top-right">
+          <SelectSimulation
+            @simulation-selected="setActiveSimulation"
+            :simulations="simulations"
+          />
+        </slot>
       </template>
     </div>
-  </div>
 
-  <div :class="['absolute', 'top-6', 'left-6', computedGraphPointerEvents]">
-    <ProductDropdown />
-  </div>
+    <div
+      :class="[
+        'absolute',
+        'bottom-8',
+        'gap-4',
+        'w-full',
+        'flex',
+        'flex-col',
+        'justify-center',
+        'items-center',
+      ]"
+    >
+      <template v-if="runningSimulation && isActive">
+        <slot name="bottom-center-sim">
+          <SimulationPlaybackControls :controls="simRunner.simControls" />
+        </slot>
+      </template>
 
-  <div :class="['absolute', 'top-6', 'right-6', computedGraphPointerEvents]">
-    <template v-if="runningSimulation">
-      <slot name="top-right-sim">
-        <StopSimButton @click="stopSimulation" />
-      </slot>
-    </template>
+      <template v-else>
+        <slot name="bottom-center">
+          <div v-show="graph.annotation.isActive.value">
+            <AnnotationToolbar />
+          </div>
+        </slot>
+      </template>
+    </div>
 
-    <template v-else>
-      <slot name="top-right">
-        <SelectSimulation
-          @simulation-selected="setActiveSimulation"
-          :simulations="simulations"
-        />
-      </slot>
-    </template>
-  </div>
+    <div :class="['absolute', 'flex', 'gap-2', 'bottom-8', 'left-8']">
+      <HelpMenu />
+      <ZoomButtons />
+    </div>
 
-  <div
-    :class="[
-      'absolute',
-      'bottom-8',
-      'gap-4',
-      'w-full',
-      'flex',
-      'flex-col',
-      'justify-center',
-      'items-center',
-      computedGraphPointerEvents,
-    ]"
-  >
-    <template v-if="runningSimulation && isActive">
-      <slot name="bottom-center-sim">
-        <SimulationPlaybackControls :controls="simRunner.simControls" />
-      </slot>
-    </template>
-
-    <template v-else>
-      <slot name="bottom-center">
-        <div v-show="graph.annotation.isActive.value">
-          <AnnotationToolbar />
-        </div>
-      </slot>
-    </template>
-  </div>
-
-  <div
-    :class="[
-      'absolute',
-      'flex',
-      'gap-2',
-      'bottom-8',
-      'left-8',
-      computedGraphPointerEvents,
-    ]"
-  >
-    <HelpMenu />
-    <ZoomButtons />
-  </div>
-
-  <div
-    :class="[
-      'absolute',
-      'flex',
-      'gap-2',
-      'bottom-8',
-      'right-8',
-      computedGraphPointerEvents,
-    ]"
-  >
-    <ThemeToolbar />
-    <FullscreenButton />
+    <div :class="['absolute', 'flex', 'gap-2', 'bottom-8', 'right-8']">
+      <ThemeToolbar />
+      <FullscreenButton />
+    </div>
   </div>
 </template>
