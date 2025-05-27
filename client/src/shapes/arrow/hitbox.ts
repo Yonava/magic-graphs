@@ -10,7 +10,10 @@ import {
   triangleEfficientHitbox,
   triangleHitbox,
 } from '@shape/triangle/hitbox';
-import { calculateArrowHeadCorners, normalizeBoundingBox } from '@shape/helpers';
+import {
+  calculateArrowHeadCorners,
+  normalizeBoundingBox,
+} from '@shape/helpers';
 
 export const arrowHitbox = (arrow: ArrowSchema) => {
   const { start, end, width, arrowHeadSize, arrowHeadShape } = {
@@ -43,7 +46,6 @@ export const getArrowBoundingBox = (arrow: ArrowSchema) => () => {
     x: at.x,
     y: at.y,
   };
-
   const lineBottomRight = {
     x: at.x + width,
     y: at.y + height,
@@ -58,6 +60,7 @@ export const getArrowBoundingBox = (arrow: ArrowSchema) => () => {
     ...ARROW_SCHEMA_DEFAULTS,
     ...arrow,
   };
+
   const arrowHeadTriangle = calculateArrowHeadCorners({
     start,
     end,
@@ -67,23 +70,30 @@ export const getArrowBoundingBox = (arrow: ArrowSchema) => () => {
 
   const minX = Math.min(
     lineTopLeft.x,
+    lineBottomRight.x,
     arrowHeadTriangle.pointA.x,
     arrowHeadTriangle.pointB.x,
     arrowHeadTriangle.pointC.x,
   );
+
   const maxX = Math.max(
     lineTopLeft.x,
+    lineBottomRight.x,
     arrowHeadTriangle.pointA.x,
     arrowHeadTriangle.pointB.x,
     arrowHeadTriangle.pointC.x,
   );
+
   const minY = Math.min(
+    lineTopLeft.y,
     lineBottomRight.y,
     arrowHeadTriangle.pointA.y,
     arrowHeadTriangle.pointB.y,
     arrowHeadTriangle.pointC.y,
   );
+
   const maxY = Math.max(
+    lineTopLeft.y,
     lineBottomRight.y,
     arrowHeadTriangle.pointA.y,
     arrowHeadTriangle.pointB.y,
