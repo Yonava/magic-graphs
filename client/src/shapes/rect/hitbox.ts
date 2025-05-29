@@ -18,28 +18,37 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
     ...rectangle,
   };
 
-  const centerX = at.x + width / 2;
-  const centerY = at.y + height / 2;
+  const normalizedWidth = Math.abs(width);
+  const normalizedHeight = Math.abs(height);
 
+  const adjustedX = width < 0 ? at.x + width : at.x;
+  const adjustedY = height < 0 ? at.y + height : at.y;
+
+  const centerX = adjustedX + normalizedWidth / 2;
+  const centerY = adjustedY + normalizedHeight / 2;
   const strokeWidth = stroke?.width || STROKE_DEFAULTS.width;
-
   const localPoint = rotatePoint(point, { x: centerX, y: centerY }, -rotation);
-
-  const { x, y } = { x: centerX - width / 2, y: centerY - height / 2 };
+  const { x, y } = {
+    x: centerX - normalizedWidth / 2,
+    y: centerY - normalizedHeight / 2,
+  };
 
   if (borderRadius === undefined || borderRadius === 0) {
     return (
       localPoint.x >= x - strokeWidth / 2 &&
-      localPoint.x <= x + width + strokeWidth / 2 &&
+      localPoint.x <= x + normalizedWidth + strokeWidth / 2 &&
       localPoint.y >= y - strokeWidth / 2 &&
-      localPoint.y <= y + height + strokeWidth / 2
+      localPoint.y <= y + normalizedHeight + strokeWidth / 2
     );
   }
 
-  const radius = Math.min(borderRadius, width / 2, height / 2);
-
-  const verticalWidth = Math.max(width - 2 * radius, 0);
-  const horizontalHeight = Math.max(height - 2 * radius, 0);
+  const radius = Math.min(
+    borderRadius,
+    normalizedWidth / 2,
+    normalizedHeight / 2,
+  );
+  const verticalWidth = Math.max(normalizedWidth - 2 * radius, 0);
+  const horizontalHeight = Math.max(normalizedHeight - 2 * radius, 0);
 
   const rectVertical = rectHitbox({
     ...rectangle,
@@ -68,19 +77,19 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
   });
 
   const isInTopRightCircle = circleHitbox({
-    at: { x: x + width - radius, y: y + radius },
+    at: { x: x + normalizedWidth - radius, y: y + radius },
     radius,
     stroke,
   });
 
   const isInBottomLeftCircle = circleHitbox({
-    at: { x: x + radius, y: y + height - radius },
+    at: { x: x + radius, y: y + normalizedHeight - radius },
     radius,
     stroke,
   });
 
   const isInBottomRightCircle = circleHitbox({
-    at: { x: x + width - radius, y: y + height - radius },
+    at: { x: x + normalizedWidth - radius, y: y + normalizedHeight - radius },
     radius,
     stroke,
   });
