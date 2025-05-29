@@ -3,7 +3,7 @@
   import { useDark, useWindowSize } from '@vueuse/core';
   import ResponsiveCanvas from '@utils/components/ResponsiveCanvas.vue';
   import colors from '@colors';
-  import { useOptimizedShapes, square, triangle } from '@shapes';
+  import { useOptimizedShapes, square } from '@shapes';
   import type { Shape } from '@shape/types';
   import { getCtx } from '@utils/ctx';
   import ShapePlaygroundToolbar from './Toolbar.vue';
@@ -25,6 +25,19 @@
     const ctx = getCtx(canvas);
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     items.value = [];
+
+    items.value.push(
+      square({
+        at: {
+          x: 100,
+          y: 100,
+        },
+        size: 200,
+        color: colors.RED_500,
+        borderRadius: 20,
+        rotation: 10,
+      }),
+    );
 
     items.value.forEach((item) => item.draw(ctx));
   };

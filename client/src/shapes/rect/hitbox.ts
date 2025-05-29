@@ -5,7 +5,7 @@ import {
 } from '@shape/types';
 import type { RectSchema } from '.';
 import { RECT_SCHEMA_DEFAULTS } from '.';
-import { ellipseHitbox } from '@shape/ellipse/hitbox';
+import { circle } from '@shape/circle';
 import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 
 /**
@@ -70,33 +70,29 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
 
   if (rectVertical(localPoint) || rectHorizontal(localPoint)) return true;
 
-  const isInTopLeftCircle = ellipseHitbox({
+  const isInTopLeftCircle = circle({
     at: { x: x + radius, y: y + radius },
-    radiusX: radius,
-    radiusY: radius,
+    radius: radius,
     stroke,
-  });
+  }).hitbox;
 
-  const isInTopRightCircle = ellipseHitbox({
+  const isInTopRightCircle = circle({
     at: { x: x + normalizedWidth - radius, y: y + radius },
-    radiusX: radius,
-    radiusY: radius,
+    radius: radius,
     stroke,
-  });
+  }).hitbox;
 
-  const isInBottomLeftCircle = ellipseHitbox({
+  const isInBottomLeftCircle = circle({
     at: { x: x + radius, y: y + normalizedHeight - radius },
-    radiusX: radius,
-    radiusY: radius,
+    radius: radius,
     stroke,
-  });
+  }).hitbox;
 
-  const isInBottomRightCircle = ellipseHitbox({
+  const isInBottomRightCircle = circle({
     at: { x: x + normalizedWidth - radius, y: y + normalizedHeight - radius },
-    radiusX: radius,
-    radiusY: radius,
+    radius: radius,
     stroke,
-  });
+  }).hitbox;
 
   return (
     isInTopLeftCircle(localPoint) ||
