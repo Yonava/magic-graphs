@@ -4,7 +4,7 @@ import { lineHitbox } from '@shape/line/hitbox';
 import type { UTurnSchema } from '.';
 import { rectEfficientHitbox } from '@shape/rect/hitbox';
 import { arrowHitbox } from '@shape/arrow/hitbox';
-import { circleHitbox } from '@shape/circle/hitbox';
+import { ellipseHitbox } from '@shape/ellipse/hitbox';
 
 export const uturnHitbox = (uturn: UTurnSchema) => {
   const { spacing, at, downDistance, upDistance, lineWidth, rotation } = uturn;
@@ -64,9 +64,10 @@ export const uturnHitbox = (uturn: UTurnSchema) => {
     end: shortLegTo,
     width: lineWidth,
   });
-  const isInUTurn = circleHitbox({
+  const isInUTurn = ellipseHitbox({
     at: arcAt,
-    radius: spacing + lineWidth / 2,
+    radiusX: spacing + lineWidth / 2,
+    radiusY: spacing + lineWidth / 2,
   });
 
   return (point: Coordinate) =>

@@ -26,19 +26,6 @@
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     items.value = [];
 
-    items.value.push(
-      square({
-        id: 'test',
-        color: 'transparent',
-        at: { x: 300, y: 300 },
-        size: -200,
-        stroke: {
-          color: 'purple',
-          width: 15,
-        },
-      }),
-    );
-
     items.value.forEach((item) => item.draw(ctx));
   };
 
