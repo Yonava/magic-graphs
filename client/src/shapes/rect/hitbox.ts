@@ -1,4 +1,8 @@
-import { type Coordinate, type BoundingBox, STROKE_DEFAULTS } from '@shape/types';
+import {
+  type Coordinate,
+  type BoundingBox,
+  STROKE_DEFAULTS,
+} from '@shape/types';
 import type { RectSchema } from '.';
 import { RECT_SCHEMA_DEFAULTS } from '.';
 import { circleHitbox } from '@shape/circle/hitbox';
@@ -17,13 +21,13 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
   const centerX = at.x + width / 2;
   const centerY = at.y + height / 2;
 
-  const strokeWidth = stroke?.width || 0;
+  const strokeWidth = stroke?.width || STROKE_DEFAULTS.width;
 
   const localPoint = rotatePoint(point, { x: centerX, y: centerY }, -rotation);
 
   const { x, y } = { x: centerX - width / 2, y: centerY - height / 2 };
 
-  if (borderRadius === 0 || borderRadius === undefined) {
+  if (borderRadius === undefined || borderRadius === 0) {
     return (
       localPoint.x >= x - strokeWidth / 2 &&
       localPoint.x <= x + width + strokeWidth / 2 &&
@@ -91,15 +95,21 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
 
 export const getRectBoundingBox = (rectangle: RectSchema) => () => {
   const { at, width, height, stroke } = rectangle;
-  const { width: strokeWidth } = stroke ?? STROKE_DEFAULTS
+  const { width: strokeWidth } = stroke ?? STROKE_DEFAULTS;
+
+  const normalizedWidth = Math.abs(width);
+  const normalizedHeight = Math.abs(height);
+
+  const adjustedX = width < 0 ? at.x + width : at.x;
+  const adjustedY = height < 0 ? at.y + height : at.y;
 
   return normalizeBoundingBox({
     at: {
-      x: at.x - strokeWidth / 2,
-      y: at.y - strokeWidth / 2,
+      x: adjustedX - strokeWidth / 2,
+      y: adjustedY - strokeWidth / 2,
     },
-    width: width + strokeWidth,
-    height: height + strokeWidth,
+    width: normalizedWidth + strokeWidth,
+    height: normalizedHeight + strokeWidth,
   });
 };
 
