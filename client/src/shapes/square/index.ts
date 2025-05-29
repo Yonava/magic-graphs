@@ -33,7 +33,7 @@ export type SquareSchema = {
   rotation?: number;
 };
 
-export const SQUARE_DEFAULTS = RECT_SCHEMA_DEFAULTS;
+export const SQUARE_SCHEMA_DEFAULTS = RECT_SCHEMA_DEFAULTS;
 
 export const square: ShapeFactory<SquareSchema> = (options) => {
   const drawShape = drawSquareWithCtx(options);
@@ -41,7 +41,8 @@ export const square: ShapeFactory<SquareSchema> = (options) => {
   const shapeHitbox = squareHitbox(options);
   const textHitbox = squareTextHitbox(options);
   const efficientHitbox = squareEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
+  const hitbox = (point: Coordinate) =>
+    textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getSquareBoundingBox(options);
 
