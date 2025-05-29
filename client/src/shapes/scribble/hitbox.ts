@@ -2,7 +2,7 @@ import type { Coordinate, BoundingBox } from '@shape/types';
 import { SCRIBBLE_DEFAULTS, type ScribbleSchema } from '.';
 import { rectEfficientHitbox, rectHitbox } from '@shape/rect/hitbox';
 import { lineEfficientHitbox } from '@shape/line/hitbox';
-import { circleEfficientHitbox, circleHitbox } from '@shape/circle/hitbox';
+import { circle } from '@shape/circle';
 import { normalizeBoundingBox } from '@shape/helpers';
 
 /**
@@ -26,7 +26,7 @@ export const scribbleHitbox =
     if (!isInRectHitbox(point)) return false;
 
     if (points.length === 1) {
-      if (circleHitbox({ at: points[0], radius: brushWeight })(point))
+      if (circle({ at: points[0], radius: brushWeight }).hitbox(point))
         return true;
     }
 
@@ -92,10 +92,10 @@ export const scribbleEfficientHitbox =
 
     if (points.length === 1) {
       if (
-        circleEfficientHitbox({
+        circle({
           at: points[0],
           radius: brushWeight,
-        })(boxToCheck)
+        }).efficientHitbox(boxToCheck)
       )
         return true;
     }
