@@ -39,20 +39,6 @@
       }),
     );
 
-    items.value.push(
-      triangle({
-        id: 'test2',
-        color: 'yellow',
-        pointA: { x: 500, y: 500 },
-        pointB: { x: 600, y: 500 },
-        pointC: { x: 500, y: 600 },
-        stroke: {
-          color: 'purple',
-          width: 15,
-        },
-      }),
-    );
-
     items.value.forEach((item) => item.draw(ctx));
   };
 
