@@ -56,8 +56,8 @@ export const initShapeCache = () => {
 
     return {
       ...shape,
-      draw: drawWithCache(shape.draw),
-      drawShape: drawWithCache(shape.drawShape),
+      // draw: drawWithCache(shape.draw),
+      // drawShape: drawWithCache(shape.drawShape),
     }
   }
 }

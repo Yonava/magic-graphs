@@ -2,6 +2,11 @@ import { computed, shallowRef } from "vue";
 import type { GEdge, GNode, Graph } from "./types";
 import type { Annotation } from "./plugins/annotations/types";
 
+/**
+ * if true, stats are displayed on screen
+ */
+export const inDevMode = shallowRef(false)
+
 export const graph = shallowRef<Graph>();
 
 export const nonNullGraph = computed(() => {

@@ -11,6 +11,7 @@
   import { usePinchToZoom } from './usePinchToZoom';
   import { useStorePanZoomState } from './useStorePanZoomState';
   import { useCanvasCamera } from './useCanvasCamera';
+  import { inDevMode } from '@graph/global';
 
   const canvasWidth = ref(0);
   const canvasHeight = ref(0);
@@ -174,11 +175,11 @@
   onMounted(() => {
     if (!parentEl.value) return;
 
-    parentEl.value.addEventListener("mousedown", startPan);
-    parentEl.value.addEventListener("mousemove", pan);
-    parentEl.value.addEventListener("mouseup", endPan);
-    parentEl.value.addEventListener("mouseleave", endPan);
-    parentEl.value.addEventListener("contextmenu", (event) =>
+    parentEl.value.addEventListener('mousedown', startPan);
+    parentEl.value.addEventListener('mousemove', pan);
+    parentEl.value.addEventListener('mouseup', endPan);
+    parentEl.value.addEventListener('mouseleave', endPan);
+    parentEl.value.addEventListener('contextmenu', (event) =>
       event.preventDefault(),
     );
   });
@@ -186,18 +187,21 @@
   onUnmounted(() => {
     if (!parentEl.value) return;
 
-    parentEl.value.removeEventListener("mousedown", startPan);
-    parentEl.value.removeEventListener("mousemove", pan);
-    parentEl.value.removeEventListener("mouseup", endPan);
-    parentEl.value.removeEventListener("mouseleave", endPan);
-    parentEl.value.removeEventListener("contextmenu", (event) =>
+    parentEl.value.removeEventListener('mousedown', startPan);
+    parentEl.value.removeEventListener('mousemove', pan);
+    parentEl.value.removeEventListener('mouseup', endPan);
+    parentEl.value.removeEventListener('mouseleave', endPan);
+    parentEl.value.removeEventListener('contextmenu', (event) =>
       event.preventDefault(),
     );
   });
 </script>
 
 <template>
-  <!-- <CoordinateIndicator :coords="coords" /> -->
+  <CoordinateIndicator
+    v-if="inDevMode"
+    :coords="coords"
+  />
   <div
     ref="parentEl"
     id="responsive-canvas-container"

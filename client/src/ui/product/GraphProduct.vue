@@ -15,6 +15,8 @@
   import ThemeToolbar from './ThemeToolbar.vue';
   import ZoomButtons from './ZoomButtons.vue';
   import HelpMenu from './HelpMenu.vue';
+  import BenchmarkingMetrics from './BenchmarkingMetrics.vue';
+  import { inDevMode } from '@graph/global';
 
   const props = defineProps<{
     graph: Graph;
@@ -214,9 +216,14 @@
       <ZoomButtons />
     </div>
 
-    <div :class="['absolute', 'flex', 'gap-2', 'bottom-8', 'right-8']">
-      <ThemeToolbar />
-      <FullscreenButton />
+    <div
+      :class="['absolute', 'flex', 'flex-col', 'gap-2', 'bottom-8', 'right-8']"
+    >
+      <BenchmarkingMetrics v-if="inDevMode" />
+      <div :class="['flex', 'gap-2']">
+        <ThemeToolbar />
+        <FullscreenButton />
+      </div>
     </div>
   </div>
 </template>
