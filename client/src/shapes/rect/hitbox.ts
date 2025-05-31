@@ -52,22 +52,20 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
   const verticalWidth = Math.max(normalizedWidth - 2 * radius, 0);
   const horizontalHeight = Math.max(normalizedHeight - 2 * radius, 0);
 
-  // Fixed: Specify both width and height for the vertical rectangle
   const rectVertical = rectHitbox({
     ...rectangle,
     at: { x: x + radius, y },
     width: verticalWidth,
-    height: normalizedHeight, // Add the full height
+    height: normalizedHeight,
     borderRadius: 0,
     rotation: 0,
     stroke,
   });
 
-  // Fixed: Specify both width and height for the horizontal rectangle
   const rectHorizontal = rectHitbox({
     ...rectangle,
     at: { x, y: y + radius },
-    width: normalizedWidth, // Add the full width
+    width: normalizedWidth,
     height: horizontalHeight,
     borderRadius: 0,
     rotation: 0,
