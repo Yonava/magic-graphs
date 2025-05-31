@@ -29,8 +29,8 @@
     items.value.push(
       square({
         at: {
-          x: 200,
-          y: 200,
+          x: 300,
+          y: 300,
         },
         size: -200,
         color: colors.RED_500,

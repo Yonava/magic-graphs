@@ -18,16 +18,17 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
     ...rectangle,
   };
 
-  const normalizedWidth = Math.abs(width);
-  const normalizedHeight = Math.abs(height);
+  const {
+    at: normalizedAt,
+    width: normalizedWidth,
+    height: normalizedHeight,
+  } = normalizeBoundingBox({ at, width, height });
 
-  const adjustedX = width < 0 ? at.x + width : at.x;
-  const adjustedY = height < 0 ? at.y + height : at.y;
-
-  const centerX = adjustedX + normalizedWidth / 2;
-  const centerY = adjustedY + normalizedHeight / 2;
+  const centerX = normalizedAt.x + normalizedWidth / 2;
+  const centerY = normalizedAt.y + normalizedHeight / 2;
   const strokeWidth = stroke?.width || STROKE_DEFAULTS.width;
   const localPoint = rotatePoint(point, { x: centerX, y: centerY }, -rotation);
+
   const { x, y } = {
     x: centerX - normalizedWidth / 2,
     y: centerY - normalizedHeight / 2,
@@ -47,21 +48,26 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
     normalizedWidth / 2,
     normalizedHeight / 2,
   );
+
   const verticalWidth = Math.max(normalizedWidth - 2 * radius, 0);
   const horizontalHeight = Math.max(normalizedHeight - 2 * radius, 0);
 
+  // Fixed: Specify both width and height for the vertical rectangle
   const rectVertical = rectHitbox({
     ...rectangle,
     at: { x: x + radius, y },
     width: verticalWidth,
+    height: normalizedHeight, // Add the full height
     borderRadius: 0,
     rotation: 0,
     stroke,
   });
 
+  // Fixed: Specify both width and height for the horizontal rectangle
   const rectHorizontal = rectHitbox({
     ...rectangle,
     at: { x, y: y + radius },
+    width: normalizedWidth, // Add the full width
     height: horizontalHeight,
     borderRadius: 0,
     rotation: 0,
