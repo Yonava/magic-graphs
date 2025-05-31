@@ -45,7 +45,8 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
   const shapeHitbox = rectHitbox(options);
   const textHitbox = rectTextHitbox(options);
   const efficientHitbox = rectEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
+  const hitbox = (point: Coordinate) =>
+    textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getRectBoundingBox(options);
 

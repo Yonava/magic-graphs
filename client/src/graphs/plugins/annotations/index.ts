@@ -10,7 +10,7 @@ import { BRUSH_WEIGHTS, COLORS } from './constants';
 import { useAnnotationHistory } from './history';
 import type { Annotation } from './types';
 import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
-import { getCircleBoundingBox } from '@shape/circle/hitbox';
+import { circle } from '@shape/circle';
 import { MOUSE_BUTTONS } from '@graph/global';
 import type { IntervalHandler } from '@utils/types';
 
@@ -65,10 +65,10 @@ export const useAnnotations = (graph: BaseGraph) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
 
     if (isErasing.value) {
-      const eraserBoundingBox = getCircleBoundingBox({
+      const eraserBoundingBox = circle({
         at: coords,
         radius: ERASER_BRUSH_RADIUS,
-      })();
+      }).getBoundingBox();
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
         const shape = graph.shapes.scribble(scribble);
@@ -95,10 +95,10 @@ export const useAnnotations = (graph: BaseGraph) => {
     if (batch.value.length === 0) return;
 
     if (isErasing.value) {
-      const eraserBoundingBox = getCircleBoundingBox({
+      const eraserBoundingBox = circle({
         at: coords,
         radius: ERASER_BRUSH_RADIUS,
-      })();
+      }).getBoundingBox();
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
         const shape = graph.shapes.scribble(scribble);

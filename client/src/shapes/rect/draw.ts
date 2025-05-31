@@ -1,3 +1,4 @@
+import { normalizeBoundingBox } from '@shape/helpers';
 import { RECT_SCHEMA_DEFAULTS } from '.';
 import type { RectSchema } from '.';
 
@@ -8,50 +9,71 @@ export const drawRectWithCtx =
       ...options,
     };
 
+    const {
+      at: normalizedAt,
+      width: normalizedWidth,
+      height: normalizedHeight,
+    } = normalizeBoundingBox({ at, width, height });
+
     ctx.save();
 
-    const centerX = at.x + width / 2;
-    const centerY = at.y + height / 2;
+    const centerX = normalizedAt.x + normalizedWidth / 2;
+    const centerY = normalizedAt.y + normalizedHeight / 2;
+
     ctx.translate(centerX, centerY);
     ctx.rotate(rotation);
 
     if (borderRadius === 0) {
       ctx.beginPath();
-      ctx.rect(-width / 2, -height / 2, width, height);
+      ctx.rect(
+        -normalizedWidth / 2,
+        -normalizedHeight / 2,
+        normalizedWidth,
+        normalizedHeight,
+      );
       ctx.fillStyle = color;
       ctx.fill();
     } else {
-      const radius = Math.min(borderRadius, width / 2, height / 2);
+      const radius = Math.min(
+        borderRadius,
+        normalizedWidth / 2,
+        normalizedHeight / 2,
+      );
       ctx.beginPath();
-      ctx.moveTo(-width / 2 + radius, -height / 2);
-      ctx.lineTo(width / 2 - radius, -height / 2);
+      ctx.moveTo(-normalizedWidth / 2 + radius, -normalizedHeight / 2);
+      ctx.lineTo(normalizedWidth / 2 - radius, -normalizedHeight / 2);
       ctx.arcTo(
-        width / 2,
-        -height / 2,
-        width / 2,
-        -height / 2 + radius,
+        normalizedWidth / 2,
+        -normalizedHeight / 2,
+        normalizedWidth / 2,
+        -normalizedHeight / 2 + radius,
         radius,
       );
-      ctx.lineTo(width / 2, height / 2 - radius);
-      ctx.arcTo(width / 2, height / 2, width / 2 - radius, height / 2, radius);
-      ctx.lineTo(-width / 2 + radius, height / 2);
+      ctx.lineTo(normalizedWidth / 2, normalizedHeight / 2 - radius);
       ctx.arcTo(
-        -width / 2,
-        height / 2,
-        -width / 2,
-        height / 2 - radius,
+        normalizedWidth / 2,
+        normalizedHeight / 2,
+        normalizedWidth / 2 - radius,
+        normalizedHeight / 2,
         radius,
       );
-      ctx.lineTo(-width / 2, -height / 2 + radius);
+      ctx.lineTo(-normalizedWidth / 2 + radius, normalizedHeight / 2);
       ctx.arcTo(
-        -width / 2,
-        -height / 2,
-        -width / 2 + radius,
-        -height / 2,
+        -normalizedWidth / 2,
+        normalizedHeight / 2,
+        -normalizedWidth / 2,
+        normalizedHeight / 2 - radius,
+        radius,
+      );
+      ctx.lineTo(-normalizedWidth / 2, -normalizedHeight / 2 + radius);
+      ctx.arcTo(
+        -normalizedWidth / 2,
+        -normalizedHeight / 2,
+        -normalizedWidth / 2 + radius,
+        -normalizedHeight / 2,
         radius,
       );
       ctx.closePath();
-
       ctx.fillStyle = color;
       ctx.fill();
     }

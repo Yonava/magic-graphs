@@ -20,7 +20,6 @@ import {
 import { generateId } from '@utils/id';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
-import { CIRCLE_SCHEMA_DEFAULTS } from '@shape/circle';
 
 export type EllipseSchema = {
   id?: string;
@@ -32,7 +31,9 @@ export type EllipseSchema = {
   textArea?: TextAreaNoLocation;
 };
 
-export const ELLIPSE_SCHEMA_DEFAULTS = CIRCLE_SCHEMA_DEFAULTS;
+export const ELLIPSE_SCHEMA_DEFAULTS = {
+  color: 'black',
+} as const;
 
 export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   if (options.radiusX < 0 || options.radiusY < 0) {
@@ -44,7 +45,8 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   const shapeHitbox = ellipseHitbox(options);
   const textHitbox = ellipseTextHitbox(options);
   const efficientHitbox = ellipseEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
+  const hitbox = (point: Coordinate) =>
+    textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getEllipseBoundingBox(options);
 

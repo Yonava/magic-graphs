@@ -1,7 +1,11 @@
-import { type Coordinate, type BoundingBox, STROKE_DEFAULTS } from '@shape/types';
+import {
+  type Coordinate,
+  type BoundingBox,
+  STROKE_DEFAULTS,
+} from '@shape/types';
 import type { RectSchema } from '.';
 import { RECT_SCHEMA_DEFAULTS } from '.';
-import { circleHitbox } from '@shape/circle/hitbox';
+import { circle } from '@shape/circle';
 import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 
 /**
@@ -14,33 +18,45 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
     ...rectangle,
   };
 
-  const centerX = at.x + width / 2;
-  const centerY = at.y + height / 2;
+  const {
+    at: normalizedAt,
+    width: normalizedWidth,
+    height: normalizedHeight,
+  } = normalizeBoundingBox({ at, width, height });
 
-  const strokeWidth = stroke?.width || 0;
-
+  const centerX = normalizedAt.x + normalizedWidth / 2;
+  const centerY = normalizedAt.y + normalizedHeight / 2;
+  const strokeWidth = stroke?.width || STROKE_DEFAULTS.width;
   const localPoint = rotatePoint(point, { x: centerX, y: centerY }, -rotation);
 
-  const { x, y } = { x: centerX - width / 2, y: centerY - height / 2 };
+  const { x, y } = {
+    x: centerX - normalizedWidth / 2,
+    y: centerY - normalizedHeight / 2,
+  };
 
-  if (borderRadius === 0 || borderRadius === undefined) {
+  if (borderRadius === undefined || borderRadius === 0) {
     return (
       localPoint.x >= x - strokeWidth / 2 &&
-      localPoint.x <= x + width + strokeWidth / 2 &&
+      localPoint.x <= x + normalizedWidth + strokeWidth / 2 &&
       localPoint.y >= y - strokeWidth / 2 &&
-      localPoint.y <= y + height + strokeWidth / 2
+      localPoint.y <= y + normalizedHeight + strokeWidth / 2
     );
   }
 
-  const radius = Math.min(borderRadius, width / 2, height / 2);
+  const radius = Math.min(
+    borderRadius,
+    normalizedWidth / 2,
+    normalizedHeight / 2,
+  );
 
-  const verticalWidth = Math.max(width - 2 * radius, 0);
-  const horizontalHeight = Math.max(height - 2 * radius, 0);
+  const verticalWidth = Math.max(normalizedWidth - 2 * radius, 0);
+  const horizontalHeight = Math.max(normalizedHeight - 2 * radius, 0);
 
   const rectVertical = rectHitbox({
     ...rectangle,
     at: { x: x + radius, y },
     width: verticalWidth,
+    height: normalizedHeight,
     borderRadius: 0,
     rotation: 0,
     stroke,
@@ -49,6 +65,7 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
   const rectHorizontal = rectHitbox({
     ...rectangle,
     at: { x, y: y + radius },
+    width: normalizedWidth,
     height: horizontalHeight,
     borderRadius: 0,
     rotation: 0,
@@ -57,29 +74,29 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
 
   if (rectVertical(localPoint) || rectHorizontal(localPoint)) return true;
 
-  const isInTopLeftCircle = circleHitbox({
+  const isInTopLeftCircle = circle({
     at: { x: x + radius, y: y + radius },
     radius,
     stroke,
-  });
+  }).hitbox;
 
-  const isInTopRightCircle = circleHitbox({
-    at: { x: x + width - radius, y: y + radius },
+  const isInTopRightCircle = circle({
+    at: { x: x + normalizedWidth - radius, y: y + radius },
     radius,
     stroke,
-  });
+  }).hitbox;
 
-  const isInBottomLeftCircle = circleHitbox({
-    at: { x: x + radius, y: y + height - radius },
+  const isInBottomLeftCircle = circle({
+    at: { x: x + radius, y: y + normalizedHeight - radius },
     radius,
     stroke,
-  });
+  }).hitbox;
 
-  const isInBottomRightCircle = circleHitbox({
-    at: { x: x + width - radius, y: y + height - radius },
+  const isInBottomRightCircle = circle({
+    at: { x: x + normalizedWidth - radius, y: y + normalizedHeight - radius },
     radius,
     stroke,
-  });
+  }).hitbox;
 
   return (
     isInTopLeftCircle(localPoint) ||
@@ -91,15 +108,21 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
 
 export const getRectBoundingBox = (rectangle: RectSchema) => () => {
   const { at, width, height, stroke } = rectangle;
-  const { width: strokeWidth } = stroke ?? STROKE_DEFAULTS
+  const { width: strokeWidth } = stroke ?? STROKE_DEFAULTS;
+
+  const normalizedWidth = Math.abs(width);
+  const normalizedHeight = Math.abs(height);
+
+  const adjustedX = width < 0 ? at.x + width : at.x;
+  const adjustedY = height < 0 ? at.y + height : at.y;
 
   return normalizeBoundingBox({
     at: {
-      x: at.x - strokeWidth / 2,
-      y: at.y - strokeWidth / 2,
+      x: adjustedX - strokeWidth / 2,
+      y: adjustedY - strokeWidth / 2,
     },
-    width: width + strokeWidth,
-    height: height + strokeWidth,
+    width: normalizedWidth + strokeWidth,
+    height: normalizedHeight + strokeWidth,
   });
 };
 
