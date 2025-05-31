@@ -1,3 +1,4 @@
+import { normalizeBoundingBox } from '@shape/helpers';
 import { RECT_SCHEMA_DEFAULTS } from '.';
 import type { RectSchema } from '.';
 
@@ -8,15 +9,16 @@ export const drawRectWithCtx =
       ...options,
     };
 
-    const normalizedWidth = Math.abs(width);
-    const normalizedHeight = Math.abs(height);
+    const {
+      at: normalizedAt,
+      width: normalizedWidth,
+      height: normalizedHeight,
+    } = normalizeBoundingBox({ at, width, height });
 
     ctx.save();
 
-    const adjustedX = width < 0 ? at.x + width : at.x;
-    const adjustedY = height < 0 ? at.y + height : at.y;
-    const centerX = adjustedX + normalizedWidth / 2;
-    const centerY = adjustedY + normalizedHeight / 2;
+    const centerX = normalizedAt.x + normalizedWidth / 2;
+    const centerY = normalizedAt.y + normalizedHeight / 2;
 
     ctx.translate(centerX, centerY);
     ctx.rotate(rotation);

@@ -29,13 +29,12 @@
     items.value.push(
       square({
         at: {
-          x: 100,
-          y: 100,
+          x: 200,
+          y: 200,
         },
-        size: 200,
+        size: -200,
         color: colors.RED_500,
         borderRadius: 20,
-        rotation: 10,
       }),
     );
 
