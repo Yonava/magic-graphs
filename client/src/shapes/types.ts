@@ -103,8 +103,7 @@ export type Coordinate = {
 };
 
 /**
- * an area that wraps some text without
- * canvas coordinates for rendering
+ * a box that wraps some text without {@link Location}
  */
 export type TextAreaNoLocation = {
   /**

@@ -16,7 +16,14 @@ type Story = StoryObj<typeof CirclePreview>
 
 export const Basic: Story = {};
 
-export const WithTextArea: Story = {
+export const Geometry: Story = {
+  args: {
+    showAtMarker: true,
+    showMeasuringStick: true,
+  }
+}
+
+export const WithText: Story = {
   args: {
     textArea: {
       text: {

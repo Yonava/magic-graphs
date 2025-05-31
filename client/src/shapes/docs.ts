@@ -1,5 +1,5 @@
 import { cross, square } from "@shapes";
-import type { Coordinate, ShapeFactory } from "./types";
+import type { Coordinate, Location, ShapeFactory } from "./types";
 import type { SquareSchema } from "./square";
 import type { CrossSchema } from "./cross";
 import { onMounted, type Ref } from "vue";
@@ -27,16 +27,23 @@ const measuringStickSchema: SquareSchema = {
 
 const measuringStick = square(measuringStickSchema)
 
-export const useShapePreview = <T extends { at: Coordinate }>(
+export type DocMarkingOptions = {
+  showAtMarker: boolean,
+  showMeasuringStick: boolean,
+}
+
+export const useShapePreview = <T extends Location>(
   canvas: Ref<HTMLCanvasElement | undefined>,
   factory: ShapeFactory<T>,
   schema: T,
+  options: DocMarkingOptions,
 ) => {
   const drawPreview = () => {
     const ctx = getCtx(canvas);
-    measuringStick.draw(ctx);
+    const { showMeasuringStick, showAtMarker } = options
+    if (showMeasuringStick) measuringStick.draw(ctx);
     factory(schema).draw(ctx);
-    atMarker(schema.at).draw(ctx);
+    if (showAtMarker) atMarker(schema.at).draw(ctx);
   }
 
   onMounted(drawPreview);
