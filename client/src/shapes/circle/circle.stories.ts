@@ -23,7 +23,7 @@ export const WithTextArea: Story = {
         content: 'Hi!',
         color: 'white',
       },
-      color: 'white'
+      color: 'blue'
     }
   }
 };

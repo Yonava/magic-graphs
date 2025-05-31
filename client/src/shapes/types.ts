@@ -128,9 +128,14 @@ export const TEXTAREA_DEFAULTS = {
   activeColor: 'white',
 } as const;
 
-export type TextArea = {
-  at: Coordinate;
-} & TextAreaNoLocation;
+export type Location = {
+  /**
+   * the point on a 2d canvas this item is placed
+   */
+  at: Coordinate
+}
+
+export type TextArea = TextAreaNoLocation & Location
 
 /**
  * all font weights supported by html canvas

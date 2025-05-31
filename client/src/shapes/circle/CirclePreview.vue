@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
-  import { getCtx } from '@utils/ctx';
+  import { ref } from 'vue';
   import { circle, CIRCLE_SCHEMA_DEFAULTS, type CircleSchema } from '.';
+  import DocsCanvas from '@shape/DocsCanvas.vue';
+  import { useShapePreview } from '@shape/docs';
 
   const canvas = ref<HTMLCanvasElement>();
 
@@ -10,12 +11,9 @@
     CIRCLE_SCHEMA_DEFAULTS,
   );
 
-  onMounted(() => {
-    const ctx = getCtx(canvas);
-    circle(props).draw(ctx);
-  });
+  useShapePreview(canvas, circle, props);
 </script>
 
 <template>
-  <canvas ref="canvas"></canvas>
+  <DocsCanvas @ref="(el) => (canvas = el)" />
 </template>
