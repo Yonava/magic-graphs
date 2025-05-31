@@ -1,11 +1,12 @@
 {
   "cSpell.words": [
     "automagically",
+    "boundingbox",
     "dismissable",
     "gsap",
     "preorder",
     "toastservice",
     "unlabel"
   ],
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": true
 }
