@@ -90,15 +90,11 @@ export const scribbleEfficientHitbox =
       height: Math.max(height, brushWeight), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
     });
 
-    if (points.length === 1) {
-      if (
-        circle({
-          at: points[0],
-          radius: brushWeight,
-        }).efficientHitbox(boxToCheck)
-      )
-        return true;
-    }
+    if (points.length === 1)
+      return circle({
+        at: points[0],
+        radius: brushWeight,
+      }).efficientHitbox(boxToCheck);
 
     if (!isInRectEfficientHitbox(boxToCheck)) return false;
 

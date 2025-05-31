@@ -72,25 +72,25 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
 
   const isInTopLeftCircle = circle({
     at: { x: x + radius, y: y + radius },
-    radius: radius,
+    radius,
     stroke,
   }).hitbox;
 
   const isInTopRightCircle = circle({
     at: { x: x + normalizedWidth - radius, y: y + radius },
-    radius: radius,
+    radius,
     stroke,
   }).hitbox;
 
   const isInBottomLeftCircle = circle({
     at: { x: x + radius, y: y + normalizedHeight - radius },
-    radius: radius,
+    radius,
     stroke,
   }).hitbox;
 
   const isInBottomRightCircle = circle({
     at: { x: x + normalizedWidth - radius, y: y + normalizedHeight - radius },
-    radius: radius,
+    radius,
     stroke,
   }).hitbox;
 
