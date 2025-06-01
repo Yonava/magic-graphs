@@ -19,11 +19,12 @@ export default meta;
 
 type Story = StoryObj<typeof Arrow>;
 
-const { basic, markings, text } = DEFAULT_STORIES;
+const { basic, markings, text, colorGradient } = DEFAULT_STORIES;
 
 export const Basic: Story = basic;
 export const Markings: Story = markings;
 export const WithText: Story = text;
+export const ColorGradient: Story = colorGradient
 
 export const TextOffset: Story = {
   args: {
@@ -41,20 +42,5 @@ export const Dashed: Story = {
 export const Width: Story = {
   args: {
     width: 20,
-  }
-}
-
-export const ColorGradient: Story = {
-  args: {
-    gradientStops: [
-      {
-        color: 'red',
-        offset: 0
-      },
-      {
-        color: 'blue',
-        offset: 1
-      }
-    ]
   }
 }

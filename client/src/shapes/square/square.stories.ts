@@ -1,0 +1,28 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
+import { square, SQUARE_SCHEMA_DEFAULTS, type SquareSchema } from '.';
+
+const Square = createDocComponent<SquareSchema>(square)
+
+const meta: Meta<typeof Square> = {
+  title: 'Shapes/Square',
+  component: Square,
+  args: {
+    ...SQUARE_SCHEMA_DEFAULTS,
+    size: 100,
+    at: { x: 20, y: 20 },
+    ...DOC_MARKING_DEFAULTS,
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Square>;
+
+const { basic, markings, text, stroke, rotation } = DEFAULT_STORIES;
+
+export const Basic: Story = basic;
+export const Markings: Story = markings;
+export const WithText: Story = text;
+export const WithStroke: Story = stroke;
+export const Rotation: Story = rotation;

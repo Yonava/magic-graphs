@@ -19,9 +19,11 @@ import { engageTextarea } from '@shape/textarea';
 
 export type RectSchema = {
   id?: string;
+
   at: Coordinate;
   width: number;
   height: number;
+
   color?: string;
   stroke?: Stroke;
   textArea?: TextAreaNoLocation;

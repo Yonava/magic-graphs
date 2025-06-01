@@ -8,8 +8,10 @@ import { ELLIPSE_SCHEMA_DEFAULTS, ellipse } from '@shape/ellipse';
 
 export type CircleSchema = {
   id?: string;
+
   at: Coordinate;
   radius: number;
+
   color?: string;
   stroke?: Stroke;
   textArea?: TextAreaNoLocation;

@@ -9,14 +9,16 @@ import { generateId } from '@utils/id';
 
 export type ScribbleSchema = {
   id?: string;
+
   type: 'draw' | 'erase';
+  points: Coordinate[];
+
   color?: string;
   brushWeight?: number;
-  points: Coordinate[];
 };
 
-export const SCRIBBLE_DEFAULTS = {
-  color: 'red',
+export const SCRIBBLE_SCHEMA_DEFAULTS = {
+  color: 'black',
   brushWeight: 3,
 } as const;
 
@@ -32,17 +34,12 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
 
   const shapeHitbox = scribbleHitbox(options);
   const efficientHitbox = scribbleEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => {
-    return shapeHitbox(point);
-  };
+  const hitbox = shapeHitbox;
 
   const getBoundingBox = getScribbleBoundingBox(options);
 
   const drawShape = drawScribbleWithCtx(options);
-
-  const draw = (ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx);
-  };
+  const draw = drawShape
 
   return {
     id: options.id ?? generateId(),

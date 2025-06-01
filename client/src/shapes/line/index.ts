@@ -19,8 +19,10 @@ import { engageTextarea } from '@shape/textarea';
 
 export type LineSchema = {
   id?: string;
+
   start: Coordinate;
   end: Coordinate;
+
   width?: number;
   textArea?: TextAreaNoLocation;
   /**
@@ -34,7 +36,7 @@ export type LineSchema = {
    * dash: [dashLength, gapLength]
    */
   dash?: [number, number];
-  gradientStops?: GradientStop[];
+  gradientStops?: readonly GradientStop[];
 };
 
 export const LINE_SCHEMA_DEFAULTS = {

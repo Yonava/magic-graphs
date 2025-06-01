@@ -20,10 +20,12 @@ import colors from '@utils/colors';
 
 export type ImageSchema = {
   id?: string;
+
   at: Coordinate;
   width: number;
   height: number;
   src: string;
+
   /**
    * in radians
    */

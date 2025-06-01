@@ -86,6 +86,20 @@ export const DEFAULT_STORIES = {
     args: {
       rotation: Math.PI * 0.25 // 45deg in radians
     }
+  },
+  colorGradient: {
+    args: {
+      gradientStops: [
+        {
+          color: 'red',
+          offset: 0,
+        },
+        {
+          color: 'blue',
+          offset: 1,
+        }
+      ]
+    }
   }
 } as const
 

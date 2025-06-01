@@ -21,13 +21,15 @@ import { drawTriangleWithCtx } from './draw';
 
 export type TriangleSchema = {
   id?: string;
+
   pointA: Coordinate;
   pointB: Coordinate;
   pointC: Coordinate;
+
   color?: string;
   stroke?: Stroke;
   textArea?: TextAreaNoLocation;
-  gradientStops?: GradientStop[];
+  gradientStops?: readonly GradientStop[];
 };
 
 export const TRIANGLE_SCHEMA_DEFAULTS = {

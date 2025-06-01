@@ -35,16 +35,12 @@ export const drawTriangleWithCtx =
     ctx.fill();
     ctx.closePath();
 
-    if (stroke) {
-      ctx.lineWidth = stroke.width;
-      ctx.strokeStyle = stroke.color;
-      if (stroke.dash) {
-        ctx.setLineDash(stroke.dash);
-      } else {
-        ctx.setLineDash([]);
-      }
-      ctx.stroke();
+    if (!stroke) return
 
-      ctx.setLineDash([]);
-    }
+    ctx.lineWidth = stroke.width;
+    ctx.strokeStyle = stroke.color;
+    ctx.setLineDash(stroke.dash ?? []);
+    ctx.stroke();
+
+    ctx.setLineDash([]);
   };

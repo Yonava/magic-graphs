@@ -1,11 +1,11 @@
-import { SCRIBBLE_DEFAULTS, ERASER_BRUSH_WEIGHT } from '.';
+import { SCRIBBLE_SCHEMA_DEFAULTS, ERASER_BRUSH_WEIGHT } from '.';
 import type { ScribbleSchema } from '.';
 import { circle } from '@shape/circle';
 
 export const drawScribbleWithCtx =
   (scribble: ScribbleSchema) => (ctx: CanvasRenderingContext2D) => {
     const { type, color, brushWeight, points } = {
-      ...SCRIBBLE_DEFAULTS,
+      ...SCRIBBLE_SCHEMA_DEFAULTS,
       ...scribble,
     };
 
