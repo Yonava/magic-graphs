@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { arrow, ARROW_SCHEMA_DEFAULTS, type ArrowSchema } from '.';
+import { line, LINE_SCHEMA_DEFAULTS, type LineSchema } from '.';
 
-const Arrow = createDocComponent<ArrowSchema>(arrow)
+const Line = createDocComponent<LineSchema>(line)
 
-const meta: Meta<typeof Arrow> = {
-  title: 'Shapes/Arrow',
-  component: Arrow,
+const meta: Meta<typeof Line> = {
+  title: 'Shapes/Line',
+  component: Line,
   args: {
-    ...ARROW_SCHEMA_DEFAULTS,
+    ...LINE_SCHEMA_DEFAULTS,
     start: { x: 30, y: 60 },
     end: { x: 200, y: 60 },
     ...DOC_MARKING_DEFAULTS,
@@ -17,7 +17,7 @@ const meta: Meta<typeof Arrow> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Arrow>;
+type Story = StoryObj<typeof Line>;
 
 const { basic, markings, text } = DEFAULT_STORIES;
 
