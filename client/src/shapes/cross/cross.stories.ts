@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { createDocComponent, DEFAULT_STORIES } from '@shape/docs';
+import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
 import { cross, CROSS_SCHEMA_DEFAULTS, type CrossSchema } from '.';
 
 const Cross = createDocComponent<CrossSchema>(cross)
@@ -10,7 +10,8 @@ const meta: Meta<typeof Cross> = {
   args: {
     ...CROSS_SCHEMA_DEFAULTS,
     size: 100,
-    at: { x: 60, y: 60 }
+    at: { x: 60, y: 60 },
+    ...DOC_MARKING_DEFAULTS,
   },
 };
 

@@ -33,6 +33,11 @@ export type DocMarkingOptions = {
   showMeasuringStick: boolean,
 }
 
+export const DOC_MARKING_DEFAULTS: DocMarkingOptions = {
+  showAtMarker: false,
+  showMeasuringStick: false,
+}
+
 export const useShapePreview = <T extends Location>(
   canvas: HTMLCanvasElement | undefined,
   factory: ShapeFactory<T>,
@@ -107,8 +112,8 @@ export const createDocComponent = <T extends Record<string, unknown>>(factory: S
 
       return () => h('canvas', {
         id: canvasId,
+        width: 400,
         height: 400,
-        width: 400
       })
     }
   })
