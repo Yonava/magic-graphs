@@ -81,6 +81,11 @@ export const DEFAULT_STORIES = {
         width: 10,
       }
     }
+  },
+  rotation: {
+    args: {
+      rotation: Math.PI * 0.25 // 45deg in radians
+    }
   }
 } as const
 

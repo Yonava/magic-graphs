@@ -12,7 +12,7 @@ const meta: Meta<typeof Image> = {
     width: 100,
     height: 100,
     src: '/favicon.ico',
-    at: { x: 10, y: 10 },
+    at: { x: 20, y: 20 },
     ...DOC_MARKING_DEFAULTS,
   },
 };
@@ -21,14 +21,14 @@ export default meta;
 
 type Story = StoryObj<typeof Image>;
 
-const { basic, markings, text } = DEFAULT_STORIES;
+const { basic, markings, text, rotation } = DEFAULT_STORIES;
 
 export const Basic: Story = basic;
 export const Markings: Story = markings;
 export const WithText: Story = text;
-
 export const Rotation: Story = {
   args: {
-    rotation: Math.PI * 1.5
+    ...rotation.args,
+    at: { x: 20, y: 20 }
   }
-}
+};

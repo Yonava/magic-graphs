@@ -19,10 +19,11 @@ export default meta;
 
 type Story = StoryObj<typeof Cross>;
 
-const { basic, markings } = DEFAULT_STORIES;
+const { basic, markings, rotation } = DEFAULT_STORIES;
 
 export const Basic: Story = basic;
 export const Markings: Story = markings;
+export const Rotation: Story = rotation;
 
 export const LineWidth: Story = {
   args: {
