@@ -1,45 +1,26 @@
-import type { Meta, StoryObj } from "@storybook/vue3-vite";
-import CirclePreview from "./CirclePreview.vue";
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { createDocComponent, DEFAULT_STORIES } from '@shape/docs';
+import { circle, CIRCLE_SCHEMA_DEFAULTS, type CircleSchema } from '.';
 
-const meta: Meta<typeof CirclePreview> = {
+const Circle = createDocComponent<CircleSchema>(circle)
+
+const meta: Meta<typeof Circle> = {
   title: 'Shapes/Circle',
-  component: CirclePreview,
+  component: Circle,
   args: {
+    ...CIRCLE_SCHEMA_DEFAULTS,
     radius: 50,
-    at: { x: 60, y: 60 }
-  }
-}
-
-export default meta
-
-type Story = StoryObj<typeof CirclePreview>
-
-export const Basic: Story = {};
-
-export const Geometry: Story = {
-  args: {
-    showAtMarker: true,
-    showMeasuringStick: true,
-  }
-}
-
-export const WithText: Story = {
-  args: {
-    textArea: {
-      text: {
-        content: 'Hi!',
-        color: 'white',
-      },
-      color: 'blue'
-    }
-  }
+    at: { x: 60, y: 60 },
+  },
 };
 
-export const WithStroke: Story = {
-  args: {
-    stroke: {
-      color: 'blue',
-      width: 10,
-    }
-  }
-}
+export default meta;
+
+type Story = StoryObj<typeof Circle>;
+
+const { basic, markings, text, stroke } = DEFAULT_STORIES;
+
+export const Basic: Story = basic;
+export const Markings: Story = markings;
+export const WithText: Story = text;
+export const WithStroke: Story = stroke;

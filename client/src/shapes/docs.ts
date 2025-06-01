@@ -1,9 +1,10 @@
+import { onMounted, defineComponent, h, watch } from "vue";
 import { cross, square } from "@shapes";
 import type { Coordinate, Location, ShapeFactory } from "./types";
 import type { SquareSchema } from "./square";
 import type { CrossSchema } from "./cross";
-import { onMounted, type Ref } from "vue";
 import { getCtx } from "@utils/ctx";
+import { generateId } from "@utils/id";
 
 const atMarkerSchema = (at: Coordinate): CrossSchema => ({
   at,
@@ -33,7 +34,7 @@ export type DocMarkingOptions = {
 }
 
 export const useShapePreview = <T extends Location>(
-  canvas: Ref<HTMLCanvasElement | undefined>,
+  canvas: HTMLCanvasElement | undefined,
   factory: ShapeFactory<T>,
   schema: T,
   options: DocMarkingOptions,
@@ -48,3 +49,66 @@ export const useShapePreview = <T extends Location>(
 
   onMounted(drawPreview);
 }
+
+export const DEFAULT_STORIES = {
+  basic: {},
+  markings: {
+    args: {
+      showAtMarker: true,
+      showMeasuringStick: true,
+    }
+  },
+  text: {
+    args: {
+      textArea: {
+        text: {
+          content: 'Hi!',
+          color: 'white',
+        },
+        color: 'blue'
+      }
+    }
+  },
+  stroke: {
+    args: {
+      stroke: {
+        color: 'blue',
+        width: 10,
+      }
+    }
+  }
+} as const
+
+export const createDocComponent = <T extends Record<string, unknown>>(factory: ShapeFactory<T>) =>
+  defineComponent<T & Partial<DocMarkingOptions>>({
+    inheritAttrs: false,
+    setup: (_, { attrs }) => {
+      const props = attrs as T & Partial<DocMarkingOptions>
+      const canvasId = generateId()
+
+      const drawPreview = () => {
+        const canvas = document.getElementById(canvasId) as HTMLCanvasElement
+        const ctx = getCtx(canvas);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const {
+          showAtMarker = false,
+          showMeasuringStick = false,
+        } = props
+
+        if (showMeasuringStick) measuringStick.draw(ctx);
+        factory(props).draw(ctx);
+        if (showAtMarker && 'at' in props) atMarker(props.at as Location['at']).draw(ctx);
+      }
+
+      onMounted(drawPreview);
+      watch(() => ({ ...props }), drawPreview)
+
+      return () => h('canvas', {
+        id: canvasId,
+        height: 400,
+        width: 400
+      })
+    }
+  })

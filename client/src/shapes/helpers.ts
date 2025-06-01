@@ -104,7 +104,6 @@ export const getLargestAngularSpace = (
  * @param arrowWidth - the width of the arrow shaft
  * @returns the arrowhead height and the arrowhead base length
  */
-
 export const getArrowHeadSize = (
   arrowWidth: ArrowSchema['width'] = LINE_SCHEMA_DEFAULTS.width,
 ) => {
