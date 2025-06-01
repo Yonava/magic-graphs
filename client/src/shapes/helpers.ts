@@ -199,7 +199,7 @@ const interpolateColor = (color1: string, color2: string, ratio: number) => {
  * @returns The color at the specified percentage as a hex string
  */
 export const getColorAtPercentage = (
-  gradient: GradientStop[],
+  gradient: readonly GradientStop[],
   percentage: number,
 ) => {
   if (gradient.length === 0) {

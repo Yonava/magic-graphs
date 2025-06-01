@@ -175,7 +175,7 @@ export const STROKE_DEFAULTS = {
 
 export type GradientStop = {
   /**
-   * between 0 and 1 denoting the color of shape at that point
+   * between [0, 1) denoting the color of shape at that point
    * (ei color: green offset: 0.5 makes shape green at midpoint)
    */
   offset: number;

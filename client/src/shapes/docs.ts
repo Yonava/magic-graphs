@@ -96,7 +96,7 @@ export const DEFAULT_STORIES = {
         },
         {
           color: 'blue',
-          offset: 1,
+          offset: 0.99,
         }
       ]
     }
@@ -104,10 +104,10 @@ export const DEFAULT_STORIES = {
 } as const
 
 export const createDocComponent = <T extends Record<string, unknown>>(factory: ShapeFactory<T>) =>
-  defineComponent<T & Partial<DocMarkingOptions>>({
+  defineComponent<T & DocMarkingOptions>({
     inheritAttrs: false,
     setup: (_, { attrs }) => {
-      const props = attrs as T & Partial<DocMarkingOptions>
+      const props = attrs as T & DocMarkingOptions
       const canvasId = generateId()
 
       const drawPreview = () => {
@@ -116,10 +116,7 @@ export const createDocComponent = <T extends Record<string, unknown>>(factory: S
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        const {
-          showAtMarker = false,
-          showMeasuringStick = false,
-        } = props
+        const { showAtMarker, showMeasuringStick } = props
 
         if (showMeasuringStick) measuringStick.draw(ctx);
         factory(props).draw(ctx);
