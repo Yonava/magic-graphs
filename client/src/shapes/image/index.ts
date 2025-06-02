@@ -20,15 +20,21 @@ import colors from '@utils/colors';
 
 export type ImageSchema = {
   id?: string;
+
   at: Coordinate;
   width: number;
   height: number;
   src: string;
+
+  /**
+   * in radians
+   */
   rotation?: number;
-  onLoad?: () => void;
-  onLoadError?: () => void;
   color?: string;
   textArea?: TextAreaNoLocation;
+
+  onLoad?: () => void;
+  onLoadError?: () => void;
 };
 
 export const IMAGE_SCHEMA_DEFAULTS = {
@@ -52,8 +58,8 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
   const drawTextAreaMatte = drawTextAreaMatteOnImage(options);
   const drawText = drawTextOnImage(options);
 
-  const draw = (ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx);
+  const draw = async (ctx: CanvasRenderingContext2D) => {
+    await drawShape(ctx);
     drawTextArea?.(ctx);
   };
 

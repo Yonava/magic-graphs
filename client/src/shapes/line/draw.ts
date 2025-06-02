@@ -25,7 +25,7 @@ export const drawLineWithCtx =
       ctx.strokeStyle = gradient;
     }
 
-    ctx.setLineDash(dash);
+    ctx.setLineDash(dash ?? []);
     ctx.stroke();
     ctx.closePath();
     ctx.restore();

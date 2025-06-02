@@ -25,12 +25,14 @@ import { getArrowHeadSize } from '@shape/helpers';
 
 export type UTurnSchema = {
   id?: string;
+
   at: Coordinate;
   spacing: number;
   upDistance: number;
   downDistance: number;
   rotation: number;
   lineWidth: number;
+
   color?: string;
   textArea?: TextAreaNoLocation;
   arrowHeadSize?: (width: number) => {
@@ -38,13 +40,13 @@ export type UTurnSchema = {
     perpLineLength: number;
   };
   arrowHeadShape?: (at: Coordinate, height: number, width: number) => Shape;
-  gradientStops?: GradientStop[];
+  gradientStops?: readonly GradientStop[];
 };
 
 export const UTURN_SCHEMA_DEFAULTS = {
   color: 'black',
   arrowHeadSize: getArrowHeadSize,
-  gradientStops: [] as GradientStop[],
+  gradientStops: [] as readonly GradientStop[],
 } as const;
 
 export const uturn: ShapeFactory<UTurnSchema> = (options) => {

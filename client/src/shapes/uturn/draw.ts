@@ -105,7 +105,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
             ((Math.PI * spacing) / totalLength),
           color: stop.color,
         })),
-      { offset: 1, color: gradientColorAtCircleEnd },
+      { offset: 1.0, color: gradientColorAtCircleEnd },
     ];
 
     arrowGradient = [
@@ -163,6 +163,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
       }
       ctx.strokeStyle = gradient;
     }
+
     // +0.01, -0.01 to overlap
     ctx.arc(
       arcAt.x,

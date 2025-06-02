@@ -5,10 +5,12 @@ import { drawStarWithCtx } from './draw';
 
 export type StarSchema = {
   id?: string;
+
   at: Coordinate;
-  color?: string;
   innerRadius: number;
   outerRadius: number;
+
+  color?: string;
   rotation?: number;
   points?: number;
 };

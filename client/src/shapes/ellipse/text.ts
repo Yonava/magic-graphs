@@ -40,7 +40,7 @@ export const ellipseTextHitbox = (ellipse: EllipseSchema) => {
   const location = getTextAreaLocationOnEllipse(ellipse);
   const fullTextArea = getFullTextArea(ellipse.textArea, location);
 
-  const { width, height } = getTextAreaDimension(fullTextArea);
+  const { width, height } = getTextAreaDimension(fullTextArea.text);
 
   const isInTextHitbox = rectHitbox({
     at: fullTextArea.at,

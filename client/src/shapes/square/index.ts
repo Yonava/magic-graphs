@@ -19,13 +19,12 @@ export type SquareSchema = {
 
 export const SQUARE_SCHEMA_DEFAULTS = RECT_SCHEMA_DEFAULTS;
 
-export const square: ShapeFactory<SquareSchema> = (options) => {
-  const rectSchema = {
+export const square: ShapeFactory<SquareSchema> = (options) => ({
+  ...rect({
     ...SQUARE_SCHEMA_DEFAULTS,
     ...options,
-    name: 'square',
     width: options.size,
     height: options.size,
-  };
-  return rect(rectSchema);
-};
+  }),
+  name: 'square',
+})

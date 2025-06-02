@@ -23,9 +23,11 @@ import { engageTextarea } from '@shape/textarea';
 
 export type EllipseSchema = {
   id?: string;
+
   at: Coordinate;
   radiusX: number;
   radiusY: number;
+
   color?: string;
   stroke?: Stroke;
   textArea?: TextAreaNoLocation;

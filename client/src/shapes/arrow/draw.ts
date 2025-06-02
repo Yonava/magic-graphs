@@ -28,7 +28,7 @@ export const drawArrowWithCtx = (options: ArrowSchema) => {
     y: end.y - arrowHeadHeight * Math.sin(angle),
   };
 
-  const shaft = {
+  const shaft: LineSchema = {
     start,
     // Add sines to make solve overlap issue with triangle when drawing (gh issue #24)
     end: {
@@ -40,7 +40,8 @@ export const drawArrowWithCtx = (options: ArrowSchema) => {
     dash,
     gradientStops,
   };
-  const drawShaft = drawLineWithCtx(shaft as LineSchema);
+
+  const drawShaft = drawLineWithCtx(shaft);
 
   const trianglePtA = end;
 

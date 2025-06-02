@@ -103,8 +103,7 @@ export type Coordinate = {
 };
 
 /**
- * an area that wraps some text without
- * canvas coordinates for rendering
+ * a box that wraps some text without {@link Location}
  */
 export type TextAreaNoLocation = {
   /**
@@ -128,9 +127,14 @@ export const TEXTAREA_DEFAULTS = {
   activeColor: 'white',
 } as const;
 
-export type TextArea = {
-  at: Coordinate;
-} & TextAreaNoLocation;
+export type Location = {
+  /**
+   * the point on a 2d canvas this item is placed
+   */
+  at: Coordinate
+}
+
+export type TextArea = TextAreaNoLocation & Location
 
 /**
  * all font weights supported by html canvas
@@ -170,6 +174,10 @@ export const STROKE_DEFAULTS = {
 };
 
 export type GradientStop = {
+  /**
+   * between [0, 1) denoting the color of shape at that point
+   * (ei color: green offset: 0.5 makes shape green at midpoint)
+   */
   offset: number;
   /**
    * parsed by the tinycolor library
