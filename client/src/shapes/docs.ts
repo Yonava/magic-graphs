@@ -1,10 +1,11 @@
 import { onMounted, defineComponent, h, watch } from "vue";
-import { cross, square } from "@shapes";
-import type { Coordinate, Location, ShapeFactory } from "./types";
+import { cross, rect, square } from "@shapes";
+import type { BoundingBox, Coordinate, Location, ShapeFactory } from "./types";
 import type { SquareSchema } from "./square";
 import type { CrossSchema } from "./cross";
 import { getCtx } from "@utils/ctx";
 import { generateId } from "@utils/id";
+import type { RectSchema } from "./rect";
 
 const atMarkerSchema = (at: Coordinate): CrossSchema => ({
   at,
@@ -14,6 +15,19 @@ const atMarkerSchema = (at: Coordinate): CrossSchema => ({
 })
 
 const atMarker = (at: Coordinate) => cross(atMarkerSchema(at))
+
+const boundingBoxMarkerSchema = (bb: BoundingBox): RectSchema => ({
+  at: bb.at,
+  width: bb.width,
+  height: bb.height,
+  color: 'transparent',
+  stroke: {
+    color: 'green',
+    width: 1,
+  }
+})
+
+const boundingBoxMarker = (bb: BoundingBox) => rect(boundingBoxMarkerSchema(bb))
 
 const measuringStickSchema: SquareSchema = {
   at: { x: 0, y: 0 },
@@ -30,11 +44,13 @@ const measuringStick = square(measuringStickSchema)
 
 export type DocMarkingOptions = {
   showAtMarker: boolean,
+  showBoundingBoxMarker: boolean,
   showMeasuringStick: boolean,
 }
 
 export const DOC_MARKING_DEFAULTS: DocMarkingOptions = {
   showAtMarker: false,
+  showBoundingBoxMarker: false,
   showMeasuringStick: false,
 }
 
@@ -60,6 +76,7 @@ export const DEFAULT_STORIES = {
   markings: {
     args: {
       showAtMarker: true,
+      showBoundingBoxMarker: true,
       showMeasuringStick: true,
     }
   },
@@ -116,11 +133,13 @@ export const createDocComponent = <T extends Record<string, unknown>>(factory: S
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        const { showAtMarker, showMeasuringStick } = props
+        const { showAtMarker, showBoundingBoxMarker, showMeasuringStick } = props
 
         if (showMeasuringStick) measuringStick.draw(ctx);
-        factory(props).draw(ctx);
+        const shape = factory(props);
+        shape.draw(ctx)
         if (showAtMarker && 'at' in props) atMarker(props.at as Location['at']).draw(ctx);
+        if (showBoundingBoxMarker) boundingBoxMarker(shape.getBoundingBox()).draw(ctx)
       }
 
       onMounted(drawPreview);
