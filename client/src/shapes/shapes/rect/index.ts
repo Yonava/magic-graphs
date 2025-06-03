@@ -38,11 +38,12 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
   if (options.borderRadius) {
     if (typeof options.borderRadius === 'number' && options.borderRadius < 0)
       throw new Error('borderRadius must be positive');
-    if (
-      Array.isArray(options.borderRadius) &&
-      options.borderRadius.some((r) => r < 0)
-    ) {
-      throw new Error('borderRadius must be positive');
+    if (Array.isArray(options.borderRadius)) {
+      if (options.borderRadius.length !== 4) {
+        throw new Error('borderRadius array must have exactly 4 values');
+      }
+      if (options.borderRadius.some((r) => r < 0))
+        throw new Error('borderRadius must be positive');
     }
   }
 

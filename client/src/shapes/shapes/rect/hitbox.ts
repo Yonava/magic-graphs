@@ -17,24 +17,25 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
     ...RECT_SCHEMA_DEFAULTS,
     ...rectangle,
   };
-
   const {
     at: normalizedAt,
     width: normalizedWidth,
     height: normalizedHeight,
   } = normalizeBoundingBox({ at, width, height });
-
   const centerX = normalizedAt.x + normalizedWidth / 2;
   const centerY = normalizedAt.y + normalizedHeight / 2;
   const strokeWidth = stroke?.width || STROKE_DEFAULTS.width;
   const localPoint = rotatePoint(point, { x: centerX, y: centerY }, -rotation);
-
   const { x, y } = {
     x: centerX - normalizedWidth / 2,
     y: centerY - normalizedHeight / 2,
   };
 
-  if (borderRadius === undefined || borderRadius === 0) {
+  if (
+    borderRadius === undefined ||
+    (typeof borderRadius === 'number' && borderRadius === 0) ||
+    (Array.isArray(borderRadius) && borderRadius.every((r) => r === 0))
+  ) {
     return (
       localPoint.x >= x - strokeWidth / 2 &&
       localPoint.x <= x + normalizedWidth + strokeWidth / 2 &&
@@ -43,67 +44,112 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
     );
   }
 
-  const radius = Math.min(
-    borderRadius,
-    normalizedWidth / 2,
-    normalizedHeight / 2,
-  );
+  let radii: number[];
+  if (typeof borderRadius === 'number') {
+    radii = [borderRadius, borderRadius, borderRadius, borderRadius];
+  } else {
+    radii = borderRadius;
+  }
 
-  const verticalWidth = Math.max(normalizedWidth - 2 * radius, 0);
-  const horizontalHeight = Math.max(normalizedHeight - 2 * radius, 0);
+  const maxRadius = Math.min(normalizedWidth / 2, normalizedHeight / 2);
+  const [topLeftRadius, topRightRadius, bottomRightRadius, bottomLeftRadius] =
+    radii.map((r) => Math.min(Math.max(r, 0), maxRadius));
 
-  const rectVertical = rectHitbox({
-    ...rectangle,
-    at: { x: x + radius, y },
-    width: verticalWidth,
-    height: normalizedHeight,
-    borderRadius: 0,
-    rotation: 0,
-    stroke,
-  });
+  const rectangles = [
+    {
+      x: x + topLeftRadius,
+      y: y,
+      width: normalizedWidth - topLeftRadius - topRightRadius,
+      height: Math.max(topLeftRadius, topRightRadius),
+    },
+    {
+      x: x + bottomLeftRadius,
+      y: y + normalizedHeight - Math.max(bottomLeftRadius, bottomRightRadius),
+      width: normalizedWidth - bottomLeftRadius - bottomRightRadius,
+      height: Math.max(bottomLeftRadius, bottomRightRadius),
+    },
+    {
+      x: x,
+      y: y + topLeftRadius,
+      width: Math.max(topLeftRadius, bottomLeftRadius),
+      height: normalizedHeight - topLeftRadius - bottomLeftRadius,
+    },
+    {
+      x: x + normalizedWidth - Math.max(topRightRadius, bottomRightRadius),
+      y: y + topRightRadius,
+      width: Math.max(topRightRadius, bottomRightRadius),
+      height: normalizedHeight - topRightRadius - bottomRightRadius,
+    },
+    {
+      x: x + Math.max(topLeftRadius, bottomLeftRadius),
+      y: y + Math.max(topLeftRadius, topRightRadius),
+      width:
+        normalizedWidth -
+        Math.max(topLeftRadius, bottomLeftRadius) -
+        Math.max(topRightRadius, bottomRightRadius),
+      height:
+        normalizedHeight -
+        Math.max(topLeftRadius, topRightRadius) -
+        Math.max(bottomLeftRadius, bottomRightRadius),
+    },
+  ];
 
-  const rectHorizontal = rectHitbox({
-    ...rectangle,
-    at: { x, y: y + radius },
-    width: normalizedWidth,
-    height: horizontalHeight,
-    borderRadius: 0,
-    rotation: 0,
-    stroke,
-  });
+  for (const rect of rectangles) {
+    if (
+      rect.width > 0 &&
+      rect.height > 0 &&
+      localPoint.x >= rect.x - strokeWidth / 2 &&
+      localPoint.x <= rect.x + rect.width + strokeWidth / 2 &&
+      localPoint.y >= rect.y - strokeWidth / 2 &&
+      localPoint.y <= rect.y + rect.height + strokeWidth / 2
+    ) {
+      return true;
+    }
+  }
 
-  if (rectVertical(localPoint) || rectHorizontal(localPoint)) return true;
+  const corners = [
+    {
+      center: { x: x + topLeftRadius, y: y + topLeftRadius },
+      radius: topLeftRadius,
+    },
+    {
+      center: {
+        x: x + normalizedWidth - topRightRadius,
+        y: y + topRightRadius,
+      },
+      radius: topRightRadius,
+    },
+    {
+      center: {
+        x: x + normalizedWidth - bottomRightRadius,
+        y: y + normalizedHeight - bottomRightRadius,
+      },
+      radius: bottomRightRadius,
+    },
+    {
+      center: {
+        x: x + bottomLeftRadius,
+        y: y + normalizedHeight - bottomLeftRadius,
+      },
+      radius: bottomLeftRadius,
+    },
+  ];
 
-  const isInTopLeftCircle = circle({
-    at: { x: x + radius, y: y + radius },
-    radius,
-    stroke,
-  }).hitbox;
+  for (const corner of corners) {
+    if (corner.radius > 0) {
+      const circleHitbox = circle({
+        at: corner.center,
+        radius: corner.radius,
+        stroke,
+      }).hitbox;
 
-  const isInTopRightCircle = circle({
-    at: { x: x + normalizedWidth - radius, y: y + radius },
-    radius,
-    stroke,
-  }).hitbox;
+      if (circleHitbox(localPoint)) {
+        return true;
+      }
+    }
+  }
 
-  const isInBottomLeftCircle = circle({
-    at: { x: x + radius, y: y + normalizedHeight - radius },
-    radius,
-    stroke,
-  }).hitbox;
-
-  const isInBottomRightCircle = circle({
-    at: { x: x + normalizedWidth - radius, y: y + normalizedHeight - radius },
-    radius,
-    stroke,
-  }).hitbox;
-
-  return (
-    isInTopLeftCircle(localPoint) ||
-    isInTopRightCircle(localPoint) ||
-    isInBottomLeftCircle(localPoint) ||
-    isInBottomRightCircle(localPoint)
-  );
+  return false;
 };
 
 export const getRectBoundingBox = (rectangle: RectSchema) => () => {

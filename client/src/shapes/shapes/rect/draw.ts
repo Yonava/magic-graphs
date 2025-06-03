@@ -22,26 +22,11 @@ export const drawRectWithCtx =
     ctx.translate(centerX, centerY);
     ctx.rotate(rotation);
 
-    // Handle border radius - support both single number and array
-    const getBorderRadii = (borderRadius: number | number[]) => {
-      if (typeof borderRadius === 'number') {
-        return borderRadius === 0
-          ? [0, 0, 0, 0]
-          : [borderRadius, borderRadius, borderRadius, borderRadius];
-      }
-
-      // For arrays, pad with 0s if too short, truncate if too long
-      const radii = [0, 0, 0, 0];
-      for (let i = 0; i < Math.min(4, borderRadius.length); i++) {
-        radii[i] = borderRadius[i];
-      }
-      return radii;
-    };
-
     const [topLeft, topRight, bottomRight, bottomLeft] =
-      getBorderRadii(borderRadius);
+      typeof borderRadius === 'number'
+        ? [borderRadius, borderRadius, borderRadius, borderRadius]
+        : borderRadius;
 
-    // Check if any border radius is applied
     if (
       topLeft === 0 &&
       topRight === 0 &&
@@ -58,7 +43,6 @@ export const drawRectWithCtx =
       ctx.fillStyle = color;
       ctx.fill();
     } else {
-      // Constrain each radius to not exceed half the width or height
       const maxRadius = Math.min(normalizedWidth / 2, normalizedHeight / 2);
       const constrainedTopLeft = Math.min(topLeft, maxRadius);
       const constrainedTopRight = Math.min(topRight, maxRadius);
@@ -67,13 +51,11 @@ export const drawRectWithCtx =
 
       ctx.beginPath();
 
-      // Start from top-left corner, moving clockwise
       ctx.moveTo(
         -normalizedWidth / 2 + constrainedTopLeft,
         -normalizedHeight / 2,
       );
 
-      // Top edge and top-right corner
       ctx.lineTo(
         normalizedWidth / 2 - constrainedTopRight,
         -normalizedHeight / 2,
@@ -88,7 +70,6 @@ export const drawRectWithCtx =
         );
       }
 
-      // Right edge and bottom-right corner
       ctx.lineTo(
         normalizedWidth / 2,
         normalizedHeight / 2 - constrainedBottomRight,
@@ -103,7 +84,6 @@ export const drawRectWithCtx =
         );
       }
 
-      // Bottom edge and bottom-left corner
       ctx.lineTo(
         -normalizedWidth / 2 + constrainedBottomLeft,
         normalizedHeight / 2,
@@ -118,7 +98,6 @@ export const drawRectWithCtx =
         );
       }
 
-      // Left edge and top-left corner
       ctx.lineTo(
         -normalizedWidth / 2,
         -normalizedHeight / 2 + constrainedTopLeft,
