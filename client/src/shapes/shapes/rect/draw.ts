@@ -19,11 +19,35 @@ export const drawRectWithCtx =
 
     const centerX = normalizedAt.x + normalizedWidth / 2;
     const centerY = normalizedAt.y + normalizedHeight / 2;
-
     ctx.translate(centerX, centerY);
     ctx.rotate(rotation);
 
-    if (borderRadius === 0) {
+    // Handle border radius - support both single number and array
+    const getBorderRadii = (borderRadius: number | number[]) => {
+      if (typeof borderRadius === 'number') {
+        return borderRadius === 0
+          ? [0, 0, 0, 0]
+          : [borderRadius, borderRadius, borderRadius, borderRadius];
+      }
+
+      // For arrays, pad with 0s if too short, truncate if too long
+      const radii = [0, 0, 0, 0];
+      for (let i = 0; i < Math.min(4, borderRadius.length); i++) {
+        radii[i] = borderRadius[i];
+      }
+      return radii;
+    };
+
+    const [topLeft, topRight, bottomRight, bottomLeft] =
+      getBorderRadii(borderRadius);
+
+    // Check if any border radius is applied
+    if (
+      topLeft === 0 &&
+      topRight === 0 &&
+      bottomRight === 0 &&
+      bottomLeft === 0
+    ) {
       ctx.beginPath();
       ctx.rect(
         -normalizedWidth / 2,
@@ -34,45 +58,81 @@ export const drawRectWithCtx =
       ctx.fillStyle = color;
       ctx.fill();
     } else {
-      const radius = Math.min(
-        borderRadius,
-        normalizedWidth / 2,
-        normalizedHeight / 2,
-      );
+      // Constrain each radius to not exceed half the width or height
+      const maxRadius = Math.min(normalizedWidth / 2, normalizedHeight / 2);
+      const constrainedTopLeft = Math.min(topLeft, maxRadius);
+      const constrainedTopRight = Math.min(topRight, maxRadius);
+      const constrainedBottomRight = Math.min(bottomRight, maxRadius);
+      const constrainedBottomLeft = Math.min(bottomLeft, maxRadius);
+
       ctx.beginPath();
-      ctx.moveTo(-normalizedWidth / 2 + radius, -normalizedHeight / 2);
-      ctx.lineTo(normalizedWidth / 2 - radius, -normalizedHeight / 2);
-      ctx.arcTo(
-        normalizedWidth / 2,
+
+      // Start from top-left corner, moving clockwise
+      ctx.moveTo(
+        -normalizedWidth / 2 + constrainedTopLeft,
         -normalizedHeight / 2,
-        normalizedWidth / 2,
-        -normalizedHeight / 2 + radius,
-        radius,
       );
-      ctx.lineTo(normalizedWidth / 2, normalizedHeight / 2 - radius);
-      ctx.arcTo(
-        normalizedWidth / 2,
-        normalizedHeight / 2,
-        normalizedWidth / 2 - radius,
-        normalizedHeight / 2,
-        radius,
-      );
-      ctx.lineTo(-normalizedWidth / 2 + radius, normalizedHeight / 2);
-      ctx.arcTo(
-        -normalizedWidth / 2,
-        normalizedHeight / 2,
-        -normalizedWidth / 2,
-        normalizedHeight / 2 - radius,
-        radius,
-      );
-      ctx.lineTo(-normalizedWidth / 2, -normalizedHeight / 2 + radius);
-      ctx.arcTo(
-        -normalizedWidth / 2,
+
+      // Top edge and top-right corner
+      ctx.lineTo(
+        normalizedWidth / 2 - constrainedTopRight,
         -normalizedHeight / 2,
-        -normalizedWidth / 2 + radius,
-        -normalizedHeight / 2,
-        radius,
       );
+      if (constrainedTopRight > 0) {
+        ctx.arcTo(
+          normalizedWidth / 2,
+          -normalizedHeight / 2,
+          normalizedWidth / 2,
+          -normalizedHeight / 2 + constrainedTopRight,
+          constrainedTopRight,
+        );
+      }
+
+      // Right edge and bottom-right corner
+      ctx.lineTo(
+        normalizedWidth / 2,
+        normalizedHeight / 2 - constrainedBottomRight,
+      );
+      if (constrainedBottomRight > 0) {
+        ctx.arcTo(
+          normalizedWidth / 2,
+          normalizedHeight / 2,
+          normalizedWidth / 2 - constrainedBottomRight,
+          normalizedHeight / 2,
+          constrainedBottomRight,
+        );
+      }
+
+      // Bottom edge and bottom-left corner
+      ctx.lineTo(
+        -normalizedWidth / 2 + constrainedBottomLeft,
+        normalizedHeight / 2,
+      );
+      if (constrainedBottomLeft > 0) {
+        ctx.arcTo(
+          -normalizedWidth / 2,
+          normalizedHeight / 2,
+          -normalizedWidth / 2,
+          normalizedHeight / 2 - constrainedBottomLeft,
+          constrainedBottomLeft,
+        );
+      }
+
+      // Left edge and top-left corner
+      ctx.lineTo(
+        -normalizedWidth / 2,
+        -normalizedHeight / 2 + constrainedTopLeft,
+      );
+      if (constrainedTopLeft > 0) {
+        ctx.arcTo(
+          -normalizedWidth / 2,
+          -normalizedHeight / 2,
+          -normalizedWidth / 2 + constrainedTopLeft,
+          -normalizedHeight / 2,
+          constrainedTopLeft,
+        );
+      }
+
       ctx.closePath();
       ctx.fillStyle = color;
       ctx.fill();

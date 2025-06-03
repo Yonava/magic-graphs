@@ -24,7 +24,7 @@ export type RectSchema = {
   color?: string;
   stroke?: Stroke;
   textArea?: TextAreaNoLocation;
-  borderRadius?: number;
+  borderRadius?: number | number[];
   rotation?: number;
 };
 
@@ -35,8 +35,15 @@ export const RECT_SCHEMA_DEFAULTS = {
 } as const;
 
 export const rect: ShapeFactory<RectSchema> = (options) => {
-  if (options.borderRadius && options.borderRadius < 0) {
-    throw new Error('borderRadius must be positive');
+  if (options.borderRadius) {
+    if (typeof options.borderRadius === 'number' && options.borderRadius < 0)
+      throw new Error('borderRadius must be positive');
+    if (
+      Array.isArray(options.borderRadius) &&
+      options.borderRadius.some((r) => r < 0)
+    ) {
+      throw new Error('borderRadius must be positive');
+    }
   }
 
   const drawShape = drawRectWithCtx(options);

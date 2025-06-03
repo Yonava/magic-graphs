@@ -12,7 +12,7 @@ export type SquareSchema = {
   color?: string;
   stroke?: Stroke;
   textArea?: TextAreaNoLocation;
-  borderRadius?: number;
+  borderRadius?: number | number[];
   rotation?: number;
 };
 
@@ -26,4 +26,4 @@ export const square: ShapeFactory<SquareSchema> = (options) => ({
     height: options.size,
   }),
   name: 'square',
-})
+});
