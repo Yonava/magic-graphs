@@ -1,8 +1,8 @@
 import type { Ref } from 'vue';
 import type { Collaborator, CollaboratorMap } from '@graph/collab/types';
 import colors from '@colors';
-import { rect, type RectSchema } from '@shape/rect';
-import { circle, type CircleSchema } from '@shape/circle';
+import { rect, type RectSchema } from '@shape/shapes/rect';
+import { circle, type CircleSchema } from '@shape/shapes/circle';
 
 export const collabTagShapes = (collaborator: Collaborator) => {
   const {

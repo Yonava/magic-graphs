@@ -1,4 +1,4 @@
-import type { UTurnSchema } from '@shape/uturn';
+import type { UTurnSchema } from '@shape/shapes/uturn';
 import gsap from 'gsap';
 import { EASING_FUNCTIONS } from '@utils/animate';
 import { DURATION_MS } from '@graph/animationController';

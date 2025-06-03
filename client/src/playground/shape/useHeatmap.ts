@@ -3,7 +3,7 @@ import type { Ref } from 'vue';
 import colors from '@colors';
 import type { Coordinate, Shape } from '@shape/types';
 import { circle } from '@shapes';
-import type { CircleSchema } from '@shape/circle';
+import type { CircleSchema } from '@shape/shapes/circle';
 import { getCtx } from '@utils/ctx';
 import { debounce } from '@utils/debounce';
 

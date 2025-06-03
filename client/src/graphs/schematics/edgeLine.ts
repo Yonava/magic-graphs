@@ -5,7 +5,7 @@ import type { ShapeResolverOptions } from './types';
 import { SEQ } from './edgeSeq';
 import { getMapper, inRange } from './utils';
 import { animateInTextArea, animateOutTextArea } from './edgeTextArea';
-import type { LineSchema } from '@shape/line';
+import type { LineSchema } from '@shape/shapes/line';
 import type { WithId } from '@shape/cacher';
 
 const { interpolate, normalize } = gsap.utils;

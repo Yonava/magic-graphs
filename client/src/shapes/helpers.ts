@@ -1,6 +1,6 @@
 import { type BoundingBox, type Coordinate, type GradientStop } from '@shape/types';
-import { LINE_SCHEMA_DEFAULTS } from './line';
-import type { ArrowSchema } from './arrow';
+import { LINE_SCHEMA_DEFAULTS } from './shapes/line';
+import type { ArrowSchema } from './shapes/arrow';
 import tinycolor from 'tinycolor2';
 
 /**

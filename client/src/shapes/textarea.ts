@@ -1,7 +1,7 @@
 import type { DeepRequired } from 'ts-essentials';
 import type { TextArea } from '@shape/types';
 import { getCanvasScale } from '@utils/components/useCanvasCoord';
-import { rectHitbox } from './rect/hitbox';
+import { rectHitbox } from './shapes/rect/hitbox';
 import { useTextDimensionOnCanvas } from './useTextDimensionsOnCanvas';
 import { HORIZONTAL_TEXT_PADDING } from './text';
 

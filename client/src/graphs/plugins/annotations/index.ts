@@ -10,7 +10,7 @@ import { BRUSH_WEIGHTS, COLORS } from './constants';
 import { useAnnotationHistory } from './history';
 import type { Annotation } from './types';
 import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
-import { circle } from '@shape/circle';
+import { circle } from '@shape/shapes/circle';
 import { MOUSE_BUTTONS } from '@graph/global';
 import type { IntervalHandler } from '@utils/types';
 

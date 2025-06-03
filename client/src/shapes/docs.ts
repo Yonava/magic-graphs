@@ -1,11 +1,11 @@
 import { onMounted, defineComponent, h, watch } from "vue";
 import { cross, rect, square } from "@shapes";
 import type { BoundingBox, Coordinate, Location, ShapeFactory } from "./types";
-import type { SquareSchema } from "./square";
-import type { CrossSchema } from "./cross";
+import type { SquareSchema } from "./shapes/square";
+import type { CrossSchema } from "./shapes/cross";
 import { getCtx } from "@utils/ctx";
 import { generateId } from "@utils/id";
-import type { RectSchema } from "./rect";
+import type { RectSchema } from "./shapes/rect";
 
 const atMarkerSchema = (at: Coordinate): CrossSchema => ({
   at,
