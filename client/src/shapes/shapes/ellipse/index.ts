@@ -4,7 +4,7 @@ import type {
   TextAreaNoLocation,
   ShapeFactory,
 } from '@shape/types';
-import { drawEllipseWithCtx } from '@shape/ellipse/draw';
+import { drawEllipseWithCtx } from '@shape/shapes/ellipse/draw';
 import {
   ellipseHitbox,
   ellipseEfficientHitbox,
