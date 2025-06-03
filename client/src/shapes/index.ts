@@ -1,15 +1,15 @@
-import { arrow as arrowAPI } from './arrow';
-import { circle as circleAPI } from './circle';
-import { line as lineAPI } from './line';
-import { rect as rectAPI } from './rect';
-import { square as squareAPI } from './square';
-import { triangle as triangleAPI } from './triangle';
-import { uturn as uturnAPI } from './uturn';
-import { cross as crossAPI } from './cross';
-import { scribble as scribbleAPI } from './scribble';
-import { ellipse as ellipseAPI } from './ellipse';
-import { star as starAPI } from './star';
-import { image as imageAPI } from './image';
+import { arrow as arrowAPI } from './shapes/arrow';
+import { circle as circleAPI } from './shapes/circle';
+import { line as lineAPI } from './shapes/line';
+import { rect as rectAPI } from './shapes/rect';
+import { square as squareAPI } from './shapes/square';
+import { triangle as triangleAPI } from './shapes/triangle';
+import { uturn as uturnAPI } from './shapes/uturn';
+import { cross as crossAPI } from './shapes/cross';
+import { scribble as scribbleAPI } from './shapes/scribble';
+import { ellipse as ellipseAPI } from './shapes/ellipse';
+import { star as starAPI } from './shapes/star';
+import { image as imageAPI } from './shapes/image';
 import { initShapeCache } from './cacher';
 
 export const line = lineAPI;

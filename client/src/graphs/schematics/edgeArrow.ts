@@ -1,4 +1,4 @@
-import type { ArrowSchema } from '@shape/arrow';
+import type { ArrowSchema } from '@shape/shapes/arrow';
 import gsap from 'gsap';
 import { EASING_FUNCTIONS } from '@utils/animate';
 import { DURATION_MS } from '@graph/animationController';

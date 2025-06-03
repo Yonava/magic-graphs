@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import type { CircleSchema } from '@shape/circle';
+import type { CircleSchema } from '@shape/shapes/circle';
 import type { ShapeResolverOptions } from './types';
 import { getMapper } from './utils';
 import { EASING_FUNCTIONS } from '@utils/animate';

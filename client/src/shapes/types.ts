@@ -1,4 +1,4 @@
-import type { RectSchema } from '@shape/rect';
+import type { RectSchema } from '@shape/shapes/rect';
 
 export type BoundingBox = Pick<RectSchema, 'at' | 'width' | 'height'>;
 
@@ -23,7 +23,7 @@ export type ShapeName =
 
 export type Shape = {
   /**
-   * the name of the shape type, ie 'circle', 'line', etc
+   * the name of the shape type, ie `"circle"`, `"line"`, etc
    */
   name: ShapeName;
 

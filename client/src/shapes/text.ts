@@ -1,7 +1,7 @@
 import type { DeepRequired } from 'ts-essentials';
 import { TEXT_DEFAULTS, TEXTAREA_DEFAULTS } from '@shape/types';
 import type { Coordinate, Text, TextArea, TextAreaNoLocation } from '@shape/types';
-import { rect } from './rect';
+import { rect } from './shapes/rect';
 import { useTextDimensionOnCanvas } from './useTextDimensionsOnCanvas';
 import { useMemoize } from '@vueuse/core';
 
