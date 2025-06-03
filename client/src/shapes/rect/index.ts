@@ -13,13 +13,10 @@ import {
   drawTextOnRect,
   getTextAreaLocationOnRect,
 } from './text';
-import { generateId } from '@utils/id';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 
 export type RectSchema = {
-  id?: string;
-
   at: Coordinate;
   width: number;
   height: number;
@@ -73,7 +70,6 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
   };
 
   return {
-    id: options.id ?? generateId(),
     name: 'rect',
 
     draw,

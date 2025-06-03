@@ -1,4 +1,3 @@
-import { generateId } from '@utils/id';
 import { LINE_SCHEMA_DEFAULTS } from '@shape/line';
 import type { LineSchema } from '@shape/line';
 import type { Shape, Coordinate, ShapeFactory } from '@shape/types';
@@ -67,7 +66,6 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   };
 
   return {
-    id: options.id ?? generateId(),
     name: 'arrow',
 
     draw,

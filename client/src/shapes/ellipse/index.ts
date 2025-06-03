@@ -17,13 +17,10 @@ import {
   drawTextOnEllipse,
   getTextAreaLocationOnEllipse,
 } from './text';
-import { generateId } from '@utils/id';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 
 export type EllipseSchema = {
-  id?: string;
-
   at: Coordinate;
   radiusX: number;
   radiusY: number;
@@ -73,7 +70,6 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   };
 
   return {
-    id: options.id ?? generateId(),
     name: 'ellipse',
 
     draw,

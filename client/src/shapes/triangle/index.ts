@@ -1,4 +1,3 @@
-import { generateId } from '@utils/id';
 import type {
   Coordinate,
   GradientStop,
@@ -20,8 +19,6 @@ import {
 import { drawTriangleWithCtx } from './draw';
 
 export type TriangleSchema = {
-  id?: string;
-
   pointA: Coordinate;
   pointB: Coordinate;
   pointC: Coordinate;
@@ -56,7 +53,6 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   };
 
   return {
-    id: options.id ?? generateId(),
     name: 'triangle',
 
     draw,

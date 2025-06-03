@@ -1,11 +1,8 @@
 import type { Coordinate, ShapeFactory } from '@shape/types';
-import { generateId } from '@utils/id';
 import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';
 import { drawStarWithCtx } from './draw';
 
 export type StarSchema = {
-  id?: string;
-
   at: Coordinate;
   innerRadius: number;
   outerRadius: number;
@@ -29,7 +26,6 @@ export const star: ShapeFactory<StarSchema> = (options) => {
   const getBoundingBox = getStarBoundingBox(options);
 
   return {
-    id: options.id ?? generateId(),
     name: 'star',
 
     draw: drawShape,

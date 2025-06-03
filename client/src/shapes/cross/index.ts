@@ -6,12 +6,11 @@ import {
 } from './hitbox';
 import { drawCrossWithCtx } from './draw';
 import { LINE_SCHEMA_DEFAULTS } from '@shape/line';
-import { generateId } from '@utils/id';
 
 export type CrossSchema = {
-  id?: string;
   at: Coordinate;
   size: number;
+
   rotation?: number;
   color?: string;
   lineWidth?: number;
@@ -37,7 +36,6 @@ export const cross: ShapeFactory<CrossSchema> = (options) => {
   const getBoundingBox = getCrossBoundingBox(options);
 
   return {
-    id: options.id ?? generateId(),
     name: 'cross',
 
     draw: drawShape,

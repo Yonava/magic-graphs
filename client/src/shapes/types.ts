@@ -23,11 +23,6 @@ export type ShapeName =
 
 export type Shape = {
   /**
-   * a unique identifier for the shape
-   */
-  id: string;
-
-  /**
    * the name of the shape type, ie 'circle', 'line', etc
    */
   name: ShapeName;
