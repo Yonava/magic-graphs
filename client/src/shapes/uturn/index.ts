@@ -1,4 +1,3 @@
-import { generateId } from '@utils/id';
 import type {
   Coordinate,
   GradientStop,
@@ -24,8 +23,6 @@ import { engageTextarea } from '@shape/textarea';
 import { getArrowHeadSize } from '@shape/helpers';
 
 export type UTurnSchema = {
-  id?: string;
-
   at: Coordinate;
   spacing: number;
   upDistance: number;
@@ -90,7 +87,6 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   };
 
   return {
-    id: options.id ?? generateId(),
     name: 'uturn',
 
     draw,

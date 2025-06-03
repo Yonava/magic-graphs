@@ -5,7 +5,6 @@ import {
   scribbleEfficientHitbox,
   getScribbleBoundingBox,
 } from './hitbox';
-import { generateId } from '@utils/id';
 
 export type ScribbleSchema = {
   id?: string;
@@ -42,7 +41,6 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
   const draw = drawShape
 
   return {
-    id: options.id ?? generateId(),
     name: 'scribble',
 
     drawShape,

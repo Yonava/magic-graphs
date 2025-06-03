@@ -7,7 +7,6 @@ import type {
 import { RECT_SCHEMA_DEFAULTS, rect } from '@shape/rect';
 
 export type SquareSchema = {
-  id?: string;
   at: Coordinate;
   size: number;
   color?: string;

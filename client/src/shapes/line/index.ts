@@ -13,13 +13,10 @@ import {
   drawTextOnLine,
   getTextAreaLocationOnLine,
 } from './text';
-import { generateId } from '@utils/id';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 
 export type LineSchema = {
-  id?: string;
-
   start: Coordinate;
   end: Coordinate;
 
@@ -81,7 +78,6 @@ export const line: ShapeFactory<LineSchema> = (options) => {
   };
 
   return {
-    id: options.id ?? generateId(),
     name: 'line',
 
     draw,

@@ -1,5 +1,4 @@
 import type { Coordinate, ShapeFactory, TextAreaNoLocation } from '@shape/types';
-import { generateId } from '@utils/id';
 import { drawImageWithCtx } from './draw';
 import {
   getImageBoundingBox,
@@ -19,8 +18,6 @@ import { engageTextarea } from '@shape/textarea';
 import colors from '@utils/colors';
 
 export type ImageSchema = {
-  id?: string;
-
   at: Coordinate;
   width: number;
   height: number;
@@ -74,7 +71,6 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
   };
 
   return {
-    id: options.id ?? generateId(),
     name: 'image',
 
     draw,
