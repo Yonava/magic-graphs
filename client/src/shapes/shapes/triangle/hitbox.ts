@@ -1,4 +1,4 @@
-import type { Coordinate, BoundingBox } from '@shape/types';
+import type { Coordinate, BoundingBox } from '@shape/types/utility';
 import type { TriangleSchema } from '.';
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import { lineHitbox } from '@shape/shapes/line/hitbox';
@@ -30,9 +30,11 @@ export const triangleHitbox =
       return isInsideTriangle;
     }
 
-    const edge1 = { start: a, end: b, width: stroke.width };
-    const edge2 = { start: b, end: c, width: stroke.width };
-    const edge3 = { start: c, end: a, width: stroke.width };
+    const { lineWidth: strokeWidth } = stroke
+
+    const edge1 = { start: a, end: b, width: strokeWidth };
+    const edge2 = { start: b, end: c, width: strokeWidth };
+    const edge3 = { start: c, end: a, width: strokeWidth };
 
     const isOnStroke =
       lineHitbox(edge1)(point) ||

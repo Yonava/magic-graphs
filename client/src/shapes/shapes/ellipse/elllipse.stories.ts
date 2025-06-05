@@ -4,7 +4,7 @@ import { ellipse, ELLIPSE_SCHEMA_DEFAULTS, type EllipseSchema } from '.';
 
 const Ellipse = createDocComponent<EllipseSchema>(ellipse)
 
-const meta: Meta<typeof Ellipse> = {
+const meta = {
   title: 'Shapes/Ellipse',
   component: Ellipse,
   args: {
@@ -14,11 +14,11 @@ const meta: Meta<typeof Ellipse> = {
     at: { x: 60, y: 60 },
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Ellipse>;
 
 export default meta;
 
-type Story = StoryObj<typeof Ellipse>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, text, stroke } = DEFAULT_STORIES;
 

@@ -4,7 +4,7 @@ import { line, LINE_SCHEMA_DEFAULTS, type LineSchema } from '.';
 
 const Line = createDocComponent<LineSchema>(line)
 
-const meta: Meta<typeof Line> = {
+const meta = {
   title: 'Shapes/Line',
   component: Line,
   args: {
@@ -13,11 +13,11 @@ const meta: Meta<typeof Line> = {
     end: { x: 200, y: 60 },
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Line>
 
 export default meta;
 
-type Story = StoryObj<typeof Line>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, text, colorGradient } = DEFAULT_STORIES;
 
@@ -41,6 +41,6 @@ export const Dashed: Story = {
 
 export const Width: Story = {
   args: {
-    width: 20,
+    lineWidth: 20,
   }
 }

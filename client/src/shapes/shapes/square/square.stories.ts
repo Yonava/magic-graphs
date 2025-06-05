@@ -4,7 +4,7 @@ import { square, SQUARE_SCHEMA_DEFAULTS, type SquareSchema } from '.';
 
 const Square = createDocComponent<SquareSchema>(square)
 
-const meta: Meta<typeof Square> = {
+const meta = {
   title: 'Shapes/Square',
   component: Square,
   args: {
@@ -13,11 +13,11 @@ const meta: Meta<typeof Square> = {
     at: { x: 20, y: 20 },
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Square>
 
 export default meta;
 
-type Story = StoryObj<typeof Square>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, text, stroke, rotation } = DEFAULT_STORIES;
 

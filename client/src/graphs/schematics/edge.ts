@@ -6,6 +6,7 @@ import { GOLDEN_RATIO } from '@utils/math';
 import { edgeArrow } from './edgeArrow';
 import { edgeLine } from './edgeLine';
 import { edgeUTurn } from './edgeUturn';
+import type { TextArea } from '@shape/types/utility';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE = 2;
 
@@ -100,10 +101,10 @@ export const getEdgeSchematic = (
   const edgeTextSize = graph.getTheme('edgeTextSize', edge);
   const edgeTextFontWeight = graph.getTheme('edgeTextFontWeight', edge);
 
-  const textAreaOnEdge = {
+  const textAreaOnEdge: TextArea = {
     color: graphBgColor,
     activeColor: graphBgColor,
-    text: {
+    textBlock: {
       content: edgeText,
       color: edgeTextColor,
       fontSize: edgeTextSize,
@@ -128,7 +129,7 @@ export const getEdgeSchematic = (
       downDistance,
       rotation: largestAngularSpace,
       lineWidth: edgeWidth,
-      color,
+      fillColor: color,
       textArea,
     });
 
@@ -154,8 +155,8 @@ export const getEdgeSchematic = (
       id: edge.id,
       start: edgeStart,
       end: edgeEnd,
-      width: edgeWidth,
-      color,
+      lineWidth: edgeWidth,
+      fillColor: color,
       textArea,
     });
 
@@ -172,9 +173,9 @@ export const getEdgeSchematic = (
     id: edge.id,
     start: edgeStart,
     end: edgeEnd,
-    width: edgeWidth,
+    lineWidth: edgeWidth,
     textOffsetFromCenter: (fromNodeSize + fromNodeBorderWidth / 2) / 2,
-    color,
+    fillColor: color,
     textArea,
   });
 

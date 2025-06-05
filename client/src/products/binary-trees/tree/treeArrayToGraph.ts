@@ -1,4 +1,4 @@
-import type { Coordinate } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 import type { TreeNodeKeyArray } from './avl';
 import type { TreeNode } from './treeNode';
 import type { GEdge, Graph } from '@graph/types';

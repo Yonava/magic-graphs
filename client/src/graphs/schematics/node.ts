@@ -34,13 +34,13 @@ export const getNodeSchematic = (
       y: node.y,
     },
     radius: size,
-    color: color,
+    fillColor: color,
     stroke: {
       color: borderColor,
-      width: borderWidth,
+      lineWidth: borderWidth,
     },
     textArea: {
-      text: {
+      textBlock: {
         content: text,
         fontSize: textSize,
         fontWeight: 'bold',
@@ -57,13 +57,13 @@ export const getNodeSchematic = (
       y: node.y - size,
     },
     size: size * 2,
-    color: color,
+    fillColor: color,
     stroke: {
       color: borderColor,
-      width: borderWidth,
+      lineWidth: borderWidth,
     },
     textArea: {
-      text: {
+      textBlock: {
         content: text,
         fontSize: textSize,
         fontWeight: 'bold',

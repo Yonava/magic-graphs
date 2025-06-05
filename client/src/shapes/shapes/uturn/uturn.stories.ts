@@ -4,7 +4,7 @@ import { uturn, UTURN_SCHEMA_DEFAULTS, type UTurnSchema } from '.';
 
 const UTurn = createDocComponent<UTurnSchema>(uturn)
 
-const meta: Meta<typeof UTurn> = {
+const meta = {
   title: 'Shapes/UTurn',
   component: UTurn,
   args: {
@@ -17,11 +17,11 @@ const meta: Meta<typeof UTurn> = {
     lineWidth: 10,
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof UTurn>
 
 export default meta;
 
-type Story = StoryObj<typeof UTurn>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, text, rotation, colorGradient } = DEFAULT_STORIES;
 

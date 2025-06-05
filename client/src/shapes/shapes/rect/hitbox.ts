@@ -1,12 +1,8 @@
-import {
-  type Coordinate,
-  type BoundingBox,
-  STROKE_DEFAULTS,
-} from '@shape/types';
 import type { RectSchema } from '.';
 import { RECT_SCHEMA_DEFAULTS } from '.';
 import { circle } from '@shape/shapes/circle';
 import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
 
 /**
  * @param point - the point to check if it is in the rotated rectangle
@@ -26,7 +22,8 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
 
   const centerX = normalizedAt.x + normalizedWidth / 2;
   const centerY = normalizedAt.y + normalizedHeight / 2;
-  const strokeWidth = stroke?.width || STROKE_DEFAULTS.width;
+
+  const strokeWidth = stroke?.lineWidth ?? 0;
   const localPoint = rotatePoint(point, { x: centerX, y: centerY }, -rotation);
 
   const { x, y } = {
@@ -34,7 +31,7 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
     y: centerY - normalizedHeight / 2,
   };
 
-  if (borderRadius === undefined || borderRadius === 0) {
+  if (borderRadius === 0) {
     return (
       localPoint.x >= x - strokeWidth / 2 &&
       localPoint.x <= x + normalizedWidth + strokeWidth / 2 &&
@@ -108,7 +105,8 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
 
 export const getRectBoundingBox = (rectangle: RectSchema) => () => {
   const { at, width, height, stroke } = rectangle;
-  const { width: strokeWidth } = stroke ?? STROKE_DEFAULTS;
+
+  const strokeWidth = stroke?.lineWidth ?? 0;
 
   const normalizedWidth = Math.abs(width);
   const normalizedHeight = Math.abs(height);

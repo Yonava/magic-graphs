@@ -1,4 +1,4 @@
-import type { BoundingBox, Coordinate } from '@shape/types';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import { getCtx } from '@utils/ctx';
 import { average } from '@utils/math';
 import { getCanvasCoords } from '@utils/components/useCanvasCoord';

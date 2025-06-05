@@ -1,5 +1,3 @@
-import { TEXT_DEFAULTS } from '@shape/types';
-import type { Coordinate } from '@shape/types';
 import type { LineSchema } from '@shape/shapes/line';
 import {
   drawTextWithTextArea,
@@ -10,6 +8,8 @@ import {
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { getAngle } from '@shape/helpers';
 import { LINE_SCHEMA_DEFAULTS } from '.';
+import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults/utility';
+import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnLine = (line: LineSchema) => {
   const { textOffsetFromCenter, start, end, textArea } = {
@@ -19,10 +19,10 @@ export const getTextAreaLocationOnLine = (line: LineSchema) => {
 
   if (!textArea) throw new Error('no text area provided');
 
-  const { text } = textArea;
+  const { textBlock: text } = textArea;
 
   const { fontSize } = {
-    ...TEXT_DEFAULTS,
+    ...TEXT_BLOCK_DEFAULTS,
     ...text,
   };
 
@@ -52,7 +52,7 @@ export const lineTextHitbox = (line: LineSchema) => {
   const location = getTextAreaLocationOnLine(line);
   const fullTextArea = getFullTextArea(line.textArea, location);
 
-  const { width, height } = getTextAreaDimension(fullTextArea.text);
+  const { width, height } = getTextAreaDimension(fullTextArea.textBlock);
 
   const isInTextHitbox = rectHitbox({
     at: fullTextArea.at,

@@ -1,6 +1,6 @@
 import type { GNode, Graph } from '@graph/types';
 import type { NodeDepth } from '@product/search-visualizer/useNodeDepth';
-import type { Coordinate } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 
 /**
  * an array which maps a tree index (root = 0, left child = 1, right child = 2, etc)

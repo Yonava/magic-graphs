@@ -1,11 +1,13 @@
 import { djb2Hasher, type DJB2Hash } from "@utils/hashing"
 import type { Shape, ShapeFactory } from "./types"
 
+type SchemaId = string
+
 export type WithId<T> = T & {
   /**
    * optimized shapes require a unique id to track them across renders
    */
-  id: string
+  id: SchemaId
 }
 
 const serializeSchema = (schema: unknown) => djb2Hasher(JSON.stringify(schema))
@@ -20,10 +22,10 @@ export const initShapeCache = () => {
    * maps a shapes provided schema `id` to a serialized version of
    * the schema in order to perform diffing
    */
-  const cache: Map<string, DJB2Hash> = new Map()
-  const canvasCache: Map<string, HTMLCanvasElement> = new Map();
+  const cache: Map<SchemaId, DJB2Hash> = new Map()
+  const canvasCache: Map<SchemaId, HTMLCanvasElement> = new Map();
 
-  const hasSchemaChanged = (schemaId: string, serializedSchema: DJB2Hash) => {
+  const hasSchemaChanged = (schemaId: SchemaId, serializedSchema: DJB2Hash) => {
     const cachedSchema = cache.get(schemaId)
     return cachedSchema !== serializedSchema
   }

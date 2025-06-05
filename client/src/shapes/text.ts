@@ -1,14 +1,14 @@
 import type { DeepRequired } from 'ts-essentials';
-import { TEXT_DEFAULTS, TEXTAREA_DEFAULTS } from '@shape/types';
-import type { Coordinate, Text, TextArea, TextAreaNoLocation } from '@shape/types';
+import { TEXT_BLOCK_DEFAULTS, TEXTAREA_DEFAULTS } from '@shape/defaults/utility';
 import { rect } from './shapes/rect';
 import { useTextDimensionOnCanvas } from './useTextDimensionsOnCanvas';
 import { useMemoize } from '@vueuse/core';
+import type { Coordinate, TextArea, TextAreaWithAnchorPoint, TextBlock } from './types/utility';
 
 const { getTextDimensionsOnCanvas } = useTextDimensionOnCanvas();
 export const HORIZONTAL_TEXT_PADDING = 20;
 
-export const getTextAreaDimension = (text: Required<Text>) => {
+export const getTextAreaDimension = (text: Required<TextBlock>) => {
   const paddingVertical = HORIZONTAL_TEXT_PADDING;
 
   const { width, height, ascent, descent } = useMemoize(() =>
@@ -29,52 +29,52 @@ export const getTextAreaDimension = (text: Required<Text>) => {
   };
 };
 
-export const drawTextMatteWithTextArea = (textArea: DeepRequired<TextArea>) => {
+export const drawTextMatteWithTextArea = (textArea: DeepRequired<TextAreaWithAnchorPoint>) => {
   const { color, at } = textArea;
-  const { width, height } = getTextAreaDimension(textArea.text);
+  const { width, height } = getTextAreaDimension(textArea.textBlock);
   const matte = rect({
     at,
     width,
     height,
-    color,
+    fillColor: color,
   });
   return (ctx: CanvasRenderingContext2D) => matte.drawShape(ctx);
 };
 
 export const drawTextWithTextArea =
-  (textArea: DeepRequired<TextArea>) => (ctx: CanvasRenderingContext2D) => {
-    const { at, text } = textArea;
-    const { content, fontSize, fontWeight, color, fontFamily } = text;
+  (textArea: DeepRequired<TextAreaWithAnchorPoint>) => (ctx: CanvasRenderingContext2D) => {
+    const { at, textBlock } = textArea;
+    const { content, fontSize, fontWeight, color, fontFamily } = textBlock;
 
     ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
     ctx.fillStyle = color;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    const { width, descent, height } = getTextAreaDimension(text);
+    const { width, descent, height } = getTextAreaDimension(textBlock);
 
     ctx.fillText(content, at.x + width / 2, at.y + height / 2 + descent / 4);
   };
 
 export const getFullTextArea = (
-  textAreaNoLocation: TextAreaNoLocation,
+  unplacedTextArea: TextArea,
   at: Coordinate,
-): DeepRequired<TextArea> => {
-  const textAreaNoLocWithDefaults: Required<TextAreaNoLocation> = {
+): DeepRequired<TextAreaWithAnchorPoint> => {
+  const textAreaNoLocWithDefaults: Required<TextArea> = {
     ...TEXTAREA_DEFAULTS,
-    ...textAreaNoLocation,
+    ...unplacedTextArea,
   };
 
-  const textWithDefaults: Required<Text> = {
-    ...TEXT_DEFAULTS,
-    ...textAreaNoLocWithDefaults.text,
+  const textWithDefaults: Required<TextBlock> = {
+    ...TEXT_BLOCK_DEFAULTS,
+    ...textAreaNoLocWithDefaults.textBlock,
   };
 
   const { width } = getTextAreaDimension(textWithDefaults);
 
-  const fullTextArea = {
+  const fullTextArea: DeepRequired<TextAreaWithAnchorPoint> = {
     ...textAreaNoLocWithDefaults,
-    text: textWithDefaults,
+    textBlock: textWithDefaults,
     at: { x: at.x - width / 2 + textWithDefaults.fontSize, y: at.y },
   };
 

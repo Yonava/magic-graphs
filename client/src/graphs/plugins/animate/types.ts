@@ -4,7 +4,7 @@ import type {
   PersistOption,
 } from '@graph/base/types';
 import type { GNode } from '@graph/types';
-import type { Coordinate } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 
 export type AnimateNodeMoveOptions = {
   /**

@@ -2,7 +2,7 @@ import { ELLIPSE_SCHEMA_DEFAULTS, type EllipseSchema } from '.';
 
 export const drawEllipseWithCtx =
   (options: EllipseSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { at, radiusX, radiusY, color, stroke } = {
+    const { at, radiusX, radiusY, fillColor: color, stroke } = {
       ...ELLIPSE_SCHEMA_DEFAULTS,
       ...options,
     };
@@ -13,7 +13,7 @@ export const drawEllipseWithCtx =
     ctx.fill();
 
     if (stroke) {
-      const { color, width, dash } = stroke;
+      const { color, lineWidth: width, dash } = stroke;
       ctx.strokeStyle = color;
       ctx.lineWidth = width;
       ctx.setLineDash(dash || []);

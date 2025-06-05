@@ -1,9 +1,3 @@
-import type {
-  Coordinate,
-  GradientStop,
-  ShapeFactory,
-  TextAreaNoLocation,
-} from '@shape/types';
 import { drawLineWithCtx } from './draw';
 import { lineHitbox, lineEfficientHitbox, getLineBoundingBox } from './hitbox';
 import {
@@ -15,36 +9,31 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
+import type { Coordinate, DashPattern } from '@shape/types/utility';
+import type { ShapeFactory } from '@shape/types';
+import type { FillColor, FillGradient, LineWidth, TextArea } from '@shape/types/schema';
+import { BACKGROUND_COLOR_DEFAULTS, LINE_WIDTH_DEFAULTS } from '@shape/defaults/schema';
 
-export type LineSchema = {
+export type LineSchema = LineWidth & TextArea & FillColor & FillGradient & {
   start: Coordinate;
   end: Coordinate;
-
-  width?: number;
-  textArea?: TextAreaNoLocation;
   /**
    * offsetFromCenter is used to position text. By default, text is centered on the line.
    * If -10, text will be on the line but 10 units towards the start.
    * If 10, text will be on the line but 10 units away from the start.
    */
   textOffsetFromCenter?: number;
-  color?: string;
-  /**
-   * dash: [dashLength, gapLength]
-   */
-  dash?: [number, number];
-  gradientStops?: readonly GradientStop[];
+  dash?: DashPattern;
 };
 
 export const LINE_SCHEMA_DEFAULTS = {
-  width: 10,
+  ...LINE_WIDTH_DEFAULTS,
+  ...BACKGROUND_COLOR_DEFAULTS,
   textOffsetFromCenter: 0,
-  color: 'black',
-  gradientStops: [] as LineSchema['gradientStops'],
-} as const;
+} as const satisfies Partial<LineSchema>;
 
 export const line: ShapeFactory<LineSchema> = (options) => {
-  if (options.width && options.width < 0) {
+  if (options.lineWidth && options.lineWidth < 0) {
     throw new Error('lineWidth must be positive');
   }
 

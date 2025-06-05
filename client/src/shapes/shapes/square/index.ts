@@ -1,22 +1,13 @@
-import type {
-  Coordinate,
-  ShapeFactory,
-  Stroke,
-  TextAreaNoLocation,
-} from '@shape/types';
-import { RECT_SCHEMA_DEFAULTS, rect } from '@shape/shapes/rect';
+import { RECT_SCHEMA_DEFAULTS, rect, type RectSchema } from '@shape/shapes/rect';
+import type { ShapeFactory } from '@shape/types';
 
-export type SquareSchema = {
-  at: Coordinate;
+export type SquareSchema = Omit<RectSchema, 'width' | 'height'> & {
   size: number;
-  color?: string;
-  stroke?: Stroke;
-  textArea?: TextAreaNoLocation;
-  borderRadius?: number;
-  rotation?: number;
 };
 
-export const SQUARE_SCHEMA_DEFAULTS = RECT_SCHEMA_DEFAULTS;
+export const SQUARE_SCHEMA_DEFAULTS = {
+  ...RECT_SCHEMA_DEFAULTS
+} as const satisfies Partial<SquareSchema>
 
 export const square: ShapeFactory<SquareSchema> = (options) => ({
   ...rect({

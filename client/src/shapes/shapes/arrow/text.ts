@@ -4,7 +4,7 @@ import {
   getTextAreaDimension,
   getFullTextArea,
 } from '@shape/text';
-import { type Coordinate } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 import { getTextAreaLocationOnLine } from '@shape/shapes/line/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import type { ArrowSchema } from '.';
@@ -23,7 +23,7 @@ export const arrowTextHitbox = (arrow: ArrowSchema) => {
   const location = getTextAreaLocationOnArrow(arrow);
   const fullTextArea = getFullTextArea(arrow.textArea, location);
 
-  const { width, height } = getTextAreaDimension(fullTextArea.text);
+  const { width, height } = getTextAreaDimension(fullTextArea.textBlock);
 
   const isInText = rectHitbox({
     at: fullTextArea.at,

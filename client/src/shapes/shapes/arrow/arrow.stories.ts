@@ -4,7 +4,7 @@ import { arrow, ARROW_SCHEMA_DEFAULTS, type ArrowSchema } from '.';
 
 const Arrow = createDocComponent<ArrowSchema>(arrow)
 
-const meta: Meta<typeof Arrow> = {
+const meta = {
   title: 'Shapes/Arrow',
   component: Arrow,
   args: {
@@ -13,11 +13,11 @@ const meta: Meta<typeof Arrow> = {
     end: { x: 200, y: 60 },
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Arrow>
 
 export default meta;
 
-type Story = StoryObj<typeof Arrow>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, text, colorGradient } = DEFAULT_STORIES;
 
@@ -41,6 +41,6 @@ export const Dashed: Story = {
 
 export const Width: Story = {
   args: {
-    width: 20,
+    lineWidth: 20,
   }
 }

@@ -1,16 +1,18 @@
 import { onMounted, defineComponent, h, watch } from "vue";
 import { cross, rect, square } from "@shapes";
-import type { BoundingBox, Coordinate, Location, ShapeFactory } from "./types";
 import type { SquareSchema } from "./shapes/square";
 import type { CrossSchema } from "./shapes/cross";
 import { getCtx } from "@utils/ctx";
 import { generateId } from "@utils/id";
 import type { RectSchema } from "./shapes/rect";
+import type { BoundingBox, Coordinate } from "./types/utility";
+import type { ShapeFactory } from "./types";
+import type { AnchorPoint } from "./types/schema";
 
 const atMarkerSchema = (at: Coordinate): CrossSchema => ({
   at,
   size: 5,
-  color: 'red',
+  fillColor: 'red',
   lineWidth: 1,
 })
 
@@ -20,10 +22,10 @@ const boundingBoxMarkerSchema = (bb: BoundingBox): RectSchema => ({
   at: bb.at,
   width: bb.width,
   height: bb.height,
-  color: 'transparent',
+  fillColor: 'transparent',
   stroke: {
     color: 'green',
-    width: 1,
+    lineWidth: 1,
   }
 })
 
@@ -32,10 +34,10 @@ const boundingBoxMarker = (bb: BoundingBox) => rect(boundingBoxMarkerSchema(bb))
 const measuringStickSchema: SquareSchema = {
   at: { x: 0, y: 0 },
   size: 1008,
-  color: 'transparent',
+  fillColor: 'transparent',
   stroke: {
     color: 'black',
-    width: 4,
+    lineWidth: 4,
     dash: [10, 10]
   },
 }
@@ -54,23 +56,6 @@ export const DOC_MARKING_DEFAULTS: DocMarkingOptions = {
   showMeasuringStick: false,
 }
 
-export const useShapePreview = <T extends Location>(
-  canvas: HTMLCanvasElement | undefined,
-  factory: ShapeFactory<T>,
-  schema: T,
-  options: DocMarkingOptions,
-) => {
-  const drawPreview = () => {
-    const ctx = getCtx(canvas);
-    const { showMeasuringStick, showAtMarker } = options
-    if (showMeasuringStick) measuringStick.draw(ctx);
-    factory(schema).draw(ctx);
-    if (showAtMarker) atMarker(schema.at).draw(ctx);
-  }
-
-  onMounted(drawPreview);
-}
-
 export const DEFAULT_STORIES = {
   basic: {},
   markings: {
@@ -83,7 +68,7 @@ export const DEFAULT_STORIES = {
   text: {
     args: {
       textArea: {
-        text: {
+        textBlock: {
           content: 'Hi!',
           color: 'white',
         },
@@ -95,7 +80,7 @@ export const DEFAULT_STORIES = {
     args: {
       stroke: {
         color: 'blue',
-        width: 10,
+        lineWidth: 10,
       }
     }
   },
@@ -106,7 +91,7 @@ export const DEFAULT_STORIES = {
   },
   colorGradient: {
     args: {
-      gradientStops: [
+      fillGradient: [
         {
           color: 'red',
           offset: 0,
@@ -138,7 +123,7 @@ export const createDocComponent = <T extends Record<string, unknown>>(factory: S
         if (showMeasuringStick) measuringStick.draw(ctx);
         const shape = factory(props);
         shape.draw(ctx)
-        if (showAtMarker && 'at' in props) atMarker(props.at as Location['at']).draw(ctx);
+        if (showAtMarker && 'at' in props) atMarker(props.at as AnchorPoint['at']).draw(ctx);
         if (showBoundingBoxMarker) boundingBoxMarker(shape.getBoundingBox()).draw(ctx)
       }
 

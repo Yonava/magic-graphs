@@ -2,7 +2,7 @@ import { onUnmounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import type { Aggregator, UpdateAggregator } from '@graph/types';
 import type { Emitter as GraphEventEmitter } from '@graph/events';
-import type { Coordinate } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 
 export type UseAggregatorOptions = {
   canvas: Ref<HTMLCanvasElement | null | undefined>;

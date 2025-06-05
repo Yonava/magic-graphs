@@ -1,11 +1,12 @@
 import { computed, ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import colors from '@colors';
-import type { Coordinate, Shape } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 import { circle } from '@shapes';
 import type { CircleSchema } from '@shape/shapes/circle';
 import { getCtx } from '@utils/ctx';
 import { debounce } from '@utils/debounce';
+import type { Shape } from '@shape/types';
 
 /**
  * the color when the point is not hitting any shape
@@ -86,11 +87,11 @@ export const useHeatmap = (
     const circleSchema: CircleSchema = {
       at: coords,
       radius: 2,
-      color: MISS_COLOR + opacityStr.value,
+      fillColor: MISS_COLOR + opacityStr.value,
     };
 
-    if (textHit) circleSchema.color = TEXT_HIT_COLOR + opacityStr.value;
-    else if (shapeHit) circleSchema.color = HIT_COLOR + opacityStr.value;
+    if (textHit) circleSchema.fillColor = TEXT_HIT_COLOR + opacityStr.value;
+    else if (shapeHit) circleSchema.fillColor = HIT_COLOR + opacityStr.value;
 
     const ctx = getCtx(canvas);
     circle(circleSchema).draw(ctx);

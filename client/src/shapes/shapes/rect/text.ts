@@ -1,5 +1,3 @@
-import { TEXT_DEFAULTS } from '@shape/types';
-import type { Coordinate } from '@shape/types';
 import type { RectSchema } from '@shape/shapes/rect';
 import {
   drawTextWithTextArea,
@@ -9,16 +7,18 @@ import {
 } from '@shape/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { RECT_SCHEMA_DEFAULTS } from '.';
+import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults/utility';
+import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnRect = (rect: RectSchema) => {
   const { at, width, height, textArea } = { ...RECT_SCHEMA_DEFAULTS, ...rect };
 
   if (!textArea) throw new Error('no text area provided');
 
-  const { text } = textArea;
+  const { textBlock: text } = textArea;
 
   const { fontSize } = {
-    ...TEXT_DEFAULTS,
+    ...TEXT_BLOCK_DEFAULTS,
     ...text,
   };
 
@@ -43,7 +43,7 @@ export const rectTextHitbox = (rect: RectSchema) => {
   const location = getTextAreaLocationOnRect(rect);
   const fullTextArea = getFullTextArea(rect.textArea, location);
 
-  const { width, height } = getTextAreaDimension(fullTextArea.text);
+  const { width, height } = getTextAreaDimension(fullTextArea.textBlock);
 
   const isInTextHitbox = rectHitbox({
     at: fullTextArea.at,

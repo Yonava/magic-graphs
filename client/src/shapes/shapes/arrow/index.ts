@@ -1,6 +1,7 @@
 import { LINE_SCHEMA_DEFAULTS } from '@shape/shapes/line';
 import type { LineSchema } from '@shape/shapes/line';
-import type { Shape, Coordinate, ShapeFactory } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
+import type { Shape, ShapeFactory } from '@shape/types'
 import { drawArrowWithCtx } from './draw';
 import {
   arrowHitbox,
@@ -29,10 +30,10 @@ export type ArrowSchema = LineSchema & {
 export const ARROW_SCHEMA_DEFAULTS = {
   ...LINE_SCHEMA_DEFAULTS,
   arrowHeadSize: getArrowHeadSize,
-} as const;
+} as const satisfies Partial<ArrowSchema>
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {
-  if (options.width && options.width < 0) {
+  if (options.lineWidth && options.lineWidth < 0) {
     throw new Error('width must be positive');
   }
 

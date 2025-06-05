@@ -4,7 +4,7 @@ import { UTURN_SCHEMA_DEFAULTS } from '.';
 import type { UTurnSchema } from '.';
 import { drawArrowWithCtx } from '@shape/shapes/arrow/draw';
 import { getColorAtPercentage } from '@shape/helpers';
-import type { GradientStop } from '@shape/types';
+import type { GradientStop } from '@shape/types/utility';
 
 export const drawUTurnWithCtx = (options: UTurnSchema) => {
   const {
@@ -14,10 +14,10 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
     downDistance,
     rotation,
     lineWidth,
-    color,
+    fillColor: color,
     arrowHeadShape,
     arrowHeadSize,
-    gradientStops,
+    fillGradient,
   } = {
     ...UTURN_SCHEMA_DEFAULTS,
     ...options,
@@ -72,20 +72,20 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
   let circleGradient: GradientStop[] = [];
   let arrowGradient: GradientStop[] = [];
 
-  if (gradientStops.length >= 2) {
+  if (fillGradient && fillGradient.length >= 2) {
     const totalLength = upDistance + downDistance + Math.PI * spacing;
 
     const gradientColorAtCircleStart = getColorAtPercentage(
-      gradientStops,
+      fillGradient,
       upDistance / totalLength,
     );
     const gradientColorAtCircleEnd = getColorAtPercentage(
-      gradientStops,
+      fillGradient,
       (totalLength - downDistance) / totalLength,
     );
 
     lineGradient = [
-      ...gradientStops.filter(
+      ...fillGradient.filter(
         (stop) => stop.offset <= upDistance / totalLength,
       ),
       { offset: 1, color: gradientColorAtCircleStart },
@@ -93,7 +93,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
 
     circleGradient = [
       { offset: 0, color: gradientColorAtCircleStart },
-      ...gradientStops
+      ...fillGradient
         .filter(
           (stop) =>
             stop.offset >= upDistance / totalLength &&
@@ -110,7 +110,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
 
     arrowGradient = [
       { offset: 0, color: gradientColorAtCircleEnd },
-      ...gradientStops
+      ...fillGradient
         .filter(
           (stop) => stop.offset >= (totalLength - downDistance) / totalLength,
         )
@@ -126,19 +126,19 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
   const drawLongShaft = drawLineWithCtx({
     start: longLegFrom,
     end: longLegTo,
-    width: lineWidth,
-    color,
-    gradientStops: lineGradient,
+    lineWidth: lineWidth,
+    fillColor: color,
+    fillGradient: lineGradient,
   });
 
   const drawArrow = drawArrowWithCtx({
     start: shortLegFrom,
     end: shortLegTo,
-    width: lineWidth,
-    color,
+    lineWidth: lineWidth,
+    fillColor: color,
     arrowHeadSize,
     arrowHeadShape,
-    gradientStops: arrowGradient,
+    fillGradient: arrowGradient,
   });
 
   return (ctx: CanvasRenderingContext2D) => {

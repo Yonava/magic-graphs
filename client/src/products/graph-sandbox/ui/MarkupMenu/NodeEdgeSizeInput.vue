@@ -30,9 +30,13 @@
 
   const activeSize = ref(getSize());
 
-  const setActiveSize = (value: MarkupSize) => {
+  const setActiveSize = (value: MarkupSize | undefined) => {
     for (const id of props.graph.focus.focusedItemIds.value) {
-      props.sizeMap.set(id, value);
+      if (value) {
+        props.sizeMap.set(id, value);
+      } else {
+        props.sizeMap.delete(id);
+      }
     }
     activeSize.value = value;
     props.graph.marquee.updateEncapsulatedNodeBox();

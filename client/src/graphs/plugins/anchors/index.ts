@@ -6,6 +6,8 @@ import type { SchemaItem, GNode } from '@graph/types';
 import type { GraphFocusPlugin } from '@graph/plugins/focus';
 import type { NodeAnchor } from '@graph/plugins/anchors/types';
 import { MOUSE_BUTTONS } from "@graph/global";
+import type { CircleSchema } from '@shape/shapes/circle';
+import type { WithId } from '@shape/cacher';
 
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
@@ -64,11 +66,11 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
         id === hoveredNodeAnchorId.value ||
         id === currentDraggingAnchor.value?.id;
 
-      const nodeAnchorSchema = {
+      const nodeAnchorSchema: WithId<CircleSchema> = {
         id,
         at: { x, y },
         radius,
-        color: isHoveredOrDragged ? focusColor : color,
+        fillColor: isHoveredOrDragged ? focusColor : color,
       };
 
       if (
@@ -175,8 +177,8 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
       id: 'link-preview',
       start,
       end,
-      color,
-      width,
+      fillColor: color,
+      lineWidth: width,
     });
 
     const schema: Omit<SchemaItem, "priority"> = {

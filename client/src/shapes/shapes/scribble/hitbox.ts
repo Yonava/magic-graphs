@@ -1,4 +1,4 @@
-import type { Coordinate, BoundingBox } from '@shape/types';
+import type { Coordinate, BoundingBox } from '@shape/types/utility';
 import { SCRIBBLE_SCHEMA_DEFAULTS, type ScribbleSchema } from '.';
 import { rectEfficientHitbox, rectHitbox } from '@shape/shapes/rect/hitbox';
 import { lineEfficientHitbox } from '@shape/shapes/line/hitbox';

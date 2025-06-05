@@ -7,7 +7,7 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
     at: crossAt,
     size,
     rotation,
-    color,
+    fillColor: color,
     lineWidth,
     borderRadius,
   } = {
@@ -22,7 +22,7 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
       at: { x: crossAt.x - halfLineWidth, y: crossAt.y - size / 2 },
       width: lineWidth,
       height: size,
-      color,
+      fillColor: color,
       borderRadius,
       rotation,
     })(ctx);
@@ -30,7 +30,7 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
       at: { x: crossAt.x - size / 2, y: crossAt.y - halfLineWidth },
       width: size,
       height: lineWidth,
-      color,
+      fillColor: color,
       borderRadius,
       rotation,
     })(ctx);

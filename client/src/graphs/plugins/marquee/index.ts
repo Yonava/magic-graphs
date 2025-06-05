@@ -3,7 +3,7 @@ import type { Aggregator } from '@graph/types';
 import { useTheme } from '@graph/themes/useTheme';
 import { MARQUEE_CONSTANTS } from '@graph/plugins/marquee/types';
 import colors from '@colors';
-import type { BoundingBox, Coordinate } from '@shape/types';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import type { BaseGraph } from '@graph/base';
 import type { GraphMouseEvent } from '@graph/base/types';
 import type { GraphFocusPlugin } from '../focus';
@@ -137,10 +137,10 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const shape = graph.shapes.rect({
       id,
       ...normalizeBoundingBox(box),
-      color: graph.getTheme("marqueeSelectionBoxColor"),
+      fillColor: graph.getTheme("marqueeSelectionBoxColor"),
       stroke: {
         color: graph.getTheme("marqueeSelectionBoxBorderColor"),
-        width: 2,
+        lineWidth: 2,
       },
     });
 
@@ -168,10 +168,10 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const shape = graph.shapes.rect({
       id,
       ...box,
-      color: graph.getTheme("marqueeEncapsulatedNodeBoxColor"),
+      fillColor: graph.getTheme("marqueeEncapsulatedNodeBoxColor"),
       stroke: {
         color: graph.getTheme("marqueeEncapsulatedNodeBoxBorderColor"),
-        width: 2,
+        lineWidth: 2,
       },
     });
 

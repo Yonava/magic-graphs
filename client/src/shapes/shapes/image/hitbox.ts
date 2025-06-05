@@ -1,4 +1,4 @@
-import type { Coordinate, BoundingBox } from '@shape/types';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import { IMAGE_SCHEMA_DEFAULTS, type ImageSchema } from '.';
 import {
   rectHitbox,

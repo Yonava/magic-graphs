@@ -4,7 +4,7 @@ import type { RectSchema } from '.';
 
 export const drawRectWithCtx =
   (options: RectSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { at, width, height, color, borderRadius, rotation, stroke } = {
+    const { at, width, height, fillColor: color, borderRadius, rotation, stroke } = {
       ...RECT_SCHEMA_DEFAULTS,
       ...options,
     };
@@ -79,7 +79,7 @@ export const drawRectWithCtx =
     }
 
     if (stroke) {
-      const { color, width, dash } = stroke;
+      const { color, lineWidth: width, dash } = stroke;
       ctx.strokeStyle = color;
       ctx.lineWidth = width;
       ctx.setLineDash(dash || []);

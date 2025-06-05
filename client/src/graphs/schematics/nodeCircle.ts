@@ -43,15 +43,15 @@ const animateInCircleText =
 
       const interpolateFontSize = interpolate(
         0,
-        circleSchema.textArea.text.fontSize,
+        circleSchema.textArea.textBlock.fontSize,
       );
 
       return {
         ...circleSchema,
         textArea: {
           ...circleSchema.textArea,
-          text: {
-            ...circleSchema.textArea.text,
+          textBlock: {
+            ...circleSchema.textArea.textBlock,
             fontSize: interpolateFontSize(percentage),
           },
         },
@@ -66,7 +66,7 @@ const animateOutCircleText =
       const percentage = EASING(mapper(progress));
 
       const interpolateFontSize = interpolate(
-        circleSchema.textArea.text.fontSize,
+        circleSchema.textArea.textBlock.fontSize,
         0,
       );
 
@@ -74,8 +74,8 @@ const animateOutCircleText =
         ...circleSchema,
         textArea: {
           ...circleSchema.textArea,
-          text: {
-            ...circleSchema.textArea.text,
+          textBlock: {
+            ...circleSchema.textArea.textBlock,
             fontSize: interpolateFontSize(percentage),
           },
         },

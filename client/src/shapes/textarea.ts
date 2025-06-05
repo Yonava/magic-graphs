@@ -1,20 +1,20 @@
 import type { DeepRequired } from 'ts-essentials';
-import type { TextArea } from '@shape/types';
 import { getCanvasScale } from '@utils/components/useCanvasCoord';
 import { rectHitbox } from './shapes/rect/hitbox';
 import { useTextDimensionOnCanvas } from './useTextDimensionsOnCanvas';
 import { HORIZONTAL_TEXT_PADDING } from './text';
+import type { TextAreaWithAnchorPoint } from './types/utility';
 
 export const engageTextarea = (
   ctx: CanvasRenderingContext2D,
-  textArea: DeepRequired<TextArea>,
+  textArea: DeepRequired<TextAreaWithAnchorPoint>,
   handler: (str: string) => void,
 ) => {
-  const { at, text, activeColor: bgColor } = textArea;
+  const { at, textBlock, activeColor: bgColor } = textArea;
 
   const { getTextDimensionsOnCanvas } = useTextDimensionOnCanvas();
 
-  const { width, descent } = getTextDimensionsOnCanvas(text);
+  const { width, descent } = getTextDimensionsOnCanvas(textBlock);
 
   const scale = getCanvasScale(ctx);
   const transform = ctx.getTransform();
@@ -23,7 +23,7 @@ export const engageTextarea = (
   const transformedX = transform.a * at.x + transform.c * at.y + transform.e;
   const transformedY = transform.b * at.x + transform.d * at.y + transform.f;
 
-  const { color: textColor, content, fontSize, fontWeight } = text;
+  const { color: textColor, content, fontSize, fontWeight } = textBlock;
 
   const inputWidth = Math.round(
     Math.max(fontSize * 2, width + HORIZONTAL_TEXT_PADDING) * scale,

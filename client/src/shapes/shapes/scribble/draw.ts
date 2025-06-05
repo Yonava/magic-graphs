@@ -4,7 +4,7 @@ import { circle } from '@shape/shapes/circle';
 
 export const drawScribbleWithCtx =
   (scribble: ScribbleSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { type, color, brushWeight, points } = {
+    const { type, fillColor: color, brushWeight, points } = {
       ...SCRIBBLE_SCHEMA_DEFAULTS,
       ...scribble,
     };
@@ -14,7 +14,7 @@ export const drawScribbleWithCtx =
         circle({
           at: points[0],
           radius: brushWeight / 2,
-          color,
+          fillColor: color,
         }).draw(ctx);
         return;
       }

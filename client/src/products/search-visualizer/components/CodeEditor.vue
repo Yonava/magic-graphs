@@ -3,22 +3,22 @@
   import { Codemirror } from 'vue-codemirror';
   import { javascript } from '@codemirror/lang-javascript';
   import { oneDark } from '@codemirror/theme-one-dark';
-  import type { EditorState } from '@codemirror/state';
-  import readOnlyRangesExtension from 'codemirror-readonly-ranges';
+  // import type { EditorState } from '@codemirror/state';
+  // import readOnlyRangesExtension from 'codemirror-readonly-ranges';
   import { CODE_MIRROR_DARK_BACKGROUND } from '../colors';
 
   const code = defineModel<string>();
 
-  const getReadOnlyRanges = (targetState: EditorState) => [
-    {
-      from: undefined,
-      to: targetState.doc.line(1).to,
-    },
-    {
-      from: targetState.doc.line(targetState.doc.lines - 1).to,
-      to: undefined,
-    },
-  ];
+  // const getReadOnlyRanges = (targetState: EditorState) => [
+  //   {
+  //     from: undefined,
+  //     to: targetState.doc.line(1).to,
+  //   },
+  //   {
+  //     from: targetState.doc.line(targetState.doc.lines - 1).to,
+  //     to: undefined,
+  //   },
+  // ];
 
   const extensions = computed(() => [
     /**
@@ -32,7 +32,7 @@
     /**
      * makes certain lines read-only
      */
-    readOnlyRangesExtension(getReadOnlyRanges),
+    // readOnlyRangesExtension(getReadOnlyRanges),
   ]);
 </script>
 

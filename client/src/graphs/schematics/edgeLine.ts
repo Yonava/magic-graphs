@@ -17,10 +17,10 @@ const animateInLineBody =
       const mapper = getMapper(...SEQ.IN.BODY);
       const percentage = EASING(mapper(progress));
 
-      const interpolateWidth = interpolate(0, lineSchema.width);
+      const interpolateWidth = interpolate(0, lineSchema.lineWidth);
 
       return {
-        width: interpolateWidth(percentage),
+        lineWidth: interpolateWidth(percentage),
       };
     };
 
@@ -30,10 +30,10 @@ const animateOutLineBody =
       const mapper = getMapper(0, 1);
       const percentage = EASING(mapper(progress));
 
-      const interpolateWidth = interpolate(lineSchema.width, 0);
+      const interpolateWidth = interpolate(lineSchema.lineWidth, 0);
 
       return {
-        width: interpolateWidth(percentage),
+        lineWidth: interpolateWidth(percentage),
       };
     };
 

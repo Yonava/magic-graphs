@@ -100,7 +100,7 @@
       cross({
         at: { x, y },
         size: 2,
-        color: props.patternColor,
+        fillColor: props.patternColor,
       }).draw(ctx);
     };
 

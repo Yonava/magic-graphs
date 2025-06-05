@@ -4,7 +4,7 @@ import { scribble, SCRIBBLE_SCHEMA_DEFAULTS, type ScribbleSchema } from '.';
 
 const Scribble = createDocComponent<ScribbleSchema>(scribble)
 
-const meta: Meta<typeof Scribble> = {
+const meta = {
   title: 'Shapes/Scribble',
   component: Scribble,
   args: {
@@ -20,11 +20,11 @@ const meta: Meta<typeof Scribble> = {
     ],
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Scribble>
 
 export default meta;
 
-type Story = StoryObj<typeof Scribble>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings } = DEFAULT_STORIES;
 

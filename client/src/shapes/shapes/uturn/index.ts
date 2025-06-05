@@ -1,10 +1,3 @@
-import type {
-  Coordinate,
-  GradientStop,
-  Shape,
-  ShapeFactory,
-  TextAreaNoLocation,
-} from '@shape/types';
 import { drawUTurnWithCtx } from './draw';
 import {
   uturnHitbox,
@@ -21,30 +14,42 @@ import {
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 import { getArrowHeadSize } from '@shape/helpers';
+import type { Coordinate } from '@shape/types/utility';
+import type { Shape, ShapeFactory } from '@shape/types';
+import { BACKGROUND_COLOR_DEFAULTS, LINE_WIDTH_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
+import type {
+  AnchorPoint,
+  FillColor,
+  FillGradient,
+  LineWidth,
+  Rotation,
+  TextArea
+} from '@shape/types/schema';
 
-export type UTurnSchema = {
-  at: Coordinate;
-  spacing: number;
-  upDistance: number;
-  downDistance: number;
-  rotation: number;
-  lineWidth: number;
-
-  color?: string;
-  textArea?: TextAreaNoLocation;
-  arrowHeadSize?: (width: number) => {
-    arrowHeadHeight: number;
-    perpLineLength: number;
+export type UTurnSchema =
+  AnchorPoint &
+  Rotation &
+  LineWidth &
+  FillColor &
+  TextArea &
+  FillGradient & {
+    spacing: number;
+    upDistance: number;
+    downDistance: number;
+    arrowHeadSize?: (width: number) => {
+      arrowHeadHeight: number;
+      perpLineLength: number;
+    };
+    arrowHeadShape?: (at: Coordinate, height: number, width: number) => Shape;
   };
-  arrowHeadShape?: (at: Coordinate, height: number, width: number) => Shape;
-  gradientStops?: readonly GradientStop[];
-};
 
 export const UTURN_SCHEMA_DEFAULTS = {
-  color: 'black',
+  ...BACKGROUND_COLOR_DEFAULTS,
+  ...ROTATION_DEFAULTS,
+  ...LINE_WIDTH_DEFAULTS,
+  ...ROTATION_DEFAULTS,
   arrowHeadSize: getArrowHeadSize,
-  gradientStops: [] as readonly GradientStop[],
-} as const;
+} as const satisfies Partial<UTurnSchema>
 
 export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   if (options.downDistance < 0) {

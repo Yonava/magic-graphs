@@ -1,23 +1,13 @@
-import type {
-  Coordinate,
-  Stroke,
-  TextAreaNoLocation,
-  ShapeFactory,
-} from '@shape/types';
-import { ELLIPSE_SCHEMA_DEFAULTS, ellipse } from '../ellipse';
+import { ELLIPSE_SCHEMA_DEFAULTS, ellipse, type EllipseSchema } from '../ellipse';
+import type { ShapeFactory } from '@shape/types';
 
-export type CircleSchema = {
-  id?: string;
+export type CircleSchema = Omit<EllipseSchema, 'radiusX' | 'radiusY'> & {
+  radius: number
+}
 
-  at: Coordinate;
-  radius: number;
-
-  color?: string;
-  stroke?: Stroke;
-  textArea?: TextAreaNoLocation;
-};
-
-export const CIRCLE_SCHEMA_DEFAULTS = ELLIPSE_SCHEMA_DEFAULTS;
+export const CIRCLE_SCHEMA_DEFAULTS = {
+  ...ELLIPSE_SCHEMA_DEFAULTS,
+} as const satisfies Partial<CircleSchema>
 
 export const circle: ShapeFactory<CircleSchema> = (options) => ({
   ...ellipse({

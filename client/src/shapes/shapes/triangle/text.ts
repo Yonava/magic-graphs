@@ -1,5 +1,3 @@
-import { TEXT_DEFAULTS } from '@shape/types';
-import type { Coordinate } from '@shape/types';
 import type { TriangleSchema } from '@shape/shapes/triangle';
 import {
   drawTextWithTextArea,
@@ -9,6 +7,8 @@ import {
 } from '@shape/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { TRIANGLE_SCHEMA_DEFAULTS } from '.';
+import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults/utility';
+import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnTriangle = (triangle: TriangleSchema) => {
   const { pointA, pointB, pointC, textArea } = {
@@ -18,10 +18,10 @@ export const getTextAreaLocationOnTriangle = (triangle: TriangleSchema) => {
 
   if (!textArea) throw new Error('no text area provided');
 
-  const { text } = textArea;
+  const { textBlock: text } = textArea;
 
   const { fontSize } = {
-    ...TEXT_DEFAULTS,
+    ...TEXT_BLOCK_DEFAULTS,
     ...text,
   };
 
@@ -46,7 +46,7 @@ export const triangleTextHitbox = (triangle: TriangleSchema) => {
   const location = getTextAreaLocationOnTriangle(triangle);
   const fullTextArea = getFullTextArea(triangle.textArea, location);
 
-  const { width, height } = getTextAreaDimension(fullTextArea.text);
+  const { width, height } = getTextAreaDimension(fullTextArea.textBlock);
 
   const isInTextHitbox = rectHitbox({
     at: fullTextArea.at,

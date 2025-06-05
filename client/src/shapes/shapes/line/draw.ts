@@ -3,7 +3,7 @@ import type { LineSchema } from '.';
 
 export const drawLineWithCtx =
   (line: LineSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { start, end, width, color, dash, gradientStops } = {
+    const { start, end, lineWidth: width, fillColor: color, dash, fillGradient } = {
       ...LINE_SCHEMA_DEFAULTS,
       ...line,
     };
@@ -17,9 +17,9 @@ export const drawLineWithCtx =
     ctx.lineWidth = width;
     ctx.strokeStyle = color;
 
-    if (gradientStops && gradientStops.length >= 2) {
+    if (fillGradient && fillGradient.length >= 2) {
       const gradient = ctx.createLinearGradient(start.x, start.y, end.x, end.y);
-      gradientStops.forEach(({ offset, color }) => {
+      fillGradient.forEach(({ offset, color }) => {
         gradient.addColorStop(offset, color);
       });
       ctx.strokeStyle = gradient;
