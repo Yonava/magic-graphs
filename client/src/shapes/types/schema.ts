@@ -9,14 +9,10 @@ export type AnchorPoint = {
 
 export type LineWidth = {
   /**
-   * The visual thickness of the shape
+   * the visual thickness of the shape (in pixels)
    */
   lineWidth?: number
 }
-
-export const LINE_WIDTH_DEFAULTS = {
-  lineWidth: 10
-} as const satisfies LineWidth
 
 export type BackgroundColor = {
   /**
@@ -24,10 +20,6 @@ export type BackgroundColor = {
    */
   color?: string;
 }
-
-export const BACKGROUND_COLOR_DEFAULTS = {
-  color: 'black'
-} as const satisfies BackgroundColor
 
 export type DashPattern = {
   /**
@@ -43,12 +35,15 @@ export type Stroke = DashPattern & {
 
 export type Rotation = {
   /**
-   * the rotation of the shape in radians
+   * the rotation of the shape (in radians)
    */
   rotation?: number
-}
+};
 
 export type BorderRadius = {
+  /**
+   * the roundness of the shape's corners (in pixels)
+   */
   borderRadius?: number;
 }
 

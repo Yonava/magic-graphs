@@ -36,7 +36,6 @@ export const LINE_SCHEMA_DEFAULTS = {
   lineWidth: 10,
   textOffsetFromCenter: 0,
   color: 'black',
-  gradientStops: [] as LineSchema['gradientStops'],
 } as const;
 
 export const line: ShapeFactory<LineSchema> = (options) => {

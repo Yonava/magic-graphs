@@ -8,7 +8,7 @@ import { rotatePoint } from '@shape/helpers';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { UTURN_SCHEMA_DEFAULTS } from '.';
 import type { UTurnSchema } from '.';
-import { TEXT_DEFAULTS } from '@shape/defaults';
+import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults';
 import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnUTurn = (uturn: UTurnSchema) => {
@@ -19,10 +19,10 @@ export const getTextAreaLocationOnUTurn = (uturn: UTurnSchema) => {
 
   if (!textArea) throw new Error('no text area provided');
 
-  const { text } = textArea;
+  const { textBlock: text } = textArea;
 
   const { fontSize } = {
-    ...TEXT_DEFAULTS,
+    ...TEXT_BLOCK_DEFAULTS,
     ...text,
   };
 

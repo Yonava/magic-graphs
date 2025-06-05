@@ -6,7 +6,7 @@ import {
 } from '@shape/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { ELLIPSE_SCHEMA_DEFAULTS, type EllipseSchema } from '.';
-import { TEXT_DEFAULTS } from '@shape/defaults';
+import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults';
 import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnEllipse = (ellipse: EllipseSchema) => {
@@ -14,10 +14,10 @@ export const getTextAreaLocationOnEllipse = (ellipse: EllipseSchema) => {
 
   if (!textArea) throw new Error('no text area provided');
 
-  const { text } = textArea;
+  const { textBlock: text } = textArea;
 
   const { fontSize } = {
-    ...TEXT_DEFAULTS,
+    ...TEXT_BLOCK_DEFAULTS,
     ...text,
   };
 

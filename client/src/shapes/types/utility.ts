@@ -36,7 +36,7 @@ export type TextArea = {
   /**
    * the text areas inner text
    */
-  text: TextBlock;
+  textBlock: TextBlock;
   /**
    * the color of the text area
    */

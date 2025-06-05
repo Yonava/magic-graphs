@@ -33,7 +33,7 @@ export const collabTagShapes = (collaborator: Collaborator) => {
     color: collaboratorColor,
     borderRadius: 5,
     textArea: {
-      text: {
+      textBlock: {
         content: collaboratorName,
         color: colors.WHITE,
         fontSize: 14,

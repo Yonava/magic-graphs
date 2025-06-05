@@ -40,7 +40,7 @@ export const getNodeSchematic = (
       lineWidth: borderWidth,
     },
     textArea: {
-      text: {
+      textBlock: {
         content: text,
         fontSize: textSize,
         fontWeight: 'bold',
@@ -63,7 +63,7 @@ export const getNodeSchematic = (
       width: borderWidth,
     },
     textArea: {
-      text: {
+      textBlock: {
         content: text,
         fontSize: textSize,
         fontWeight: 'bold',

@@ -68,7 +68,7 @@ export const DEFAULT_STORIES = {
   text: {
     args: {
       textArea: {
-        text: {
+        textBlock: {
           content: 'Hi!',
           color: 'white',
         },
