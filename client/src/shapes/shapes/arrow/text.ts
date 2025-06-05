@@ -23,7 +23,7 @@ export const arrowTextHitbox = (arrow: ArrowSchema) => {
   const location = getTextAreaLocationOnArrow(arrow);
   const fullTextArea = getFullTextArea(arrow.textArea, location);
 
-  const { width, height } = getTextAreaDimension(fullTextArea.text);
+  const { width, height } = getTextAreaDimension(fullTextArea.textBlock);
 
   const isInText = rectHitbox({
     at: fullTextArea.at,

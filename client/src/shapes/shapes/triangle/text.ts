@@ -46,7 +46,7 @@ export const triangleTextHitbox = (triangle: TriangleSchema) => {
   const location = getTextAreaLocationOnTriangle(triangle);
   const fullTextArea = getFullTextArea(triangle.textArea, location);
 
-  const { width, height } = getTextAreaDimension(fullTextArea.text);
+  const { width, height } = getTextAreaDimension(fullTextArea.textBlock);
 
   const isInTextHitbox = rectHitbox({
     at: fullTextArea.at,

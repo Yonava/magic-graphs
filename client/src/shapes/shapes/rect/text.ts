@@ -43,7 +43,7 @@ export const rectTextHitbox = (rect: RectSchema) => {
   const location = getTextAreaLocationOnRect(rect);
   const fullTextArea = getFullTextArea(rect.textArea, location);
 
-  const { width, height } = getTextAreaDimension(fullTextArea.text);
+  const { width, height } = getTextAreaDimension(fullTextArea.textBlock);
 
   const isInTextHitbox = rectHitbox({
     at: fullTextArea.at,

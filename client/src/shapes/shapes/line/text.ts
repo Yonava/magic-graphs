@@ -52,7 +52,7 @@ export const lineTextHitbox = (line: LineSchema) => {
   const location = getTextAreaLocationOnLine(line);
   const fullTextArea = getFullTextArea(line.textArea, location);
 
-  const { width, height } = getTextAreaDimension(fullTextArea.text);
+  const { width, height } = getTextAreaDimension(fullTextArea.textBlock);
 
   const isInTextHitbox = rectHitbox({
     at: fullTextArea.at,

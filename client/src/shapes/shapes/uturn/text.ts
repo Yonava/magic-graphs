@@ -47,7 +47,7 @@ export const uturnTextHitbox = (uturn: UTurnSchema) => {
   const location = getTextAreaLocationOnUTurn(uturn);
   const fullTextArea = getFullTextArea(uturn.textArea, location);
 
-  const { width, height } = getTextAreaDimension(fullTextArea.text);
+  const { width, height } = getTextAreaDimension(fullTextArea.textBlock);
 
   const isInTextHitbox = rectHitbox({
     at: fullTextArea.at,

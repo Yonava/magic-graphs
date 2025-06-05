@@ -3,7 +3,7 @@ import type { TriangleSchema } from '.';
 
 export const drawTriangleWithCtx =
   (options: TriangleSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { pointA, pointB, pointC, fillColor: color, stroke, fillGradient: backgroundGradient } = {
+    const { pointA, pointB, pointC, fillColor: color, stroke, fillGradient } = {
       ...TRIANGLE_SCHEMA_DEFAULTS,
       ...options,
     };
@@ -13,7 +13,7 @@ export const drawTriangleWithCtx =
     ctx.lineTo(pointB.x, pointB.y);
     ctx.lineTo(pointC.x, pointC.y);
 
-    if (backgroundGradient && backgroundGradient.length >= 2) {
+    if (fillGradient && fillGradient.length >= 2) {
       const baseMidpoint = {
         x: (pointB.x + pointC.x) / 2,
         y: (pointB.y + pointC.y) / 2,
@@ -24,7 +24,7 @@ export const drawTriangleWithCtx =
         pointA.x,
         pointA.y,
       );
-      backgroundGradient.forEach(({ offset, color }) => {
+      fillGradient.forEach(({ offset, color }) => {
         gradient.addColorStop(offset, color);
       });
       ctx.fillStyle = gradient;
