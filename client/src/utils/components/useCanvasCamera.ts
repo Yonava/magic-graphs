@@ -1,5 +1,5 @@
 import { ref, computed, type Ref } from "vue";
-import type { Coordinate } from "@shape/types";
+import type { Coordinate } from "@shape/types/utility";
 import { MOUSE_BUTTONS } from "@graph/global";
 
 /**

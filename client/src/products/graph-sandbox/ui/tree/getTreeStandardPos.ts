@@ -1,6 +1,6 @@
 import type { GNode, Graph } from '@graph/types';
 import type { NodeDepth } from '@product/search-visualizer/useNodeDepth';
-import type { Coordinate } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 import { roundToNearestN } from '@utils/math';
 
 export const getTreeStandardPos = (
