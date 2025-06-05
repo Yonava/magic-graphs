@@ -91,7 +91,7 @@ export const DEFAULT_STORIES = {
   },
   colorGradient: {
     args: {
-      backgroundGradient: [
+      fillGradient: [
         {
           color: 'red',
           offset: 0,

@@ -1,6 +1,7 @@
 import { getCtx } from '@utils/ctx';
-import { TEXT_DEFAULTS, type Text } from './types';
 import { onUnmounted } from 'vue';
+import type { TextBlock } from './types/utility';
+import { TEXT_BLOCK_DEFAULTS } from './defaults/utility';
 
 const canvas = document.createElement('canvas');
 const ctx = getCtx(canvas);
@@ -12,9 +13,9 @@ export const useTextDimensionOnCanvas = () => {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
-  const getTextDimensionsOnCanvas = (text: Text) => {
+  const getTextDimensionsOnCanvas = (text: TextBlock) => {
     const { content, fontSize, fontWeight, fontFamily } = {
-      ...TEXT_DEFAULTS,
+      ...TEXT_BLOCK_DEFAULTS,
       ...text,
     };
 
