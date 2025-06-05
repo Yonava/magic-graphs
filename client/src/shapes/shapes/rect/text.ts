@@ -7,7 +7,7 @@ import {
 } from '@shape/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { RECT_SCHEMA_DEFAULTS } from '.';
-import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults';
+import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults/utility';
 import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnRect = (rect: RectSchema) => {

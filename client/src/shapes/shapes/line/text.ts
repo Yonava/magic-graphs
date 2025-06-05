@@ -8,7 +8,7 @@ import {
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { getAngle } from '@shape/helpers';
 import { LINE_SCHEMA_DEFAULTS } from '.';
-import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults';
+import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults/utility';
 import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnLine = (line: LineSchema) => {

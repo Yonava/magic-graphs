@@ -6,21 +6,19 @@ import {
   getScribbleBoundingBox,
 } from './hitbox';
 import type { ShapeFactory } from '@shape/types';
+import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
+import type { BackgroundColor } from '@shape/types/schema';
 
-export type ScribbleSchema = {
-  id?: string;
-
+export type ScribbleSchema = BackgroundColor & {
   type: 'draw' | 'erase';
   points: Coordinate[];
-
-  color?: string;
   brushWeight?: number;
 };
 
 export const SCRIBBLE_SCHEMA_DEFAULTS = {
-  color: 'black',
+  ...BACKGROUND_COLOR_DEFAULTS,
   brushWeight: 3,
-} as const;
+} as const satisfies Partial<ScribbleSchema>
 
 export const ERASER_BRUSH_WEIGHT = 50;
 

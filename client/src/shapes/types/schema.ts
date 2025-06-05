@@ -1,4 +1,9 @@
-import type { Coordinate, GradientStop } from "./utility";
+import type {
+  Coordinate,
+  GradientStop,
+  Stroke as StrokeDefinition,
+  TextArea as TextAreaDefinition,
+} from "./utility";
 
 export type AnchorPoint = {
   /**
@@ -14,24 +19,26 @@ export type LineWidth = {
   lineWidth?: number
 }
 
+export type Stroke = {
+  /**
+   * the border around the shape
+   */
+  stroke?: StrokeDefinition
+}
+
+export type TextArea = {
+  /**
+   * the text of the shape
+   */
+  textArea?: TextAreaDefinition
+}
+
 export type BackgroundColor = {
   /**
    * the background color of the shape
    */
   color?: string;
 }
-
-export type DashPattern = {
-  /**
-   * for dashed border: [dashLength, gapLength]
-   */
-  dash?: readonly [number, number];
-}
-
-export type Stroke = DashPattern & {
-  color: string;
-  lineWidth: number;
-};
 
 export type Rotation = {
   /**

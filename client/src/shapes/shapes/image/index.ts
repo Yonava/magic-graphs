@@ -15,26 +15,19 @@ import { RECT_SCHEMA_DEFAULTS } from '@shape/shapes/rect';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 import type { ShapeFactory } from '@shape/types';
-import type { Coordinate, TextArea } from '@shape/types/utility';
-import colors from '@utils/colors';
+import type { Coordinate } from '@shape/types/utility';
 import type { LoadImageOptions } from './cache';
+import type { AnchorPoint, Rotation, TextArea } from '@shape/types/schema';
 
-export type ImageSchema = Partial<LoadImageOptions> & {
-  at: Coordinate;
+export type ImageSchema = AnchorPoint & Rotation & TextArea & {
+  src: string;
   width: number;
   height: number;
-
-  src: string;
-
-  color?: string;
-  rotation?: number;
-  textArea?: TextArea;
-}
+} & Partial<LoadImageOptions>
 
 export const IMAGE_SCHEMA_DEFAULTS = {
-  ...RECT_SCHEMA_DEFAULTS,
-  color: colors.TRANSPARENT,
-} as const;
+  ...RECT_SCHEMA_DEFAULTS
+} as const satisfies Partial<ImageSchema>
 
 export const image: ShapeFactory<ImageSchema> = (options) => {
   if (options.width < 0 || options.height < 0) {

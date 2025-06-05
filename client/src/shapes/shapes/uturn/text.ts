@@ -8,7 +8,7 @@ import { rotatePoint } from '@shape/helpers';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { UTURN_SCHEMA_DEFAULTS } from '.';
 import type { UTurnSchema } from '.';
-import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults';
+import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults/utility';
 import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnUTurn = (uturn: UTurnSchema) => {

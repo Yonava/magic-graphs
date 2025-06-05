@@ -91,7 +91,7 @@ export const DEFAULT_STORIES = {
   },
   colorGradient: {
     args: {
-      gradientStops: [
+      backgroundGradient: [
         {
           color: 'red',
           offset: 0,

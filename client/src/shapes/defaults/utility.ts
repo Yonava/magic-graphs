@@ -1,8 +1,8 @@
-import type { TextArea, TextBlock } from "./types/utility";
+import type { TextArea, TextBlock } from "@shape/types/utility";
 
 export const TEXTAREA_DEFAULTS = {
   color: 'white',
-  // TODO - make active color depend on the color of the text area
+  // TODO - make default active color depend on the color of the text area
   activeColor: 'white',
 } as const satisfies Omit<TextArea, 'textBlock'>
 

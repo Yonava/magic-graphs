@@ -17,7 +17,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
     color,
     arrowHeadShape,
     arrowHeadSize,
-    gradientStops,
+    backgroundGradient,
   } = {
     ...UTURN_SCHEMA_DEFAULTS,
     ...options,
@@ -72,20 +72,20 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
   let circleGradient: GradientStop[] = [];
   let arrowGradient: GradientStop[] = [];
 
-  if (gradientStops.length >= 2) {
+  if (backgroundGradient && backgroundGradient.length >= 2) {
     const totalLength = upDistance + downDistance + Math.PI * spacing;
 
     const gradientColorAtCircleStart = getColorAtPercentage(
-      gradientStops,
+      backgroundGradient,
       upDistance / totalLength,
     );
     const gradientColorAtCircleEnd = getColorAtPercentage(
-      gradientStops,
+      backgroundGradient,
       (totalLength - downDistance) / totalLength,
     );
 
     lineGradient = [
-      ...gradientStops.filter(
+      ...backgroundGradient.filter(
         (stop) => stop.offset <= upDistance / totalLength,
       ),
       { offset: 1, color: gradientColorAtCircleStart },
@@ -93,7 +93,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
 
     circleGradient = [
       { offset: 0, color: gradientColorAtCircleStart },
-      ...gradientStops
+      ...backgroundGradient
         .filter(
           (stop) =>
             stop.offset >= upDistance / totalLength &&
@@ -110,7 +110,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
 
     arrowGradient = [
       { offset: 0, color: gradientColorAtCircleEnd },
-      ...gradientStops
+      ...backgroundGradient
         .filter(
           (stop) => stop.offset >= (totalLength - downDistance) / totalLength,
         )
@@ -128,7 +128,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
     end: longLegTo,
     lineWidth: lineWidth,
     color,
-    gradientStops: lineGradient,
+    backgroundGradient: lineGradient,
   });
 
   const drawArrow = drawArrowWithCtx({
@@ -138,7 +138,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
     color,
     arrowHeadSize,
     arrowHeadShape,
-    gradientStops: arrowGradient,
+    backgroundGradient: arrowGradient,
   });
 
   return (ctx: CanvasRenderingContext2D) => {

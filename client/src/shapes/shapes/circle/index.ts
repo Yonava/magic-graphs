@@ -5,7 +5,9 @@ export type CircleSchema = Omit<EllipseSchema, 'radiusX' | 'radiusY'> & {
   radius: number
 }
 
-export const CIRCLE_SCHEMA_DEFAULTS = ELLIPSE_SCHEMA_DEFAULTS;
+export const CIRCLE_SCHEMA_DEFAULTS = {
+  ...ELLIPSE_SCHEMA_DEFAULTS,
+} as const satisfies Partial<CircleSchema>
 
 export const circle: ShapeFactory<CircleSchema> = (options) => ({
   ...ellipse({

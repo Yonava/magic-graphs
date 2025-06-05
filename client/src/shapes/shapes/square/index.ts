@@ -5,7 +5,9 @@ export type SquareSchema = Omit<RectSchema, 'width' | 'height'> & {
   size: number;
 };
 
-export const SQUARE_SCHEMA_DEFAULTS = RECT_SCHEMA_DEFAULTS;
+export const SQUARE_SCHEMA_DEFAULTS = {
+  ...RECT_SCHEMA_DEFAULTS
+} as const satisfies Partial<SquareSchema>
 
 export const square: ShapeFactory<SquareSchema> = (options) => ({
   ...rect({

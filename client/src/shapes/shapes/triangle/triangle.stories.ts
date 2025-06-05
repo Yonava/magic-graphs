@@ -4,7 +4,7 @@ import { triangle, TRIANGLE_SCHEMA_DEFAULTS, type TriangleSchema } from '.';
 
 const Triangle = createDocComponent<TriangleSchema>(triangle)
 
-const meta: Meta<typeof Triangle> = {
+const meta = {
   title: 'Shapes/Triangle',
   component: Triangle,
   args: {
@@ -14,11 +14,11 @@ const meta: Meta<typeof Triangle> = {
     pointC: { x: 160, y: 100 },
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Triangle>
 
 export default meta;
 
-type Story = StoryObj<typeof Triangle>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, text, stroke, colorGradient } = DEFAULT_STORIES;
 

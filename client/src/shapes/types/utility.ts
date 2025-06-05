@@ -61,3 +61,14 @@ export type GradientStop = {
    */
   color: string;
 };
+
+/**
+ * for dashed border: [dashLength, gapLength]
+ */
+export type DashPattern = readonly [number, number];
+
+export type Stroke = {
+  color: string;
+  lineWidth: number;
+  dash?: DashPattern;
+};

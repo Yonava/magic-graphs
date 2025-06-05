@@ -1,13 +1,16 @@
 import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
 import { lineHitbox } from '@shape/shapes/line/hitbox';
-import type { UTurnSchema } from '.';
+import { UTURN_SCHEMA_DEFAULTS, type UTurnSchema } from '.';
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import { arrowHitbox } from '@shape/shapes/arrow/hitbox';
 import { circle } from '@shape/shapes/circle';
 
 export const uturnHitbox = (uturn: UTurnSchema) => {
-  const { spacing, at, downDistance, upDistance, lineWidth, rotation } = uturn;
+  const { spacing, at, downDistance, upDistance, lineWidth, rotation } = {
+    ...UTURN_SCHEMA_DEFAULTS,
+    ...uturn,
+  };
 
   const longLegFrom = rotatePoint(
     {
@@ -74,7 +77,10 @@ export const uturnHitbox = (uturn: UTurnSchema) => {
 };
 
 export const getUTurnBoundingBox = (uturn: UTurnSchema) => () => {
-  const { spacing, at, upDistance, rotation, lineWidth } = uturn;
+  const { spacing, at, upDistance, rotation, lineWidth } = {
+    ...UTURN_SCHEMA_DEFAULTS,
+    ...uturn,
+  };
 
   const end = rotatePoint(
     {

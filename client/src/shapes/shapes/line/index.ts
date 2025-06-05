@@ -9,34 +9,28 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
-import type { Coordinate, GradientStop, TextArea } from '@shape/types/utility';
+import type { Coordinate, DashPattern } from '@shape/types/utility';
 import type { ShapeFactory } from '@shape/types';
+import type { BackgroundColor, BackgroundGradient, LineWidth, TextArea } from '@shape/types/schema';
+import { BACKGROUND_COLOR_DEFAULTS, LINE_WIDTH_DEFAULTS } from '@shape/defaults/schema';
 
-export type LineSchema = {
+export type LineSchema = LineWidth & TextArea & BackgroundColor & BackgroundGradient & {
   start: Coordinate;
   end: Coordinate;
-
-  lineWidth?: number;
-  textArea?: TextArea;
   /**
    * offsetFromCenter is used to position text. By default, text is centered on the line.
    * If -10, text will be on the line but 10 units towards the start.
    * If 10, text will be on the line but 10 units away from the start.
    */
   textOffsetFromCenter?: number;
-  color?: string;
-  /**
-   * dash: [dashLength, gapLength]
-   */
-  dash?: [number, number];
-  gradientStops?: readonly GradientStop[];
+  dash?: DashPattern;
 };
 
 export const LINE_SCHEMA_DEFAULTS = {
-  lineWidth: 10,
+  ...LINE_WIDTH_DEFAULTS,
+  ...BACKGROUND_COLOR_DEFAULTS,
   textOffsetFromCenter: 0,
-  color: 'black',
-} as const;
+} as const satisfies Partial<LineSchema>;
 
 export const line: ShapeFactory<LineSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {

@@ -10,24 +10,20 @@ import {
   getTriangleBoundingBox,
 } from './hitbox';
 import { drawTriangleWithCtx } from './draw';
-import type { Coordinate, GradientStop, TextArea } from '@shape/types/utility';
-import type { Stroke } from '@shape/types/schema';
+import type { Coordinate } from '@shape/types/utility';
+import type { BackgroundColor, BackgroundGradient, Stroke, TextArea } from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
+import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 
-export type TriangleSchema = {
+export type TriangleSchema = BackgroundColor & Stroke & TextArea & BackgroundGradient & {
   pointA: Coordinate;
   pointB: Coordinate;
   pointC: Coordinate;
-
-  color?: string;
-  stroke?: Stroke;
-  textArea?: TextArea;
-  gradientStops?: readonly GradientStop[];
 };
 
 export const TRIANGLE_SCHEMA_DEFAULTS = {
-  color: 'black',
-} as const;
+  ...BACKGROUND_COLOR_DEFAULTS,
+} as const satisfies Partial<TriangleSchema>
 
 export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const drawShape = drawTriangleWithCtx(options);

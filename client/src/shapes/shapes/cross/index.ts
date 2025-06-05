@@ -4,7 +4,6 @@ import {
   getCrossBoundingBox,
 } from './hitbox';
 import { drawCrossWithCtx } from './draw';
-import { LINE_SCHEMA_DEFAULTS } from '@shape/shapes/line';
 import type { ShapeFactory } from '@shape/types';
 import type {
   AnchorPoint,
@@ -13,17 +12,18 @@ import type {
   LineWidth,
   Rotation,
 } from '@shape/types/schema';
+import { BACKGROUND_COLOR_DEFAULTS, BORDER_RADIUS_DEFAULTS, LINE_WIDTH_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
 
 export type CrossSchema = AnchorPoint & Rotation & LineWidth & BorderRadius & BackgroundColor & {
   size: number;
 };
 
 export const CROSS_SCHEMA_DEFAULTS = {
-  rotation: 0,
-  color: 'black',
-  lineWidth: LINE_SCHEMA_DEFAULTS.lineWidth,
-  borderRadius: 0,
-} as const;
+  ...ROTATION_DEFAULTS,
+  ...BACKGROUND_COLOR_DEFAULTS,
+  ...LINE_WIDTH_DEFAULTS,
+  ...BORDER_RADIUS_DEFAULTS
+} as const satisfies Partial<CrossSchema>
 
 export const cross: ShapeFactory<CrossSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {

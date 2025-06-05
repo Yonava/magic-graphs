@@ -30,7 +30,7 @@ export type ArrowSchema = LineSchema & {
 export const ARROW_SCHEMA_DEFAULTS = {
   ...LINE_SCHEMA_DEFAULTS,
   arrowHeadSize: getArrowHeadSize,
-} as const;
+} as const satisfies Partial<ArrowSchema>
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {

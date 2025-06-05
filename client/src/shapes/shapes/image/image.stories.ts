@@ -4,7 +4,7 @@ import { image, IMAGE_SCHEMA_DEFAULTS, type ImageSchema } from '.';
 
 const Image = createDocComponent<ImageSchema>(image)
 
-const meta: Meta<typeof Image> = {
+const meta = {
   title: 'Shapes/Image',
   component: Image,
   args: {
@@ -15,11 +15,11 @@ const meta: Meta<typeof Image> = {
     at: { x: 20, y: 20 },
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Image>
 
 export default meta;
 
-type Story = StoryObj<typeof Image>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, text, rotation } = DEFAULT_STORIES;
 
