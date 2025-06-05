@@ -137,7 +137,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const shape = graph.shapes.rect({
       id,
       ...normalizeBoundingBox(box),
-      color: graph.getTheme("marqueeSelectionBoxColor"),
+      fillColor: graph.getTheme("marqueeSelectionBoxColor"),
       stroke: {
         color: graph.getTheme("marqueeSelectionBoxBorderColor"),
         lineWidth: 2,
@@ -168,7 +168,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const shape = graph.shapes.rect({
       id,
       ...box,
-      color: graph.getTheme("marqueeEncapsulatedNodeBoxColor"),
+      fillColor: graph.getTheme("marqueeEncapsulatedNodeBoxColor"),
       stroke: {
         color: graph.getTheme("marqueeEncapsulatedNodeBoxBorderColor"),
         lineWidth: 2,

@@ -186,7 +186,7 @@ export const useAnnotations = (graph: BaseGraph) => {
         id: 'annotation-eraser-cursor',
         at: graph.graphAtMousePosition.value.coords,
         radius: ERASER_BRUSH_RADIUS,
-        color: colors.TRANSPARENT,
+        fillColor: colors.TRANSPARENT,
         stroke: {
           color: graphColor.value.contrast,
           lineWidth: 2,
@@ -204,7 +204,7 @@ export const useAnnotations = (graph: BaseGraph) => {
         id: 'incomplete-annotation',
         type: 'draw',
         points: batch.value,
-        color: selectedColor.value,
+        fillColor: selectedColor.value,
         brushWeight: selectedBrushWeight.value,
       });
 
@@ -219,7 +219,7 @@ export const useAnnotations = (graph: BaseGraph) => {
         id: 'laser-pointer-cursor',
         at: graph.graphAtMousePosition.value.coords,
         radius: selectedBrushWeight.value,
-        color: selectedColor.value,
+        fillColor: selectedColor.value,
       });
 
       aggregator.push({
@@ -237,7 +237,7 @@ export const useAnnotations = (graph: BaseGraph) => {
         id: scribble.id,
         shape: graph.shapes.scribble({
           ...scribble,
-          color: scribble.color + (isErased ? '50' : ''),
+          fillColor: scribble.fillColor + (isErased ? '50' : ''),
         }),
         priority: 5000,
       });

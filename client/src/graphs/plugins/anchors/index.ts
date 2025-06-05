@@ -175,7 +175,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
       id: 'link-preview',
       start,
       end,
-      color,
+      fillColor: color,
       lineWidth: width,
     });
 

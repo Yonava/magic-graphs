@@ -33,7 +33,7 @@
           y: 300,
         },
         size: -200,
-        color: colors.RED_500,
+        fillColor: colors.RED_500,
         borderRadius: 20,
       }),
     );

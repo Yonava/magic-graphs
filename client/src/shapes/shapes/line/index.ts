@@ -11,10 +11,10 @@ import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 import type { Coordinate, DashPattern } from '@shape/types/utility';
 import type { ShapeFactory } from '@shape/types';
-import type { BackgroundColor, BackgroundGradient, LineWidth, TextArea } from '@shape/types/schema';
+import type { FillColor, FillGradient, LineWidth, TextArea } from '@shape/types/schema';
 import { BACKGROUND_COLOR_DEFAULTS, LINE_WIDTH_DEFAULTS } from '@shape/defaults/schema';
 
-export type LineSchema = LineWidth & TextArea & BackgroundColor & BackgroundGradient & {
+export type LineSchema = LineWidth & TextArea & FillColor & FillGradient & {
   start: Coordinate;
   end: Coordinate;
   /**

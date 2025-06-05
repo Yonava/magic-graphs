@@ -3,7 +3,7 @@ import type { TriangleSchema } from '.';
 
 export const drawTriangleWithCtx =
   (options: TriangleSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { pointA, pointB, pointC, color, stroke, backgroundGradient } = {
+    const { pointA, pointB, pointC, fillColor: color, stroke, fillGradient: backgroundGradient } = {
       ...TRIANGLE_SCHEMA_DEFAULTS,
       ...options,
     };

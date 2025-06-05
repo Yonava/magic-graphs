@@ -30,7 +30,7 @@ export const collabTagShapes = (collaborator: Collaborator) => {
     },
     width,
     height,
-    color: collaboratorColor,
+    fillColor: collaboratorColor,
     borderRadius: 5,
     textArea: {
       textBlock: {
@@ -46,7 +46,7 @@ export const collabTagShapes = (collaborator: Collaborator) => {
   const cursorPoint: CircleSchema = {
     radius: 3,
     at: { x, y },
-    color: collaboratorColor,
+    fillColor: collaboratorColor,
   };
 
   return {

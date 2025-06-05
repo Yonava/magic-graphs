@@ -9,7 +9,7 @@ export const drawArrowWithCtx = (options: ArrowSchema) => {
     start,
     end,
     lineWidth: width,
-    color,
+    fillColor: color,
     dash,
     gradientStops,
     arrowHeadSize,
@@ -36,7 +36,7 @@ export const drawArrowWithCtx = (options: ArrowSchema) => {
       y: shaftEnd.y + Math.sin(angle),
     },
     lineWidth: width,
-    color,
+    fillColor: color,
     dash,
     gradientStops,
   };
@@ -61,7 +61,7 @@ export const drawArrowWithCtx = (options: ArrowSchema) => {
       pointA: trianglePtA,
       pointB: trianglePtB,
       pointC: trianglePtC,
-      color:
+      fillColor:
         gradientStops && gradientStops.length
           ? gradientStops.at(-1)?.color
           : color,

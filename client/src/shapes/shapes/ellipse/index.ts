@@ -14,11 +14,11 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
-import type { AnchorPoint, BackgroundColor, Stroke, TextArea } from '@shape/types/schema';
+import type { AnchorPoint, FillColor, Stroke, TextArea } from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 
-export type EllipseSchema = AnchorPoint & BackgroundColor & Stroke & TextArea & {
+export type EllipseSchema = AnchorPoint & FillColor & Stroke & TextArea & {
   radiusX: number;
   radiusY: number;
 };

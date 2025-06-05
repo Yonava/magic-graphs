@@ -2,7 +2,7 @@ import { STAR_SCHEMA_DEFAULTS } from '.';
 import type { StarSchema } from '.';
 
 export const drawStarWithCtx = (options: StarSchema) => {
-  const { at, color, innerRadius, outerRadius, rotation, points } = {
+  const { at, fillColor: color, innerRadius, outerRadius, rotation, points } = {
     ...STAR_SCHEMA_DEFAULTS,
     ...options,
   };

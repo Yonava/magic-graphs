@@ -34,7 +34,7 @@ export const getNodeSchematic = (
       y: node.y,
     },
     radius: size,
-    color: color,
+    fillColor: color,
     stroke: {
       color: borderColor,
       lineWidth: borderWidth,
@@ -57,7 +57,7 @@ export const getNodeSchematic = (
       y: node.y - size,
     },
     size: size * 2,
-    color: color,
+    fillColor: color,
     stroke: {
       color: borderColor,
       width: borderWidth,

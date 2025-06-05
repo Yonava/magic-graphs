@@ -8,13 +8,13 @@ import type { ShapeFactory } from '@shape/types';
 import type {
   AnchorPoint,
   BorderRadius,
-  BackgroundColor,
+  FillColor,
   LineWidth,
   Rotation,
 } from '@shape/types/schema';
 import { BACKGROUND_COLOR_DEFAULTS, BORDER_RADIUS_DEFAULTS, LINE_WIDTH_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
 
-export type CrossSchema = AnchorPoint & Rotation & LineWidth & BorderRadius & BackgroundColor & {
+export type CrossSchema = AnchorPoint & Rotation & LineWidth & BorderRadius & FillColor & {
   size: number;
 };
 

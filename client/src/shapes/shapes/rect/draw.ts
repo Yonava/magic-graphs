@@ -4,7 +4,7 @@ import type { RectSchema } from '.';
 
 export const drawRectWithCtx =
   (options: RectSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { at, width, height, color, borderRadius, rotation, stroke } = {
+    const { at, width, height, fillColor: color, borderRadius, rotation, stroke } = {
       ...RECT_SCHEMA_DEFAULTS,
       ...options,
     };

@@ -11,7 +11,7 @@ import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 import type {
   AnchorPoint,
-  BackgroundColor,
+  FillColor,
   BorderRadius,
   Rotation,
   Stroke,
@@ -21,7 +21,7 @@ import type { Coordinate } from '@shape/types/utility';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS, BORDER_RADIUS_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
 
-export type RectSchema = AnchorPoint & BackgroundColor & Stroke & TextArea & BorderRadius & Rotation & {
+export type RectSchema = AnchorPoint & FillColor & Stroke & TextArea & BorderRadius & Rotation & {
   width: number;
   height: number;
 };

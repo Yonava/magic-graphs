@@ -12,7 +12,7 @@ import type { AnchorPoint } from "./types/schema";
 const atMarkerSchema = (at: Coordinate): CrossSchema => ({
   at,
   size: 5,
-  color: 'red',
+  fillColor: 'red',
   lineWidth: 1,
 })
 
@@ -22,7 +22,7 @@ const boundingBoxMarkerSchema = (bb: BoundingBox): RectSchema => ({
   at: bb.at,
   width: bb.width,
   height: bb.height,
-  color: 'transparent',
+  fillColor: 'transparent',
   stroke: {
     color: 'green',
     lineWidth: 1,
@@ -34,7 +34,7 @@ const boundingBoxMarker = (bb: BoundingBox) => rect(boundingBoxMarkerSchema(bb))
 const measuringStickSchema: SquareSchema = {
   at: { x: 0, y: 0 },
   size: 1008,
-  color: 'transparent',
+  fillColor: 'transparent',
   stroke: {
     color: 'black',
     lineWidth: 4,

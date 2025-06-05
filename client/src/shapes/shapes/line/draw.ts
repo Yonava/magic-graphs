@@ -3,7 +3,7 @@ import type { LineSchema } from '.';
 
 export const drawLineWithCtx =
   (line: LineSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { start, end, lineWidth: width, color, dash, gradientStops } = {
+    const { start, end, lineWidth: width, fillColor: color, dash, gradientStops } = {
       ...LINE_SCHEMA_DEFAULTS,
       ...line,
     };

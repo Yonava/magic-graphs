@@ -128,7 +128,7 @@ export const getEdgeSchematic = (
       downDistance,
       rotation: largestAngularSpace,
       lineWidth: edgeWidth,
-      color,
+      fillColor: color,
       textArea,
     });
 
@@ -155,7 +155,7 @@ export const getEdgeSchematic = (
       start: edgeStart,
       end: edgeEnd,
       lineWidth: edgeWidth,
-      color,
+      fillColor: color,
       textArea,
     });
 
@@ -174,7 +174,7 @@ export const getEdgeSchematic = (
     end: edgeEnd,
     lineWidth: edgeWidth,
     textOffsetFromCenter: (fromNodeSize + fromNodeBorderWidth / 2) / 2,
-    color,
+    fillColor: color,
     textArea,
   });
 

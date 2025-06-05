@@ -11,11 +11,11 @@ import {
 } from './hitbox';
 import { drawTriangleWithCtx } from './draw';
 import type { Coordinate } from '@shape/types/utility';
-import type { BackgroundColor, BackgroundGradient, Stroke, TextArea } from '@shape/types/schema';
+import type { FillColor, FillGradient, Stroke, TextArea } from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 
-export type TriangleSchema = BackgroundColor & Stroke & TextArea & BackgroundGradient & {
+export type TriangleSchema = FillColor & Stroke & TextArea & FillGradient & {
   pointA: Coordinate;
   pointB: Coordinate;
   pointC: Coordinate;

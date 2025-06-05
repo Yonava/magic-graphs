@@ -7,9 +7,9 @@ import {
 } from './hitbox';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
-import type { BackgroundColor } from '@shape/types/schema';
+import type { FillColor } from '@shape/types/schema';
 
-export type ScribbleSchema = BackgroundColor & {
+export type ScribbleSchema = FillColor & {
   type: 'draw' | 'erase';
   points: Coordinate[];
   brushWeight?: number;

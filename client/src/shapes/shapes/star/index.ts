@@ -1,10 +1,10 @@
 import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';
 import { drawStarWithCtx } from './draw';
 import type { ShapeFactory } from '@shape/types';
-import type { AnchorPoint, BackgroundColor, Rotation } from '@shape/types/schema';
+import type { AnchorPoint, FillColor, Rotation } from '@shape/types/schema';
 import { BACKGROUND_COLOR_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
 
-export type StarSchema = AnchorPoint & BackgroundColor & Rotation & {
+export type StarSchema = AnchorPoint & FillColor & Rotation & {
   innerRadius: number;
   outerRadius: number;
   points?: number;

@@ -19,8 +19,8 @@ import type { Shape, ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS, LINE_WIDTH_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
 import type {
   AnchorPoint,
-  BackgroundColor,
-  BackgroundGradient,
+  FillColor,
+  FillGradient,
   LineWidth,
   Rotation,
   TextArea
@@ -30,9 +30,9 @@ export type UTurnSchema =
   AnchorPoint &
   Rotation &
   LineWidth &
-  BackgroundColor &
+  FillColor &
   TextArea &
-  BackgroundGradient & {
+  FillGradient & {
     spacing: number;
     upDistance: number;
     downDistance: number;

@@ -33,11 +33,11 @@ export type TextArea = {
   textArea?: TextAreaDefinition
 }
 
-export type BackgroundColor = {
+export type FillColor = {
   /**
    * the background color of the shape
    */
-  color?: string;
+  fillColor?: string;
 }
 
 export type Rotation = {
@@ -54,10 +54,10 @@ export type BorderRadius = {
   borderRadius?: number;
 }
 
-export type BackgroundGradient = {
+export type FillGradient = {
   /**
    * defines a fixed-position color gradient for the background
    * using a sequence of color stops
    */
-  backgroundGradient?: readonly GradientStop[]
+  fillGradient?: readonly GradientStop[]
 }
