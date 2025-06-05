@@ -1,6 +1,7 @@
 import { LINE_SCHEMA_DEFAULTS } from '@shape/shapes/line';
 import type { LineSchema } from '@shape/shapes/line';
-import type { Shape, Coordinate, ShapeFactory } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
+import type { Shape, ShapeFactory } from '@shape/types'
 import { drawArrowWithCtx } from './draw';
 import {
   arrowHitbox,

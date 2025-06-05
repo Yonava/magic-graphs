@@ -4,7 +4,7 @@ import {
   getTextAreaDimension,
   getFullTextArea,
 } from '@shape/text';
-import { type Coordinate } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 import { getTextAreaLocationOnLine } from '@shape/shapes/line/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import type { ArrowSchema } from '.';

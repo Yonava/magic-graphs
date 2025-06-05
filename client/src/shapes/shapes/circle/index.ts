@@ -1,10 +1,7 @@
-import type {
-  Coordinate,
-  Stroke,
-  TextAreaNoLocation,
-  ShapeFactory,
-} from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
+import type { Stroke, TextArea } from '@shape/types/schema'
 import { ELLIPSE_SCHEMA_DEFAULTS, ellipse } from '../ellipse';
+import type { ShapeFactory } from '@shape/types';
 
 export type CircleSchema = {
   id?: string;
@@ -14,7 +11,7 @@ export type CircleSchema = {
 
   color?: string;
   stroke?: Stroke;
-  textArea?: TextAreaNoLocation;
+  textArea?: TextArea;
 };
 
 export const CIRCLE_SCHEMA_DEFAULTS = ELLIPSE_SCHEMA_DEFAULTS;
