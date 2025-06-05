@@ -17,7 +17,7 @@ import type {
   RedoHistoryOptions,
   UndoHistoryOptions,
 } from '@graph/plugins/history/types';
-import type { BoundingBox, Coordinate } from '@shape/types';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import type { GraphMouseEvent } from '@graph/base/types';
 import type { GraphState } from '@graph/collab/types';
 

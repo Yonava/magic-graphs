@@ -60,7 +60,7 @@ export const getNodeSchematic = (
     fillColor: color,
     stroke: {
       color: borderColor,
-      width: borderWidth,
+      lineWidth: borderWidth,
     },
     textArea: {
       textBlock: {

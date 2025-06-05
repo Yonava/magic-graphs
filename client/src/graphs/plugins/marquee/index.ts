@@ -3,7 +3,7 @@ import type { Aggregator } from '@graph/types';
 import { useTheme } from '@graph/themes/useTheme';
 import { MARQUEE_CONSTANTS } from '@graph/plugins/marquee/types';
 import colors from '@colors';
-import type { BoundingBox, Coordinate } from '@shape/types';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import type { BaseGraph } from '@graph/base';
 import type { GraphMouseEvent } from '@graph/base/types';
 import type { GraphFocusPlugin } from '../focus';

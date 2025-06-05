@@ -1,4 +1,4 @@
-import type { Coordinate } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 import tinycolor from 'tinycolor2';
 
 /**

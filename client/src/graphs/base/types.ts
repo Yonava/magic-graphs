@@ -5,7 +5,7 @@
 
 import type { DeepReadonly } from 'vue';
 import type { SchemaItem } from '@graph/types';
-import type { Coordinate } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 
 export type FocusOption = {
   /**

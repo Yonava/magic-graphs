@@ -1,12 +1,13 @@
-import type { TextAreaNoLocation } from '@shape/types';
+import type { TextArea } from '@shape/types/utility';
 import tinycolor from 'tinycolor2';
 import { getMapper } from './utils';
 import { SEQ } from './edgeSeq';
 
 const opacityAdjustedTextArea =
-  (opacity: number) => (textArea: TextAreaNoLocation) => {
-    const bgColor = textArea.color;
-    const textColor = textArea.text.color;
+  (opacity: number) => (textArea: TextArea) => {
+    const { color: bgColor, textBlock } = textArea;
+    const { color: textColor } = textBlock
+
     if (!bgColor || !textColor) return textArea;
 
     const adjustOpacity = (color: string) =>
@@ -19,14 +20,14 @@ const opacityAdjustedTextArea =
       ...textArea,
       color: bgColorWithOpacity,
       text: {
-        ...textArea.text,
+        ...textBlock,
         color: textColorWithOpacity,
       },
     };
   };
 
 export const animateInTextArea =
-  (progress: number) => (textArea: TextAreaNoLocation | undefined) => {
+  (progress: number) => (textArea: TextArea | undefined) => {
     if (!textArea) return undefined;
 
     const mapper = getMapper(...SEQ.IN.TEXT_AREA);
@@ -37,13 +38,13 @@ export const animateInTextArea =
   };
 
 export const animateOutTextArea =
-  (progress: number) => (textArea: TextAreaNoLocation | undefined) => {
+  (progress: number) => (textArea: TextArea | undefined) => {
     if (!textArea) return undefined;
 
     const mapper = getMapper(0, 1);
     const opacity = 1 - mapper(progress);
 
-    const textColor = textArea.text.color;
+    const { color: textColor } = textArea.textBlock;
     if (!textColor) return textArea;
 
     const adjustOpacity = (color: string) =>
@@ -54,7 +55,7 @@ export const animateOutTextArea =
     return {
       ...textArea,
       text: {
-        ...textArea.text,
+        ...textArea.textBlock,
         color: textColorWithOpacity,
       },
     };

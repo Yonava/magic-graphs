@@ -11,7 +11,7 @@ import type {
   UndoHistoryOptions,
   GNodeMoveRecord,
 } from './types';
-import type { Coordinate } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 import { debounce } from '@utils/debounce';
 import type { HistoryOption } from '@graph/base/types';
 import type { GraphState } from '@graph/collab/types';
