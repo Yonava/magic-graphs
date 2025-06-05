@@ -29,9 +29,13 @@
 
   const activeColor = ref(getColor());
 
-  const setActiveColor = (value: Color) => {
+  const setActiveColor = (value: Color | undefined) => {
     for (const id of props.graph.focus.focusedItemIds.value) {
-      props.colorMap.set(id, value);
+      if (value) {
+        props.colorMap.set(id, value);
+      } else {
+        props.colorMap.delete(id);
+      }
     }
     activeColor.value = value;
   };
