@@ -1,9 +1,3 @@
-import type {
-  TextAreaNoLocation,
-  Stroke,
-  Coordinate,
-  ShapeFactory,
-} from '@shape/types';
 import { rectHitbox, rectEfficientHitbox, getRectBoundingBox } from './hitbox';
 import { drawRectWithCtx } from './draw';
 import {
@@ -15,6 +9,9 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
+import type { Stroke } from '@shape/types/schema';
+import type { Coordinate, TextArea } from '@shape/types/utility';
+import type { ShapeFactory } from '@shape/types';
 
 export type RectSchema = {
   at: Coordinate;
@@ -23,7 +20,7 @@ export type RectSchema = {
 
   color?: string;
   stroke?: Stroke;
-  textArea?: TextAreaNoLocation;
+  textArea?: TextArea;
   borderRadius?: number;
   rotation?: number;
 };

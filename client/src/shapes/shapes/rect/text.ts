@@ -1,5 +1,3 @@
-import { TEXT_DEFAULTS } from '@shape/types';
-import type { Coordinate } from '@shape/types';
 import type { RectSchema } from '@shape/shapes/rect';
 import {
   drawTextWithTextArea,
@@ -9,6 +7,8 @@ import {
 } from '@shape/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { RECT_SCHEMA_DEFAULTS } from '.';
+import { TEXT_DEFAULTS } from '@shape/defaults';
+import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnRect = (rect: RectSchema) => {
   const { at, width, height, textArea } = { ...RECT_SCHEMA_DEFAULTS, ...rect };

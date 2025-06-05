@@ -1,10 +1,3 @@
-import type {
-  Coordinate,
-  GradientStop,
-  Shape,
-  ShapeFactory,
-  TextAreaNoLocation,
-} from '@shape/types';
 import { drawUTurnWithCtx } from './draw';
 import {
   uturnHitbox,
@@ -21,6 +14,8 @@ import {
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 import { getArrowHeadSize } from '@shape/helpers';
+import type { Coordinate, GradientStop, TextArea } from '@shape/types/utility';
+import type { Shape, ShapeFactory } from '@shape/types';
 
 export type UTurnSchema = {
   at: Coordinate;
@@ -31,7 +26,7 @@ export type UTurnSchema = {
   lineWidth: number;
 
   color?: string;
-  textArea?: TextAreaNoLocation;
+  textArea?: TextArea;
   arrowHeadSize?: (width: number) => {
     arrowHeadHeight: number;
     perpLineLength: number;

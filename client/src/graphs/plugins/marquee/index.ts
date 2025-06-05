@@ -140,7 +140,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
       color: graph.getTheme("marqueeSelectionBoxColor"),
       stroke: {
         color: graph.getTheme("marqueeSelectionBoxBorderColor"),
-        width: 2,
+        lineWidth: 2,
       },
     });
 
@@ -171,7 +171,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
       color: graph.getTheme("marqueeEncapsulatedNodeBoxColor"),
       stroke: {
         color: graph.getTheme("marqueeEncapsulatedNodeBoxBorderColor"),
-        width: 2,
+        lineWidth: 2,
       },
     });
 

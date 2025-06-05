@@ -176,7 +176,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
       start,
       end,
       color,
-      width,
+      lineWidth: width,
     });
 
     const schema: Omit<SchemaItem, "priority"> = {

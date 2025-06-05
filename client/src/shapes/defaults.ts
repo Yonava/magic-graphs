@@ -14,5 +14,5 @@ export const TEXT_DEFAULTS = {
 
 export const STROKE_DEFAULTS = {
   color: 'black',
-  width: 0,
+  lineWidth: 0,
 };

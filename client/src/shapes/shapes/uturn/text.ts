@@ -1,5 +1,3 @@
-import { TEXT_DEFAULTS } from '@shape/types';
-import type { Coordinate } from '@shape/types';
 import {
   drawTextWithTextArea,
   drawTextMatteWithTextArea,
@@ -10,6 +8,8 @@ import { rotatePoint } from '@shape/helpers';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { UTURN_SCHEMA_DEFAULTS } from '.';
 import type { UTurnSchema } from '.';
+import { TEXT_DEFAULTS } from '@shape/defaults';
+import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnUTurn = (uturn: UTurnSchema) => {
   const { at, upDistance, rotation, textArea, spacing, lineWidth } = {

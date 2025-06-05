@@ -8,7 +8,7 @@ export const drawArrowWithCtx = (options: ArrowSchema) => {
   const {
     start,
     end,
-    width,
+    lineWidth: width,
     color,
     dash,
     gradientStops,
@@ -35,7 +35,7 @@ export const drawArrowWithCtx = (options: ArrowSchema) => {
       x: shaftEnd.x + Math.cos(angle),
       y: shaftEnd.y + Math.sin(angle),
     },
-    width,
+    lineWidth: width,
     color,
     dash,
     gradientStops,

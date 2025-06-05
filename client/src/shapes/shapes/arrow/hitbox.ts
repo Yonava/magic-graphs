@@ -16,7 +16,7 @@ import {
 } from '@shape/helpers';
 
 export const arrowHitbox = (arrow: ArrowSchema) => {
-  const { start, end, width, arrowHeadSize, arrowHeadShape } = {
+  const { start, end, lineWidth: width, arrowHeadSize, arrowHeadShape } = {
     ...ARROW_SCHEMA_DEFAULTS,
     ...arrow,
   };
@@ -28,7 +28,7 @@ export const arrowHitbox = (arrow: ArrowSchema) => {
   const arrowHeadTriangle = calculateArrowHeadCorners({
     start,
     end,
-    width,
+    lineWidth: width,
     arrowHeadSize,
   });
 
@@ -54,7 +54,7 @@ export const getArrowBoundingBox = (arrow: ArrowSchema) => () => {
   const {
     start,
     end,
-    width: arrowHeadWidth,
+    lineWidth: arrowHeadWidth,
     arrowHeadSize,
   } = {
     ...ARROW_SCHEMA_DEFAULTS,
@@ -64,7 +64,7 @@ export const getArrowBoundingBox = (arrow: ArrowSchema) => () => {
   const arrowHeadTriangle = calculateArrowHeadCorners({
     start,
     end,
-    width: arrowHeadWidth,
+    lineWidth: arrowHeadWidth,
     arrowHeadSize,
   });
 
@@ -113,7 +113,7 @@ export const getArrowBoundingBox = (arrow: ArrowSchema) => () => {
 export const arrowEfficientHitbox = (arrow: ArrowSchema) => {
   const isInLineEfficientHitbox = lineEfficientHitbox(arrow);
 
-  const { start, end, width, arrowHeadSize } = {
+  const { start, end, lineWidth: width, arrowHeadSize } = {
     ...ARROW_SCHEMA_DEFAULTS,
     ...arrow,
   };
@@ -121,7 +121,7 @@ export const arrowEfficientHitbox = (arrow: ArrowSchema) => {
   const arrowHeadTriangle = calculateArrowHeadCorners({
     start,
     end,
-    width,
+    lineWidth: width,
     arrowHeadSize,
   });
 

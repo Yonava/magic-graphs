@@ -1,10 +1,3 @@
-import type {
-  Coordinate,
-  GradientStop,
-  ShapeFactory,
-  Stroke,
-  TextAreaNoLocation,
-} from '@shape/types';
 import {
   drawTextAreaOnTriangle,
   drawTextAreaMatteOnTriangle,
@@ -17,6 +10,9 @@ import {
   getTriangleBoundingBox,
 } from './hitbox';
 import { drawTriangleWithCtx } from './draw';
+import type { Coordinate, GradientStop, TextArea } from '@shape/types/utility';
+import type { Stroke } from '@shape/types/schema';
+import type { ShapeFactory } from '@shape/types';
 
 export type TriangleSchema = {
   pointA: Coordinate;
@@ -25,7 +21,7 @@ export type TriangleSchema = {
 
   color?: string;
   stroke?: Stroke;
-  textArea?: TextAreaNoLocation;
+  textArea?: TextArea;
   gradientStops?: readonly GradientStop[];
 };
 

@@ -1,4 +1,4 @@
-import type { Coordinate, ShapeFactory } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 import {
   crossHitbox,
   crossEfficientHitbox,
@@ -6,6 +6,7 @@ import {
 } from './hitbox';
 import { drawCrossWithCtx } from './draw';
 import { LINE_SCHEMA_DEFAULTS } from '@shape/shapes/line';
+import type { ShapeFactory } from '@shape/types';
 
 export type CrossSchema = {
   at: Coordinate;
@@ -20,7 +21,7 @@ export type CrossSchema = {
 export const CROSS_SCHEMA_DEFAULTS = {
   rotation: 0,
   color: 'black',
-  lineWidth: LINE_SCHEMA_DEFAULTS.width,
+  lineWidth: LINE_SCHEMA_DEFAULTS.lineWidth,
   borderRadius: 0,
 } as const;
 

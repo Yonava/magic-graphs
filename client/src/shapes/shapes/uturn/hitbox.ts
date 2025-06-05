@@ -1,5 +1,5 @@
 import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
-import type { Coordinate, BoundingBox } from '@shape/types';
+import type { Coordinate, BoundingBox } from '@shape/types/utility';
 import { lineHitbox } from '@shape/shapes/line/hitbox';
 import type { UTurnSchema } from '.';
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
@@ -57,12 +57,12 @@ export const uturnHitbox = (uturn: UTurnSchema) => {
   const isInLine = lineHitbox({
     start: longLegFrom,
     end: longLegTo,
-    width: lineWidth,
+    lineWidth: lineWidth,
   });
   const isInArrow = arrowHitbox({
     start: shortLegFrom,
     end: shortLegTo,
-    width: lineWidth,
+    lineWidth: lineWidth,
   });
   const isInUTurn = circle({
     at: arcAt,

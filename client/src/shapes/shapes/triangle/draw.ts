@@ -37,7 +37,7 @@ export const drawTriangleWithCtx =
 
     if (!stroke) return
 
-    ctx.lineWidth = stroke.width;
+    ctx.lineWidth = stroke.lineWidth;
     ctx.strokeStyle = stroke.color;
     ctx.setLineDash(stroke.dash ?? []);
     ctx.stroke();

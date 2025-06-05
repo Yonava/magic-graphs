@@ -1,9 +1,4 @@
-import type {
-  Coordinate,
-  Stroke,
-  TextAreaNoLocation,
-  ShapeFactory,
-} from '@shape/types';
+import type { Coordinate, TextArea } from '@shape/types/utility';
 import { drawEllipseWithCtx } from '@shape/shapes/ellipse/draw';
 import {
   ellipseHitbox,
@@ -19,6 +14,8 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
+import type { Stroke } from '@shape/types/schema';
+import type { ShapeFactory } from '@shape/types';
 
 export type EllipseSchema = {
   at: Coordinate;
@@ -27,7 +24,7 @@ export type EllipseSchema = {
 
   color?: string;
   stroke?: Stroke;
-  textArea?: TextAreaNoLocation;
+  textArea?: TextArea;
 };
 
 export const ELLIPSE_SCHEMA_DEFAULTS = {

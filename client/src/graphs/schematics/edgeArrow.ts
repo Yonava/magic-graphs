@@ -18,11 +18,11 @@ const animateInArrowBody =
       const percentage = EASING(mapper(progress));
 
       const interpolateCoords = interpolate(arrowSchema.start, arrowSchema.end);
-      const interpolateWidth = interpolate(0, arrowSchema.width);
+      const interpolateWidth = interpolate(0, arrowSchema.lineWidth);
 
       return {
         end: interpolateCoords(percentage),
-        width: interpolateWidth(percentage),
+        lineWidth: interpolateWidth(percentage),
       };
     };
 
@@ -32,10 +32,10 @@ const animateOutArrowBody =
       const mapper = getMapper(0, 1);
       const percentage = EASING(mapper(progress));
 
-      const interpolateWidth = interpolate(arrowSchema.width, 0);
+      const interpolateWidth = interpolate(arrowSchema.lineWidth, 0);
 
       return {
-        width: interpolateWidth(percentage),
+        lineWidth: interpolateWidth(percentage),
       };
     };
 

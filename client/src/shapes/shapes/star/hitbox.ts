@@ -1,4 +1,4 @@
-import type { Coordinate, BoundingBox } from '@shape/types';
+import type { Coordinate, BoundingBox } from '@shape/types/utility';
 import type { StarSchema } from '.';
 import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';

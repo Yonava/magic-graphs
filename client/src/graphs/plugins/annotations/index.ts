@@ -189,7 +189,7 @@ export const useAnnotations = (graph: BaseGraph) => {
         color: colors.TRANSPARENT,
         stroke: {
           color: graphColor.value.contrast,
-          width: 2,
+          lineWidth: 2,
         },
       });
 

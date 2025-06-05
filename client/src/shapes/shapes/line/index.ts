@@ -1,9 +1,3 @@
-import type {
-  Coordinate,
-  GradientStop,
-  ShapeFactory,
-  TextAreaNoLocation,
-} from '@shape/types';
 import { drawLineWithCtx } from './draw';
 import { lineHitbox, lineEfficientHitbox, getLineBoundingBox } from './hitbox';
 import {
@@ -15,13 +9,15 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
+import type { Coordinate, GradientStop, TextArea } from '@shape/types/utility';
+import type { ShapeFactory } from '@shape/types';
 
 export type LineSchema = {
   start: Coordinate;
   end: Coordinate;
 
-  width?: number;
-  textArea?: TextAreaNoLocation;
+  lineWidth?: number;
+  textArea?: TextArea;
   /**
    * offsetFromCenter is used to position text. By default, text is centered on the line.
    * If -10, text will be on the line but 10 units towards the start.
@@ -37,14 +33,14 @@ export type LineSchema = {
 };
 
 export const LINE_SCHEMA_DEFAULTS = {
-  width: 10,
+  lineWidth: 10,
   textOffsetFromCenter: 0,
   color: 'black',
   gradientStops: [] as LineSchema['gradientStops'],
 } as const;
 
 export const line: ShapeFactory<LineSchema> = (options) => {
-  if (options.width && options.width < 0) {
+  if (options.lineWidth && options.lineWidth < 0) {
     throw new Error('lineWidth must be positive');
   }
 

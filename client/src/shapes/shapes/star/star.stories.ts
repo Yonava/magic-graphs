@@ -4,7 +4,7 @@ import { star, STAR_SCHEMA_DEFAULTS, type StarSchema } from '.';
 
 const Star = createDocComponent<StarSchema>(star)
 
-const meta: Meta<typeof Star> = {
+const meta = {
   title: 'Shapes/Star',
   component: Star,
   args: {
@@ -14,11 +14,11 @@ const meta: Meta<typeof Star> = {
     at: { x: 60, y: 60 },
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Star>
 
 export default meta;
 
-type Story = StoryObj<typeof Star>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, rotation } = DEFAULT_STORIES;
 

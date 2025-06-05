@@ -2,7 +2,7 @@ import { normalizeBoundingBox } from '@shape/helpers';
 import { CROSS_SCHEMA_DEFAULTS } from '.';
 import type { CrossSchema } from '.';
 import { rectHitbox, rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
-import type { Coordinate, BoundingBox } from '@shape/types';
+import type { Coordinate, BoundingBox } from '@shape/types/utility';
 
 /**
  * @param point - the point to check if it is in the cross

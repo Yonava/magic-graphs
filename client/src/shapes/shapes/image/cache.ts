@@ -6,7 +6,7 @@ type ImageCacheEntry = {
 
 const imageCache = new Map<string, ImageCacheEntry>();
 
-type LoadImageOptions = {
+export type LoadImageOptions = {
   onLoad: () => void;
   onLoadError: () => void
 }

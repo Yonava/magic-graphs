@@ -4,7 +4,7 @@ import { cross, CROSS_SCHEMA_DEFAULTS, type CrossSchema } from '.';
 
 const Cross = createDocComponent<CrossSchema>(cross)
 
-const meta: Meta<typeof Cross> = {
+const meta = {
   title: 'Shapes/Cross',
   component: Cross,
   args: {
@@ -13,11 +13,11 @@ const meta: Meta<typeof Cross> = {
     at: { x: 60, y: 60 },
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Cross>;
 
 export default meta;
 
-type Story = StoryObj<typeof Cross>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, rotation } = DEFAULT_STORIES;
 

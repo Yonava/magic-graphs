@@ -1,5 +1,3 @@
-import { TEXT_DEFAULTS } from '@shape/types';
-import type { Coordinate } from '@shape/types';
 import {
   drawTextWithTextArea,
   drawTextMatteWithTextArea,
@@ -8,6 +6,8 @@ import {
 } from '@shape/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { ELLIPSE_SCHEMA_DEFAULTS, type EllipseSchema } from '.';
+import { TEXT_DEFAULTS } from '@shape/defaults';
+import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnEllipse = (ellipse: EllipseSchema) => {
   const { at, textArea } = { ...ELLIPSE_SCHEMA_DEFAULTS, ...ellipse };

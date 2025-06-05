@@ -154,7 +154,7 @@ export const getEdgeSchematic = (
       id: edge.id,
       start: edgeStart,
       end: edgeEnd,
-      width: edgeWidth,
+      lineWidth: edgeWidth,
       color,
       textArea,
     });
@@ -172,7 +172,7 @@ export const getEdgeSchematic = (
     id: edge.id,
     start: edgeStart,
     end: edgeEnd,
-    width: edgeWidth,
+    lineWidth: edgeWidth,
     textOffsetFromCenter: (fromNodeSize + fromNodeBorderWidth / 2) / 2,
     color,
     textArea,

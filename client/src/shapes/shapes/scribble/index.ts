@@ -1,10 +1,11 @@
-import type { Coordinate, ShapeFactory } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
 import { drawScribbleWithCtx } from './draw';
 import {
   scribbleHitbox,
   scribbleEfficientHitbox,
   getScribbleBoundingBox,
 } from './hitbox';
+import type { ShapeFactory } from '@shape/types';
 
 export type ScribbleSchema = {
   id?: string;

@@ -4,7 +4,7 @@ import { rect, RECT_SCHEMA_DEFAULTS, type RectSchema } from '.';
 
 const Rect = createDocComponent<RectSchema>(rect)
 
-const meta: Meta<typeof Rect> = {
+const meta = {
   title: 'Shapes/Rect',
   component: Rect,
   args: {
@@ -14,11 +14,11 @@ const meta: Meta<typeof Rect> = {
     at: { x: 20, y: 20 },
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Rect>
 
 export default meta;
 
-type Story = StoryObj<typeof Rect>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, text, stroke, rotation } = DEFAULT_STORIES;
 

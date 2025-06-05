@@ -1,8 +1,8 @@
-import type { Coordinate, BoundingBox } from '@shape/types';
-import type { EllipseSchema } from '@shape/ellipse';
-import { STROKE_DEFAULTS } from '@shape/types';
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import { normalizeBoundingBox } from '@shape/helpers';
+import type { EllipseSchema } from '.';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
+import { STROKE_DEFAULTS } from '@shape/defaults';
 
 export const ellipseHitbox = (ellipse: EllipseSchema) => (point: Coordinate) => {
   const dx = point.x - ellipse.at.x;
@@ -13,8 +13,8 @@ export const ellipseHitbox = (ellipse: EllipseSchema) => (point: Coordinate) => 
     ...ellipse.stroke,
   };
 
-  const radiusX = ellipse.radiusX + stroke.width / 2;
-  const radiusY = ellipse.radiusY + stroke.width / 2;
+  const radiusX = ellipse.radiusX + stroke.lineWidth / 2;
+  const radiusY = ellipse.radiusY + stroke.lineWidth / 2;
 
   const inEllipse =
     (dx * dx) / (radiusX * radiusX) + (dy * dy) / (radiusY * radiusY) <= 1;
@@ -25,7 +25,7 @@ export const ellipseHitbox = (ellipse: EllipseSchema) => (point: Coordinate) => 
 export const getEllipseBoundingBox = (ellipse: EllipseSchema) => () => {
   const { at, radiusX, radiusY } = ellipse;
 
-  const { width: borderWidth } = {
+  const { lineWidth: borderWidth } = {
     ...STROKE_DEFAULTS,
     ...ellipse.stroke,
   };

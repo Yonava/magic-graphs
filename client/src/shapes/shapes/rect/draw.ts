@@ -79,7 +79,7 @@ export const drawRectWithCtx =
     }
 
     if (stroke) {
-      const { color, width, dash } = stroke;
+      const { color, lineWidth: width, dash } = stroke;
       ctx.strokeStyle = color;
       ctx.lineWidth = width;
       ctx.setLineDash(dash || []);

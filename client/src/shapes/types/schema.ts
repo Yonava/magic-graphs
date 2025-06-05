@@ -1,50 +1,53 @@
-import type { Coordinate } from "./utility";
+import type { Coordinate, GradientStop } from "./utility";
 
-export type Location = {
+export type AnchorPoint = {
   /**
    * the point on a 2d canvas this item is placed
    */
   at: Coordinate
 }
 
-/**
- * a box that wraps some text without {@link Location}
- */
-export type TextArea = {
+export type LineWidth = {
   /**
-   * the text areas inner text
+   * The visual thickness of the shape
    */
-  text: Text;
+  lineWidth?: number
+}
+
+export type Color = {
   /**
-   * the color of the text area
+   * the background color of the shape
    */
   color?: string;
-  /**
-   * the color of the text area when it is engaged
-   * IE is converted to a textarea html element for user interaction
-   */
-  activeColor?: string;
-};
+}
 
-export type TextAreaWithLocation = TextArea & Location
-
-export type Stroke = {
-  color: string;
-  width: number;
+export type DashPattern = {
   /**
    * for dashed border: [dashLength, gapLength]
    */
-  dash?: [number, number];
+  dash?: readonly [number, number];
+}
+
+export type Stroke = DashPattern & {
+  color: string;
+  lineWidth: number;
 };
 
-export type GradientStop = {
+export type Rotation = {
   /**
-   * between [0, 1) denoting the color of shape at that point
-   * (ei color: green offset: 0.5 makes shape green at midpoint)
+   * the rotation of the shape in radians
    */
-  offset: number;
+  rotation?: number
+}
+
+export type BorderRadius = {
+  borderRadius?: number;
+}
+
+export type BackgroundGradient = {
   /**
-   * parsed by the tinycolor library
+   * defines a fixed-position color gradient for the background
+   * using a sequence of color stops
    */
-  color: string;
-};
+  backgroundGradient?: readonly GradientStop[]
+}

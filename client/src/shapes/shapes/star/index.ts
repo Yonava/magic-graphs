@@ -1,6 +1,7 @@
-import type { Coordinate, ShapeFactory } from '@shape/types';
 import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';
 import { drawStarWithCtx } from './draw';
+import type { Coordinate } from '@shape/types/utility';
+import type { ShapeFactory } from '@shape/types';
 
 export type StarSchema = {
   at: Coordinate;

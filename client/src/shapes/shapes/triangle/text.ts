@@ -1,5 +1,3 @@
-import { TEXT_DEFAULTS } from '@shape/types';
-import type { Coordinate } from '@shape/types';
 import type { TriangleSchema } from '@shape/shapes/triangle';
 import {
   drawTextWithTextArea,
@@ -9,6 +7,8 @@ import {
 } from '@shape/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { TRIANGLE_SCHEMA_DEFAULTS } from '.';
+import { TEXT_DEFAULTS } from '@shape/defaults';
+import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnTriangle = (triangle: TriangleSchema) => {
   const { pointA, pointB, pointC, textArea } = {

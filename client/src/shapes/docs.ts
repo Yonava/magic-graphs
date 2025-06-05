@@ -23,7 +23,7 @@ const boundingBoxMarkerSchema = (bb: BoundingBox): RectSchema => ({
   color: 'transparent',
   stroke: {
     color: 'green',
-    width: 1,
+    lineWidth: 1,
   }
 })
 
@@ -95,7 +95,7 @@ export const DEFAULT_STORIES = {
     args: {
       stroke: {
         color: 'blue',
-        width: 10,
+        lineWidth: 10,
       }
     }
   },

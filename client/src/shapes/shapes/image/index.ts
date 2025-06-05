@@ -1,4 +1,3 @@
-import type { Coordinate, ShapeFactory, TextAreaNoLocation } from '@shape/types';
 import { drawImageWithCtx } from './draw';
 import {
   getImageBoundingBox,
@@ -15,24 +14,22 @@ import {
 import { RECT_SCHEMA_DEFAULTS } from '@shape/shapes/rect';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
+import type { ShapeFactory } from '@shape/types';
+import type { Coordinate, TextArea } from '@shape/types/utility';
 import colors from '@utils/colors';
+import type { LoadImageOptions } from './cache';
 
-export type ImageSchema = {
+export type ImageSchema = Partial<LoadImageOptions> & {
   at: Coordinate;
   width: number;
   height: number;
+
   src: string;
 
-  /**
-   * in radians
-   */
-  rotation?: number;
   color?: string;
-  textArea?: TextAreaNoLocation;
-
-  onLoad?: () => void;
-  onLoadError?: () => void;
-};
+  rotation?: number;
+  textArea?: TextArea;
+}
 
 export const IMAGE_SCHEMA_DEFAULTS = {
   ...RECT_SCHEMA_DEFAULTS,

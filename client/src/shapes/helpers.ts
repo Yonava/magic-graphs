@@ -1,7 +1,7 @@
-import { type BoundingBox, type Coordinate, type GradientStop } from '@shape/types';
 import { LINE_SCHEMA_DEFAULTS } from './shapes/line';
 import type { ArrowSchema } from './shapes/arrow';
 import tinycolor from 'tinycolor2';
+import type { BoundingBox, Coordinate, GradientStop } from './types/utility';
 
 /**
  * rotates a point around a center point by a given angle in radians
@@ -105,7 +105,7 @@ export const getLargestAngularSpace = (
  * @returns the arrowhead height and the arrowhead base length
  */
 export const getArrowHeadSize = (
-  arrowWidth: ArrowSchema['width'] = LINE_SCHEMA_DEFAULTS.width,
+  arrowWidth: ArrowSchema['lineWidth'] = LINE_SCHEMA_DEFAULTS.lineWidth,
 ) => {
   const arrowHeadHeight = arrowWidth * 2.5;
   const perpLineLength = arrowHeadHeight / 1.75;
@@ -121,11 +121,10 @@ export const getArrowHeadSize = (
  * @param options the arrow
  * @returns the triangle that makes up the arrow tip
  */
-
 export const calculateArrowHeadCorners = (
-  options: Required<Pick<ArrowSchema, 'start' | 'end' | 'width' | 'arrowHeadSize'>>,
+  options: Required<Pick<ArrowSchema, 'start' | 'end' | 'lineWidth' | 'arrowHeadSize'>>,
 ) => {
-  const { start, end, width, arrowHeadSize } = options;
+  const { start, end, lineWidth: width, arrowHeadSize } = options;
 
   const { arrowHeadHeight, perpLineLength } = arrowHeadSize(width);
 

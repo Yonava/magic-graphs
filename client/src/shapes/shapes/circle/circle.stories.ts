@@ -4,7 +4,7 @@ import { circle, CIRCLE_SCHEMA_DEFAULTS, type CircleSchema } from '.';
 
 const Circle = createDocComponent<CircleSchema>(circle)
 
-const meta: Meta<typeof Circle> = {
+const meta = {
   title: 'Shapes/Circle',
   component: Circle,
   args: {
@@ -13,11 +13,11 @@ const meta: Meta<typeof Circle> = {
     at: { x: 60, y: 60 },
     ...DOC_MARKING_DEFAULTS,
   },
-};
+} satisfies Meta<typeof Circle>
 
 export default meta;
 
-type Story = StoryObj<typeof Circle>;
+type Story = StoryObj<typeof meta>;
 
 const { basic, markings, text, stroke } = DEFAULT_STORIES;
 

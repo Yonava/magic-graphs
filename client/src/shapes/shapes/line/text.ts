@@ -1,5 +1,3 @@
-import { TEXT_DEFAULTS } from '@shape/types';
-import type { Coordinate } from '@shape/types';
 import type { LineSchema } from '@shape/shapes/line';
 import {
   drawTextWithTextArea,
@@ -10,6 +8,8 @@ import {
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import { getAngle } from '@shape/helpers';
 import { LINE_SCHEMA_DEFAULTS } from '.';
+import { TEXT_DEFAULTS } from '@shape/defaults';
+import type { Coordinate } from '@shape/types/utility';
 
 export const getTextAreaLocationOnLine = (line: LineSchema) => {
   const { textOffsetFromCenter, start, end, textArea } = {

@@ -33,7 +33,7 @@ export const ARROW_SCHEMA_DEFAULTS = {
 } as const;
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {
-  if (options.width && options.width < 0) {
+  if (options.lineWidth && options.lineWidth < 0) {
     throw new Error('width must be positive');
   }
 

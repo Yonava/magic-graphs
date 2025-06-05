@@ -1,15 +1,15 @@
-import type { Coordinate, BoundingBox } from '@shape/types';
 import { LINE_SCHEMA_DEFAULTS } from '.';
 import type { LineSchema } from '.';
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import { normalizeBoundingBox } from '@shape/helpers';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
 
 /**
  * @param point - the point to check if it is in the line
  * @returns a function that checks if the point is in the line
  */
 export const lineHitbox = (line: LineSchema) => (point: Coordinate) => {
-  const { start, end, width } = {
+  const { start, end, lineWidth } = {
     ...LINE_SCHEMA_DEFAULTS,
     ...line,
   };
@@ -22,7 +22,7 @@ export const lineHitbox = (line: LineSchema) => (point: Coordinate) => {
 
   if (lineLengthSquared === 0) {
     const distanceSquared = (x - x1) ** 2 + (y - y1) ** 2;
-    return distanceSquared <= (width / 2) ** 2;
+    return distanceSquared <= (lineWidth / 2) ** 2;
   }
 
   const projectionDistance =
@@ -38,11 +38,11 @@ export const lineHitbox = (line: LineSchema) => (point: Coordinate) => {
 
   const distanceSquared = (x - closestX) ** 2 + (y - closestY) ** 2;
 
-  return distanceSquared <= (width / 2) ** 2;
+  return distanceSquared <= (lineWidth / 2) ** 2;
 };
 
 export const getLineBoundingBox = (line: LineSchema) => () => {
-  const { start, end, width } = {
+  const { start, end, lineWidth: width } = {
     ...LINE_SCHEMA_DEFAULTS,
     ...line,
   };
@@ -63,7 +63,7 @@ export const getLineBoundingBox = (line: LineSchema) => () => {
 };
 
 export const lineEfficientHitbox = (line: LineSchema) => {
-  const { start, end, width } = {
+  const { start, end, lineWidth: width } = {
     ...LINE_SCHEMA_DEFAULTS,
     ...line,
   };

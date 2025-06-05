@@ -4,7 +4,7 @@ import { UTURN_SCHEMA_DEFAULTS } from '.';
 import type { UTurnSchema } from '.';
 import { drawArrowWithCtx } from '@shape/shapes/arrow/draw';
 import { getColorAtPercentage } from '@shape/helpers';
-import type { GradientStop } from '@shape/types';
+import type { GradientStop } from '@shape/types/utility';
 
 export const drawUTurnWithCtx = (options: UTurnSchema) => {
   const {
@@ -126,7 +126,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
   const drawLongShaft = drawLineWithCtx({
     start: longLegFrom,
     end: longLegTo,
-    width: lineWidth,
+    lineWidth: lineWidth,
     color,
     gradientStops: lineGradient,
   });
@@ -134,7 +134,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
   const drawArrow = drawArrowWithCtx({
     start: shortLegFrom,
     end: shortLegTo,
-    width: lineWidth,
+    lineWidth: lineWidth,
     color,
     arrowHeadSize,
     arrowHeadShape,
