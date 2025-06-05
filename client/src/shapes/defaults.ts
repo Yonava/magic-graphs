@@ -11,8 +11,3 @@ export const TEXT_DEFAULTS = {
   color: 'black',
   fontFamily: 'Arial',
 } as const;
-
-export const STROKE_DEFAULTS = {
-  color: 'black',
-  lineWidth: 0,
-};

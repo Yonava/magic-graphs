@@ -1,4 +1,3 @@
-import type { Coordinate } from '@shape/types/utility';
 import {
   crossHitbox,
   crossEfficientHitbox,
@@ -7,15 +6,16 @@ import {
 import { drawCrossWithCtx } from './draw';
 import { LINE_SCHEMA_DEFAULTS } from '@shape/shapes/line';
 import type { ShapeFactory } from '@shape/types';
+import type {
+  AnchorPoint,
+  BorderRadius,
+  BackgroundColor,
+  LineWidth,
+  Rotation,
+} from '@shape/types/schema';
 
-export type CrossSchema = {
-  at: Coordinate;
+export type CrossSchema = AnchorPoint & Rotation & LineWidth & BorderRadius & BackgroundColor & {
   size: number;
-
-  rotation?: number;
-  color?: string;
-  lineWidth?: number;
-  borderRadius?: number;
 };
 
 export const CROSS_SCHEMA_DEFAULTS = {

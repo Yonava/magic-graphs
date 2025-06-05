@@ -14,12 +14,20 @@ export type LineWidth = {
   lineWidth?: number
 }
 
-export type Color = {
+export const LINE_WIDTH_DEFAULTS = {
+  lineWidth: 10
+} as const satisfies LineWidth
+
+export type BackgroundColor = {
   /**
    * the background color of the shape
    */
   color?: string;
 }
+
+export const BACKGROUND_COLOR_DEFAULTS = {
+  color: 'black'
+} as const satisfies BackgroundColor
 
 export type DashPattern = {
   /**
