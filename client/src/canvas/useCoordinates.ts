@@ -1,6 +1,7 @@
 import type { Coordinate } from "@shape/types/utility";
 import { getCtx } from "@utils/ctx";
 import { onMounted, onUnmounted, ref, type Ref } from "vue";
+import { getDevicePixelRatio } from "./initCanvas";
 
 type CoordGetter = (ev: MouseEvent, ctx: CanvasRenderingContext2D) => Coordinate
 
@@ -35,16 +36,17 @@ const getRawCoords: CoordGetter = (ev) => ({ x: ev.clientX, y: ev.clientY })
 const getNormalizedCoords: CoordGetter = (ev, ctx) => {
   const transform = ctx.getTransform();
   const invertedTransform = transform.inverse();
-  const { offsetX, offsetY } = ev;
+  const { clientX, clientY } = ev;
+  const dpr = getDevicePixelRatio()
   return {
     x:
-      invertedTransform.a * offsetX +
-      invertedTransform.c * offsetY +
-      invertedTransform.e,
+      (invertedTransform.a * clientX +
+        invertedTransform.c * clientY +
+        invertedTransform.e) * dpr,
     y:
-      invertedTransform.b * offsetX +
-      invertedTransform.d * offsetY +
-      invertedTransform.f,
+      (invertedTransform.b * clientX +
+        invertedTransform.d * clientY +
+        invertedTransform.f) * dpr,
     scale: transform.a,
   };
 };

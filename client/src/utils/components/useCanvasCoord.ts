@@ -1,5 +1,6 @@
-import { computed, onMounted, onUnmounted, ref } from 'vue';
 import type { Ref } from 'vue';
+import { getDevicePixelRatio } from '@canvas/initCanvas';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 /**
  * gets the canvas coordinates with a mouse event on a *potentially* transformed canvas
@@ -11,15 +12,16 @@ export const getCanvasCoords = (
   const transform = ctx.getTransform();
   const invertedTransform = transform.inverse();
   const { offsetX, offsetY } = ev;
+  const dpr = getDevicePixelRatio()
   return {
     x:
-      invertedTransform.a * offsetX +
-      invertedTransform.c * offsetY +
-      invertedTransform.e,
+      (invertedTransform.a * offsetX +
+        invertedTransform.c * offsetY +
+        invertedTransform.e) * dpr,
     y:
-      invertedTransform.b * offsetX +
-      invertedTransform.d * offsetY +
-      invertedTransform.f,
+      (invertedTransform.b * offsetX +
+        invertedTransform.d * offsetY +
+        invertedTransform.f) * dpr,
     scale: transform.a,
   };
 };

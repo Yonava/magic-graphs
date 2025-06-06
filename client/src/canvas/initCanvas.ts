@@ -1,9 +1,11 @@
 import { getCtx } from "@utils/ctx";
 
+export const getDevicePixelRatio = () => window.devicePixelRatio || 1
+
 export const initCanvas = (canvas: HTMLCanvasElement) => {
   const ctx = getCtx(canvas);
 
-  const dpr = window.devicePixelRatio || 1;
+  const dpr = getDevicePixelRatio()
   const rect = canvas.getBoundingClientRect();
 
   canvas.width = rect.width * dpr;
