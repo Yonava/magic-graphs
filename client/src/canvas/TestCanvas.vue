@@ -11,7 +11,7 @@
 
     circle({
       radius: 50,
-      at: { x: 500, y: 500 },
+      at: { x: 100, y: 100 },
     }).draw(ctx);
   });
 </script>

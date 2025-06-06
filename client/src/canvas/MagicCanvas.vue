@@ -1,39 +1,29 @@
 <script setup lang="ts">
-  import { getCtx } from '@utils/ctx';
   import { onMounted, ref } from 'vue';
   import { twMerge, type ClassNameValue } from 'tailwind-merge';
+  import { useCoordinates } from './useCoordinates';
+  import { initCanvas } from './initCanvas';
 
   const emit = defineEmits<{
     (e: 'canvasRef', value: HTMLCanvasElement): void;
   }>();
 
   const canvas = ref<HTMLCanvasElement>();
+  const { coords } = useCoordinates(canvas);
 
   onMounted(() => {
     if (!canvas.value) {
       throw new Error('Canvas not found in DOM. Check ref link.');
     }
 
-    const ctx = getCtx(canvas);
-
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.value.getBoundingClientRect();
-
-    canvas.value.width = rect.width * dpr;
-    canvas.value.height = rect.height * dpr;
-
-    canvas.value.style.width = `${rect.width}px`;
-    canvas.value.style.height = `${rect.height}px`;
-
-    ctx.scale(dpr, dpr);
-
+    initCanvas(canvas.value);
     emit('canvasRef', canvas.value);
   });
 </script>
 
 <template>
-  <div class="absolute top-0 left-0 m-2">
-    {{ canvas?.width }} - {{ canvas?.height }}
+  <div class="absolute top-0 left-0 m-2 pointer-events-none">
+    {{ coords }}
   </div>
   <canvas
     v-bind="{
