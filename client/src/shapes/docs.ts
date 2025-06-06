@@ -116,6 +116,16 @@ export const createDocComponent = <T extends Record<string, unknown>>(factory: S
         const canvas = document.getElementById(canvasId) as HTMLCanvasElement
         const ctx = getCtx(canvas);
 
+        const dpr = window.devicePixelRatio || 1
+        const rect = canvas.getBoundingClientRect()
+
+        canvas.width = rect.width * dpr
+        canvas.height = rect.height * dpr
+        canvas.style.width = `${rect.width}px`
+        canvas.style.height = `${rect.height}px`
+
+        ctx.scale(dpr, dpr)
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const { showAtMarker, showBoundingBoxMarker, showMeasuringStick } = props
