@@ -1,12 +1,15 @@
 import type { Coordinate } from "@shape/types/utility";
+import { getCtx } from "@utils/ctx";
 import { onMounted, onUnmounted, ref, type Ref } from "vue";
 
-export const useCoordinates = (canvas: Ref<HTMLCanvasElement | undefined>) => {
-  const coords = ref<Coordinate>({ x: 0, y: 0 });
+type CoordGetter = (ev: MouseEvent, ctx: CanvasRenderingContext2D) => Coordinate
 
-  const captureCoords = (ev: MouseEvent) => {
-    coords.value = { x: ev.clientX, y: ev.clientY };
-  }
+export const useCoordinatesBase = (
+  canvas: Ref<HTMLCanvasElement | undefined>,
+  coordGetter: CoordGetter,
+) => {
+  const coords = ref<Coordinate>({ x: 0, y: 0 });
+  const captureCoords = (ev: MouseEvent) => coords.value = coordGetter(ev, getCtx(canvas))
 
   onMounted(() => {
     if (!canvas.value) {
@@ -26,3 +29,27 @@ export const useCoordinates = (canvas: Ref<HTMLCanvasElement | undefined>) => {
 
   return { coords }
 }
+
+const getRawCoords: CoordGetter = (ev) => ({ x: ev.clientX, y: ev.clientY })
+
+const getNormalizedCoords: CoordGetter = (ev, ctx) => {
+  const transform = ctx.getTransform();
+  const invertedTransform = transform.inverse();
+  const { offsetX, offsetY } = ev;
+  return {
+    x:
+      invertedTransform.a * offsetX +
+      invertedTransform.c * offsetY +
+      invertedTransform.e,
+    y:
+      invertedTransform.b * offsetX +
+      invertedTransform.d * offsetY +
+      invertedTransform.f,
+    scale: transform.a,
+  };
+};
+
+export const useCoordinates = (canvas: Ref<HTMLCanvasElement | undefined>) => ({
+  raw: useCoordinatesBase(canvas, getRawCoords),
+  normal: useCoordinatesBase(canvas, getNormalizedCoords),
+})

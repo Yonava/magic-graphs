@@ -9,8 +9,5 @@ export const initCanvas = (canvas: HTMLCanvasElement) => {
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
 
-  canvas.style.width = `${rect.width}px`;
-  canvas.style.height = `${rect.height}px`;
-
   ctx.scale(dpr, dpr);
 }

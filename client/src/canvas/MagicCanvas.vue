@@ -9,7 +9,7 @@
   }>();
 
   const canvas = ref<HTMLCanvasElement>();
-  const { coords } = useCoordinates(canvas);
+  const coords = useCoordinates(canvas);
 
   onMounted(() => {
     if (!canvas.value) {
@@ -23,7 +23,9 @@
 
 <template>
   <div class="absolute top-0 left-0 m-2 pointer-events-none">
-    {{ coords }}
+    Raw: ({{ coords.raw.coords.value.x }}, {{ coords.raw.coords.value.y }}) /
+    Norm: ({{ coords.normal.coords.value.x }},
+    {{ coords.normal.coords.value.y }})
   </div>
   <canvas
     v-bind="{
