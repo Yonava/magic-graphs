@@ -2,7 +2,7 @@ import { useRoute, useRouter } from 'vue-router';
 import type { Graph } from '@graph/types';
 import type { ProductInfo, SimulationDeclarationGetter } from 'src/types';
 
-// imports all route.ts files dynamically
+// imports all info.ts files dynamically
 const infoModules = import.meta.glob<{
   default: ProductInfo;
 }>('/src/**/info.ts', { eager: true });
