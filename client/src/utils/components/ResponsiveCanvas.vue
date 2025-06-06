@@ -9,7 +9,6 @@
   import CoordinateIndicator from './CoordinateIndicator.vue';
   import { useCanvasCoords } from './useCanvasCoord';
   import { usePinchToZoom } from './usePinchToZoom';
-  import { useStorePanZoomState } from './useStorePanZoomState';
   import { useCanvasCamera } from './useCanvasCamera';
   import { inDevMode } from '@graph/global';
 
@@ -157,7 +156,6 @@
   });
 
   const controls = usePinchToZoom(mainCanvasRef);
-  useStorePanZoomState(mainCanvasRef);
 
   watch(controls.scale, () => {
     const { scale, origin } = controls;
