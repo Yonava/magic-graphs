@@ -34,7 +34,12 @@
         },
         size: -200,
         fillColor: colors.RED_500,
-        borderRadius: 20,
+        borderRadius: [20, 50, 80, 10],
+        stroke: {
+          color: colors.RED_700,
+          lineWidth: 10,
+        },
+        rotation: 0.2,
       }),
     );
 
