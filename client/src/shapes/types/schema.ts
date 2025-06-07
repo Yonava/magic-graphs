@@ -53,7 +53,7 @@ export type BorderRadius = {
    * can be a single value or an array for each corner
    * e.g. [topLeft, topRight, bottomRight, bottomLeft]
    */
-  borderRadius?: number | number[];
+  borderRadius?: number | [number, number, number, number];
 };
 
 export type FillGradient = {
