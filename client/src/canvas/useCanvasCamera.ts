@@ -1,19 +1,15 @@
 import { onMounted, onUnmounted, type Ref } from 'vue'
+import type { CanvasTransform } from './utils'
 
-export function useCanvasCamera(canvasRef: Ref<HTMLCanvasElement | undefined>) {
+export type CameraPluggable = (canvasRef: Ref<HTMLCanvasElement | undefined>) => {
+  getTransform: () => Partial<CanvasTransform>
+}
+
+export const usePan: CameraPluggable = (canvasRef) => {
   let panX = 0
   let panY = 0
 
   const SENSITIVITY = 1
-
-  function applyTransform(ctx: CanvasRenderingContext2D) {
-    ctx.setTransform(2, 0, 0, 2, panX, panY)
-  }
-
-  function requestRedraw(canvas: HTMLCanvasElement) {
-    const event = new CustomEvent('canvas-camera-moved')
-    canvas.dispatchEvent(event)
-  }
 
   const onWheel = (ev: WheelEvent) => {
     ev.preventDefault();
@@ -23,8 +19,6 @@ export function useCanvasCamera(canvasRef: Ref<HTMLCanvasElement | undefined>) {
 
     panX -= ev.deltaX * SENSITIVITY
     panY -= ev.deltaY * SENSITIVITY
-
-    requestRedraw(canvas)
   };
 
   onMounted(() => {
@@ -42,13 +36,6 @@ export function useCanvasCamera(canvasRef: Ref<HTMLCanvasElement | undefined>) {
   })
 
   return {
-    applyTransform,
-    get pan() {
-      return { x: panX, y: panY }
-    },
-    clear(ctx: CanvasRenderingContext2D) {
-      ctx.setTransform(1, 0, 0, 1, 0, 0)
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    },
+    getTransform: () => ({ translateX: panX, translateY: panY })
   }
 }

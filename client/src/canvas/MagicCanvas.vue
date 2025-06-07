@@ -3,7 +3,7 @@
   import { twMerge, type ClassNameValue } from 'tailwind-merge';
   import { useCoordinates } from './useCoordinates';
   import { initCanvas } from './initCanvas';
-  import { useCanvasCamera } from './useCanvasCamera';
+  import { usePan } from './useCanvasCamera';
   import { getCtx } from '@utils/ctx';
 
   const props = defineProps<{
@@ -16,7 +16,7 @@
 
   const canvas = ref<HTMLCanvasElement>();
   const coords = useCoordinates(canvas);
-  const camera = useCanvasCamera(canvas);
+  const camera = usePan(canvas);
 
   let repaintInterval: NodeJS.Timeout;
   const REPAINT_FPS = 60;
