@@ -3,6 +3,12 @@
   import { twMerge, type ClassNameValue } from 'tailwind-merge';
   import { useCoordinates } from './useCoordinates';
   import { initCanvas } from './initCanvas';
+  import { useCanvasCamera } from './useCanvasCamera';
+  import { getCtx } from '@utils/ctx';
+
+  const props = defineProps<{
+    draw: () => void;
+  }>();
 
   const emit = defineEmits<{
     (e: 'canvasRef', value: HTMLCanvasElement): void;
@@ -10,6 +16,7 @@
 
   const canvas = ref<HTMLCanvasElement>();
   const coords = useCoordinates(canvas);
+  const camera = useCanvasCamera(canvas);
 
   onMounted(() => {
     if (!canvas.value) {
@@ -18,6 +25,13 @@
 
     initCanvas(canvas.value);
     emit('canvasRef', canvas.value);
+
+    setInterval(() => {
+      const ctx = getCtx(canvas);
+      camera.clear(ctx);
+      camera.applyTransform(ctx);
+      props.draw();
+    }, 1000 / 60);
   });
 </script>
 
@@ -35,3 +49,17 @@
     ref="canvas"
   ></canvas>
 </template>
+
+<style scoped>
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    height: 100%;
+  }
+  canvas {
+    display: block;
+  }
+</style>
