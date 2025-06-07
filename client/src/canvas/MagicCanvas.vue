@@ -36,6 +36,10 @@
     initCanvas(canvas.value);
     emit('canvasRef', canvas.value);
     repaintInterval = setInterval(repaintCanvas, 1000 / REPAINT_FPS);
+
+    canvas.value.addEventListener('wheel', (ev) => {
+      console.log('wheel', [ev.deltaX, ev.deltaY, ev.deltaZ]);
+    });
   });
 
   onUnmounted(() => {
