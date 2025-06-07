@@ -3,7 +3,6 @@ import {
   getImageBoundingBox,
   imageEfficientHitbox,
   imageHitbox,
-  getImageCenterPoint,
 } from './hitbox';
 import {
   drawTextAreaOnImage,
@@ -19,6 +18,7 @@ import type { ShapeFactory } from '@shape/types';
 import type { Coordinate } from '@shape/types/utility';
 import type { LoadImageOptions } from './cache';
 import type { AnchorPoint, Rotation, TextArea } from '@shape/types/schema';
+import { withCenterPoint } from '@shape/factories';
 
 export type ImageSchema = AnchorPoint &
   Rotation &
@@ -44,7 +44,6 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
   const hitbox = (point: Coordinate) =>
     textHitbox?.(point) || shapeHitbox(point);
   const getBoundingBox = getImageBoundingBox(options);
-  const getCenterPoint = getImageCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnImage(options);
   const drawTextAreaMatte = drawTextAreaMatteOnImage(options);
@@ -65,7 +64,7 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return withCenterPoint({
     name: 'image',
 
     draw,
@@ -80,8 +79,7 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
     efficientHitbox,
 
     getBoundingBox,
-    getCenterPoint,
 
     activateTextArea,
-  };
+  });
 };

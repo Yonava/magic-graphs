@@ -1,10 +1,5 @@
 import { drawLineWithCtx } from './draw';
-import {
-  lineHitbox,
-  lineEfficientHitbox,
-  getLineBoundingBox,
-  getLineCenterPoint,
-} from './hitbox';
+import { lineHitbox, lineEfficientHitbox, getLineBoundingBox } from './hitbox';
 import {
   lineTextHitbox,
   drawTextAreaOnLine,
@@ -26,6 +21,7 @@ import {
   BACKGROUND_COLOR_DEFAULTS,
   LINE_WIDTH_DEFAULTS,
 } from '@shape/defaults/schema';
+import { withCenterPoint } from '@shape/factories';
 
 export type LineSchema = LineWidth &
   TextArea &
@@ -62,7 +58,6 @@ export const line: ShapeFactory<LineSchema> = (options) => {
     textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getLineBoundingBox(options);
-  const getCenterPoint = getLineCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnLine(options);
 
@@ -84,7 +79,7 @@ export const line: ShapeFactory<LineSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return withCenterPoint({
     name: 'line',
 
     draw,
@@ -99,8 +94,7 @@ export const line: ShapeFactory<LineSchema> = (options) => {
     textHitbox,
     efficientHitbox,
     getBoundingBox,
-    getCenterPoint,
 
     activateTextArea,
-  };
+  });
 };

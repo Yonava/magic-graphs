@@ -116,14 +116,6 @@ export const getArrowBoundingBox = (arrow: ArrowSchema) => () => {
   });
 };
 
-export const getArrowCenterPoint = (arrow: ArrowSchema) => () => {
-  const { at, width, height } = getArrowBoundingBox(arrow)();
-  return {
-    x: at.x + width / 2,
-    y: at.y + height / 2,
-  };
-};
-
 export const arrowEfficientHitbox = (arrow: ArrowSchema) => {
   const isInLineEfficientHitbox = lineEfficientHitbox(arrow);
 

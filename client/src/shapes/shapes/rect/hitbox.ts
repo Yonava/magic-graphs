@@ -124,14 +124,6 @@ export const getRectBoundingBox = (rectangle: RectSchema) => () => {
   });
 };
 
-export const getRectCenterPoint = (rect: RectSchema) => () => {
-  const { at, width, height } = getRectBoundingBox(rect)();
-  return {
-    x: at.x + width / 2,
-    y: at.y + height / 2,
-  };
-};
-
 export const rectEfficientHitbox =
   (rectangle: RectSchema) => (boxToCheck: BoundingBox) => {
     const {

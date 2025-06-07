@@ -1,9 +1,4 @@
-import {
-  getStarBoundingBox,
-  starEfficientHitbox,
-  starHitbox,
-  getStarCenterPoint,
-} from './hitbox';
+import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';
 import { drawStarWithCtx } from './draw';
 import type { ShapeFactory } from '@shape/types';
 import type { AnchorPoint, FillColor, Rotation } from '@shape/types/schema';
@@ -11,6 +6,7 @@ import {
   BACKGROUND_COLOR_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
+import { withCenterPoint } from '@shape/factories';
 
 export type StarSchema = AnchorPoint &
   FillColor &
@@ -34,9 +30,8 @@ export const star: ShapeFactory<StarSchema> = (options) => {
   const hitbox = shapeHitbox;
   const efficientHitbox = starEfficientHitbox(options);
   const getBoundingBox = getStarBoundingBox(options);
-  const getCenterPoint = getStarCenterPoint(options);
 
-  return {
+  return withCenterPoint({
     name: 'star',
 
     draw,
@@ -46,6 +41,5 @@ export const star: ShapeFactory<StarSchema> = (options) => {
     shapeHitbox,
     efficientHitbox,
     getBoundingBox,
-    getCenterPoint,
-  };
+  });
 };

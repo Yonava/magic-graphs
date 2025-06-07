@@ -63,14 +63,6 @@ export const getStarBoundingBox = (star: StarSchema) => () => {
   });
 };
 
-export const getStarCenterPoint = (star: StarSchema) => () => {
-  const { at, width, height } = getStarBoundingBox(star)();
-  return {
-    x: at.x + width / 2,
-    y: at.y + height / 2,
-  };
-};
-
 export const starEfficientHitbox = (star: StarSchema) => {
   const starBoundingBox = getStarBoundingBox(star)();
 

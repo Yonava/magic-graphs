@@ -59,14 +59,6 @@ export const getTriangleBoundingBox = (triangle: TriangleSchema) => () => {
   });
 };
 
-export const getTriangleCenterPoint = (triangle: TriangleSchema) => () => {
-  const { at, width, height } = getTriangleBoundingBox(triangle)();
-  return {
-    x: at.x + width / 2,
-    y: at.y + height / 2,
-  };
-};
-
 export const triangleEfficientHitbox = (triangle: TriangleSchema) => {
   const triangleBoundingBox = getTriangleBoundingBox(triangle)();
 

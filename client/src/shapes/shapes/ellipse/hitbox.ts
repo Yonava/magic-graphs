@@ -36,14 +36,6 @@ export const getEllipseBoundingBox = (ellipse: EllipseSchema) => () => {
   });
 };
 
-export const getEllipseCenterPoint = (ellipse: EllipseSchema) => () => {
-  const { at, width, height } = getEllipseBoundingBox(ellipse)();
-  return {
-    x: at.x + width / 2,
-    y: at.y + height / 2,
-  };
-};
-
 export const ellipseEfficientHitbox = (ellipse: EllipseSchema) => {
   const ellipseBoundingBox = getEllipseBoundingBox(ellipse)();
 

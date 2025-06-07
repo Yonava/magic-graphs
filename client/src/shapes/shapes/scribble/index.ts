@@ -4,11 +4,11 @@ import {
   scribbleHitbox,
   scribbleEfficientHitbox,
   getScribbleBoundingBox,
-  getScribbleCenterPoint,
 } from './hitbox';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 import type { FillColor } from '@shape/types/schema';
+import { withCenterPoint } from '@shape/factories';
 
 export type ScribbleSchema = FillColor & {
   type: 'draw' | 'erase';
@@ -36,12 +36,11 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
   const hitbox = shapeHitbox;
 
   const getBoundingBox = getScribbleBoundingBox(options);
-  const getCenterPoint = getScribbleCenterPoint(options);
 
   const drawShape = drawScribbleWithCtx(options);
   const draw = drawShape;
 
-  return {
+  return withCenterPoint({
     name: 'scribble',
 
     drawShape,
@@ -51,6 +50,5 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
     shapeHitbox,
     efficientHitbox,
     getBoundingBox,
-    getCenterPoint,
-  };
+  });
 };

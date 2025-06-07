@@ -8,7 +8,6 @@ import {
   triangleHitbox,
   triangleEfficientHitbox,
   getTriangleBoundingBox,
-  getTriangleCenterPoint,
 } from './hitbox';
 import { drawTriangleWithCtx } from './draw';
 import type { Coordinate } from '@shape/types/utility';
@@ -20,6 +19,7 @@ import type {
 } from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
+import { withCenterPoint } from '@shape/factories';
 
 export type TriangleSchema = FillColor &
   Stroke &
@@ -42,7 +42,6 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const hitbox = shapeHitbox;
 
   const getBoundingBox = getTriangleBoundingBox(options);
-  const getCenterPoint = getTriangleCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnTriangle(options);
 
@@ -54,7 +53,7 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
     drawTextArea?.(ctx);
   };
 
-  return {
+  return withCenterPoint({
     name: 'triangle',
 
     draw,
@@ -68,6 +67,5 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
     textHitbox,
     efficientHitbox,
     getBoundingBox,
-    getCenterPoint,
-  };
+  });
 };

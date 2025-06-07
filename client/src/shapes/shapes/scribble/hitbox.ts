@@ -79,14 +79,6 @@ export const getScribbleBoundingBox = (scribble: ScribbleSchema) => () => {
   });
 };
 
-export const getScribbleCenterPoint = (scribble: ScribbleSchema) => () => {
-  const { at, width, height } = getScribbleBoundingBox(scribble)();
-  return {
-    x: at.x + width / 2,
-    y: at.y + height / 2,
-  };
-};
-
 export const scribbleEfficientHitbox =
   (scribble: ScribbleSchema) => (boxToCheck: BoundingBox) => {
     if (scribble.type === 'erase') return false;

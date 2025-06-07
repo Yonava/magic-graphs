@@ -3,7 +3,6 @@ import {
   uturnHitbox,
   uturnEfficientHitbox,
   getUTurnBoundingBox,
-  getUTurnCenterPoint,
 } from './hitbox';
 import {
   drawTextAreaMatteOnUTurn,
@@ -30,6 +29,7 @@ import type {
   Rotation,
   TextArea,
 } from '@shape/types/schema';
+import { withCenterPoint } from '@shape/factories';
 
 export type UTurnSchema = AnchorPoint &
   Rotation &
@@ -74,7 +74,6 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   };
 
   const getBoundingBox = getUTurnBoundingBox(options);
-  const getCenterPoint = getUTurnCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnUTurn(options);
 
@@ -96,7 +95,7 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return withCenterPoint({
     name: 'uturn',
 
     draw,
@@ -111,8 +110,7 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
     textHitbox,
     efficientHitbox,
     getBoundingBox,
-    getCenterPoint,
 
     activateTextArea,
-  };
+  });
 };

@@ -7,7 +7,6 @@ import {
   arrowHitbox,
   arrowEfficientHitbox,
   getArrowBoundingBox,
-  getArrowCenterPoint,
 } from './hitbox';
 import { engageTextarea } from '@shape/textarea';
 import {
@@ -19,6 +18,7 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { getArrowHeadSize } from '@shape/helpers';
+import { withCenterPoint } from '@shape/factories';
 
 export type ArrowSchema = LineSchema & {
   arrowHeadSize?: (width: number) => {
@@ -47,7 +47,6 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
     textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getArrowBoundingBox(options);
-  const getCenterPoint = getArrowCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnArrow(options);
 
@@ -69,7 +68,7 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return withCenterPoint({
     name: 'arrow',
 
     draw,
@@ -84,8 +83,7 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
     textHitbox,
     efficientHitbox,
     getBoundingBox,
-    getCenterPoint,
 
     activateTextArea,
-  };
+  });
 };

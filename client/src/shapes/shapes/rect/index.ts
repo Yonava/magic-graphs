@@ -1,9 +1,4 @@
-import {
-  rectHitbox,
-  rectEfficientHitbox,
-  getRectBoundingBox,
-  getRectCenterPoint,
-} from './hitbox';
+import { rectHitbox, rectEfficientHitbox, getRectBoundingBox } from './hitbox';
 import { drawRectWithCtx } from './draw';
 import {
   rectTextHitbox,
@@ -29,6 +24,7 @@ import {
   BORDER_RADIUS_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
+import { withCenterPoint } from '@shape/factories';
 
 export type RectSchema = AnchorPoint &
   FillColor &
@@ -60,7 +56,6 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getRectBoundingBox(options);
-  const getCenterPoint = getRectCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnRect(options);
 
@@ -82,7 +77,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return withCenterPoint({
     name: 'rect',
 
     draw,
@@ -97,8 +92,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     textHitbox,
     efficientHitbox,
     getBoundingBox,
-    getCenterPoint,
 
     activateTextArea,
-  };
+  });
 };

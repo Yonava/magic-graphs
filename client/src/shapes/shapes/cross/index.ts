@@ -2,7 +2,6 @@ import {
   crossHitbox,
   crossEfficientHitbox,
   getCrossBoundingBox,
-  getCrossCenterPoint,
 } from './hitbox';
 import { drawCrossWithCtx } from './draw';
 import type { ShapeFactory } from '@shape/types';
@@ -19,6 +18,7 @@ import {
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
+import { withCenterPoint } from '@shape/factories';
 
 export type CrossSchema = AnchorPoint &
   Rotation &
@@ -45,9 +45,8 @@ export const cross: ShapeFactory<CrossSchema> = (options) => {
   const efficientHitbox = crossEfficientHitbox(options);
 
   const getBoundingBox = getCrossBoundingBox(options);
-  const getCenterPoint = getCrossCenterPoint(options);
 
-  return {
+  return withCenterPoint({
     name: 'cross',
 
     draw: drawShape,
@@ -58,6 +57,5 @@ export const cross: ShapeFactory<CrossSchema> = (options) => {
 
     efficientHitbox,
     getBoundingBox,
-    getCenterPoint,
-  };
+  });
 };

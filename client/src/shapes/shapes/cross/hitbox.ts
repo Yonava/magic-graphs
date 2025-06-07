@@ -46,14 +46,6 @@ export const getCrossBoundingBox = (cross: CrossSchema) => () => {
   });
 };
 
-export const getCrossCenterPoint = (cross: CrossSchema) => () => {
-  const { at, width, height } = getCrossBoundingBox(cross)();
-  return {
-    x: at.x + width / 2,
-    y: at.y + height / 2,
-  };
-};
-
 export const crossEfficientHitbox = (cross: CrossSchema) => {
   const crossBoundingBox = getCrossBoundingBox(cross)();
 

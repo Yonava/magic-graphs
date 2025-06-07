@@ -4,7 +4,6 @@ import {
   ellipseHitbox,
   ellipseEfficientHitbox,
   getEllipseBoundingBox,
-  getEllipseCenterPoint,
 } from './hitbox';
 import {
   ellipseTextHitbox,
@@ -23,6 +22,7 @@ import type {
 } from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
+import { withCenterPoint } from '@shape/factories';
 
 export type EllipseSchema = AnchorPoint &
   FillColor &
@@ -50,7 +50,6 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getEllipseBoundingBox(options);
-  const getCenterPoint = getEllipseCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnEllipse(options);
 
@@ -72,7 +71,7 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return withCenterPoint({
     name: 'ellipse',
 
     draw,
@@ -87,8 +86,7 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     textHitbox,
     efficientHitbox,
     getBoundingBox,
-    getCenterPoint,
 
     activateTextArea,
-  };
+  });
 };
