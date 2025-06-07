@@ -3,7 +3,6 @@ import { CROSS_SCHEMA_DEFAULTS } from '.';
 import type { CrossSchema } from '.';
 import { rectHitbox, rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
-import type { EllipseSchema } from '../ellipse';
 
 /**
  * @param point - the point to check if it is in the cross
