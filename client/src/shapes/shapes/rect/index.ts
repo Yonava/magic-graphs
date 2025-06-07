@@ -15,26 +15,43 @@ import type {
   BorderRadius,
   Rotation,
   Stroke,
-  TextArea
+  TextArea,
 } from '@shape/types/schema';
 import type { Coordinate } from '@shape/types/utility';
 import type { ShapeFactory } from '@shape/types';
-import { BACKGROUND_COLOR_DEFAULTS, BORDER_RADIUS_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
+import {
+  BACKGROUND_COLOR_DEFAULTS,
+  BORDER_RADIUS_DEFAULTS,
+  ROTATION_DEFAULTS,
+} from '@shape/defaults/schema';
 
-export type RectSchema = AnchorPoint & FillColor & Stroke & TextArea & BorderRadius & Rotation & {
-  width: number;
-  height: number;
-};
+export type RectSchema = AnchorPoint &
+  FillColor &
+  Stroke &
+  TextArea &
+  BorderRadius &
+  Rotation & {
+    width: number;
+    height: number;
+  };
 
 export const RECT_SCHEMA_DEFAULTS = {
   ...BACKGROUND_COLOR_DEFAULTS,
   ...BORDER_RADIUS_DEFAULTS,
   ...ROTATION_DEFAULTS,
-} as const satisfies Partial<RectSchema>
+} as const satisfies Partial<RectSchema>;
 
 export const rect: ShapeFactory<RectSchema> = (options) => {
-  if (options.borderRadius && options.borderRadius < 0) {
-    throw new Error('borderRadius must be positive');
+  if (options.borderRadius) {
+    if (typeof options.borderRadius === 'number' && options.borderRadius < 0)
+      throw new Error('borderRadius must be positive');
+    if (Array.isArray(options.borderRadius)) {
+      if (options.borderRadius.length !== 4) {
+        throw new Error('borderRadius array must have exactly 4 values');
+      }
+      if (options.borderRadius.some((r) => r < 0))
+        throw new Error('borderRadius must be positive');
+    }
   }
 
   const drawShape = drawRectWithCtx(options);
