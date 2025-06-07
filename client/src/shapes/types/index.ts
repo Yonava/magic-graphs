@@ -1,4 +1,4 @@
-import type { BoundingBox, Coordinate } from "./utility";
+import type { BoundingBox, Coordinate } from './utility';
 
 export type ShapeName =
   | 'circle'
@@ -73,6 +73,11 @@ export type Shape = {
   getBoundingBox: () => BoundingBox;
 
   /**
+   * returns the coordinates of the center point of the shape's bounding box
+   */
+  getCenterPoint: () => Coordinate;
+
+  /**
    * activates the text area of the shape
    */
   activateTextArea?: (
@@ -84,4 +89,4 @@ export type Shape = {
 /**
  * the process all schemas go through to become shapes
  */
-export type ShapeFactory<T> = (schema: T) => Shape
+export type ShapeFactory<T> = (schema: T) => Shape;

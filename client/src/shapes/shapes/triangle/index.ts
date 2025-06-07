@@ -8,22 +8,31 @@ import {
   triangleHitbox,
   triangleEfficientHitbox,
   getTriangleBoundingBox,
+  getTriangleCenterPoint,
 } from './hitbox';
 import { drawTriangleWithCtx } from './draw';
 import type { Coordinate } from '@shape/types/utility';
-import type { FillColor, FillGradient, Stroke, TextArea } from '@shape/types/schema';
+import type {
+  FillColor,
+  FillGradient,
+  Stroke,
+  TextArea,
+} from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 
-export type TriangleSchema = FillColor & Stroke & TextArea & FillGradient & {
-  pointA: Coordinate;
-  pointB: Coordinate;
-  pointC: Coordinate;
-};
+export type TriangleSchema = FillColor &
+  Stroke &
+  TextArea &
+  FillGradient & {
+    pointA: Coordinate;
+    pointB: Coordinate;
+    pointC: Coordinate;
+  };
 
 export const TRIANGLE_SCHEMA_DEFAULTS = {
   ...BACKGROUND_COLOR_DEFAULTS,
-} as const satisfies Partial<TriangleSchema>
+} as const satisfies Partial<TriangleSchema>;
 
 export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const drawShape = drawTriangleWithCtx(options);
@@ -33,6 +42,7 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const hitbox = shapeHitbox;
 
   const getBoundingBox = getTriangleBoundingBox(options);
+  const getCenterPoint = getTriangleCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnTriangle(options);
 
@@ -58,5 +68,6 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
     textHitbox,
     efficientHitbox,
     getBoundingBox,
+    getCenterPoint,
   };
 };

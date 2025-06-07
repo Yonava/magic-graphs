@@ -1,4 +1,9 @@
-import { rectHitbox, rectEfficientHitbox, getRectBoundingBox } from './hitbox';
+import {
+  rectHitbox,
+  rectEfficientHitbox,
+  getRectBoundingBox,
+  getRectCenterPoint,
+} from './hitbox';
 import { drawRectWithCtx } from './draw';
 import {
   rectTextHitbox,
@@ -15,22 +20,31 @@ import type {
   BorderRadius,
   Rotation,
   Stroke,
-  TextArea
+  TextArea,
 } from '@shape/types/schema';
 import type { Coordinate } from '@shape/types/utility';
 import type { ShapeFactory } from '@shape/types';
-import { BACKGROUND_COLOR_DEFAULTS, BORDER_RADIUS_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
+import {
+  BACKGROUND_COLOR_DEFAULTS,
+  BORDER_RADIUS_DEFAULTS,
+  ROTATION_DEFAULTS,
+} from '@shape/defaults/schema';
 
-export type RectSchema = AnchorPoint & FillColor & Stroke & TextArea & BorderRadius & Rotation & {
-  width: number;
-  height: number;
-};
+export type RectSchema = AnchorPoint &
+  FillColor &
+  Stroke &
+  TextArea &
+  BorderRadius &
+  Rotation & {
+    width: number;
+    height: number;
+  };
 
 export const RECT_SCHEMA_DEFAULTS = {
   ...BACKGROUND_COLOR_DEFAULTS,
   ...BORDER_RADIUS_DEFAULTS,
   ...ROTATION_DEFAULTS,
-} as const satisfies Partial<RectSchema>
+} as const satisfies Partial<RectSchema>;
 
 export const rect: ShapeFactory<RectSchema> = (options) => {
   if (options.borderRadius && options.borderRadius < 0) {
@@ -46,6 +60,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getRectBoundingBox(options);
+  const getCenterPoint = getRectCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnRect(options);
 
@@ -82,6 +97,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     textHitbox,
     efficientHitbox,
     getBoundingBox,
+    getCenterPoint,
 
     activateTextArea,
   };

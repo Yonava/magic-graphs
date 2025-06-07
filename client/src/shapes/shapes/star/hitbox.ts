@@ -47,12 +47,10 @@ const isPointInPolygon = (
   return inside;
 };
 
-export const starHitbox =
-  (star: StarSchema) =>
-    (point: Coordinate) => {
-      const vertices = getStarPoints(star);
-      return isPointInPolygon(point, vertices);
-    };
+export const starHitbox = (star: StarSchema) => (point: Coordinate) => {
+  const vertices = getStarPoints(star);
+  return isPointInPolygon(point, vertices);
+};
 
 export const getStarBoundingBox = (star: StarSchema) => () => {
   const { at, outerRadius } = star;
@@ -63,6 +61,14 @@ export const getStarBoundingBox = (star: StarSchema) => () => {
     width: size,
     height: size,
   });
+};
+
+export const getStarCenterPoint = (star: StarSchema) => () => {
+  const { at, width, height } = getStarBoundingBox(star)();
+  return {
+    x: at.x + width / 2,
+    y: at.y + height / 2,
+  };
 };
 
 export const starEfficientHitbox = (star: StarSchema) => {

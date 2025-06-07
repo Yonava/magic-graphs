@@ -3,6 +3,7 @@ import {
   uturnHitbox,
   uturnEfficientHitbox,
   getUTurnBoundingBox,
+  getUTurnCenterPoint,
 } from './hitbox';
 import {
   drawTextAreaMatteOnUTurn,
@@ -16,18 +17,21 @@ import { engageTextarea } from '@shape/textarea';
 import { getArrowHeadSize } from '@shape/helpers';
 import type { Coordinate } from '@shape/types/utility';
 import type { Shape, ShapeFactory } from '@shape/types';
-import { BACKGROUND_COLOR_DEFAULTS, LINE_WIDTH_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
+import {
+  BACKGROUND_COLOR_DEFAULTS,
+  LINE_WIDTH_DEFAULTS,
+  ROTATION_DEFAULTS,
+} from '@shape/defaults/schema';
 import type {
   AnchorPoint,
   FillColor,
   FillGradient,
   LineWidth,
   Rotation,
-  TextArea
+  TextArea,
 } from '@shape/types/schema';
 
-export type UTurnSchema =
-  AnchorPoint &
+export type UTurnSchema = AnchorPoint &
   Rotation &
   LineWidth &
   FillColor &
@@ -49,7 +53,7 @@ export const UTURN_SCHEMA_DEFAULTS = {
   ...LINE_WIDTH_DEFAULTS,
   ...ROTATION_DEFAULTS,
   arrowHeadSize: getArrowHeadSize,
-} as const satisfies Partial<UTurnSchema>
+} as const satisfies Partial<UTurnSchema>;
 
 export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   if (options.downDistance < 0) {
@@ -70,6 +74,7 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   };
 
   const getBoundingBox = getUTurnBoundingBox(options);
+  const getCenterPoint = getUTurnCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnUTurn(options);
 
@@ -106,6 +111,7 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
     textHitbox,
     efficientHitbox,
     getBoundingBox,
+    getCenterPoint,
 
     activateTextArea,
   };

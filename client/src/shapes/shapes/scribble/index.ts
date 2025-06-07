@@ -4,6 +4,7 @@ import {
   scribbleHitbox,
   scribbleEfficientHitbox,
   getScribbleBoundingBox,
+  getScribbleCenterPoint,
 } from './hitbox';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
@@ -18,7 +19,7 @@ export type ScribbleSchema = FillColor & {
 export const SCRIBBLE_SCHEMA_DEFAULTS = {
   ...BACKGROUND_COLOR_DEFAULTS,
   brushWeight: 3,
-} as const satisfies Partial<ScribbleSchema>
+} as const satisfies Partial<ScribbleSchema>;
 
 export const ERASER_BRUSH_WEIGHT = 50;
 
@@ -35,9 +36,10 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
   const hitbox = shapeHitbox;
 
   const getBoundingBox = getScribbleBoundingBox(options);
+  const getCenterPoint = getScribbleCenterPoint(options);
 
   const drawShape = drawScribbleWithCtx(options);
-  const draw = drawShape
+  const draw = drawShape;
 
   return {
     name: 'scribble',
@@ -49,5 +51,6 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
     shapeHitbox,
     efficientHitbox,
     getBoundingBox,
+    getCenterPoint,
   };
 };

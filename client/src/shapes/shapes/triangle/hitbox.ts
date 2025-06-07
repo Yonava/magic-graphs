@@ -30,7 +30,7 @@ export const triangleHitbox =
       return isInsideTriangle;
     }
 
-    const { lineWidth: strokeWidth } = stroke
+    const { lineWidth: strokeWidth } = stroke;
 
     const edge1 = { start: a, end: b, width: strokeWidth };
     const edge2 = { start: b, end: c, width: strokeWidth };
@@ -57,6 +57,14 @@ export const getTriangleBoundingBox = (triangle: TriangleSchema) => () => {
     width: maxX - minX,
     height: maxY - minY,
   });
+};
+
+export const getTriangleCenterPoint = (triangle: TriangleSchema) => () => {
+  const { at, width, height } = getTriangleBoundingBox(triangle)();
+  return {
+    x: at.x + width / 2,
+    y: at.y + height / 2,
+  };
 };
 
 export const triangleEfficientHitbox = (triangle: TriangleSchema) => {

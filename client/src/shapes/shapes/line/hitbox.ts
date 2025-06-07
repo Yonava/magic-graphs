@@ -42,7 +42,11 @@ export const lineHitbox = (line: LineSchema) => (point: Coordinate) => {
 };
 
 export const getLineBoundingBox = (line: LineSchema) => () => {
-  const { start, end, lineWidth: width } = {
+  const {
+    start,
+    end,
+    lineWidth: width,
+  } = {
     ...LINE_SCHEMA_DEFAULTS,
     ...line,
   };
@@ -62,8 +66,20 @@ export const getLineBoundingBox = (line: LineSchema) => () => {
   });
 };
 
+export const getLineCenterPoint = (line: LineSchema) => () => {
+  const { at, width, height } = getLineBoundingBox(line)();
+  return {
+    x: at.x + width / 2,
+    y: at.y + height / 2,
+  };
+};
+
 export const lineEfficientHitbox = (line: LineSchema) => {
-  const { start, end, lineWidth: width } = {
+  const {
+    start,
+    end,
+    lineWidth: width,
+  } = {
     ...LINE_SCHEMA_DEFAULTS,
     ...line,
   };

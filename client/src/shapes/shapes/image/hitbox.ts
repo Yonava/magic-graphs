@@ -36,6 +36,14 @@ export const getImageBoundingBox = (image: ImageSchema) => {
   });
 };
 
+export const getImageCenterPoint = (image: ImageSchema) => () => {
+  const { at, width, height } = getImageBoundingBox(image)();
+  return {
+    x: at.x + width / 2,
+    y: at.y + height / 2,
+  };
+};
+
 export const imageEfficientHitbox = (image: ImageSchema) => {
   const { at, width, height } = image;
 

@@ -103,6 +103,14 @@ export const getUTurnBoundingBox = (uturn: UTurnSchema) => () => {
   });
 };
 
+export const getUTurnCenterPoint = (uturn: UTurnSchema) => () => {
+  const { at, width, height } = getUTurnBoundingBox(uturn)();
+  return {
+    x: at.x + width / 2,
+    y: at.y + height / 2,
+  };
+};
+
 export const uturnEfficientHitbox = (uturn: UTurnSchema) => {
   const uturnBoundingBox = getUTurnBoundingBox(uturn)();
 

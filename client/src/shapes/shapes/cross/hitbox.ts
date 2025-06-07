@@ -3,6 +3,7 @@ import { CROSS_SCHEMA_DEFAULTS } from '.';
 import type { CrossSchema } from '.';
 import { rectHitbox, rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
+import type { EllipseSchema } from '../ellipse';
 
 /**
  * @param point - the point to check if it is in the cross
@@ -44,6 +45,14 @@ export const getCrossBoundingBox = (cross: CrossSchema) => () => {
     width: size,
     height: size,
   });
+};
+
+export const getCrossCenterPoint = (cross: CrossSchema) => () => {
+  const { at, width, height } = getCrossBoundingBox(cross)();
+  return {
+    x: at.x + width / 2,
+    y: at.y + height / 2,
+  };
 };
 
 export const crossEfficientHitbox = (cross: CrossSchema) => {

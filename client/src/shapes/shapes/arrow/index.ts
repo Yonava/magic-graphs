@@ -1,12 +1,13 @@
 import { LINE_SCHEMA_DEFAULTS } from '@shape/shapes/line';
 import type { LineSchema } from '@shape/shapes/line';
 import type { Coordinate } from '@shape/types/utility';
-import type { Shape, ShapeFactory } from '@shape/types'
+import type { Shape, ShapeFactory } from '@shape/types';
 import { drawArrowWithCtx } from './draw';
 import {
   arrowHitbox,
   arrowEfficientHitbox,
   getArrowBoundingBox,
+  getArrowCenterPoint,
 } from './hitbox';
 import { engageTextarea } from '@shape/textarea';
 import {
@@ -30,7 +31,7 @@ export type ArrowSchema = LineSchema & {
 export const ARROW_SCHEMA_DEFAULTS = {
   ...LINE_SCHEMA_DEFAULTS,
   arrowHeadSize: getArrowHeadSize,
-} as const satisfies Partial<ArrowSchema>
+} as const satisfies Partial<ArrowSchema>;
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {
@@ -42,9 +43,11 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   const shapeHitbox = arrowHitbox(options);
   const textHitbox = arrowTextHitbox(options);
   const efficientHitbox = arrowEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
+  const hitbox = (point: Coordinate) =>
+    textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getArrowBoundingBox(options);
+  const getCenterPoint = getArrowCenterPoint(options);
 
   const drawTextArea = drawTextAreaOnArrow(options);
 
@@ -81,6 +84,7 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
     textHitbox,
     efficientHitbox,
     getBoundingBox,
+    getCenterPoint,
 
     activateTextArea,
   };
