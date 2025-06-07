@@ -122,7 +122,9 @@ export const getArrowHeadSize = (
  * @returns the triangle that makes up the arrow tip
  */
 export const calculateArrowHeadCorners = (
-  options: Required<Pick<ArrowSchema, 'start' | 'end' | 'lineWidth' | 'arrowHeadSize'>>,
+  options: Required<
+    Pick<ArrowSchema, 'start' | 'end' | 'lineWidth' | 'arrowHeadSize'>
+  >,
 ) => {
   const { start, end, lineWidth: width, arrowHeadSize } = options;
 
@@ -237,8 +239,8 @@ export const getColorAtPercentage = (
 export const normalizeBoundingBox = (bb: BoundingBox): BoundingBox => ({
   at: {
     x: bb.at.x + (bb.width < 0 ? bb.width : 0),
-    y: bb.at.y + (bb.height < 0 ? bb.height : 0)
+    y: bb.at.y + (bb.height < 0 ? bb.height : 0),
   },
   width: Math.abs(bb.width),
   height: Math.abs(bb.height),
-})
+});
