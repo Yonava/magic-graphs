@@ -30,7 +30,7 @@ export const triangleHitbox =
       return isInsideTriangle;
     }
 
-    const { lineWidth: strokeWidth } = stroke
+    const { lineWidth: strokeWidth } = stroke;
 
     const edge1 = { start: a, end: b, width: strokeWidth };
     const edge2 = { start: b, end: c, width: strokeWidth };

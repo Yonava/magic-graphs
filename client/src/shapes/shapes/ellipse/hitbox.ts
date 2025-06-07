@@ -3,27 +3,28 @@ import { normalizeBoundingBox } from '@shape/helpers';
 import type { EllipseSchema } from '.';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
 
-export const ellipseHitbox = (ellipse: EllipseSchema) => (point: Coordinate) => {
-  const { at, stroke, radiusX, radiusY } = ellipse
+export const ellipseHitbox =
+  (ellipse: EllipseSchema) => (point: Coordinate) => {
+    const { at, stroke, radiusX, radiusY } = ellipse;
 
-  const dx = point.x - at.x;
-  const dy = point.y - at.y;
+    const dx = point.x - at.x;
+    const dy = point.y - at.y;
 
-  const strokeWidth = stroke?.lineWidth ?? 0
+    const strokeWidth = stroke?.lineWidth ?? 0;
 
-  const radiusXWithStroke = radiusX + strokeWidth / 2;
-  const radiusYWithStroke = radiusY + strokeWidth / 2;
+    const radiusXWithStroke = radiusX + strokeWidth / 2;
+    const radiusYWithStroke = radiusY + strokeWidth / 2;
 
-  const inEllipse =
-    (dx ** 2) / (radiusXWithStroke ** 2) + (dy ** 2) / (radiusYWithStroke ** 2) <= 1;
+    const inEllipse =
+      dx ** 2 / radiusXWithStroke ** 2 + dy ** 2 / radiusYWithStroke ** 2 <= 1;
 
-  return inEllipse;
-};
+    return inEllipse;
+  };
 
 export const getEllipseBoundingBox = (ellipse: EllipseSchema) => () => {
   const { at, radiusX, radiusY, stroke } = ellipse;
 
-  const borderWidth = stroke?.lineWidth ?? 0
+  const borderWidth = stroke?.lineWidth ?? 0;
 
   return normalizeBoundingBox({
     at: {

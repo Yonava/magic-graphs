@@ -11,7 +11,10 @@ import { normalizeBoundingBox } from '@shape/helpers';
  */
 export const scribbleHitbox =
   (scribble: ScribbleSchema) => (point: Coordinate) => {
-    const { type, points, brushWeight } = { ...SCRIBBLE_SCHEMA_DEFAULTS, ...scribble };
+    const { type, points, brushWeight } = {
+      ...SCRIBBLE_SCHEMA_DEFAULTS,
+      ...scribble,
+    };
 
     if (type === 'erase') return false;
 
@@ -82,7 +85,10 @@ export const scribbleEfficientHitbox =
 
     const { at, width, height } = getScribbleBoundingBox(scribble)();
 
-    const { points, brushWeight } = { ...SCRIBBLE_SCHEMA_DEFAULTS, ...scribble };
+    const { points, brushWeight } = {
+      ...SCRIBBLE_SCHEMA_DEFAULTS,
+      ...scribble,
+    };
 
     const isInRectEfficientHitbox = rectEfficientHitbox({
       at,

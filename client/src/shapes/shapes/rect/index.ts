@@ -15,22 +15,32 @@ import type {
   BorderRadius,
   Rotation,
   Stroke,
-  TextArea
+  TextArea,
 } from '@shape/types/schema';
 import type { Coordinate } from '@shape/types/utility';
 import type { ShapeFactory } from '@shape/types';
-import { BACKGROUND_COLOR_DEFAULTS, BORDER_RADIUS_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
+import {
+  BACKGROUND_COLOR_DEFAULTS,
+  BORDER_RADIUS_DEFAULTS,
+  ROTATION_DEFAULTS,
+} from '@shape/defaults/schema';
+import { withCenterPoint } from '@shape/factories';
 
-export type RectSchema = AnchorPoint & FillColor & Stroke & TextArea & BorderRadius & Rotation & {
-  width: number;
-  height: number;
-};
+export type RectSchema = AnchorPoint &
+  FillColor &
+  Stroke &
+  TextArea &
+  BorderRadius &
+  Rotation & {
+    width: number;
+    height: number;
+  };
 
 export const RECT_SCHEMA_DEFAULTS = {
   ...BACKGROUND_COLOR_DEFAULTS,
   ...BORDER_RADIUS_DEFAULTS,
   ...ROTATION_DEFAULTS,
-} as const satisfies Partial<RectSchema>
+} as const satisfies Partial<RectSchema>;
 
 export const rect: ShapeFactory<RectSchema> = (options) => {
   if (options.borderRadius && options.borderRadius < 0) {
@@ -67,7 +77,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return withCenterPoint({
     name: 'rect',
 
     draw,
@@ -84,5 +94,5 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     getBoundingBox,
 
     activateTextArea,
-  };
+  });
 };

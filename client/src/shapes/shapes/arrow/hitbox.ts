@@ -1,4 +1,4 @@
-import type { Coordinate, BoundingBox } from '@shape/types/utility'
+import type { Coordinate, BoundingBox } from '@shape/types/utility';
 import {
   lineHitbox,
   lineEfficientHitbox,
@@ -16,7 +16,13 @@ import {
 } from '@shape/helpers';
 
 export const arrowHitbox = (arrow: ArrowSchema) => {
-  const { start, end, lineWidth: width, arrowHeadSize, arrowHeadShape } = {
+  const {
+    start,
+    end,
+    lineWidth: width,
+    arrowHeadSize,
+    arrowHeadShape,
+  } = {
     ...ARROW_SCHEMA_DEFAULTS,
     ...arrow,
   };
@@ -113,7 +119,12 @@ export const getArrowBoundingBox = (arrow: ArrowSchema) => () => {
 export const arrowEfficientHitbox = (arrow: ArrowSchema) => {
   const isInLineEfficientHitbox = lineEfficientHitbox(arrow);
 
-  const { start, end, lineWidth: width, arrowHeadSize } = {
+  const {
+    start,
+    end,
+    lineWidth: width,
+    arrowHeadSize,
+  } = {
     ...ARROW_SCHEMA_DEFAULTS,
     ...arrow,
   };
