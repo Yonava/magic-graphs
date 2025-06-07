@@ -1,5 +1,9 @@
 import type { Shape } from './types';
 
+/**
+ * Adds a `getCenterPoint` method to a shape object.
+ * This method calculates the center point of the shape based on its bounding box.
+ */
 export const withCenterPoint = (
   shapeProps: Omit<Shape, 'getCenterPoint'>,
 ): Shape => {
