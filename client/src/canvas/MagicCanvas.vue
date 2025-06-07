@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
+  import { onMounted, onUnmounted, ref } from 'vue';
   import { twMerge, type ClassNameValue } from 'tailwind-merge';
   import { useCoordinates } from './useCoordinates';
   import { initCanvas } from './initCanvas';
@@ -7,7 +7,7 @@
   import { getCtx } from '@utils/ctx';
 
   const props = defineProps<{
-    draw: () => void;
+    draw: (ctx: CanvasRenderingContext2D) => void;
   }>();
 
   const emit = defineEmits<{
@@ -18,6 +18,16 @@
   const coords = useCoordinates(canvas);
   const camera = useCanvasCamera(canvas);
 
+  let repaintInterval: NodeJS.Timeout;
+  const REPAINT_FPS = 60;
+
+  const repaintCanvas = () => {
+    const ctx = getCtx(canvas);
+    camera.clear(ctx);
+    camera.applyTransform(ctx);
+    props.draw(ctx);
+  };
+
   onMounted(() => {
     if (!canvas.value) {
       throw new Error('Canvas not found in DOM. Check ref link.');
@@ -25,13 +35,11 @@
 
     initCanvas(canvas.value);
     emit('canvasRef', canvas.value);
+    repaintInterval = setInterval(repaintCanvas, 1000 / REPAINT_FPS);
+  });
 
-    setInterval(() => {
-      const ctx = getCtx(canvas);
-      camera.clear(ctx);
-      camera.applyTransform(ctx);
-      props.draw();
-    }, 1000 / 60);
+  onUnmounted(() => {
+    clearInterval(repaintInterval);
   });
 </script>
 
