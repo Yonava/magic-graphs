@@ -47,13 +47,19 @@ export type Rotation = {
   rotation?: number;
 };
 
+type BorderRadiusArrayValue = [
+  topLeft: number,
+  topRight: number,
+  bottomRight: number,
+  bottomLeft: number,
+];
+
 export type BorderRadius = {
   /**
    * the roundness of the shape's corners (in pixels)
    * can be a single value or an array for each corner
-   * e.g. [topLeft, topRight, bottomRight, bottomLeft]
    */
-  borderRadius?: number | [number, number, number, number];
+  borderRadius?: number | BorderRadiusArrayValue;
 };
 
 export type FillGradient = {

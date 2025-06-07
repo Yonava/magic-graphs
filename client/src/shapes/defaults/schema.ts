@@ -1,4 +1,3 @@
-import { color } from '@codemirror/theme-one-dark';
 import type {
   FillColor,
   BorderRadius,
@@ -22,10 +21,3 @@ export const ROTATION_DEFAULTS = {
 export const BORDER_RADIUS_DEFAULTS = {
   borderRadius: 0,
 } as const satisfies BorderRadius;
-
-export const STROKE_DEFAULTS = {
-  stroke: {
-    color: 'black',
-    lineWidth: 0,
-  },
-} as const satisfies Stroke;

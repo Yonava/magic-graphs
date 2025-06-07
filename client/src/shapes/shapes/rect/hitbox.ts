@@ -3,7 +3,6 @@ import { RECT_SCHEMA_DEFAULTS } from '.';
 import { circle } from '@shape/shapes/circle';
 import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
-import { STROKE_DEFAULTS } from '@shape/defaults/schema';
 
 /**
  * @param point - the point to check if it is in the rotated rectangle
@@ -22,18 +21,18 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
   } = normalizeBoundingBox({ at, width, height });
   const centerX = normalizedAt.x + normalizedWidth / 2;
   const centerY = normalizedAt.y + normalizedHeight / 2;
-  const strokeWidth = stroke?.lineWidth || STROKE_DEFAULTS.stroke.lineWidth;
+  const strokeWidth = stroke?.lineWidth || 0;
   const localPoint = rotatePoint(point, { x: centerX, y: centerY }, -rotation);
   const { x, y } = {
     x: centerX - normalizedWidth / 2,
     y: centerY - normalizedHeight / 2,
   };
 
-  if (
-    borderRadius === undefined ||
+  const noBorderRadius =
     (typeof borderRadius === 'number' && borderRadius === 0) ||
-    (Array.isArray(borderRadius) && borderRadius.every((r) => r === 0))
-  ) {
+    (Array.isArray(borderRadius) && borderRadius.every((r) => r === 0));
+
+  if (noBorderRadius) {
     return (
       localPoint.x >= x - strokeWidth / 2 &&
       localPoint.x <= x + normalizedWidth + strokeWidth / 2 &&
@@ -42,18 +41,23 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
     );
   }
 
-  let radii: number[];
-  if (typeof borderRadius === 'number') {
-    radii = [borderRadius, borderRadius, borderRadius, borderRadius];
-  } else {
-    radii = borderRadius;
-  }
+  const radii =
+    typeof borderRadius === 'number'
+      ? [borderRadius, borderRadius, borderRadius, borderRadius]
+      : borderRadius;
 
   const maxRadius = Math.min(normalizedWidth / 2, normalizedHeight / 2);
   const [topLeftRadius, topRightRadius, bottomRightRadius, bottomLeftRadius] =
     radii.map((r) => Math.min(Math.max(r, 0), maxRadius));
 
-  const rectangles = [
+  type HitboxRect = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+
+  const rectangles: HitboxRect[] = [
     {
       x: x + topLeftRadius,
       y: y,
@@ -105,7 +109,12 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
     }
   }
 
-  const corners = [
+  type HitboxCircle = {
+    center: Coordinate;
+    radius: number;
+  };
+
+  const corners: HitboxCircle[] = [
     {
       center: { x: x + topLeftRadius, y: y + topLeftRadius },
       radius: topLeftRadius,
