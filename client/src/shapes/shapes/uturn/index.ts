@@ -29,7 +29,7 @@ import type {
   Rotation,
   TextArea,
 } from '@shape/types/schema';
-import { factoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/factories';
 
 export type UTurnSchema = AnchorPoint &
   Rotation &
@@ -95,7 +95,7 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return factoryWrapper({
+  return shapeFactoryWrapper({
     name: 'uturn',
 
     draw,

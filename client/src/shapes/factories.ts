@@ -1,6 +1,6 @@
 import type { Shape, ShapeUtilProps } from './types';
 
-export const factoryWrapper = (
+export const shapeFactoryWrapper = (
   shapeProps: Omit<Shape, keyof ShapeUtilProps>,
 ): Shape => {
   return {

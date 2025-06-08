@@ -6,7 +6,7 @@ import {
   BACKGROUND_COLOR_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
-import { factoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/factories';
 
 export type StarSchema = AnchorPoint &
   FillColor &
@@ -31,7 +31,7 @@ export const star: ShapeFactory<StarSchema> = (options) => {
   const efficientHitbox = starEfficientHitbox(options);
   const getBoundingBox = getStarBoundingBox(options);
 
-  return factoryWrapper({
+  return shapeFactoryWrapper({
     name: 'star',
 
     draw,

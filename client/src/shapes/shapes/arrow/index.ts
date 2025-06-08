@@ -18,7 +18,7 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { getArrowHeadSize } from '@shape/helpers';
-import { factoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/factories';
 
 export type ArrowSchema = LineSchema & {
   arrowHeadSize?: (width: number) => {
@@ -68,7 +68,7 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return factoryWrapper({
+  return shapeFactoryWrapper({
     name: 'arrow',
 
     draw,

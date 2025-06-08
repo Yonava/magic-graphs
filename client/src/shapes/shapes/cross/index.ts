@@ -18,7 +18,7 @@ import {
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
-import { factoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/factories';
 
 export type CrossSchema = AnchorPoint &
   Rotation &
@@ -46,7 +46,7 @@ export const cross: ShapeFactory<CrossSchema> = (options) => {
 
   const getBoundingBox = getCrossBoundingBox(options);
 
-  return factoryWrapper({
+  return shapeFactoryWrapper({
     name: 'cross',
 
     draw: drawShape,

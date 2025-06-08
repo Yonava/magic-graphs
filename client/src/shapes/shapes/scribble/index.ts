@@ -8,7 +8,7 @@ import {
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 import type { FillColor } from '@shape/types/schema';
-import { factoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/factories';
 
 export type ScribbleSchema = FillColor & {
   type: 'draw' | 'erase';
@@ -40,7 +40,7 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
   const drawShape = drawScribbleWithCtx(options);
   const draw = drawShape;
 
-  return factoryWrapper({
+  return shapeFactoryWrapper({
     name: 'scribble',
 
     drawShape,

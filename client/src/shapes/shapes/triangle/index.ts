@@ -19,7 +19,7 @@ import type {
 } from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
-import { factoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/factories';
 
 export type TriangleSchema = FillColor &
   Stroke &
@@ -53,7 +53,7 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
     drawTextArea?.(ctx);
   };
 
-  return factoryWrapper({
+  return shapeFactoryWrapper({
     name: 'triangle',
 
     draw,

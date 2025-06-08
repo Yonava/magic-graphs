@@ -24,7 +24,7 @@ import {
   BORDER_RADIUS_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
-import { factoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/factories';
 
 export type RectSchema = AnchorPoint &
   FillColor &
@@ -77,7 +77,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return factoryWrapper({
+  return shapeFactoryWrapper({
     name: 'rect',
 
     draw,

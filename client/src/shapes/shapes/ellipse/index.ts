@@ -22,7 +22,7 @@ import type {
 } from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
-import { factoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/factories';
 
 export type EllipseSchema = AnchorPoint &
   FillColor &
@@ -71,7 +71,7 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return factoryWrapper({
+  return shapeFactoryWrapper({
     name: 'ellipse',
 
     draw,
