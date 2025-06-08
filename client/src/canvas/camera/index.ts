@@ -3,7 +3,7 @@ import { usePanAndZoom } from "./panZoom";
 import { addTransform, getDevicePixelRatio, type TransformOptions } from "./utils";
 
 export const useCamera = (canvas: Ref<HTMLCanvasElement | undefined>) => {
-  const panAndZoom = usePanAndZoom(canvas)
+  const { getTransform: getPZTransform, ...rest } = usePanAndZoom(canvas)
   const dpr = getDevicePixelRatio()
 
   const dprTransform: TransformOptions = {
@@ -12,11 +12,12 @@ export const useCamera = (canvas: Ref<HTMLCanvasElement | undefined>) => {
   }
 
   return {
+    ...rest,
     transform: (ctx: CanvasRenderingContext2D) => {
       ctx.resetTransform()
-      const transforms = [dprTransform, panAndZoom.getTransform()]
+      const transforms = [dprTransform, getPZTransform()]
       for (const t of transforms) addTransform(ctx, t)
-    }
+    },
   }
 }
 

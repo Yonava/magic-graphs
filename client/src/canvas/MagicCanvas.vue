@@ -5,6 +5,8 @@
   import { initCanvas } from './initCanvas';
   import { getCtx } from '@utils/ctx';
   import { useCamera } from './camera';
+  import Button from '@ui/core/button/Button.vue';
+  import { MAX_ZOOM, MIN_ZOOM } from './camera/panZoom';
 
   const emit = defineEmits<{
     (e: 'canvasRef', value: HTMLCanvasElement): void;
@@ -41,10 +43,30 @@
 </script>
 
 <template>
-  <div class="absolute top-0 left-0 m-2 pointer-events-none">
-    Raw: ({{ coords.raw.coords.value.x }}, {{ coords.raw.coords.value.y }}) /
-    Norm: ({{ coords.normal.coords.value.x }},
-    {{ coords.normal.coords.value.y }})
+  <div class="absolute top-0 left-0 m-2 flex gap-2">
+    <Button
+      @click="camera.actions.zoomIn()"
+      :disabled="MAX_ZOOM === camera.state.zoom.value"
+      >Zoom In</Button
+    >
+    <Button
+      @click="camera.actions.zoomOut()"
+      :disabled="MIN_ZOOM === camera.state.zoom.value"
+      >Zoom Out</Button
+    >
+  </div>
+  <div
+    class="absolute top-0 right-0 m-2 text-white pointer-events-none flex flex-col gap-2 text-right"
+  >
+    <span>
+      Raw: ({{ coords.raw.coords.value.x }}, {{ coords.raw.coords.value.y }}) /
+      Norm: ({{ coords.normal.coords.value.x }},
+      {{ coords.normal.coords.value.y }})
+    </span>
+    <span>
+      PanX: {{ camera.state.panX }} / PanY {{ camera.state.panY }} / Zoom:
+      {{ camera.state.zoom }}
+    </span>
   </div>
   <canvas
     v-bind="{
