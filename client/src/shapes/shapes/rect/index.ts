@@ -24,7 +24,7 @@ import {
   BORDER_RADIUS_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
-import { validateBorderRadius } from '../optionsValidator';
+import { validateBorderRadius } from '../../optionsValidator';
 
 export type RectSchema = AnchorPoint &
   FillColor &

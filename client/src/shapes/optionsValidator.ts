@@ -1,6 +1,6 @@
 import type { BorderRadius } from '@shape/types/schema';
 
-export const validateBorderRadius = <T extends BorderRadius>(options: T) => {
+export const validateBorderRadius = (options: BorderRadius) => {
   const { borderRadius } = options;
   if (borderRadius === undefined) return;
   if (typeof borderRadius === 'number') {
