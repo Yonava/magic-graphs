@@ -1,14 +1,13 @@
-import type { Shape } from './types';
+import type { Shape, ShapeUtilProps } from './types';
 
-/**
- * Adds a `getCenterPoint` method to a shape object.
- * This method calculates the center point of the shape based on its bounding box.
- */
-export const withCenterPoint = (
-  shapeProps: Omit<Shape, 'getCenterPoint'>,
+export const factoryWrapper = (
+  shapeProps: Omit<Shape, keyof ShapeUtilProps>,
 ): Shape => {
   return {
     ...shapeProps,
+    /**
+     * This method calculates the center point of the shape based on its bounding box.
+     */
     getCenterPoint: () => {
       const {
         at: { x, y },

@@ -24,7 +24,7 @@ import {
   BORDER_RADIUS_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
-import { withCenterPoint } from '@shape/factories';
+import { factoryWrapper } from '@shape/factories';
 
 export type RectSchema = AnchorPoint &
   FillColor &
@@ -77,7 +77,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return withCenterPoint({
+  return factoryWrapper({
     name: 'rect',
 
     draw,

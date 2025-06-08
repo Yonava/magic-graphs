@@ -18,7 +18,7 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { getArrowHeadSize } from '@shape/helpers';
-import { withCenterPoint } from '@shape/factories';
+import { factoryWrapper } from '@shape/factories';
 
 export type ArrowSchema = LineSchema & {
   arrowHeadSize?: (width: number) => {
@@ -68,7 +68,7 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return withCenterPoint({
+  return factoryWrapper({
     name: 'arrow',
 
     draw,

@@ -21,7 +21,7 @@ import {
   BACKGROUND_COLOR_DEFAULTS,
   LINE_WIDTH_DEFAULTS,
 } from '@shape/defaults/schema';
-import { withCenterPoint } from '@shape/factories';
+import { factoryWrapper } from '@shape/factories';
 
 export type LineSchema = LineWidth &
   TextArea &
@@ -79,7 +79,7 @@ export const line: ShapeFactory<LineSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return withCenterPoint({
+  return factoryWrapper({
     name: 'line',
 
     draw,

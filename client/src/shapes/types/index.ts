@@ -14,7 +14,7 @@ export type ShapeName =
   | 'star'
   | 'image';
 
-export type Shape = {
+export type ShapeProps = {
   /**
    * the name of the shape type, ie `"circle"`, `"line"`, etc
    */
@@ -73,11 +73,6 @@ export type Shape = {
   getBoundingBox: () => BoundingBox;
 
   /**
-   * returns the coordinates of the center point of the shape's bounding box
-   */
-  getCenterPoint: () => Coordinate;
-
-  /**
    * activates the text area of the shape
    */
   activateTextArea?: (
@@ -85,6 +80,15 @@ export type Shape = {
     handler: (str: string) => void,
   ) => void;
 };
+
+export type ShapeUtilProps = {
+  /**
+   * returns the coordinates of the center point of the shape's bounding box
+   */
+  getCenterPoint: () => Coordinate;
+};
+
+export type Shape = ShapeProps & ShapeUtilProps;
 
 /**
  * the process all schemas go through to become shapes
