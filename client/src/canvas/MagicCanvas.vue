@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onMounted, onUnmounted, ref } from 'vue';
+  import { onBeforeUnmount, onMounted, ref } from 'vue';
   import { twMerge, type ClassNameValue } from 'tailwind-merge';
   import { useCoordinates } from './useCoordinates';
   import { initCanvas } from './initCanvas';
@@ -35,7 +35,7 @@
     repaintInterval = setInterval(repaintCanvas, 1000 / REPAINT_FPS);
   });
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     clearInterval(repaintInterval);
   });
 </script>

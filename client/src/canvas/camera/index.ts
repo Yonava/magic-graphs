@@ -1,11 +1,9 @@
 import type { Ref } from "vue"
 import { defineCamera } from "./defineCamera"
-import { usePan } from "./pluggables/pan"
-import { useZoom } from "./pluggables/zoom"
+import { useCameraState } from "./pluggables"
 
 export const useCamera = (canvas: Ref<HTMLCanvasElement | undefined>) => {
-  const pan = usePan(canvas)
-  const zoom = useZoom(canvas)
+  const { pan, zoom } = useCameraState(canvas)
 
   return defineCamera({
     pluggables: [pan, zoom]

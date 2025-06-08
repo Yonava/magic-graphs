@@ -1,6 +1,6 @@
 import type { Coordinate } from "@shape/types/utility";
 import { getCtx } from "@utils/ctx";
-import { onMounted, onUnmounted, ref, type Ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, type Ref } from "vue";
 import { getDevicePixelRatio } from "./camera/utils";
 
 type CoordGetter = (ev: MouseEvent, ctx: CanvasRenderingContext2D) => Coordinate
@@ -21,7 +21,7 @@ export const useCoordinatesBase = (
     canvas.value.addEventListener('wheel', captureCoords)
   })
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     if (!canvas.value) {
       throw new Error('Canvas not found in DOM')
     }
