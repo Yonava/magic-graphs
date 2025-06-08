@@ -20,8 +20,6 @@ export const useCameraState = (canvas: Ref<HTMLCanvasElement | undefined>) => {
     zoom: ref(1),
   }
 
-  return {
-    pan: usePan(state)(canvas),
-    zoom: useZoom(state)(canvas)
-  }
+  usePan(state)(canvas)
+  return [useZoom(state)(canvas)]
 }

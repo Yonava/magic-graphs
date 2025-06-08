@@ -3,9 +3,9 @@ import { defineCamera } from "./defineCamera"
 import { useCameraState } from "./pluggables"
 
 export const useCamera = (canvas: Ref<HTMLCanvasElement | undefined>) => {
-  const { pan, zoom } = useCameraState(canvas)
+  const state = useCameraState(canvas)
 
   return defineCamera({
-    pluggables: [pan, zoom]
+    pluggables: state
   })
 }

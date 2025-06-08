@@ -12,7 +12,7 @@ export const useZoom: (state: CameraState) => CameraPluggable =
         if (!ev.ctrlKey || !canvas.value) return;
         ev.preventDefault();
 
-        const { offsetX: cx, offsetY: cy } = ev;
+        const { clientX: cx, clientY: cy } = ev;
         const zoomAmount = ev.deltaY * -SENSITIVITY;
         const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom.value + zoomAmount));
         const scale = newZoom / zoom.value;

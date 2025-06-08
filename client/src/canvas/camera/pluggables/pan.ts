@@ -6,7 +6,7 @@ export const usePan: (state: CameraState) => CameraPluggable = ({ panX, panY }) 
 
   const onWheel = (ev: WheelEvent) => {
     ev.preventDefault();
-
+    if (ev.ctrlKey) return
     panX.value -= ev.deltaX * SENSITIVITY
     panY.value -= ev.deltaY * SENSITIVITY
   };
