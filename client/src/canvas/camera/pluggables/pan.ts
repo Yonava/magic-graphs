@@ -1,10 +1,6 @@
-import { onMounted, onUnmounted, type Ref } from 'vue'
-import { useLocalStorage } from '@vueuse/core'
-import type { TransformOptions } from './utils'
-
-export type CameraPluggable = (canvasRef: Ref<HTMLCanvasElement | undefined>) => {
-  getTransform: () => TransformOptions
-}
+import { onMounted, onUnmounted } from "vue";
+import { useLocalStorage } from "@vueuse/core";
+import type { CameraPluggable } from ".";
 
 export const usePan: CameraPluggable = (canvasRef) => {
   const panX = useLocalStorage('pan-x', 0)

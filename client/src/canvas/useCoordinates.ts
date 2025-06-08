@@ -33,22 +33,20 @@ export const useCoordinatesBase = (
   return { coords }
 }
 
-const getRawCoords: CoordGetter = (ev) => ({ x: ev.clientX, y: ev.clientY })
+export const getRawCoords: CoordGetter = (ev) => ({ x: ev.clientX, y: ev.clientY })
 
-const getNormalizedCoords: CoordGetter = (ev, ctx) => {
+export const getNormalizedCoords: CoordGetter = (ev, ctx) => {
   const transform = ctx.getTransform();
   const invertedTransform = transform.inverse();
   const { clientX, clientY } = ev;
   const dpr = getDevicePixelRatio()
+
+  const x = (invertedTransform.a * clientX + invertedTransform.c * clientY + invertedTransform.e) * dpr
+  const y = (invertedTransform.b * clientX + invertedTransform.d * clientY + invertedTransform.f) * dpr
+
   return {
-    x:
-      (invertedTransform.a * clientX +
-        invertedTransform.c * clientY +
-        invertedTransform.e) * dpr,
-    y:
-      (invertedTransform.b * clientX +
-        invertedTransform.d * clientY +
-        invertedTransform.f) * dpr,
+    x: Math.round(x),
+    y: Math.round(y),
     scale: transform.a,
   };
 };

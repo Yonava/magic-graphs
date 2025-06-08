@@ -1,5 +1,4 @@
 import type { Ref } from 'vue';
-import { getDevicePixelRatio } from '@canvas/camera/utils'
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 /**
@@ -12,16 +11,15 @@ export const getCanvasCoords = (
   const transform = ctx.getTransform();
   const invertedTransform = transform.inverse();
   const { offsetX, offsetY } = ev;
-  const dpr = getDevicePixelRatio()
   return {
     x:
-      (invertedTransform.a * offsetX +
-        invertedTransform.c * offsetY +
-        invertedTransform.e) * dpr,
+      invertedTransform.a * offsetX +
+      invertedTransform.c * offsetY +
+      invertedTransform.e,
     y:
-      (invertedTransform.b * offsetX +
-        invertedTransform.d * offsetY +
-        invertedTransform.f) * dpr,
+      invertedTransform.b * offsetX +
+      invertedTransform.d * offsetY +
+      invertedTransform.f,
     scale: transform.a,
   };
 };

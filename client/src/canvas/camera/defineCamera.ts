@@ -1,5 +1,5 @@
 import type { CameraPluggable } from "./pluggables";
-import { addTransform, getDevicePixelRatio, resetTransform, type TransformOptions } from "./utils";
+import { addTransform, getDevicePixelRatio, type TransformOptions } from "./utils";
 
 export type CameraConfig = {
   pluggables: ReturnType<CameraPluggable>[];
@@ -19,7 +19,7 @@ export const defineCamera = (config: Partial<CameraConfig> = {}) => {
 
   return {
     transform: (ctx: CanvasRenderingContext2D) => {
-      resetTransform(ctx)
+      ctx.resetTransform()
       const transforms = [dprTransform, ...pluggables.map(plug => plug.getTransform())]
       for (const t of transforms) addTransform(ctx, t)
     }
