@@ -1,7 +1,6 @@
 import { ref, type Ref } from "vue"
 import { type TransformOptions } from "../utils"
-import { usePan } from "./pan"
-import { useZoom } from "./zoom"
+import { usePanAndZoom } from "./panZoom"
 
 export type CameraPluggable = (canvas: Ref<HTMLCanvasElement | undefined>) => {
   getTransform: () => TransformOptions
@@ -20,6 +19,5 @@ export const useCameraState = (canvas: Ref<HTMLCanvasElement | undefined>) => {
     zoom: ref(1),
   }
 
-  usePan(state)(canvas)
-  return [useZoom(state)(canvas)]
+  return [usePanAndZoom(state)(canvas)]
 }

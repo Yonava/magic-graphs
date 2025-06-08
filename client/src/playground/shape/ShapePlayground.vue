@@ -1,28 +1,17 @@
 <script setup lang="ts">
-  import { ref, computed } from 'vue';
-  import { useDark, useWindowSize } from '@vueuse/core';
-  import ResponsiveCanvas from '@utils/components/ResponsiveCanvas.vue';
+  import { ref } from 'vue';
   import colors from '@colors';
-  import { useOptimizedShapes, square } from '@shapes';
+  import { square } from '@shapes';
   import type { Shape } from '@shape/types';
-  import { getCtx } from '@utils/ctx';
-  import ShapePlaygroundToolbar from './Toolbar.vue';
+  import ShapePlaygroundToolbar from './ShapePlaygroundToolbar.vue';
+  import MagicCanvas from '@canvas/MagicCanvas.vue';
 
   const canvas = ref<HTMLCanvasElement>();
-  const isDark = useDark();
-
-  const color = computed(() =>
-    isDark.value ? colors.GRAY_800 : colors.GRAY_200,
-  );
+  const setCanvas = (el: HTMLCanvasElement) => (canvas.value = el);
 
   const items = ref<Shape[]>([]);
 
-  const patternColor = computed(
-    () => (isDark.value ? colors.GRAY_200 : colors.GRAY_700) + '15',
-  );
-
-  const draw = () => {
-    const ctx = getCtx(canvas);
+  const draw = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     items.value = [];
 
@@ -40,16 +29,6 @@
 
     items.value.forEach((item) => item.draw(ctx));
   };
-
-  document.addEventListener('resize', draw);
-
-  document.addEventListener('keyup', (e) => {
-    if (e.code === 'Space') draw();
-  });
-
-  setTimeout(draw, 100);
-
-  const { width, height } = useWindowSize();
 </script>
 
 <template>
@@ -58,16 +37,13 @@
       <ShapePlaygroundToolbar
         :canvas="canvas"
         :items="items"
-        :draw="draw"
       />
     </div>
 
-    <ResponsiveCanvas
-      @canvas-ref="(el) => (canvas = el)"
-      :color="color"
-      :pattern-color="patternColor"
-      :canvas-width="width"
-      :canvas-height="height"
-    ></ResponsiveCanvas>
+    <MagicCanvas
+      @canvas-ref="setCanvas"
+      @draw="draw"
+      class="bg-gray-700"
+    />
   </div>
 </template>
