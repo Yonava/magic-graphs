@@ -6,7 +6,7 @@ export const shapeFactoryWrapper = (
   return {
     ...shapeProps,
     /**
-     * This method calculates the center point of the shape based on its bounding box.
+     * calculates the center point of the shape based on its bounding box
      */
     getCenterPoint: () => {
       const {
