@@ -1,7 +1,7 @@
 import type { Coordinate } from "@shape/types/utility";
 import { getCtx } from "@utils/ctx";
 import { onMounted, onUnmounted, ref, type Ref } from "vue";
-import { getDevicePixelRatio } from "./initCanvas";
+import { getDevicePixelRatio } from "./camera/utils";
 
 type CoordGetter = (ev: MouseEvent, ctx: CanvasRenderingContext2D) => Coordinate
 
@@ -18,6 +18,7 @@ export const useCoordinatesBase = (
     }
 
     canvas.value.addEventListener('mousemove', captureCoords)
+    canvas.value.addEventListener('wheel', captureCoords)
   })
 
   onUnmounted(() => {
@@ -26,6 +27,7 @@ export const useCoordinatesBase = (
     }
 
     canvas.value.removeEventListener('mousemove', captureCoords)
+    canvas.value.removeEventListener('wheel', captureCoords)
   })
 
   return { coords }

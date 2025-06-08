@@ -4,6 +4,7 @@
     "boundingbox",
     "dismissable",
     "gsap",
+    "Pluggables",
     "preorder",
     "toastservice",
     "unlabel"

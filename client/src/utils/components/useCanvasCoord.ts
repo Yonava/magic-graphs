@@ -1,5 +1,5 @@
 import type { Ref } from 'vue';
-import { getDevicePixelRatio } from '@canvas/initCanvas';
+import { getDevicePixelRatio } from '@canvas/camera/utils'
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 /**

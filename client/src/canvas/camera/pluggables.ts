@@ -1,15 +1,16 @@
 import { onMounted, onUnmounted, type Ref } from 'vue'
-import type { CanvasTransform } from './utils'
+import { useLocalStorage } from '@vueuse/core'
+import type { TransformOptions } from './utils'
 
 export type CameraPluggable = (canvasRef: Ref<HTMLCanvasElement | undefined>) => {
-  getTransform: () => Partial<CanvasTransform>
+  getTransform: () => TransformOptions
 }
 
 export const usePan: CameraPluggable = (canvasRef) => {
-  let panX = 0
-  let panY = 0
+  const panX = useLocalStorage('pan-x', 0)
+  const panY = useLocalStorage('pan-y', 0)
 
-  const SENSITIVITY = 1
+  const SENSITIVITY = 5
 
   const onWheel = (ev: WheelEvent) => {
     ev.preventDefault();
@@ -17,8 +18,8 @@ export const usePan: CameraPluggable = (canvasRef) => {
     const canvas = canvasRef.value;
     if (!canvas) return;
 
-    panX -= ev.deltaX * SENSITIVITY
-    panY -= ev.deltaY * SENSITIVITY
+    panX.value -= ev.deltaX * SENSITIVITY
+    panY.value -= ev.deltaY * SENSITIVITY
   };
 
   onMounted(() => {
@@ -36,6 +37,6 @@ export const usePan: CameraPluggable = (canvasRef) => {
   })
 
   return {
-    getTransform: () => ({ translateX: panX, translateY: panY })
+    getTransform: () => ({ translateX: panX.value, translateY: panY.value })
   }
 }

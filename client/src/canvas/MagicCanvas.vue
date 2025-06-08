@@ -3,29 +3,26 @@
   import { twMerge, type ClassNameValue } from 'tailwind-merge';
   import { useCoordinates } from './useCoordinates';
   import { initCanvas } from './initCanvas';
-  import { usePan } from './useCanvasCamera';
   import { getCtx } from '@utils/ctx';
-
-  const props = defineProps<{
-    draw: (ctx: CanvasRenderingContext2D) => void;
-  }>();
+  import { useCamera } from './camera';
 
   const emit = defineEmits<{
     (e: 'canvasRef', value: HTMLCanvasElement): void;
+    (e: 'draw', value: CanvasRenderingContext2D): void;
   }>();
 
   const canvas = ref<HTMLCanvasElement>();
   const coords = useCoordinates(canvas);
-  const camera = usePan(canvas);
+  const camera = useCamera(canvas);
 
   let repaintInterval: NodeJS.Timeout;
   const REPAINT_FPS = 60;
 
   const repaintCanvas = () => {
     const ctx = getCtx(canvas);
-    camera.clear(ctx);
-    camera.applyTransform(ctx);
-    props.draw(ctx);
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    camera.transform(ctx);
+    emit('draw', ctx);
   };
 
   onMounted(() => {
@@ -36,10 +33,6 @@
     initCanvas(canvas.value);
     emit('canvasRef', canvas.value);
     repaintInterval = setInterval(repaintCanvas, 1000 / REPAINT_FPS);
-
-    canvas.value.addEventListener('wheel', (ev) => {
-      console.log('wheel', [ev.deltaX, ev.deltaY, ev.deltaZ]);
-    });
   });
 
   onUnmounted(() => {
@@ -61,17 +54,3 @@
     ref="canvas"
   ></canvas>
 </template>
-
-<style scoped>
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    overscroll-behavior: none;
-    height: 100%;
-  }
-  canvas {
-    display: block;
-  }
-</style>
