@@ -13,6 +13,6 @@
 <template>
   <MagicCanvas
     @draw="draw"
-    class="bg-orange-500"
+    class="bg-gray-700"
   />
 </template>

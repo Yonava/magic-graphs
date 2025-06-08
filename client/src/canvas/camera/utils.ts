@@ -16,7 +16,7 @@ export type TransformProps = {
 
 export type TransformOptions = Partial<TransformProps>
 
-export const getDevicePixelRatio = () => window.devicePixelRatio || 1
+export const getDevicePixelRatio = () => window.devicePixelRatio ?? 1
 
 export const addTransform = (ctx: CanvasRenderingContext2D, t: TransformOptions) => {
   const translateX = t.translateX ?? 0

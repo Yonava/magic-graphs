@@ -33,9 +33,9 @@ export const useCoordinatesBase = (
   return { coords }
 }
 
-export const getRawCoords: CoordGetter = (ev) => ({ x: ev.clientX, y: ev.clientY })
+export const getRawCoords = (ev: MouseEvent) => ({ x: ev.clientX, y: ev.clientY })
 
-export const getNormalizedCoords: CoordGetter = (ev, ctx) => {
+export const getNormalizedCoords = (ev: MouseEvent, ctx: CanvasRenderingContext2D) => {
   const transform = ctx.getTransform();
   const invertedTransform = transform.inverse();
   const { clientX, clientY } = ev;
