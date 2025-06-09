@@ -1,38 +1,24 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
   import type { Shape } from '@shape/types';
   import MagicCanvas from './MagicCanvas.vue';
   import { circle } from '@shapes';
   import { useMagicCanvas } from './useMagicCanvas';
 
-  const shapes = ref<Shape[]>([
-    circle({
-      radius: 50,
-      at: { x: 100, y: 100 },
-    }),
-  ]);
+  const dots: Shape[] = [];
 
-  const draw = (ctx: CanvasRenderingContext2D) => {
-    shapes.value.forEach((shape) => shape.draw(ctx));
-  };
+  const magic = useMagicCanvas({
+    draw: (ctx) => dots.forEach((dot) => dot.draw(ctx)),
+  });
 
-  const props = useMagicCanvas({ draw });
-
-  const click = () => {
-    shapes.value.push(
-      circle({
-        radius: 20,
-        fillColor: 'red',
-        at: props.coordinates.value,
-      }),
-    );
+  const addDot = () => {
+    dots.push(circle({ radius: 20, at: magic.cursorCoordinates.value }));
   };
 </script>
 
 <template>
   <MagicCanvas
-    @dblclick="click"
-    v-bind="props.ref"
+    @dblclick="addDot"
+    v-bind="magic.ref"
     class="bg-gray-700"
   />
 </template>

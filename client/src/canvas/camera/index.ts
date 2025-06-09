@@ -13,8 +13,9 @@ export const useCamera = (canvas: Ref<HTMLCanvasElement | undefined>) => {
 
   return {
     ...rest,
-    transform: (ctx: CanvasRenderingContext2D) => {
+    transformAndClear: (ctx: CanvasRenderingContext2D) => {
       ctx.resetTransform()
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       const transforms = [dprTransform, getPZTransform()]
       for (const t of transforms) addTransform(ctx, t)
     },

@@ -8,7 +8,7 @@ import { initCanvas } from "./initCanvas"
 export type MagicCanvasProps = {
   canvas: Ref<HTMLCanvasElement | undefined>
   camera: Omit<Camera, 'cleanup'>,
-  coordinates: Ref<Coordinate>,
+  cursorCoordinates: Ref<Coordinate>,
   ref: {
     canvasRef: (canvas: HTMLCanvasElement) => void,
     cleanup: (canvas: HTMLCanvasElement) => void,
@@ -30,23 +30,22 @@ export const useMagicCanvas: UseMagicCanvas = (config: MagicCanvasConfig) => {
     repaintInterval = setInterval(repaintCanvas, 1000 / REPAINT_FPS);
   })
 
+  const { cleanup: cleanupCamera, ...camera } = useCamera(canvas);
+  const { coordinates: cursorCoordinates, cleanup: cleanupCoords } = useMagicCoordinates(canvas, camera.state);
+
   let repaintInterval: NodeJS.Timeout;
   const REPAINT_FPS = 60;
 
   const repaintCanvas = () => {
     const ctx = getCtx(canvas);
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    camera.transform(ctx);
+    camera.transformAndClear(ctx);
     config.draw(ctx)
   };
-
-  const { cleanup: cleanupCamera, ...camera } = useCamera(canvas);
-  const { coordinates, cleanup: cleanupCoords } = useMagicCoordinates(canvas, camera.state);
 
   return {
     canvas,
     camera,
-    coordinates,
+    cursorCoordinates,
     ref: {
       canvasRef: (ref) => canvas.value = ref,
       cleanup: (ref) => {
