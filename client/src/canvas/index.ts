@@ -1,25 +1,9 @@
-import { onMounted, ref, type Ref } from "vue"
-import { useCamera, type Camera } from "./camera"
+import { onMounted, ref } from "vue"
+import { useCamera } from "./camera"
 import { useMagicCoordinates } from "./coordinates"
-import type { Coordinate } from "@shape/types/utility"
 import { getCtx } from "@utils/ctx"
 import { getDevicePixelRatio } from "./camera/utils"
-
-export type MagicCanvasProps = {
-  canvas: Ref<HTMLCanvasElement | undefined>
-  camera: Omit<Camera, 'cleanup'>,
-  cursorCoordinates: Ref<Coordinate>,
-  ref: {
-    canvasRef: (canvas: HTMLCanvasElement) => void,
-    cleanup: (canvas: HTMLCanvasElement) => void,
-  }
-}
-
-export type MagicCanvasConfig = {
-  draw: (ctx: CanvasRenderingContext2D) => void
-}
-
-export type UseMagicCanvas = (config: MagicCanvasConfig) => MagicCanvasProps
+import type { MagicCanvasConfig, UseMagicCanvas } from "./types"
 
 export const useMagicCanvas: UseMagicCanvas = (config: MagicCanvasConfig) => {
   const canvas = ref<HTMLCanvasElement>()
