@@ -16,7 +16,7 @@
     shapes.value.forEach((shape) => shape.draw(ctx));
   };
 
-  const props = useMagicCanvas();
+  const props = useMagicCanvas({ draw });
 
   const click = () => {
     shapes.value.push(
@@ -31,9 +31,8 @@
 
 <template>
   <MagicCanvas
-    @draw="draw"
     @dblclick="click"
+    v-bind="props.ref"
     class="bg-gray-700"
-    v-bind="props"
   />
 </template>
