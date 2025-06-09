@@ -4,10 +4,11 @@ import { useMagicCoordinates } from "./useCoordinates"
 import type { Coordinate } from "@shape/types/utility"
 
 export type MagicCanvasProps = {
-  canvasRef: (canvasRef: HTMLCanvasElement) => void,
+  canvasRef: (canvas: HTMLCanvasElement) => void,
   canvas: Ref<HTMLCanvasElement | undefined>
-  camera: Camera,
+  camera: Omit<Camera, 'cleanup'>,
   coordinates: Ref<Coordinate>,
+  cleanup: (canvas: HTMLCanvasElement) => void
 }
 
 export type UseMagicCanvas = () => MagicCanvasProps
@@ -19,13 +20,17 @@ export const useMagicCanvas: UseMagicCanvas = () => {
     console.log(canvas.value)
   })
 
-  const camera = useCamera(canvas);
-  const coordinates = useMagicCoordinates(canvas, camera.state);
+  const { cleanup: cleanupCamera, ...camera } = useCamera(canvas);
+  const { coordinates, cleanup: cleanupCoords } = useMagicCoordinates(canvas, camera.state);
 
   return {
     canvasRef: (ref) => canvas.value = ref,
     canvas,
     camera,
     coordinates,
+    cleanup: (ref) => {
+      cleanupCoords(ref)
+      cleanupCamera(ref)
+    },
   }
 }

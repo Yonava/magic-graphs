@@ -1,4 +1,4 @@
-import { onBeforeUnmount, onMounted, ref, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 
 export const MIN_ZOOM = 0.5;
 export const MAX_ZOOM = 5;
@@ -40,11 +40,6 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
     canvas.value.addEventListener("wheel", onWheel, { passive: false });
   });
 
-  onBeforeUnmount(() => {
-    if (!canvas.value) throw new Error("canvas not found in DOM");
-    canvas.value.removeEventListener("wheel", onWheel);
-  });
-
   return {
     actions: {
       zoomIn: (increment = 0.5) => zoom.value = Math.min(MAX_ZOOM, zoom.value + increment),
@@ -61,5 +56,8 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
       translateX: panX.value,
       translateY: panY.value,
     }),
+    cleanup: (ref: HTMLCanvasElement) => {
+      ref.removeEventListener("wheel", onWheel);
+    }
   };
 };

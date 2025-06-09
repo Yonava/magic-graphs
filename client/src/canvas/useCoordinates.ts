@@ -1,6 +1,6 @@
 import type { Coordinate } from "@shape/types/utility";
 import { getCtx } from "@utils/ctx";
-import { onBeforeUnmount, onMounted, ref, type Ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import type { Camera } from "./camera";
 
 export const getMagicCoordinates = (
@@ -24,8 +24,8 @@ export const useMagicCoordinates = (
   canvas: Ref<HTMLCanvasElement | undefined>,
   cameraState: Camera['state']
 ) => {
-  const coords = ref<Coordinate>({ x: 0, y: 0 });
-  const captureCoords = (ev: MouseEvent) => coords.value = getMagicCoordinates(
+  const coordinates = ref<Coordinate>({ x: 0, y: 0 });
+  const captureCoords = (ev: MouseEvent) => coordinates.value = getMagicCoordinates(
     ev,
     getCtx(canvas),
     cameraState
@@ -40,14 +40,11 @@ export const useMagicCoordinates = (
     canvas.value.addEventListener('wheel', captureCoords)
   })
 
-  onBeforeUnmount(() => {
-    if (!canvas.value) {
-      throw new Error('Canvas not found in DOM')
-    }
-
-    canvas.value.removeEventListener('mousemove', captureCoords)
-    canvas.value.removeEventListener('wheel', captureCoords)
-  })
-
-  return coords
+  return {
+    coordinates,
+    cleanup: (ref: HTMLCanvasElement) => {
+      ref.removeEventListener('mousemove', captureCoords)
+      ref.removeEventListener('wheel', captureCoords)
+    },
+  }
 }

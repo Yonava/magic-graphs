@@ -1,22 +1,19 @@
 <script setup lang="ts">
   import { onBeforeUnmount, onMounted, ref } from 'vue';
   import { twMerge, type ClassNameValue } from 'tailwind-merge';
-  import { useMagicCoordinates } from './useCoordinates';
   import { initCanvas } from './initCanvas';
   import { getCtx } from '@utils/ctx';
-  import Button from '@ui/core/button/Button.vue';
-  import { MAX_ZOOM, MIN_ZOOM } from './camera/panZoom';
+  // import Button from '@ui/core/button/Button.vue';
+  // import { MAX_ZOOM, MIN_ZOOM } from './camera/panZoom';
   import type { MagicCanvasProps } from './useMagicCanvas';
 
   const props = defineProps<MagicCanvasProps>();
 
   const emit = defineEmits<{
-    (e: 'canvasRef', value: HTMLCanvasElement): void;
     (e: 'draw', value: CanvasRenderingContext2D): void;
   }>();
 
   const canvas = ref<HTMLCanvasElement>();
-  const coords = useMagicCoordinates(canvas, props.camera.state);
 
   let repaintInterval: NodeJS.Timeout;
   const REPAINT_FPS = 60;
@@ -34,18 +31,23 @@
     }
 
     initCanvas(canvas.value);
-    emit('canvasRef', canvas.value);
     props.canvasRef(canvas.value);
     repaintInterval = setInterval(repaintCanvas, 1000 / REPAINT_FPS);
   });
 
   onBeforeUnmount(() => {
+    console.log('unmounting magic', canvas.value ?? 'not here');
+    if (!canvas.value) {
+      throw new Error('Canvas not found in DOM. Check ref link.');
+    }
+
     clearInterval(repaintInterval);
+    props.cleanup(canvas.value);
   });
 </script>
 
 <template>
-  <div class="absolute top-0 left-0 m-2 flex gap-2">
+  <!-- <div class="absolute top-0 left-0 m-2 flex gap-2">
     <Button
       @click="camera.actions.zoomIn()"
       :disabled="MAX_ZOOM === camera.state.zoom.value"
@@ -60,12 +62,14 @@
   <div
     class="absolute top-0 right-0 m-2 text-white pointer-events-none flex flex-col gap-2 text-right"
   >
-    <span> Cursor At: ({{ coords.x }}, {{ coords.y }}) </span>
+    <span>
+      Cursor At: ({{ coordinates.value.x }}, {{ coordinates.value.y }})
+    </span>
     <span>
       PanX: {{ camera.state.panX }} / PanY {{ camera.state.panY }} / Zoom:
       {{ camera.state.zoom }}
     </span>
-  </div>
+  </div> -->
   <canvas
     v-bind="{
       ...$attrs,
