@@ -32,10 +32,7 @@ export const useMagicCoordinates = (
   )
 
   onMounted(() => {
-    if (!canvas.value) {
-      throw new Error('Canvas not found in DOM')
-    }
-
+    if (!canvas.value) throw new Error('Canvas not found in DOM. Check ref link.');
     canvas.value.addEventListener('mousemove', captureCoords)
     canvas.value.addEventListener('wheel', captureCoords)
   })

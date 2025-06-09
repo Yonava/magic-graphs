@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import TestCanvas from './StoryCanvas.vue';
+import StoryCanvas from './StoryCanvas.vue';
 
 const meta = {
   title: 'Canvas/MagicCanvas',
-  component: TestCanvas,
-} satisfies Meta<typeof TestCanvas>
+  component: StoryCanvas,
+} satisfies Meta<typeof StoryCanvas>
 
 export default meta;
 
