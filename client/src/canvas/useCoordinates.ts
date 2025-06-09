@@ -1,16 +1,35 @@
 import type { Coordinate } from "@shape/types/utility";
 import { getCtx } from "@utils/ctx";
 import { onBeforeUnmount, onMounted, ref, type Ref } from "vue";
-import { getDevicePixelRatio } from "./camera/utils";
+import type { Camera } from "./camera";
 
-type CoordGetter = (ev: MouseEvent, ctx: CanvasRenderingContext2D) => Coordinate
+export const getMagicCoordinates = (
+  ev: MouseEvent,
+  ctx: CanvasRenderingContext2D,
+  cameraState: Camera['state'],
+) => {
+  const rect = ctx.canvas.getBoundingClientRect();
+  const localX = ev.clientX - rect.left;
+  const localY = ev.clientY - rect.top;
 
-export const useCoordinatesBase = (
+  const { panX, panY, zoom } = cameraState;
+
+  const x = Math.round((localX - panX.value) / zoom.value);
+  const y = Math.round((localY - panY.value) / zoom.value);
+
+  return { x, y };
+}
+
+export const useMagicCoordinates = (
   canvas: Ref<HTMLCanvasElement | undefined>,
-  coordGetter: CoordGetter,
+  cameraState: Camera['state']
 ) => {
   const coords = ref<Coordinate>({ x: 0, y: 0 });
-  const captureCoords = (ev: MouseEvent) => coords.value = coordGetter(ev, getCtx(canvas))
+  const captureCoords = (ev: MouseEvent) => coords.value = getMagicCoordinates(
+    ev,
+    getCtx(canvas),
+    cameraState
+  )
 
   onMounted(() => {
     if (!canvas.value) {
@@ -30,28 +49,5 @@ export const useCoordinatesBase = (
     canvas.value.removeEventListener('wheel', captureCoords)
   })
 
-  return { coords }
+  return coords
 }
-
-export const getRawCoords = (ev: MouseEvent) => ({ x: ev.clientX, y: ev.clientY })
-
-export const getNormalizedCoords = (ev: MouseEvent, ctx: CanvasRenderingContext2D) => {
-  const transform = ctx.getTransform();
-  const invertedTransform = transform.inverse();
-  const { clientX, clientY } = ev;
-  const dpr = getDevicePixelRatio()
-
-  const x = (invertedTransform.a * clientX + invertedTransform.c * clientY + invertedTransform.e) * dpr
-  const y = (invertedTransform.b * clientX + invertedTransform.d * clientY + invertedTransform.f) * dpr
-
-  return {
-    x: Math.round(x),
-    y: Math.round(y),
-    scale: transform.a,
-  };
-};
-
-export const useCoordinates = (canvas: Ref<HTMLCanvasElement | undefined>) => ({
-  raw: useCoordinatesBase(canvas, getRawCoords),
-  normal: useCoordinatesBase(canvas, getNormalizedCoords),
-})

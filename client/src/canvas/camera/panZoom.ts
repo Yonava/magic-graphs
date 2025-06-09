@@ -1,4 +1,3 @@
-import { getRawCoords } from "@canvas/useCoordinates";
 import { onBeforeUnmount, onMounted, ref, type Ref } from "vue";
 
 export const MIN_ZOOM = 0.5;
@@ -12,7 +11,7 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
   const zoom = ref(1)
 
   const setZoom = (ev: WheelEvent) => {
-    const { x: cx, y: cy } = getRawCoords(ev);
+    const { clientX: cx, clientY: cy } = ev
     const zoomAmount = ev.deltaY * -ZOOM_SENSITIVITY;
     const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom.value + zoomAmount));
     const scale = newZoom / zoom.value;
