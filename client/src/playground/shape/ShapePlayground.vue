@@ -5,44 +5,38 @@
   import type { Shape } from '@shape/types';
   import ShapePlaygroundToolbar from './ShapePlaygroundToolbar.vue';
   import MagicCanvas from '@canvas/MagicCanvas.vue';
+  import { useMagicCanvas } from '@canvas/index';
 
-  const canvas = ref<HTMLCanvasElement>();
-  const setCanvas = (el: HTMLCanvasElement) => (canvas.value = el);
+  const shapes = ref<Shape[]>([]);
 
-  const items = ref<Shape[]>([]);
+  shapes.value.push(
+    square({
+      at: {
+        x: 300,
+        y: 300,
+      },
+      size: -200,
+      fillColor: colors.RED_500,
+      borderRadius: 20,
+    }),
+  );
 
-  const draw = (ctx: CanvasRenderingContext2D) => {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    items.value = [];
-
-    items.value.push(
-      square({
-        at: {
-          x: 300,
-          y: 300,
-        },
-        size: -200,
-        fillColor: colors.RED_500,
-        borderRadius: 20,
-      }),
-    );
-
-    items.value.forEach((item) => item.draw(ctx));
-  };
+  const magic = useMagicCanvas({
+    draw: (ctx) => shapes.value.forEach((item) => item.draw(ctx)),
+  });
 </script>
 
 <template>
   <div class="h-full w-full">
     <div class="absolute m-3 flex gap-3 z-50">
       <ShapePlaygroundToolbar
-        :canvas="canvas"
-        :items="items"
+        :canvas="magic.canvas.value"
+        :items="shapes"
       />
     </div>
 
     <MagicCanvas
-      @canvas-ref="setCanvas"
-      @draw="draw"
+      v-bind="magic.ref"
       class="bg-gray-700"
     />
   </div>
