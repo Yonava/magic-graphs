@@ -17,7 +17,7 @@ const router = createRouter({
     },
     {
       path: '/canvas',
-      component: () => import('../canvas/TestCanvas.vue')
+      component: () => import('../canvas/docs/StoryCanvas.vue')
     },
     ...Object.values(infoModules).flatMap((mod) => mod.default.route ?? []),
     {

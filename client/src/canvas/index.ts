@@ -1,6 +1,6 @@
 import { onMounted, ref, type Ref } from "vue"
 import { useCamera, type Camera } from "./camera"
-import { useMagicCoordinates } from "./useCoordinates"
+import { useMagicCoordinates } from "./coordinates"
 import type { Coordinate } from "@shape/types/utility"
 import { getCtx } from "@utils/ctx"
 import { getDevicePixelRatio } from "./camera/utils"

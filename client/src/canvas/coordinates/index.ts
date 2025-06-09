@@ -1,7 +1,7 @@
 import type { Coordinate } from "@shape/types/utility";
 import { getCtx } from "@utils/ctx";
 import { onMounted, ref, type Ref } from "vue";
-import type { Camera } from "./camera";
+import type { Camera } from "../camera";
 
 export const getMagicCoordinates = (
   ev: MouseEvent,

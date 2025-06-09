@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onBeforeUnmount, onMounted, ref } from 'vue';
   import { twMerge, type ClassNameValue } from 'tailwind-merge';
-  import type { MagicCanvasProps } from './useMagicCanvas';
+  import type { MagicCanvasProps } from '.';
 
   const props = defineProps<MagicCanvasProps['ref']>();
 

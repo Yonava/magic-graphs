@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import TestCanvas from './TestCanvas.vue';
+import TestCanvas from './StoryCanvas.vue';
 
 const meta = {
   title: 'Canvas/MagicCanvas',
