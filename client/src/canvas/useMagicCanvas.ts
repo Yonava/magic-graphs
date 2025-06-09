@@ -3,7 +3,7 @@ import { useCamera, type Camera } from "./camera"
 import { useMagicCoordinates } from "./useCoordinates"
 import type { Coordinate } from "@shape/types/utility"
 import { getCtx } from "@utils/ctx"
-import { initCanvas } from "./initCanvas"
+import { getDevicePixelRatio } from "./camera/utils"
 
 export type MagicCanvasProps = {
   canvas: Ref<HTMLCanvasElement | undefined>
@@ -26,7 +26,12 @@ export const useMagicCanvas: UseMagicCanvas = (config: MagicCanvasConfig) => {
 
   onMounted(() => {
     if (!canvas.value) throw new Error('Canvas not found in DOM. Check ref link.');
-    initCanvas(canvas.value);
+
+    const dpr = getDevicePixelRatio()
+    const rect = canvas.value.getBoundingClientRect();
+    canvas.value.width = rect.width * dpr;
+    canvas.value.height = rect.height * dpr;
+
     repaintInterval = setInterval(repaintCanvas, 1000 / REPAINT_FPS);
   })
 

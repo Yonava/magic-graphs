@@ -8,7 +8,7 @@ import type { RectSchema } from "./shapes/rect";
 import type { BoundingBox, Coordinate } from "./types/utility";
 import type { ShapeFactory } from "./types";
 import type { AnchorPoint } from "./types/schema";
-import { initCanvas } from "@canvas/initCanvas";
+import { getDevicePixelRatio } from "@canvas/camera/utils";
 
 const atMarkerSchema = (at: Coordinate): CrossSchema => ({
   at,
@@ -115,9 +115,15 @@ export const createDocComponent = <T extends Record<string, unknown>>(factory: S
 
       const drawPreview = () => {
         const canvas = document.getElementById(canvasId) as HTMLCanvasElement
-        initCanvas(canvas)
 
         const ctx = getCtx(canvas);
+
+        const dpr = getDevicePixelRatio()
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr)
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const { showAtMarker, showBoundingBoxMarker, showMeasuringStick } = props
