@@ -64,6 +64,8 @@ export const usePinchToZoom = (
       cursorY - (cursorY - zoomOrigin.value.y) * (newScale / scale.value);
 
     scale.value = newScale;
+
+    console.log(zoomOrigin.value)
   };
 
   const applyZoom = () => {

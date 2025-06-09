@@ -1,5 +1,5 @@
-import { computed, onMounted, onUnmounted, ref } from 'vue';
 import type { Ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 /**
  * gets the canvas coordinates with a mouse event on a *potentially* transformed canvas
