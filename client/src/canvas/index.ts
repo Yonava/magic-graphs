@@ -5,8 +5,12 @@ import { getCtx } from "@utils/ctx"
 import { getDevicePixelRatio } from "./camera/utils"
 import type { MagicCanvasConfig, UseMagicCanvas } from "./types"
 
+const REPAINT_FPS = 60;
+
 export const useMagicCanvas: UseMagicCanvas = (config: MagicCanvasConfig) => {
   const canvas = ref<HTMLCanvasElement>()
+
+  let repaintInterval: NodeJS.Timeout;
 
   onMounted(() => {
     if (!canvas.value) throw new Error('Canvas not found in DOM. Check ref link.');
@@ -20,10 +24,7 @@ export const useMagicCanvas: UseMagicCanvas = (config: MagicCanvasConfig) => {
   })
 
   const { cleanup: cleanupCamera, ...camera } = useCamera(canvas);
-  const { coordinates: cursorCoordinates, cleanup: cleanupCoords } = useMagicCoordinates(canvas, camera.state);
-
-  let repaintInterval: NodeJS.Timeout;
-  const REPAINT_FPS = 60;
+  const { coordinates: cursorCoordinates, cleanup: cleanupCoords } = useMagicCoordinates(canvas);
 
   const repaintCanvas = () => {
     const ctx = getCtx(canvas);
