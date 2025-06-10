@@ -1,15 +1,14 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { useGraph } from '@graph/useGraph';
   import GraphProduct from '@ui/product/GraphProduct.vue';
   import { useSourceSinkTheme } from './theme/useSourceSinkTheme';
   import { useEdgeThickener } from './theme/useEdgeThickener';
   import { FLOW_GRAPH_SETTINGS, flowNodeLabelGetter } from './settings';
   import FordFulkersonOutput from './ui/FordFulkersonOutput.vue';
   import SourceSinkControls from './ui/SourceSinkControls.vue';
+  import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
 
-  const graphEl = ref<HTMLCanvasElement>();
-  const graph = useGraph(graphEl, FLOW_GRAPH_SETTINGS);
+  const graphWithCanvas = useGraphWithCanvas(FLOW_GRAPH_SETTINGS);
+  const { graph } = graphWithCanvas;
 
   graph.settings.value.newNodeLabelGetter = flowNodeLabelGetter(graph);
 
@@ -21,17 +20,10 @@
 </script>
 
 <template>
-  <GraphProduct
-    @graph-ref="(el) => (graphEl = el)"
-    :graph="graph"
-  >
+  <GraphProduct v-bind="graphWithCanvas">
     <template #top-center>
       <FordFulkersonOutput />
       <SourceSinkControls />
     </template>
-
-    <template #center-left></template>
-
-    <template #center-right-sim></template>
   </GraphProduct>
 </template>

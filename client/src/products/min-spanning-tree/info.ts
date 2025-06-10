@@ -10,7 +10,7 @@ import templates from './templates';
 const info: ProductInfo = {
   route: {
     path: '/mst',
-    component: () => import('./Main.vue'),
+    component: () => import('./MainView.vue'),
   },
   name: 'Minimum Spanning Trees',
   description: 'Visualize Minimum Spanning Trees',
