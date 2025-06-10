@@ -4,7 +4,7 @@ import state from './state';
 const info: ProductInfo = {
   route: {
     path: '/binary-trees',
-    component: () => import('./Main.vue'),
+    component: () => import('./MainView.vue'),
   },
   name: 'Binary Trees',
   description: 'Visualize Binary Trees',

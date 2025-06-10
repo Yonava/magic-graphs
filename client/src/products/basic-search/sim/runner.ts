@@ -1,4 +1,3 @@
-import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
 import type { Graph } from '@graph/types';
 import type { SimulationRunner } from '@ui/product/sim/types';
