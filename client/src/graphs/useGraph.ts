@@ -1,5 +1,3 @@
-import type { Ref } from 'vue';
-
 import { useBaseGraph } from '@graph/base';
 import type { GraphSettings } from '@graph/settings';
 
@@ -20,6 +18,7 @@ import { useHelpers } from '@graph/helpers/useHelpers';
 
 import { useAdjacencyList } from './useAdjacencyList';
 import { useTransitionMatrix } from './useTransitionMatrix';
+import type { MagicCanvasProps } from '@canvas/types';
 
 /**
  * a package brimming with tools for creating and managing graphs bringing
@@ -30,7 +29,7 @@ import { useTransitionMatrix } from './useTransitionMatrix';
  * @returns a graph instance with APIs for managing the graph
  */
 export const useGraph = (
-  canvas: Ref<HTMLCanvasElement | undefined | null>,
+  canvas: MagicCanvasProps,
   settings: Partial<GraphSettings> = {},
 ) => {
   const base = useBaseGraph(canvas, settings);

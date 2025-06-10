@@ -1,28 +1,23 @@
-import { onUnmounted, ref } from 'vue';
-import type { Ref } from 'vue';
+import { ref } from 'vue';
 import type { Aggregator, UpdateAggregator } from '@graph/types';
 import type { Emitter as GraphEventEmitter } from '@graph/events';
 import type { Coordinate } from '@shape/types/utility';
+import type { MagicCanvasConfig } from '@canvas/types';
 
 export type UseAggregatorOptions = {
-  canvas: Ref<HTMLCanvasElement | null | undefined>;
   emit: GraphEventEmitter;
 };
 
-export const useAggregator = ({ canvas, emit }: UseAggregatorOptions) => {
+export const useAggregator = ({ emit }: UseAggregatorOptions) => {
   const aggregator = ref<Aggregator>([]);
   const updateAggregator: UpdateAggregator[] = [];
 
-  const repaintLoop = () => {
-    if (!canvas.value) return;
-    const ctx = canvas.value.getContext('2d');
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
-
+  const draw: MagicCanvasConfig['draw'] = (ctx) => {
     const evaluateAggregator = updateAggregator.reduce<Aggregator>(
       (acc, fn) => fn(acc),
       [],
     );
+
     aggregator.value = [
       ...evaluateAggregator.sort((a, b) => a.priority - b.priority),
     ];
@@ -30,10 +25,9 @@ export const useAggregator = ({ canvas, emit }: UseAggregatorOptions) => {
     const indexOfLastEdge = aggregator.value.findLastIndex(
       (item) => item.graphType === 'edge',
     );
+
     const beforeLastEdge = aggregator.value.slice(0, indexOfLastEdge + 1);
     const afterLastEdge = aggregator.value.slice(indexOfLastEdge + 1);
-
-    // console.log(aggregator.value.length)
 
     for (const item of beforeLastEdge) {
       item.shape.drawShape(ctx);
@@ -51,16 +45,8 @@ export const useAggregator = ({ canvas, emit }: UseAggregatorOptions) => {
       item.shape.draw(ctx);
     }
 
-    emit('onRepaint', ctx, 'loop');
+    emit('onDraw', ctx);
   };
-
-  const loop = setInterval(repaintLoop, 1000 / 60);
-
-  onUnmounted(() => {
-    clearInterval(loop);
-  });
-
-  setTimeout(repaintLoop, 1000);
 
   /**
    * get all schema items at given coordinates
@@ -82,5 +68,6 @@ export const useAggregator = ({ canvas, emit }: UseAggregatorOptions) => {
     aggregator,
     updateAggregator,
     getSchemaItemsByCoordinates,
+    draw,
   };
 };

@@ -108,7 +108,7 @@ export type BaseGraphEventMap = {
    * **WARNING** items drawn to the canvas using ctx won't be tied to graphs internal state.
    * see {@link Graph.updateAggregator | `updateAggregator`} if you need drawn item to integrate with graph APIs
    */
-  onRepaint: (ctx: CanvasRenderingContext2D, repaintId: string) => void;
+  onDraw: (ctx: CanvasRenderingContext2D) => void;
   /**
    * when the node that the user is hovering over changes.
    * undefined if the user is not hovering over a node

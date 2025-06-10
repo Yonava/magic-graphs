@@ -1,5 +1,4 @@
 import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue';
-import type { Ref } from 'vue';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 import type { GNode, GEdge, SchemaItem, Aggregator } from '@graph/types';
 import { prioritizeNode } from '@graph/helpers';
@@ -23,19 +22,20 @@ import { getThemeResolver } from '@graph/themes/getThemeResolver';
 import { useNodeEdgeMap } from './useNodeEdgeMap';
 import { useAggregator } from './useAggregator';
 import { useGraphCRUD } from './useGraphCRUD';
-import { getCtx } from '@utils/ctx';
 import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types';
 import type { GraphAtMousePosition, HistoryOption } from './types';
 import { useGraphCursor } from './useGraphCursor';
-import { getCanvasCoords } from '@utils/components/useCanvasCoord';
 import { useAnimationController } from '@graph/animationController';
 import { useOptimizedShapes } from '@shapes';
 import { usePluginHoldController } from './usePluginHold';
+import type { MagicCanvasProps } from '@canvas/types';
 
 export const useBaseGraph = (
-  canvas: Ref<HTMLCanvasElement | undefined | null>,
+  magicCanvas: MagicCanvasProps,
   startupSettings: Partial<GraphSettings> = {},
 ) => {
+  const { canvas, cursorCoordinates } = magicCanvas;
+
   const themeName = ref<GraphThemeName>('light');
 
   const themeMap = getInitialThemeMap();
@@ -53,15 +53,13 @@ export const useBaseGraph = (
 
   const canvasFocused = ref(true);
 
-  onClickOutside(canvas, () => {
+  onClickOutside(magicCanvas.canvas, () => {
     canvasFocused.value = false;
   });
 
   subscribe('onMouseDown', () => {
     canvasFocused.value = true;
   });
-
-  const canvasHovered = useElementHover(canvas);
 
   const nodes = ref<GNode[]>([]);
   const edges = ref<GEdge[]>([]);
@@ -77,13 +75,9 @@ export const useBaseGraph = (
     graphAtMousePosition,
   });
 
-  const updateGraphAtMousePosition = (ev: MouseEvent) => {
-    const ctx = getCtx(canvas);
-    const coords = getCanvasCoords(ev, ctx);
-    graphAtMousePosition.value = {
-      coords,
-      items: getSchemaItemsByCoordinates(coords),
-    };
+  const updateGraphAtMousePosition = () => graphAtMousePosition.value = {
+    coords: cursorCoordinates.value,
+    items: getSchemaItemsByCoordinates(cursorCoordinates.value),
   };
 
   const graphMouseEv = (event: MouseEvent) => ({
@@ -122,8 +116,12 @@ export const useBaseGraph = (
     keyup: (ev: KeyboardEvent) => emit('onKeyUp', ev),
   };
 
-  const { aggregator, updateAggregator, getSchemaItemsByCoordinates } =
-    useAggregator({ canvas, emit });
+  const {
+    aggregator,
+    updateAggregator,
+    getSchemaItemsByCoordinates,
+    draw,
+  } = useAggregator({ emit });
 
   const animationController = useAnimationController();
   const shapes = useOptimizedShapes()
@@ -378,7 +376,7 @@ export const useBaseGraph = (
     load,
     reset,
 
-    canvas,
+    canvas: magicCanvas,
     /**
      * whether the canvas is currently focused in the browser
      */
@@ -386,7 +384,9 @@ export const useBaseGraph = (
     /**
      * whether the canvas is currently hovered by the mouse
      */
-    canvasHovered: computed(() => canvasHovered.value),
+    canvasHovered: useElementHover(magicCanvas.canvas),
+
+    draw,
 
     graphAtMousePosition,
     updateGraphAtMousePosition,
