@@ -8,7 +8,7 @@ import templates from './templates';
 const info: ProductInfo = {
   route: {
     path: '/dijkstras',
-    component: () => import('./Main.vue'),
+    component: () => import('./MainView.vue'),
   },
   name: 'Dijkstras',
   description: 'Visualize Dijkstras Algorithm',

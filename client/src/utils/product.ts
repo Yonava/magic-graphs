@@ -98,7 +98,6 @@ export const useProductRouting = () => {
       return window.open(redirectLink, '_blank');
     }
 
-    console.log(product.route.path)
     router.push(productLink(product.route.path));
   };
 
