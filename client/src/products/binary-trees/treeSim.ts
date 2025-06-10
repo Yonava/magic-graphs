@@ -5,7 +5,7 @@ import { treeArrayToGraph } from './tree/treeArrayToGraph';
 import type { AVLTree, TreeTrace } from './tree/avl';
 import state from './state';
 
-const ROOT_POS = { x: 0, y: 0 };
+const ROOT_POS = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
 const { activeSim } = state;
 
