@@ -92,14 +92,17 @@ export const useBaseGraph = (
     },
     mousemove: (ev: MouseEvent) => {
       ev.preventDefault();
+      updateGraphAtMousePosition()
       emit('onMouseMove', graphMouseEv(ev));
     },
     mousedown: (ev: MouseEvent) => {
       ev.preventDefault();
+      updateGraphAtMousePosition()
       emit('onMouseDown', graphMouseEv(ev));
     },
     mouseup: (ev: MouseEvent) => {
       ev.preventDefault();
+      updateGraphAtMousePosition()
       emit('onMouseUp', graphMouseEv(ev));
     },
     dblclick: (ev: MouseEvent) => {
@@ -160,8 +163,6 @@ export const useBaseGraph = (
       throw new Error('canvas element not found');
     }
 
-    canvas.value.addEventListener('mousemove', updateGraphAtMousePosition);
-
     for (const [event, listeners] of Object.entries(
       mouseEvents,
     ) as MouseEventEntries) {
@@ -179,8 +180,6 @@ export const useBaseGraph = (
     if (!canvas.value) {
       throw new Error('Canvas element not found');
     }
-
-    canvas.value.removeEventListener('mousemove', updateGraphAtMousePosition);
 
     for (const [event, listeners] of Object.entries(
       mouseEvents,
