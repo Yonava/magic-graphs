@@ -3,7 +3,7 @@ import { getCtx } from "@utils/ctx";
 import { onMounted, ref, type Ref } from "vue";
 import { getDevicePixelRatio } from "@canvas/camera/utils";
 
-const getCanvasTransform = (ctx: CanvasRenderingContext2D) => {
+export const getCanvasTransform = (ctx: CanvasRenderingContext2D) => {
   const { a, e, f } = ctx.getTransform();
   // TODO investigate why dpr isn't already factored into ctx. Camera should add it with the PZ transform!
   const dpr = getDevicePixelRatio()
@@ -30,8 +30,8 @@ export const getMagicCoordinates = (clientCoords: ClientCoords, ctx: CanvasRende
 
   const { panX, panY, zoom } = getCanvasTransform(ctx);
 
-  const x = Math.round((localX - panX) / zoom);
-  const y = Math.round((localY - panY) / zoom);
+  const x = Number(((localX - panX) / zoom).toFixed(2));
+  const y = Number(((localY - panY) / zoom).toFixed(2));
 
   return { x, y, zoom };
 }
@@ -41,8 +41,8 @@ export const getClientCoordinates = (magicCoords: MagicCoords, ctx: CanvasRender
   const { x, y } = magicCoords;
 
   return {
-    clientX: Math.round(x * zoom + panX),
-    clientY: Math.round(y * zoom + panY),
+    clientX: Number((x * zoom + panX).toFixed(2)),
+    clientY: Number((y * zoom + panY).toFixed(2)),
     zoom,
   };
 };
