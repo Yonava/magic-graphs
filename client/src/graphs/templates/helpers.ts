@@ -5,7 +5,7 @@ import { getCanvasCoords } from '@utils/components/useCanvasCoord';
 import { nonNullGraph as graph } from '@graph/global';
 
 export const getAverageCoordinates = (coords: Coordinate[]) => {
-  const { canvas } = graph.value;
+  const { magicCanvas: canvas } = graph.value;
   const ctx = getCtx(canvas);
 
   const rect = canvas.value?.getBoundingClientRect();

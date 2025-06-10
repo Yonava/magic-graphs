@@ -7,7 +7,7 @@
   import TutorialHint from '@graph/tutorials/TutorialHint.vue';
   import { useGraphBtns } from '@graph/buttons/useGraphBtns';
   import GraphBtns from '@graph/buttons/GraphBtns.vue';
-  import Graph from '@graph/Graph.vue';
+  import Graph from '@graph/MagicGraph.vue';
   import ThemeControls from './ThemeControls.vue';
   import type { GraphPlaygroundControls as Controls } from './types';
   import GraphPlaygroundControls from './GraphPlaygroundControls.vue';

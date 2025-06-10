@@ -13,6 +13,8 @@ import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
 import { circle } from '@shape/shapes/circle';
 import { MOUSE_BUTTONS } from '@graph/global';
 import type { IntervalHandler } from '@utils/types';
+import type { ScribbleSchema } from '@shape/shapes/scribble';
+import type { WithId } from '@shape/cacher';
 
 const ERASER_BRUSH_RADIUS = 10;
 
@@ -157,9 +159,9 @@ export const useAnnotations = (graph: BaseGraph) => {
       id: generateId(),
       type: 'draw',
       points: batch.value,
-      color: selectedColor.value,
+      fillColor: selectedColor.value,
       brushWeight: selectedBrushWeight.value,
-    } as const;
+    } as const satisfies WithId<ScribbleSchema>
 
     scribbles.value.push(scribble);
 
@@ -174,8 +176,9 @@ export const useAnnotations = (graph: BaseGraph) => {
   const hideCursor = computed(() => isErasing.value || isLaserPointing.value);
 
   watch(hideCursor, () => {
-    if (!graph.canvas.value) return;
-    graph.canvas.value.style.cursor = hideCursor.value ? 'none' : 'crosshair';
+    const canvas = graph.magicCanvas.canvas.value
+    if (!canvas) return;
+    canvas.style.cursor = hideCursor.value ? 'none' : 'crosshair';
   });
 
   const addScribblesToAggregator = (aggregator: Aggregator) => {
@@ -252,7 +255,8 @@ export const useAnnotations = (graph: BaseGraph) => {
   graph.updateAggregator.push(addScribblesToAggregator);
 
   const activate = () => {
-    if (!graph.canvas.value) return;
+    const canvas = graph.magicCanvas.canvas.value
+    if (!canvas) return;
 
     isActive.value = true;
 
@@ -263,7 +267,7 @@ export const useAnnotations = (graph: BaseGraph) => {
 
     graph.graphCursorDisabled.value = true;
 
-    graph.canvas.value.style.cursor = 'crosshair';
+    canvas.style.cursor = 'crosshair';
 
     graph.subscribe('onMouseDown', startDrawing);
     graph.subscribe('onMouseMove', drawLine);
@@ -271,7 +275,8 @@ export const useAnnotations = (graph: BaseGraph) => {
   };
 
   const deactivate = () => {
-    if (!graph.canvas.value) return;
+    const canvas = graph.magicCanvas.canvas.value
+    if (!canvas) return;
 
     isActive.value = false;
     isErasing.value = false;
@@ -283,7 +288,7 @@ export const useAnnotations = (graph: BaseGraph) => {
 
     graph.graphCursorDisabled.value = false;
 
-    graph.canvas.value.style.cursor = 'default';
+    canvas.style.cursor = 'default';
 
     graph.unsubscribe('onMouseDown', startDrawing);
     graph.unsubscribe('onMouseMove', drawLine);

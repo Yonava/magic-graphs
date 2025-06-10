@@ -43,7 +43,7 @@ export const useFocus = (graph: BaseGraph) => {
   };
 
   const handleTextArea = (schemaItem: SchemaItem) => {
-    const ctx = getCtx(graph.canvas);
+    const ctx = getCtx(graph.magicCanvas);
     schemaItem.shape.activateTextArea?.(ctx, (str: string) => {
       const edge = graph.getEdge(schemaItem.id);
       if (!edge) throw new Error('textarea only implemented for edges');

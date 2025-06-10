@@ -7,7 +7,7 @@
   import { algos } from './algos';
   import CodeEditor from './components/CodeEditor.vue';
   import TraceOutput from './components/TraceOutput.vue';
-  import Graph from '@graph/Graph.vue';
+  import Graph from '@graph/MagicGraph.vue';
 
   /** Trace or undefined for loading state */
   const trace = ref<Trace | undefined>(undefined);

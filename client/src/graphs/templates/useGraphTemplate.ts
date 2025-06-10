@@ -54,7 +54,7 @@ export const useGraphTemplate = (graph: Graph) => {
     tempCanvas.value.width = 5000;
     tempCanvas.value.height = 5000;
 
-    const { nodes, edges, canvas } = graph;
+    const { nodes, edges, magicCanvas: canvas } = graph;
 
     if (!canvas.value) throw new Error('no snapshot canvas found');
 

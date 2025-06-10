@@ -376,7 +376,7 @@ export const useBaseGraph = (
     load,
     reset,
 
-    canvas: magicCanvas,
+    magicCanvas,
     /**
      * whether the canvas is currently focused in the browser
      */
