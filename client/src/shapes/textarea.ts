@@ -4,6 +4,7 @@ import { useTextDimensionOnCanvas } from './useTextDimensionsOnCanvas';
 import { HORIZONTAL_TEXT_PADDING } from './text';
 import type { TextAreaWithAnchorPoint } from './types/utility';
 import { getClientCoordinates } from '@canvas/coordinates';
+import type { RectSchema } from './shapes/rect';
 
 export const engageTextarea = (
   ctx: CanvasRenderingContext2D,
@@ -73,7 +74,7 @@ export const engageTextarea = (
   const isClickOutsideInput = (input: HTMLElement, event: MouseEvent) => {
     const { x, y, width, height } = input.getBoundingClientRect();
 
-    const rect = {
+    const rect: RectSchema = {
       at: { x, y },
       width,
       height,

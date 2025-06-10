@@ -209,7 +209,7 @@
 
     <div :class="['absolute', 'flex', 'gap-2', 'bottom-8', 'left-8']">
       <HelpMenu />
-      <ZoomButtons />
+      <ZoomButtons :camera="canvas.camera" />
     </div>
 
     <div
