@@ -1,7 +1,7 @@
 import { onMounted, ref, type Ref } from "vue";
 
-export const MIN_ZOOM = 0.5;
-export const MAX_ZOOM = 5;
+export const MIN_ZOOM = 0.2;
+export const MAX_ZOOM = 2;
 
 export const ZOOM_SENSITIVITY = 0.02;
 export const PAN_SENSITIVITY = 1;
