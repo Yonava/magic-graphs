@@ -7,7 +7,8 @@
     "Pluggables",
     "preorder",
     "toastservice",
-    "unlabel"
+    "unlabel",
+    "unref"
   ],
   "editor.formatOnSave": true
 }
