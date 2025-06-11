@@ -3,11 +3,9 @@ import { useCamera } from "./camera"
 import { useMagicCoordinates } from "./coordinates"
 import { getCtx } from "@utils/ctx"
 import { getDevicePixelRatio } from "./camera/utils"
-import type { UseMagicCanvas } from "./types"
+import type { DrawContent, UseMagicCanvas } from "./types"
 import { useElementSize } from "@vueuse/core"
-import { useBackgroundPattern } from "./backgroundPattern"
-import { cross } from "@shapes"
-import colors from "@utils/colors"
+import { useBackgroundPattern, type DrawPattern } from "./backgroundPattern"
 
 const REPAINT_FPS = 60;
 
@@ -20,9 +18,12 @@ const initCanvasWidthHeight = (canvas: HTMLCanvasElement | undefined) => {
   canvas.height = rect.height * dpr;
 }
 
-export const useMagicCanvas: UseMagicCanvas = (config) => {
+export const useMagicCanvas: UseMagicCanvas = () => {
   const canvas = ref<HTMLCanvasElement>()
   const canvasBoxSize = useElementSize(canvas)
+
+  const drawContent = ref<DrawContent>(() => { })
+  const drawBackgroundPattern = ref<DrawPattern>(() => { })
 
   let repaintInterval: NodeJS.Timeout;
 
@@ -36,20 +37,13 @@ export const useMagicCanvas: UseMagicCanvas = (config) => {
   const { cleanup: cleanupCamera, ...camera } = useCamera(canvas);
   const { coordinates: cursorCoordinates, cleanup: cleanupCoords } = useMagicCoordinates(canvas);
 
-  const pattern = useBackgroundPattern(camera.state, (ctx, at, alpha) => {
-    cross({
-      at,
-      size: 12,
-      lineWidth: 1,
-      fillColor: colors.GRAY_500 + alpha,
-    }).draw(ctx);
-  })
+  const pattern = useBackgroundPattern(camera.state, drawBackgroundPattern)
 
   const repaintCanvas = () => {
     const ctx = getCtx(canvas);
     camera.transformAndClear(ctx);
     pattern.draw(ctx)
-    config.draw(ctx)
+    drawContent.value(ctx)
   };
 
   return {
@@ -63,6 +57,10 @@ export const useMagicCanvas: UseMagicCanvas = (config) => {
         cleanupCamera(ref)
         clearInterval(repaintInterval)
       },
+    },
+    draw: {
+      content: drawContent,
+      backgroundPattern: drawBackgroundPattern,
     }
   }
 }

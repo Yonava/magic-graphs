@@ -2,6 +2,7 @@
 import { getMagicCoordinates } from "@canvas/coordinates";
 import type { Camera } from "./camera";
 import type { Coordinate } from "@shape/types/utility";
+import type { DrawFns } from "./types";
 
 const STAGGER = 100
 
@@ -15,9 +16,12 @@ const computeAlpha = (z: number) => {
   return strPercent.length === 1 ? `0${strPercent}` : strPercent
 }
 
-type DrawPattern = (ctx: CanvasRenderingContext2D, at: Coordinate, alpha: string) => void
+export type DrawPattern = (ctx: CanvasRenderingContext2D, at: Coordinate, alpha: string) => void
 
-export const useBackgroundPattern = ({ panX, panY, zoom }: Camera['state'], drawPattern: DrawPattern) => {
+export const useBackgroundPattern = (
+  { panX, panY, zoom }: Camera['state'],
+  drawPattern: DrawFns['backgroundPattern']
+) => {
   const draw = (ctx: CanvasRenderingContext2D) => {
     if (zoom.value <= PATTERN_FULLY_FADED_OUT) return
 
@@ -36,7 +40,7 @@ export const useBackgroundPattern = ({ panX, panY, zoom }: Camera['state'], draw
 
     for (let x = startingCoords.x + offsetX; x < endingCoords.x; x += STAGGER) {
       for (let y = startingCoords.y + offsetY; y < endingCoords.y; y += STAGGER) {
-        drawPattern(ctx, { x, y }, computeAlpha(zoom.value))
+        drawPattern.value(ctx, { x, y }, computeAlpha(zoom.value))
       }
     }
   }

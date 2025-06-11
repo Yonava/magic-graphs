@@ -2,7 +2,6 @@ import { ref } from 'vue';
 import type { Aggregator, UpdateAggregator } from '@graph/types';
 import type { Emitter as GraphEventEmitter } from '@graph/events';
 import type { Coordinate } from '@shape/types/utility';
-import type { MagicCanvasConfig } from '@canvas/types';
 
 export type UseAggregatorOptions = {
   emit: GraphEventEmitter;
@@ -12,7 +11,7 @@ export const useAggregator = ({ emit }: UseAggregatorOptions) => {
   const aggregator = ref<Aggregator>([]);
   const updateAggregator: UpdateAggregator[] = [];
 
-  const draw: MagicCanvasConfig['draw'] = (ctx) => {
+  const draw = (ctx: CanvasRenderingContext2D) => {
     const evaluateAggregator = updateAggregator.reduce<Aggregator>(
       (acc, fn) => fn(acc),
       [],
