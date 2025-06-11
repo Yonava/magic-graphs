@@ -130,7 +130,7 @@
         'absolute',
         'grid',
         'place-items-center',
-        'left-4',
+        'left-6',
         'top-0',
         'h-full',
         'max-w-96',
@@ -152,7 +152,36 @@
     <div
       :class="[
         'absolute',
-        'bottom-8',
+        'grid',
+        'place-items-center',
+        'right-6',
+        'top-0',
+        'h-full',
+        'max-w-96',
+      ]"
+    >
+      <div
+        class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
+      >
+        <template v-if="runningSimulation">
+          <slot name="center-right-sim"></slot>
+        </template>
+
+        <template v-else>
+          <slot name="center-right"></slot>
+        </template>
+      </div>
+    </div>
+
+    <div :class="['absolute', 'flex', 'gap-2', 'bottom-6', 'left-6']">
+      <HelpMenu />
+      <ZoomButtons :camera="canvas.camera" />
+    </div>
+
+    <div
+      :class="[
+        'absolute',
+        'bottom-6',
         'gap-4',
         'w-full',
         'flex',
@@ -177,36 +206,7 @@
     </div>
 
     <div
-      :class="[
-        'absolute',
-        'grid',
-        'place-items-center',
-        'right-4',
-        'top-0',
-        'h-full',
-        'max-w-96',
-      ]"
-    >
-      <div
-        class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
-      >
-        <template v-if="runningSimulation">
-          <slot name="center-right-sim"></slot>
-        </template>
-
-        <template v-else>
-          <slot name="center-right"></slot>
-        </template>
-      </div>
-    </div>
-
-    <div :class="['absolute', 'flex', 'gap-2', 'bottom-8', 'left-8']">
-      <HelpMenu />
-      <ZoomButtons :camera="canvas.camera" />
-    </div>
-
-    <div
-      :class="['absolute', 'flex', 'flex-col', 'gap-2', 'bottom-8', 'right-8']"
+      :class="['absolute', 'flex', 'flex-col', 'gap-2', 'bottom-6', 'right-6']"
     >
       <BenchmarkingMetrics v-if="inDevMode" />
       <div :class="['flex', 'gap-2']">

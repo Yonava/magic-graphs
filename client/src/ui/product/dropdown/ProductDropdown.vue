@@ -9,9 +9,10 @@
 
 <template>
   <CPopover>
-    <template #activator="{ toggle }">
+    <template #activator="{ toggle, isOpen }">
       <GButton
         @click="toggle"
+        :tertiary="isOpen"
         class="px-4 py-2 text-xl rounded-lg"
       >
         <span :class="`text-${colors.brand}`">Magic Algorithms</span>
