@@ -10,7 +10,15 @@
   const props = defineProps<Pick<MagicCanvasProps, 'camera'>>();
 
   const zoom = computed(() => props.camera.state.zoom.value);
-  const scalePercentage = computed(() => Math.round(zoom.value * 100));
+
+  const normalizedZoom = computed(() => {
+    const logMin = Math.log(MIN_ZOOM);
+    const logMax = Math.log(MAX_ZOOM);
+    const logZoom = Math.log(zoom.value);
+    return (logZoom - logMin) / (logMax - logMin);
+  });
+
+  const zoomPercentage = computed(() => Math.round(normalizedZoom.value * 100));
 </script>
 
 <template>
@@ -22,7 +30,7 @@
         icon="minus"
       ></GToolbarButton>
       <GWell class="w-12 text-center">
-        <p class="text-sm font-semibold">{{ scalePercentage }}%</p>
+        <p class="text-sm font-semibold">{{ zoomPercentage }}%</p>
       </GWell>
       <GToolbarButton
         @click="camera.actions.zoomIn()"
