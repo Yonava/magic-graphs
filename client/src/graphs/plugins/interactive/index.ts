@@ -7,13 +7,20 @@ import type { NodeAnchor } from '@graph/plugins/anchors/types';
  * interactive allows users to create, edit and delete nodes and edges
  */
 export const useInteractive = (graph: BaseGraph) => {
-  const handleNodeCreation = ({ coords, event }: GraphMouseEvent) => {
+
+  let lastClickTime = 0;
+
+  const handleNodeCreation = ({ coords }: GraphMouseEvent) => {
+    const ONE_SECOND = 350
+    const timeDiff = Date.now() - lastClickTime
+    const closeEnoughInTime = timeDiff < ONE_SECOND
+    if (!closeEnoughInTime) return lastClickTime = Date.now()
+    lastClickTime = 0
+
     const itemStack = graph.getSchemaItemsByCoordinates(coords);
     if (itemStack.at(-1)?.graphType === 'node') return;
 
-    const nodeAdded = graph.addNode(coords);
-    if (!nodeAdded) return;
-    setTimeout(() => graph.updateGraphAtMousePosition(event), 10);
+    graph.addNode(coords);
   };
 
   const doesEdgeConformToRules = (fromNode: GNode, toNode: GNode) => {
@@ -58,14 +65,14 @@ export const useInteractive = (graph: BaseGraph) => {
   };
 
   const activate = () => {
-    graph.subscribe('onDblClick', handleNodeCreation);
+    graph.subscribe('onClick', handleNodeCreation);
     graph.subscribe('onNodeAnchorDrop', handleEdgeCreation);
     graph.settings.value.nodeAnchors = true;
     graph.settings.value.edgeLabelsEditable = true;
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onDblClick', handleNodeCreation);
+    graph.unsubscribe('onClick', handleNodeCreation);
     graph.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
     graph.settings.value.nodeAnchors = false;
     graph.settings.value.edgeLabelsEditable = false;
