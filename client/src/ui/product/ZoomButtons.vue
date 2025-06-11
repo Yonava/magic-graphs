@@ -2,33 +2,39 @@
   import GToolbarButton from '@ui/graph/toolbar/GToolbarButton.vue';
   import GToolbarBase from '@ui/graph/toolbar/GToolbarBase.vue';
   import ToolbarButtonGroup from '@ui/core/toolbar/ToolbarButtonGroup.vue';
-  import {
-    scale,
-    MAX_SCALE,
-    MIN_SCALE,
-    zoomIn,
-    zoomOut,
-  } from '@utils/components/usePinchToZoom';
   import GWell from '@ui/graph/GWell.vue';
   import { computed } from 'vue';
+  import type { MagicCanvasProps } from '@canvas/types';
+  import { MAX_ZOOM, MIN_ZOOM } from '@canvas/camera/panZoom';
 
-  const scalePercentage = computed(() => (scale.value * 100).toFixed(0));
+  const props = defineProps<Pick<MagicCanvasProps, 'camera'>>();
+
+  const zoom = computed(() => props.camera.state.zoom.value);
+
+  const normalizedZoom = computed(() => {
+    const logMin = Math.log(MIN_ZOOM);
+    const logMax = Math.log(MAX_ZOOM);
+    const logZoom = Math.log(zoom.value);
+    return (logZoom - logMin) / (logMax - logMin);
+  });
+
+  const zoomPercentage = computed(() => Math.round(normalizedZoom.value * 100));
 </script>
 
 <template>
   <GToolbarBase>
     <ToolbarButtonGroup>
       <GToolbarButton
-        @click="zoomOut()"
-        :disabled="scale <= MIN_SCALE"
+        @click="camera.actions.zoomOut()"
+        :disabled="zoom <= MIN_ZOOM"
         icon="minus"
       ></GToolbarButton>
       <GWell class="w-12 text-center">
-        <p class="text-sm font-semibold">{{ scalePercentage }}%</p>
+        <p class="text-sm font-semibold">{{ zoomPercentage }}%</p>
       </GWell>
       <GToolbarButton
-        @click="zoomIn()"
-        :disabled="scale >= MAX_SCALE"
+        @click="camera.actions.zoomIn()"
+        :disabled="zoom >= MAX_ZOOM"
         icon="plus"
       ></GToolbarButton>
     </ToolbarButtonGroup>

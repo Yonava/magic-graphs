@@ -1,9 +1,7 @@
 <script setup lang="ts">
   import { computed, onMounted, onUnmounted, ref } from 'vue';
   import type { UnwrapRef } from 'vue';
-  import GraphCanvas from '@graph/Graph.vue';
   import { useGraphProduct } from '@graph/useGraphProduct';
-  import type { Graph } from '@graph/types';
   import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
   import AnnotationToolbar from '@product/graph-sandbox/ui/AnnotationToolbar.vue';
   import ProductDropdown from '@ui/product/dropdown/ProductDropdown.vue';
@@ -17,15 +15,14 @@
   import HelpMenu from './HelpMenu.vue';
   import BenchmarkingMetrics from './BenchmarkingMetrics.vue';
   import { inDevMode } from '@graph/global';
+  import MagicCanvas from '@canvas/MagicCanvas.vue';
+  import type { GraphWithCanvas } from '@product/shared/useGraphWithCanvas';
 
-  const props = defineProps<{
-    graph: Graph;
-  }>();
+  const props = defineProps<GraphWithCanvas>();
 
   const wasAnnotationActive = ref(false);
 
   const emit = defineEmits<{
-    (e: 'graph-ref', value: HTMLCanvasElement | undefined): void;
     (e: 'simulation-started', value: UnwrapRef<SimulationDeclaration>): void;
     (e: 'simulation-stopped'): void;
   }>();
@@ -61,8 +58,6 @@
     startSimulation();
   };
 
-  const graphEl = ref<HTMLCanvasElement>();
-
   useGraphProduct(props.graph);
 
   const graphDragging = ref(false);
@@ -75,8 +70,6 @@
   const stopGraphDrag = () => (graphDragging.value = false);
 
   onMounted(() => {
-    emit('graph-ref', graphEl.value);
-
     props.graph.subscribe('onMouseDown', startGraphDrag);
     props.graph.subscribe('onMouseUp', stopGraphDrag);
   });
@@ -88,10 +81,7 @@
 </script>
 
 <template>
-  <GraphCanvas
-    @graph-ref="(el) => (graphEl = el)"
-    :graph="graph"
-  />
+  <MagicCanvas v-bind="{ ...props.canvas.ref, ...props.css.value }" />
 
   <div :class="[pointerEvents]">
     <div
@@ -213,7 +203,7 @@
 
     <div :class="['absolute', 'flex', 'gap-2', 'bottom-8', 'left-8']">
       <HelpMenu />
-      <ZoomButtons />
+      <ZoomButtons :camera="canvas.camera" />
     </div>
 
     <div

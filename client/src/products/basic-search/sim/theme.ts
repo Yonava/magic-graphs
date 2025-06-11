@@ -1,4 +1,3 @@
-import { computed } from 'vue';
 import type { GNode, Graph } from '@graph/types';
 import type { SimulationControls } from '@ui/product/sim/types';
 import { useTheme } from '@graph/themes/useTheme';

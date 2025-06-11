@@ -15,8 +15,9 @@
 
       "@graph/*": ["./src/graphs/*"],
       "@shape/*": ["./src/shapes/*"],
+      "@canvas/*": ["./src/canvas/*"],
       "@product/*": ["./src/products/*"],
-      "@playground/*": ["./src/playground/*"],
+      "@playground/*": ["./src/playground/*"]
     }
   }
 }
