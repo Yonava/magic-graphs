@@ -11,20 +11,32 @@ import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
 import type { Coordinate, DashPattern } from '@shape/types/utility';
 import type { ShapeFactory } from '@shape/types';
-import type { FillColor, FillGradient, LineWidth, TextArea } from '@shape/types/schema';
-import { BACKGROUND_COLOR_DEFAULTS, LINE_WIDTH_DEFAULTS } from '@shape/defaults/schema';
+import type {
+  FillColor,
+  FillGradient,
+  LineWidth,
+  TextArea,
+} from '@shape/types/schema';
+import {
+  BACKGROUND_COLOR_DEFAULTS,
+  LINE_WIDTH_DEFAULTS,
+} from '@shape/defaults/schema';
+import { shapeFactoryWrapper } from '@shape/factories';
 
-export type LineSchema = LineWidth & TextArea & FillColor & FillGradient & {
-  start: Coordinate;
-  end: Coordinate;
-  /**
-   * offsetFromCenter is used to position text. By default, text is centered on the line.
-   * If -10, text will be on the line but 10 units towards the start.
-   * If 10, text will be on the line but 10 units away from the start.
-   */
-  textOffsetFromCenter?: number;
-  dash?: DashPattern;
-};
+export type LineSchema = LineWidth &
+  TextArea &
+  FillColor &
+  FillGradient & {
+    start: Coordinate;
+    end: Coordinate;
+    /**
+     * offsetFromCenter is used to position text. By default, text is centered on the line.
+     * If -10, text will be on the line but 10 units towards the start.
+     * If 10, text will be on the line but 10 units away from the start.
+     */
+    textOffsetFromCenter?: number;
+    dash?: DashPattern;
+  };
 
 export const LINE_SCHEMA_DEFAULTS = {
   ...LINE_WIDTH_DEFAULTS,
@@ -42,7 +54,8 @@ export const line: ShapeFactory<LineSchema> = (options) => {
   const shapeHitbox = lineHitbox(options);
   const textHitbox = lineTextHitbox(options);
   const efficientHitbox = lineEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
+  const hitbox = (point: Coordinate) =>
+    textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getLineBoundingBox(options);
 
@@ -66,7 +79,7 @@ export const line: ShapeFactory<LineSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return shapeFactoryWrapper({
     name: 'line',
 
     draw,
@@ -83,5 +96,5 @@ export const line: ShapeFactory<LineSchema> = (options) => {
     getBoundingBox,
 
     activateTextArea,
-  };
+  });
 };

@@ -18,16 +18,19 @@ import type { ShapeFactory } from '@shape/types';
 import type { Coordinate } from '@shape/types/utility';
 import type { LoadImageOptions } from './cache';
 import type { AnchorPoint, Rotation, TextArea } from '@shape/types/schema';
+import { shapeFactoryWrapper } from '@shape/factories';
 
-export type ImageSchema = AnchorPoint & Rotation & TextArea & {
-  src: string;
-  width: number;
-  height: number;
-} & Partial<LoadImageOptions>
+export type ImageSchema = AnchorPoint &
+  Rotation &
+  TextArea & {
+    src: string;
+    width: number;
+    height: number;
+  } & Partial<LoadImageOptions>;
 
 export const IMAGE_SCHEMA_DEFAULTS = {
-  ...RECT_SCHEMA_DEFAULTS
-} as const satisfies Partial<ImageSchema>
+  ...RECT_SCHEMA_DEFAULTS,
+} as const satisfies Partial<ImageSchema>;
 
 export const image: ShapeFactory<ImageSchema> = (options) => {
   if (options.width < 0 || options.height < 0) {
@@ -38,7 +41,8 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
   const shapeHitbox = imageHitbox(options);
   const textHitbox = imageTextHitbox(options);
   const efficientHitbox = imageEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
+  const hitbox = (point: Coordinate) =>
+    textHitbox?.(point) || shapeHitbox(point);
   const getBoundingBox = getImageBoundingBox(options);
 
   const drawTextArea = drawTextAreaOnImage(options);
@@ -60,7 +64,7 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return shapeFactoryWrapper({
     name: 'image',
 
     draw,
@@ -68,11 +72,14 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
     drawTextArea,
     drawTextAreaMatte,
     drawText,
+
     hitbox,
     shapeHitbox,
     textHitbox,
     efficientHitbox,
+
     getBoundingBox,
+
     activateTextArea,
-  };
+  });
 };

@@ -24,6 +24,7 @@ import {
   BORDER_RADIUS_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
+import { shapeFactoryWrapper } from '@shape/factories';
 import { validateBorderRadius } from '../../optionsValidator';
 
 export type RectSchema = AnchorPoint &
@@ -75,7 +76,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return shapeFactoryWrapper({
     name: 'rect',
 
     draw,
@@ -92,5 +93,5 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     getBoundingBox,
 
     activateTextArea,
-  };
+  });
 };

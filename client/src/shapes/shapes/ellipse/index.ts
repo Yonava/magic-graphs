@@ -14,18 +14,27 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { engageTextarea } from '@shape/textarea';
-import type { AnchorPoint, FillColor, Stroke, TextArea } from '@shape/types/schema';
+import type {
+  AnchorPoint,
+  FillColor,
+  Stroke,
+  TextArea,
+} from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
+import { shapeFactoryWrapper } from '@shape/factories';
 
-export type EllipseSchema = AnchorPoint & FillColor & Stroke & TextArea & {
-  radiusX: number;
-  radiusY: number;
-};
+export type EllipseSchema = AnchorPoint &
+  FillColor &
+  Stroke &
+  TextArea & {
+    radiusX: number;
+    radiusY: number;
+  };
 
 export const ELLIPSE_SCHEMA_DEFAULTS = {
   ...BACKGROUND_COLOR_DEFAULTS,
-} as const satisfies Partial<EllipseSchema>
+} as const satisfies Partial<EllipseSchema>;
 
 export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   if (options.radiusX < 0 || options.radiusY < 0) {
@@ -62,7 +71,7 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return shapeFactoryWrapper({
     name: 'ellipse',
 
     draw,
@@ -79,5 +88,5 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     getBoundingBox,
 
     activateTextArea,
-  };
+  });
 };

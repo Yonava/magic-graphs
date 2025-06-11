@@ -1,4 +1,8 @@
-import { RECT_SCHEMA_DEFAULTS, rect, type RectSchema } from '@shape/shapes/rect';
+import {
+  RECT_SCHEMA_DEFAULTS,
+  rect,
+  type RectSchema,
+} from '@shape/shapes/rect';
 import type { ShapeFactory } from '@shape/types';
 
 export type SquareSchema = Omit<RectSchema, 'width' | 'height'> & {
@@ -6,8 +10,8 @@ export type SquareSchema = Omit<RectSchema, 'width' | 'height'> & {
 };
 
 export const SQUARE_SCHEMA_DEFAULTS = {
-  ...RECT_SCHEMA_DEFAULTS
-} as const satisfies Partial<SquareSchema>
+  ...RECT_SCHEMA_DEFAULTS,
+} as const satisfies Partial<SquareSchema>;
 
 export const square: ShapeFactory<SquareSchema> = (options) => ({
   ...rect({
@@ -17,4 +21,4 @@ export const square: ShapeFactory<SquareSchema> = (options) => ({
     height: options.size,
   }),
   name: 'square',
-})
+});

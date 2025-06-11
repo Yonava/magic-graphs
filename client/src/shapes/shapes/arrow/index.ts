@@ -1,7 +1,7 @@
 import { LINE_SCHEMA_DEFAULTS } from '@shape/shapes/line';
 import type { LineSchema } from '@shape/shapes/line';
 import type { Coordinate } from '@shape/types/utility';
-import type { Shape, ShapeFactory } from '@shape/types'
+import type { Shape, ShapeFactory } from '@shape/types';
 import { drawArrowWithCtx } from './draw';
 import {
   arrowHitbox,
@@ -18,6 +18,7 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { getArrowHeadSize } from '@shape/helpers';
+import { shapeFactoryWrapper } from '@shape/factories';
 
 export type ArrowSchema = LineSchema & {
   arrowHeadSize?: (width: number) => {
@@ -30,7 +31,7 @@ export type ArrowSchema = LineSchema & {
 export const ARROW_SCHEMA_DEFAULTS = {
   ...LINE_SCHEMA_DEFAULTS,
   arrowHeadSize: getArrowHeadSize,
-} as const satisfies Partial<ArrowSchema>
+} as const satisfies Partial<ArrowSchema>;
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {
@@ -42,7 +43,8 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   const shapeHitbox = arrowHitbox(options);
   const textHitbox = arrowTextHitbox(options);
   const efficientHitbox = arrowEfficientHitbox(options);
-  const hitbox = (point: Coordinate) => textHitbox?.(point) || shapeHitbox(point);
+  const hitbox = (point: Coordinate) =>
+    textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getArrowBoundingBox(options);
 
@@ -66,7 +68,7 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
     engageTextarea(ctx, fullTextArea, handler);
   };
 
-  return {
+  return shapeFactoryWrapper({
     name: 'arrow',
 
     draw,
@@ -83,5 +85,5 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
     getBoundingBox,
 
     activateTextArea,
-  };
+  });
 };

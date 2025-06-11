@@ -1,4 +1,4 @@
-import type { BoundingBox, Coordinate } from "./utility";
+import type { BoundingBox, Coordinate } from './utility';
 
 export type ShapeName =
   | 'circle'
@@ -14,7 +14,7 @@ export type ShapeName =
   | 'star'
   | 'image';
 
-export type Shape = {
+export type ShapeProps = {
   /**
    * the name of the shape type, ie `"circle"`, `"line"`, etc
    */
@@ -81,7 +81,16 @@ export type Shape = {
   ) => void;
 };
 
+export type ShapeUtilProps = {
+  /**
+   * returns the coordinates of the center point of the shape's bounding box
+   */
+  getCenterPoint: () => Coordinate;
+};
+
+export type Shape = ShapeProps & ShapeUtilProps;
+
 /**
  * the process all schemas go through to become shapes
  */
-export type ShapeFactory<T> = (schema: T) => Shape
+export type ShapeFactory<T> = (schema: T) => Shape;
