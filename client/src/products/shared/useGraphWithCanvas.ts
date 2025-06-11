@@ -6,11 +6,15 @@ import { useGraph } from "@graph/useGraph"
 import { useGraphCanvasColor } from "./useGraphCanvasColor"
 import type { StyleValue } from "vue"
 import { cross } from "@shapes"
+import { computed } from "vue"
+import type { ComputedRef } from "vue"
+
+type GraphCanvasCSS = { style: StyleValue }
 
 export type GraphWithCanvas = {
   graph: Graph,
   canvas: MagicCanvasProps,
-  css: { style: StyleValue },
+  css: ComputedRef<GraphCanvasCSS>,
 }
 
 type UseGraphWithCanvas = (settings: Partial<GraphSettings>) => GraphWithCanvas
@@ -28,11 +32,11 @@ export const useGraphWithCanvas: UseGraphWithCanvas = (settings: Partial<GraphSe
     fillColor: patternColor.value + alpha,
   }).draw(ctx);
 
-  const css = {
+  const css = computed<GraphCanvasCSS>(() => ({
     style: {
       backgroundColor: bgColor.value,
     }
-  } as const satisfies GraphWithCanvas['css']
+  }))
 
   return {
     canvas,

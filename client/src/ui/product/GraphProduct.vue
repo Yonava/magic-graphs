@@ -81,7 +81,7 @@
 </script>
 
 <template>
-  <MagicCanvas v-bind="{ ...props.canvas.ref, ...props.css }" />
+  <MagicCanvas v-bind="{ ...props.canvas.ref, ...props.css.value }" />
 
   <div :class="[pointerEvents]">
     <div
