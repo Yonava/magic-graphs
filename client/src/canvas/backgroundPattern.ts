@@ -6,8 +6,8 @@ import type { DrawFns } from "./types";
 
 const STAGGER = 100
 
-const START_PATTERN_FADE_OUT = 1
-const PATTERN_FULLY_FADED_OUT = 0.5
+const START_PATTERN_FADE_OUT = 0.5
+const PATTERN_FULLY_FADED_OUT = 0.25
 
 const computeAlpha = (z: number) => {
   if (z <= PATTERN_FULLY_FADED_OUT) return '00'
