@@ -15,27 +15,35 @@ import type {
   BorderRadius,
   Rotation,
   Stroke,
-  TextArea
+  TextArea,
 } from '@shape/types/schema';
 import type { Coordinate } from '@shape/types/utility';
 import type { ShapeFactory } from '@shape/types';
-import { BACKGROUND_COLOR_DEFAULTS, BORDER_RADIUS_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
+import {
+  BACKGROUND_COLOR_DEFAULTS,
+  BORDER_RADIUS_DEFAULTS,
+  ROTATION_DEFAULTS,
+} from '@shape/defaults/schema';
+import { validateBorderRadius } from '../../optionsValidator';
 
-export type RectSchema = AnchorPoint & FillColor & Stroke & TextArea & BorderRadius & Rotation & {
-  width: number;
-  height: number;
-};
+export type RectSchema = AnchorPoint &
+  FillColor &
+  Stroke &
+  TextArea &
+  BorderRadius &
+  Rotation & {
+    width: number;
+    height: number;
+  };
 
 export const RECT_SCHEMA_DEFAULTS = {
   ...BACKGROUND_COLOR_DEFAULTS,
   ...BORDER_RADIUS_DEFAULTS,
   ...ROTATION_DEFAULTS,
-} as const satisfies Partial<RectSchema>
+} as const satisfies Partial<RectSchema>;
 
 export const rect: ShapeFactory<RectSchema> = (options) => {
-  if (options.borderRadius && options.borderRadius < 0) {
-    throw new Error('borderRadius must be positive');
-  }
+  validateBorderRadius(options);
 
   const drawShape = drawRectWithCtx(options);
 

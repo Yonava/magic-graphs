@@ -21,6 +21,7 @@
     }),
   );
 
+
   const magic = useMagicCanvas({
     draw: (ctx) => shapes.value.forEach((item) => item.draw(ctx)),
   });

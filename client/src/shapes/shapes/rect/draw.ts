@@ -4,7 +4,7 @@ import type { RectSchema } from '.';
 
 export const drawRectWithCtx =
   (options: RectSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { at, width, height, fillColor: color, borderRadius, rotation, stroke } = {
+    const { at, width, height, fillColor, borderRadius, rotation, stroke } = {
       ...RECT_SCHEMA_DEFAULTS,
       ...options,
     };
@@ -19,11 +19,20 @@ export const drawRectWithCtx =
 
     const centerX = normalizedAt.x + normalizedWidth / 2;
     const centerY = normalizedAt.y + normalizedHeight / 2;
-
     ctx.translate(centerX, centerY);
     ctx.rotate(rotation);
 
-    if (borderRadius === 0) {
+    const [topLeft, topRight, bottomRight, bottomLeft] =
+      typeof borderRadius === 'number'
+        ? [borderRadius, borderRadius, borderRadius, borderRadius]
+        : borderRadius;
+
+    if (
+      topLeft === 0 &&
+      topRight === 0 &&
+      bottomRight === 0 &&
+      bottomLeft === 0
+    ) {
       ctx.beginPath();
       ctx.rect(
         -normalizedWidth / 2,
@@ -31,57 +40,87 @@ export const drawRectWithCtx =
         normalizedWidth,
         normalizedHeight,
       );
-      ctx.fillStyle = color;
+      ctx.fillStyle = fillColor;
       ctx.fill();
     } else {
-      const radius = Math.min(
-        borderRadius,
-        normalizedWidth / 2,
-        normalizedHeight / 2,
-      );
+      const maxRadius = Math.min(normalizedWidth / 2, normalizedHeight / 2);
+      const constrainedTopLeft = Math.min(topLeft, maxRadius);
+      const constrainedTopRight = Math.min(topRight, maxRadius);
+      const constrainedBottomRight = Math.min(bottomRight, maxRadius);
+      const constrainedBottomLeft = Math.min(bottomLeft, maxRadius);
+
       ctx.beginPath();
-      ctx.moveTo(-normalizedWidth / 2 + radius, -normalizedHeight / 2);
-      ctx.lineTo(normalizedWidth / 2 - radius, -normalizedHeight / 2);
-      ctx.arcTo(
-        normalizedWidth / 2,
+
+      ctx.moveTo(
+        -normalizedWidth / 2 + constrainedTopLeft,
         -normalizedHeight / 2,
-        normalizedWidth / 2,
-        -normalizedHeight / 2 + radius,
-        radius,
       );
-      ctx.lineTo(normalizedWidth / 2, normalizedHeight / 2 - radius);
-      ctx.arcTo(
-        normalizedWidth / 2,
-        normalizedHeight / 2,
-        normalizedWidth / 2 - radius,
-        normalizedHeight / 2,
-        radius,
-      );
-      ctx.lineTo(-normalizedWidth / 2 + radius, normalizedHeight / 2);
-      ctx.arcTo(
-        -normalizedWidth / 2,
-        normalizedHeight / 2,
-        -normalizedWidth / 2,
-        normalizedHeight / 2 - radius,
-        radius,
-      );
-      ctx.lineTo(-normalizedWidth / 2, -normalizedHeight / 2 + radius);
-      ctx.arcTo(
-        -normalizedWidth / 2,
+
+      ctx.lineTo(
+        normalizedWidth / 2 - constrainedTopRight,
         -normalizedHeight / 2,
-        -normalizedWidth / 2 + radius,
-        -normalizedHeight / 2,
-        radius,
       );
+      if (constrainedTopRight > 0) {
+        ctx.arcTo(
+          normalizedWidth / 2,
+          -normalizedHeight / 2,
+          normalizedWidth / 2,
+          -normalizedHeight / 2 + constrainedTopRight,
+          constrainedTopRight,
+        );
+      }
+
+      ctx.lineTo(
+        normalizedWidth / 2,
+        normalizedHeight / 2 - constrainedBottomRight,
+      );
+      if (constrainedBottomRight > 0) {
+        ctx.arcTo(
+          normalizedWidth / 2,
+          normalizedHeight / 2,
+          normalizedWidth / 2 - constrainedBottomRight,
+          normalizedHeight / 2,
+          constrainedBottomRight,
+        );
+      }
+
+      ctx.lineTo(
+        -normalizedWidth / 2 + constrainedBottomLeft,
+        normalizedHeight / 2,
+      );
+      if (constrainedBottomLeft > 0) {
+        ctx.arcTo(
+          -normalizedWidth / 2,
+          normalizedHeight / 2,
+          -normalizedWidth / 2,
+          normalizedHeight / 2 - constrainedBottomLeft,
+          constrainedBottomLeft,
+        );
+      }
+
+      ctx.lineTo(
+        -normalizedWidth / 2,
+        -normalizedHeight / 2 + constrainedTopLeft,
+      );
+      if (constrainedTopLeft > 0) {
+        ctx.arcTo(
+          -normalizedWidth / 2,
+          -normalizedHeight / 2,
+          -normalizedWidth / 2 + constrainedTopLeft,
+          -normalizedHeight / 2,
+          constrainedTopLeft,
+        );
+      }
+
       ctx.closePath();
-      ctx.fillStyle = color;
+      ctx.fillStyle = fillColor;
       ctx.fill();
     }
 
     if (stroke) {
-      const { color, lineWidth: width, dash } = stroke;
+      const { color, lineWidth, dash } = stroke;
       ctx.strokeStyle = color;
-      ctx.lineWidth = width;
+      ctx.lineWidth = lineWidth;
       ctx.setLineDash(dash || []);
       ctx.stroke();
       ctx.setLineDash([]);
