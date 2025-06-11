@@ -54,7 +54,7 @@ const useCollab = () => {
     meAsACollaborator.value = undefined;
     connectedRoomId.value = undefined;
     collaborators.value = {};
-    graph.value?.unsubscribe('onRepaint', paintCollabTag);
+    graph.value?.unsubscribe('onDraw', paintCollabTag);
     if (socket.value) {
       socket.value.disconnect();
       socket.value = undefined;
@@ -131,7 +131,7 @@ const useCollab = () => {
         },
       };
 
-      options.graph.subscribe('onRepaint', paintCollabTag);
+      options.graph.subscribe('onDraw', paintCollabTag);
       startListening(socket.value, { graph: options.graph, collaborators });
 
       socket.value.emit('joinRoom', joinOptions, (collabMap, graphState) => {

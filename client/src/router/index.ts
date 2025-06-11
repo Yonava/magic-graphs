@@ -3,7 +3,7 @@ import type { ProductInfo } from 'src/types';
 import GraphSandboxInfo from '@product/graph-sandbox/info';
 import { collabControls } from '@graph/collab';
 
-// import all route.ts files dynamically
+// import all info.ts files dynamically
 const infoModules = import.meta.glob<{
   default: ProductInfo;
 }>('/src/**/info.ts', { eager: true });
@@ -14,6 +14,10 @@ const router = createRouter({
     {
       path: '/',
       redirect: GraphSandboxInfo.route.path,
+    },
+    {
+      path: '/canvas',
+      component: () => import('../canvas/docs/StoryCanvas.vue')
     },
     ...Object.values(infoModules).flatMap((mod) => mod.default.route ?? []),
     {

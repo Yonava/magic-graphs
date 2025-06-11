@@ -1,15 +1,14 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { useGraph } from '@graph/useGraph';
   import GraphProduct from '@ui/product/GraphProduct.vue';
   import { SANDBOX_GRAPH_SETTINGS } from './settings';
   import IslandToolbar from './ui/IslandToolbar.vue';
   import IslandMarkup from './ui/IslandMarkup.vue';
   import { useMarkupColorizer } from './theme/useMarkupColorizer';
   import { useMarkupSizer } from './theme/useMarkupSizer';
+  import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
 
-  const graphEl = ref<HTMLCanvasElement>();
-  const graph = useGraph(graphEl, SANDBOX_GRAPH_SETTINGS);
+  const graphWithCanvas = useGraphWithCanvas(SANDBOX_GRAPH_SETTINGS);
+  const { graph } = graphWithCanvas;
 
   const { colorize, colorMap } = useMarkupColorizer(graph);
   colorize();
@@ -19,10 +18,7 @@
 </script>
 
 <template>
-  <GraphProduct
-    @graph-ref="(el) => (graphEl = el)"
-    :graph="graph"
-  >
+  <GraphProduct v-bind="graphWithCanvas">
     <template #top-center>
       <IslandToolbar />
     </template>

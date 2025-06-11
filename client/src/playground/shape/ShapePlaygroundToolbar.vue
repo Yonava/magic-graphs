@@ -4,12 +4,10 @@
   import { useHeatmap } from '@playground/shape/useHeatmap';
   import Button from '@ui/core/button/Button.vue';
   import InputRange from '@ui/InputRange.vue';
-  import { getCtx } from '@utils/ctx';
 
   const props = defineProps<{
     canvas: HTMLCanvasElement | undefined;
     items: Shape[];
-    draw: () => void;
   }>();
 
   const { items, canvas } = toRefs(props);
@@ -29,18 +27,9 @@
   const toggleHeatmapModeButtonText = computed(() =>
     heatmapMode.value === 'efficient' ? 'Precise Heatmap' : 'Efficient Heatmap',
   );
-
-  const fn = () => {
-    const ctx = getCtx(canvas);
-    items.value[2].activateTextArea?.(ctx, (str) => {
-      console.log('value', str);
-    });
-  };
 </script>
 
 <template>
-  <Button @click="draw">Redraw</Button>
-
   <Button @click="heatmapActive = !heatmapActive">
     {{ heatmapBtnText }}
   </Button>
@@ -51,8 +40,6 @@
   >
     {{ toggleHeatmapModeButtonText }}
   </Button>
-
-  <Button @click="fn">Micro Control</Button>
 
   <div
     v-if="heatmapActive"

@@ -57,11 +57,7 @@ export const useHeatmap = (
     canvas.style.top = '0';
     canvas.style.left = '0';
     canvas.style.pointerEvents = 'none';
-    const canvasContainer = document.getElementById(
-      'responsive-canvas-container',
-    );
-    if (!canvasContainer) throw new Error('Canvas container not found');
-    canvasContainer.appendChild(canvas);
+    document.body.appendChild(canvas);
   };
 
   const heatmapMode = ref<'efficient' | 'precise'>('precise');

@@ -7,7 +7,7 @@ import { canRunMarkovChain } from './sim/guard';
 export const info: ProductInfo = {
   route: {
     path: '/markov-chains',
-    component: () => import('./Main.vue'),
+    component: () => import('./MainView.vue'),
   },
   name: 'Markov Chains',
   description:

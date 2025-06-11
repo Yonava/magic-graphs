@@ -28,7 +28,7 @@
           tertiary
           :disabled="props.controls.step.value === 0"
         >
-          <- prev
+          👈 prev
         </GButton>
         <GButton
           @click="props.controls.next"
@@ -37,7 +37,7 @@
             props.controls.trace.value.length - 1 === props.controls.step.value
           "
         >
-          next ->
+          next 👉
         </GButton>
         <GButton
           @click="props.controls.exit"

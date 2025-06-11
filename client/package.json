@@ -21,6 +21,7 @@
     "@codemirror/lang-javascript": "^6.2.2",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@mdi/font": "^7.4.47",
+    "@types/lodash": "^4.17.17",
     "@vueuse/core": "^11.1.0",
     "codemirror": "^6.0.1",
     "codemirror-readonly-ranges": "^0.1.0-alpha.2",

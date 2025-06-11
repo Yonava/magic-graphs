@@ -14,7 +14,7 @@ export const LIGHT_THEME: GraphThemeRaw = {
   edgeFocusColor: colors.BLUE_600,
   edgeFocusTextColor: colors.BLACK,
   graphBgColor: colors.GRAY_200,
-  graphBgPatternColor: colors.BLACK + '15',
+  graphBgPatternColor: colors.GRAY_500,
 
   nodeAnchorColor: colors.BLACK,
   nodeAnchorColorWhenParentFocused: colors.BLUE_900,

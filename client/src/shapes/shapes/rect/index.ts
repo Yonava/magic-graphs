@@ -25,6 +25,7 @@ import {
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
 import { shapeFactoryWrapper } from '@shape/factories';
+import { validateBorderRadius } from '../../optionsValidator';
 
 export type RectSchema = AnchorPoint &
   FillColor &
@@ -43,9 +44,7 @@ export const RECT_SCHEMA_DEFAULTS = {
 } as const satisfies Partial<RectSchema>;
 
 export const rect: ShapeFactory<RectSchema> = (options) => {
-  if (options.borderRadius && options.borderRadius < 0) {
-    throw new Error('borderRadius must be positive');
-  }
+  validateBorderRadius(options);
 
   const drawShape = drawRectWithCtx(options);
 

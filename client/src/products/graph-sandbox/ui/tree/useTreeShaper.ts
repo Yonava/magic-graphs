@@ -1,10 +1,10 @@
-import { computed, onUnmounted, ref, watch } from 'vue';
+import { onUnmounted, ref, watch } from 'vue';
 import type { GNode, Graph } from '@graph/types';
-import { getNodeDepths } from '@product/search-visualizer/useNodeDepth';
 import type { GNodeMoveRecord } from '@graph/plugins/history/types';
 import { debounce } from '@utils/debounce';
 import { getTreeStandardPos } from './getTreeStandardPos';
 import { getTreeBinaryPos } from './getTreeBinaryPos';
+import { getNodeDepths } from './useNodeDepth';
 
 export type TreeFormationOptions = {
   /**

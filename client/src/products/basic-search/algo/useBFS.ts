@@ -1,5 +1,5 @@
 import { computed, ref, watch } from 'vue';
-import type { GNode, Graph } from '@graph/types';
+import type { Graph } from '@graph/types';
 import { bfs } from './bfs';
 import state from '../state';
 import { useAdjacencyList } from '@graph/useAdjacencyList';
