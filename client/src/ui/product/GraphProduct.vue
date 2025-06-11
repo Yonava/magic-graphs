@@ -17,7 +17,6 @@
   import { inDevMode } from '@graph/global';
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import type { GraphWithCanvas } from '@product/shared/useGraphWithCanvas';
-  import { useGraphCanvasColor } from '@product/shared/useGraphCanvasColor';
 
   const props = defineProps<GraphWithCanvas>();
 
@@ -79,15 +78,10 @@
     props.graph.unsubscribe('onMouseDown', startGraphDrag);
     props.graph.unsubscribe('onMouseUp', stopGraphDrag);
   });
-
-  const canvasColor = useGraphCanvasColor(props.graph);
 </script>
 
 <template>
-  <MagicCanvas
-    v-bind="props.canvas.ref"
-    :style="{ backgroundColor: canvasColor.bgColor.value }"
-  />
+  <MagicCanvas v-bind="{ ...props.canvas.ref, ...props.css }" />
 
   <div :class="[pointerEvents]">
     <div

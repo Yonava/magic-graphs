@@ -3,7 +3,7 @@ import { useCamera } from "./camera"
 import { useMagicCoordinates } from "./coordinates"
 import { getCtx } from "@utils/ctx"
 import { getDevicePixelRatio } from "./camera/utils"
-import type { MagicCanvasConfig, UseMagicCanvas } from "./types"
+import type { UseMagicCanvas } from "./types"
 import { useElementSize } from "@vueuse/core"
 import { useBackgroundPattern } from "./backgroundPattern"
 import { cross } from "@shapes"
@@ -20,7 +20,7 @@ const initCanvasWidthHeight = (canvas: HTMLCanvasElement | undefined) => {
   canvas.height = rect.height * dpr;
 }
 
-export const useMagicCanvas: UseMagicCanvas = (config: MagicCanvasConfig) => {
+export const useMagicCanvas: UseMagicCanvas = (config) => {
   const canvas = ref<HTMLCanvasElement>()
   const canvasBoxSize = useElementSize(canvas)
 
