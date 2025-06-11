@@ -178,18 +178,7 @@
       <ZoomButtons :camera="canvas.camera" />
     </div>
 
-    <div
-      :class="[
-        'absolute',
-        'bottom-6',
-        'gap-4',
-        'w-full',
-        'flex',
-        'flex-col',
-        'justify-center',
-        'items-center',
-      ]"
-    >
+    <div :class="['absolute', 'bottom-6', '-translate-x-1/2', 'left-1/2']">
       <template v-if="runningSimulation && isActive">
         <slot name="bottom-center-sim">
           <SimulationPlaybackControls :controls="simRunner.simControls" />
