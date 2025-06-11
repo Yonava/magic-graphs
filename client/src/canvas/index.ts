@@ -5,6 +5,9 @@ import { getCtx } from "@utils/ctx"
 import { getDevicePixelRatio } from "./camera/utils"
 import type { MagicCanvasConfig, UseMagicCanvas } from "./types"
 import { useElementSize } from "@vueuse/core"
+import { useBackgroundPattern } from "./backgroundPattern"
+import { cross } from "@shapes"
+import colors from "@utils/colors"
 
 const REPAINT_FPS = 60;
 
@@ -33,9 +36,19 @@ export const useMagicCanvas: UseMagicCanvas = (config: MagicCanvasConfig) => {
   const { cleanup: cleanupCamera, ...camera } = useCamera(canvas);
   const { coordinates: cursorCoordinates, cleanup: cleanupCoords } = useMagicCoordinates(canvas);
 
+  const pattern = useBackgroundPattern(camera.state, (ctx, at, alpha) => {
+    cross({
+      at,
+      size: 12,
+      lineWidth: 1,
+      fillColor: colors.GRAY_500 + alpha,
+    }).draw(ctx);
+  })
+
   const repaintCanvas = () => {
     const ctx = getCtx(canvas);
     camera.transformAndClear(ctx);
+    pattern.draw(ctx)
     config.draw(ctx)
   };
 

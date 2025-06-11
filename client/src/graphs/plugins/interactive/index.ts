@@ -11,9 +11,9 @@ export const useInteractive = (graph: BaseGraph) => {
   let lastClickTime = 0;
 
   const handleNodeCreation = ({ coords }: GraphMouseEvent) => {
-    const ONE_SECOND = 350
+    const ABOUT_A_FEW_HUNDRED_MS = 350
     const timeDiff = Date.now() - lastClickTime
-    const closeEnoughInTime = timeDiff < ONE_SECOND
+    const closeEnoughInTime = timeDiff < ABOUT_A_FEW_HUNDRED_MS
     if (!closeEnoughInTime) return lastClickTime = Date.now()
     lastClickTime = 0
 
