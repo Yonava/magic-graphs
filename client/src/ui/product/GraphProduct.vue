@@ -131,9 +131,9 @@
         'grid',
         'place-items-center',
         'left-6',
-        'top-0',
-        'h-full',
         'max-w-96',
+        '-translate-y-1/2',
+        'top-1/2',
       ]"
     >
       <div
@@ -155,9 +155,9 @@
         'grid',
         'place-items-center',
         'right-6',
-        'top-0',
-        'h-full',
         'max-w-96',
+        '-translate-y-1/2',
+        'top-1/2',
       ]"
     >
       <div
