@@ -9,7 +9,7 @@ import { graphToAVL } from './tree/graphToAVL';
 export const useTree = (graph: Graph) => {
   const tree = new AVLTree();
 
-  const { undoStack, undo, redo } = useTreeHistory(graph, tree);
+  const { undoStack, undo, redo } = useTreeHistory(graph);
 
   const mapNodeIds = <T>(getter: (node: TreeNode) => T) => {
     const nodes = graph.nodes.value;

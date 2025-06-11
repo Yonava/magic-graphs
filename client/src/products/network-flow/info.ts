@@ -7,7 +7,7 @@ import { canRunFordFulkerson } from './sim/guard';
 const info: ProductInfo = {
   route: {
     path: '/flow',
-    component: () => import('./Main.vue'),
+    component: () => import('./MainView.vue'),
   },
   name: 'Network Flow',
   description: 'Visualize Network Flow',

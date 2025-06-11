@@ -7,7 +7,7 @@ import state from './state';
 const info: ProductInfo = {
   route: {
     path: '/basic-search',
-    component: () => import('./Main.vue'),
+    component: () => import('./MainView.vue'),
   },
   name: 'Basic Search',
   description: 'Visualize basic search algorithms',

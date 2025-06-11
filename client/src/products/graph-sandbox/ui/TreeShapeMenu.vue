@@ -40,8 +40,8 @@
 
 <template>
   <CPopover>
-    <template #activator="props">
-      <slot v-bind="props"></slot>
+    <template #activator="menuProps">
+      <slot v-bind="menuProps"></slot>
     </template>
 
     <GWell class="p-3 flex flex-col gap-2 w-72 rounded-lg">

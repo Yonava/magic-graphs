@@ -10,6 +10,7 @@ import type { GraphFocusPlugin } from '../focus';
 import { getEncapsulatedNodeBox } from './helpers';
 import { MOUSE_BUTTONS } from "@graph/global";
 import { normalizeBoundingBox } from '@shape/helpers';
+import { computed } from 'vue';
 
 export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   const marqueeBox = ref<BoundingBox | undefined>();
@@ -247,6 +248,10 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
      * use this when you are changing theme or position outside of the standard supported use cases
      */
     updateEncapsulatedNodeBox,
+    /**
+     * true when the marquee box is being actively sized by user
+     */
+    activelySelecting: computed(() => !!marqueeBox.value)
   };
 };
 

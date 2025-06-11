@@ -103,7 +103,7 @@ export const getInitialEventBus = () => {
 
     onEdgeLabelEdited: new Set(),
 
-    onRepaint: new Set(),
+    onDraw: new Set(),
     onNodeHoverChange: new Set(),
 
     onGraphLoaded: new Set(),

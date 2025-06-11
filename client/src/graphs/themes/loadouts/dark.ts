@@ -17,9 +17,9 @@ export const DARK_THEME: GraphThemeRaw = {
   edgeTextColor: colors.WHITE,
 
   graphBgColor: colors.GRAY_600,
-  graphBgPatternColor: colors.WHITE + '15',
+  graphBgPatternColor: colors.GRAY_500,
 
-  nodeAnchorColorWhenParentFocused: colors.RED_800,
+  nodeAnchorColorWhenParentFocused: colors.RED_900,
   nodeAnchorColor: colors.GRAY_900,
   linkPreviewColor: colors.BLACK,
 

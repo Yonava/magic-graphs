@@ -1,6 +1,14 @@
 import type { Ref } from "vue"
 import type { Coordinate } from "@shape/types/utility"
 import type { Camera } from "./camera"
+import type { DrawPattern } from "./backgroundPattern"
+
+export type DrawContent = (ctx: CanvasRenderingContext2D) => void
+
+export type DrawFns = {
+  content: Ref<DrawContent>,
+  backgroundPattern: Ref<DrawPattern>
+}
 
 export type MagicCanvasProps = {
   canvas: Ref<HTMLCanvasElement | undefined>
@@ -9,11 +17,8 @@ export type MagicCanvasProps = {
   ref: {
     canvasRef: (canvas: HTMLCanvasElement) => void,
     cleanup: (canvas: HTMLCanvasElement) => void,
-  }
+  },
+  draw: DrawFns,
 }
 
-export type MagicCanvasConfig = {
-  draw: (ctx: CanvasRenderingContext2D) => void
-}
-
-export type UseMagicCanvas = (config: MagicCanvasConfig) => MagicCanvasProps
+export type UseMagicCanvas = () => MagicCanvasProps

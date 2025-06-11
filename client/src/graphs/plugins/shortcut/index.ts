@@ -3,7 +3,6 @@ import type { BaseGraph } from '@graph/base';
 import type { GraphHistoryPlugin } from '../history';
 import type { GraphFocusPlugin } from '../focus';
 import type { GraphAnnotationPlugin } from '../annotations';
-import { setScale, DEFAULT_SCALE_JUMP } from '@utils/components/usePinchToZoom';
 import keys from 'ctrl-keys';
 import type { Key } from 'ctrl-keys';
 import type { PlatformShortcuts } from './types';
@@ -56,13 +55,6 @@ export const useShortcuts = (
     graph.bulkRemoveEdge([...graph.focus.focusedItemIds.value]);
   };
 
-  // for some reason the zoom in and out functions get called 2 times.
-  // this is a temporary fix to make the zoom in and out functions work as expected
-  // this issue is likely due to overlaps inside of the ctrl-keys library and the items we are feeding it
-  const defaultShortcutTriggerZoomIn = () => setScale(DEFAULT_SCALE_JUMP / 2);
-  const defaultShortcutTriggerZoomOut = () =>
-    setScale(-(DEFAULT_SCALE_JUMP / 2));
-
   /**
    * get the function to run based on the keyboard shortcut setting
    */
@@ -88,10 +80,10 @@ export const useShortcuts = (
     getFn(defaultShortcutTriggerDelete, settings.value.shortcutDelete),
   );
   const triggerZoomIn = computed(() =>
-    getFn(defaultShortcutTriggerZoomIn, settings.value.shortcutZoomIn),
+    getFn(graph.magicCanvas.camera.actions.zoomIn, settings.value.shortcutZoomIn),
   );
   const triggerZoomOut = computed(() =>
-    getFn(defaultShortcutTriggerZoomOut, settings.value.shortcutZoomOut),
+    getFn(graph.magicCanvas.camera.actions.zoomOut, settings.value.shortcutZoomOut),
   );
 
   const allShortcuts = computed<PlatformShortcuts>(() => ({

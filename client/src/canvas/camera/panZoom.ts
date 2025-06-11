@@ -1,9 +1,9 @@
 import { onMounted, ref, type Ref } from "vue";
 
-export const MIN_ZOOM = 0.5;
-export const MAX_ZOOM = 5;
+export const MIN_ZOOM = 0.2;
+export const MAX_ZOOM = 2;
 
-export const ZOOM_SENSITIVITY = 0.03;
+export const ZOOM_SENSITIVITY = 0.02;
 export const PAN_SENSITIVITY = 1;
 
 export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
@@ -11,7 +11,7 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
   const panY = ref(0)
   const zoom = ref(1)
 
-  const setZoom = (ev: WheelEvent) => {
+  const setZoom = (ev: Pick<WheelEvent, 'clientX' | 'clientY' | 'deltaY'>) => {
     const { clientX: cx, clientY: cy } = ev
     const zoomAmount = ev.deltaY * -ZOOM_SENSITIVITY;
     const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom.value + zoomAmount));
@@ -19,16 +19,15 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
 
     panX.value = Math.round(cx - (cx - panX.value) * scale);
     panY.value = Math.round(cy - (cy - panY.value) * scale);
-    zoom.value = Number(newZoom.toFixed(4));
+    zoom.value = newZoom
   }
 
-  const setPan = (ev: WheelEvent) => {
+  const setPan = (ev: Pick<WheelEvent, 'deltaX' | 'deltaY'>) => {
     panX.value -= Math.round(ev.deltaX * PAN_SENSITIVITY)
     panY.value -= Math.round(ev.deltaY * PAN_SENSITIVITY)
   }
 
   const onWheel = (ev: WheelEvent) => {
-    if (!canvas.value) return;
     ev.preventDefault();
 
     const isPanning = !ev.ctrlKey;
@@ -36,15 +35,50 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
     maneuverCamera(ev)
   };
 
+  let lastX = 0;
+  let lastY = 0;
+  let middleMouseDown = false;
+
+  const onMousedown = (ev: MouseEvent) => {
+    middleMouseDown = ev.button === 1
+
+    lastX = ev.clientX
+    lastY = ev.clientY
+  }
+
+  const onMousemove = (ev: MouseEvent) => {
+    if (!middleMouseDown) return
+    setPan({ deltaX: lastX - ev.clientX, deltaY: lastY - ev.clientY })
+    lastX = ev.clientX
+    lastY = ev.clientY
+  }
+
+  const onMouseup = () => {
+    lastX = 0
+    lastY = 0
+    middleMouseDown = false
+  }
+
   onMounted(() => {
     if (!canvas.value) throw new Error("canvas not found in DOM");
     canvas.value.addEventListener("wheel", onWheel, { passive: false });
+    canvas.value.addEventListener("mousedown", onMousedown)
+    canvas.value.addEventListener("mousemove", onMousemove)
+    document.addEventListener('mouseup', onMouseup)
   });
 
   return {
     actions: {
-      zoomIn: (increment = 0.5) => zoom.value = Math.min(MAX_ZOOM, zoom.value + increment),
-      zoomOut: (decrement = 0.5) => zoom.value = Math.max(MIN_ZOOM, zoom.value - decrement),
+      zoomIn: (increment = 12.5) => setZoom({
+        deltaY: -increment,
+        clientX: window.innerWidth / 2,
+        clientY: window.innerHeight / 2
+      }),
+      zoomOut: (decrement = 12.5) => setZoom({
+        deltaY: decrement,
+        clientX: window.innerWidth / 2,
+        clientY: window.innerHeight / 2
+      }),
     },
     state: {
       panX,
@@ -59,6 +93,9 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
     }),
     cleanup: (ref: HTMLCanvasElement) => {
       ref.removeEventListener("wheel", onWheel);
+      ref.addEventListener("mousedown", onMousedown)
+      ref.addEventListener("mousemove", onMousemove)
+      document.addEventListener('mouseup', onMouseup)
     }
   };
 };

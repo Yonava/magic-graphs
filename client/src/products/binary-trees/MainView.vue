@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { useGraph } from '@graph/useGraph';
   import GraphProduct from '@ui/product/GraphProduct.vue';
   import { BINARY_TREE_GRAPH_SETTINGS } from './settings';
   import CRUDControls from './ui/CRUDControls.vue';
@@ -9,11 +7,12 @@
   import AddNodePanel from './ui/AddNodePanel.vue';
   import state from './state';
   import TreeSimMenu from './ui/TreeSimMenu.vue';
+  import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
 
   const { activeSim } = state;
 
-  const graphEl = ref<HTMLCanvasElement>();
-  const graph = useGraph(graphEl, BINARY_TREE_GRAPH_SETTINGS);
+  const graphWithCanvas = useGraphWithCanvas(BINARY_TREE_GRAPH_SETTINGS);
+  const { graph } = graphWithCanvas;
 
   const tree = useTree(graph);
 
@@ -34,10 +33,7 @@
 </script>
 
 <template>
-  <GraphProduct
-    @graph-ref="(el) => (graphEl = el)"
-    :graph="graph"
-  >
+  <GraphProduct v-bind="graphWithCanvas">
     <template #top-center>
       <TreeInfoLabels :tree="tree" />
     </template>
