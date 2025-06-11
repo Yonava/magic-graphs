@@ -58,6 +58,8 @@ export const useBaseGraph = (
   });
 
   subscribe('onMouseDown', () => {
+    const el = document.activeElement;
+    if (el instanceof HTMLElement && typeof el.blur === 'function') el.blur();
     canvasFocused.value = true;
   });
 

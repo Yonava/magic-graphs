@@ -19,14 +19,14 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
 
     const scale = newZoom / zoom.value;
 
-    panX.value = Math.round(cx - (cx - panX.value) * scale);
-    panY.value = Math.round(cy - (cy - panY.value) * scale);
+    panX.value = cx - (cx - panX.value) * scale;
+    panY.value = cy - (cy - panY.value) * scale;
     zoom.value = newZoom
   }
 
   const setPan = (ev: Pick<WheelEvent, 'deltaX' | 'deltaY'>) => {
-    panX.value -= Math.round(ev.deltaX * PAN_SENSITIVITY)
-    panY.value -= Math.round(ev.deltaY * PAN_SENSITIVITY)
+    panX.value -= ev.deltaX * PAN_SENSITIVITY
+    panY.value -= ev.deltaY * PAN_SENSITIVITY
   }
 
   const onWheel = (ev: WheelEvent) => {

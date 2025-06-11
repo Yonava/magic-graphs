@@ -84,6 +84,10 @@
   <MagicCanvas v-bind="{ ...props.canvas.ref, ...props.css.value }" />
 
   <div :class="[pointerEvents]">
+    <div :class="['absolute', 'top-6', 'left-6']">
+      <ProductDropdown />
+    </div>
+
     <div
       :class="[
         'absolute',
@@ -102,6 +106,23 @@
 
       <template v-else>
         <slot name="top-center"></slot>
+      </template>
+    </div>
+
+    <div :class="['absolute', 'top-6', 'right-6']">
+      <template v-if="runningSimulation">
+        <slot name="top-right-sim">
+          <StopSimButton @click="stopSimulation" />
+        </slot>
+      </template>
+
+      <template v-else>
+        <slot name="top-right">
+          <SelectSimulation
+            @simulation-selected="setActiveSimulation"
+            :simulations="simulations"
+          />
+        </slot>
       </template>
     </div>
 
@@ -132,51 +153,6 @@
     <div
       :class="[
         'absolute',
-        'grid',
-        'place-items-center',
-        'right-4',
-        'top-0',
-        'h-full',
-        'max-w-96',
-      ]"
-    >
-      <div
-        class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
-      >
-        <template v-if="runningSimulation">
-          <slot name="center-right-sim"></slot>
-        </template>
-
-        <template v-else>
-          <slot name="center-right"></slot>
-        </template>
-      </div>
-    </div>
-
-    <div :class="['absolute', 'top-6', 'left-6']">
-      <ProductDropdown />
-    </div>
-
-    <div :class="['absolute', 'top-6', 'right-6']">
-      <template v-if="runningSimulation">
-        <slot name="top-right-sim">
-          <StopSimButton @click="stopSimulation" />
-        </slot>
-      </template>
-
-      <template v-else>
-        <slot name="top-right">
-          <SelectSimulation
-            @simulation-selected="setActiveSimulation"
-            :simulations="simulations"
-          />
-        </slot>
-      </template>
-    </div>
-
-    <div
-      :class="[
-        'absolute',
         'bottom-8',
         'gap-4',
         'w-full',
@@ -199,6 +175,30 @@
           </div>
         </slot>
       </template>
+    </div>
+
+    <div
+      :class="[
+        'absolute',
+        'grid',
+        'place-items-center',
+        'right-4',
+        'top-0',
+        'h-full',
+        'max-w-96',
+      ]"
+    >
+      <div
+        class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
+      >
+        <template v-if="runningSimulation">
+          <slot name="center-right-sim"></slot>
+        </template>
+
+        <template v-else>
+          <slot name="center-right"></slot>
+        </template>
+      </div>
     </div>
 
     <div :class="['absolute', 'flex', 'gap-2', 'bottom-8', 'left-8']">
