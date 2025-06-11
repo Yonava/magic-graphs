@@ -18,10 +18,12 @@
   >
     <slot></slot>
     <template #hint>
-      <GToolbarHint
-        v-if="hint"
-        :tutorial="hint"
-      />
+      <div class="absolute w-full translate-y-14 pointer-events-none">
+        <GToolbarHint
+          v-if="hint"
+          :tutorial="hint"
+        />
+      </div>
     </template>
   </CToolbar>
 </template>

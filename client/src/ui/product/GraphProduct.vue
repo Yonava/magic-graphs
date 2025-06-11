@@ -81,8 +81,6 @@
 </script>
 
 <template>
-  <MagicCanvas v-bind="{ ...props.canvas.ref, ...props.css.value }" />
-
   <div :class="[pointerEvents]">
     <div :class="['absolute', 'top-6', 'left-6']">
       <ProductDropdown />
@@ -91,13 +89,14 @@
     <div
       :class="[
         'absolute',
-        'top-6',
-        'w-full',
         'flex',
         'flex-col',
         'justify-center',
         'items-center',
         'gap-2',
+        'left-1/2',
+        '-translate-x-1/2',
+        'translate-y-6',
       ]"
     >
       <template v-if="runningSimulation">
@@ -216,4 +215,6 @@
       </div>
     </div>
   </div>
+
+  <MagicCanvas v-bind="{ ...props.canvas.ref, ...props.css.value }" />
 </template>
