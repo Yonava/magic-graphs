@@ -22,13 +22,12 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
     zoom.value = newZoom
   }
 
-  const setPan = (ev: WheelEvent) => {
+  const setPan = (ev: Pick<WheelEvent, 'deltaX' | 'deltaY'>) => {
     panX.value -= Math.round(ev.deltaX * PAN_SENSITIVITY)
     panY.value -= Math.round(ev.deltaY * PAN_SENSITIVITY)
   }
 
   const onWheel = (ev: WheelEvent) => {
-    if (!canvas.value) return;
     ev.preventDefault();
 
     const isPanning = !ev.ctrlKey;
@@ -36,9 +35,36 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
     maneuverCamera(ev)
   };
 
+  let lastX = 0;
+  let lastY = 0;
+  let middleMouseDown = false;
+
+  const onMousedown = (ev: MouseEvent) => {
+    middleMouseDown = ev.button === 1
+
+    lastX = ev.clientX
+    lastY = ev.clientY
+  }
+
+  const onMousemove = (ev: MouseEvent) => {
+    if (!middleMouseDown) return
+    setPan({ deltaX: lastX - ev.clientX, deltaY: lastY - ev.clientY })
+    lastX = ev.clientX
+    lastY = ev.clientY
+  }
+
+  const onMouseup = () => {
+    lastX = 0
+    lastY = 0
+    middleMouseDown = false
+  }
+
   onMounted(() => {
     if (!canvas.value) throw new Error("canvas not found in DOM");
     canvas.value.addEventListener("wheel", onWheel, { passive: false });
+    canvas.value.addEventListener("mousedown", onMousedown)
+    canvas.value.addEventListener("mousemove", onMousemove)
+    document.addEventListener('mouseup', onMouseup)
   });
 
   return {
@@ -67,6 +93,9 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
     }),
     cleanup: (ref: HTMLCanvasElement) => {
       ref.removeEventListener("wheel", onWheel);
+      ref.addEventListener("mousedown", onMousedown)
+      ref.addEventListener("mousemove", onMousemove)
+      document.addEventListener('mouseup', onMouseup)
     }
   };
 };
