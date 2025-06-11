@@ -1,7 +1,7 @@
 import { onMounted, ref, type Ref } from "vue";
 
 export const MIN_ZOOM = 0.2;
-export const MAX_ZOOM = 2;
+export const MAX_ZOOM = 10;
 
 export const ZOOM_SENSITIVITY = 0.02;
 export const PAN_SENSITIVITY = 1;
@@ -13,8 +13,10 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
 
   const setZoom = (ev: Pick<WheelEvent, 'clientX' | 'clientY' | 'deltaY'>) => {
     const { clientX: cx, clientY: cy } = ev
-    const zoomAmount = ev.deltaY * -ZOOM_SENSITIVITY;
-    const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom.value + zoomAmount));
+
+    const zoomFactor = Math.exp(-ev.deltaY * ZOOM_SENSITIVITY);
+    const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom.value * zoomFactor));
+
     const scale = newZoom / zoom.value;
 
     panX.value = Math.round(cx - (cx - panX.value) * scale);

@@ -1,55 +1,54 @@
 <script setup lang="ts">
-  import { ref, watch } from 'vue';
-  import { useLocalStorage } from '@vueuse/core';
-  import { useGraph } from '@graph/useGraph';
-  import { useBasicsTutorial } from '@graph/tutorials/useTutorial';
-  import TutorialControls from '@graph/tutorials/TutorialControls.vue';
-  import TutorialHint from '@graph/tutorials/TutorialHint.vue';
-  import { useGraphBtns } from '@graph/buttons/useGraphBtns';
-  import GraphBtns from '@graph/buttons/GraphBtns.vue';
-  import Graph from '@graph/MagicGraph.vue';
-  import ThemeControls from './ThemeControls.vue';
-  import type { GraphPlaygroundControls as Controls } from './types';
-  import GraphPlaygroundControls from './GraphPlaygroundControls.vue';
-  import { isFraction } from '@utils/fracDecConverter';
-  import SettingsControls from './SettingsControls.vue';
+  // import { ref, watch } from 'vue';
+  // import { useLocalStorage } from '@vueuse/core';
+  // import { useGraph } from '@graph/useGraph';
+  // import { useBasicsTutorial } from '@graph/tutorials/useTutorial';
+  // import TutorialControls from '@graph/tutorials/TutorialControls.vue';
+  // import TutorialHint from '@graph/tutorials/TutorialHint.vue';
+  // import { useGraphBtns } from '@graph/buttons/useGraphBtns';
+  // import GraphBtns from '@graph/buttons/GraphBtns.vue';
+  // import ThemeControls from './ThemeControls.vue';
+  // import type { GraphPlaygroundControls as Controls } from './types';
+  // import GraphPlaygroundControls from './GraphPlaygroundControls.vue';
+  // import { isFraction } from '@utils/fracDecConverter';
+  // import SettingsControls from './SettingsControls.vue';
 
-  const graphElement = ref<HTMLCanvasElement>();
+  // const graphElement = ref<HTMLCanvasElement>();
 
-  const graph = useGraph(graphElement, {
-    edgeInputToLabel: (str) => {
-      if (isFraction(str)) return str;
-      else if (!isNaN(Number(str))) return str;
-    },
-  });
+  // const graph = useGraph(graphElement, {
+  //   edgeInputToLabel: (str) => {
+  //     if (isFraction(str)) return str;
+  //     else if (!isNaN(Number(str))) return str;
+  //   },
+  // });
 
-  const tutorialControls = useBasicsTutorial(graph);
+  // const tutorialControls = useBasicsTutorial(graph);
 
-  const { btnArr } = useGraphBtns(graph);
+  // const { btnArr } = useGraphBtns(graph);
 
-  const controls = useLocalStorage<Controls>('graph-playground-controls', {
-    tutorial: true,
-    theme: true,
-    settings: true,
-    buttons: true,
-  });
+  // const controls = useLocalStorage<Controls>('graph-playground-controls', {
+  //   tutorial: true,
+  //   theme: true,
+  //   settings: true,
+  //   buttons: true,
+  // });
 
-  watch(
-    controls,
-    () => {
-      if (controls.value.tutorial) {
-        tutorialControls.start();
-      } else {
-        tutorialControls.stop();
-      }
-    },
-    { immediate: true, deep: true },
-  );
+  // watch(
+  //   controls,
+  //   () => {
+  //     if (controls.value.tutorial) {
+  //       tutorialControls.start();
+  //     } else {
+  //       tutorialControls.stop();
+  //     }
+  //   },
+  //   { immediate: true, deep: true },
+  // );
 </script>
 
 <template>
   <div class="relative w-full h-full">
-    <div class="w-full h-full absolute">
+    <!-- <div class="w-full h-full absolute">
       <Graph
         @graph-ref="(el) => (graphElement = el)"
         :graph="graph"
@@ -97,6 +96,6 @@
       class="absolute w-[150px] top-1/4 overflow-auto bg-gray-800 bg-opacity-80 rounded-r-xl"
     >
       <GraphPlaygroundControls :playground-controls="controls" />
-    </div>
+    </div> -->
   </div>
 </template>
