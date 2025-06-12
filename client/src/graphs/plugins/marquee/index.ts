@@ -48,10 +48,9 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     if (!topItem) engageMarqueeBox(coords);
   };
 
-  const groupDrag = ({ items, coords }: GraphMouseEvent) => {
+  const groupDrag = ({ coords }: GraphMouseEvent) => {
     if (!groupDragCoordinates.value) return;
-    const topItem = items.at(-1);
-    if (topItem?.graphType !== 'encapsulated-node-box') return;
+
     const dx = coords.x - groupDragCoordinates.value.x;
     const dy = coords.y - groupDragCoordinates.value.y;
     groupDragCoordinates.value = coords;
