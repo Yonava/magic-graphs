@@ -19,15 +19,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   const groupDragCoordinates = ref<Coordinate | undefined>();
 
   const { setTheme, removeTheme } = useTheme(graph, MARQUEE_CONSTANTS.THEME_ID);
-
-  const hideNodeAnchors = () => {
-    setTheme('nodeAnchorColor', colors.TRANSPARENT);
-    setTheme('nodeAnchorColorWhenParentFocused', colors.TRANSPARENT);
-  };
-  const showNodeAnchors = () => {
-    removeTheme('nodeAnchorColor');
-    removeTheme('nodeAnchorColorWhenParentFocused');
-  };
+  const { hold, release } = graph.pluginHoldController('marquee')
 
   const getSurfaceArea = (box: BoundingBox) => {
     const { width, height } = box;
@@ -44,7 +36,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   }: GraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
-    if (topItem?.graphType !== 'encapsulated-node-box') showNodeAnchors();
+    if (topItem?.graphType !== 'encapsulated-node-box') release('nodeAnchors')
     if (!topItem) engageMarqueeBox(coords);
   };
 
@@ -66,8 +58,10 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   const beginGroupDrag = ({ items, coords, event }: GraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     if (marqueeBox.value) return;
+
     const topItem = items.at(-1);
     if (topItem?.graphType !== 'encapsulated-node-box') return;
+
     groupDragCoordinates.value = coords;
     graph.emit('onGroupDragStart', graph.focus.focusedNodes.value, coords);
   };
@@ -83,7 +77,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   const engageMarqueeBox = (startingCoords: { x: number; y: number }) => {
-    hideNodeAnchors();
+    hold('nodeAnchors')
     graph.graphCursorDisabled.value = true;
     marqueeBox.value = {
       at: startingCoords,
@@ -98,7 +92,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const finalMarqueeBox = marqueeBox.value;
     marqueeBox.value = undefined;
     graph.graphCursorDisabled.value = false;
-    showNodeAnchors();
+    release('nodeAnchors')
     graph.emit('onMarqueeEndSelection', finalMarqueeBox);
   };
 
