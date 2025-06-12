@@ -36,8 +36,6 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     if (!node) throw new Error('node not found');
     if (graph.animationController.isAnimating(node.id)) return;
 
-    console.log('setting!')
-
     parentNode.value = node;
     updateNodeAnchors(node);
   };
@@ -291,12 +289,6 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     if (parentNode.value?.id === node.id) resetParentNode();
   };
 
-  const disallowNodesInFocusGroupFromBeingParents = () => {
-    const moreThanOneNodeFocused = graph.focus.focusedNodes.value.length > 1;
-    console.log(graph.focus.focusedNodes.value.length)
-    if (moreThanOneNodeFocused) resetParentNode();
-  };
-
   const activate = () => {
     graph.subscribe('onNodeRemoved', resetParentNodeIfRemoved);
     graph.subscribe('onNodeMoved', resetParentNode);
@@ -306,7 +298,6 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.subscribe('onMouseMove', updateHoveredNodeAnchorId);
     graph.subscribe('onMouseDown', setCurrentlyDraggingAnchor);
     graph.subscribe('onMouseUp', dropAnchor);
-    graph.subscribe('onFocusChange', disallowNodesInFocusGroupFromBeingParents);
   };
 
   const deactivate = () => {
@@ -318,10 +309,6 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.unsubscribe('onMouseMove', updateHoveredNodeAnchorId);
     graph.unsubscribe('onMouseDown', setCurrentlyDraggingAnchor);
     graph.unsubscribe('onMouseUp', dropAnchor);
-    graph.unsubscribe(
-      'onFocusChange',
-      disallowNodesInFocusGroupFromBeingParents,
-    );
     resetParentNode();
   };
 
