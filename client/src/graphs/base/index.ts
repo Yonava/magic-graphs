@@ -232,20 +232,6 @@ export const useBaseGraph = (
     }, new Map()),
   );
 
-  /**
-   * get a node by its coordinates
-   *
-   * @param x - the x coord
-   * @param y - the y coord
-   * @returns the node at given coords or undefined if not there or obscured by another schema item
-   */
-  const getNodeByCoordinates = (x: number, y: number) => {
-    const topItem = getSchemaItemsByCoordinates({ x, y }).pop();
-    if (!topItem) return;
-    if (topItem.graphType !== 'node') return;
-    return getNode(topItem.id);
-  };
-
   let currHoveredNode: GNode | undefined;
   subscribe('onMouseMove', ({ items }) => {
     const topItem = items.at(-1);
@@ -349,7 +335,6 @@ export const useBaseGraph = (
     bulkRemoveEdge,
 
     getSchemaItemsByCoordinates,
-    getNodeByCoordinates,
 
     /**
      * a mapping of all graph events to a set of their callback functions
