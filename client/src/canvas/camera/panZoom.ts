@@ -15,13 +15,13 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
     const { clientX: cx, clientY: cy } = ev
 
     const zoomFactor = Math.exp(-ev.deltaY * ZOOM_SENSITIVITY);
-    const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom.value * zoomFactor));
+    const clampedZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom.value * zoomFactor));
 
-    const scale = newZoom / zoom.value;
+    const scale = clampedZoom / zoom.value;
 
     panX.value = cx - (cx - panX.value) * scale;
     panY.value = cy - (cy - panY.value) * scale;
-    zoom.value = newZoom
+    zoom.value = clampedZoom
   }
 
   const setPan = (ev: Pick<WheelEvent, 'deltaX' | 'deltaY'>) => {
@@ -43,6 +43,7 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
 
   const onMousedown = (ev: MouseEvent) => {
     middleMouseDown = ev.button === 1
+    if (!middleMouseDown) return
 
     lastX = ev.clientX
     lastY = ev.clientY
@@ -50,7 +51,12 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
 
   const onMousemove = (ev: MouseEvent) => {
     if (!middleMouseDown) return
-    setPan({ deltaX: lastX - ev.clientX, deltaY: lastY - ev.clientY })
+
+    setPan({
+      deltaX: lastX - ev.clientX,
+      deltaY: lastY - ev.clientY
+    })
+
     lastX = ev.clientX
     lastY = ev.clientY
   }
