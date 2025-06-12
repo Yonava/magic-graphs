@@ -9,17 +9,21 @@ export type UseAggregatorOptions = {
 
 export const useAggregator = ({ emit }: UseAggregatorOptions) => {
   const aggregator = ref<Aggregator>([]);
-  const updateAggregator: UpdateAggregator[] = [];
+  const subscribeToAggregator: UpdateAggregator[] = [];
 
-  const draw = (ctx: CanvasRenderingContext2D) => {
-    const evaluateAggregator = updateAggregator.reduce<Aggregator>(
+  const updateAggregator = () => {
+    const resolvedSchemaItems = subscribeToAggregator.reduce<Aggregator>(
       (acc, fn) => fn(acc),
       [],
     );
 
     aggregator.value = [
-      ...evaluateAggregator.sort((a, b) => a.priority - b.priority),
+      ...resolvedSchemaItems.sort((a, b) => a.priority - b.priority),
     ];
+  }
+
+  const draw = (ctx: CanvasRenderingContext2D) => {
+    updateAggregator()
 
     const indexOfLastEdge = aggregator.value.findLastIndex(
       (item) => item.graphType === 'edge',
@@ -65,8 +69,11 @@ export const useAggregator = ({ emit }: UseAggregatorOptions) => {
 
   return {
     aggregator,
+    subscribeToAggregator,
     updateAggregator,
     getSchemaItemsByCoordinates,
     draw,
   };
 };
+
+export type AggregatorProps = ReturnType<typeof useAggregator>

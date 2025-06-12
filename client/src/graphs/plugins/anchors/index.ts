@@ -196,9 +196,10 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   /**
    * updates which node is the parent node based on the mouse event
    */
-  const checkForParentNodeUpdate = ({ items }: GraphMouseEvent) => {
+  const checkForParentNodeUpdate = () => {
     if (currentDraggingAnchor.value) return;
 
+    const { items } = graph.graphAtMousePosition.value
     const topItem = items.at(-1);
     if (!topItem) return resetParentNode();
     if (topItem.graphType === 'node-anchor') return
@@ -282,15 +283,12 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     return aggregator;
   };
 
-  graph.updateAggregator.push(insertAnchorsIntoAggregator);
-  graph.updateAggregator.push(insertLinkPreviewIntoAggregator);
-
-  const resetParentNodeIfRemoved = (node: GNode) => {
-    if (parentNode.value?.id === node.id) resetParentNode();
-  };
+  graph.subscribeToAggregator.push(insertAnchorsIntoAggregator);
+  graph.subscribeToAggregator.push(insertLinkPreviewIntoAggregator);
 
   const activate = () => {
-    graph.subscribe('onNodeRemoved', resetParentNodeIfRemoved);
+    graph.subscribe('onNodeAdded', checkForParentNodeUpdate)
+    graph.subscribe('onNodeRemoved', checkForParentNodeUpdate);
     graph.subscribe('onNodeMoved', resetParentNode);
     graph.subscribe('onNodeDrop', updateNodeAnchors);
     graph.subscribe('onMouseMove', checkForParentNodeUpdate);
@@ -301,7 +299,8 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onNodeRemoved', resetParentNodeIfRemoved);
+    graph.unsubscribe('onNodeAdded', checkForParentNodeUpdate)
+    graph.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
     graph.unsubscribe('onNodeMoved', resetParentNode);
     graph.unsubscribe('onNodeDrop', updateNodeAnchors);
     graph.unsubscribe('onMouseMove', checkForParentNodeUpdate);

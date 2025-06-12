@@ -26,6 +26,7 @@ import type { Emitter } from '@graph/events';
 import { nodeLetterLabelGetter } from '@graph/labels';
 import type { GraphSettings } from '@graph/settings';
 import type { GraphAnimationController } from '@graph/animationController';
+import type { AggregatorProps } from './useAggregator';
 
 type GraphCRUDOptions = {
   emit: Emitter;
@@ -35,6 +36,8 @@ type GraphCRUDOptions = {
   edgeMap: EdgeMap;
   settings: Ref<GraphSettings>;
   animationController: GraphAnimationController;
+  updateGraphAtMousePosition: () => void,
+  updateAggregator: AggregatorProps['updateAggregator']
 };
 
 export const useGraphCRUD = ({
@@ -45,6 +48,8 @@ export const useGraphCRUD = ({
   emit,
   settings,
   animationController,
+  updateGraphAtMousePosition,
+  updateAggregator,
 }: GraphCRUDOptions) => {
   // READ OPERATIONS
 
@@ -102,8 +107,13 @@ export const useGraphCRUD = ({
     if (fullOptions.animate) animationController.animateIn(newNode.id);
 
     nodes.value.push(newNode);
+
+    updateAggregator()
+    updateGraphAtMousePosition()
+
     emit('onNodeAdded', newNode, fullOptions);
     emit('onStructureChange');
+
     return newNode;
   };
 
@@ -178,6 +188,9 @@ export const useGraphCRUD = ({
     if (fullOptions.animate) animationController.animateIn(newEdge.id);
 
     edges.value.push(newEdge);
+
+    updateAggregator()
+    updateGraphAtMousePosition()
 
     emit('onEdgeAdded', newEdge, fullOptions);
     emit('onStructureChange');
@@ -302,6 +315,9 @@ export const useGraphCRUD = ({
 
     nodes.value = nodes.value.filter((n) => n.id !== removedNode.id);
 
+    updateAggregator()
+    updateGraphAtMousePosition()
+
     emit('onNodeRemoved', removedNode, removedEdges, fullOptions);
     emit('onStructureChange');
 
@@ -360,6 +376,10 @@ export const useGraphCRUD = ({
     if (fullOptions.animate) await animationController.animateOut(edge.id);
 
     edges.value = edges.value.filter((e) => e.id !== edge.id);
+
+    updateAggregator()
+    updateGraphAtMousePosition()
+
     emit('onEdgeRemoved', edge, fullOptions);
     emit('onStructureChange');
 

@@ -252,7 +252,7 @@ export const useAnnotations = (graph: BaseGraph) => {
     return aggregator;
   };
 
-  graph.updateAggregator.push(addScribblesToAggregator);
+  graph.subscribeToAggregator.push(addScribblesToAggregator);
 
   const activate = () => {
     const canvas = graph.magicCanvas.canvas.value

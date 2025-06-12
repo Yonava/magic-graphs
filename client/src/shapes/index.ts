@@ -57,3 +57,5 @@ export const useOptimizedShapes = () => {
     image: toOptimized(image),
   } satisfies Record<keyof typeof shapes, ReturnType<typeof toOptimized<any>>>
 }
+
+export type OptimizedShapes = ReturnType<typeof useOptimizedShapes>

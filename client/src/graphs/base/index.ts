@@ -1,6 +1,6 @@
 import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue';
 import { onClickOutside, useElementHover } from '@vueuse/core';
-import type { GNode, GEdge, SchemaItem, Aggregator } from '@graph/types';
+import type { GNode, GEdge, Aggregator } from '@graph/types';
 import { prioritizeNode } from '@graph/helpers';
 import { getNodeSchematic } from '@graph/schematics/node';
 import { getEdgeSchematic } from '@graph/schematics/edge';
@@ -118,11 +118,12 @@ export const useBaseGraph = (
 
   const keyboardEvents: Partial<KeyboardEventMap> = {
     keydown: (ev: KeyboardEvent) => emit('onKeyDown', ev),
-    keyup: (ev: KeyboardEvent) => emit('onKeyUp', ev),
+    keyup: (ev: KeyboardEvent) => emit('onKeyUp', ev)
   };
 
   const {
     aggregator,
+    subscribeToAggregator,
     updateAggregator,
     getSchemaItemsByCoordinates,
     draw,
@@ -145,12 +146,12 @@ export const useBaseGraph = (
     const edgeSchemaItems = edges.value
       .map((edge) => getEdgeSchematic(edge, options))
       .filter(Boolean)
-      .map((item, i) => ({ ...item, priority: i * 10 })) as SchemaItem[];
+      .map((item, i) => ({ ...item!, priority: i * 10 }))
 
     const nodeSchemaItems = nodes.value
       .map((node) => getNodeSchematic(node, options))
       .filter(Boolean)
-      .map((item, i) => ({ ...item, priority: i * 10 + 1000 })) as SchemaItem[];
+      .map((item, i) => ({ ...item!, priority: i * 10 + 1000 }))
 
     aggregator.push(...edgeSchemaItems);
     aggregator.push(...nodeSchemaItems);
@@ -158,7 +159,7 @@ export const useBaseGraph = (
     return aggregator;
   };
 
-  updateAggregator.push(addNodesAndEdgesToAggregator);
+  subscribeToAggregator.push(addNodesAndEdgesToAggregator);
 
   onMounted(() => {
     if (!canvas.value) {
@@ -218,6 +219,8 @@ export const useBaseGraph = (
     emit,
     settings,
     animationController,
+    updateGraphAtMousePosition,
+    updateAggregator,
   });
 
   const nodeIdToIndex = computed(() =>
@@ -266,7 +269,7 @@ export const useBaseGraph = (
     return aggregator;
   };
 
-  updateAggregator.push(liftHoveredNodeToTop);
+  subscribeToAggregator.push(liftHoveredNodeToTop);
 
   /**
    * load a graph state into the graph
@@ -361,8 +364,9 @@ export const useBaseGraph = (
     unsubscribe,
     emit,
 
-    updateAggregator,
+    subscribeToAggregator,
     aggregator,
+    updateAggregator,
 
     animationController,
     pluginHoldController,
