@@ -26,11 +26,17 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
   const drop = () => {
     if (!currentlyDraggingNode.value) return;
 
-    graph.emit('onNodeDrop', currentlyDraggingNode.value.node);
+    const { node: droppedNode } = currentlyDraggingNode.value
+    currentlyDraggingNode.value = undefined;
+
+    graph.emit('onNodeDrop', droppedNode);
     release('nodeAnchors');
 
-    graph.nodeAnchors.setParentNode(currentlyDraggingNode.value.node.id);
-    currentlyDraggingNode.value = undefined;
+    const { items } = graph.graphAtMousePosition.value
+    const topItem = items.at(-1);
+    if (topItem?.id !== droppedNode.id) return
+
+    graph.nodeAnchors.setParentNode(droppedNode.id);
   };
 
   const drag = ({ coords: evCoords }: GraphMouseEvent) => {
