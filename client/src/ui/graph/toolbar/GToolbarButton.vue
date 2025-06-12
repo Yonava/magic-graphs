@@ -5,6 +5,7 @@
   import { nonNullGraph as graph } from '@graph/global';
 
   const colors = useNonNullGraphColors();
+  const color = computed(() => colors.value.primary);
 
   // special case!
   const activeColor = computed(() => {
@@ -18,7 +19,7 @@
 <template>
   <CToolbarButton
     v-bind="$props"
-    :color="colors.primary"
+    :color="color"
     :active-color="activeColor"
   >
     <slot></slot>

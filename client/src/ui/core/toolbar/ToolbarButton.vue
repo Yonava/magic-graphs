@@ -14,6 +14,7 @@
     }>(),
     {
       color: colors.GRAY_800,
+      activeColor: colors.GRAY_900,
       active: false,
       disabled: false,
       icon: '',
@@ -21,15 +22,15 @@
   );
 
   const colorRef = toRef(props, 'color');
-  const color = useTinycolor(colorRef);
+  const tinyColor = useTinycolor(colorRef);
 
   const hoverColor = computed(() => {
-    return color.value.darken(5).toHexString();
+    return tinyColor.value.darken(5).toHexString();
   });
 
   const activeColor = computed(() => {
     if (props.activeColor) return props.activeColor;
-    return color.value.darken(10).toHexString();
+    return tinyColor.value.darken(10).toHexString();
   });
 
   const bgColor = computed(() => {
@@ -40,7 +41,7 @@
   });
 
   const textColor = computed(() => {
-    const standardTextColor = color.value.isDark()
+    const standardTextColor = tinyColor.value.isDark()
       ? colors.WHITE
       : colors.BLACK;
     if (props.disabled) return standardTextColor + '80';
@@ -62,7 +63,6 @@
     'place-items-center',
     'w-10',
     'h-10',
-    'outline-none',
   ];
 
   const hovered = ref(false);

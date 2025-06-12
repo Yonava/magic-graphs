@@ -81,19 +81,22 @@
 </script>
 
 <template>
-  <MagicCanvas v-bind="{ ...props.canvas.ref, ...props.css.value }" />
-
   <div :class="[pointerEvents]">
+    <div :class="['absolute', 'top-6', 'left-6']">
+      <ProductDropdown />
+    </div>
+
     <div
       :class="[
         'absolute',
-        'top-6',
-        'w-full',
         'flex',
         'flex-col',
         'justify-center',
         'items-center',
         'gap-2',
+        'left-1/2',
+        '-translate-x-1/2',
+        'translate-y-6',
       ]"
     >
       <template v-if="runningSimulation">
@@ -103,58 +106,6 @@
       <template v-else>
         <slot name="top-center"></slot>
       </template>
-    </div>
-
-    <div
-      :class="[
-        'absolute',
-        'grid',
-        'place-items-center',
-        'left-4',
-        'top-0',
-        'h-full',
-        'max-w-96',
-      ]"
-    >
-      <div
-        class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
-      >
-        <template v-if="runningSimulation">
-          <slot name="center-left-sim"></slot>
-        </template>
-
-        <template v-else>
-          <slot name="center-left"></slot>
-        </template>
-      </div>
-    </div>
-
-    <div
-      :class="[
-        'absolute',
-        'grid',
-        'place-items-center',
-        'right-4',
-        'top-0',
-        'h-full',
-        'max-w-96',
-      ]"
-    >
-      <div
-        class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
-      >
-        <template v-if="runningSimulation">
-          <slot name="center-right-sim"></slot>
-        </template>
-
-        <template v-else>
-          <slot name="center-right"></slot>
-        </template>
-      </div>
-    </div>
-
-    <div :class="['absolute', 'top-6', 'left-6']">
-      <ProductDropdown />
     </div>
 
     <div :class="['absolute', 'top-6', 'right-6']">
@@ -177,15 +128,57 @@
     <div
       :class="[
         'absolute',
-        'bottom-8',
-        'gap-4',
-        'w-full',
-        'flex',
-        'flex-col',
-        'justify-center',
-        'items-center',
+        'grid',
+        'place-items-center',
+        'left-6',
+        'max-w-96',
+        '-translate-y-1/2',
+        'top-1/2',
       ]"
     >
+      <div
+        class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
+      >
+        <template v-if="runningSimulation">
+          <slot name="center-left-sim"></slot>
+        </template>
+
+        <template v-else>
+          <slot name="center-left"></slot>
+        </template>
+      </div>
+    </div>
+
+    <div
+      :class="[
+        'absolute',
+        'grid',
+        'place-items-center',
+        'right-6',
+        'max-w-96',
+        '-translate-y-1/2',
+        'top-1/2',
+      ]"
+    >
+      <div
+        class="relative max-h-3/4 w-full grid place-items-center overflow-auto"
+      >
+        <template v-if="runningSimulation">
+          <slot name="center-right-sim"></slot>
+        </template>
+
+        <template v-else>
+          <slot name="center-right"></slot>
+        </template>
+      </div>
+    </div>
+
+    <div :class="['absolute', 'flex', 'gap-2', 'bottom-6', 'left-6']">
+      <HelpMenu />
+      <ZoomButtons :camera="canvas.camera" />
+    </div>
+
+    <div :class="['absolute', 'bottom-6', '-translate-x-1/2', 'left-1/2']">
       <template v-if="runningSimulation && isActive">
         <slot name="bottom-center-sim">
           <SimulationPlaybackControls :controls="simRunner.simControls" />
@@ -201,13 +194,8 @@
       </template>
     </div>
 
-    <div :class="['absolute', 'flex', 'gap-2', 'bottom-8', 'left-8']">
-      <HelpMenu />
-      <ZoomButtons :camera="canvas.camera" />
-    </div>
-
     <div
-      :class="['absolute', 'flex', 'flex-col', 'gap-2', 'bottom-8', 'right-8']"
+      :class="['absolute', 'flex', 'flex-col', 'gap-2', 'bottom-6', 'right-6']"
     >
       <BenchmarkingMetrics v-if="inDevMode" />
       <div :class="['flex', 'gap-2']">
@@ -216,4 +204,6 @@
       </div>
     </div>
   </div>
+
+  <MagicCanvas v-bind="{ ...props.canvas.ref, ...props.css.value }" />
 </template>

@@ -2,7 +2,7 @@ import { computed, ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import type { SchemaItem } from '@graph/types';
 import type { Subscriber } from '@graph/events';
-import type { GraphAtMousePosition, GraphMouseEvent } from './types';
+import type { GraphAtMousePosition } from './types';
 
 /**
  * cursor types supported by the browser
@@ -101,33 +101,29 @@ export const useGraphCursor = ({
     return cursor;
   };
 
-  const changeCursorType = ({ items }: Pick<GraphMouseEvent, 'items'>) => {
+  const changeCursorType = () => {
     if (!canvas.value || graphCursorDisabled.value) return;
-    const topItem = items.at(-1);
+    const topItem = graphAtMousePosition.value.items.at(-1);
     canvas.value.style.cursor = getCursorType(topItem);
   };
 
-  subscribe('onMouseDown', (ev) => {
+  subscribe('onMouseDown', () => {
     isMouseDown.value = true;
-    changeCursorType(ev);
+    changeCursorType();
   });
 
-  subscribe('onMouseUp', (ev) => {
+  subscribe('onMouseUp', () => {
     isMouseDown.value = false;
-    changeCursorType(ev);
+    changeCursorType();
   });
 
+  subscribe('onClick', changeCursorType)
+  subscribe('onDblClick', changeCursorType)
+  subscribe('onKeyUp', changeCursorType)
+  subscribe('onKeyDown', changeCursorType)
   subscribe('onMouseMove', changeCursorType);
 
-  watch(
-    graphToCursorMap,
-    () => {
-      changeCursorType({
-        items: graphAtMousePosition.value.items,
-      });
-    },
-    { deep: true },
-  );
+  watch(graphToCursorMap, changeCursorType, { deep: true });
 
   return {
     /**

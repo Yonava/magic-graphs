@@ -30,9 +30,12 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
 
   const setParentNode = (nodeId: GNode['id']) => {
     if (graph.settings.value.nodeAnchors === false) return;
+
     const node = graph.getNode(nodeId);
+
     if (!node) throw new Error('node not found');
     if (graph.animationController.isAnimating(node.id)) return;
+
     parentNode.value = node;
     updateNodeAnchors(node);
   };
@@ -193,31 +196,22 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   /**
    * updates which node is the parent node based on the mouse event
    */
-  const updateParentNode = ({ items }: GraphMouseEvent) => {
+  const checkForParentNodeUpdate = () => {
     if (currentDraggingAnchor.value) return;
 
+    const { items } = graph.graphAtMousePosition.value
     const topItem = items.at(-1);
     if (!topItem) return resetParentNode();
-    if (topItem.graphType !== 'node') return;
+    if (topItem.graphType === 'node-anchor') return
+    if (topItem.graphType !== 'node') return resetParentNode()
 
-    /**
-     * TODO try making this simpler by making a rule that if there is more than 1
-     * focused node, the parent node should be reset. I dont think
-     * all this other logic-ing is necessary
-     */
+    const newParentNode = graph.getNode(topItem.id);
+    if (!newParentNode) {
+      throw new Error('anchors: node shown on screen not in graph state');
+    }
 
-    const perspectiveNode = graph.getNode(topItem.id);
-    if (!perspectiveNode)
-      throw new Error('node in aggregator but not in graph');
-
-    const perspectiveNodeFocused = graph.focus.isFocused(perspectiveNode.id);
-    const moreThanOneNodeFocused = graph.focus.focusedNodes.value.length > 1;
-
-    if (perspectiveNodeFocused && moreThanOneNodeFocused)
-      return resetParentNode();
-
-    setParentNode(perspectiveNode.id);
-    updateNodeAnchors(perspectiveNode);
+    if (newParentNode.id === parentNode.value?.id) return
+    setParentNode(newParentNode.id);
   };
 
   const setCurrentlyDraggingAnchor = (ev: GraphMouseEvent) => {
@@ -289,45 +283,31 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     return aggregator;
   };
 
-  graph.updateAggregator.push(insertAnchorsIntoAggregator);
-  graph.updateAggregator.push(insertLinkPreviewIntoAggregator);
-
-  const resetParentNodeIfRemoved = (node: GNode) => {
-    if (parentNode.value?.id === node.id) resetParentNode();
-  };
-
-  const disallowNodesInFocusGroupFromBeingParents = () => {
-    if (!parentNode.value) return;
-    const parentFocused = graph.focus.isFocused(parentNode.value.id);
-    const moreThanOneNodeFocused = graph.focus.focusedNodes.value.length > 1;
-    if (parentFocused && moreThanOneNodeFocused) resetParentNode();
-  };
+  graph.subscribeToAggregator.push(insertAnchorsIntoAggregator);
+  graph.subscribeToAggregator.push(insertLinkPreviewIntoAggregator);
 
   const activate = () => {
-    graph.subscribe('onNodeRemoved', resetParentNodeIfRemoved);
+    graph.subscribe('onNodeAdded', checkForParentNodeUpdate)
+    graph.subscribe('onNodeRemoved', checkForParentNodeUpdate);
     graph.subscribe('onNodeMoved', resetParentNode);
     graph.subscribe('onNodeDrop', updateNodeAnchors);
-    graph.subscribe('onMouseMove', updateParentNode);
+    graph.subscribe('onMouseMove', checkForParentNodeUpdate);
     graph.subscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
     graph.subscribe('onMouseMove', updateHoveredNodeAnchorId);
     graph.subscribe('onMouseDown', setCurrentlyDraggingAnchor);
     graph.subscribe('onMouseUp', dropAnchor);
-    graph.subscribe('onFocusChange', disallowNodesInFocusGroupFromBeingParents);
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onNodeRemoved', resetParentNodeIfRemoved);
+    graph.unsubscribe('onNodeAdded', checkForParentNodeUpdate)
+    graph.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
     graph.unsubscribe('onNodeMoved', resetParentNode);
     graph.unsubscribe('onNodeDrop', updateNodeAnchors);
-    graph.unsubscribe('onMouseMove', updateParentNode);
+    graph.unsubscribe('onMouseMove', checkForParentNodeUpdate);
     graph.unsubscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
     graph.unsubscribe('onMouseMove', updateHoveredNodeAnchorId);
     graph.unsubscribe('onMouseDown', setCurrentlyDraggingAnchor);
     graph.unsubscribe('onMouseUp', dropAnchor);
-    graph.unsubscribe(
-      'onFocusChange',
-      disallowNodesInFocusGroupFromBeingParents,
-    );
     resetParentNode();
   };
 

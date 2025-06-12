@@ -198,8 +198,8 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     return aggregator;
   };
 
-  graph.updateAggregator.push(addEncapsulatedNodeBoxToAggregator);
-  graph.updateAggregator.push(addMarqueeBoxToAggregator);
+  graph.subscribeToAggregator.push(addEncapsulatedNodeBoxToAggregator);
+  graph.subscribeToAggregator.push(addMarqueeBoxToAggregator);
 
   const activate = () => {
     graph.subscribe('onFocusChange', updateEncapsulatedNodeBox);

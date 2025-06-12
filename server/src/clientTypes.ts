@@ -1567,8 +1567,6 @@ export type GEdge = {
 
 export type Aggregator = SchemaItem[]
 
-export type UpdateAggregator = (aggregator: Aggregator) => Aggregator
-
 export type EdgeGetterOrValue<T> = MaybeGetter<T, [GEdge]>
 
 type MarqueeGraphTypes = 'marquee-box' | 'encapsulated-node-box'
@@ -1666,22 +1664,22 @@ export type BasicSearchSimulationRunner = SimulationRunner<BasicSearchTrace>;
 export type DijkstrasResult = number[];
 
 export type DijkstrasMatrixTrace = {
-  queue: {node: number, distance: number}[];
+  queue: { node: number, distance: number }[];
   currentNode?: number;
   distances: number[];
 }[];
 
 class PriorityQueue {
-  private heap: {node: number, distance: number}[] = [];
+  private heap: { node: number, distance: number }[] = [];
 
-  constructor() {}
+  constructor() { }
 
   enqueue(node: number, distance: number) {
     this.heap.push({ node, distance });
     this.bubbleUp(this.heap.length - 1);
   }
 
-  dequeue(): {node: number, distance: number} | undefined {
+  dequeue(): { node: number, distance: number } | undefined {
     if (this.heap.length === 0) return undefined;
 
     const min = this.heap[0];
@@ -1748,11 +1746,11 @@ class PriorityQueue {
     return this.heap.length === 0;
   }
 
-  peek(): {node: number, distance: number} | undefined {
+  peek(): { node: number, distance: number } | undefined {
     return this.heap[0];
   }
 
-  getHeap(): Array<{node: number, distance: number}> {
+  getHeap(): Array<{ node: number, distance: number }> {
     return [...this.heap];
   }
 }
@@ -2352,15 +2350,15 @@ export type Text = {
 export type Stroke = {
   color: string,
   width: number,
-    /**
-   * For dashed border
-   *
-   * @params
-   *
-   * dash: [dashLength, gapLength]
-   *
-  */
-    dash?: [number, number]
+  /**
+ * For dashed border
+ *
+ * @params
+ *
+ * dash: [dashLength, gapLength]
+ *
+*/
+  dash?: [number, number]
 }
 
 export type UTurn = {

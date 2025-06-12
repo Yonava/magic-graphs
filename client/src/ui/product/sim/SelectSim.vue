@@ -27,9 +27,10 @@
 
 <template>
   <CPopover>
-    <template #activator="{ toggle }">
+    <template #activator="{ toggle, isOpen }">
       <GButton
         @click="toggle"
+        :tertiary="isOpen"
         :disabled="disabled"
         class="h-14 w-14 rounded-full"
       >
