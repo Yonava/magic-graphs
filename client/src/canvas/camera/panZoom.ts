@@ -95,9 +95,9 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
     }),
     cleanup: (ref: HTMLCanvasElement) => {
       ref.removeEventListener("wheel", onWheel);
-      ref.addEventListener("mousedown", onMousedown)
-      ref.addEventListener("mousemove", onMousemove)
-      document.addEventListener('mouseup', onMouseup)
+      ref.removeEventListener("mousedown", onMousedown)
+      ref.removeEventListener("mousemove", onMousemove)
+      document.removeEventListener('mouseup', onMouseup)
     }
   };
 };
