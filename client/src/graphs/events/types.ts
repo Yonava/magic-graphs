@@ -1,5 +1,5 @@
 import type { DeepPartial, DeepReadonly } from 'ts-essentials';
-import type { GEdge, GNode } from '@graph/types';
+import type { GEdge, GNode, Graph } from '@graph/types';
 import type { GraphSettings } from '@graph/settings';
 import type {
   AddNodeOptions,
@@ -29,6 +29,7 @@ export type BaseGraphEventMap = {
    * - an edge label is {@link Graph.editEdgeLabel | edited}
    * - the {@link Graph.load | graph load} api is invoked with new nodes and edges
    * - the {@link Graph.reset | graph reset} api is invoked clearing all nodes and edges
+   * - the `isGraphDirected` {@link Graph.settings | graph setting} is toggled
    */
   onStructureChange: () => void;
   /**
