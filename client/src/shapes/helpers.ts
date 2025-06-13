@@ -246,7 +246,7 @@ export const normalizeBoundingBox = (bb: BoundingBox): BoundingBox => ({
   height: Math.abs(bb.height),
 });
 
-export const normalizeBorderRadius = (
+export const toBorderRadiusArray = (
   borderRadius: BorderRadius['borderRadius'],
 ): BorderRadiusArrayValue => {
   if (!borderRadius) {
