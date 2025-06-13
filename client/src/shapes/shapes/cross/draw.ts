@@ -1,3 +1,4 @@
+import { normalizeBorderRadius } from '@shape/helpers';
 import { CROSS_SCHEMA_DEFAULTS } from '.';
 import type { CrossSchema } from '.';
 import { drawRectWithCtx } from '@shape/shapes/rect/draw';
@@ -17,6 +18,9 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
 
   const halfLineWidth = lineWidth / 2;
 
+  const [topLeft, topRight, bottomLeft, bottomRight] =
+    normalizeBorderRadius(borderRadius);
+
   return (ctx: CanvasRenderingContext2D) => {
     // vertical top
     drawRectWithCtx({
@@ -24,16 +28,7 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
       width: lineWidth,
       height: size / 2 - halfLineWidth,
       fillColor: color,
-      borderRadius,
-      rotation,
-    })(ctx);
-    // vertical bottom
-    drawRectWithCtx({
-      at: { x: crossAt.x - halfLineWidth, y: crossAt.y + halfLineWidth },
-      width: lineWidth,
-      height: size / 2 - halfLineWidth,
-      fillColor: color,
-      borderRadius,
+      borderRadius: [topLeft, topLeft, 0, 0],
       rotation,
     })(ctx);
     // horizontal
@@ -42,7 +37,16 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
       width: size,
       height: lineWidth,
       fillColor: color,
-      borderRadius,
+      borderRadius: [bottomLeft, bottomLeft, topRight, topRight],
+      rotation,
+    })(ctx);
+    // vertical bottom
+    drawRectWithCtx({
+      at: { x: crossAt.x - halfLineWidth, y: crossAt.y + halfLineWidth },
+      width: lineWidth,
+      height: size / 2 - halfLineWidth,
+      fillColor: color,
+      borderRadius: [0, 0, bottomRight, bottomRight],
       rotation,
     })(ctx);
   };
