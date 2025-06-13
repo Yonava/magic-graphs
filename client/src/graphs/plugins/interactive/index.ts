@@ -1,7 +1,6 @@
 import type { GNode } from '@graph/types';
 import type { BaseGraph } from '@graph/base';
 import type { GraphMouseEvent } from '@graph/base/types';
-import type { NodeAnchor } from '@graph/plugins/anchors/types';
 
 /**
  * interactive allows users to create, edit and delete nodes and edges
@@ -10,15 +9,14 @@ export const useInteractive = (graph: BaseGraph) => {
 
   let lastClickTime = 0;
 
-  const handleNodeCreation = ({ coords }: GraphMouseEvent) => {
+  const handleNodeCreation = ({ coords, items }: GraphMouseEvent) => {
     const ABOUT_A_FEW_HUNDRED_MS = 350
     const timeDiff = Date.now() - lastClickTime
     const closeEnoughInTime = timeDiff < ABOUT_A_FEW_HUNDRED_MS
     if (!closeEnoughInTime) return lastClickTime = Date.now()
     lastClickTime = 0
 
-    const itemStack = graph.getSchemaItemsByCoordinates(coords);
-    if (itemStack.at(-1)?.graphType === 'node') return;
+    if (items.at(-1)?.graphType === 'node') return;
 
     graph.addNode(coords);
   };
@@ -45,13 +43,13 @@ export const useInteractive = (graph: BaseGraph) => {
     return true;
   };
 
-  const handleEdgeCreation = (fromNode: GNode, anchor: NodeAnchor) => {
-    const itemStack = graph.getSchemaItemsByCoordinates(anchor);
-    const toNodeSchema = itemStack.findLast(
-      (item) => item.graphType === 'node',
-    );
-    if (!toNodeSchema) return;
-    const toNode = graph.getNode(toNodeSchema.id);
+  const handleEdgeCreation = (fromNode: GNode) => {
+    const { items } = graph.graphAtMousePosition.value
+
+    const nodeUnderneathAnchor = items.findLast((i) => i.graphType === 'node');
+    if (!nodeUnderneathAnchor) return;
+
+    const toNode = graph.getNode(nodeUnderneathAnchor.id);
     if (!toNode) return;
 
     const canCreateEdge = doesEdgeConformToRules(fromNode, toNode);
