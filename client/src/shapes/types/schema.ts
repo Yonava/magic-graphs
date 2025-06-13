@@ -47,7 +47,7 @@ export type Rotation = {
   rotation?: number;
 };
 
-type BorderRadiusArrayValue = [
+export type BorderRadiusArrayValue = [
   topLeft: number,
   topRight: number,
   bottomRight: number,

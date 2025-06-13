@@ -1,4 +1,4 @@
-import { normalizeBoundingBox } from '@shape/helpers';
+import { toBorderRadiusArray, normalizeBoundingBox } from '@shape/helpers';
 import { RECT_SCHEMA_DEFAULTS } from '.';
 import type { RectSchema } from '.';
 
@@ -23,9 +23,7 @@ export const drawRectWithCtx =
     ctx.rotate(rotation);
 
     const [topLeft, topRight, bottomRight, bottomLeft] =
-      typeof borderRadius === 'number'
-        ? [borderRadius, borderRadius, borderRadius, borderRadius]
-        : borderRadius;
+      toBorderRadiusArray(borderRadius);
 
     if (
       topLeft === 0 &&

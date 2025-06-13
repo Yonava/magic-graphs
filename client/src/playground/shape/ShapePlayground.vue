@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import colors from '@colors';
-  import { square } from '@shapes';
+  import { cross } from '@shapes';
   import type { Shape } from '@shape/types';
   import ShapePlaygroundToolbar from './ShapePlaygroundToolbar.vue';
   import MagicCanvas from '@canvas/MagicCanvas.vue';
@@ -10,17 +10,17 @@
   const shapes = ref<Shape[]>([]);
 
   shapes.value.push(
-    square({
+    cross({
       at: {
         x: 300,
         y: 300,
       },
-      size: -200,
+      size: 200,
+      lineWidth: 50,
       fillColor: colors.RED_500,
-      borderRadius: 20,
+      borderRadius: [0, 10, 20, 5],
     }),
   );
-
 
   const magic = useMagicCanvas({
     draw: (ctx) => shapes.value.forEach((item) => item.draw(ctx)),
