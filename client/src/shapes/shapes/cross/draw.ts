@@ -15,39 +15,43 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
     ...CROSS_SCHEMA_DEFAULTS,
     ...options,
   };
-
   const halfLineWidth = lineWidth / 2;
-
   const [topLeft, topRight, bottomLeft, bottomRight] =
     normalizeBorderRadius(borderRadius);
 
   return (ctx: CanvasRenderingContext2D) => {
+    ctx.save();
+
+    ctx.translate(crossAt.x, crossAt.y);
+    ctx.rotate(rotation);
+
     // vertical top
     drawRectWithCtx({
-      at: { x: crossAt.x - halfLineWidth, y: crossAt.y - size / 2 },
+      at: { x: -halfLineWidth, y: -size / 2 },
       width: lineWidth,
       height: size / 2 - halfLineWidth,
       fillColor: color,
       borderRadius: [topLeft, topLeft, 0, 0],
-      rotation,
     })(ctx);
+
     // horizontal
     drawRectWithCtx({
-      at: { x: crossAt.x - size / 2, y: crossAt.y - halfLineWidth },
+      at: { x: -size / 2, y: -halfLineWidth },
       width: size,
       height: lineWidth,
       fillColor: color,
-      borderRadius: [bottomLeft, bottomLeft, topRight, topRight],
-      rotation,
+      borderRadius: [bottomRight, topRight, topRight, bottomRight],
     })(ctx);
+
     // vertical bottom
     drawRectWithCtx({
-      at: { x: crossAt.x - halfLineWidth, y: crossAt.y + halfLineWidth },
+      at: { x: -halfLineWidth, y: halfLineWidth },
       width: lineWidth,
       height: size / 2 - halfLineWidth,
       fillColor: color,
-      borderRadius: [0, 0, bottomRight, bottomRight],
-      rotation,
+      borderRadius: [0, 0, bottomLeft, bottomLeft],
     })(ctx);
+
+    ctx.restore();
   };
 };
