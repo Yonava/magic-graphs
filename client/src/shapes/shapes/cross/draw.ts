@@ -1,4 +1,4 @@
-import { normalizeBorderRadius } from '@shape/helpers';
+import { toBorderRadiusArray } from '@shape/helpers';
 import { CROSS_SCHEMA_DEFAULTS } from '.';
 import type { CrossSchema } from '.';
 import { drawRectWithCtx } from '@shape/shapes/rect/draw';
@@ -17,7 +17,7 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
   };
   const halfLineWidth = lineWidth / 2;
   const [topLeft, topRight, bottomLeft, bottomRight] =
-    normalizeBorderRadius(borderRadius);
+    toBorderRadiusArray(borderRadius);
 
   return (ctx: CanvasRenderingContext2D) => {
     ctx.save();

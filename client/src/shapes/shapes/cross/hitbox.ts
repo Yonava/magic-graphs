@@ -1,4 +1,4 @@
-import { normalizeBorderRadius, normalizeBoundingBox } from '@shape/helpers';
+import { toBorderRadiusArray, normalizeBoundingBox } from '@shape/helpers';
 import { CROSS_SCHEMA_DEFAULTS } from '.';
 import type { CrossSchema } from '.';
 import { rectHitbox, rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
@@ -16,7 +16,7 @@ export const crossHitbox = (cross: CrossSchema) => {
   const halfLineWidth = lineWidth / 2;
 
   const [topLeft, topRight, bottomLeft, bottomRight] =
-    normalizeBorderRadius(borderRadius);
+    toBorderRadiusArray(borderRadius);
 
   const horizontalHitbox = rectHitbox({
     ...rest,
