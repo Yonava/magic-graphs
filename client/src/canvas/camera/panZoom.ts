@@ -1,4 +1,5 @@
-import { onMounted, ref, type Ref } from "vue";
+import { useLocalStorage } from "@vueuse/core";
+import { onMounted, type Ref } from "vue";
 
 export const MIN_ZOOM = 0.2;
 export const MAX_ZOOM = 10;
@@ -6,10 +7,10 @@ export const MAX_ZOOM = 10;
 export const ZOOM_SENSITIVITY = 0.02;
 export const PAN_SENSITIVITY = 1;
 
-export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
-  const panX = ref(0)
-  const panY = ref(0)
-  const zoom = ref(1)
+export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>, canvasId: string) => {
+  const panX = useLocalStorage('camera-pan-x-' + canvasId, 0)
+  const panY = useLocalStorage('camera-pan-y-' + canvasId, 0)
+  const zoom = useLocalStorage('camera-zoom-' + canvasId, 1)
 
   const setZoom = (ev: Pick<WheelEvent, 'clientX' | 'clientY' | 'deltaY'>) => {
     const { clientX: cx, clientY: cy } = ev
