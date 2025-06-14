@@ -86,11 +86,12 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
 
       const nodeAnchorShape = graph.shapes.circle(nodeAnchorSchema);
 
+      const beingDragged = anchor.id === currentDraggingAnchor.value?.id
       anchorSchemas.push({
         id: anchor.id,
         graphType: "node-anchor",
         shape: nodeAnchorShape,
-        priority: Infinity,
+        priority: beingDragged ? Infinity : 99_999,
       });
     }
 
