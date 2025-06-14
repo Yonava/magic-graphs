@@ -3,6 +3,7 @@
   import MagicCanvas from '../MagicCanvas.vue';
   import { circle } from '@shapes';
   import { useMagicCanvas } from '..';
+  import CameraDebugInfo from '@canvas/docs/CanvasDebugInfo.vue';
 
   const dots: Shape[] = [];
 
@@ -15,6 +16,9 @@
 </script>
 
 <template>
+  <div class="absolute top-6 left-6">
+    <CameraDebugInfo :canvas="magic" />
+  </div>
   <MagicCanvas
     @dblclick="addDot"
     v-bind="magic.ref"
