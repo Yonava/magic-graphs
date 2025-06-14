@@ -6,9 +6,8 @@
 
   const dots: Shape[] = [];
 
-  const magic = useMagicCanvas({
-    draw: (ctx) => dots.forEach((dot) => dot.draw(ctx)),
-  });
+  const magic = useMagicCanvas();
+  magic.draw.content.value = (ctx) => dots.forEach((dot) => dot.draw(ctx));
 
   const addDot = () => {
     dots.push(circle({ radius: 20, at: magic.cursorCoordinates.value }));

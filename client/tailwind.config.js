@@ -8,8 +8,8 @@ export default {
   safelist: [
     'bg-magic',
     'text-magic',
-    'bg-girl-magic',
-    'text-girl-magic',
+    'bg-pink-magic',
+    'text-pink-magic',
   ],
   plugins: [
     primeui,
@@ -30,16 +30,16 @@ export default {
             {},
         },
         /**
-         * our branded background color (for girls)
+         * our branded background color (for pink theme)
          */
-        ".bg-girl-magic": {
+        ".bg-pink-magic": {
           "@apply bg-gradient-to-tr from-purple-300 to-pink-100":
             {},
         },
         /**
-         * our branded text color (for girls)
+         * our branded text color (for pink theme)
          */
-        ".text-girl-magic": {
+        ".text-pink-magic": {
           "@apply bg-gradient-to-tr from-purple-300 to-pink-100 text-transparent bg-clip-text":
             {},
         },

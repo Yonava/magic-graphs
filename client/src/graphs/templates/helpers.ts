@@ -1,27 +1,18 @@
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import { getCtx } from '@utils/ctx';
 import { average } from '@utils/math';
-import { getCanvasCoords } from '@utils/components/useCanvasCoord';
 import { nonNullGraph as graph } from '@graph/global';
+import { getMagicCoordinates } from '@canvas/coordinates';
 
 export const getAverageCoordinates = (coords: Coordinate[]) => {
   const { magicCanvas: canvas } = graph.value;
-  const ctx = getCtx(canvas);
 
-  const rect = canvas.value?.getBoundingClientRect();
-  const screenCenter = {
-    x: window.innerWidth / 2 - (rect?.left || 0),
-    y: window.innerHeight / 2 - (rect?.top || 0),
-  };
+  const coordsInMiddleOfScreen = getMagicCoordinates({
+    clientX: window.innerWidth / 2,
+    clientY: window.innerHeight / 2,
+  }, getCtx(canvas.canvas))
 
-  const mouseEvent = new MouseEvent('mousemove', {
-    clientX: screenCenter.x,
-    clientY: screenCenter.y,
-  });
-
-  const { x: defaultX, y: defaultY } = getCanvasCoords(mouseEvent, ctx);
-
-  if (coords.length === 0) return { x: defaultX, y: defaultY };
+  if (coords.length === 0) return coordsInMiddleOfScreen
 
   return {
     x: average(coords.map((coord) => coord.x)),

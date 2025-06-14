@@ -50,7 +50,7 @@ export const useMarkupColorizer = (graph: Graph) => {
     const themes: Record<GraphThemeName, Color> = {
       dark: colors.WHITE,
       light: colors.BLACK,
-      girl: colors.PURPLE_800,
+      pink: colors.PURPLE_800,
     };
 
     return themes[graph.themeName.value] + '80';
