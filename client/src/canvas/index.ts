@@ -25,7 +25,7 @@ export type MagicCanvasOptions = {
   id?: string
 }
 
-export const useMagicCanvas: UseMagicCanvas = (options: MagicCanvasOptions = {}) => {
+export const useMagicCanvas: UseMagicCanvas = (options = {}) => {
   const canvas = ref<HTMLCanvasElement>()
   const canvasBoxSize = useElementSize(canvas)
 

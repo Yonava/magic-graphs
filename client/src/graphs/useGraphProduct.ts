@@ -10,6 +10,17 @@ import {
   queuedGraphAnnotationState,
 } from '@graph/global';
 
+export const getProductFromCurrentRoute = () => {
+  const route = useRoute();
+
+  const productInfo = routeToProduct[route.path];
+  if (!productInfo) {
+    throw new Error(`no product found for route ${route.path}`);
+  }
+
+  return productInfo
+}
+
 /**
  * bootstraps and breaks down a graph centric product, connecting to a room if a room id is provided
  * in the query and performing various other configuration tasks such as setting the document title.
@@ -21,10 +32,7 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   const route = useRoute();
 
   if (!product) {
-    const productForCurrentRoute = routeToProduct[route.path];
-    if (!productForCurrentRoute)
-      throw new Error(`no product found for route ${route.path}`);
-    product = productForCurrentRoute;
+    product = getProductFromCurrentRoute()
   }
 
   const { connectToRoom } = collabControls;
@@ -62,4 +70,6 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   onBeforeUnmount(() => {
     product.state?.reset();
   });
+
+  return product
 };
