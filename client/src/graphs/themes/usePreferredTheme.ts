@@ -2,7 +2,7 @@ import { watch } from 'vue';
 import { useDark } from '@vueuse/core';
 import type { BaseGraph } from '@graph/base';
 import { useLocalStorage } from '@vueuse/core';
-import type { GraphThemeName } from '.';
+import { THEME_NAMES, type GraphThemeName } from '.';
 import type { Graph } from '@graph/types';
 
 export type PreferredGraphTheme = GraphThemeName | 'auto';
@@ -35,6 +35,12 @@ export const usePreferredTheme = (graph: BaseGraph) => {
   watch(
     preferredTheme,
     () => {
+      // preferred theme comes from localStorage and can be tampered with, so the value cannot be trusted!
+      if (![...THEME_NAMES, 'auto'].includes(preferredTheme.value)) {
+        console.warn('unrecognized preferred-theme in localStorage: falling back to', DEFAULT_THEME)
+        preferredTheme.value = DEFAULT_THEME
+      }
+
       if (preferredTheme.value === 'auto') {
         graph.themeName.value = isDark.value ? 'dark' : 'light';
       } else {

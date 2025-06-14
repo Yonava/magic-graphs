@@ -9,5 +9,5 @@ type GNodeTheme = {
 export const GNodeTheme: Record<GraphThemeName, GNodeTheme> = {
   light: { color: colors.GRAY_300, textColor: colors.GRAY_900 },
   dark: { color: colors.GRAY_600, textColor: colors.GRAY_100 },
-  girl: { color: colors.PINK_100, textColor: colors.PINK_800 },
+  pink: { color: colors.PINK_100, textColor: colors.PINK_800 },
 };

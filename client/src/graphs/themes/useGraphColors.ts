@@ -29,13 +29,13 @@ export const ThemeToGraphColors: Record<GraphThemeName, GraphColors> = {
     text: colors.GRAY_100,
     brand: 'magic',
   },
-  girl: {
+  pink: {
     primary: colors.PINK_700,
     secondary: colors.PINK_600,
     tertiary: colors.PINK_800,
     contrast: colors.PINK_200,
     text: colors.WHITE,
-    brand: 'girl-magic',
+    brand: 'pink-magic',
   },
 };
 
