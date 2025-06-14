@@ -211,16 +211,10 @@ export const useAdjacencyList = (graph: BaseGraph) => {
 
   update();
 
-  const checkSettingsDiffForUpdate = (diff: DeepPartial<GraphSettings>) => {
-    if ('isGraphDirected' in diff) update();
-  };
-
   graph.subscribe('onStructureChange', update);
-  graph.subscribe('onSettingsChange', checkSettingsDiffForUpdate);
 
   onUnmounted(() => {
     graph.unsubscribe('onStructureChange', update);
-    graph.unsubscribe('onSettingsChange', checkSettingsDiffForUpdate);
   });
 
   return {

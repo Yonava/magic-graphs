@@ -304,6 +304,7 @@ export const useBaseGraph = (
       if (!settingsDiff) return;
       activeSettings.value = clone(settings.value);
       emit('onSettingsChange', settingsDiff);
+      if ('isGraphDirected' in settingsDiff) emit('onStructureChange')
     },
     { deep: true },
   );

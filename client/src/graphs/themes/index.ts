@@ -7,7 +7,7 @@ import type {
 } from '@graph/themes/types';
 import { DARK_THEME } from '@graph/themes/loadouts/dark';
 import { LIGHT_THEME } from '@graph/themes/loadouts/light';
-import { GIRL_THEME } from './loadouts/girl';
+import { GIRL_THEME } from '@graph/themes/loadouts/girl';
 
 export type GraphTheme = GraphThemeImport;
 export type GraphThemeKey = keyof GraphTheme;
