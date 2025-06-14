@@ -31,7 +31,7 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   const roomId = route.query.rid;
 
   const { productId, name } = product;
-  document.title = `${name} - Magic Algorithms`;
+  document.title = `${name} - Magic Graphs`;
 
   globalGraph.value = graph;
 

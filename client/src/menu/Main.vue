@@ -23,7 +23,7 @@
       <h1
         class="font-black text-7xl bg-gradient-to-tr dark:from-purple-700 dark:to-orange-600 from-purple-500 to-orange-500 text-transparent bg-clip-text p-4"
       >
-        Magic Algorithms
+        Magic Graphs
       </h1>
       <h3 class="font-bold text-2xl">Select An Experience</h3>
     </div>

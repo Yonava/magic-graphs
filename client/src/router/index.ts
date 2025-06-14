@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import type { ProductInfo } from 'src/types';
-import GraphSandboxInfo from '@product/graph-sandbox/info';
+import GraphSandboxInfo from '@product/sandbox/info';
 import { collabControls } from '@graph/collab';
 
 // import all info.ts files dynamically
