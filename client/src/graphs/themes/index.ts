@@ -20,6 +20,8 @@ export const THEMES = {
 
 export type GraphThemeName = keyof typeof THEMES;
 
+export const THEME_NAMES = Object.keys(THEMES) as GraphThemeName[]
+
 /**
  * gets the theme attributes for a GNode at the point in time the function is called
  *
