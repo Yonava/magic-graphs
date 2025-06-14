@@ -9,6 +9,7 @@
     MARKUP_USETHEME_ID,
   } from '@product/graph-sandbox/constants';
   import InputColor from './InputColor.vue';
+  import { THEMES } from '@graph/themes';
 
   const props = defineProps<{
     graph: Graph;
@@ -60,7 +61,12 @@
   props.graph.subscribe('onFocusChange', recalculateActiveColor);
 
   const { setTheme } = useTheme(props.graph, MARKUP_USETHEME_ID + '-preview');
-  const colorLinkPreview = () => activeColor.value ?? DEFAULT_MARKUP_COLOR;
+
+  const colorLinkPreview = () => {
+    const { linkPreviewColor } = THEMES[props.graph.themeName.value];
+    return activeColor.value ?? linkPreviewColor;
+  };
+
   setTheme('linkPreviewColor', colorLinkPreview);
 </script>
 
