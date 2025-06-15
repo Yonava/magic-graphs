@@ -11,7 +11,7 @@
   import StopSimButton from './StopSimButton.vue';
   import FullscreenButton from './FullscreenButton.vue';
   import ThemeToolbar from './ThemeToolbar.vue';
-  import ZoomButtons from './ZoomButtons.vue';
+  import ZoomToolbar from './ZoomToolbar.vue';
   import HelpMenu from './HelpMenu.vue';
   import BenchmarkingMetrics from './BenchmarkingMetrics.vue';
   import { inDevMode } from '@graph/global';
@@ -175,7 +175,7 @@
 
     <div :class="['absolute', 'flex', 'gap-2', 'bottom-6', 'left-6']">
       <HelpMenu />
-      <ZoomButtons :camera="canvas.camera" />
+      <ZoomToolbar :camera="canvas.camera" />
     </div>
 
     <div :class="['absolute', 'bottom-6', '-translate-x-1/2', 'left-1/2']">
