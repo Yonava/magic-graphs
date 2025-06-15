@@ -5,6 +5,7 @@
   import { getTransitData } from '@graph/transit';
   import { nonNullGraph as graph } from '@graph/global';
   import { useRoute } from 'vue-router';
+  import { SHARE_GRAPH_QUERY_PARAM_KEY } from '@graph/useGraphProduct';
 
   const route = useRoute();
   const linkCopied = ref(false);
@@ -19,7 +20,10 @@
     if (linkCopied.value) return;
     try {
       const data = getTransitData(graph.value);
-      const url = location.host + route.path + '?g=' + JSON.stringify(data);
+      const shareKey = SHARE_GRAPH_QUERY_PARAM_KEY;
+      const serializedData = JSON.stringify(data);
+      const baseUrl = `${location.host}${route.path}`;
+      const url = `${baseUrl}?${shareKey}=${serializedData}`;
       await navigator.clipboard.writeText(url);
       linkCopied.value = true;
     } catch (e) {
