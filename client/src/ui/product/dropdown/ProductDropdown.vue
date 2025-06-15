@@ -15,7 +15,7 @@
         :tertiary="isOpen"
         class="px-4 py-2 text-xl rounded-lg"
       >
-        <span :class="`text-${colors.brand}`">Magic Algorithms</span>
+        <span :class="`text-${colors.brand}`">Magic Graphs</span>
       </GButton>
     </template>
 

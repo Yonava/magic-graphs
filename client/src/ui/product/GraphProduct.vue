@@ -3,7 +3,7 @@
   import type { UnwrapRef } from 'vue';
   import { useGraphProduct } from '@graph/useGraphProduct';
   import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
-  import AnnotationToolbar from '@product/graph-sandbox/ui/AnnotationToolbar.vue';
+  import AnnotationToolbar from '@product/sandbox/ui/AnnotationToolbar.vue';
   import ProductDropdown from '@ui/product/dropdown/ProductDropdown.vue';
   import SelectSimulation from '@ui/product/sim/SelectSim.vue';
   import type { SimulationDeclaration } from 'src/types';

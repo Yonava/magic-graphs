@@ -1,4 +1,6 @@
 import type { DeepPartial, DeepReadonly } from 'ts-essentials';
+// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
+// eslint-disable-next-line
 import type { GEdge, GNode, Graph } from '@graph/types';
 import type { GraphSettings } from '@graph/settings';
 import type {

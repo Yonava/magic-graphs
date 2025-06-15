@@ -20,7 +20,7 @@ export type GraphWithCanvas = {
 type UseGraphWithCanvas = (settings: Partial<GraphSettings>) => GraphWithCanvas
 
 export const useGraphWithCanvas: UseGraphWithCanvas = (settings: Partial<GraphSettings> = {}) => {
-  const canvas = useMagicCanvas()
+  const canvas = useMagicCanvas({ storageKey: settings.persistentStorageKey })
   const graph = useGraph(canvas, settings)
   const { bgColor, patternColor } = useGraphCanvasColor(graph);
 

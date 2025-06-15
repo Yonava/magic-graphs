@@ -18,7 +18,14 @@ const initCanvasWidthHeight = (canvas: HTMLCanvasElement | undefined) => {
   canvas.height = rect.height * dpr;
 }
 
-export const useMagicCanvas: UseMagicCanvas = () => {
+export type MagicCanvasOptions = {
+  /**
+   * a key that is used to track the camera state in localStorage
+   */
+  storageKey?: string
+}
+
+export const useMagicCanvas: UseMagicCanvas = (options = {}) => {
   const canvas = ref<HTMLCanvasElement>()
   const canvasBoxSize = useElementSize(canvas)
 
@@ -34,7 +41,10 @@ export const useMagicCanvas: UseMagicCanvas = () => {
 
   watch([canvasBoxSize.width, canvasBoxSize.height], () => initCanvasWidthHeight(canvas.value))
 
-  const { cleanup: cleanupCamera, ...camera } = useCamera(canvas);
+  const { cleanup: cleanupCamera, ...camera } = useCamera(
+    canvas,
+    options?.storageKey ?? '[default-storage-key]'
+  );
   const { coordinates: cursorCoordinates, cleanup: cleanupCoords } = useMagicCoordinates(canvas);
 
   const pattern = useBackgroundPattern(camera.state, drawBackgroundPattern)

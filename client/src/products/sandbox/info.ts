@@ -2,14 +2,14 @@ import type { ProductInfo } from 'src/types';
 
 export const info: ProductInfo = {
   route: {
-    path: '/graph-sandbox',
+    path: '/sandbox',
     component: () => import('./MainView.vue'),
   },
-  name: 'Graph Sandbox',
+  name: 'Sandbox',
   description: 'Build a graph and run algorithms on it',
-  productId: 'graph-sandbox',
+  productId: 'sandbox',
   menu: {
-    name: 'Graph Sandbox',
+    name: 'Sandbox',
     description: 'Build a graph and run algorithms on it',
     thumbnail: '/products/thumbnails/graph-sandbox.png',
     category: 'sandbox',
