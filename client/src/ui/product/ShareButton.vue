@@ -1,19 +1,25 @@
 <script setup lang="ts">
-  import { useFullscreen } from '@vueuse/core';
   import GButton from '@ui/graph/button/GButton.vue';
   import CIcon from '@ui/core/Icon.vue';
+  import { ref } from 'vue';
 
-  const { toggle, isFullscreen } = useFullscreen();
+  const linkCopied = ref(false);
+
+  const copyLink = () => {
+    if (linkCopied.value) return;
+    linkCopied.value = true;
+    setTimeout(() => (linkCopied.value = false), 3000);
+  };
 </script>
 
 <template>
   <GButton
-    @click="toggle"
+    @click="copyLink"
     class="h-12 w-12"
   >
     <CIcon
       class="text-3xl"
-      :icon="isFullscreen ? 'fullscreen-exit' : 'fullscreen'"
+      :icon="linkCopied ? 'check' : 'share'"
     />
   </GButton>
 </template>

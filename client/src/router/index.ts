@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import type { ProductInfo } from 'src/types';
-import GraphSandboxInfo from '@product/sandbox/info';
+import SandboxInfo from '@product/sandbox/info';
 import { collabControls } from '@graph/collab';
 
 // import all info.ts files dynamically
@@ -13,7 +13,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: GraphSandboxInfo.route.path,
+      redirect: SandboxInfo.route.path,
     },
     {
       path: '/canvas',
@@ -23,7 +23,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       name: '404',
-      component: () => import('./404.vue'),
+      component: () => import('./404View.vue'),
     },
   ],
 });

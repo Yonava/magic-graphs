@@ -21,15 +21,13 @@
         <span class="text-4xl">Poof!</span>
         <br />
         Looks like
-        <span class="text-magic">Magic Algorithms</span>
+        <span class="text-magic">Magic Graphs</span>
         pulled a disappearing act. Cast this spell to
         <router-link
           to="/"
           class="text-blue-500 hover:underline"
-        >
-          return
-        </router-link>
-        .
+          >return</router-link
+        >.
       </h1>
     </div>
   </div>
