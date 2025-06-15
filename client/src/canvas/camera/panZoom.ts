@@ -1,3 +1,4 @@
+import { MOUSE_BUTTONS } from "@utils/mouse";
 import { useLocalStorage } from "@vueuse/core";
 import { onMounted, type Ref } from "vue";
 
@@ -43,7 +44,7 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>, canvas
   let middleMouseDown = false;
 
   const onMousedown = (ev: MouseEvent) => {
-    middleMouseDown = ev.button === 1
+    middleMouseDown = ev.button === MOUSE_BUTTONS.middle
     if (!middleMouseDown) return
 
     lastX = ev.clientX

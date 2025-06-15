@@ -1,16 +1,13 @@
 import { ref } from 'vue';
 import type { Aggregator } from '@graph/types';
-import { useTheme } from '@graph/themes/useTheme';
-import { MARQUEE_CONSTANTS } from '@graph/plugins/marquee/types';
-import colors from '@colors';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import type { BaseGraph } from '@graph/base';
 import type { GraphMouseEvent } from '@graph/base/types';
 import type { GraphFocusPlugin } from '../focus';
 import { getEncapsulatedNodeBox } from './helpers';
-import { MOUSE_BUTTONS } from "@graph/global";
 import { normalizeBoundingBox } from '@shape/helpers';
 import { computed } from 'vue';
+import { MOUSE_BUTTONS } from '@utils/mouse';
 
 export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   const marqueeBox = ref<BoundingBox | undefined>();
@@ -18,7 +15,6 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
 
   const groupDragCoordinates = ref<Coordinate | undefined>();
 
-  const { setTheme, removeTheme } = useTheme(graph, MARQUEE_CONSTANTS.THEME_ID);
   const { hold, release } = graph.pluginHoldController('marquee')
 
   const getSurfaceArea = (box: BoundingBox) => {

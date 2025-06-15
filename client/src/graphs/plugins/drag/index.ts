@@ -3,7 +3,7 @@ import type { GraphMouseEvent } from '@graph/base/types';
 import type { ActiveDragNode } from './types';
 import type { BaseGraph } from '@graph/base';
 import type { NodeAnchorPlugin } from '../anchors';
-import { MOUSE_BUTTONS } from "@graph/global";
+import { MOUSE_BUTTONS } from '@utils/mouse';
 
 export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
   const currentlyDraggingNode = ref<ActiveDragNode | undefined>();

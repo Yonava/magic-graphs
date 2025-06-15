@@ -29,12 +29,3 @@ export const queuedGraphStateLoadout = shallowRef<{
  * when switching between products, if this is set, the annotations will be loaded with this state
  */
 export const queuedGraphAnnotationState = shallowRef<Annotation[]>();
-
-/**
- * https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
- */
-export const MOUSE_BUTTONS = {
-  left: 0,
-  middle: 1,
-  right: 2,
-} as const;
