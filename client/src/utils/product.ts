@@ -108,12 +108,17 @@ export const useProductRouting = () => {
    */
   const navigateWithGraph = async (product: ProductInfo) => {
     const annotations = globalGraph.value.annotation.annotations.value
-    const nodes = globalGraph.value.nodes.value
-    const edges = globalGraph.value.edges.value
+    const { nodes, edges } = globalGraph.value
+    const { zoom, panX, panY } = globalGraph.value.magicCanvas.camera.state;
     await navigate(product)
+    // wait one tick for the global graph to update
     await new Promise((res) => setTimeout(res, 0))
-    globalGraph.value.load({ nodes, edges })
+    globalGraph.value.load({ nodes: nodes.value, edges: edges.value })
     globalGraph.value.annotation.load(annotations)
+    const { state } = globalGraph.value.magicCanvas.camera
+    state.zoom.value = zoom.value
+    state.panX.value = panX.value
+    state.panY.value = panY.value
   }
 
   return {
