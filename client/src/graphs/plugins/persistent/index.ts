@@ -1,8 +1,16 @@
 import type { GNode, GEdge } from '@graph/types';
 import type { GraphEvent } from '@graph/events';
 import type { BaseGraph } from '@graph/base';
+import { local } from '@utils/localStorage';
 
 export const usePersistent = (graph: BaseGraph) => {
+  const onBlacklist = (id: GNode['id'] | GEdge['id']) => {
+    const list = graph.settings.value.persistentBlacklist
+    return list.has(id)
+  }
+
+  const getKey = () => graph.settings.value.persistentStorageKey
+
   const nodeStorage = {
     get: () =>
       JSON.parse(
@@ -11,16 +19,8 @@ export const usePersistent = (graph: BaseGraph) => {
         ) ?? '[]',
       ),
     set: (nodes: GNode[]) => {
-      const nodesToAdd = nodes.filter((node) => {
-        const nodeInBlacklist = graph.settings.value.persistentBlacklist.has(
-          node.id,
-        );
-        return !nodeInBlacklist;
-      });
-      localStorage.setItem(
-        graph.settings.value.persistentStorageKey + '-nodes',
-        JSON.stringify(nodesToAdd),
-      );
+      const serializedNodes = JSON.stringify(nodes.filter((n) => !onBlacklist(n.id)))
+      local.set(`nodes-${getKey()}`, serializedNodes)
     },
   };
 
