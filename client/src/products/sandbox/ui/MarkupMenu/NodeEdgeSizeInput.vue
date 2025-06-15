@@ -2,13 +2,13 @@
   import { ref } from 'vue';
   import type { Graph } from '@graph/types';
   import { useTheme } from '@graph/themes/useTheme';
-  import type { MarkupSize } from '@product/graph-sandbox/types';
+  import type { MarkupSize } from '@product/sandbox/types';
   import {
     DEFAULT_MARKUP_SIZE,
     MARKUP_USETHEME_ID,
     SIZE_TO_WIDTH,
-  } from '@product/graph-sandbox/constants';
-  import type { SizeMap } from '@product/graph-sandbox/theme/useMarkupSizer';
+  } from '@product/sandbox/constants';
+  import type { SizeMap } from '@product/sandbox/theme/useMarkupSizer';
   import InputSize from './InputSize.vue';
 
   const props = defineProps<{

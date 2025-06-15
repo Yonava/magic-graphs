@@ -176,7 +176,7 @@ export type PersistentGraphSettings = {
    */
   persistentStorageKey: string;
   /**
-   * set of node or edge ids that will not be saved through graph persistence
+   * set of node or edge ids that will not be saved to localStorage
    * @default new Set()
    */
   persistentBlacklist: Set<GNode['id'] | GEdge['id']>;

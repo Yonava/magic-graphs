@@ -4,11 +4,16 @@ import type { Graph } from '@graph/types';
 import { collabControls } from '@graph/collab';
 import type { ProductInfo } from 'src/types';
 import { routeToProduct } from '@utils/product';
-import {
-  graph as globalGraph,
-  queuedGraphStateLoadout,
-  queuedGraphAnnotationState,
-} from '@graph/global';
+import { graph as globalGraph } from '@graph/global';
+
+export const getProductFromCurrentRoute = (routePath: string) => {
+  const productInfo = routeToProduct[routePath];
+  if (!productInfo) {
+    throw new Error(`no product found for route ${routePath}`);
+  }
+
+  return productInfo
+}
 
 /**
  * bootstraps and breaks down a graph centric product, connecting to a room if a room id is provided
@@ -21,31 +26,16 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   const route = useRoute();
 
   if (!product) {
-    const productForCurrentRoute = routeToProduct[route.path];
-    if (!productForCurrentRoute)
-      throw new Error(`no product found for route ${route.path}`);
-    product = productForCurrentRoute;
+    product = getProductFromCurrentRoute(route.path)
   }
 
   const { connectToRoom } = collabControls;
   const roomId = route.query.rid;
 
   const { productId, name } = product;
-  document.title = `${name} - Magic Algorithms`;
+  document.title = `${name} - Magic Graphs`;
 
   globalGraph.value = graph;
-
-  setTimeout(() => {
-    if (!queuedGraphStateLoadout.value) return;
-    graph.load(queuedGraphStateLoadout.value);
-    queuedGraphStateLoadout.value = undefined;
-  }, 5);
-
-  setTimeout(() => {
-    if (!queuedGraphAnnotationState.value) return;
-    graph.annotation.load(queuedGraphAnnotationState.value);
-    queuedGraphAnnotationState.value = undefined;
-  }, 5);
 
   onMounted(() => {
     if (!roomId) return;
@@ -62,4 +52,6 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   onBeforeUnmount(() => {
     product.state?.reset();
   });
+
+  return product
 };

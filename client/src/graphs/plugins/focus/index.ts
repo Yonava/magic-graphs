@@ -5,7 +5,7 @@ import type { BaseGraph } from '@graph/base';
 import { useTheme } from '@graph/themes/useTheme';
 import { getCtx } from '@utils/ctx';
 import { FOCUS_THEME_ID, FOCUSABLE_GRAPH_TYPES } from './constants';
-import { MOUSE_BUTTONS } from "@graph/global";
+import { MOUSE_BUTTONS } from '@utils/mouse';
 
 export const useFocus = (graph: BaseGraph) => {
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from '@graph/global';
   import { usePeriodicityLabels } from './usePeriodicityLabels';
-  import { useSCCColorizer } from '@product/graph-sandbox/ui/GraphInfoMenu/useSCCColorizer';
+  import { useSCCColorizer } from '@product/sandbox/ui/GraphInfoMenu/useSCCColorizer';
   import { useIllegalStateColorizer } from './useIllegalStateColorizer';
   import { useLabelSteadyState } from './useLabelSteadyState';
   import type { MarkovChain } from '../markov/useMarkovChain';

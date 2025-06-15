@@ -1,11 +1,6 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue';
   import {
-    nonNullGraph as graph,
-    queuedGraphStateLoadout,
-    queuedGraphAnnotationState,
-  } from '@graph/global';
-  import {
     useProductRouting,
     getCurrentProduct,
     isExternal,
@@ -13,22 +8,12 @@
   import type { ProductInfoWithMenu } from '@utils/product';
   import GVerticalCardButton from '@ui/graph/button/GVerticalCardButton.vue';
   import GButton from '@ui/graph/button/GButton.vue';
-  import type { ProductInfo } from 'src/types';
   import CIcon from '@ui/core/Icon.vue';
   import GWell from '@ui/graph/GWell.vue';
   import { getRandomInRange } from '@utils/random';
 
-  const { navigate } = useProductRouting();
+  const { navigate, navigateWithGraph } = useProductRouting();
   const currentProduct = getCurrentProduct();
-
-  const navigateWithGraph = (product: ProductInfo) => {
-    queuedGraphStateLoadout.value = {
-      nodes: graph.value.nodes.value,
-      edges: graph.value.edges.value,
-    };
-    queuedGraphAnnotationState.value = graph.value.annotation.annotations.value;
-    navigate(product);
-  };
 
   const props = defineProps<{
     product: ProductInfoWithMenu;

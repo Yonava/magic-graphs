@@ -2,7 +2,7 @@ import type { Coordinate } from '@shape/types/utility';
 import type { TreeNodeKeyArray } from './avl';
 import type { TreeNode } from './treeNode';
 import type { GEdge, Graph } from '@graph/types';
-import { getTreeIndexToPosition } from '@product/graph-sandbox/ui/tree/getTreeBinaryPos';
+import { getTreeIndexToPosition } from '@product/sandbox/ui/tree/getTreeBinaryPos';
 
 const newEdge = (from: number, to: number) => ({
   from: from.toString(),

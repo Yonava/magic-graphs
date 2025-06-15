@@ -3,7 +3,7 @@ import type { Graph } from '@graph/types';
 import { useNodeEdgeTheme } from './theme/useNodeEdgeThemer';
 import { CANT_RUN_REASONS } from './constants';
 import type { Reason } from './types';
-import { useCycleColorizer } from '@product/graph-sandbox/ui/GraphInfoMenu/useCycleColorizer';
+import { useCycleColorizer } from '@product/sandbox/ui/GraphInfoMenu/useCycleColorizer';
 
 /**
  * determines if the simulation can run.

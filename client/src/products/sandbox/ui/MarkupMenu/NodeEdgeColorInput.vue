@@ -2,12 +2,12 @@
   import { ref } from 'vue';
   import type { Graph } from '@graph/types';
   import { useTheme } from '@graph/themes/useTheme';
-  import type { ColorMap } from '@product/graph-sandbox/theme/useMarkupColorizer';
+  import type { ColorMap } from '@product/sandbox/theme/useMarkupColorizer';
   import type { Color } from '@utils/colors';
   import {
     DEFAULT_MARKUP_COLOR,
     MARKUP_USETHEME_ID,
-  } from '@product/graph-sandbox/constants';
+  } from '@product/sandbox/constants';
   import InputColor from './InputColor.vue';
   import { THEMES } from '@graph/themes';
 

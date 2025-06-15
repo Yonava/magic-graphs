@@ -11,10 +11,10 @@ import { useAnnotationHistory } from './history';
 import type { Annotation } from './types';
 import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
 import { circle } from '@shape/shapes/circle';
-import { MOUSE_BUTTONS } from '@graph/global';
 import type { IntervalHandler } from '@utils/types';
 import type { ScribbleSchema } from '@shape/shapes/scribble';
 import type { WithId } from '@shape/cacher';
+import { MOUSE_BUTTONS } from '@utils/mouse';
 
 const ERASER_BRUSH_RADIUS = 10;
 
