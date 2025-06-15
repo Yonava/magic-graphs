@@ -4,6 +4,7 @@
   import { nonNullGraph as graph } from '@graph/global';
   import HelpShortcutKey from './HelpShortcutKey.vue';
   import type { Shortcut } from '@graph/plugins/shortcut/types';
+  import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
 
   /**
    * @example 'Control+Shift+Z' -> ['Control', 'Shift', 'Z']
@@ -12,19 +13,12 @@
     keyBindStr
       .split('+')
       .map((key) => key.trim())
-      .filter((key) => key !== '');
+      .filter((key) => key !== '') as Shortcut['binding'][];
 
   const { activeShortcuts } = graph.value.shortcut;
 
-  const ADDITIONAL_SHORTCUTS = {
-    Fullscreen: { binding: 'F' },
-    'Pause/Play Simulation': { binding: 'Space' },
-    'Simulation Step Forward': { binding: 'rightArrow' },
-    'Simulation Step Backward': { binding: 'leftArrow' },
-  };
-
   const shortcuts = computed(() =>
-    Object.assign(activeShortcuts, ADDITIONAL_SHORTCUTS),
+    Object.assign(activeShortcuts, PRODUCT_SHORTCUTS),
   );
 </script>
 

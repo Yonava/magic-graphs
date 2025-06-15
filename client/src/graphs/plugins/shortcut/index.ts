@@ -29,8 +29,6 @@ export const useShortcuts = (
     if (settings.value.interactive) {
       const action = graph.history.undo();
       if (!action) return;
-      // TODO focus the edges that were affected by move
-      // actions as well
       graph.focus.set(action.affectedItems.map((item) => item.data.id));
     }
   };
@@ -105,7 +103,7 @@ export const useShortcuts = (
         trigger: triggerSelectAll.value,
       },
       Deselect: {
-        binding: 'escape',
+        binding: 'esc',
         trigger: triggerEscape.value,
       },
       'Zoom In': {
@@ -119,11 +117,11 @@ export const useShortcuts = (
     },
     Windows: {
       Undo: {
-        binding: 'ctrl+Z',
+        binding: 'ctrl+z',
         trigger: triggerUndo.value,
       },
       Redo: {
-        binding: 'ctrl+shift+Z',
+        binding: 'ctrl+shift+z',
         trigger: triggerRedo.value,
       },
       Delete: {

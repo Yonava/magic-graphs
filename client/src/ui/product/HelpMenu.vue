@@ -6,6 +6,7 @@
   import { onClickOutside } from '@vueuse/core';
   import HelpContent from './help/HelpContent.vue';
   import { keys } from 'ctrl-keys';
+  import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
 
   const showDialog = ref(false);
   const dialogContent = ref();
@@ -19,12 +20,9 @@
   };
 
   const ctrlKeysHandler = keys();
-  ctrlKeysHandler.add('h', () => {
-    toggleDialog();
-  });
-  ctrlKeysHandler.add('escape', () => {
-    showDialog.value = false;
-  });
+
+  ctrlKeysHandler.add(PRODUCT_SHORTCUTS['Help'].binding, toggleDialog);
+  ctrlKeysHandler.add('escape', () => (showDialog.value = false));
 
   window.addEventListener('keydown', ctrlKeysHandler.handle);
 
@@ -36,7 +34,7 @@
 <template>
   <GButton
     @click="toggleDialog"
-    class="aspect-square w-[45px]"
+    class="h-12 w-12"
   >
     <CIcon icon="help"></CIcon>
   </GButton>

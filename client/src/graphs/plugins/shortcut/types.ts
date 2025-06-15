@@ -1,3 +1,4 @@
+import type { Key } from "ctrl-keys";
 
 /**
  * a keyboard shortcut
@@ -7,9 +8,9 @@ export type Shortcut = {
    * a string of characters that defines the sequence of the shortcut
    * @example 'meta+shift+z'
    */
-  binding: string;
+  binding: Key;
   /**
-   * a function that fires when the shortcut is activated
+   * the function that fires when the shortcut is activated
    */
   trigger: () => void;
 };
