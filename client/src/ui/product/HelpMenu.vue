@@ -19,12 +19,9 @@
   };
 
   const ctrlKeysHandler = keys();
-  ctrlKeysHandler.add('h', () => {
-    toggleDialog();
-  });
-  ctrlKeysHandler.add('escape', () => {
-    showDialog.value = false;
-  });
+
+  ctrlKeysHandler.add('h', toggleDialog);
+  ctrlKeysHandler.add('escape', () => (showDialog.value = false));
 
   window.addEventListener('keydown', ctrlKeysHandler.handle);
 
@@ -36,7 +33,7 @@
 <template>
   <GButton
     @click="toggleDialog"
-    class="aspect-square w-[45px]"
+    class="h-12 w-12"
   >
     <CIcon icon="help"></CIcon>
   </GButton>

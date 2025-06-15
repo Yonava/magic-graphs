@@ -9,7 +9,8 @@
   import GSpreadSelect from '@ui/graph/select/GSpreadSelect.vue';
   import GButton from '@ui/graph/button/GButton.vue';
   import { DEFAULT_PLAYBACK_SPEED } from './useSimulationControls';
-  import { onKeyStroke } from '@vueuse/core';
+  import keys from 'ctrl-keys';
+  import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
 
   const colors = useNonNullGraphColors();
 
@@ -96,8 +97,9 @@
     PLAYBACK_SPEEDS.findIndex((speed) => speed.value === playbackSpeed.value) ??
     2;
 
-  onKeyStroke([' ', 'Spacebar'], (e) => {
-    e.preventDefault();
+  const ctrlKeys = keys();
+
+  ctrlKeys.add(PRODUCT_SHORTCUTS['Pause/Play Simulation'].binding, () => {
     if (isOver.value) {
       restart();
     } else {
@@ -105,15 +107,18 @@
     }
   });
 
-  onKeyStroke('ArrowLeft', (e) => {
-    e.preventDefault();
-    goPrevStep();
-  });
+  ctrlKeys.add(
+    PRODUCT_SHORTCUTS['Simulation Step Backward'].binding,
+    goPrevStep,
+  );
 
-  onKeyStroke('ArrowRight', (e) => {
-    e.preventDefault();
-    goNextStep();
-  });
+  ctrlKeys.add(
+    PRODUCT_SHORTCUTS['Simulation Step Forward'].binding,
+    goNextStep,
+  );
+
+  window.addEventListener('keyup', ctrlKeys.handle);
+  onUnmounted(() => window.removeEventListener('keyup', ctrlKeys.handle));
 </script>
 
 <template>
