@@ -8,7 +8,6 @@ import type { StyleValue } from "vue"
 import { cross } from "@shapes"
 import { computed } from "vue"
 import type { ComputedRef } from "vue"
-import { getProductFromCurrentRoute } from "@graph/useGraphProduct"
 
 type GraphCanvasCSS = { style: StyleValue }
 
@@ -21,8 +20,7 @@ export type GraphWithCanvas = {
 type UseGraphWithCanvas = (settings: Partial<GraphSettings>) => GraphWithCanvas
 
 export const useGraphWithCanvas: UseGraphWithCanvas = (settings: Partial<GraphSettings> = {}) => {
-  const { productId } = getProductFromCurrentRoute()
-  const canvas = useMagicCanvas({ id: productId })
+  const canvas = useMagicCanvas({ storageKey: settings.persistentStorageKey })
   const graph = useGraph(canvas, settings)
   const { bgColor, patternColor } = useGraphCanvasColor(graph);
 

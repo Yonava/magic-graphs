@@ -8,10 +8,10 @@ export const MAX_ZOOM = 10;
 export const ZOOM_SENSITIVITY = 0.02;
 export const PAN_SENSITIVITY = 1;
 
-export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>, canvasId: string) => {
-  const panX = useLocalStorage('camera-pan-x-' + canvasId, 0)
-  const panY = useLocalStorage('camera-pan-y-' + canvasId, 0)
-  const zoom = useLocalStorage('camera-zoom-' + canvasId, 1)
+export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>, storageKey: string) => {
+  const panX = useLocalStorage('camera-pan-x-' + storageKey, 0)
+  const panY = useLocalStorage('camera-pan-y-' + storageKey, 0)
+  const zoom = useLocalStorage('camera-zoom-' + storageKey, 1)
 
   const setZoom = (ev: Pick<WheelEvent, 'clientX' | 'clientY' | 'deltaY'>) => {
     const { clientX: cx, clientY: cy } = ev

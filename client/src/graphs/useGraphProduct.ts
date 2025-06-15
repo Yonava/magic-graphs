@@ -10,12 +10,10 @@ import {
   queuedGraphAnnotationState,
 } from '@graph/global';
 
-export const getProductFromCurrentRoute = () => {
-  const route = useRoute();
-
-  const productInfo = routeToProduct[route.path];
+export const getProductFromCurrentRoute = (routePath: string) => {
+  const productInfo = routeToProduct[routePath];
   if (!productInfo) {
-    throw new Error(`no product found for route ${route.path}`);
+    throw new Error(`no product found for route ${routePath}`);
   }
 
   return productInfo
@@ -32,7 +30,7 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   const route = useRoute();
 
   if (!product) {
-    product = getProductFromCurrentRoute()
+    product = getProductFromCurrentRoute(route.path)
   }
 
   const { connectToRoom } = collabControls;
