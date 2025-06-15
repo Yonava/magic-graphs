@@ -1,9 +1,10 @@
 <script setup lang="ts">
+  import type { Shortcut } from '@graph/plugins/shortcut/types';
   import CIcon from '@ui/core/Icon.vue';
   import { computed } from 'vue';
 
   const props = defineProps<{
-    keyboardKey: string;
+    keyboardKey: Shortcut['binding'];
   }>();
 
   const KEYBOARD_KEY_TO_USER_STRING: Record<string, string> = {
@@ -12,9 +13,9 @@
 
   const KEYS_WITH_USER_STRING = Object.keys(KEYBOARD_KEY_TO_USER_STRING);
 
-  const KEYBOARD_KEY_TO_ICON: Record<string, string> = {
-    rightArrow: 'arrow-right',
-    leftArrow: 'arrow-left',
+  const KEYBOARD_KEY_TO_ICON: Partial<Record<Shortcut['binding'], string>> = {
+    arrowright: 'arrow-right',
+    arrowleft: 'arrow-left',
   };
 
   const KEYS_WITH_ICONS = Object.keys(KEYBOARD_KEY_TO_ICON);
@@ -41,7 +42,7 @@
   >
     <CIcon
       v-if="hasIconDepiction"
-      :icon="KEYBOARD_KEY_TO_ICON[keyboardKey]"
+      :icon="KEYBOARD_KEY_TO_ICON[keyboardKey]!"
       class="text-xs"
     />
     <p v-else-if="hasUserStringDepiction">

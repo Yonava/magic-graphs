@@ -6,6 +6,7 @@
   import { onClickOutside } from '@vueuse/core';
   import HelpContent from './help/HelpContent.vue';
   import { keys } from 'ctrl-keys';
+  import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
 
   const showDialog = ref(false);
   const dialogContent = ref();
@@ -20,7 +21,7 @@
 
   const ctrlKeysHandler = keys();
 
-  ctrlKeysHandler.add('h', toggleDialog);
+  ctrlKeysHandler.add(PRODUCT_SHORTCUTS['Help'].binding, toggleDialog);
   ctrlKeysHandler.add('escape', () => (showDialog.value = false));
 
   window.addEventListener('keydown', ctrlKeysHandler.handle);

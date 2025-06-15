@@ -13,7 +13,7 @@
     keyBindStr
       .split('+')
       .map((key) => key.trim())
-      .filter((key) => key !== '');
+      .filter((key) => key !== '') as Shortcut['binding'][];
 
   const { activeShortcuts } = graph.value.shortcut;
 
