@@ -4,11 +4,7 @@ import type { Graph } from '@graph/types';
 import { collabControls } from '@graph/collab';
 import type { ProductInfo } from 'src/types';
 import { routeToProduct } from '@utils/product';
-import {
-  graph as globalGraph,
-  queuedGraphStateLoadout,
-  queuedGraphAnnotationState,
-} from '@graph/global';
+import { graph as globalGraph } from '@graph/global';
 
 export const getProductFromCurrentRoute = (routePath: string) => {
   const productInfo = routeToProduct[routePath];
@@ -40,18 +36,6 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   document.title = `${name} - Magic Graphs`;
 
   globalGraph.value = graph;
-
-  setTimeout(() => {
-    if (!queuedGraphStateLoadout.value) return;
-    graph.load(queuedGraphStateLoadout.value);
-    queuedGraphStateLoadout.value = undefined;
-  }, 5);
-
-  setTimeout(() => {
-    if (!queuedGraphAnnotationState.value) return;
-    graph.annotation.load(queuedGraphAnnotationState.value);
-    queuedGraphAnnotationState.value = undefined;
-  }, 5);
 
   onMounted(() => {
     if (!roomId) return;

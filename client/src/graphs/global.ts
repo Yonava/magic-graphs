@@ -1,6 +1,5 @@
 import { computed, shallowRef } from "vue";
-import type { GEdge, GNode, Graph } from "./types";
-import type { Annotation } from "./plugins/annotations/types";
+import type { Graph } from "./types";
 
 /**
  * if true, stats are displayed on screen
@@ -16,16 +15,3 @@ export const nonNullGraph = computed(() => {
 
   return graph.value;
 });
-
-/**
- * when switching between products, if this is set, the graph will be loaded with this state
- */
-export const queuedGraphStateLoadout = shallowRef<{
-  nodes: GNode[];
-  edges: GEdge[];
-}>();
-
-/**
- * when switching between products, if this is set, the annotations will be loaded with this state
- */
-export const queuedGraphAnnotationState = shallowRef<Annotation[]>();

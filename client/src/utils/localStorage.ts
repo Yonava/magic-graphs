@@ -1,10 +1,11 @@
+import type { ProductInfo } from "src/types"
 
 type LocalStorageGetter = (...args: any[]) => string
 type LocalStorageRecord = Record<string, string | LocalStorageGetter>
 
 export const localKeys = {
-  nodes: (key: string) => `nodes-${key}` as const,
-  edges: (key: string) => `edges-${key}` as const,
+  nodes: (pid: ProductInfo['productId']) => `nodes-${pid}` as const,
+  edges: (pid: ProductInfo['productId']) => `edges-${pid}` as const,
 } as const satisfies LocalStorageRecord
 
 /**

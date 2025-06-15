@@ -1,6 +1,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import type { Graph } from '@graph/types';
 import type { ProductInfo, SimulationDeclarationGetter } from 'src/types';
+import { nonNullGraph as globalGraph } from '@graph/global';
 
 // imports all info.ts files dynamically
 const infoModules = import.meta.glob<{
@@ -90,7 +91,7 @@ export const useProductRouting = () => {
     return roomIdValid ? `${productRoute}?rid=${roomId}` : productRoute;
   };
 
-  const navigate = (product: ProductInfo) => {
+  const navigate = async (product: ProductInfo) => {
     const redirectLink = product.route?.redirect?.toString();
     const goingExternal = redirectLink?.startsWith('http');
 
@@ -98,11 +99,26 @@ export const useProductRouting = () => {
       return window.open(redirectLink, '_blank');
     }
 
-    router.push(productLink(product.route.path));
+    await router.push(productLink(product.route.path));
   };
+
+  /**
+   * navigate between products while preserving the graph state including
+   * annotations and canvas camera positioning
+   */
+  const navigateWithGraph = async (product: ProductInfo) => {
+    const annotations = globalGraph.value.annotation.annotations.value
+    const nodes = globalGraph.value.nodes.value
+    const edges = globalGraph.value.edges.value
+    await navigate(product)
+    await new Promise((res) => setTimeout(res, 0))
+    globalGraph.value.load({ nodes, edges })
+    globalGraph.value.annotation.load(annotations)
+  }
 
   return {
     navigate,
+    navigateWithGraph,
     productLink,
   };
 };
