@@ -4,50 +4,38 @@ import type { BaseGraph } from '@graph/base';
 import { local } from '@utils/localStorage';
 
 export const usePersistent = (graph: BaseGraph) => {
-  const onBlacklist = (id: GNode['id'] | GEdge['id']) => {
+  const canStore = (nodeOrEdge: { id: string }) => {
     const list = graph.settings.value.persistentBlacklist
-    return list.has(id)
+    return !list.has(nodeOrEdge.id)
   }
 
   const getKey = () => graph.settings.value.persistentStorageKey
 
   const nodeStorage = {
-    get: () =>
-      JSON.parse(
-        localStorage.getItem(
-          graph.settings.value.persistentStorageKey + '-nodes',
-        ) ?? '[]',
-      ),
+    get: () => {
+      const serializedNodes = local.get(`nodes-${getKey()}`) ?? '[]'
+      return JSON.parse(serializedNodes)
+    },
     set: (nodes: GNode[]) => {
-      const serializedNodes = JSON.stringify(nodes.filter((n) => !onBlacklist(n.id)))
+      const serializedNodes = JSON.stringify(nodes.filter(canStore))
       local.set(`nodes-${getKey()}`, serializedNodes)
     },
   };
 
   const edgeStorage = {
-    get: () =>
-      JSON.parse(
-        localStorage.getItem(
-          graph.settings.value.persistentStorageKey + '-edges',
-        ) ?? '[]',
-      ),
+    get: () => {
+      const serializedEdges = local.get(`edges-${getKey()}`) ?? '[]'
+      return JSON.parse(serializedEdges)
+    },
     set: (edges: GEdge[]) => {
-      const edgesToAdd = edges.filter((edge) => {
-        const edgeInBlacklist = graph.settings.value.persistentBlacklist.has(
-          edge.id,
-        );
-        return !edgeInBlacklist;
-      });
-      localStorage.setItem(
-        graph.settings.value.persistentStorageKey + '-edges',
-        JSON.stringify(edgesToAdd),
-      );
+      const serializedEdges = JSON.stringify(edges.filter(canStore))
+      local.set(`edges-${getKey()}`, serializedEdges)
     },
   };
 
   const trackGraphState = async () => {
-    // lets all callbacks run before saving to storage
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    // lets all callbacks run on event bus before saving to storage
+    await new Promise((res) => setTimeout(res, 10));
     nodeStorage.set(graph.nodes.value);
     edgeStorage.set(graph.edges.value);
   };
