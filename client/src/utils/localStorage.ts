@@ -24,6 +24,8 @@ export const localKeys = {
   cameraPanY: (key: MagicCanvasOptions['storageKey']) => `camera-pan-y-${key}` as const,
   /** camera `zoom` state in magic canvas - {@link Camera.state} */
   cameraZoom: (key: MagicCanvasOptions['storageKey']) => `camera-zoom-${key}` as const,
+  /** graph product simulation speed */
+  simulationPlaybackSpeed: 'simulation-playback-speed'
 } as const satisfies LocalStorageRecord
 
 /**

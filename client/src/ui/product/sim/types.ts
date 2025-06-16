@@ -42,16 +42,16 @@ export type SimulationControls<T = any> = {
    */
   trace: ComputedRef<SimulationTrace<T>>;
   /**
-   * the trace as an array. throws an error if the trace is not an array
+   * the trace as an array. throws an error when accessed if the trace is not an array
    */
   traceArray: ComputedRef<T[]>;
   /**
-   * the trace as a function. throws an error if the trace is not a function
+   * the trace as a function. throws an error when accessed if the trace is not a function
    */
   traceFn: ComputedRef<TraceFunction<T>>;
   /**
    * the current step of the simulation.
-   * ranges from 0 to trace.length where 0 is the state before the algorithm has begun
+   * ranges from 0 to `lastStep` where 0 is the state before the algorithm has begun
    * and `lastStep` is the state after the algorithm has completed.
    */
   step: ComputedRef<number>;
@@ -91,17 +91,16 @@ export type SimulationControls<T = any> = {
    */
   isActive: ComputedRef<boolean>;
   /**
-   * whether the simulation is over.
-   * true when the step is equal to `lastStep` (trace.length by default)
+   * whether the simulation is over. true when the step is equal to `lastStep`
    */
   isOver: ComputedRef<boolean>;
   /**
-   * whether the simulation has begun.
-   * true when the step is greater than 0
+   * whether the simulation has begun. true when the step is greater than 0
    */
   hasBegun: ComputedRef<boolean>;
   /**
-   * the last step of the simulation. defaults to trace.length
+   * the last step of the simulation.
+   * @default trace.length
    */
   lastStep: ComputedRef<number>;
   /**

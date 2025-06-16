@@ -6,11 +6,13 @@ import type {
   SimulationTrace,
 } from '@ui/product/sim/types';
 import { useLocalStorage } from '@vueuse/core';
+import { localKeys } from '@utils/localStorage';
 
 type SimulationControlsOptions = {
   /**
-   * if set, the simulation will stop when the step reaches this value
-   * @default trace.length - 1
+   * if set, the simulation will stop when the step reaches this value.
+   * See {@link SimulationControls.lastStep}
+   * @default trace.length
    */
   lastStep?: MaybeRef<number>;
 };
@@ -54,7 +56,7 @@ export const useSimulationControls = <T>(
    * the playback speed in ms per step of the simulation
    */
   const playbackSpeed = useLocalStorage(
-    'simulation-playback-speed',
+    localKeys.simulationPlaybackSpeed,
     DEFAULT_PLAYBACK_SPEED,
   );
 
@@ -152,9 +154,18 @@ export const useSimulationControls = <T>(
   watch(step, emitStepChange);
 
   const traceAtStep = computed(() => {
-    if (Array.isArray(trace.value)) return trace.value[step.value];
+    if (Array.isArray(trace.value)) {
+      if (step.value >= trace.value.length) return trace.value.at(-1)!
+      return trace.value[step.value];
+    }
     return trace.value(step.value);
   });
+
+  watch(trace, () => {
+    if (step.value >= trace.value.length) {
+      setStep(trace.value.length - 1)
+    }
+  })
 
   /**
    * allows users to subscribe to step changes
