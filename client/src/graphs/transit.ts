@@ -47,7 +47,10 @@ export const setTransitData = (g: Graph, transitData: GraphTransitData) => {
 }
 
 /**
- * a lower fidelity state of the graph for when transferring data is expensive
+ * takes graph transit data and converts it into an encoded string with lower fidelity
+ * data that is perfect for sending over the wire or when transferring data is expensive.
+ *
+ * run encoded strings through {@link decodeCompressedTransitData} to decode!
  */
 export const encodeCompressedTransitData = (data: GraphTransitData) => {
   const { nodes, edges, cameraPanX, cameraPanY, cameraZoom } = data
@@ -74,7 +77,8 @@ export const encodeCompressedTransitData = (data: GraphTransitData) => {
 }
 
 /**
- * undoes the compression done to graph transit data in {@link encodeCompressedTransitData}
+ * takes the compressed string returned by {@link encodeCompressedTransitData} and
+ * resolves it back to usable graph transit data
  */
 export const decodeCompressedTransitData = (encodedData: string): GraphTransitData => {
   const [
