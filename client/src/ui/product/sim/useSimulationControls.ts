@@ -154,9 +154,18 @@ export const useSimulationControls = <T>(
   watch(step, emitStepChange);
 
   const traceAtStep = computed(() => {
-    if (Array.isArray(trace.value)) return trace.value[step.value];
+    if (Array.isArray(trace.value)) {
+      if (step.value >= trace.value.length) return trace.value.at(-1)!
+      return trace.value[step.value];
+    }
     return trace.value(step.value);
   });
+
+  watch(trace, () => {
+    if (step.value >= trace.value.length) {
+      setStep(trace.value.length - 1)
+    }
+  })
 
   /**
    * allows users to subscribe to step changes
