@@ -23,26 +23,50 @@ export type ClientCoords = Pick<MouseEvent, 'clientX' | 'clientY'>
  */
 export type MagicCoords = Coordinate
 
-export const getMagicCoordinates = (clientCoords: ClientCoords, ctx: CanvasRenderingContext2D) => {
+export type WithZoom<T> = T & {
+  /**
+   * the scale factor of the canvas
+   */
+  zoom: number
+}
+
+/**
+ * magic coordinates are coordinates transformed by the pan and zoom of the camera.
+ *
+ * if the user has panned their camera 10px to the left, running this function with
+ * `clientCoords` set to (0, 0) will return (-10, 0, 1)
+ */
+export const getMagicCoordinates = (
+  clientCoords: ClientCoords,
+  ctx: CanvasRenderingContext2D,
+): WithZoom<MagicCoords> => {
   const rect = ctx.canvas.getBoundingClientRect();
   const localX = clientCoords.clientX - rect.left;
   const localY = clientCoords.clientY - rect.top;
 
   const { panX, panY, zoom } = getCanvasTransform(ctx);
 
-  const x = Number(((localX - panX) / zoom).toFixed(2));
-  const y = Number(((localY - panY) / zoom).toFixed(2));
+  const x = (localX - panX) / zoom
+  const y = (localY - panY) / zoom
 
   return { x, y, zoom };
 }
 
-export const getClientCoordinates = (magicCoords: MagicCoords, ctx: CanvasRenderingContext2D) => {
+/**
+ * client coordinates are the raw coordinates corresponding to the clients physical screen.
+ *
+ * the top left corner is (0, 0) and bottom right corner is (window.innerWidth, window.innerHeight).
+ */
+export const getClientCoordinates = (
+  magicCoords: MagicCoords,
+  ctx: CanvasRenderingContext2D,
+): WithZoom<ClientCoords> => {
   const { panX, panY, zoom } = getCanvasTransform(ctx);
   const { x, y } = magicCoords;
 
   return {
-    clientX: Number((x * zoom + panX).toFixed(2)),
-    clientY: Number((y * zoom + panY).toFixed(2)),
+    clientX: x * zoom + panX,
+    clientY: y * zoom + panY,
     zoom,
   };
 };

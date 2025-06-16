@@ -17,6 +17,7 @@
   import { inDevMode } from '@graph/global';
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import type { GraphWithCanvas } from '@product/shared/useGraphWithCanvas';
+  import ShareButton from './ShareButton.vue';
 
   const props = defineProps<GraphWithCanvas>();
 
@@ -175,6 +176,7 @@
 
     <div :class="['absolute', 'flex', 'gap-2', 'bottom-6', 'left-6']">
       <HelpMenu />
+      <ShareButton />
       <ZoomToolbar :camera="canvas.camera" />
     </div>
 

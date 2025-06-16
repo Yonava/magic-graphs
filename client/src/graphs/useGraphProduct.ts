@@ -1,10 +1,20 @@
 import { onBeforeUnmount, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter, type LocationQueryValue } from 'vue-router';
 import type { Graph } from '@graph/types';
 import { collabControls } from '@graph/collab';
 import type { ProductInfo } from 'src/types';
 import { routeToProduct } from '@utils/product';
 import { graph as globalGraph } from '@graph/global';
+import { decodeCompressedTransitData, setTransitData } from './transit';
+import { useToast } from 'primevue/usetoast';
+import { USER_PLATFORM } from './plugins/shortcut';
+import { decompressFromEncodedURIComponent } from 'lz-string';
+
+/**
+ * query param key we assign an encoded graph to when sharing
+ * a graph via url
+ */
+export const SHARE_GRAPH_QUERY_PARAM_KEY = 'g'
 
 export const getProductFromCurrentRoute = (routePath: string) => {
   const productInfo = routeToProduct[routePath];
@@ -15,9 +25,57 @@ export const getProductFromCurrentRoute = (routePath: string) => {
   return productInfo
 }
 
+const loadSharedGraphFromQuery = (
+  graph: Graph,
+  compressedAndUriEncodedTransitData: LocationQueryValue | LocationQueryValue[]
+) => {
+  const router = useRouter();
+  const route = useRoute();
+  const toast = useToast()
+
+  const successToast = () => {
+    const undoShortcut = USER_PLATFORM === 'Mac' ? '⌘+Z' : 'Ctrl+Z'
+    toast.add({
+      summary: `Loaded graph from link successfully. Press ${undoShortcut} to undo.`,
+      severity: 'success',
+      life: 5000,
+    })
+  }
+
+  const failedToast = () => toast.add({
+    summary: 'Failed to load graph from link 😕',
+    severity: 'error',
+    life: 5000,
+  })
+
+  router.replace({ path: route.path, query: {} });
+
+  if (typeof compressedAndUriEncodedTransitData !== 'string') {
+    console.error('graph share failed - serialized transit data not a string')
+    failedToast()
+    return
+  }
+
+  try {
+    const decodedUriComponent = decompressFromEncodedURIComponent(compressedAndUriEncodedTransitData);
+    const transitData = decodeCompressedTransitData(decodedUriComponent)
+
+    // wait one tick to allow graph in localStorage to be loaded before overwriting
+    setTimeout(() => setTransitData(graph, transitData), 0)
+
+    successToast()
+  } catch {
+    console.error('graph share failed - could not parse graph transit data')
+    failedToast()
+  }
+}
+
 /**
- * bootstraps and breaks down a graph centric product, connecting to a room if a room id is provided
- * in the query and performing various other configuration tasks such as setting the document title.
+ * bootstraps and breaks down a graph product by:
+ * - connecting to a room if a room id is provided query param
+ * - loads a graph sent in a query param
+ * - sets the document title
+ * - resets the state of the product when torn down
  *
  * @param graph the graph instance of the product
  * @param product the product info for the product (inferred from the route if not provided)
@@ -36,6 +94,9 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   document.title = `${name} - Magic Graphs`;
 
   globalGraph.value = graph;
+
+  const sharedGraph = route.query[SHARE_GRAPH_QUERY_PARAM_KEY]
+  if (sharedGraph) loadSharedGraphFromQuery(graph, sharedGraph)
 
   onMounted(() => {
     if (!roomId) return;

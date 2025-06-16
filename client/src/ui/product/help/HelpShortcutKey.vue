@@ -7,7 +7,9 @@
     keyboardKey: Shortcut['binding'];
   }>();
 
-  const KEYBOARD_KEY_TO_USER_STRING: Record<string, string> = {
+  const KEYBOARD_KEY_TO_USER_STRING: Partial<
+    Record<Shortcut['binding'], string>
+  > = {
     meta: '⌘',
   };
 
