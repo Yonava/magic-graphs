@@ -50,7 +50,7 @@
   <div
     @mousemove="handleMouseOver"
     @click="handleClick"
-    class="relative overflow-hidden h-4 w-full z-1"
+    class="relative overflow-hidden h-4 w-full z-1 cursor-pointer"
   >
     <div
       :class="`absolute top-0 left-0 h-full z-0`"
@@ -65,7 +65,6 @@
       :style="{
         backgroundColor: colors.primary + '90',
         width: `${progressPercentage(previewProgress ?? props.range[0])}%`,
-        transition: `width ${props.transitionTimeMs}ms ${props.transitionEasing}`,
       }"
     ></div>
   </div>
