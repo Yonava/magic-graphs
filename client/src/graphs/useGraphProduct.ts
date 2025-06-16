@@ -29,8 +29,30 @@ const loadSharedGraphFromQuery = (
   graph: Graph,
   compressedAndUriEncodedTransitData: LocationQueryValue | LocationQueryValue[]
 ) => {
+  const router = useRouter();
+  const route = useRoute();
+  const toast = useToast()
+
+  const successToast = () => {
+    const undoShortcut = USER_PLATFORM === 'Mac' ? '⌘+Z' : 'Ctrl+Z'
+    toast.add({
+      summary: `Loaded graph from link successfully. Press ${undoShortcut} to undo.`,
+      severity: 'success',
+      life: 5000,
+    })
+  }
+
+  const failedToast = () => toast.add({
+    summary: 'Failed to load graph from link 😕',
+    severity: 'error',
+    life: 5000,
+  })
+
+  router.replace({ path: route.path, query: {} });
+
   if (typeof compressedAndUriEncodedTransitData !== 'string') {
     console.error('graph share failed - serialized transit data not a string')
+    failedToast()
     return
   }
 
@@ -38,25 +60,13 @@ const loadSharedGraphFromQuery = (
     const decodedUriComponent = decompressFromEncodedURIComponent(compressedAndUriEncodedTransitData);
     const transitData = decodeCompressedTransitData(decodedUriComponent)
 
-    console.log(JSON.stringify(transitData))
-
     // wait one tick to allow graph in localStorage to be loaded before overwriting
     setTimeout(() => setTransitData(graph, transitData), 0)
 
-    const toast = useToast()
-    const router = useRouter();
-    const route = useRoute();
-
-    const undoShortcut = USER_PLATFORM === 'Mac' ? '⌘+Z' : 'Ctrl+Z'
-    toast.add({
-      summary: `Loaded graph from link successfully. Press ${undoShortcut} to undo.`,
-      severity: 'success',
-      life: 5000,
-    })
-
-    router.replace({ path: route.path, query: {} });
+    successToast()
   } catch {
     console.error('graph share failed - could not parse graph transit data')
+    failedToast()
   }
 }
 
