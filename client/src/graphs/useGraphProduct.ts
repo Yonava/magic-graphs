@@ -5,9 +5,10 @@ import { collabControls } from '@graph/collab';
 import type { ProductInfo } from 'src/types';
 import { routeToProduct } from '@utils/product';
 import { graph as globalGraph } from '@graph/global';
-import { setTransitData } from './transit';
+import { decodeCompressedTransitData, setTransitData } from './transit';
 import { useToast } from 'primevue/usetoast';
 import { USER_PLATFORM } from './plugins/shortcut';
+import { decompressFromEncodedURIComponent } from 'lz-string';
 
 /**
  * query param key we assign an encoded graph to when sharing
@@ -26,15 +27,19 @@ export const getProductFromCurrentRoute = (routePath: string) => {
 
 const loadSharedGraphFromQuery = (
   graph: Graph,
-  serializedTransitData: LocationQueryValue | LocationQueryValue[]
+  compressedAndUriEncodedTransitData: LocationQueryValue | LocationQueryValue[]
 ) => {
-  if (typeof serializedTransitData !== 'string') {
+  if (typeof compressedAndUriEncodedTransitData !== 'string') {
     console.error('graph share failed - serialized transit data not a string')
     return
   }
 
   try {
-    const transitData = JSON.parse(serializedTransitData)
+    const decodedUriComponent = decompressFromEncodedURIComponent(compressedAndUriEncodedTransitData);
+    const transitData = decodeCompressedTransitData(decodedUriComponent)
+
+    console.log(JSON.stringify(transitData))
+
     // wait one tick to allow graph in localStorage to be loaded before overwriting
     setTimeout(() => setTransitData(graph, transitData), 0)
 

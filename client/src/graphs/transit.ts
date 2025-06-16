@@ -1,4 +1,5 @@
-import type { Graph } from "./types";
+import { generateId } from "@utils/id";
+import type { GEdge, GNode, Graph } from "./types";
 
 /**
  * all data that will be transferred between graph instances
@@ -43,4 +44,74 @@ export const setTransitData = (g: Graph, transitData: GraphTransitData) => {
   cameraState.panX.value = transitData.cameraPanX
   cameraState.panY.value = transitData.cameraPanY
   cameraState.zoom.value = transitData.cameraZoom
+}
+
+/**
+ * a lower fidelity state of the graph for when transferring data is expensive
+ */
+export const encodeCompressedTransitData = (data: GraphTransitData) => {
+  const { nodes, edges, cameraPanX, cameraPanY, cameraZoom } = data
+
+  const nodeData = nodes.reduce((compressedStr, node) => {
+    const x = Math.round(node.x / 10)
+    const y = Math.round(node.y / 10)
+    return compressedStr + `-${node.label},${x},${y}`
+  }, '').slice(1)
+
+  const edgeData = edges.reduce((compressedStr, edge) => {
+    const from = nodes.findIndex((n) => n.id === edge.from)
+    const to = nodes.findIndex((n) => n.id === edge.to)
+    // if most common default, no need to send it
+    const label = edge.label === '1' ? `,${edge.label}` : ''
+    return compressedStr + `-${from},${to}` + label
+  }, '').slice(1)
+
+  const panX = Math.round(cameraPanX / 10)
+  const panY = Math.round(cameraPanY / 10)
+  const zoom = cameraZoom.toFixed(2)
+
+  return `${nodeData}+${edgeData}+${panX}+${panY}+${zoom}`
+}
+
+/**
+ * undoes the compression done to graph transit data in {@link encodeCompressedTransitData}
+ */
+export const decodeCompressedTransitData = (encodedData: string): GraphTransitData => {
+  const [
+    encodedNodes,
+    encodedEdges,
+    encodedPanX,
+    encodedPanY,
+    encodedZoom,
+  ] = encodedData.split('+')
+
+  const nodes = encodedNodes.split('-').map((encodedNode): GNode => {
+    const [encodedLabel, encodedX, encodedY] = encodedNode.split(',')
+    return {
+      id: generateId(),
+      label: encodedLabel,
+      x: Number(encodedX) * 10,
+      y: Number(encodedY) * 10,
+    }
+  })
+
+  const edges = encodedEdges.split('-').map((encodedEdge): GEdge => {
+    const [encodedFrom, encodedTo, encodedLabel] = encodedEdge.split(',')
+    return {
+      id: generateId(),
+      label: encodedLabel ?? '1',
+      from: nodes[Number(encodedFrom)].id,
+      to: nodes[Number(encodedTo)].id,
+    }
+  })
+
+  return {
+    nodes,
+    edges,
+    cameraPanX: Number(encodedPanX) * 10,
+    cameraPanY: Number(encodedPanY) * 10,
+    cameraZoom: Number(encodedZoom),
+
+    annotations: [],
+  }
 }
