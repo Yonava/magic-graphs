@@ -7,7 +7,7 @@ import keys from 'ctrl-keys';
 import type { Key } from 'ctrl-keys';
 import type { PlatformShortcuts } from './types';
 
-const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
+export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
   ? 'Mac'
   : 'Windows';
 

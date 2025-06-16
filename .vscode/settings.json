@@ -11,7 +11,8 @@
     "Spacebar",
     "toastservice",
     "unlabel",
-    "unref"
+    "unref",
+    "usetoast"
   ],
   "editor.formatOnSave": true
 }

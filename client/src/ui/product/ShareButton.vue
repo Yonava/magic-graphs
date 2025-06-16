@@ -6,10 +6,13 @@
   import { nonNullGraph as graph } from '@graph/global';
   import { useRoute } from 'vue-router';
   import { SHARE_GRAPH_QUERY_PARAM_KEY } from '@graph/useGraphProduct';
+  import { useToast } from 'primevue/usetoast';
 
   const route = useRoute();
   const linkCopied = ref(false);
   const clipboardCopyError = ref(false);
+
+  const toast = useToast();
 
   const resetButtonState = () => {
     linkCopied.value = false;
@@ -26,8 +29,18 @@
       const url = `${baseUrl}?${shareKey}=${serializedData}`;
       await navigator.clipboard.writeText(url);
       linkCopied.value = true;
+      toast.add({
+        summary: 'Graph Share Link Copied to Clipboard!',
+        life: 3000,
+        severity: 'success',
+      });
     } catch (e) {
       clipboardCopyError.value = true;
+      toast.add({
+        summary: 'Failed to copy share link to clipboard!',
+        life: 3000,
+        severity: 'error',
+      });
       console.error(e);
     } finally {
       setTimeout(resetButtonState, 3000);

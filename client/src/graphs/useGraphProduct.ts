@@ -1,11 +1,13 @@
 import { onBeforeUnmount, onMounted } from 'vue';
-import { useRoute, type LocationQueryValue } from 'vue-router';
+import { useRoute, useRouter, type LocationQueryValue } from 'vue-router';
 import type { Graph } from '@graph/types';
 import { collabControls } from '@graph/collab';
 import type { ProductInfo } from 'src/types';
 import { routeToProduct } from '@utils/product';
 import { graph as globalGraph } from '@graph/global';
 import { setTransitData } from './transit';
+import { useToast } from 'primevue/usetoast';
+import { USER_PLATFORM } from './plugins/shortcut';
 
 /**
  * query param key we assign an encoded graph to when sharing
@@ -35,6 +37,19 @@ const loadSharedGraphFromQuery = (
     const transitData = JSON.parse(serializedTransitData)
     // wait one tick to allow graph in localStorage to be loaded before overwriting
     setTimeout(() => setTransitData(graph, transitData), 0)
+
+    const toast = useToast()
+    const router = useRouter();
+    const route = useRoute();
+
+    const undoShortcut = USER_PLATFORM === 'Mac' ? '⌘+Z' : 'Ctrl+Z'
+    toast.add({
+      summary: `Loaded graph from link successfully. Press ${undoShortcut} to undo.`,
+      severity: 'success',
+      life: 5000,
+    })
+
+    router.replace({ path: route.path, query: {} });
   } catch {
     console.error('graph share failed - could not parse graph transit data')
   }
