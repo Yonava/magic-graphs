@@ -46,6 +46,9 @@ export const setTransitData = (g: Graph, transitData: GraphTransitData) => {
   cameraState.zoom.value = transitData.cameraZoom
 }
 
+const SCALE_FACTOR = 10
+const DEFAULT_EDGE_LABEL = '1'
+
 /**
  * takes graph transit data and converts it into an encoded string with lower fidelity
  * data that is perfect for sending over the wire or when transferring data is expensive.
@@ -56,8 +59,8 @@ export const encodeCompressedTransitData = (data: GraphTransitData) => {
   const { nodes, edges, cameraPanX, cameraPanY, cameraZoom } = data
 
   const nodeData = nodes.reduce((compressedStr, node) => {
-    const x = Math.round(node.x / 10)
-    const y = Math.round(node.y / 10)
+    const x = Math.round(node.x / SCALE_FACTOR)
+    const y = Math.round(node.y / SCALE_FACTOR)
     return compressedStr + `-${node.label},${x},${y}`
   }, '').slice(1)
 
@@ -65,12 +68,12 @@ export const encodeCompressedTransitData = (data: GraphTransitData) => {
     const from = nodes.findIndex((n) => n.id === edge.from)
     const to = nodes.findIndex((n) => n.id === edge.to)
     // if most common default, no need to send it
-    const label = edge.label === '1' ? `,${edge.label}` : ''
+    const label = edge.label === DEFAULT_EDGE_LABEL ? '' : `,${edge.label}`
     return compressedStr + `-${from},${to}` + label
   }, '').slice(1)
 
-  const panX = Math.round(cameraPanX / 10)
-  const panY = Math.round(cameraPanY / 10)
+  const panX = Math.round(cameraPanX / SCALE_FACTOR)
+  const panY = Math.round(cameraPanY / SCALE_FACTOR)
   const zoom = cameraZoom.toFixed(2)
 
   return `${nodeData}+${edgeData}+${panX}+${panY}+${zoom}`
@@ -94,8 +97,8 @@ export const decodeCompressedTransitData = (encodedData: string): GraphTransitDa
     return {
       id: generateId(),
       label: encodedLabel,
-      x: Number(encodedX) * 10,
-      y: Number(encodedY) * 10,
+      x: Number(encodedX) * SCALE_FACTOR,
+      y: Number(encodedY) * SCALE_FACTOR,
     }
   })
 
@@ -103,7 +106,7 @@ export const decodeCompressedTransitData = (encodedData: string): GraphTransitDa
     const [encodedFrom, encodedTo, encodedLabel] = encodedEdge.split(',')
     return {
       id: generateId(),
-      label: encodedLabel ?? '1',
+      label: encodedLabel ?? DEFAULT_EDGE_LABEL,
       from: nodes[Number(encodedFrom)].id,
       to: nodes[Number(encodedTo)].id,
     }
@@ -112,8 +115,8 @@ export const decodeCompressedTransitData = (encodedData: string): GraphTransitDa
   return {
     nodes,
     edges,
-    cameraPanX: Number(encodedPanX) * 10,
-    cameraPanY: Number(encodedPanY) * 10,
+    cameraPanX: Number(encodedPanX) * SCALE_FACTOR,
+    cameraPanY: Number(encodedPanY) * SCALE_FACTOR,
     cameraZoom: Number(encodedZoom),
 
     annotations: [],
