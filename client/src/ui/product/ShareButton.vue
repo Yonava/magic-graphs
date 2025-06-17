@@ -28,7 +28,7 @@
       const compressedUriData = compressToEncodedURIComponent(data);
 
       const shareKey = SHARE_GRAPH_QUERY_PARAM_KEY;
-      const baseUrl = `${location.host}${route.path}`;
+      const baseUrl = `${location.origin}${route.path}`;
       const url = `${baseUrl}?${shareKey}=${compressedUriData}`;
 
       await navigator.clipboard.writeText(url);
