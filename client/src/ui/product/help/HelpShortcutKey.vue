@@ -40,6 +40,7 @@
       'mx-[1px]',
       'text-xs',
       'capitalize',
+      'border-current',
     ]"
   >
     <CIcon
