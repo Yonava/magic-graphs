@@ -104,7 +104,6 @@ export const decodeCompressedTransitData = (encodedData: string): GraphTransitDa
 
   const edges = encodedEdges.split('-').map((encodedEdge): GEdge => {
     const [encodedFrom, encodedTo, encodedLabel] = encodedEdge.split(',')
-    console.log('label', encodedLabel)
     return {
       id: generateId(),
       label: encodedLabel ?? DEFAULT_EDGE_LABEL,
