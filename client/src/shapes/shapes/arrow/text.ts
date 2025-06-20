@@ -1,13 +1,8 @@
-import {
-  drawTextWithTextArea,
-  drawTextMatteWithTextArea,
-  getTextAreaDimension,
-  getFullTextArea,
-} from '@shape/text';
 import type { Coordinate } from '@shape/types/utility';
 import { getTextAreaLocationOnLine } from '@shape/shapes/line/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import type { ArrowSchema } from '.';
+import { drawTextMatteWithTextArea, drawTextWithTextArea, getFullTextArea, getTextAreaDimension } from '@shape/text/text';
 
 export const getTextAreaLocationOnArrow = (arrow: ArrowSchema) => {
   const { textArea } = arrow;

@@ -3,12 +3,12 @@ import {
   drawTextAreaOnRect,
   drawTextAreaMatteOnRect,
   drawTextOnRect,
-  getTextAreaLocationOnRect,
+  getTextAreaAnchorPoint,
   rectTextHitbox,
 } from '@shape/shapes/rect/text';
 
 export const getTextAreaLocationOnImage = (image: ImageSchema) => {
-  return getTextAreaLocationOnRect(image);
+  return getTextAreaAnchorPoint(image);
 };
 
 /**

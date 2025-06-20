@@ -17,6 +17,28 @@ export type ShapeName =
   | 'star'
   | 'image';
 
+/**
+ * interface for shapes that support text areas
+ */
+export type ShapeTextProps = {
+  /**
+   * only draws the matte of the text area
+   */
+  drawTextAreaMatte: (ctx: CanvasRenderingContext2D) => void;
+  /**
+   * only draws the text content of the text area
+   */
+  drawText: (ctx: CanvasRenderingContext2D) => void;
+  /**
+   * draws the text area (ie both matte and text)
+   */
+  drawTextArea: (ctx: CanvasRenderingContext2D) => void;
+  /**
+   * returns true if the point is within the text area
+   */
+  textHitbox: (point: Coordinate) => boolean;
+}
+
 export type ShapeProps = {
   /**
    * the name of the shape type, ie `"circle"`, `"line"`, etc
@@ -35,21 +57,6 @@ export type ShapeProps = {
   drawShape: (ctx: CanvasRenderingContext2D) => void;
 
   /**
-   * draws the text area of the shape (ie both matte and text)
-   */
-  drawTextArea?: (ctx: CanvasRenderingContext2D) => void;
-
-  /**
-   * only draws the matte of the text area
-   */
-  drawTextAreaMatte?: (ctx: CanvasRenderingContext2D) => void;
-
-  /**
-   * only draws the text content of the text area
-   */
-  drawText?: (ctx: CanvasRenderingContext2D) => void;
-
-  /**
    * returns true if the point is within the shape or text area of the shape
    */
   hitbox: (point: Coordinate) => boolean;
@@ -58,11 +65,6 @@ export type ShapeProps = {
    * returns true if the point is within the area of the shape
    */
   shapeHitbox: (point: Coordinate) => boolean;
-
-  /**
-   * returns true if the point is within the text area of the shape
-   */
-  textHitbox?: (point: Coordinate) => boolean;
 
   /**
    * returns true if the point is within the rectangular bounding box of the shape
@@ -82,7 +84,7 @@ export type ShapeProps = {
     ctx: CanvasRenderingContext2D,
     handler: (str: string) => void,
   ) => void;
-};
+} & Partial<ShapeTextProps>;
 
 
 /**

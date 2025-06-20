@@ -1,14 +1,6 @@
 import { rectHitbox, rectEfficientHitbox, getRectBoundingBox } from './hitbox';
 import { drawRectWithCtx } from './draw';
-import {
-  rectTextHitbox,
-  drawTextAreaOnRect,
-  drawTextAreaMatteOnRect,
-  drawTextOnRect,
-  getTextAreaLocationOnRect,
-} from './text';
-import { getFullTextArea } from '@shape/text';
-import { engageTextarea } from '@shape/textarea';
+import { engageTextarea } from '@shape/text/textarea';
 import type {
   AnchorPoint,
   FillColor,
@@ -71,7 +63,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     handler: (str: string) => void,
   ) => {
     if (!options.textArea) return;
-    const location = getTextAreaLocationOnRect(options);
+    const location = getTextAreaAnchorPoint(options);
     const fullTextArea = getFullTextArea(options.textArea, location);
     engageTextarea(ctx, fullTextArea, handler);
   };

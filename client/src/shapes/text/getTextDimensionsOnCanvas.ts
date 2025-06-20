@@ -1,6 +1,6 @@
+import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults/utility';
+import type { TextBlock } from '@shape/types/utility';
 import { getCtx } from '@utils/ctx';
-import type { TextBlock } from './types/utility';
-import { TEXT_BLOCK_DEFAULTS } from './defaults/utility';
 
 const canvas = document.createElement('canvas');
 const ctx = getCtx(canvas);

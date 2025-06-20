@@ -1,10 +1,56 @@
 import type { DeepRequired } from 'ts-essentials';
 import { TEXT_BLOCK_DEFAULTS, TEXTAREA_DEFAULTS } from '@shape/defaults/utility';
-import { rect } from './shapes/rect';
-import type { Coordinate, TextArea, TextAreaWithAnchorPoint, TextBlock } from './types/utility';
-import { getTextDimensionsOnCanvas } from './useTextDimensionsOnCanvas';
+import { getTextDimensionsOnCanvas } from './getTextDimensionsOnCanvas';
+import type { Coordinate, TextArea, TextAreaWithAnchorPoint, TextBlock } from '@shape/types/utility';
+import { rect } from '@shapes';
+import { rectHitbox } from '@shape/shapes/rect/hitbox';
+import type { ShapeTextProps } from '@shape/types';
 
 export const HORIZONTAL_TEXT_PADDING = 20;
+
+/**
+ * if a text area is provided, will return ShapeTextProps, otherwise undefined
+ */
+type ShapeTextPropsGetter = (at: Coordinate, textArea?: TextArea) => ShapeTextProps | undefined
+
+export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
+  if (!textArea) return
+
+  const textBlockWithDefaults: Required<TextBlock> = {
+    ...TEXT_BLOCK_DEFAULTS,
+    ...textArea.textBlock,
+  }
+
+  const textAreaWithDefaults: DeepRequired<TextAreaWithAnchorPoint> = {
+    at,
+    textBlock: textBlockWithDefaults,
+    color: textArea.color ?? TEXTAREA_DEFAULTS.color,
+    activeColor: textArea.activeColor ?? TEXTAREA_DEFAULTS.activeColor,
+  }
+
+  const { width, height } = getTextAreaDimension(textBlockWithDefaults);
+
+  const textHitbox = rectHitbox({
+    at,
+    width,
+    height,
+  });
+
+  const drawTextAreaMatte = drawTextMatteWithTextArea(textAreaWithDefaults);
+  const drawText = drawTextWithTextArea(textAreaWithDefaults)
+
+  const drawTextArea = (ctx: CanvasRenderingContext2D) => {
+    drawTextAreaMatte(ctx)
+    drawText(ctx)
+  }
+
+  return {
+    textHitbox,
+    drawTextAreaMatte,
+    drawText,
+    drawTextArea,
+  }
+}
 
 export const getTextAreaDimension = (text: Required<TextBlock>) => {
   const paddingVertical = HORIZONTAL_TEXT_PADDING;

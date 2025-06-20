@@ -1,10 +1,10 @@
 import type { DeepRequired } from 'ts-essentials';
-import { rectHitbox } from './shapes/rect/hitbox';
 import { HORIZONTAL_TEXT_PADDING } from './text';
-import type { TextAreaWithAnchorPoint } from './types/utility';
 import { getClientCoordinates } from '@canvas/coordinates';
-import type { RectSchema } from './shapes/rect';
-import { getTextDimensionsOnCanvas } from './useTextDimensionsOnCanvas';
+import type { TextAreaWithAnchorPoint } from '@shape/types/utility';
+import { getTextDimensionsOnCanvas } from './getTextDimensionsOnCanvas';
+import type { RectSchema } from '@shape/shapes/rect';
+import { rectHitbox } from '@shape/shapes/rect/hitbox';
 
 export const engageTextarea = (
   ctx: CanvasRenderingContext2D,
