@@ -85,7 +85,6 @@ export type ShapeProps = {
   getBoundingBox: () => BoundingBox;
 } & Partial<ShapeTextProps>;
 
-
 /**
  * props added to every shape in {@link ShapeFactoryWrapper}
  */

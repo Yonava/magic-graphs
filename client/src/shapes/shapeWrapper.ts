@@ -1,8 +1,8 @@
 import type { Shape, ShapeProps } from './types';
 
-export const shapeFactoryWrapper = (
-  shapeProps: ShapeProps,
-): Shape => {
+export type ShapeFactoryWrapper = (shapeProps: ShapeProps) => Shape
+
+export const shapeFactoryWrapper: ShapeFactoryWrapper = (shapeProps) => {
   return {
     ...shapeProps,
     /**
@@ -21,5 +21,3 @@ export const shapeFactoryWrapper = (
     },
   };
 };
-
-export type ShapeFactoryWrapper = typeof shapeFactoryWrapper
