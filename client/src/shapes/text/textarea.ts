@@ -2,7 +2,7 @@ import type { DeepRequired } from 'ts-essentials';
 import { HORIZONTAL_TEXT_PADDING } from './text';
 import { getClientCoordinates } from '@canvas/coordinates';
 import type { TextAreaWithAnchorPoint } from '@shape/types/utility';
-import { getTextDimensionsOnCanvas } from './getTextDimensionsOnCanvas';
+import { getTextDimensions } from './getTextDimensions';
 import type { RectSchema } from '@shape/shapes/rect';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 
@@ -13,7 +13,7 @@ export const engageTextarea = (
 ) => {
   const { at, textBlock, activeColor: bgColor } = textArea;
 
-  const { width, descent } = getTextDimensionsOnCanvas(textBlock);
+  const { width, descent } = getTextDimensions(textBlock);
 
   const { clientX, clientY, zoom } = getClientCoordinates(at, ctx)
 
