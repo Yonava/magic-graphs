@@ -37,6 +37,13 @@ export type ShapeTextProps = {
    * returns true if the point is within the text area
    */
   textHitbox: (point: Coordinate) => boolean;
+  /**
+   * activates the text area of the shape
+   */
+  activateTextArea: (
+    ctx: CanvasRenderingContext2D,
+    handler: (str: string) => void,
+  ) => void;
 }
 
 export type ShapeProps = {
@@ -76,14 +83,6 @@ export type ShapeProps = {
    * of the area comprising the bounding box
    */
   getBoundingBox: () => BoundingBox;
-
-  /**
-   * activates the text area of the shape
-   */
-  activateTextArea?: (
-    ctx: CanvasRenderingContext2D,
-    handler: (str: string) => void,
-  ) => void;
 } & Partial<ShapeTextProps>;
 
 

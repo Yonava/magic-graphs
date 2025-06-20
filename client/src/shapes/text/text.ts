@@ -5,6 +5,7 @@ import type { Coordinate, TextArea, TextAreaWithAnchorPoint, TextBlock } from '@
 import { rect } from '@shapes';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import type { ShapeTextProps } from '@shape/types';
+import { engageTextarea } from './textarea';
 
 export const HORIZONTAL_TEXT_PADDING = 20;
 
@@ -44,11 +45,19 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
     drawText(ctx)
   }
 
+  const activateTextArea = (
+    ctx: CanvasRenderingContext2D,
+    handler: (str: string) => void,
+  ) => {
+    engageTextarea(ctx, textAreaWithDefaults, handler);
+  };
+
   return {
     textHitbox,
     drawTextAreaMatte,
     drawText,
     drawTextArea,
+    activateTextArea,
   }
 }
 

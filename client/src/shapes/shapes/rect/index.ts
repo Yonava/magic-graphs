@@ -1,6 +1,5 @@
 import { rectHitbox, rectEfficientHitbox, getRectBoundingBox } from './hitbox';
 import { drawRectWithCtx } from './draw';
-import { engageTextarea } from '@shape/text/textarea';
 import type {
   AnchorPoint,
   FillColor,
@@ -18,16 +17,19 @@ import {
 } from '@shape/defaults/schema';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { validateBorderRadius } from '../../optionsValidator';
+import { getShapeTextProps } from '@shape/text/text';
+import { getTextAreaAnchorPoint } from './text';
 
-export type RectSchema = AnchorPoint &
+export type RectSchema = {
+  width: number;
+  height: number;
+} &
+  AnchorPoint &
   FillColor &
   Stroke &
   TextArea &
   BorderRadius &
-  Rotation & {
-    width: number;
-    height: number;
-  };
+  Rotation;
 
 export const RECT_SCHEMA_DEFAULTS = {
   ...BACKGROUND_COLOR_DEFAULTS,
@@ -41,32 +43,20 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
   const drawShape = drawRectWithCtx(options);
 
   const shapeHitbox = rectHitbox(options);
-  const textHitbox = rectTextHitbox(options);
   const efficientHitbox = rectEfficientHitbox(options);
-  const hitbox = (point: Coordinate) =>
-    textHitbox?.(point) || shapeHitbox(point);
 
   const getBoundingBox = getRectBoundingBox(options);
 
-  const drawTextArea = drawTextAreaOnRect(options);
-
-  const drawTextAreaMatte = drawTextAreaMatteOnRect(options);
-  const drawText = drawTextOnRect(options);
+  const anchorPt = getTextAreaAnchorPoint(options)
+  const shapeTextProps = getShapeTextProps(anchorPt, options.textArea)
 
   const draw = (ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
-    drawTextArea?.(ctx);
+    shapeTextProps?.drawTextArea(ctx);
   };
 
-  const activateTextArea = (
-    ctx: CanvasRenderingContext2D,
-    handler: (str: string) => void,
-  ) => {
-    if (!options.textArea) return;
-    const location = getTextAreaAnchorPoint(options);
-    const fullTextArea = getFullTextArea(options.textArea, location);
-    engageTextarea(ctx, fullTextArea, handler);
-  };
+  const hitbox = (point: Coordinate) =>
+    shapeTextProps?.textHitbox(point) || shapeHitbox(point);
 
   return shapeFactoryWrapper({
     name: 'rect',
@@ -74,16 +64,12 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
     draw,
 
     drawShape,
-    drawTextArea,
-    drawTextAreaMatte,
-    drawText,
 
     hitbox,
     shapeHitbox,
-    textHitbox,
     efficientHitbox,
     getBoundingBox,
 
-    activateTextArea,
+    ...shapeTextProps,
   });
 };
