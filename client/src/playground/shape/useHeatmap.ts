@@ -2,11 +2,11 @@ import { computed, ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import colors from '@colors';
 import type { Coordinate } from '@shape/types/utility';
-import { circle } from '@shapes';
-import type { CircleSchema } from '@shape/shapes/circle';
 import { getCtx } from '@utils/ctx';
 import { debounce } from '@utils/debounce';
 import type { Shape } from '@shape/types';
+import type { CircleSchema } from '@shapes/circle/types';
+import { circle } from '@shapes/circle';
 
 /**
  * the color when the point is not hitting any shape

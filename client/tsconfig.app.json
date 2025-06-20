@@ -11,7 +11,7 @@
       "@ui/*": ["./src/ui/*"],
       "@utils/*": ["./src/utils/*"],
       "@colors": ["./src/utils/colors.ts"],
-      "@shapes": ["./src/shapes/index.ts"],
+      "@shapes/*": ["./src/shapes/shapes/*"],
 
       "@graph/*": ["./src/graphs/*"],
       "@shape/*": ["./src/shapes/*"],

@@ -26,7 +26,7 @@ import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types';
 import type { GraphAtMousePosition, HistoryOption } from './types';
 import { useGraphCursor } from './useGraphCursor';
 import { useAnimationController } from '@graph/animationController';
-import { useOptimizedShapes } from '@shapes';
+import { useOptimizedShapes } from '@shapes/..';
 import { usePluginHoldController } from './usePluginHold';
 import type { MagicCanvasProps } from '@canvas/types';
 

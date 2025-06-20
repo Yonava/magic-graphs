@@ -27,7 +27,7 @@ export default defineConfig({
         new URL('./src/utils/colors.ts', import.meta.url),
       ),
       '@shapes': fileURLToPath(
-        new URL('./src/shapes/index.ts', import.meta.url),
+        new URL('./src/shapes/shapes', import.meta.url),
       ),
 
       '@graph': fileURLToPath(new URL('./src/graphs', import.meta.url)),

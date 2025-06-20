@@ -1,14 +1,15 @@
 import { onMounted, defineComponent, h, watch } from "vue";
-import { cross, rect, square } from "@shapes";
-import type { SquareSchema } from "./shapes/square";
-import type { CrossSchema } from "./shapes/cross";
+import { cross, type CrossSchema } from "./shapes/cross";
 import { getCtx } from "@utils/ctx";
 import { generateId } from "@utils/id";
-import type { RectSchema } from "./shapes/rect";
 import type { BoundingBox, Coordinate } from "./types/utility";
 import type { ShapeFactory } from "./types";
 import type { AnchorPoint } from "./types/schema";
 import { getDevicePixelRatio } from "@canvas/camera/utils";
+import type { RectSchema } from "@shapes/rect/types";
+import { rect } from "@shapes/rect";
+import { square } from "@shapes/square";
+import type { SquareSchema } from "@shapes/square/types";
 
 const atMarkerSchema = (at: Coordinate): CrossSchema => ({
   at,

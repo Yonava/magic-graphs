@@ -2,10 +2,10 @@ import type { DeepRequired } from 'ts-essentials';
 import { TEXT_BLOCK_DEFAULTS, TEXTAREA_DEFAULTS } from '@shape/defaults/utility';
 import { getTextDimensions } from './getTextDimensions';
 import type { Coordinate, TextArea, TextAreaWithAnchorPoint, TextBlock } from '@shape/types/utility';
-import { rect } from '@shapes';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import type { ShapeTextProps } from '@shape/types';
 import { engageTextarea } from './textarea';
+import { rect } from '@shape/shapes/rect';
 
 export const HORIZONTAL_TEXT_PADDING = 20;
 
