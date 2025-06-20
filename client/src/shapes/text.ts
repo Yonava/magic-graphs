@@ -1,19 +1,15 @@
 import type { DeepRequired } from 'ts-essentials';
 import { TEXT_BLOCK_DEFAULTS, TEXTAREA_DEFAULTS } from '@shape/defaults/utility';
 import { rect } from './shapes/rect';
-import { useTextDimensionOnCanvas } from './useTextDimensionsOnCanvas';
-import { useMemoize } from '@vueuse/core';
 import type { Coordinate, TextArea, TextAreaWithAnchorPoint, TextBlock } from './types/utility';
+import { getTextDimensionsOnCanvas } from './useTextDimensionsOnCanvas';
 
-const { getTextDimensionsOnCanvas } = useTextDimensionOnCanvas();
 export const HORIZONTAL_TEXT_PADDING = 20;
 
 export const getTextAreaDimension = (text: Required<TextBlock>) => {
   const paddingVertical = HORIZONTAL_TEXT_PADDING;
 
-  const { width, height, ascent, descent } = useMemoize(() =>
-    getTextDimensionsOnCanvas(text),
-  )();
+  const { width, height, ascent, descent } = getTextDimensionsOnCanvas(text)
 
   return {
     width: Math.max(

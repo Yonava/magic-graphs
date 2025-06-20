@@ -1,10 +1,10 @@
 import type { DeepRequired } from 'ts-essentials';
 import { rectHitbox } from './shapes/rect/hitbox';
-import { useTextDimensionOnCanvas } from './useTextDimensionsOnCanvas';
 import { HORIZONTAL_TEXT_PADDING } from './text';
 import type { TextAreaWithAnchorPoint } from './types/utility';
 import { getClientCoordinates } from '@canvas/coordinates';
 import type { RectSchema } from './shapes/rect';
+import { getTextDimensionsOnCanvas } from './useTextDimensionsOnCanvas';
 
 export const engageTextarea = (
   ctx: CanvasRenderingContext2D,
@@ -12,8 +12,6 @@ export const engageTextarea = (
   handler: (str: string) => void,
 ) => {
   const { at, textBlock, activeColor: bgColor } = textArea;
-
-  const { getTextDimensionsOnCanvas } = useTextDimensionOnCanvas();
 
   const { width, descent } = getTextDimensionsOnCanvas(textBlock);
 

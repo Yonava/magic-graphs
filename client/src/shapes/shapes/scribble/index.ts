@@ -8,7 +8,7 @@ import {
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 import type { FillColor } from '@shape/types/schema';
-import { shapeFactoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 
 export type ScribbleSchema = FillColor & {
   type: 'draw' | 'erase';

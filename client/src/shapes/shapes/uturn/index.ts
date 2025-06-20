@@ -29,7 +29,7 @@ import type {
   Rotation,
   TextArea,
 } from '@shape/types/schema';
-import { shapeFactoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 
 export type UTurnSchema = AnchorPoint &
   Rotation &

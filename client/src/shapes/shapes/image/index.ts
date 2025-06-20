@@ -18,7 +18,7 @@ import type { ShapeFactory } from '@shape/types';
 import type { Coordinate } from '@shape/types/utility';
 import type { LoadImageOptions } from './cache';
 import type { AnchorPoint, Rotation, TextArea } from '@shape/types/schema';
-import { shapeFactoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 
 export type ImageSchema = AnchorPoint &
   Rotation &

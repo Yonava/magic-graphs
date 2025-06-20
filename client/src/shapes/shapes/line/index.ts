@@ -21,7 +21,7 @@ import {
   BACKGROUND_COLOR_DEFAULTS,
   LINE_WIDTH_DEFAULTS,
 } from '@shape/defaults/schema';
-import { shapeFactoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 
 export type LineSchema = LineWidth &
   TextArea &

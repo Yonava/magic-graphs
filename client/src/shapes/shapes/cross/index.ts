@@ -18,7 +18,7 @@ import {
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '@shape/defaults/schema';
-import { shapeFactoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 
 export type CrossSchema = AnchorPoint &
   Rotation &

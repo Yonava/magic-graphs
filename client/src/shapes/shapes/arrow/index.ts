@@ -18,7 +18,7 @@ import {
 } from './text';
 import { getFullTextArea } from '@shape/text';
 import { getArrowHeadSize } from '@shape/helpers';
-import { shapeFactoryWrapper } from '@shape/factories';
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 
 export type ArrowSchema = LineSchema & {
   arrowHeadSize?: (width: number) => {
