@@ -1,3 +1,6 @@
+// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
+// eslint-disable-next-line
+import type { ShapeFactoryWrapper } from '@shape/shapeWrapper';
 import type { BoundingBox, Coordinate } from './utility';
 
 export type ShapeName =
@@ -81,14 +84,18 @@ export type ShapeProps = {
   ) => void;
 };
 
-export type ShapeUtilProps = {
+
+/**
+ * props added to every shape in {@link ShapeFactoryWrapper}
+ */
+export type ShapeWrapperProps = {
   /**
    * returns the coordinates of the center point of the shape's bounding box
    */
   getCenterPoint: () => Coordinate;
 };
 
-export type Shape = ShapeProps & ShapeUtilProps;
+export type Shape = ShapeProps & ShapeWrapperProps;
 
 /**
  * the process all schemas go through to become shapes
