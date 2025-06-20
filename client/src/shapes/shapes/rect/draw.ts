@@ -1,6 +1,6 @@
 import { toBorderRadiusArray, normalizeBoundingBox } from '@shape/helpers';
-import { RECT_SCHEMA_DEFAULTS } from '.';
-import type { RectSchema } from '.';
+import type { RectSchema } from './types';
+import { RECT_SCHEMA_DEFAULTS } from './defaults';
 
 export const drawRectWithCtx =
   (options: RectSchema) => (ctx: CanvasRenderingContext2D) => {

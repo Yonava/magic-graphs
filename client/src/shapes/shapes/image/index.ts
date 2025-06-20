@@ -4,27 +4,12 @@ import {
   imageEfficientHitbox,
   imageHitbox,
 } from './hitbox';
-import { RECT_SCHEMA_DEFAULTS } from '@shape/shapes/rect';
 import type { ShapeFactory } from '@shape/types';
 import type { Coordinate } from '@shape/types/utility';
-import type { LoadImageOptions } from './cache';
-import type { AnchorPoint, Rotation, TextArea } from '@shape/types/schema';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
 import { getCenterPoint } from '@shape/helpers';
-
-export type ImageSchema = {
-  src: string;
-  width: number;
-  height: number;
-} & Partial<LoadImageOptions> &
-  AnchorPoint &
-  Rotation &
-  TextArea;
-
-export const IMAGE_SCHEMA_DEFAULTS = {
-  ...RECT_SCHEMA_DEFAULTS,
-} as const satisfies Partial<ImageSchema>;
+import type { ImageSchema } from './types';
 
 export const image: ShapeFactory<ImageSchema> = (options) => {
   if (options.width < 0 || options.height < 0) {

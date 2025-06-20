@@ -1,6 +1,6 @@
-import type { LineSchema } from '@shape/shapes/line';
 import { getAngle } from '@shape/helpers';
-import { LINE_SCHEMA_DEFAULTS } from '.';
+import { LINE_SCHEMA_DEFAULTS } from './defaults';
+import type { LineSchema } from './types';
 
 export const getTextAreaAnchorPoint = (line: LineSchema) => {
   if (!line.textArea) return

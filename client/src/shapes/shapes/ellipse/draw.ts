@@ -1,4 +1,5 @@
-import { ELLIPSE_SCHEMA_DEFAULTS, type EllipseSchema } from '.';
+import { ELLIPSE_SCHEMA_DEFAULTS } from "./defaults";
+import type { EllipseSchema } from "./types";
 
 export const drawEllipseWithCtx =
   (options: EllipseSchema) => (ctx: CanvasRenderingContext2D) => {

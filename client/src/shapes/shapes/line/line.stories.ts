@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { line, LINE_SCHEMA_DEFAULTS, type LineSchema } from '.';
+import type { LineSchema } from './types';
+import { line } from '@shapes';
+import { LINE_SCHEMA_DEFAULTS } from './defaults';
 
 const Line = createDocComponent<LineSchema>(line)
 

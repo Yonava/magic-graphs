@@ -1,8 +1,8 @@
-import { LINE_SCHEMA_DEFAULTS } from './shapes/line';
 import type { ArrowSchema } from './shapes/arrow';
 import tinycolor from 'tinycolor2';
 import type { BoundingBox, Coordinate, GradientStop } from './types/utility';
 import type { BorderRadius, BorderRadiusArrayValue } from './types/schema';
+import { LINE_SCHEMA_DEFAULTS } from './shapes/line/defaults';
 
 /**
  * rotates a point around a center point by a given angle in radians

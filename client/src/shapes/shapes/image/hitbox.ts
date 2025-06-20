@@ -1,10 +1,11 @@
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
-import { IMAGE_SCHEMA_DEFAULTS, type ImageSchema } from '.';
 import {
   rectHitbox,
   rectEfficientHitbox,
   getRectBoundingBox,
 } from '@shape/shapes/rect/hitbox';
+import type { ImageSchema } from './types';
+import { IMAGE_SCHEMA_DEFAULTS } from './defaults';
 
 /**
  * @param point - the point to check if it is in the image

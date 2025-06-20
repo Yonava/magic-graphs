@@ -2,7 +2,7 @@ import { drawLineWithCtx } from '@shape/shapes/line/draw';
 import { drawTriangleWithCtx } from '@shape/shapes/triangle/draw';
 import { ARROW_SCHEMA_DEFAULTS } from '.';
 import type { ArrowSchema } from '.';
-import type { LineSchema } from '@shape/shapes/line';
+import type { LineSchema } from '../line/types';
 
 export const drawArrowWithCtx = (options: ArrowSchema) => {
   const {

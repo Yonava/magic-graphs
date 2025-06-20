@@ -5,29 +5,10 @@ import {
   ellipseEfficientHitbox,
   getEllipseBoundingBox,
 } from './hitbox';
-import type {
-  AnchorPoint,
-  FillColor,
-  Stroke,
-  TextArea,
-} from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
-import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
-
-export type EllipseSchema = {
-  radiusX: number;
-  radiusY: number;
-} &
-  AnchorPoint &
-  FillColor &
-  Stroke &
-  TextArea;
-
-export const ELLIPSE_SCHEMA_DEFAULTS = {
-  ...BACKGROUND_COLOR_DEFAULTS,
-} as const satisfies Partial<EllipseSchema>;
+import type { EllipseSchema } from './types';
 
 export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   if (options.radiusX < 0 || options.radiusY < 0) {

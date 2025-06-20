@@ -1,8 +1,8 @@
-import type { RectSchema } from '.';
-import { RECT_SCHEMA_DEFAULTS } from '.';
 import { circle } from '@shape/shapes/circle';
 import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
+import type { RectSchema } from './types';
+import { RECT_SCHEMA_DEFAULTS } from './defaults';
 
 /**
  * @param point - the point to check if it is in the rotated rectangle
