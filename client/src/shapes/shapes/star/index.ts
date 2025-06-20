@@ -8,13 +8,14 @@ import {
 } from '@shape/defaults/schema';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 
-export type StarSchema = AnchorPoint &
+export type StarSchema = {
+  innerRadius: number;
+  outerRadius: number;
+  points?: number;
+} &
+  AnchorPoint &
   FillColor &
-  Rotation & {
-    innerRadius: number;
-    outerRadius: number;
-    points?: number;
-  };
+  Rotation;
 
 export const STAR_SCHEMA_DEFAULTS = {
   ...BACKGROUND_COLOR_DEFAULTS,

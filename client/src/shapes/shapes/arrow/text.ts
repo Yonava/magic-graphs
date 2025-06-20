@@ -1,5 +1,5 @@
 import type { Coordinate } from '@shape/types/utility';
-import { getTextAreaLocationOnLine } from '@shape/shapes/line/text';
+import { getTextAreaAnchorPoint } from '@shape/shapes/line/text';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import type { ArrowSchema } from '.';
 import { drawTextMatteWithTextArea, drawTextWithTextArea, getFullTextArea, getTextAreaDimension } from '@shape/text/text';
@@ -9,7 +9,7 @@ export const getTextAreaLocationOnArrow = (arrow: ArrowSchema) => {
 
   if (!textArea) throw new Error('no text area provided');
 
-  return getTextAreaLocationOnLine(arrow);
+  return getTextAreaAnchorPoint(arrow);
 };
 
 export const arrowTextHitbox = (arrow: ArrowSchema) => {
