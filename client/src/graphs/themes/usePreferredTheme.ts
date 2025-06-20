@@ -13,7 +13,8 @@ export type PreferredGraphTheme = GraphThemeName | 'auto';
 const DEFAULT_THEME: PreferredGraphTheme = 'auto';
 
 /**
- * creates a `ref` that when changed updates the {@link Graph.themeName | graph theme} and saves the preference
+ * creates a `ref` that when changed updates the
+ * {@link Graph.themeName | graph theme} and saves the preference
  * to local storage for future sessions or when another graph is created that implements
  * `usePreferredTheme`
  *

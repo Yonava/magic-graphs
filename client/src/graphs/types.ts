@@ -27,8 +27,7 @@ export type GNode = {
    */
   id: string;
   /**
-   * it reflects what the user sees in the UI.
-   * recommended to be unique.
+   * the text that appears on the node
    */
   label: string;
   /**
@@ -50,15 +49,15 @@ export type GEdge = {
    */
   id: string;
   /**
-   * id of the node that the edge is coming from
+   * {@link GNode.id | id} of the node that the edge is coming from
    */
   to: string;
   /**
-   * id of the node that the edge is going to
+   * {@link GNode.id | id} of the node that the edge is going to
    */
   from: string;
   /**
-   * the text label that appears on the edge
+   * the text that appears on the edge, typically denotes edge weight
    */
   label: string;
 };
@@ -100,10 +99,9 @@ export type SchemaItem = {
   | MarqueeGraphTypes
   | AnnotationGraphTypes;
   /**
-   * determines the order in which this schema item is rendered
-   * on the canvas. The lower the number, the higher the priority, the higher the priority,
-   * the earlier the item is rendered on the canvas.
-   * (items with a lower priority score will appear visually underneath those with a higher score)
+   * determines the rendering order of this schema item on the canvas.
+   * Items with lower priority values are rendered earlier and appear
+   * visually beneath items with higher values.
    */
   priority: number;
   /**
