@@ -19,6 +19,15 @@ const atMarkerSchema = (at: Coordinate): CrossSchema => ({
 
 const atMarker = (at: Coordinate) => cross(atMarkerSchema(at))
 
+const centerMarkerSchema = (at: Coordinate): CrossSchema => ({
+  at,
+  size: 5,
+  fillColor: 'purple',
+  lineWidth: 1,
+})
+
+const centerMarker = (at: Coordinate) => cross(centerMarkerSchema(at))
+
 const boundingBoxMarkerSchema = (bb: BoundingBox): RectSchema => ({
   at: bb.at,
   width: bb.width,
@@ -49,12 +58,14 @@ export type DocMarkingOptions = {
   showAtMarker: boolean,
   showBoundingBoxMarker: boolean,
   showMeasuringStick: boolean,
+  showCenterMarker: boolean,
 }
 
 export const DOC_MARKING_DEFAULTS: DocMarkingOptions = {
   showAtMarker: false,
   showBoundingBoxMarker: false,
   showMeasuringStick: false,
+  showCenterMarker: false,
 }
 
 export const DEFAULT_STORIES = {
@@ -64,6 +75,7 @@ export const DEFAULT_STORIES = {
       showAtMarker: true,
       showBoundingBoxMarker: true,
       showMeasuringStick: true,
+      showCenterMarker: false,
     }
   },
   text: {
@@ -126,13 +138,19 @@ export const createDocComponent = <T extends Record<string, unknown>>(factory: S
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        const { showAtMarker, showBoundingBoxMarker, showMeasuringStick } = props
+        const {
+          showAtMarker,
+          showCenterMarker,
+          showBoundingBoxMarker,
+          showMeasuringStick
+        } = props
 
         if (showMeasuringStick) measuringStick.draw(ctx);
         const shape = factory(props);
         shape.draw(ctx)
-        if (showAtMarker && 'at' in props) atMarker(props.at as AnchorPoint['at']).draw(ctx);
         if (showBoundingBoxMarker) boundingBoxMarker(shape.getBoundingBox()).draw(ctx)
+        if (showAtMarker && 'at' in props) atMarker(props.at as AnchorPoint['at']).draw(ctx);
+        if (showCenterMarker) centerMarker(shape.getCenterPoint()).draw(ctx);
       }
 
       onMounted(drawPreview);

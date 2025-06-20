@@ -8,7 +8,7 @@ export const getTextAreaAnchorPoint = (triangle: TriangleSchema) => {
     ...triangle,
   };
 
-  if (!textArea) throw new Error('no text area provided');
+  if (!textArea) return
 
   const { textBlock: text } = textArea;
 

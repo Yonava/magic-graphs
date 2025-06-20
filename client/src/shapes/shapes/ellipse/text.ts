@@ -4,7 +4,7 @@ import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults/utility';
 export const getTextAreaAnchorPoint = (ellipse: EllipseSchema) => {
   const { at, textArea } = { ...ELLIPSE_SCHEMA_DEFAULTS, ...ellipse };
 
-  if (!textArea) throw new Error('no text area provided');
+  if (!textArea) return
 
   const { textBlock: text } = textArea;
 

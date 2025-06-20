@@ -9,7 +9,7 @@ export const getTextAreaAnchorPoint = (line: LineSchema) => {
     ...line,
   };
 
-  if (!textArea) throw new Error('no text area provided');
+  if (!textArea) return
 
   const { textBlock: text } = textArea;
 

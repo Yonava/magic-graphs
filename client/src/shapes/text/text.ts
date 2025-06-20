@@ -12,10 +12,10 @@ export const HORIZONTAL_TEXT_PADDING = 20;
 /**
  * if a text area is provided, will return ShapeTextProps, otherwise undefined
  */
-type ShapeTextPropsGetter = (at: Coordinate, textArea?: TextArea) => ShapeTextProps | undefined
+type ShapeTextPropsGetter = (at?: Coordinate, textArea?: TextArea) => ShapeTextProps | undefined
 
 export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
-  if (!textArea) return
+  if (!at || !textArea) return
 
   const textBlockWithDefaults: Required<TextBlock> = {
     ...TEXT_BLOCK_DEFAULTS,
