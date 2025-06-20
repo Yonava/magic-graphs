@@ -2,7 +2,6 @@ import type { DeepRequired } from 'ts-essentials';
 import { TEXT_BLOCK_DEFAULTS, TEXTAREA_DEFAULTS } from '@shape/defaults/utility';
 import { getTextDimensions } from './getTextDimensions';
 import type { Coordinate, TextArea, TextAreaWithAnchorPoint, TextBlock } from '@shape/types/utility';
-import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import type { ShapeTextProps } from '@shape/types';
 import { engageTextarea } from './textarea';
 import { rect } from '@shape/shapes/rect';
@@ -22,26 +21,26 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
     ...textArea.textBlock,
   }
 
+  const dimensions = getTextAreaDimension(textBlockWithDefaults);
+
   const textAreaWithDefaults: DeepRequired<TextAreaWithAnchorPoint> = {
-    at,
+    at: { x: at.x - dimensions.width / 2, y: at.y - dimensions.height / 2 },
     textBlock: textBlockWithDefaults,
     color: textArea.color ?? TEXTAREA_DEFAULTS.color,
     activeColor: textArea.activeColor ?? TEXTAREA_DEFAULTS.activeColor,
   }
 
-  const { width, height } = getTextAreaDimension(textBlockWithDefaults);
-
-  const textHitbox = rectHitbox({
-    at,
-    width,
-    height,
+  const textAreaMatte = rect({
+    at: textAreaWithDefaults.at,
+    width: dimensions.width,
+    height: dimensions.height,
+    fillColor: textAreaWithDefaults.color,
   });
 
-  const drawTextAreaMatte = drawTextMatteWithTextArea(textAreaWithDefaults);
-  const drawText = drawTextWithTextArea(textAreaWithDefaults)
+  const drawText = drawTextWithTextArea(textAreaWithDefaults, dimensions)
 
   const drawTextArea = (ctx: CanvasRenderingContext2D) => {
-    drawTextAreaMatte(ctx)
+    textAreaMatte.draw(ctx)
     drawText(ctx)
   }
 
@@ -53,8 +52,8 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
   };
 
   return {
-    textHitbox,
-    drawTextAreaMatte,
+    textHitbox: textAreaMatte.hitbox,
+    drawTextAreaMatte: textAreaMatte.draw,
     drawText,
     drawTextArea,
     activateTextArea,
@@ -80,54 +79,19 @@ export const getTextAreaDimension = (text: Required<TextBlock>) => {
   };
 };
 
-export const drawTextMatteWithTextArea = (textArea: DeepRequired<TextAreaWithAnchorPoint>) => {
-  const { color, at } = textArea;
-  const { width, height } = getTextAreaDimension(textArea.textBlock);
-  const matte = rect({
-    at,
-    width,
-    height,
-    fillColor: color,
-  });
-  return (ctx: CanvasRenderingContext2D) => matte.drawShape(ctx);
-};
+export const drawTextWithTextArea = (
+  textArea: DeepRequired<TextAreaWithAnchorPoint>,
+  textAreaDimensions: ReturnType<typeof getTextAreaDimension>
+) => (ctx: CanvasRenderingContext2D) => {
+  const { at, textBlock } = textArea;
+  const { content, fontSize, fontWeight, color, fontFamily } = textBlock;
 
-export const drawTextWithTextArea =
-  (textArea: DeepRequired<TextAreaWithAnchorPoint>) => (ctx: CanvasRenderingContext2D) => {
-    const { at, textBlock } = textArea;
-    const { content, fontSize, fontWeight, color, fontFamily } = textBlock;
+  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+  ctx.fillStyle = color;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
 
-    ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-    ctx.fillStyle = color;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+  const { width, descent, height } = textAreaDimensions
 
-    const { width, descent, height } = getTextAreaDimension(textBlock);
-
-    ctx.fillText(content, at.x + width / 2, at.y + height / 2 + descent / 4);
-  };
-
-export const getFullTextArea = (
-  unplacedTextArea: TextArea,
-  at: Coordinate,
-): DeepRequired<TextAreaWithAnchorPoint> => {
-  const textAreaNoLocWithDefaults: Required<TextArea> = {
-    ...TEXTAREA_DEFAULTS,
-    ...unplacedTextArea,
-  };
-
-  const textWithDefaults: Required<TextBlock> = {
-    ...TEXT_BLOCK_DEFAULTS,
-    ...textAreaNoLocWithDefaults.textBlock,
-  };
-
-  const { width } = getTextAreaDimension(textWithDefaults);
-
-  const fullTextArea: DeepRequired<TextAreaWithAnchorPoint> = {
-    ...textAreaNoLocWithDefaults,
-    textBlock: textWithDefaults,
-    at: { x: at.x - width / 2 + textWithDefaults.fontSize, y: at.y },
-  };
-
-  return fullTextArea;
+  ctx.fillText(content, at.x + width / 2, at.y + height / 2 + descent / 4);
 };
