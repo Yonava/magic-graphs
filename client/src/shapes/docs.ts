@@ -99,7 +99,7 @@ export const DEFAULT_STORIES = {
   },
   rotation: {
     args: {
-      rotation: Math.PI * 0.25 // 45deg in radians
+      rotation: Math.PI * (1 / 4) // 45deg in radians
     }
   },
   colorGradient: {

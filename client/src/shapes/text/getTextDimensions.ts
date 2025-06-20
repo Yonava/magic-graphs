@@ -11,7 +11,7 @@ canvas.height = 1;
 ctx.textAlign = 'center';
 ctx.textBaseline = 'middle';
 
-export const getTextDimensionsOnCanvas = (text: TextBlock) => {
+export const getTextDimensions = (text: TextBlock) => {
   const { content, fontSize, fontWeight, fontFamily } = {
     ...TEXT_BLOCK_DEFAULTS,
     ...text,

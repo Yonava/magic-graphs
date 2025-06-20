@@ -1,4 +1,3 @@
-import { getTextAreaAnchorPoint } from './text';
 import {
   triangleHitbox,
   triangleEfficientHitbox,
@@ -16,6 +15,7 @@ import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
+import { getCenterPoint } from '@shape/helpers';
 
 export type TriangleSchema = {
   pointA: Coordinate;
@@ -32,15 +32,13 @@ export const TRIANGLE_SCHEMA_DEFAULTS = {
 } as const satisfies Partial<TriangleSchema>;
 
 export const triangle: ShapeFactory<TriangleSchema> = (options) => {
-  const anchorPt = getTextAreaAnchorPoint(options)
-  const shapeTextProps = getShapeTextProps(anchorPt, options.textArea)
+  const getBoundingBox = getTriangleBoundingBox(options);
+  const shapeTextProps = getShapeTextProps(getCenterPoint(getBoundingBox()), options.textArea)
 
   const drawShape = drawTriangleWithCtx(options);
   const shapeHitbox = triangleHitbox(options);
   const efficientHitbox = triangleEfficientHitbox(options);
   const hitbox = shapeHitbox;
-
-  const getBoundingBox = getTriangleBoundingBox(options);
 
   const draw = (ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);

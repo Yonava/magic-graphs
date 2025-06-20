@@ -246,6 +246,22 @@ export const normalizeBoundingBox = (bb: BoundingBox): BoundingBox => ({
   height: Math.abs(bb.height),
 });
 
+/**
+ * get the center point of a bounding box
+ */
+export const getCenterPoint = (bb: BoundingBox) => {
+  const {
+    at: { x, y },
+    width,
+    height,
+  } = bb
+
+  return {
+    x: x + width / 2,
+    y: y + height / 2,
+  };
+}
+
 export const toBorderRadiusArray = (
   borderRadius: BorderRadius['borderRadius'],
 ): BorderRadiusArrayValue => {

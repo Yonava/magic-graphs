@@ -14,7 +14,6 @@ import type {
 import type { ShapeFactory } from '@shape/types';
 import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
-import { getTextAreaAnchorPoint } from './text';
 import { getShapeTextProps } from '@shape/text/text';
 
 export type EllipseSchema = {
@@ -35,11 +34,9 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     throw new Error('radius must be positive');
   }
 
-  const anchorPt = getTextAreaAnchorPoint(options)
-  const shapeTextProps = getShapeTextProps(anchorPt, options.textArea)
+  const shapeTextProps = getShapeTextProps(options.at, options.textArea)
 
   const drawShape = drawEllipseWithCtx(options);
-
   const shapeHitbox = ellipseHitbox(options);
 
   const efficientHitbox = ellipseEfficientHitbox(options);

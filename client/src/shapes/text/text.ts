@@ -1,6 +1,6 @@
 import type { DeepRequired } from 'ts-essentials';
 import { TEXT_BLOCK_DEFAULTS, TEXTAREA_DEFAULTS } from '@shape/defaults/utility';
-import { getTextDimensionsOnCanvas } from './getTextDimensionsOnCanvas';
+import { getTextDimensions } from './getTextDimensions';
 import type { Coordinate, TextArea, TextAreaWithAnchorPoint, TextBlock } from '@shape/types/utility';
 import { rect } from '@shapes';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
@@ -64,7 +64,7 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
 export const getTextAreaDimension = (text: Required<TextBlock>) => {
   const paddingVertical = HORIZONTAL_TEXT_PADDING;
 
-  const { width, height, ascent, descent } = getTextDimensionsOnCanvas(text)
+  const { width, height, ascent, descent } = getTextDimensions(text)
 
   return {
     width: Math.max(

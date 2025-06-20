@@ -11,15 +11,16 @@ import type { LoadImageOptions } from './cache';
 import type { AnchorPoint, Rotation, TextArea } from '@shape/types/schema';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
-import { getTextAreaAnchorPoint } from '../rect/text';
+import { getCenterPoint } from '@shape/helpers';
 
-export type ImageSchema = AnchorPoint &
+export type ImageSchema = {
+  src: string;
+  width: number;
+  height: number;
+} & Partial<LoadImageOptions> &
+  AnchorPoint &
   Rotation &
-  TextArea & {
-    src: string;
-    width: number;
-    height: number;
-  } & Partial<LoadImageOptions>;
+  TextArea;
 
 export const IMAGE_SCHEMA_DEFAULTS = {
   ...RECT_SCHEMA_DEFAULTS,
@@ -30,8 +31,7 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
     throw new Error('width and height must be positive');
   }
 
-  const anchorPt = getTextAreaAnchorPoint(options)
-  const shapeTextProps = getShapeTextProps(anchorPt, options.textArea)
+  const shapeTextProps = getShapeTextProps(getCenterPoint(options), options.textArea)
 
   const drawShape = drawImageWithCtx(options);
   const shapeHitbox = imageHitbox(options);

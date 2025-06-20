@@ -18,7 +18,7 @@ import {
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { validateBorderRadius } from '../../optionsValidator';
 import { getShapeTextProps } from '@shape/text/text';
-import { getTextAreaAnchorPoint } from './text';
+import { getCenterPoint } from '@shape/helpers';
 
 export type RectSchema = {
   width: number;
@@ -47,8 +47,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
 
   const getBoundingBox = getRectBoundingBox(options);
 
-  const anchorPt = getTextAreaAnchorPoint(options)
-  const shapeTextProps = getShapeTextProps(anchorPt, options.textArea)
+  const shapeTextProps = getShapeTextProps(getCenterPoint(options), options.textArea)
 
   const draw = (ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
