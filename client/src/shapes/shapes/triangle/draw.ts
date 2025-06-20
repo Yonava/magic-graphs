@@ -1,5 +1,5 @@
-import { TRIANGLE_SCHEMA_DEFAULTS } from '.';
-import type { TriangleSchema } from '.';
+import { TRIANGLE_SCHEMA_DEFAULTS } from "./defaults";
+import type { TriangleSchema } from "./types";
 
 export const drawTriangleWithCtx =
   (options: TriangleSchema) => (ctx: CanvasRenderingContext2D) => {

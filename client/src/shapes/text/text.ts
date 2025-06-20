@@ -24,7 +24,10 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
   const dimensions = getTextAreaDimension(textBlockWithDefaults);
 
   const textAreaWithDefaults: DeepRequired<TextAreaWithAnchorPoint> = {
-    at: { x: at.x - dimensions.width / 2, y: at.y - dimensions.height / 2 },
+    at: {
+      x: at.x - dimensions.width / 2,
+      y: at.y - dimensions.height / 2
+    },
     textBlock: textBlockWithDefaults,
     color: textArea.color ?? TEXTAREA_DEFAULTS.color,
     activeColor: textArea.activeColor ?? TEXTAREA_DEFAULTS.activeColor,

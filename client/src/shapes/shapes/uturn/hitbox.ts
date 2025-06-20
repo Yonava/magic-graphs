@@ -1,10 +1,11 @@
 import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
 import { lineHitbox } from '@shape/shapes/line/hitbox';
-import { UTURN_SCHEMA_DEFAULTS, type UTurnSchema } from '.';
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import { arrowHitbox } from '@shape/shapes/arrow/hitbox';
 import { circle } from '@shape/shapes/circle';
+import type { UTurnSchema } from './types';
+import { UTURN_SCHEMA_DEFAULTS } from './defaults';
 
 export const uturnHitbox = (uturn: UTurnSchema) => {
   const { spacing, at, downDistance, upDistance, lineWidth, rotation } = {

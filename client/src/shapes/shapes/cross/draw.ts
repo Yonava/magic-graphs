@@ -1,6 +1,6 @@
 import { toBorderRadiusArray } from '@shape/helpers';
-import { CROSS_SCHEMA_DEFAULTS } from '.';
-import type { CrossSchema } from '.';
+import { CROSS_SCHEMA_DEFAULTS } from './defaults';
+import type { CrossSchema } from './types';
 import { drawRectWithCtx } from '@shape/shapes/rect/draw';
 
 export const drawCrossWithCtx = (options: CrossSchema) => {
@@ -8,7 +8,7 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
     at: crossAt,
     size,
     rotation,
-    fillColor: color,
+    fillColor,
     lineWidth,
     borderRadius,
   } = {
@@ -30,7 +30,7 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
       at: { x: -halfLineWidth, y: -size / 2 },
       width: lineWidth,
       height: size / 2 - halfLineWidth,
-      fillColor: color,
+      fillColor,
       borderRadius: [topLeft, topLeft, 0, 0],
     })(ctx);
 
@@ -39,7 +39,7 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
       at: { x: -size / 2, y: -halfLineWidth },
       width: size,
       height: lineWidth,
-      fillColor: color,
+      fillColor,
       borderRadius: [bottomRight, topRight, topRight, bottomRight],
     })(ctx);
 
@@ -48,7 +48,7 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
       at: { x: -halfLineWidth, y: halfLineWidth },
       width: lineWidth,
       height: size / 2 - halfLineWidth,
-      fillColor: color,
+      fillColor,
       borderRadius: [0, 0, bottomLeft, bottomLeft],
     })(ctx);
 

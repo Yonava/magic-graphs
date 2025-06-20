@@ -1,8 +1,8 @@
 import { toBorderRadiusArray, normalizeBoundingBox } from '@shape/helpers';
-import { CROSS_SCHEMA_DEFAULTS } from '.';
-import type { CrossSchema } from '.';
 import { rectHitbox, rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
+import type { CrossSchema } from './types';
+import { CROSS_SCHEMA_DEFAULTS } from './defaults';
 
 /**
  * @param point - the point to check if it is in the cross

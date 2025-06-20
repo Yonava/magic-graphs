@@ -4,32 +4,11 @@ import {
   getTriangleBoundingBox,
 } from './hitbox';
 import { drawTriangleWithCtx } from './draw';
-import type { Coordinate } from '@shape/types/utility';
-import type {
-  FillColor,
-  FillGradient,
-  Stroke,
-  TextArea,
-} from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
-import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
 import { getCenterPoint } from '@shape/helpers';
-
-export type TriangleSchema = {
-  pointA: Coordinate;
-  pointB: Coordinate;
-  pointC: Coordinate;
-} &
-  FillColor &
-  Stroke &
-  TextArea &
-  FillGradient;
-
-export const TRIANGLE_SCHEMA_DEFAULTS = {
-  ...BACKGROUND_COLOR_DEFAULTS,
-} as const satisfies Partial<TriangleSchema>;
+import type { TriangleSchema } from './types';
 
 export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const getBoundingBox = getTriangleBoundingBox(options);

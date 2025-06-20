@@ -1,8 +1,8 @@
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
-import type { TriangleSchema } from '.';
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import { lineHitbox } from '@shape/shapes/line/hitbox';
 import { normalizeBoundingBox } from '@shape/helpers';
+import type { TriangleSchema } from './types';
 
 /**
  * uses barycentric coordinate system for triangles. dont ask me, im not that smart.

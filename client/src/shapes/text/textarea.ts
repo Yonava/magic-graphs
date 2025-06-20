@@ -3,8 +3,8 @@ import { HORIZONTAL_TEXT_PADDING } from './text';
 import { getClientCoordinates } from '@canvas/coordinates';
 import type { TextAreaWithAnchorPoint } from '@shape/types/utility';
 import { getTextDimensions } from './getTextDimensions';
-import type { RectSchema } from '@shape/shapes/rect';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
+import type { RectSchema } from '@shapes/rect/types';
 
 export const engageTextarea = (
   ctx: CanvasRenderingContext2D,
@@ -14,7 +14,6 @@ export const engageTextarea = (
   const { at, textBlock, activeColor: bgColor } = textArea;
 
   const { width, descent } = getTextDimensions(textBlock);
-
   const { clientX, clientY, zoom } = getClientCoordinates(at, ctx)
 
   const { color: textColor, content, fontSize, fontWeight } = textBlock;

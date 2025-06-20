@@ -1,6 +1,6 @@
 import { rotatePoint } from '@shape/helpers';
-import { UTURN_SCHEMA_DEFAULTS } from '.';
-import type { UTurnSchema } from '.';
+import type { UTurnSchema } from './types';
+import { UTURN_SCHEMA_DEFAULTS } from './defaults';
 
 export const getTextAreaAnchorPoint = (uturn: UTurnSchema) => {
   if (!uturn.textArea) return

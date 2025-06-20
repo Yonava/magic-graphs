@@ -1,4 +1,3 @@
-import type { Coordinate } from '@shape/types/utility';
 import { drawScribbleWithCtx } from './draw';
 import {
   scribbleHitbox,
@@ -6,20 +5,8 @@ import {
   getScribbleBoundingBox,
 } from './hitbox';
 import type { ShapeFactory } from '@shape/types';
-import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
-import type { FillColor } from '@shape/types/schema';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
-
-export type ScribbleSchema = FillColor & {
-  type: 'draw' | 'erase';
-  points: Coordinate[];
-  brushWeight?: number;
-};
-
-export const SCRIBBLE_SCHEMA_DEFAULTS = {
-  ...BACKGROUND_COLOR_DEFAULTS,
-  brushWeight: 3,
-} as const satisfies Partial<ScribbleSchema>;
+import type { ScribbleSchema } from './types';
 
 export const ERASER_BRUSH_WEIGHT = 50;
 

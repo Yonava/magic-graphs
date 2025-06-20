@@ -1,9 +1,10 @@
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
-import { SCRIBBLE_SCHEMA_DEFAULTS, type ScribbleSchema } from '.';
 import { rectEfficientHitbox, rectHitbox } from '@shape/shapes/rect/hitbox';
 import { lineEfficientHitbox } from '@shape/shapes/line/hitbox';
 import { circle } from '@shape/shapes/circle';
 import { normalizeBoundingBox } from '@shape/helpers';
+import type { ScribbleSchema } from './types';
+import { SCRIBBLE_SCHEMA_DEFAULTS } from './defaults';
 
 /**
  * @param point - the point to check if it is in the scribble bounding box
