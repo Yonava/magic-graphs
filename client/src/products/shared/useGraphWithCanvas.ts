@@ -5,9 +5,9 @@ import type { Graph } from "@graph/types"
 import { useGraph } from "@graph/useGraph"
 import { useGraphCanvasColor } from "./useGraphCanvasColor"
 import type { StyleValue } from "vue"
-import { cross } from "@shapes"
 import { computed } from "vue"
 import type { ComputedRef } from "vue"
+import { cross } from "@shapes/cross"
 
 type GraphCanvasCSS = { style: StyleValue }
 

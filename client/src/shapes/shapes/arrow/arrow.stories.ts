@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { arrow, ARROW_SCHEMA_DEFAULTS, type ArrowSchema } from '.';
+import { ARROW_SCHEMA_DEFAULTS } from './defaults';
+import type { ArrowSchema } from './types';
+import { arrow } from '.';
 
 const Arrow = createDocComponent<ArrowSchema>(arrow)
 

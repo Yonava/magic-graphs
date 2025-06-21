@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { square, SQUARE_SCHEMA_DEFAULTS, type SquareSchema } from '.';
+import { square } from '.';
+import type { SquareSchema } from './types';
+import { SQUARE_SCHEMA_DEFAULTS } from './defaults';
 
 const Square = createDocComponent<SquareSchema>(square)
 

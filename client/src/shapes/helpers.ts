@@ -1,8 +1,8 @@
-import { LINE_SCHEMA_DEFAULTS } from './shapes/line';
 import type { ArrowSchema } from './shapes/arrow';
 import tinycolor from 'tinycolor2';
 import type { BoundingBox, Coordinate, GradientStop } from './types/utility';
 import type { BorderRadius, BorderRadiusArrayValue } from './types/schema';
+import { LINE_SCHEMA_DEFAULTS } from './shapes/line/defaults';
 
 /**
  * rotates a point around a center point by a given angle in radians
@@ -245,6 +245,22 @@ export const normalizeBoundingBox = (bb: BoundingBox): BoundingBox => ({
   width: Math.abs(bb.width),
   height: Math.abs(bb.height),
 });
+
+/**
+ * get the center point of a bounding box
+ */
+export const getCenterPoint = (bb: BoundingBox) => {
+  const {
+    at: { x, y },
+    width,
+    height,
+  } = bb
+
+  return {
+    x: x + width / 2,
+    y: y + height / 2,
+  };
+}
 
 export const toBorderRadiusArray = (
   borderRadius: BorderRadius['borderRadius'],

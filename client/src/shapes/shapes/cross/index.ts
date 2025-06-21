@@ -5,35 +5,8 @@ import {
 } from './hitbox';
 import { drawCrossWithCtx } from './draw';
 import type { ShapeFactory } from '@shape/types';
-import type {
-  AnchorPoint,
-  BorderRadius,
-  FillColor,
-  LineWidth,
-  Rotation,
-} from '@shape/types/schema';
-import {
-  BACKGROUND_COLOR_DEFAULTS,
-  BORDER_RADIUS_DEFAULTS,
-  LINE_WIDTH_DEFAULTS,
-  ROTATION_DEFAULTS,
-} from '@shape/defaults/schema';
-import { shapeFactoryWrapper } from '@shape/factories';
-
-export type CrossSchema = AnchorPoint &
-  Rotation &
-  LineWidth &
-  BorderRadius &
-  FillColor & {
-    size: number;
-  };
-
-export const CROSS_SCHEMA_DEFAULTS = {
-  ...ROTATION_DEFAULTS,
-  ...BACKGROUND_COLOR_DEFAULTS,
-  ...LINE_WIDTH_DEFAULTS,
-  ...BORDER_RADIUS_DEFAULTS,
-} as const satisfies Partial<CrossSchema>;
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
+import type { CrossSchema } from './types';
 
 export const cross: ShapeFactory<CrossSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {

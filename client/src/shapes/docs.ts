@@ -1,14 +1,15 @@
 import { onMounted, defineComponent, h, watch } from "vue";
-import { cross, rect, square } from "@shapes";
-import type { SquareSchema } from "./shapes/square";
-import type { CrossSchema } from "./shapes/cross";
+import { cross, type CrossSchema } from "./shapes/cross";
 import { getCtx } from "@utils/ctx";
 import { generateId } from "@utils/id";
-import type { RectSchema } from "./shapes/rect";
 import type { BoundingBox, Coordinate } from "./types/utility";
 import type { ShapeFactory } from "./types";
 import type { AnchorPoint } from "./types/schema";
 import { getDevicePixelRatio } from "@canvas/camera/utils";
+import type { RectSchema } from "@shapes/rect/types";
+import { rect } from "@shapes/rect";
+import { square } from "@shapes/square";
+import type { SquareSchema } from "@shapes/square/types";
 
 const atMarkerSchema = (at: Coordinate): CrossSchema => ({
   at,
@@ -18,6 +19,15 @@ const atMarkerSchema = (at: Coordinate): CrossSchema => ({
 })
 
 const atMarker = (at: Coordinate) => cross(atMarkerSchema(at))
+
+const centerMarkerSchema = (at: Coordinate): CrossSchema => ({
+  at,
+  size: 5,
+  fillColor: 'purple',
+  lineWidth: 1,
+})
+
+const centerMarker = (at: Coordinate) => cross(centerMarkerSchema(at))
 
 const boundingBoxMarkerSchema = (bb: BoundingBox): RectSchema => ({
   at: bb.at,
@@ -49,12 +59,14 @@ export type DocMarkingOptions = {
   showAtMarker: boolean,
   showBoundingBoxMarker: boolean,
   showMeasuringStick: boolean,
+  showCenterMarker: boolean,
 }
 
 export const DOC_MARKING_DEFAULTS: DocMarkingOptions = {
   showAtMarker: false,
   showBoundingBoxMarker: false,
   showMeasuringStick: false,
+  showCenterMarker: false,
 }
 
 export const DEFAULT_STORIES = {
@@ -64,6 +76,7 @@ export const DEFAULT_STORIES = {
       showAtMarker: true,
       showBoundingBoxMarker: true,
       showMeasuringStick: true,
+      showCenterMarker: false,
     }
   },
   text: {
@@ -87,7 +100,7 @@ export const DEFAULT_STORIES = {
   },
   rotation: {
     args: {
-      rotation: Math.PI * 0.25 // 45deg in radians
+      rotation: Math.PI * (1 / 4) // 45deg in radians
     }
   },
   colorGradient: {
@@ -126,13 +139,19 @@ export const createDocComponent = <T extends Record<string, unknown>>(factory: S
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        const { showAtMarker, showBoundingBoxMarker, showMeasuringStick } = props
+        const {
+          showAtMarker,
+          showCenterMarker,
+          showBoundingBoxMarker,
+          showMeasuringStick
+        } = props
 
         if (showMeasuringStick) measuringStick.draw(ctx);
         const shape = factory(props);
         shape.draw(ctx)
-        if (showAtMarker && 'at' in props) atMarker(props.at as AnchorPoint['at']).draw(ctx);
         if (showBoundingBoxMarker) boundingBoxMarker(shape.getBoundingBox()).draw(ctx)
+        if (showAtMarker && 'at' in props) atMarker(props.at as AnchorPoint['at']).draw(ctx);
+        if (showCenterMarker) centerMarker(shape.getCenterPoint()).draw(ctx);
       }
 
       onMounted(drawPreview);

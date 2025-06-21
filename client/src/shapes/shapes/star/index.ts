@@ -1,26 +1,8 @@
 import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';
 import { drawStarWithCtx } from './draw';
 import type { ShapeFactory } from '@shape/types';
-import type { AnchorPoint, FillColor, Rotation } from '@shape/types/schema';
-import {
-  BACKGROUND_COLOR_DEFAULTS,
-  ROTATION_DEFAULTS,
-} from '@shape/defaults/schema';
-import { shapeFactoryWrapper } from '@shape/factories';
-
-export type StarSchema = AnchorPoint &
-  FillColor &
-  Rotation & {
-    innerRadius: number;
-    outerRadius: number;
-    points?: number;
-  };
-
-export const STAR_SCHEMA_DEFAULTS = {
-  ...BACKGROUND_COLOR_DEFAULTS,
-  ...ROTATION_DEFAULTS,
-  points: 5,
-} as const satisfies Partial<StarSchema>;
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
+import type { StarSchema } from './types';
 
 export const star: ShapeFactory<StarSchema> = (options) => {
   const draw = drawStarWithCtx(options);

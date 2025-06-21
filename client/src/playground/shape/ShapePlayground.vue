@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import colors from '@colors';
-  import { cross } from '@shapes';
+  import { cross } from '@shapes/cross';
   import type { Shape } from '@shape/types';
   import ShapePlaygroundToolbar from './ShapePlaygroundToolbar.vue';
   import MagicCanvas from '@canvas/MagicCanvas.vue';

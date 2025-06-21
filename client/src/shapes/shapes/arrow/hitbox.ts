@@ -4,8 +4,6 @@ import {
   lineEfficientHitbox,
   getLineBoundingBox,
 } from '@shape/shapes/line/hitbox';
-import { type ArrowSchema } from '.';
-import { ARROW_SCHEMA_DEFAULTS } from '.';
 import {
   triangleEfficientHitbox,
   triangleHitbox,
@@ -14,6 +12,8 @@ import {
   calculateArrowHeadCorners,
   normalizeBoundingBox,
 } from '@shape/helpers';
+import { ARROW_SCHEMA_DEFAULTS } from './defaults';
+import type { ArrowSchema } from './types';
 
 export const arrowHitbox = (arrow: ArrowSchema) => {
   const {

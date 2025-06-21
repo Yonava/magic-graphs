@@ -1,7 +1,7 @@
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import { normalizeBoundingBox } from '@shape/helpers';
-import type { EllipseSchema } from '.';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
+import type { EllipseSchema } from './types';
 
 export const ellipseHitbox =
   (ellipse: EllipseSchema) => (point: Coordinate) => {

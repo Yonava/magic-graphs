@@ -1,8 +1,8 @@
-import { LINE_SCHEMA_DEFAULTS } from '.';
-import type { LineSchema } from '.';
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import { normalizeBoundingBox } from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
+import { LINE_SCHEMA_DEFAULTS } from './defaults';
+import type { LineSchema } from './types';
 
 /**
  * @param point - the point to check if it is in the line

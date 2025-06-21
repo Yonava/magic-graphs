@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { scribble, SCRIBBLE_SCHEMA_DEFAULTS, type ScribbleSchema } from '.';
+import { scribble } from '.';
+import type { ScribbleSchema } from './types';
+import { SCRIBBLE_SCHEMA_DEFAULTS } from './defaults';
 
 const Scribble = createDocComponent<ScribbleSchema>(scribble)
 

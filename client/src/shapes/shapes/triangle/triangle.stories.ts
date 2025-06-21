@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { triangle, TRIANGLE_SCHEMA_DEFAULTS, type TriangleSchema } from '.';
+import { triangle } from '.';
+import type { TriangleSchema } from './types';
+import { TRIANGLE_SCHEMA_DEFAULTS } from './defaults';
 
 const Triangle = createDocComponent<TriangleSchema>(triangle)
 

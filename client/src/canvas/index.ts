@@ -18,13 +18,6 @@ const initCanvasWidthHeight = (canvas: HTMLCanvasElement | undefined) => {
   canvas.height = rect.height * dpr;
 }
 
-export type MagicCanvasOptions = {
-  /**
-   * a key that is used to track the camera state in localStorage
-   */
-  storageKey?: string
-}
-
 export const useMagicCanvas: UseMagicCanvas = (options = {}) => {
   const canvas = ref<HTMLCanvasElement>()
   const canvasBoxSize = useElementSize(canvas)

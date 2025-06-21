@@ -1,3 +1,6 @@
+// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
+// eslint-disable-next-line
+import type { ShapeFactoryWrapper } from '@shape/shapeWrapper';
 import type { BoundingBox, Coordinate } from './utility';
 
 export type ShapeName =
@@ -13,6 +16,35 @@ export type ShapeName =
   | 'ellipse'
   | 'star'
   | 'image';
+
+/**
+ * interface for shapes that support text areas
+ */
+export type ShapeTextProps = {
+  /**
+   * only draws the matte of the text area
+   */
+  drawTextAreaMatte: (ctx: CanvasRenderingContext2D) => void;
+  /**
+   * only draws the text content of the text area
+   */
+  drawText: (ctx: CanvasRenderingContext2D) => void;
+  /**
+   * draws the text area (ie both matte and text)
+   */
+  drawTextArea: (ctx: CanvasRenderingContext2D) => void;
+  /**
+   * returns true if the point is within the text area
+   */
+  textHitbox: (point: Coordinate) => boolean;
+  /**
+   * activates the text area of the shape
+   */
+  activateTextArea: (
+    ctx: CanvasRenderingContext2D,
+    handler: (str: string) => void,
+  ) => void;
+}
 
 export type ShapeProps = {
   /**
@@ -32,21 +64,6 @@ export type ShapeProps = {
   drawShape: (ctx: CanvasRenderingContext2D) => void;
 
   /**
-   * draws the text area of the shape (ie both matte and text)
-   */
-  drawTextArea?: (ctx: CanvasRenderingContext2D) => void;
-
-  /**
-   * only draws the matte of the text area
-   */
-  drawTextAreaMatte?: (ctx: CanvasRenderingContext2D) => void;
-
-  /**
-   * only draws the text content of the text area
-   */
-  drawText?: (ctx: CanvasRenderingContext2D) => void;
-
-  /**
    * returns true if the point is within the shape or text area of the shape
    */
   hitbox: (point: Coordinate) => boolean;
@@ -55,11 +72,6 @@ export type ShapeProps = {
    * returns true if the point is within the area of the shape
    */
   shapeHitbox: (point: Coordinate) => boolean;
-
-  /**
-   * returns true if the point is within the text area of the shape
-   */
-  textHitbox?: (point: Coordinate) => boolean;
 
   /**
    * returns true if the point is within the rectangular bounding box of the shape
@@ -71,24 +83,19 @@ export type ShapeProps = {
    * of the area comprising the bounding box
    */
   getBoundingBox: () => BoundingBox;
+} & Partial<ShapeTextProps>;
 
-  /**
-   * activates the text area of the shape
-   */
-  activateTextArea?: (
-    ctx: CanvasRenderingContext2D,
-    handler: (str: string) => void,
-  ) => void;
-};
-
-export type ShapeUtilProps = {
+/**
+ * props added to every shape in {@link ShapeFactoryWrapper}
+ */
+export type ShapeWrapperProps = {
   /**
    * returns the coordinates of the center point of the shape's bounding box
    */
   getCenterPoint: () => Coordinate;
 };
 
-export type Shape = ShapeProps & ShapeUtilProps;
+export type Shape = ShapeProps & ShapeWrapperProps;
 
 /**
  * the process all schemas go through to become shapes

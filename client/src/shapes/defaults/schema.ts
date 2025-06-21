@@ -3,7 +3,6 @@ import type {
   BorderRadius,
   LineWidth,
   Rotation,
-  Stroke,
 } from '@shape/types/schema';
 
 export const LINE_WIDTH_DEFAULTS = {

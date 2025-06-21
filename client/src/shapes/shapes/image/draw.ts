@@ -1,6 +1,7 @@
 import { drawRectWithCtx } from '@shape/shapes/rect/draw';
-import { IMAGE_SCHEMA_DEFAULTS, type ImageSchema } from '.';
 import { loadImage } from './cache';
+import type { ImageSchema } from './types';
+import { IMAGE_SCHEMA_DEFAULTS } from './defaults';
 
 /**
  * checkerboard as placeholder for image that fails to load

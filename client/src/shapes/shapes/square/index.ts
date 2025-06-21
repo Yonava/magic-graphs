@@ -1,17 +1,7 @@
-import {
-  RECT_SCHEMA_DEFAULTS,
-  rect,
-  type RectSchema,
-} from '@shape/shapes/rect';
 import type { ShapeFactory } from '@shape/types';
-
-export type SquareSchema = Omit<RectSchema, 'width' | 'height'> & {
-  size: number;
-};
-
-export const SQUARE_SCHEMA_DEFAULTS = {
-  ...RECT_SCHEMA_DEFAULTS,
-} as const satisfies Partial<SquareSchema>;
+import type { SquareSchema } from './types';
+import { SQUARE_SCHEMA_DEFAULTS } from './defaults';
+import { rect } from '../rect';
 
 export const square: ShapeFactory<SquareSchema> = (options) => ({
   ...rect({

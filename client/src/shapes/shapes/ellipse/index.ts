@@ -5,70 +5,30 @@ import {
   ellipseEfficientHitbox,
   getEllipseBoundingBox,
 } from './hitbox';
-import {
-  ellipseTextHitbox,
-  drawTextAreaOnEllipse,
-  drawTextAreaMatteOnEllipse,
-  drawTextOnEllipse,
-  getTextAreaLocationOnEllipse,
-} from './text';
-import { getFullTextArea } from '@shape/text';
-import { engageTextarea } from '@shape/textarea';
-import type {
-  AnchorPoint,
-  FillColor,
-  Stroke,
-  TextArea,
-} from '@shape/types/schema';
 import type { ShapeFactory } from '@shape/types';
-import { BACKGROUND_COLOR_DEFAULTS } from '@shape/defaults/schema';
-import { shapeFactoryWrapper } from '@shape/factories';
-
-export type EllipseSchema = AnchorPoint &
-  FillColor &
-  Stroke &
-  TextArea & {
-    radiusX: number;
-    radiusY: number;
-  };
-
-export const ELLIPSE_SCHEMA_DEFAULTS = {
-  ...BACKGROUND_COLOR_DEFAULTS,
-} as const satisfies Partial<EllipseSchema>;
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
+import { getShapeTextProps } from '@shape/text/text';
+import type { EllipseSchema } from './types';
 
 export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   if (options.radiusX < 0 || options.radiusY < 0) {
     throw new Error('radius must be positive');
   }
 
-  const drawShape = drawEllipseWithCtx(options);
+  const shapeTextProps = getShapeTextProps(options.at, options.textArea)
 
+  const drawShape = drawEllipseWithCtx(options);
   const shapeHitbox = ellipseHitbox(options);
-  const textHitbox = ellipseTextHitbox(options);
+
   const efficientHitbox = ellipseEfficientHitbox(options);
   const hitbox = (point: Coordinate) =>
-    textHitbox?.(point) || shapeHitbox(point);
+    shapeTextProps?.textHitbox(point) || shapeHitbox(point);
 
   const getBoundingBox = getEllipseBoundingBox(options);
 
-  const drawTextArea = drawTextAreaOnEllipse(options);
-
-  const drawTextAreaMatte = drawTextAreaMatteOnEllipse(options);
-  const drawText = drawTextOnEllipse(options);
-
   const draw = (ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
-    drawTextArea?.(ctx);
-  };
-
-  const activateTextArea = (
-    ctx: CanvasRenderingContext2D,
-    handler: (str: string) => void,
-  ) => {
-    if (!options.textArea) return;
-    const location = getTextAreaLocationOnEllipse(options);
-    const fullTextArea = getFullTextArea(options.textArea, location);
-    engageTextarea(ctx, fullTextArea, handler);
+    shapeTextProps?.drawTextArea(ctx);
   };
 
   return shapeFactoryWrapper({
@@ -77,16 +37,13 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     draw,
 
     drawShape,
-    drawTextArea,
-    drawTextAreaMatte,
-    drawText,
 
     hitbox,
     shapeHitbox,
-    textHitbox,
+
     efficientHitbox,
     getBoundingBox,
 
-    activateTextArea,
+    ...shapeTextProps
   });
 };
