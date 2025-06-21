@@ -17,7 +17,9 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>, storag
   const setZoom = (ev: Pick<WheelEvent, 'clientX' | 'clientY' | 'deltaY'>) => {
     const { clientX: cx, clientY: cy } = ev
 
-    const zoomFactor = Math.exp(-ev.deltaY * ZOOM_SENSITIVITY);
+    // clamp deltaY to a max range to prevent mice with large deltaY notches from feeling too sensitive
+    const normalizedDelta = Math.max(-100, Math.min(100, ev.deltaY));
+    const zoomFactor = Math.exp(-normalizedDelta * ZOOM_SENSITIVITY);
     const clampedZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom.value * zoomFactor));
 
     const scale = clampedZoom / zoom.value;
