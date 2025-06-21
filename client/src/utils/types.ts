@@ -1,3 +1,5 @@
+import type { UnionToIntersection } from "ts-essentials";
+
 /**
  * makes only certain keys K in an object T optional
  * @example PartiallyPartial<{ a: number, b: string }, 'a'> // { a?: number, b: string }
@@ -41,3 +43,27 @@ export type KeyboardEventEntries = [
 
 export type TimeoutHandler = ReturnType<typeof setTimeout>;
 export type IntervalHandler = ReturnType<typeof setInterval>;
+
+type LastOf<U> =
+  UnionToIntersection<U extends any ? () => U : never> extends () => infer R
+  ? R
+  : never;
+
+type Push<T extends any[], V> = [...T, V];
+
+type UnionToTuple<T, L = LastOf<T>> =
+  [T] extends [never]
+  ? []
+  : Push<UnionToTuple<Exclude<T, L>>, L>;
+
+/**
+ * turns the keys of an object into a tuple
+ *
+ * WARNING: order is not guaranteed! for deterministic ordering use
+ * readonly runtime array instead
+ *
+ * @example
+ * ObjectKeysToTuple<{ name: string, age: number, id: string }>
+ * // ["name", "age", "id"]
+ */
+export type ObjectKeysToTuple<T extends object> = UnionToTuple<keyof T>

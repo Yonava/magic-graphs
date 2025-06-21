@@ -3,28 +3,38 @@
   import colors from '@colors';
   import { cross } from '@shapes/cross';
   import type { Shape } from '@shape/types';
+  import { useAnimatedShapes } from '@shape/index';
   import ShapePlaygroundToolbar from './ShapePlaygroundToolbar.vue';
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import { useMagicCanvas } from '@canvas/index';
+  import Button from '@ui/core/button/Button.vue';
+
+  const {
+    animation,
+    shapes: { square },
+  } = useAnimatedShapes();
 
   const shapes = ref<Shape[]>([]);
 
   shapes.value.push(
-    cross({
-      at: {
-        x: 300,
-        y: 300,
-      },
-      size: 200,
-      lineWidth: 50,
-      fillColor: colors.RED_500,
-      borderRadius: [0, 10, 20, 5],
+    square({
+      id: 'test',
+      size: 100,
+      at: { x: 0, y: 0 },
     }),
   );
 
   const magic = useMagicCanvas();
-  magic.draw.content.value = (ctx) =>
-    shapes.value.forEach((item) => item.draw(ctx));
+  magic.draw.content.value = (ctx) => shapes.value.forEach((i) => i.draw(ctx));
+
+  magic.draw.backgroundPattern.value = (ctx, at) => {
+    cross({
+      at,
+      size: 8,
+      lineWidth: 1,
+      fillColor: colors.GRAY_600,
+    }).draw(ctx);
+  };
 </script>
 
 <template>
@@ -34,6 +44,8 @@
         :canvas="magic.canvas.value"
         :items="shapes"
       />
+      <Button @click="animation.start('test')"> Start Animation </Button>
+      <Button @click="animation.stop('test')"> Stop Animation </Button>
     </div>
 
     <MagicCanvas

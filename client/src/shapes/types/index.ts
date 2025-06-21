@@ -2,6 +2,7 @@
 // eslint-disable-next-line
 import type { ShapeFactoryWrapper } from '@shape/shapeWrapper';
 import type { BoundingBox, Coordinate } from './utility';
+import type { ObjectKeysToTuple } from '@utils/types';
 
 export type ShapeName =
   | 'circle'
@@ -101,3 +102,31 @@ export type Shape = ShapeProps & ShapeWrapperProps;
  * the process all schemas go through to become shapes
  */
 export type ShapeFactory<T> = (schema: T) => Shape;
+
+export type SchemaId = string
+
+export type WithId<T> = T & {
+  /**
+   * optimized shapes require a unique id to track them across renders
+   */
+  id: SchemaId
+}
+
+/**
+ * every {@link Shape} prop as an array of runtime strings
+ */
+export const shapeProps: ObjectKeysToTuple<Shape> = [
+  'drawTextAreaMatte',
+  'drawText',
+  'drawTextArea',
+  'textHitbox',
+  'activateTextArea',
+  'name',
+  'draw',
+  'drawShape',
+  'hitbox',
+  'shapeHitbox',
+  'efficientHitbox',
+  'getBoundingBox',
+  'getCenterPoint',
+]
