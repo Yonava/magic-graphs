@@ -1,4 +1,4 @@
-import type { RectSchema } from '@shape/shapes/rect';
+import type { RectSchema } from '@shapes/rect/types';
 import type { AnchorPoint } from './schema';
 
 export type Coordinate = {
