@@ -3,7 +3,7 @@
   import colors from '@colors';
   import { cross } from '@shapes/cross';
   import type { Shape } from '@shape/types';
-  import { useAnimatedShapes } from '@shape/index';
+  import { useAnimatedShapes } from '@shape/animation';
   import ShapePlaygroundToolbar from './ShapePlaygroundToolbar.vue';
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import { useMagicCanvas } from '@canvas/index';

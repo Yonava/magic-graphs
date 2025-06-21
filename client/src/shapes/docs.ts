@@ -1,5 +1,5 @@
 import { onMounted, defineComponent, h, watch } from "vue";
-import { cross, type CrossSchema } from "./shapes/cross";
+import { cross } from "./shapes/cross";
 import { getCtx } from "@utils/ctx";
 import { generateId } from "@utils/id";
 import type { BoundingBox, Coordinate } from "./types/utility";
@@ -10,6 +10,7 @@ import type { RectSchema } from "@shapes/rect/types";
 import { rect } from "@shapes/rect";
 import { square } from "@shapes/square";
 import type { SquareSchema } from "@shapes/square/types";
+import type { CrossSchema } from "@shapes/cross/types";
 
 const atMarkerSchema = (at: Coordinate): CrossSchema => ({
   at,
