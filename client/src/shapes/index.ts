@@ -35,13 +35,24 @@ export const useOptimizedShapes = () => {
 
 export type OptimizedShapes = ReturnType<typeof useOptimizedShapes>
 
-type AnimationId = string
+type AnimationDefinitionId = string
+
+type AnimationDefinition = {
+  /**
+   * a unique identifier for this definition
+   */
+  id: AnimationDefinitionId,
+  /**
+   * the duration of this animation (in milliseconds)
+   */
+  durationMs: number,
+}
 
 type ActiveAnimation = {
   /**
-   * ID linking to the animation definition
+   * links the active animation to the animation definition
    */
-  definitionId: AnimationId,
+  definitionId: AnimationDefinitionId,
   /**
    * unix timestamp when the animation started
    */
@@ -53,6 +64,8 @@ type ActiveAnimation = {
   runCount: number,
 }
 
+type ActiveAnimationWithDefinition = ActiveAnimation & AnimationDefinition
+
 export const useAnimatedShapes = () => {
   /**
    * a mapping between shapes (via ids) and the animations currently
@@ -60,16 +73,35 @@ export const useAnimatedShapes = () => {
    */
   const activeAnimations: Map<SchemaId, ActiveAnimation[]> = new Map()
 
-  const animationDurationMs = 4000
-
-  const getTimesRun = (animationDurationMs: number, timeSinceBegun: number) => {
-    return timeSinceBegun / animationDurationMs
+  /**
+   * returns the number of times the animation has completed as a float.
+   *
+   * @example
+   * const runs = getCurrentRunCount(animation) // 2.5
+   * // "animation" is half way through its 3rd run
+   */
+  const getCurrentRunCount = ({
+    durationMs,
+    startedAt,
+  }: Pick<ActiveAnimationWithDefinition, 'startedAt' | 'durationMs'>) => {
+    const timeElapsed = Date.now() - startedAt
+    return timeElapsed / durationMs
   }
 
-  const getAnimationProgress = (timeBegun: number) => {
-    const timeSinceBegun = Date.now() - timeBegun
-    const progress = (timeSinceBegun % animationDurationMs) / animationDurationMs
-    return progress
+  /**
+   * returns the current progress through the active animation cycle, as a value between 0 and 1.
+   * Useful for determining how far along the animation is within its current run.
+   *
+   * @example
+   * const progress = getAnimationProgress(animation); // 0.25
+   * // "animation" is 25% through its current cycle
+   */
+  const getAnimationProgress = ({
+    durationMs,
+    startedAt
+  }: Pick<ActiveAnimationWithDefinition, 'startedAt' | 'durationMs'>) => {
+    const timeElapsed = Date.now() - startedAt
+    return (timeElapsed % durationMs) / durationMs
   }
 
   const validPropsSet: ReadonlySet<keyof Shape> = new Set(shapeProps)
