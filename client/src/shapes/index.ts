@@ -35,11 +35,30 @@ export const useOptimizedShapes = () => {
 
 export type OptimizedShapes = ReturnType<typeof useOptimizedShapes>
 
+type AnimationId = string
+
+type ActiveAnimation = {
+  /**
+   * ID linking to the animation definition
+   */
+  definitionId: AnimationId,
+  /**
+   * unix timestamp when the animation started
+   */
+  startedAt: number,
+  /**
+   * number of times this animation will run before automatically stopping (can be fractional).
+   * set to `Infinity` to run animation indefinitely
+   */
+  runCount: number,
+}
+
 export const useAnimatedShapes = () => {
   /**
-   * maps schema id to unix timestamp the animation begun
+   * a mapping between shapes (via ids) and the animations currently
+   * active/running on those shapes
    */
-  const runningAnimations: Map<SchemaId, { animationId: string, timeBegun: number }[]> = new Map()
+  const activeAnimations: Map<SchemaId, ActiveAnimation[]> = new Map()
 
   const animationDurationMs = 4000
 
@@ -56,7 +75,6 @@ export const useAnimatedShapes = () => {
   const validPropsSet: ReadonlySet<keyof Shape> = new Set(shapeProps)
 
   const squareWithId: ShapeFactory<WithId<SquareSchema>> = (schema) => {
-    // if they call square.draw(ctx) then get runs with (square, 'draw') -> square.draw
     return new Proxy(square(schema), {
       get: (target, rawProp) => {
         const prop = rawProp as keyof Shape
@@ -66,14 +84,29 @@ export const useAnimatedShapes = () => {
           return target[prop]
         }
 
-        const timeBegun = runningAnimations.get(schema.id)
-        if (timeBegun === undefined) return target[prop]
+        const animationsOnShape = activeAnimations.get(schema.id)
 
-        const timesRun = getTimesRun(animationDurationMs, Date.now() - timeBegun)
-        const shouldRemove = timesRun >= 0.5
-        if (shouldRemove) {
-          runningAnimations.delete(schema.id)
+        const notAnimating = !animationsOnShape || animationsOnShape.length === 0
+        if (notAnimating) return target[prop]
+
+        const animationDefs = animationsOnShape.map((a) => ({
+          def: getAnimationDefinition(a.definitionId),
+          ...a
+        }))
+
+        // cleanup expired animations
+        for (const animation of animationDefs) {
+          // const { timeAtStart, def: { durationMs } } = animation
+          // const timesRun = getTimesRun(animationDurationMs, Date.now() - timeBegun)
+          // const shouldRemove = timesRun >= 0.5
+          // if (shouldRemove) {
+          //   activeAnimations.delete(schema.id)
+          // }
         }
+
+        // resolve the properties for the animated shape schema
+        const animatedSchema =
+
 
         const prog = getAnimationProgress(timeBegun)
 
@@ -94,10 +127,10 @@ export const useAnimatedShapes = () => {
     shapes: { square: squareWithId },
     animation: {
       start: (id: SchemaId) => {
-        runningAnimations.set(id, Date.now())
+        activeAnimations.set(id, Date.now())
       },
       stop: (id: SchemaId) => {
-        runningAnimations.delete(id)
+        activeAnimations.delete(id)
       }
     },
   }
