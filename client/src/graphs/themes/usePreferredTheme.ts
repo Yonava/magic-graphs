@@ -3,14 +3,18 @@ import { useDark } from '@vueuse/core';
 import type { BaseGraph } from '@graph/base';
 import { useLocalStorage } from '@vueuse/core';
 import { THEME_NAMES, type GraphThemeName } from '.';
+// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
+// eslint-disable-next-line
 import type { Graph } from '@graph/types';
+import { localKeys } from '@utils/localStorage';
 
 export type PreferredGraphTheme = GraphThemeName | 'auto';
 
 const DEFAULT_THEME: PreferredGraphTheme = 'auto';
 
 /**
- * creates a `ref` that when changed updates the {@link Graph.themeName | graph theme} and saves the preference
+ * creates a `ref` that when changed updates the
+ * {@link Graph.themeName | graph theme} and saves the preference
  * to local storage for future sessions or when another graph is created that implements
  * `usePreferredTheme`
  *
@@ -19,7 +23,7 @@ const DEFAULT_THEME: PreferredGraphTheme = 'auto';
 export const usePreferredTheme = (graph: BaseGraph) => {
   const isDark = useDark();
   const preferredTheme = useLocalStorage<PreferredGraphTheme>(
-    'preferred-theme',
+    localKeys.preferredTheme,
     DEFAULT_THEME,
   );
 

@@ -2,11 +2,7 @@
   import GButton from '@ui/graph/button/GButton.vue';
   import CIcon from '@ui/core/Icon.vue';
   import { computed, ref } from 'vue';
-  import {
-    decodeCompressedTransitData,
-    encodeCompressedTransitData,
-    getTransitData,
-  } from '@graph/transit';
+  import { encodeCompressedTransitData, getTransitData } from '@graph/transit';
   import { nonNullGraph as graph } from '@graph/global';
   import { useRoute } from 'vue-router';
   import { SHARE_GRAPH_QUERY_PARAM_KEY } from '@graph/useGraphProduct';
@@ -30,8 +26,6 @@
       const uncompressedData = getTransitData(graph.value);
       const data = encodeCompressedTransitData(uncompressedData);
       const compressedUriData = compressToEncodedURIComponent(data);
-
-      decodeCompressedTransitData(data);
 
       const shareKey = SHARE_GRAPH_QUERY_PARAM_KEY;
       const baseUrl = `${location.origin}${route.path}`;
