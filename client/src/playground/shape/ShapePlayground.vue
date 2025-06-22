@@ -8,11 +8,20 @@
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import { useMagicCanvas } from '@canvas/index';
   import Button from '@ui/core/button/Button.vue';
+  import { DefineAnimation } from '@shape/animation/defineAnimation';
+
+  const anim = new DefineAnimation('width', 1000)
+    .from()
+    .width(0)
+    .at(0.5)
+    .width(0.2)
+    .to()
+    .width(1);
 
   const {
     animation,
     shapes: { square },
-  } = useAnimatedShapes();
+  } = useAnimatedShapes([anim]);
 
   const shapes = ref<Shape[]>([]);
 
@@ -44,7 +53,9 @@
         :canvas="magic.canvas.value"
         :items="shapes"
       />
-      <Button @click="animation.start('test')"> Start Animation </Button>
+      <Button @click="animation.start('test', 'width', 3)">
+        Start Animation
+      </Button>
       <Button @click="animation.stop('test')"> Stop Animation </Button>
     </div>
 

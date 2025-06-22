@@ -5,8 +5,8 @@ import type { ShapeResolverOptions } from './types';
 import { SEQ } from './edgeSeq';
 import { getMapper, inRange } from './utils';
 import { animateInTextArea, animateOutTextArea } from './edgeTextArea';
-import type { LineSchema } from '@shape/shapes/line';
-import type { WithId } from '@shape/cacher';
+import type { LineSchema } from '@shapes/line/types';
+import type { WithId } from '@shape/types';
 
 const { interpolate, normalize } = gsap.utils;
 const EASING = EASING_FUNCTIONS['in-out'];

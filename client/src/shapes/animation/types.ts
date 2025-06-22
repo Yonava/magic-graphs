@@ -1,22 +1,10 @@
-
-export type AnimationDefinitionId = string
-
-export type AnimationDefinition = {
-  /**
-   * a unique identifier for this definition
-   */
-  id: AnimationDefinitionId,
-  /**
-   * the duration of this animation (in milliseconds)
-   */
-  durationMs: number,
-}
+import type { AnimationDefinition, DefineAnimation } from "./defineAnimation"
 
 export type ActiveAnimation = {
   /**
    * links the active animation to the animation definition
    */
-  definitionId: AnimationDefinitionId,
+  definitionId: DefineAnimation['id'],
   /**
    * unix timestamp when the animation started
    */
