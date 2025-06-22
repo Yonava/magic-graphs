@@ -10,33 +10,25 @@
   import Button from '@ui/core/button/Button.vue';
   import { DefineAnimation } from '@shape/animation/defineAnimation';
 
-  const customWidthAnimation = new DefineAnimation('width')
+  const rotationAnimation = new DefineAnimation('rotate')
     .from()
-    .width(1)
+    .rotation(0)
     .to()
-    .width(2)
-    .duration({ ms: 2000 });
-
-  const customHeightAnimation = new DefineAnimation('height')
-    .from()
-    .width(1)
-    .to()
-    .width(2)
+    .rotation(Math.PI)
     .duration({ ms: 2000 });
 
   const {
     animation,
-    shapes: { rect },
-  } = useAnimatedShapes([customWidthAnimation, customHeightAnimation]);
+    shapes: { square },
+  } = useAnimatedShapes([rotationAnimation]);
 
   const shapes = ref<Shape[]>([]);
 
   shapes.value.push(
-    rect({
+    square({
       id: 'test',
-      width: 100,
-      height: 100,
-      at: { x: 0, y: 0 },
+      size: 140,
+      at: { x: -200, y: -300 },
     }),
   );
 
@@ -60,7 +52,7 @@
         :canvas="magic.canvas.value"
         :items="shapes"
       />
-      <Button @click="animation.start('test', 'height')">
+      <Button @click="animation.start('test', 'rotate')">
         Start Animation
       </Button>
       <Button @click="animation.stop('test')"> Stop Animation </Button>

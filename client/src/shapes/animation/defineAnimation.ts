@@ -2,36 +2,47 @@ import { EASING_FUNCTIONS, type EasingFunction } from "@utils/animate";
 
 type ScalarPoint = {
   scalar: number;
-  at: number
+  progress: number
 };
 
-export type AnimatedProps = Partial<{
-  lineWidth: ScalarPoint[],
-  width: ScalarPoint[],
-}>
+const scalarProps = ['lineWidth', 'width'] as const
 
-type AnimatedPropFns = Partial<{
-  /**
-   * function that takes progress (0, 1) and returns the scalar
-   */
-  width: (progress: number) => number
-}>
+type ScalarProps = {
+  [K in typeof scalarProps[number]]: ScalarPoint[]
+}
+
+type OffsetPoint = {
+  offset: number,
+  progress: number
+}
+
+const offsetProps = ['rotation'] as const
+
+type OffsetProps = {
+  [K in typeof offsetProps[number]]: OffsetPoint[]
+}
+
+export type AnimatedProps = Partial<ScalarProps>
+
+type AnimatedPropFns = {
+  [K in Extract<keyof AnimatedProps, keyof ScalarProps>]?: (progress: number) => number
+}
 
 export const getScalarAt = (
   points: ScalarPoint[],
   easing: EasingFunction
-) => (at: number) => {
+) => (progress: number) => {
   if (points.length === 0) return 1; // default fallback
 
-  if (at <= points[0].at) return points[0].scalar;
-  if (at >= points[points.length - 1].at) return points[points.length - 1].scalar;
+  if (progress <= points[0].progress) return points[0].scalar;
+  if (progress >= points[points.length - 1].progress) return points[points.length - 1].scalar;
 
   for (let i = 0; i < points.length - 1; i++) {
     const p1 = points[i];
     const p2 = points[i + 1];
 
-    if (at >= p1.at && at <= p2.at) {
-      const t = (at - p1.at) / (p2.at - p1.at);
+    if (progress >= p1.progress && progress <= p2.progress) {
+      const t = (progress - p1.progress) / (p2.progress - p1.progress);
       return p1.scalar + easing(t) * (p2.scalar - p1.scalar);
     }
   }
@@ -60,6 +71,23 @@ export class DefineAnimation<T extends string = string> {
     this.id = id
   }
 
+  #scalarProp(key: keyof ScalarProps, scalar: number) {
+    const entry = {
+      scalar,
+      progress: this.#currentProgress
+    }
+
+    const scalarProp = this.#animatedProps[key]
+
+    if (!scalarProp) {
+      this.#animatedProps[key] = [entry]
+    } else {
+      scalarProp.push(entry)
+    }
+
+    return this
+  }
+
   duration({ ms }: { ms: number }) {
     this.durationMs = ms;
     return this
@@ -81,45 +109,23 @@ export class DefineAnimation<T extends string = string> {
   }
 
   lineWidth(scalar: number) {
-    const entry = {
-      scalar,
-      at: this.#currentProgress
-    }
-
-    const lineWidthProp = this.#animatedProps['lineWidth']
-
-    if (!lineWidthProp) {
-      this.#animatedProps['lineWidth'] = [entry]
-    } else {
-      lineWidthProp.push(entry)
-    }
-
-    return this
+    return this.#scalarProp('lineWidth', scalar)
   }
 
   width(scalar: number) {
-    const entry = {
-      scalar,
-      at: this.#currentProgress
-    }
+    return this.#scalarProp('width', scalar)
+  }
 
-    const widthProp = this.#animatedProps['width']
-
-    if (!widthProp) {
-      this.#animatedProps['width'] = [entry]
-    } else {
-      widthProp.push(entry)
-    }
-
-    return this
+  rotation(degrees: number) {
+    return this.#scalarProp('rotation', scalar)
   }
 
   getDefinition() {
     const props: AnimatedPropFns = {}
 
-    const widthProp = this.#animatedProps['width']
-    if (widthProp) {
-      props['width'] = getScalarAt(widthProp, EASING_FUNCTIONS.linear)
+    for (const propName of scalarProps) {
+      const propVal = this.#animatedProps[propName]
+      if (propVal) props[propName] = getScalarAt(propVal, EASING_FUNCTIONS.linear)
     }
 
     return {

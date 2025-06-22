@@ -4,6 +4,12 @@ import { square } from "@shapes/square"
 import { getAnimationProgress, getCurrentRunCount, validPropsSet } from "./utils"
 import type { AnimationDefinition, DefineAnimation } from "./defineAnimation"
 import { rect } from "@shapes/rect"
+import { line } from "@shapes/line"
+import {
+  BORDER_RADIUS_DEFAULTS,
+  LINE_WIDTH_DEFAULTS,
+  ROTATION_DEFAULTS
+} from "@shape/defaults/schema"
 
 export const useAnimatedShapes = <const D extends readonly DefineAnimation<string>[]>(
   animationDefs: D,
@@ -56,15 +62,22 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
         const { props } = animationWithDef
         const progress = getAnimationProgress(animationWithDef)
 
+        const schemaWithDefaults = {
+          ...LINE_WIDTH_DEFAULTS,
+          ...ROTATION_DEFAULTS,
+          ...BORDER_RADIUS_DEFAULTS,
+          ...schema,
+        }
+
         const infusedProps = Object.entries(props).reduce((acc, curr) => {
           const [propName, progressFn] = curr
-          if (!(propName in schema)) return acc
-          acc[propName] = progressFn(progress) * (schema as any)[propName]
+          if (!(propName in schemaWithDefaults)) return acc
+          acc[propName] = progressFn(progress) * (schemaWithDefaults as any)[propName]
           return acc
         }, {} as Record<string, number>)
 
         return factory({
-          ...schema,
+          ...schemaWithDefaults,
           ...infusedProps,
         })[prop]
       }
@@ -75,6 +88,7 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
     shapes: {
       square: animatedFactory(square),
       rect: animatedFactory(rect),
+      line: animatedFactory(line),
     },
     animation: {
       start: (
