@@ -39,10 +39,9 @@ export const getScalarAt = (
   return 1; // fallback, should not be reached
 };
 
-
 export type AnimationDefinitionId = string
 
-export class DefineAnimation {
+export class DefineAnimation<T extends string = string> {
   #animatedProps: AnimatedProps = {};
 
   #currentProgress = 0;
@@ -53,12 +52,17 @@ export class DefineAnimation {
   id: AnimationDefinitionId
   /**
    * the duration of this animation (in milliseconds)
+   * @default 1000
    */
-  durationMs: number
+  durationMs = 1000
 
-  constructor(id: string, durationMs: number) {
+  constructor(id: T) {
     this.id = id
-    this.durationMs = durationMs
+  }
+
+  duration({ ms }: { ms: number }) {
+    this.durationMs = ms;
+    return this
   }
 
   from() {

@@ -2,10 +2,10 @@ import type { SchemaId, Shape, ShapeFactory, WithId } from "@shape/types"
 import type { ActiveAnimation, ActiveAnimationWithDefinition } from "./types"
 import { square } from "@shapes/square"
 import { getAnimationProgress, getCurrentRunCount, validPropsSet } from "./utils"
-import type { SquareSchema } from "@shapes/square/types"
 import type { AnimationDefinition, DefineAnimation } from "./defineAnimation"
+import { rect } from "@shapes/rect"
 
-export const useAnimatedShapes = (animationDefs: DefineAnimation[]) => {
+export const useAnimatedShapes = <D extends string>(animationDefs: DefineAnimation<D>[]) => {
   const defMap: Map<AnimationDefinition['id'], AnimationDefinition> = new Map()
 
   for (const animationDef of animationDefs) {
@@ -24,8 +24,8 @@ export const useAnimatedShapes = (animationDefs: DefineAnimation[]) => {
    */
   const activeAnimations: Map<SchemaId, ActiveAnimation> = new Map()
 
-  const squareWithId: ShapeFactory<WithId<SquareSchema>> = (schema) => {
-    return new Proxy(square(schema), {
+  const animatedFactory = <T>(factory: ShapeFactory<T>) => (schema: WithId<T>) => {
+    return new Proxy(factory(schema), {
       get: (target, rawProp) => {
         const prop = rawProp as keyof Shape
 
@@ -61,7 +61,7 @@ export const useAnimatedShapes = (animationDefs: DefineAnimation[]) => {
           return acc
         }, {} as Record<string, number>)
 
-        return square({
+        return factory({
           ...schema,
           ...infusedProps,
         })[prop]
@@ -70,9 +70,12 @@ export const useAnimatedShapes = (animationDefs: DefineAnimation[]) => {
   }
 
   return {
-    shapes: { square: squareWithId },
+    shapes: {
+      square: animatedFactory(square),
+      rect: animatedFactory(rect),
+    },
     animation: {
-      start: (id: SchemaId, definitionId: string, runCount: number) => {
+      start: (id: SchemaId, definitionId: D, runCount = Infinity) => {
         activeAnimations.set(id, {
           definitionId,
           runCount,
