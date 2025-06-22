@@ -5,7 +5,9 @@ import { getAnimationProgress, getCurrentRunCount, validPropsSet } from "./utils
 import type { AnimationDefinition, DefineAnimation } from "./defineAnimation"
 import { rect } from "@shapes/rect"
 
-export const useAnimatedShapes = <D extends string>(animationDefs: DefineAnimation<D>[]) => {
+export const useAnimatedShapes = <const D extends readonly DefineAnimation<string>[]>(
+  animationDefs: D,
+) => {
   const defMap: Map<AnimationDefinition['id'], AnimationDefinition> = new Map()
 
   for (const animationDef of animationDefs) {
@@ -75,7 +77,11 @@ export const useAnimatedShapes = <D extends string>(animationDefs: DefineAnimati
       rect: animatedFactory(rect),
     },
     animation: {
-      start: (id: SchemaId, definitionId: D, runCount = Infinity) => {
+      start: (
+        id: SchemaId,
+        definitionId: D[number] extends DefineAnimation<infer K> ? K : never,
+        runCount = Infinity
+      ) => {
         activeAnimations.set(id, {
           definitionId,
           runCount,

@@ -27,7 +27,7 @@
   const {
     animation,
     shapes: { rect },
-  } = useAnimatedShapes([customWidthAnimation, customHeightAnimation] as const);
+  } = useAnimatedShapes([customWidthAnimation, customHeightAnimation]);
 
   const shapes = ref<Shape[]>([]);
 
