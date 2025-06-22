@@ -1,7 +1,7 @@
 import type { SchemaId, Shape, ShapeFactory, WithId } from "@shape/types"
 import type { ActiveAnimation, ActiveAnimationWithDefinition } from "./types"
 import { square } from "@shapes/square"
-import { getCurrentRunCount, validPropsSet } from "./utils"
+import { getAnimationProgress, getCurrentRunCount, validPropsSet } from "./utils"
 import type { SquareSchema } from "@shapes/square/types"
 import type { AnimationDefinition, DefineAnimation } from "./defineAnimation"
 
@@ -43,15 +43,28 @@ export const useAnimatedShapes = (animationDefs: DefineAnimation[]) => {
         }
 
         // cleanup expired animations
-
         const currentRunCount = getCurrentRunCount(animationWithDef)
         const shouldRemove = currentRunCount >= animationWithDef.runCount
         if (shouldRemove) {
           activeAnimations.delete(schema.id)
+          return target[prop]
         }
 
         // resolve the properties for the animated shape schema
-        const animatedSchema = {}
+        const { props } = animationWithDef
+        const progress = getAnimationProgress(animationWithDef)
+
+        const infusedProps = Object.entries(props).reduce((acc, curr) => {
+          const [propName, progressFn] = curr
+          if (!(propName in schema)) return acc
+          acc[propName] = progressFn(progress) * (schema as any)[propName]
+          return acc
+        }, {} as Record<string, number>)
+
+        return square({
+          ...schema,
+          ...infusedProps,
+        })[prop]
       }
     })
   }
