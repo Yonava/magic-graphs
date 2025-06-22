@@ -15,7 +15,7 @@
     .rotation(0)
     .to()
     .rotation(Math.PI)
-    .duration({ ms: 2000 });
+    .duration({ ms: 5000 });
 
   const {
     animation,
