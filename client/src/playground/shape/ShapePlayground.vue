@@ -12,7 +12,7 @@
 
   const rotationAnimation = new DefineAnimation('rotate')
     .at(0.5)
-    .width({ scaleTo: 3 })
+    .fillColor('purple')
     .duration({ ms: 3000 });
 
   const widthAnimation = new DefineAnimation('width');
@@ -27,8 +27,9 @@
   shapes.value.push(
     rect({
       id: 'test',
+      fillColor: 'blue',
       width: 140,
-      height: 140,
+      height: 20,
       at: { x: -200, y: -300 },
     }),
     square({

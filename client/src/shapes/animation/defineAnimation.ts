@@ -21,7 +21,7 @@ type NumericInput = {
    * @returns the value you want the property you are animating to have at the point
    * defined in your timeline
    */
-  custom: <T>(propValue: number, schema: T) => number
+  custom: (propValue: number, schema: any) => number
 }
 
 type NumericPoint = ({
@@ -32,7 +32,7 @@ type NumericPoint = ({
   value: number,
 } | {
   operation: 'custom',
-  value: <T>(prop: number, schema: T) => number
+  value: (prop: number, schema: any) => number
 }) & Pick<NumericKeyframe, 'progress'>
 
 type NumericProps = {
@@ -41,8 +41,12 @@ type NumericProps = {
 
 export const colorProps = ['fillColor'] as const
 
+type ColorPoint = {
+  value: Color | ((prop: Color, schema: any) => Color),
+} & Pick<ColorKeyframe, 'progress'>;
+
 type ColorProps = {
-  [K in typeof colorProps[number]]: ColorKeyframe[]
+  [K in typeof colorProps[number]]: ColorPoint[]
 }
 
 type AnimatedProps = Partial<NumericProps & ColorProps>
@@ -69,6 +73,16 @@ const endingNumericPoint: NumericPoint = {
   progress: 1,
   value: 1,
   operation: 'scaleTo',
+}
+
+const startingColorPoint: ColorPoint = {
+  progress: 0,
+  value: (color) => color,
+}
+
+const endingColorPoint: ColorPoint = {
+  progress: 1,
+  value: (color) => color,
 }
 
 export class DefineAnimation<T extends string = string> {
@@ -122,7 +136,10 @@ export class DefineAnimation<T extends string = string> {
     const colorProp = this.#animatedProps[key]
 
     if (!colorProp) {
-      this.#animatedProps[key] = [entry]
+      this.#animatedProps[key] = this.#currentProgress === 0 ? [entry] : [
+        startingColorPoint,
+        entry,
+      ]
     } else {
       colorProp.push(entry)
     }
@@ -178,7 +195,10 @@ export class DefineAnimation<T extends string = string> {
       if (!numericPoints) continue
       props[propName] = (schema, progress) => {
         const nonAnimatedPropValue = schema[propName]
-        if (typeof schema !== 'number') throw '😳! prop said to be numeric was not at runtime!'
+
+        if (typeof nonAnimatedPropValue !== 'number') {
+          throw `😳! prop ${propName} said to be numeric was not at runtime! got ${nonAnimatedPropValue}`
+        }
 
         if (numericPoints.at(-1)?.progress !== 1) {
           numericPoints.push(endingNumericPoint)
@@ -212,8 +232,8 @@ export class DefineAnimation<T extends string = string> {
     }
 
     for (const propName of colorProps) {
-      const colorKeyframes = this.#animatedProps[propName]
-      if (!colorKeyframes) continue
+      const colorPoints = this.#animatedProps[propName]
+      if (!colorPoints) continue
       props[propName] = (schema, progress) => {
         const nonAnimatedPropValue = schema[propName]
 
@@ -222,11 +242,29 @@ export class DefineAnimation<T extends string = string> {
           isColorString(nonAnimatedPropValue)
         )
         if (!isColor) {
-          throw '😳! prop said to be a color was not at runtime!'
+          throw `😳! prop ${propName} said to be a color was not at runtime! got ${nonAnimatedPropValue}`
         }
 
+        if (colorPoints.at(-1)?.progress !== 1) {
+          colorPoints.push(endingColorPoint)
+        }
+
+        const keyframes = colorPoints.map((pt): ColorKeyframe => {
+          const getStringColorValue = () => {
+            if (typeof pt.value === 'function') {
+              return pt.value(nonAnimatedPropValue, schema)
+            }
+            return pt.value
+          }
+
+          return {
+            value: getStringColorValue(),
+            progress: pt.progress,
+          }
+        })
+
         const getInterpolatedValue = interpolateColor(
-          colorKeyframes,
+          keyframes,
           EASING_FUNCTIONS['in-out'],
           nonAnimatedPropValue,
         )
