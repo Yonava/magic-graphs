@@ -75,7 +75,11 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
           const [propName, getAnimatedValue] = curr
           if (!(propName in schemaWithDefaults)) return acc
 
-          acc[propName] = getAnimatedValue((schemaWithDefaults as any)[propName], progress)
+          // right now we are animating all the props on a schema whether or
+          // not that schema actually implements that prop because
+          // we do not have a way of knowing at runtime (outside the type system)
+          // what properties a given schema implements
+          acc[propName] = getAnimatedValue(schemaWithDefaults, progress)
 
           return acc
         }, {} as Record<string, number>)

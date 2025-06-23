@@ -1,5 +1,4 @@
 import { EASING_FUNCTIONS } from "@utils/animate";
-import type { UnionToIntersection } from "ts-essentials";
 import type { ColorKeyframe, NumericKeyframe } from "./interpolation/types";
 import { interpolateNumber } from "./interpolation/number";
 import { interpolateColor, isColorString } from "./interpolation/color";
@@ -11,11 +10,30 @@ type NumericInput = {
   scaleTo: number
 } | {
   offsetBy: number
+} | {
+  /**
+   * define a custom value to animate
+   *
+   * @param propValue the value of the non-animated property you are animating.
+   * ie if being passed in as lineWidth, and the schemas lineWidth is 10
+   * before animations, then propValue will be 10
+   * @param schema the full schema that you are trying to animate. ie schema[lineWidth] -> 10
+   * @returns the value you want the property you are animating to have at the point
+   * defined in your timeline
+   */
+  custom: <T>(propValue: number, schema: T) => number
 }
 
-type NumericPoint = {
-  operation: keyof UnionToIntersection<NumericInput>,
-} & NumericKeyframe;
+type NumericPoint = ({
+  operation: 'scaleTo'
+  value: number,
+} | {
+  operation: 'offsetBy',
+  value: number,
+} | {
+  operation: 'custom',
+  value: <T>(prop: number, schema: T) => number
+}) & Pick<NumericKeyframe, 'progress'>
 
 type NumericProps = {
   [K in typeof numericProps[number]]: NumericPoint[]
@@ -30,11 +48,10 @@ type ColorProps = {
 type AnimatedProps = Partial<NumericProps & ColorProps>
 
 /**
- * @param schemaPropVal the non-animated value of the schema property that
- * is being targeted for animation
+ * @param schema the non-altered schema of the shape being animated
  * @param progress value between 0 and 1. See {@link NumericKeyframe.progress}
  */
-type GetAnimatedValue = (schemaPropVal: unknown, progress: number) => any
+type GetAnimatedValue = (schema: any, progress: number) => any
 
 type AnimatedPropFns = {
   [K in keyof AnimatedProps]?: GetAnimatedValue
@@ -159,23 +176,35 @@ export class DefineAnimation<T extends string = string> {
     for (const propName of numericProps) {
       const numericPoints = this.#animatedProps[propName]
       if (!numericPoints) continue
-      props[propName] = (schemaValue, progress) => {
-        if (typeof schemaValue !== 'number') throw '😳! prop said to be numeric was not at runtime!'
+      props[propName] = (schema, progress) => {
+        const nonAnimatedPropValue = schema[propName]
+        if (typeof schema !== 'number') throw '😳! prop said to be numeric was not at runtime!'
 
         if (numericPoints.at(-1)?.progress !== 1) {
           numericPoints.push(endingNumericPoint)
         }
 
-        const keyframes = numericPoints.map((pt) => ({
-          ...pt,
-          // turns all values into offsets before being ingested as keyframes
-          value: pt.operation === 'scaleTo' ? schemaValue * pt.value : schemaValue + pt.value
-        }))
+        const keyframes = numericPoints.map((pt): NumericKeyframe => {
+          const getPixelValue = () => {
+            if (pt.operation === 'offsetBy') {
+              return nonAnimatedPropValue + pt.value
+            } else if (pt.operation === 'scaleTo') {
+              return nonAnimatedPropValue * pt.value
+            } else {
+              return pt.value(nonAnimatedPropValue, schema)
+            }
+          }
+
+          return {
+            value: getPixelValue(),
+            progress: pt.progress,
+          }
+        })
 
         const getInterpolatedValue = interpolateNumber(
           keyframes,
           EASING_FUNCTIONS['in-out'],
-          schemaValue,
+          nonAnimatedPropValue,
         )
 
         return getInterpolatedValue(progress)
@@ -185,8 +214,13 @@ export class DefineAnimation<T extends string = string> {
     for (const propName of colorProps) {
       const colorKeyframes = this.#animatedProps[propName]
       if (!colorKeyframes) continue
-      props[propName] = (schemaValue, progress) => {
-        const isColor = typeof schemaValue === 'string' && isColorString(schemaValue)
+      props[propName] = (schema, progress) => {
+        const nonAnimatedPropValue = schema[propName]
+
+        const isColor = (
+          typeof nonAnimatedPropValue === 'string' &&
+          isColorString(nonAnimatedPropValue)
+        )
         if (!isColor) {
           throw '😳! prop said to be a color was not at runtime!'
         }
@@ -194,7 +228,7 @@ export class DefineAnimation<T extends string = string> {
         const getInterpolatedValue = interpolateColor(
           colorKeyframes,
           EASING_FUNCTIONS['in-out'],
-          schemaValue,
+          nonAnimatedPropValue,
         )
 
         return getInterpolatedValue(progress)
