@@ -1,7 +1,9 @@
 import { EASING_FUNCTIONS } from "@utils/animate";
 import type { UnionToIntersection } from "ts-essentials";
-import type { NumericKeyframe } from "./interpolation/types";
+import type { ColorKeyframe, NumericKeyframe } from "./interpolation/types";
 import { interpolateNumber } from "./interpolation/number";
+import { interpolateColor, isColorString } from "./interpolation/color";
+import type { Color } from "@utils/colors";
 
 export const numericProps = ['rotation', 'borderRadius', 'lineWidth', 'width'] as const
 
@@ -13,13 +15,19 @@ type NumericInput = {
 
 type NumericPoint = {
   operation: keyof UnionToIntersection<NumericInput>,
-} & NumericKeyframe
+} & NumericKeyframe;
 
 type NumericProps = {
   [K in typeof numericProps[number]]: NumericPoint[]
 }
 
-type AnimatedProps = Partial<NumericProps>
+export const colorProps = ['fillColor'] as const
+
+type ColorProps = {
+  [K in typeof colorProps[number]]: ColorKeyframe[]
+}
+
+type AnimatedProps = Partial<NumericProps & ColorProps>
 
 /**
  * @param schemaPropVal the non-animated value of the schema property that
@@ -73,6 +81,23 @@ export class DefineAnimation<T extends string = string> {
     return this
   }
 
+  #colorProp(key: keyof ColorProps, input: Color) {
+    const entry: ColorKeyframe = {
+      value: input,
+      progress: this.#currentProgress,
+    }
+
+    const colorProp = this.#animatedProps[key]
+
+    if (!colorProp) {
+      this.#animatedProps[key] = [entry]
+    } else {
+      colorProp.push(entry)
+    }
+
+    return this
+  }
+
   duration({ ms }: { ms: number }) {
     this.durationMs = ms;
     return this
@@ -109,6 +134,10 @@ export class DefineAnimation<T extends string = string> {
     return this.#numericProp('borderRadius', input)
   }
 
+  fillColor(color: Color) {
+    return this.#colorProp('fillColor', color)
+  }
+
   getDefinition() {
     const props: AnimatedPropFns = {}
 
@@ -116,22 +145,40 @@ export class DefineAnimation<T extends string = string> {
       const numericPoints = this.#animatedProps[propName]
       if (!numericPoints) continue
       props[propName] = (schemaValue, progress) => {
-        if (typeof schemaValue === 'number') {
-          const keyframes = numericPoints.map((pt) => ({
-            ...pt,
-            // turns all values into offsets before being ingested as keyframes
-            value: pt.operation === 'scaleTo' ? schemaValue * pt.value : schemaValue + pt.value
-          }))
+        if (typeof schemaValue !== 'number') throw '😳! prop said to be numeric was not at runtime!'
 
-          const getInterpolatedValue = interpolateNumber(
-            keyframes,
-            EASING_FUNCTIONS['in-out'],
-            schemaValue,
-          )
+        const keyframes = numericPoints.map((pt) => ({
+          ...pt,
+          // turns all values into offsets before being ingested as keyframes
+          value: pt.operation === 'scaleTo' ? schemaValue * pt.value : schemaValue + pt.value
+        }))
 
-          return getInterpolatedValue(progress)
+        const getInterpolatedValue = interpolateNumber(
+          keyframes,
+          EASING_FUNCTIONS['in-out'],
+          schemaValue,
+        )
+
+        return getInterpolatedValue(progress)
+      }
+    }
+
+    for (const propName of colorProps) {
+      const colorKeyframes = this.#animatedProps[propName]
+      if (!colorKeyframes) continue
+      props[propName] = (schemaValue, progress) => {
+        const isColor = typeof schemaValue === 'string' && isColorString(schemaValue)
+        if (!isColor) {
+          throw '😳! prop said to be a color was not at runtime!'
         }
-        return schemaValue
+
+        const getInterpolatedValue = interpolateColor(
+          colorKeyframes,
+          EASING_FUNCTIONS['in-out'],
+          schemaValue,
+        )
+
+        return getInterpolatedValue(progress)
       }
     }
 

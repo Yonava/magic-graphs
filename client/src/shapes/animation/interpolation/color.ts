@@ -3,9 +3,13 @@ import type { Color } from "@utils/colors";
 import tinycolor from "tinycolor2";
 import type { ColorKeyframe } from "./types";
 
+/**
+ * @returns true if the supplied string can be parsed as a color
+ */
+export const isColorString = (color: Color) => isColor(tinycolor(color))
 export const isColor = (color: tinycolor.Instance) => color.isValid();
 
-export const interpolateColorKeyframes = (
+export const interpolateColor = (
   keyframes: ColorKeyframe[],
   easing: EasingFunction,
   fallbackValue: Color

@@ -6,6 +6,7 @@ import type { AnimationDefinition, DefineAnimation } from "./defineAnimation"
 import { rect } from "@shapes/rect"
 import { line } from "@shapes/line"
 import {
+  FILL_COLOR_DEFAULTS,
   BORDER_RADIUS_DEFAULTS,
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS
@@ -66,6 +67,7 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
           ...LINE_WIDTH_DEFAULTS,
           ...ROTATION_DEFAULTS,
           ...BORDER_RADIUS_DEFAULTS,
+          ...FILL_COLOR_DEFAULTS,
           ...schema,
         }
 

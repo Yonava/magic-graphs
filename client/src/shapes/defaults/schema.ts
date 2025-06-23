@@ -9,7 +9,7 @@ export const LINE_WIDTH_DEFAULTS = {
   lineWidth: 10,
 } as const satisfies LineWidth;
 
-export const BACKGROUND_COLOR_DEFAULTS = {
+export const FILL_COLOR_DEFAULTS = {
   fillColor: 'black',
 } as const satisfies FillColor;
 
