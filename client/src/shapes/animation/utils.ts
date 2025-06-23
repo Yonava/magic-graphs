@@ -5,7 +5,8 @@ import type { ActiveAnimationWithDefinition } from "./types"
  * returns the number of times the animation has completed as a float.
  *
  * @example
- * const runs = getCurrentRunCount(animation) // 2.5
+ * const runs = getCurrentRunCount(animation)
+ * console.log(runs) // 2.5
  * // "animation" is half way through its 3rd run
  */
 export const getCurrentRunCount = ({
@@ -21,7 +22,8 @@ export const getCurrentRunCount = ({
  * Useful for determining how far along the animation is within its current run.
  *
  * @example
- * const progress = getAnimationProgress(animation); // 0.25
+ * const progress = getAnimationProgress(animation);
+ * console.log(progress) // 0.25
  * // "animation" is 25% through its current cycle
  */
 export const getAnimationProgress = ({

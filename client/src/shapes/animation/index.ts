@@ -50,7 +50,7 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
           ...animation,
         }
 
-        // cleanup expired animations
+        // cleanup animation if expired
         const currentRunCount = getCurrentRunCount(animationWithDef)
         const shouldRemove = currentRunCount >= animationWithDef.runCount
         if (shouldRemove) {

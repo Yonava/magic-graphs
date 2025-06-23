@@ -13,22 +13,45 @@
   const rotationAnimation = new DefineAnimation('rotate')
     .from()
     .rotation(0)
+    .borderRadius(0)
+    .width(0)
+    .lineWidth(0)
+    .at(0.5)
+    .borderRadius(15)
+    .width(100)
+    .lineWidth(60)
     .to()
+    .borderRadius(0)
+    .lineWidth(0)
+    .width(0)
     .rotation(Math.PI)
-    .duration({ ms: 5000 });
+    .duration({ ms: 3000 });
+
+  const widthAnimation = new DefineAnimation('width');
 
   const {
     animation,
-    shapes: { square },
-  } = useAnimatedShapes([rotationAnimation]);
+    shapes: { rect, square, line },
+  } = useAnimatedShapes([rotationAnimation, widthAnimation]);
 
   const shapes = ref<Shape[]>([]);
 
   shapes.value.push(
+    rect({
+      id: 'test',
+      width: 140,
+      height: 140,
+      at: { x: -200, y: -300 },
+    }),
     square({
       id: 'test',
-      size: 140,
-      at: { x: -200, y: -300 },
+      size: 100,
+      at: { x: 200, y: -300 },
+    }),
+    line({
+      id: 'test',
+      start: { x: 0, y: 0 },
+      end: { x: 300, y: 300 },
     }),
   );
 
@@ -38,7 +61,7 @@
   magic.draw.backgroundPattern.value = (ctx, at) => {
     cross({
       at,
-      size: 8,
+      size: 14,
       lineWidth: 1,
       fillColor: colors.GRAY_600,
     }).draw(ctx);

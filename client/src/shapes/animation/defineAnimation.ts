@@ -1,7 +1,7 @@
 import { EASING_FUNCTIONS, type EasingFunction } from "@utils/animate";
 
 export const scalarProps = ['lineWidth', 'width'] as const
-export const offsetProps = ['rotation'] as const
+export const offsetProps = ['rotation', 'borderRadius'] as const
 export const numericProps = [...scalarProps, ...offsetProps] as const
 
 export const combine = {
@@ -21,14 +21,18 @@ type NumericProps = {
 type AnimatedProps = Partial<NumericProps>
 
 type AnimatedPropFns = {
+  // instead of this, have useAnimation give us the value of the thing and the progress.
+  // then turn everything from a scalar into a usable value so we can seamlessly switch
+  // between scalar and offset because scalar is offset when combined with the actual value
   [K in keyof AnimatedProps]?: (progress: number) => number
 }
 
 export const valueAtProgress = (
   points: NumericPoint[],
-  easing: EasingFunction
+  easing: EasingFunction,
+  fallbackValue = 1,
 ) => (progress: number) => {
-  if (points.length === 0) return 1; // default fallback
+  if (points.length === 0) return fallbackValue;
 
   if (progress <= points[0].progress) return points[0].value;
   if (progress >= points[points.length - 1].progress) return points[points.length - 1].value;
@@ -43,7 +47,7 @@ export const valueAtProgress = (
     }
   }
 
-  return 1; // fallback, should not be reached
+  return fallbackValue;
 };
 
 export type AnimationDefinitionId = string
@@ -116,12 +120,16 @@ export class DefineAnimation<T extends string = string> {
     return this.#numericProp('rotation', radians)
   }
 
+  borderRadius(radius: number) {
+    return this.#numericProp('borderRadius', radius)
+  }
+
   getDefinition() {
     const props: AnimatedPropFns = {}
 
     for (const propName of numericProps) {
       const propVal = this.#animatedProps[propName]
-      if (propVal) props[propName] = valueAtProgress(propVal, EASING_FUNCTIONS.linear)
+      if (propVal) props[propName] = valueAtProgress(propVal, EASING_FUNCTIONS['in-out'])
     }
 
     return {
