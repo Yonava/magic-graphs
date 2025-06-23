@@ -24,7 +24,7 @@ type AnimatedProps = Partial<NumericProps>
 /**
  * @param schemaPropVal the non-animated value of the schema property that
  * is being targeted for animation
- * @param progress between 0 and 1. for 1s animation -> 0 = 0ms, 0.5 = 500ms, 1 = 1s
+ * @param progress value between 0 and 1. See {@link NumericKeyframe.progress}
  */
 type GetAnimatedValue = (schemaPropVal: unknown, progress: number) => any
 
