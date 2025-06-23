@@ -12,7 +12,7 @@
 
   const rotationAnimation = new DefineAnimation('rotate')
     .from()
-    .rotation(0)
+    .rotate(0)
     .borderRadius(0)
     .width(0)
     .lineWidth(0)
@@ -24,7 +24,7 @@
     .borderRadius(0)
     .lineWidth(0)
     .width(0)
-    .rotation(Math.PI)
+    .rotate(Math.PI)
     .duration({ ms: 3000 });
 
   const widthAnimation = new DefineAnimation('width');

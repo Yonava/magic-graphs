@@ -1,17 +1,18 @@
 import { EASING_FUNCTIONS, type EasingFunction } from "@utils/animate";
+import type { UnionToIntersection } from "ts-essentials";
 
-export const scalarProps = ['lineWidth', 'width'] as const
-export const offsetProps = ['rotation', 'borderRadius'] as const
-export const numericProps = [...scalarProps, ...offsetProps] as const
+export const numericProps = ['rotation', 'borderRadius', 'lineWidth', 'width'] as const
 
-export const combine = {
-  scalar: (val1: number, val2: number) => val1 * val2,
-  offset: (val1: number, val2: number) => val1 + val2,
-} as const
+type NumericInput = {
+  scaleTo: number
+} | {
+  offsetBy: number
+}
 
 type NumericPoint = {
   value: number,
   progress: number,
+  operation: keyof UnionToIntersection<NumericInput>,
 };
 
 type NumericProps = {
@@ -21,10 +22,7 @@ type NumericProps = {
 type AnimatedProps = Partial<NumericProps>
 
 type AnimatedPropFns = {
-  // instead of this, have useAnimation give us the value of the thing and the progress.
-  // then turn everything from a scalar into a usable value so we can seamlessly switch
-  // between scalar and offset because scalar is offset when combined with the actual value
-  [K in keyof AnimatedProps]?: (progress: number) => number
+  [K in keyof AnimatedProps]?: <T>(schemaPropVal: T) => (progress: number) => T
 }
 
 export const valueAtProgress = (
@@ -71,10 +69,13 @@ export class DefineAnimation<T extends string = string> {
     this.id = id
   }
 
-  #numericProp(key: keyof NumericProps, value: number) {
+  #numericProp(key: keyof NumericProps, input: NumericInput) {
+    const [[operation, value]] = Object.entries(input) as any
+
     const entry: NumericPoint = {
       value,
-      progress: this.#currentProgress
+      progress: this.#currentProgress,
+      operation,
     }
 
     const numericProp = this.#animatedProps[key]
@@ -108,20 +109,20 @@ export class DefineAnimation<T extends string = string> {
     return this
   }
 
-  lineWidth(scalar: number) {
-    return this.#numericProp('lineWidth', scalar)
+  lineWidth(input: NumericInput) {
+    return this.#numericProp('lineWidth', input)
   }
 
-  width(scalar: number) {
-    return this.#numericProp('width', scalar)
+  width(input: NumericInput) {
+    return this.#numericProp('width', input)
   }
 
-  rotation(radians: number) {
-    return this.#numericProp('rotation', radians)
+  rotate(input: NumericInput) {
+    return this.#numericProp('rotation', input)
   }
 
-  borderRadius(radius: number) {
-    return this.#numericProp('borderRadius', radius)
+  borderRadius(input: NumericInput) {
+    return this.#numericProp('borderRadius', input)
   }
 
   getDefinition() {
@@ -129,7 +130,13 @@ export class DefineAnimation<T extends string = string> {
 
     for (const propName of numericProps) {
       const propVal = this.#animatedProps[propName]
-      if (propVal) props[propName] = valueAtProgress(propVal, EASING_FUNCTIONS['in-out'])
+      if (propVal) props[propName] = (schemaPropVal) => {
+        if (typeof schemaPropVal === 'number') {
+          // do the plus or multiple
+          return valueAtProgress(propVal, EASING_FUNCTIONS['in-out'])
+        }
+        return schemaPropVal
+      }
     }
 
     return {
