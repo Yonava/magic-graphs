@@ -12,10 +12,16 @@
 
   const rotationAnimation = new DefineAnimation('rotate')
     .from()
+    .width({ offsetBy: 0 })
     .rotate({ offsetBy: 0 })
     .at(0.5)
+    .width({ scaleTo: 3 })
+    .rotate({ offsetBy: 1 })
+    .at(0.9)
+    .width({ offsetBy: 100 })
     .to()
-    .rotate({ offsetBy: Math.PI })
+    .width({ scaleTo: 1 })
+    .rotate({ offsetBy: 0 })
     .duration({ ms: 3000 });
 
   const widthAnimation = new DefineAnimation('width');
