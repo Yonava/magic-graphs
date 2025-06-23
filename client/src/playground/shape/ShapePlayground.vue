@@ -11,7 +11,7 @@
   import { DefineAnimation } from '@shape/animation/defineAnimation';
 
   const rotationAnimation = new DefineAnimation('rotate')
-    .at(0.5)
+    .progress(0.5)
     .fillColor('purple')
     .duration({ ms: 3000 });
 
@@ -27,13 +27,14 @@
   shapes.value.push(
     rect({
       id: 'test',
-      fillColor: 'blue',
+      fillColor: 'white',
       width: 140,
       height: 20,
       at: { x: -200, y: -300 },
     }),
     square({
       id: 'test',
+      fillColor: 'red',
       size: 100,
       at: { x: 200, y: -300 },
     }),

@@ -1,52 +1,35 @@
 import { EASING_FUNCTIONS } from "@utils/animate";
-import type { ColorKeyframe, NumericKeyframe } from "./interpolation/types";
+import type { AnimationKeyframe, ColorKeyframe, NumericKeyframe } from "./interpolation/types";
 import { interpolateNumber } from "./interpolation/number";
 import { interpolateColor, isColorString } from "./interpolation/color";
 import type { Color } from "@utils/colors";
 
+/**
+ * define a custom value to animate
+ *
+ * @param propValue the value of the non-animated property you are animating.
+ * ie if being passed in as lineWidth, and the schemas lineWidth is 10
+ * before animations, then propValue will be 10
+ * @param schema the full schema that you are trying to animate. ie schema[lineWidth] -> 10
+ * @returns the value you want the property you are animating to have at the point
+ * defined in your timeline
+ */
+type CustomInput<T> = (propValue: T, schema: any) => T
+
+type FieldInput<T> = T | CustomInput<T>
+
+type KeyframeInput<T> = AnimationKeyframe<FieldInput<T>>
+
 export const numericProps = ['rotation', 'borderRadius', 'lineWidth', 'width'] as const
 
-type NumericInput = {
-  scaleTo: number
-} | {
-  offsetBy: number
-} | {
-  /**
-   * define a custom value to animate
-   *
-   * @param propValue the value of the non-animated property you are animating.
-   * ie if being passed in as lineWidth, and the schemas lineWidth is 10
-   * before animations, then propValue will be 10
-   * @param schema the full schema that you are trying to animate. ie schema[lineWidth] -> 10
-   * @returns the value you want the property you are animating to have at the point
-   * defined in your timeline
-   */
-  custom: (propValue: number, schema: any) => number
-}
-
-type NumericPoint = ({
-  operation: 'scaleTo'
-  value: number,
-} | {
-  operation: 'offsetBy',
-  value: number,
-} | {
-  operation: 'custom',
-  value: (prop: number, schema: any) => number
-}) & Pick<NumericKeyframe, 'progress'>
-
 type NumericProps = {
-  [K in typeof numericProps[number]]: NumericPoint[]
+  [K in typeof numericProps[number]]: KeyframeInput<number>[]
 }
 
 export const colorProps = ['fillColor'] as const
 
-type ColorPoint = {
-  value: Color | ((prop: Color, schema: any) => Color),
-} & Pick<ColorKeyframe, 'progress'>;
-
 type ColorProps = {
-  [K in typeof colorProps[number]]: ColorPoint[]
+  [K in typeof colorProps[number]]: KeyframeInput<Color>[]
 }
 
 type AnimatedProps = Partial<NumericProps & ColorProps>
@@ -63,30 +46,18 @@ type AnimatedPropFns = {
 
 export type AnimationDefinitionId = string
 
-const startingNumericPoint: NumericPoint = {
+const defaultStart: KeyframeInput<any> = {
   progress: 0,
-  value: 1,
-  operation: 'scaleTo',
+  value: (val: any) => val,
 }
 
-const endingNumericPoint: NumericPoint = {
+const defaultEnd: KeyframeInput<any> = {
   progress: 1,
-  value: 1,
-  operation: 'scaleTo',
-}
-
-const startingColorPoint: ColorPoint = {
-  progress: 0,
-  value: (color) => color,
-}
-
-const endingColorPoint: ColorPoint = {
-  progress: 1,
-  value: (color) => color,
+  value: (val: any) => val,
 }
 
 export class DefineAnimation<T extends string = string> {
-  #animatedProps: AnimatedProps = {};
+  #propToKeyframeInputs: AnimatedProps = {};
 
   #currentProgress = 0;
 
@@ -104,44 +75,24 @@ export class DefineAnimation<T extends string = string> {
     this.id = id
   }
 
-  #numericProp(key: keyof NumericProps, input: NumericInput) {
-    const [[operation, value]] = Object.entries(input) as any
-
-    const entry: NumericPoint = {
+  #addKeyframeInput(
+    propName: keyof AnimatedProps,
+    value: FieldInput<any>,
+  ) {
+    const entry = {
       value,
       progress: this.#currentProgress,
-      operation,
     }
 
-    const numericProp = this.#animatedProps[key]
+    const existingKeyframeInputs = this.#propToKeyframeInputs[propName]
 
-    if (!numericProp) {
-      this.#animatedProps[key] = this.#currentProgress === 0 ? [entry] : [
-        startingNumericPoint,
+    if (!existingKeyframeInputs) {
+      this.#propToKeyframeInputs[propName] = this.#currentProgress === 0 ? [entry] : [
+        defaultStart,
         entry,
       ]
     } else {
-      numericProp.push(entry)
-    }
-
-    return this
-  }
-
-  #colorProp(key: keyof ColorProps, input: Color) {
-    const entry: ColorKeyframe = {
-      value: input,
-      progress: this.#currentProgress,
-    }
-
-    const colorProp = this.#animatedProps[key]
-
-    if (!colorProp) {
-      this.#animatedProps[key] = this.#currentProgress === 0 ? [entry] : [
-        startingColorPoint,
-        entry,
-      ]
-    } else {
-      colorProp.push(entry)
+      existingKeyframeInputs.push(entry)
     }
 
     return this
@@ -162,36 +113,38 @@ export class DefineAnimation<T extends string = string> {
     return this
   }
 
-  at(progress: number) {
+  progress(progress: number) {
     this.#currentProgress = progress
     return this
   }
 
-  lineWidth(input: NumericInput) {
-    return this.#numericProp('lineWidth', input)
+  lineWidth(input: FieldInput<number>) {
+    return this.#addKeyframeInput('lineWidth', input)
   }
 
-  width(input: NumericInput) {
-    return this.#numericProp('width', input)
+  width(input: FieldInput<number>) {
+    return this.#addKeyframeInput('width', input)
   }
 
-  rotate(input: NumericInput) {
-    return this.#numericProp('rotation', input)
+  rotate(input: FieldInput<number>) {
+    return this.#addKeyframeInput('rotation', input)
   }
 
-  borderRadius(input: NumericInput) {
-    return this.#numericProp('borderRadius', input)
+  borderRadius(input: FieldInput<number>) {
+    return this.#addKeyframeInput('borderRadius', input)
   }
 
-  fillColor(color: Color) {
-    return this.#colorProp('fillColor', color)
+  fillColor(color: FieldInput<Color>) {
+    return this.#addKeyframeInput('fillColor', color)
   }
+
+  // at(coord: Coordinate)
 
   getDefinition() {
     const props: AnimatedPropFns = {}
 
     for (const propName of numericProps) {
-      const numericPoints = this.#animatedProps[propName]
+      const numericPoints = this.#propToKeyframeInputs[propName]
       if (!numericPoints) continue
       props[propName] = (schema, progress) => {
         const nonAnimatedPropValue = schema[propName]
@@ -201,18 +154,15 @@ export class DefineAnimation<T extends string = string> {
         }
 
         if (numericPoints.at(-1)?.progress !== 1) {
-          numericPoints.push(endingNumericPoint)
+          numericPoints.push(defaultEnd)
         }
 
         const keyframes = numericPoints.map((pt): NumericKeyframe => {
           const getPixelValue = () => {
-            if (pt.operation === 'offsetBy') {
-              return nonAnimatedPropValue + pt.value
-            } else if (pt.operation === 'scaleTo') {
-              return nonAnimatedPropValue * pt.value
-            } else {
+            if (typeof pt.value === 'function') {
               return pt.value(nonAnimatedPropValue, schema)
             }
+            return nonAnimatedPropValue + pt.value
           }
 
           return {
@@ -232,7 +182,7 @@ export class DefineAnimation<T extends string = string> {
     }
 
     for (const propName of colorProps) {
-      const colorPoints = this.#animatedProps[propName]
+      const colorPoints = this.#propToKeyframeInputs[propName]
       if (!colorPoints) continue
       props[propName] = (schema, progress) => {
         const nonAnimatedPropValue = schema[propName]
@@ -246,7 +196,7 @@ export class DefineAnimation<T extends string = string> {
         }
 
         if (colorPoints.at(-1)?.progress !== 1) {
-          colorPoints.push(endingColorPoint)
+          colorPoints.push(defaultEnd)
         }
 
         const keyframes = colorPoints.map((pt): ColorKeyframe => {

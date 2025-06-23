@@ -2,12 +2,11 @@ import type { Coordinate } from "@shape/types/utility";
 import type { EasingFunction } from "@utils/animate";
 import type { Color } from "@utils/colors";
 
-type AnimationKeyframe<T> = {
+export type AnimationKeyframe<T> = {
   /**
    * The value at this point in the animation timeline.
    */
   value: T;
-
   /**
    * The progress position, ranging from 0 to 1.
    * For example, in a 1-second animation:
