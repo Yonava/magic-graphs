@@ -1,3 +1,4 @@
+import type { Color } from "@utils/colors";
 
 type AnimationKeyframe<T> = {
   /**
@@ -16,3 +17,4 @@ type AnimationKeyframe<T> = {
 };
 
 export type NumericKeyframe = AnimationKeyframe<number>
+export type ColorKeyframe = AnimationKeyframe<Color>
