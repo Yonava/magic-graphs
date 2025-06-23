@@ -42,6 +42,18 @@ type AnimatedPropFns = {
 
 export type AnimationDefinitionId = string
 
+const startingNumericPoint: NumericPoint = {
+  progress: 0,
+  value: 1,
+  operation: 'scaleTo',
+}
+
+const endingNumericPoint: NumericPoint = {
+  progress: 1,
+  value: 1,
+  operation: 'scaleTo',
+}
+
 export class DefineAnimation<T extends string = string> {
   #animatedProps: AnimatedProps = {};
 
@@ -73,7 +85,10 @@ export class DefineAnimation<T extends string = string> {
     const numericProp = this.#animatedProps[key]
 
     if (!numericProp) {
-      this.#animatedProps[key] = [entry]
+      this.#animatedProps[key] = this.#currentProgress === 0 ? [entry] : [
+        startingNumericPoint,
+        entry,
+      ]
     } else {
       numericProp.push(entry)
     }
@@ -146,6 +161,10 @@ export class DefineAnimation<T extends string = string> {
       if (!numericPoints) continue
       props[propName] = (schemaValue, progress) => {
         if (typeof schemaValue !== 'number') throw '😳! prop said to be numeric was not at runtime!'
+
+        if (numericPoints.at(-1)?.progress !== 1) {
+          numericPoints.push(endingNumericPoint)
+        }
 
         const keyframes = numericPoints.map((pt) => ({
           ...pt,

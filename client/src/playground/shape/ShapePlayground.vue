@@ -11,20 +11,8 @@
   import { DefineAnimation } from '@shape/animation/defineAnimation';
 
   const rotationAnimation = new DefineAnimation('rotate')
-    .from()
-    .width({ offsetBy: 0 })
-    .rotate({ offsetBy: 0 })
-    .fillColor('black')
     .at(0.5)
     .width({ scaleTo: 3 })
-    .rotate({ offsetBy: 1 })
-    .fillColor('red')
-    .at(0.75)
-    .fillColor('blue')
-    .to()
-    .width({ scaleTo: 1 })
-    .rotate({ offsetBy: 0 })
-    .fillColor('black')
     .duration({ ms: 3000 });
 
   const widthAnimation = new DefineAnimation('width');
