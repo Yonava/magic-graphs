@@ -1,7 +1,6 @@
-import type { EasingFunction } from "@utils/animate";
 import type { Color } from "@utils/colors";
 import tinycolor from "tinycolor2";
-import type { ColorKeyframe } from "./types";
+import type { InterpolationFunction } from "./types";
 
 /**
  * @returns true if the supplied string can be parsed as a color
@@ -9,12 +8,10 @@ import type { ColorKeyframe } from "./types";
 export const isColorString = (color: Color) => isColor(tinycolor(color))
 export const isColor = (color: tinycolor.Instance) => color.isValid();
 
-export const interpolateColor = (
-  keyframes: ColorKeyframe[],
-  easing: EasingFunction,
-  fallbackValue: Color
-) => (progress: number) => {
-  if (keyframes.length === 0) return fallbackValue;
+export const interpolateColor: InterpolationFunction<
+  Color
+> = (keyframes, easing, fallback) => (progress) => {
+  if (keyframes.length === 0) return fallback;
 
   const validColors = keyframes.map(kf => tinycolor(kf.value));
 
@@ -43,5 +40,5 @@ export const interpolateColor = (
     }
   }
 
-  return fallbackValue
+  return fallback
 };

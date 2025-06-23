@@ -1,3 +1,5 @@
+import type { Coordinate } from "@shape/types/utility";
+import type { EasingFunction } from "@utils/animate";
 import type { Color } from "@utils/colors";
 
 type AnimationKeyframe<T> = {
@@ -16,5 +18,12 @@ type AnimationKeyframe<T> = {
   progress: number;
 };
 
+export type InterpolationFunction<T> = (
+  keyframes: AnimationKeyframe<T>[],
+  easing: EasingFunction,
+  fallbackValue: T
+) => (progress: number) => T;
+
 export type NumericKeyframe = AnimationKeyframe<number>
 export type ColorKeyframe = AnimationKeyframe<Color>
+export type CoordinateKeyframe = AnimationKeyframe<Coordinate>

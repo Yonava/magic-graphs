@@ -1,5 +1,4 @@
-import type { EasingFunction } from "@utils/animate";
-import type { NumericKeyframe } from "./types";
+import type { InterpolationFunction } from "./types";
 
 /**
  * Interpolates a numeric value based on the provided keyframes and easing function.
@@ -7,7 +6,7 @@ import type { NumericKeyframe } from "./types";
  * @param keyframes - An array of keyframes, each defining a progress point (0 to 1) and its corresponding value.
  *                    The keyframes should be ordered by progress in ascending order.
  * @param easing - A function that modifies the interpolation curve (e.g., linear, ease-in, ease-out).
- * @param fallbackValue - The value to return if no keyframes are provided.
+ * @param fallback - The value to return if no keyframes are provided.
  * @returns A function that takes a progress value (between 0 and 1) and returns the interpolated value.
  *          If the provided progress is outside the range of keyframes, the nearest keyframe's value is returned.
  *
@@ -20,12 +19,10 @@ import type { NumericKeyframe } from "./types";
  *
  * interpolated(0.5); // 5
  */
-export const interpolateNumber = (
-  keyframes: NumericKeyframe[],
-  easing: EasingFunction,
-  fallbackValue: number,
-) => (progress: number) => {
-  if (keyframes.length === 0) return fallbackValue;
+export const interpolateNumber: InterpolationFunction<
+  number
+> = (keyframes, easing, fallback) => (progress) => {
+  if (keyframes.length === 0) return fallback;
 
   if (progress <= keyframes[0].progress) return keyframes[0].value;
   if (progress >= keyframes[keyframes.length - 1].progress) return keyframes[keyframes.length - 1].value;
@@ -40,5 +37,5 @@ export const interpolateNumber = (
     }
   }
 
-  return fallbackValue;
+  return fallback;
 };
