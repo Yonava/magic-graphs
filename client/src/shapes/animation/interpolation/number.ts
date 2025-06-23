@@ -1,0 +1,44 @@
+import type { EasingFunction } from "@utils/animate";
+import type { NumericKeyframe } from "./types";
+
+/**
+ * Interpolates a numeric value based on the provided keyframes and easing function.
+ *
+ * @param keyframes - An array of keyframes, each defining a progress point (0 to 1) and its corresponding value.
+ *                    The keyframes should be ordered by progress in ascending order.
+ * @param easing - A function that modifies the interpolation curve (e.g., linear, ease-in, ease-out).
+ * @param fallbackValue - The value to return if no keyframes are provided.
+ * @returns A function that takes a progress value (between 0 and 1) and returns the interpolated value.
+ *          If the provided progress is outside the range of keyframes, the nearest keyframe's value is returned.
+ *
+ * @example
+ * const interpolated = valueAtProgress(
+ *  [{ progress: 0, value: 0 }, { progress: 1, value: 10 }],
+ *  t => t,
+ *  0
+ * );
+ *
+ * interpolated(0.5); // 5
+ */
+export const interpolateNumber = (
+  keyframes: NumericKeyframe[],
+  easing: EasingFunction,
+  fallbackValue: number,
+) => (progress: number) => {
+  if (keyframes.length === 0) return fallbackValue;
+
+  if (progress <= keyframes[0].progress) return keyframes[0].value;
+  if (progress >= keyframes[keyframes.length - 1].progress) return keyframes[keyframes.length - 1].value;
+
+  for (let i = 0; i < keyframes.length - 1; i++) {
+    const p1 = keyframes[i];
+    const p2 = keyframes[i + 1];
+
+    if (progress >= p1.progress && progress <= p2.progress) {
+      const t = (progress - p1.progress) / (p2.progress - p1.progress);
+      return p1.value + easing(t) * (p2.value - p1.value);
+    }
+  }
+
+  return fallbackValue;
+};

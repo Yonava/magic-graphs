@@ -70,10 +70,11 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
         }
 
         const infusedProps = Object.entries(props).reduce((acc, curr) => {
-          const [propName, getValueFromProgress] = curr
+          const [propName, getAnimatedValue] = curr
           if (!(propName in schemaWithDefaults)) return acc
 
-          acc[propName] = getValueFromProgress(progress) + (schemaWithDefaults as any)[propName]
+          acc[propName] = getAnimatedValue((schemaWithDefaults as any)[propName], progress)
+
           return acc
         }, {} as Record<string, number>)
 

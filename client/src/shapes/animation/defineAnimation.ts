@@ -1,5 +1,7 @@
-import { EASING_FUNCTIONS, type EasingFunction } from "@utils/animate";
+import { EASING_FUNCTIONS } from "@utils/animate";
 import type { UnionToIntersection } from "ts-essentials";
+import type { NumericKeyframe } from "./interpolation/types";
+import { interpolateNumber } from "./interpolation/number";
 
 export const numericProps = ['rotation', 'borderRadius', 'lineWidth', 'width'] as const
 
@@ -10,10 +12,8 @@ type NumericInput = {
 }
 
 type NumericPoint = {
-  value: number,
-  progress: number,
   operation: keyof UnionToIntersection<NumericInput>,
-};
+} & NumericKeyframe
 
 type NumericProps = {
   [K in typeof numericProps[number]]: NumericPoint[]
@@ -21,32 +21,16 @@ type NumericProps = {
 
 type AnimatedProps = Partial<NumericProps>
 
+/**
+ * @param schemaPropVal the non-animated value of the schema property that
+ * is being targeted for animation
+ * @param progress between 0 and 1. for 1s animation -> 0 = 0ms, 0.5 = 500ms, 1 = 1s
+ */
+type GetAnimatedValue = (schemaPropVal: unknown, progress: number) => any
+
 type AnimatedPropFns = {
-  [K in keyof AnimatedProps]?: <T>(schemaPropVal: T) => (progress: number) => T
+  [K in keyof AnimatedProps]?: GetAnimatedValue
 }
-
-export const valueAtProgress = (
-  points: NumericPoint[],
-  easing: EasingFunction,
-  fallbackValue = 1,
-) => (progress: number) => {
-  if (points.length === 0) return fallbackValue;
-
-  if (progress <= points[0].progress) return points[0].value;
-  if (progress >= points[points.length - 1].progress) return points[points.length - 1].value;
-
-  for (let i = 0; i < points.length - 1; i++) {
-    const p1 = points[i];
-    const p2 = points[i + 1];
-
-    if (progress >= p1.progress && progress <= p2.progress) {
-      const t = (progress - p1.progress) / (p2.progress - p1.progress);
-      return p1.value + easing(t) * (p2.value - p1.value);
-    }
-  }
-
-  return fallbackValue;
-};
 
 export type AnimationDefinitionId = string
 
@@ -129,13 +113,25 @@ export class DefineAnimation<T extends string = string> {
     const props: AnimatedPropFns = {}
 
     for (const propName of numericProps) {
-      const propVal = this.#animatedProps[propName]
-      if (propVal) props[propName] = (schemaPropVal) => {
-        if (typeof schemaPropVal === 'number') {
-          // do the plus or multiple
-          return valueAtProgress(propVal, EASING_FUNCTIONS['in-out'])
+      const numericPoints = this.#animatedProps[propName]
+      if (!numericPoints) continue
+      props[propName] = (schemaValue, progress) => {
+        if (typeof schemaValue === 'number') {
+          const keyframes = numericPoints.map((pt) => ({
+            ...pt,
+            // turns all values into offsets before being ingested as keyframes
+            value: pt.operation === 'scaleTo' ? schemaValue * pt.value : schemaValue + pt.value
+          }))
+
+          const getInterpolatedValue = interpolateNumber(
+            keyframes,
+            EASING_FUNCTIONS['in-out'],
+            schemaValue,
+          )
+
+          return getInterpolatedValue(progress)
         }
-        return schemaPropVal
+        return schemaValue
       }
     }
 
