@@ -2,7 +2,6 @@ import type { SchemaId, Shape, ShapeFactory, WithId } from "@shape/types"
 import type { ActiveAnimation, ActiveAnimationWithDefinition } from "./types"
 import { square } from "@shapes/square"
 import { getAnimationProgress, getCurrentRunCount, validPropsSet } from "./utils"
-import type { AnimationDefinition, DefineAnimation } from "./defineAnimation"
 import { rect } from "@shapes/rect"
 import { line } from "@shapes/line"
 import {
@@ -14,27 +13,23 @@ import {
 import { arrow } from "@shapes/arrow"
 import { getTextAreaWithDefaults } from "@shape/defaults/utility"
 import type { TextArea } from "@shape/types/utility"
+import { useDefineTimeline } from "./defineTimeline"
 
-export const useAnimatedShapes = <const D extends readonly DefineAnimation<string>[]>(
-  animationDefs: D,
-) => {
-  const defMap: Map<AnimationDefinition['id'], AnimationDefinition> = new Map()
-
-  for (const animationDef of animationDefs) {
-    defMap.set(animationDef.id, animationDef.getDefinition())
-  }
-
-  const getAnimationDefinition = (id: DefineAnimation['id']) => {
-    const animation = defMap.get(id)
-    if (!animation) throw new Error(`unrecognized animation id: ${id}`)
-    return animation
-  }
+export const useAnimatedShapes = () => {
 
   /**
    * a mapping between shapes (via ids) and the animations currently
    * active/running on those shapes
    */
   const activeAnimations: Map<SchemaId, ActiveAnimation> = new Map()
+
+  const { defineTimeline, timelineIdToTimeline } = useDefineTimeline({
+    play: ({ shapeId, ...rest }) => activeAnimations.set(shapeId, {
+      ...rest,
+      startedAt: Date.now()
+    }),
+    stop: ({ shapeId }) => activeAnimations.delete(shapeId)
+  })
 
   const animatedFactory = <T>(factory: ShapeFactory<T>) => (schema: WithId<T>) => {
     return new Proxy(factory(schema), {
@@ -49,22 +44,25 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
 
         if (!animation) return target[prop]
 
-        const animationWithDef: ActiveAnimationWithDefinition = {
-          ...getAnimationDefinition(animation.definitionId),
+        const timeline = timelineIdToTimeline.get(animation.timelineId)
+        if (!timeline) throw 'animation activated without a timeline!'
+
+        const animationWithTimeline = {
+          ...timeline,
           ...animation,
         }
 
         // cleanup animation if expired
-        const currentRunCount = getCurrentRunCount(animationWithDef)
-        const shouldRemove = currentRunCount >= animationWithDef.runCount
+        const currentRunCount = getCurrentRunCount(animationWithTimeline)
+        const shouldRemove = currentRunCount >= animationWithTimeline.runCount
         if (shouldRemove) {
           activeAnimations.delete(schema.id)
           return target[prop]
         }
 
         // resolve the properties for the animated shape schema
-        const { props } = animationWithDef
-        const progress = getAnimationProgress(animationWithDef)
+        const { props } = animationWithTimeline
+        const progress = getAnimationProgress(animationWithTimeline)
 
         const schemaWithDefaults = {
           // we must animate all the default props whether or
@@ -107,21 +105,6 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
       line: animatedFactory(line),
       arrow: animatedFactory(arrow),
     },
-    animation: {
-      start: (
-        id: SchemaId,
-        definitionId: D[number] extends DefineAnimation<infer K> ? K : never,
-        runCount = Infinity
-      ) => {
-        activeAnimations.set(id, {
-          definitionId,
-          runCount,
-          startedAt: Date.now(),
-        })
-      },
-      stop: (id: SchemaId) => {
-        activeAnimations.delete(id)
-      }
-    },
+    defineTimeline,
   }
 }
