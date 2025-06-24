@@ -12,6 +12,8 @@ import {
   ROTATION_DEFAULTS
 } from "@shape/defaults/schema"
 import { arrow } from "@shapes/arrow"
+import { getTextAreaWithDefaults } from "@shape/defaults/utility"
+import type { TextArea } from "@shape/types/utility"
 
 export const useAnimatedShapes = <const D extends readonly DefineAnimation<string>[]>(
   animationDefs: D,
@@ -65,6 +67,10 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
         const progress = getAnimationProgress(animationWithDef)
 
         const schemaWithDefaults = {
+          // we must animate all the default props whether or
+          // not the shape actually implements that prop because
+          // we do not have a way of knowing at runtime
+          // what properties a given schema implements
           ...LINE_WIDTH_DEFAULTS,
           ...ROTATION_DEFAULTS,
           ...BORDER_RADIUS_DEFAULTS,
@@ -72,14 +78,15 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
           ...schema,
         }
 
+        const schemaTextArea = (schema as any)['textArea'] as TextArea | undefined
+        if (schemaTextArea) {
+          (schemaWithDefaults as any)['textArea'] = getTextAreaWithDefaults(schemaTextArea)
+        }
+
         const infusedProps = Object.entries(props).reduce((acc, curr) => {
           const [propName, getAnimatedValue] = curr
           if (!(propName in schemaWithDefaults)) return acc
 
-          // right now we are animating all the props on a schema whether or
-          // not that schema actually implements that prop because
-          // we do not have a way of knowing at runtime (outside the type system)
-          // what properties a given schema implements
           acc[propName] = getAnimatedValue(schemaWithDefaults, progress)
 
           return acc

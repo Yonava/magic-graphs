@@ -1,5 +1,5 @@
 import type { DeepRequired } from 'ts-essentials';
-import { TEXT_BLOCK_DEFAULTS, TEXTAREA_DEFAULTS } from '@shape/defaults/utility';
+import { getTextAreaWithDefaults } from '@shape/defaults/utility';
 import { getTextDimensions } from './getTextDimensions';
 import type { Coordinate, TextArea, TextAreaWithAnchorPoint, TextBlock } from '@shape/types/utility';
 import type { ShapeTextProps } from '@shape/types';
@@ -16,31 +16,25 @@ type ShapeTextPropsGetter = (at?: Coordinate, textArea?: TextArea) => ShapeTextP
 export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
   if (!at || !textArea) return
 
-  const textBlockWithDefaults: Required<TextBlock> = {
-    ...TEXT_BLOCK_DEFAULTS,
-    ...textArea.textBlock,
-  }
+  const textAreaWithDefaults = getTextAreaWithDefaults(textArea)
+  const dimensions = getTextAreaDimension(textAreaWithDefaults.textBlock);
 
-  const dimensions = getTextAreaDimension(textBlockWithDefaults);
-
-  const textAreaWithDefaults: DeepRequired<TextAreaWithAnchorPoint> = {
+  const fullTextArea = {
+    ...textAreaWithDefaults,
     at: {
       x: at.x - dimensions.width / 2,
       y: at.y - dimensions.height / 2
-    },
-    textBlock: textBlockWithDefaults,
-    color: textArea.color ?? TEXTAREA_DEFAULTS.color,
-    activeColor: textArea.activeColor ?? TEXTAREA_DEFAULTS.activeColor,
-  }
+    }
+  } as const satisfies TextAreaWithAnchorPoint
 
   const textAreaMatte = rect({
-    at: textAreaWithDefaults.at,
+    at: fullTextArea.at,
     width: dimensions.width,
     height: dimensions.height,
-    fillColor: textAreaWithDefaults.color,
+    fillColor: fullTextArea.color,
   });
 
-  const drawText = drawTextWithTextArea(textAreaWithDefaults, dimensions)
+  const drawText = drawTextWithTextArea(fullTextArea, dimensions)
 
   const drawTextArea = (ctx: CanvasRenderingContext2D) => {
     textAreaMatte.draw(ctx)
@@ -51,7 +45,7 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
     ctx: CanvasRenderingContext2D,
     handler: (str: string) => void,
   ) => {
-    engageTextarea(ctx, textAreaWithDefaults, handler);
+    engageTextarea(ctx, fullTextArea, handler);
   };
 
   return {

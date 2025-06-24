@@ -14,7 +14,31 @@
     .from()
     .lineWidth(() => 0)
     .end((_, { start }) => start)
-    .duration({ ms: 500 });
+    .textArea({
+      textBlock: { color: 'transparent' },
+      color: 'transparent',
+    })
+    .progress(0.66)
+    .textArea({
+      textBlock: { color: 'transparent' },
+      color: 'transparent',
+    })
+    .lineWidth((l) => l)
+    .end((e) => e)
+    .duration({ ms: 2000 });
+
+  const textAnimation = new DefineAnimation('text')
+    .progress(0.25)
+    .textArea({
+      textBlock: { color: 'red', fontSize: -5 },
+      color: 'brown',
+    })
+    .progress(0.66)
+    .textArea({
+      textBlock: { color: 'green', fontSize: 30 },
+      color: 'orange',
+    })
+    .duration({ ms: 3000 });
 
   const lineAnimation = new DefineAnimation('line')
     .from()
@@ -24,7 +48,7 @@
   const {
     animation,
     shapes: { arrow },
-  } = useAnimatedShapes([arrowAnimation, lineAnimation]);
+  } = useAnimatedShapes([arrowAnimation, lineAnimation, textAnimation]);
 
   const shapes = ref<Shape[]>([]);
 
@@ -34,6 +58,11 @@
       lineWidth: 20,
       start: { x: 0, y: -50 },
       end: { x: 300, y: -50 },
+      textArea: {
+        textBlock: {
+          content: 'hello',
+        },
+      },
     }),
   );
 
@@ -57,7 +86,7 @@
         :canvas="magic.canvas.value"
         :items="shapes"
       />
-      <Button @click="animation.start('test', 'arrow')">
+      <Button @click="animation.start('test', 'text')">
         Start Animation
       </Button>
       <Button @click="animation.stop('test')"> Stop Animation </Button>

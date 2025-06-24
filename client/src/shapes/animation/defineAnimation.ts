@@ -1,10 +1,19 @@
 import { EASING_FUNCTIONS } from "@utils/animate";
-import type { AnimationKeyframe, ColorKeyframe, CoordinateKeyframe, NumberKeyframe } from "./interpolation/types";
+import type {
+  AnimationKeyframe,
+  ColorKeyframe,
+  CoordinateKeyframe,
+  NumberKeyframe,
+  TextAreaKeyframe
+} from "./interpolation/types";
 import { interpolateNumber } from "./interpolation/number";
 import { interpolateColor, isColorString } from "./interpolation/color";
 import type { Color } from "@utils/colors";
-import type { Coordinate } from "@shape/types/utility";
+import type { Coordinate, TextArea } from "@shape/types/utility";
 import { interpolateCoordinate } from "./interpolation/coordinate";
+import type { DeepPartial, DeepRequired } from "ts-essentials";
+import { interpolateTextArea } from "./interpolation/textArea";
+import { getTextAreaWithDefaults } from "@shape/defaults/utility";
 
 /**
  * define a custom value to animate
@@ -25,6 +34,7 @@ type KeyframeInput<T> = AnimationKeyframe<FieldInput<T>>
 const numberProps = ['rotation', 'borderRadius', 'lineWidth', 'width'] as const
 const colorProps = ['fillColor'] as const
 const coordProps = ['at', 'start', 'end'] as const
+const textAreaProps = ['textArea'] as const
 
 type NumberProps = {
   [K in typeof numberProps[number]]: KeyframeInput<number>[]
@@ -38,10 +48,15 @@ type CoordinateProps = {
   [K in typeof coordProps[number]]: KeyframeInput<Coordinate>[]
 }
 
+type TextAreaProps = {
+  [K in typeof textAreaProps[number]]: KeyframeInput<DeepRequired<TextArea>>[]
+}
+
 type PropToKeyframeInputs = Partial<
   NumberProps &
   ColorProps &
-  CoordinateProps
+  CoordinateProps &
+  TextAreaProps
 >
 
 /**
@@ -159,6 +174,10 @@ export class DefineAnimation<T extends string = string> {
     return this.#addKeyframeInput('end', input)
   }
 
+  textArea(input: FieldInput<DeepPartial<TextArea>>) {
+    return this.#addKeyframeInput('textArea', input)
+  }
+
   getDefinition() {
     const props: PropToAnimationFunction = {}
 
@@ -237,6 +256,41 @@ export class DefineAnimation<T extends string = string> {
         const getInterpolatedValue = interpolateColor(
           keyframes,
           EASING_FUNCTIONS['in-out'],
+          nonAnimatedPropValue,
+        )
+
+        return getInterpolatedValue(progress)
+      }
+    }
+
+    for (const propName of textAreaProps) {
+      const textAreaKeyframeInputs = this.#propToKeyframeInputs[propName]
+      if (!textAreaKeyframeInputs) continue
+
+      props[propName] = (schema, progress) => {
+        const nonAnimatedPropValue = getTextAreaWithDefaults(schema[propName] as TextArea)
+
+        if (textAreaKeyframeInputs.at(-1)?.progress !== 1) {
+          textAreaKeyframeInputs.push(DEFAULT_END)
+        }
+
+        const keyframes = textAreaKeyframeInputs.map((pt): TextAreaKeyframe => {
+          const getValue = () => {
+            if (typeof pt.value === 'function') {
+              return pt.value(nonAnimatedPropValue, schema)
+            }
+            return getTextAreaWithDefaults(pt.value)
+          }
+
+          return {
+            value: getValue(),
+            progress: pt.progress,
+          }
+        })
+
+        const getInterpolatedValue = interpolateTextArea(
+          keyframes,
+          EASING_FUNCTIONS['linear'],
           nonAnimatedPropValue,
         )
 

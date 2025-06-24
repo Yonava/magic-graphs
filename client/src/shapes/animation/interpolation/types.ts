@@ -1,6 +1,7 @@
-import type { Coordinate } from "@shape/types/utility";
+import type { Coordinate, TextArea } from "@shape/types/utility";
 import type { EasingFunction } from "@utils/animate";
 import type { Color } from "@utils/colors";
+import type { DeepRequired } from "ts-essentials";
 
 export type AnimationKeyframe<T> = {
   /**
@@ -26,3 +27,4 @@ export type InterpolationFunction<T> = (
 export type NumberKeyframe = AnimationKeyframe<number>
 export type ColorKeyframe = AnimationKeyframe<Color>
 export type CoordinateKeyframe = AnimationKeyframe<Coordinate>
+export type TextAreaKeyframe = AnimationKeyframe<DeepRequired<TextArea>>
