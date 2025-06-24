@@ -10,19 +10,26 @@
   import Button from '@ui/core/button/Button.vue';
   import { DefineAnimation } from '@shape/animation/defineAnimation';
 
-  const arrowAnimation = new DefineAnimation('arrow');
+  const arrowAnimation = new DefineAnimation('arrow')
+    .from()
+    .lineWidth(() => 0)
+    .end((_, { start }) => start)
+    .duration({ ms: 500 });
 
-  const lineAnimation = new DefineAnimation('line').from().lineWidth(() => 0);
+  const lineAnimation = new DefineAnimation('line')
+    .from()
+    .lineWidth(() => 0)
+    .duration({ ms: 500 });
 
   const {
     animation,
-    shapes: { line },
+    shapes: { arrow },
   } = useAnimatedShapes([arrowAnimation, lineAnimation]);
 
   const shapes = ref<Shape[]>([]);
 
   shapes.value.push(
-    line({
+    arrow({
       id: 'test',
       lineWidth: 20,
       start: { x: 0, y: -50 },
@@ -50,7 +57,7 @@
         :canvas="magic.canvas.value"
         :items="shapes"
       />
-      <Button @click="animation.start('test', 'line')">
+      <Button @click="animation.start('test', 'arrow')">
         Start Animation
       </Button>
       <Button @click="animation.stop('test')"> Stop Animation </Button>

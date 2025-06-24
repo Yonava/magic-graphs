@@ -11,6 +11,7 @@ import {
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS
 } from "@shape/defaults/schema"
+import { arrow } from "@shapes/arrow"
 
 export const useAnimatedShapes = <const D extends readonly DefineAnimation<string>[]>(
   animationDefs: D,
@@ -97,6 +98,7 @@ export const useAnimatedShapes = <const D extends readonly DefineAnimation<strin
       square: animatedFactory(square),
       rect: animatedFactory(rect),
       line: animatedFactory(line),
+      arrow: animatedFactory(arrow),
     },
     animation: {
       start: (
