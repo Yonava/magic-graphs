@@ -151,6 +151,14 @@ export class DefineAnimation<T extends string = string> {
     return this.#addKeyframeInput('at', input)
   }
 
+  start(input: FieldInput<Coordinate>) {
+    return this.#addKeyframeInput('start', input)
+  }
+
+  end(input: FieldInput<Coordinate>) {
+    return this.#addKeyframeInput('end', input)
+  }
+
   getDefinition() {
     const props: PropToAnimationFunction = {}
 

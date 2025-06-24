@@ -10,38 +10,23 @@
   import Button from '@ui/core/button/Button.vue';
   import { DefineAnimation } from '@shape/animation/defineAnimation';
 
-  const rotationAnimation = new DefineAnimation('rotate')
-    .progress(0.5)
-    .fillColor('purple')
-    .duration({ ms: 3000 });
+  const arrowAnimation = new DefineAnimation('arrow');
 
-  const widthAnimation = new DefineAnimation('width');
+  const lineAnimation = new DefineAnimation('line').from().lineWidth(() => 0);
 
   const {
     animation,
-    shapes: { rect, square, line },
-  } = useAnimatedShapes([rotationAnimation, widthAnimation]);
+    shapes: { line },
+  } = useAnimatedShapes([arrowAnimation, lineAnimation]);
 
   const shapes = ref<Shape[]>([]);
 
   shapes.value.push(
-    rect({
-      id: 'test',
-      fillColor: 'white',
-      width: 140,
-      height: 20,
-      at: { x: -200, y: -300 },
-    }),
-    square({
-      id: 'test',
-      fillColor: 'red',
-      size: 100,
-      at: { x: 200, y: -300 },
-    }),
     line({
       id: 'test',
-      start: { x: 0, y: 0 },
-      end: { x: 300, y: 300 },
+      lineWidth: 20,
+      start: { x: 0, y: -50 },
+      end: { x: 300, y: -50 },
     }),
   );
 
@@ -65,7 +50,7 @@
         :canvas="magic.canvas.value"
         :items="shapes"
       />
-      <Button @click="animation.start('test', 'rotate')">
+      <Button @click="animation.start('test', 'line')">
         Start Animation
       </Button>
       <Button @click="animation.stop('test')"> Stop Animation </Button>
