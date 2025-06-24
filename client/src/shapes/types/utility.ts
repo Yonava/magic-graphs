@@ -72,3 +72,10 @@ export type Stroke = {
   lineWidth: number;
   dash?: DashPattern;
 };
+
+export type BorderRadiusArrayValue = [
+  topLeft: number,
+  topRight: number,
+  bottomRight: number,
+  bottomLeft: number,
+];
