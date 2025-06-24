@@ -23,6 +23,6 @@ export type InterpolationFunction<T> = (
   fallbackValue: T
 ) => (progress: number) => T;
 
-export type NumericKeyframe = AnimationKeyframe<number>
+export type NumberKeyframe = AnimationKeyframe<number>
 export type ColorKeyframe = AnimationKeyframe<Color>
 export type CoordinateKeyframe = AnimationKeyframe<Coordinate>

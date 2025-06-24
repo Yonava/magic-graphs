@@ -1,8 +1,10 @@
 import { EASING_FUNCTIONS } from "@utils/animate";
-import type { AnimationKeyframe, ColorKeyframe, NumericKeyframe } from "./interpolation/types";
+import type { AnimationKeyframe, ColorKeyframe, CoordinateKeyframe, NumberKeyframe } from "./interpolation/types";
 import { interpolateNumber } from "./interpolation/number";
 import { interpolateColor, isColorString } from "./interpolation/color";
 import type { Color } from "@utils/colors";
+import type { Coordinate } from "@shape/types/utility";
+import { interpolateCoordinate } from "./interpolation/coordinate";
 
 /**
  * define a custom value to animate
@@ -20,45 +22,52 @@ type FieldInput<T> = T | CustomInput<T>
 
 type KeyframeInput<T> = AnimationKeyframe<FieldInput<T>>
 
-export const numericProps = ['rotation', 'borderRadius', 'lineWidth', 'width'] as const
+const numberProps = ['rotation', 'borderRadius', 'lineWidth', 'width'] as const
+const colorProps = ['fillColor'] as const
+const coordProps = ['at', 'start', 'end'] as const
 
-type NumericProps = {
-  [K in typeof numericProps[number]]: KeyframeInput<number>[]
+type NumberProps = {
+  [K in typeof numberProps[number]]: KeyframeInput<number>[]
 }
-
-export const colorProps = ['fillColor'] as const
 
 type ColorProps = {
   [K in typeof colorProps[number]]: KeyframeInput<Color>[]
 }
 
-type AnimatedProps = Partial<NumericProps & ColorProps>
+type CoordinateProps = {
+  [K in typeof coordProps[number]]: KeyframeInput<Coordinate>[]
+}
+
+type PropToKeyframeInputs = Partial<
+  NumberProps &
+  ColorProps &
+  CoordinateProps
+>
 
 /**
  * @param schema the non-altered schema of the shape being animated
- * @param progress value between 0 and 1. See {@link NumericKeyframe.progress}
+ * @param progress value between 0 and 1. See {@link NumberKeyframe.progress}
  */
-type GetAnimatedValue = (schema: any, progress: number) => any
+type AnimationFunction = (schema: any, progress: number) => any
 
-type AnimatedPropFns = {
-  [K in keyof AnimatedProps]?: GetAnimatedValue
+type PropToAnimationFunction = {
+  [K in keyof PropToKeyframeInputs]?: AnimationFunction
 }
 
 export type AnimationDefinitionId = string
 
-const defaultStart: KeyframeInput<any> = {
+const DEFAULT_START: KeyframeInput<any> = {
   progress: 0,
   value: (val: any) => val,
 }
 
-const defaultEnd: KeyframeInput<any> = {
+const DEFAULT_END: KeyframeInput<any> = {
   progress: 1,
   value: (val: any) => val,
 }
 
 export class DefineAnimation<T extends string = string> {
-  #propToKeyframeInputs: AnimatedProps = {};
-
+  #propToKeyframeInputs: PropToKeyframeInputs = {};
   #currentProgress = 0;
 
   /**
@@ -76,7 +85,7 @@ export class DefineAnimation<T extends string = string> {
   }
 
   #addKeyframeInput(
-    propName: keyof AnimatedProps,
+    propName: keyof PropToKeyframeInputs,
     value: FieldInput<any>,
   ) {
     const entry = {
@@ -88,7 +97,7 @@ export class DefineAnimation<T extends string = string> {
 
     if (!existingKeyframeInputs) {
       this.#propToKeyframeInputs[propName] = this.#currentProgress === 0 ? [entry] : [
-        defaultStart,
+        DEFAULT_START,
         entry,
       ]
     } else {
@@ -134,31 +143,34 @@ export class DefineAnimation<T extends string = string> {
     return this.#addKeyframeInput('borderRadius', input)
   }
 
-  fillColor(color: FieldInput<Color>) {
-    return this.#addKeyframeInput('fillColor', color)
+  fillColor(input: FieldInput<Color>) {
+    return this.#addKeyframeInput('fillColor', input)
   }
 
-  // at(coord: Coordinate)
+  at(input: FieldInput<Coordinate>) {
+    return this.#addKeyframeInput('at', input)
+  }
 
   getDefinition() {
-    const props: AnimatedPropFns = {}
+    const props: PropToAnimationFunction = {}
 
-    for (const propName of numericProps) {
-      const numericPoints = this.#propToKeyframeInputs[propName]
-      if (!numericPoints) continue
+    for (const propName of numberProps) {
+      const numberKeyframeInputs = this.#propToKeyframeInputs[propName]
+      if (!numberKeyframeInputs) continue
+
       props[propName] = (schema, progress) => {
         const nonAnimatedPropValue = schema[propName]
 
         if (typeof nonAnimatedPropValue !== 'number') {
-          throw `😳! prop ${propName} said to be numeric was not at runtime! got ${nonAnimatedPropValue}`
+          throw `😳! prop ${propName} said to be a number was not at runtime! got ${nonAnimatedPropValue}`
         }
 
-        if (numericPoints.at(-1)?.progress !== 1) {
-          numericPoints.push(defaultEnd)
+        if (numberKeyframeInputs.at(-1)?.progress !== 1) {
+          numberKeyframeInputs.push(DEFAULT_END)
         }
 
-        const keyframes = numericPoints.map((pt): NumericKeyframe => {
-          const getPixelValue = () => {
+        const keyframes = numberKeyframeInputs.map((pt): NumberKeyframe => {
+          const getValue = () => {
             if (typeof pt.value === 'function') {
               return pt.value(nonAnimatedPropValue, schema)
             }
@@ -166,7 +178,7 @@ export class DefineAnimation<T extends string = string> {
           }
 
           return {
-            value: getPixelValue(),
+            value: getValue(),
             progress: pt.progress,
           }
         })
@@ -182,8 +194,9 @@ export class DefineAnimation<T extends string = string> {
     }
 
     for (const propName of colorProps) {
-      const colorPoints = this.#propToKeyframeInputs[propName]
-      if (!colorPoints) continue
+      const colorKeyframeInputs = this.#propToKeyframeInputs[propName]
+      if (!colorKeyframeInputs) continue
+
       props[propName] = (schema, progress) => {
         const nonAnimatedPropValue = schema[propName]
 
@@ -195,12 +208,12 @@ export class DefineAnimation<T extends string = string> {
           throw `😳! prop ${propName} said to be a color was not at runtime! got ${nonAnimatedPropValue}`
         }
 
-        if (colorPoints.at(-1)?.progress !== 1) {
-          colorPoints.push(defaultEnd)
+        if (colorKeyframeInputs.at(-1)?.progress !== 1) {
+          colorKeyframeInputs.push(DEFAULT_END)
         }
 
-        const keyframes = colorPoints.map((pt): ColorKeyframe => {
-          const getStringColorValue = () => {
+        const keyframes = colorKeyframeInputs.map((pt): ColorKeyframe => {
+          const getValue = () => {
             if (typeof pt.value === 'function') {
               return pt.value(nonAnimatedPropValue, schema)
             }
@@ -208,12 +221,58 @@ export class DefineAnimation<T extends string = string> {
           }
 
           return {
-            value: getStringColorValue(),
+            value: getValue(),
             progress: pt.progress,
           }
         })
 
         const getInterpolatedValue = interpolateColor(
+          keyframes,
+          EASING_FUNCTIONS['in-out'],
+          nonAnimatedPropValue,
+        )
+
+        return getInterpolatedValue(progress)
+      }
+    }
+
+    for (const propName of coordProps) {
+      const coordKeyframeInputs = this.#propToKeyframeInputs[propName]
+      if (!coordKeyframeInputs) continue
+
+      props[propName] = (schema, progress) => {
+        const nonAnimatedPropValue = schema[propName] as Coordinate
+
+        if (
+          typeof nonAnimatedPropValue !== 'object' ||
+          typeof nonAnimatedPropValue['x'] !== 'number' ||
+          typeof nonAnimatedPropValue['y'] !== 'number'
+        ) {
+          throw `😳! prop ${propName} said to be a coordinate was not at runtime! got ${nonAnimatedPropValue}`
+        }
+
+        if (coordKeyframeInputs.at(-1)?.progress !== 1) {
+          coordKeyframeInputs.push(DEFAULT_END)
+        }
+
+        const keyframes = coordKeyframeInputs.map((pt): CoordinateKeyframe => {
+          const getValue = () => {
+            if (typeof pt.value === 'function') {
+              return pt.value(nonAnimatedPropValue, schema)
+            }
+            return {
+              x: pt.value.x + nonAnimatedPropValue.x,
+              y: pt.value.y + nonAnimatedPropValue.y,
+            }
+          }
+
+          return {
+            value: getValue(),
+            progress: pt.progress,
+          }
+        })
+
+        const getInterpolatedValue = interpolateCoordinate(
           keyframes,
           EASING_FUNCTIONS['in-out'],
           nonAnimatedPropValue,
