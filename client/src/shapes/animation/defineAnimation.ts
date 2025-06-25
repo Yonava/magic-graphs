@@ -71,16 +71,6 @@ type PropToAnimationFunction = {
 
 export type AnimationDefinitionId = string
 
-const DEFAULT_START: KeyframeInput<any> = {
-  progress: 0,
-  value: (val: any) => val,
-}
-
-const DEFAULT_END: KeyframeInput<any> = {
-  progress: 1,
-  value: (val: any) => val,
-}
-
 export class DefineAnimation<T extends string = string> {
   #propToKeyframeInputs: PropToKeyframeInputs = {};
   #currentProgress = 0;

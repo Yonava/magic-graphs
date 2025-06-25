@@ -2,6 +2,8 @@ import type { AnimationKeyframe } from "@shape/animation/interpolation/types";
 import type { Timeline, TimelinePlaybackDuration } from "../defineTimeline";
 import { compileNumericProp } from "./number";
 import { compileColorProp } from "./color";
+import { compileTextAreaProp } from "./textArea";
+import { compileCoordinateProp } from "./coordinate";
 
 /**
  * @param schema the non-altered schema of the shape being animated
@@ -22,8 +24,8 @@ type PropToRawKeyframe = Record<string, AnimationKeyframe<any>[]>
 
 const numberProps = ['rotation', 'borderRadius', 'lineWidth', 'width'] as const
 const colorProps = ['fillColor'] as const
-// const coordProps = ['at', 'start', 'end'] as const
-// const textAreaProps = ['textArea'] as const
+const textAreaProps = ['textArea'] as const
+const coordProps = ['at', 'start', 'end'] as const
 
 export type CompileProp = (
   prop: string,
@@ -76,6 +78,16 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
   const colorPropsInTimeline = colorProps.filter((p) => propsInTimeline.includes(p))
   for (const prop of colorPropsInTimeline) {
     tl.properties[prop] = compileColorProp(prop, propToRawKeyframes);
+  }
+
+  const textAreaPropsInTimeline = textAreaProps.filter((p) => propsInTimeline.includes(p))
+  for (const prop of textAreaPropsInTimeline) {
+    tl.properties[prop] = compileTextAreaProp(prop, propToRawKeyframes);
+  }
+
+  const coordPropsInTimeline = coordProps.filter((p) => propsInTimeline.includes(p))
+  for (const prop of coordPropsInTimeline) {
+    tl.properties[prop] = compileCoordinateProp(prop, propToRawKeyframes);
   }
 
   return tl

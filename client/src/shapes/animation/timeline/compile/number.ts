@@ -6,7 +6,7 @@ import { EASING_FUNCTIONS } from "@utils/animate"
 /**
  * compiles props that are number based into a single animation function
  *
- * number based props may include: width, height, size, lineWidth etc
+ * number based props include: width, height, size, lineWidth etc
  */
 export const compileNumericProp: CompileProp = (
   prop,
