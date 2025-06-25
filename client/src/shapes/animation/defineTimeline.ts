@@ -1,8 +1,10 @@
+import type { TextArea } from "@shape/types/utility";
 import type { ArrowSchema } from "@shapes/arrow/types";
 import type { LineSchema } from "@shapes/line/types";
 import type { RectSchema } from "@shapes/rect/types";
 import type { SquareSchema } from "@shapes/square/types";
 import { generateId } from "@utils/id";
+import type { DeepPartial } from "ts-essentials";
 
 type TimelinePlayOptions = { shapeId: string, runCount: number }
 type TimelineStopOptions = { shapeId: string }
@@ -33,6 +35,8 @@ type ShapeNameToSchema = {
   arrow: ArrowSchema,
 }
 
+type EverySchemaProp = RectSchema | SquareSchema | LineSchema | ArrowSchema
+
 type SharedSchemaProps<T extends keyof ShapeNameToSchema> = keyof ShapeNameToSchema[T] & {
   [K in keyof ShapeNameToSchema[T]]:
   T extends any
@@ -45,29 +49,50 @@ type SchemaProps<T extends keyof ShapeNameToSchema> = Pick<
   SharedSchemaProps<T>
 >;
 
-type TimelineKeyframe<T> = {
+type InterceptedSchemaProps = {
+  textArea: DeepPartial<TextArea>
+};
+
+type CustomOption<TProp, TSchema> = (propValue: TProp, schema: TSchema) => TProp
+
+type WithCustomOption<T> = {
+  [K in keyof T]: T[K] | CustomOption<T[K], T>
+}
+
+type TimelineProps<T> = {
+  [K in keyof T]: K extends keyof InterceptedSchemaProps ? InterceptedSchemaProps[K] : T[K]
+}
+
+type TimelinePropsWithCustomOption<T> = WithCustomOption<TimelineProps<T>>
+
+type TimelineKeyframe<T extends Partial<EverySchemaProp>> = {
   progress: number,
-  properties: Partial<T>
+  properties: Partial<TimelinePropsWithCustomOption<T>>
 }
 
 type Timeline<T extends keyof ShapeNameToSchema> = {
-  keyframes: TimelineKeyframe<SchemaProps<T>>[],
+  forShapes: T[]
+  keyframes: TimelineKeyframe<SchemaProps<NoInfer<T>>>[],
 };
 
-type RectTimeline = Timeline<'rect' | 'square'>
+const defineTimeline = <T extends keyof ShapeNameToSchema>(timeline: Timeline<T>) => {
+  // does the good stuff
+}
 
-const rtl: RectTimeline = {
+defineTimeline({
+  forShapes: ['rect', 'square'],
   keyframes: [
     {
       progress: 0,
       properties: {
-
+        at: { x: 50, y: 50 },
+        textArea: () => {
+          return { activeColor: 'red' }
+        }
       }
     }
   ]
-}
-
-console.log(rtl)
+})
 
 export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
   const timelineIdToTimeline: Map<TimelineId, Timeline> = new Map()
