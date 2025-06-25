@@ -14,26 +14,14 @@
     shapes: { arrow },
   } = useAnimatedShapes();
 
-  defineTimeline({
+  const { play, stop } = defineTimeline({
     forShapes: ['rect', 'line'],
     durationMs: 3000,
     keyframes: [
       {
-        progress: 0,
-        properties: {
-          fillColor: (c) => c,
-        },
-      },
-      {
         progress: 0.5,
         properties: {
           fillColor: 'red',
-        },
-      },
-      {
-        progress: 1,
-        properties: {
-          fillColor: (c) => c,
         },
       },
     ],
@@ -75,8 +63,10 @@
         :canvas="magic.canvas.value"
         :items="shapes"
       />
-      <Button> Start Animation </Button>
-      <Button> Stop Animation </Button>
+      <Button @click="play({ shapeId: 'test', runCount: Infinity })">
+        Start Animation
+      </Button>
+      <Button @click="stop({ shapeId: 'test' })"> Stop Animation </Button>
     </div>
 
     <MagicCanvas

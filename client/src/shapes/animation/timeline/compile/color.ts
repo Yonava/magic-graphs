@@ -1,7 +1,7 @@
-import type { NumberKeyframe } from "@shape/animation/interpolation/types"
 import type { CompileProp } from "."
-import { interpolateNumber } from "@shape/animation/interpolation/number"
 import { EASING_FUNCTIONS } from "@utils/animate"
+import { interpolateColor, isColorString } from "@shape/animation/interpolation/color"
+import type { ColorKeyframe } from "@shape/animation/interpolation/types"
 
 /**
  * compiles props that are color based, such
@@ -11,5 +11,35 @@ export const compileColorProp: CompileProp = (
   prop,
   propToRawKeyframes,
 ) => (schema, progress) => {
+  const nonAnimatedPropValue = schema[prop]
 
+  const isColor = (
+    typeof nonAnimatedPropValue === 'string' &&
+    isColorString(nonAnimatedPropValue)
+  )
+  if (!isColor) {
+    throw `😳! prop ${prop} said to be a color was not at runtime! got ${nonAnimatedPropValue}`
+  }
+
+  const keyframes = propToRawKeyframes[prop].map((kf): ColorKeyframe => {
+    const getValue = () => {
+      if (typeof kf.value === 'function') {
+        return kf.value(nonAnimatedPropValue, schema)
+      }
+      return kf.value
+    }
+
+    return {
+      value: getValue(),
+      progress: kf.progress,
+    }
+  })
+
+  const getInterpolatedValue = interpolateColor(
+    keyframes,
+    EASING_FUNCTIONS['in-out'],
+    nonAnimatedPropValue,
+  )
+
+  return getInterpolatedValue(progress)
 }

@@ -22,13 +22,23 @@ type PropToRawKeyframe = Record<string, AnimationKeyframe<any>[]>
 
 const numberProps = ['rotation', 'borderRadius', 'lineWidth', 'width'] as const
 const colorProps = ['fillColor'] as const
-const coordProps = ['at', 'start', 'end'] as const
-const textAreaProps = ['textArea'] as const
+// const coordProps = ['at', 'start', 'end'] as const
+// const textAreaProps = ['textArea'] as const
 
 export type CompileProp = (
   prop: string,
   propToRawKeyframes: PropToRawKeyframe
 ) => AnimationFunction;
+
+const DEFAULT_START = {
+  progress: 0,
+  value: (val: any) => val,
+} as const
+
+const DEFAULT_END = {
+  progress: 1,
+  value: (val: any) => val,
+} as const
 
 export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
   const tl: CompiledTimeline = {
@@ -46,6 +56,14 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
       value: kf.properties[prop]
     })).filter(({ value }) => value !== undefined)
 
+    if (propInTimeline[0].progress !== 0) {
+      propInTimeline.unshift(DEFAULT_START)
+    }
+
+    if (propInTimeline.at(-1)?.progress !== 1) {
+      propInTimeline.push(DEFAULT_END)
+    }
+
     acc[prop] = propInTimeline
     return acc
   }, {} as PropToRawKeyframe)
@@ -60,6 +78,5 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
     tl.properties[prop] = compileColorProp(prop, propToRawKeyframes);
   }
 
-  console.log(tl)
   return tl
 }

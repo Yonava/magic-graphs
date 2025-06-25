@@ -61,7 +61,7 @@ export const useAnimatedShapes = () => {
         }
 
         // resolve the properties for the animated shape schema
-        const { props } = animationWithTimeline
+        const { properties } = animationWithTimeline
         const progress = getAnimationProgress(animationWithTimeline)
 
         const schemaWithDefaults = {
@@ -81,7 +81,7 @@ export const useAnimatedShapes = () => {
           (schemaWithDefaults as any)['textArea'] = getTextAreaWithDefaults(schemaTextArea)
         }
 
-        const infusedProps = Object.entries(props).reduce((acc, curr) => {
+        const infusedProps = Object.entries(properties).reduce((acc, curr) => {
           const [propName, getAnimatedValue] = curr
           if (!(propName in schemaWithDefaults)) return acc
 
