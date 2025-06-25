@@ -1,5 +1,5 @@
 import type { SchemaId, Shape, ShapeFactory, WithId } from "@shape/types"
-import type { ActiveAnimation, ActiveAnimationWithDefinition } from "./types"
+import type { ActiveAnimation } from "./types"
 import { square } from "@shapes/square"
 import { getAnimationProgress, getCurrentRunCount, validPropsSet } from "./utils"
 import { rect } from "@shapes/rect"
