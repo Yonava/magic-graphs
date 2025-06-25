@@ -1,5 +1,5 @@
 import type { AnimationDefinition } from "./defineAnimation"
-import type { TimelineId } from "./defineTimeline"
+import type { TimelineId } from "./timeline/defineTimeline"
 
 export type ActiveAnimation = {
   /**

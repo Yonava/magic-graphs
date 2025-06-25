@@ -13,7 +13,7 @@ import {
 import { arrow } from "@shapes/arrow"
 import { getTextAreaWithDefaults } from "@shape/defaults/utility"
 import type { TextArea } from "@shape/types/utility"
-import { useDefineTimeline } from "./defineTimeline"
+import { useDefineTimeline } from "./timeline/defineTimeline"
 
 export const useAnimatedShapes = () => {
 

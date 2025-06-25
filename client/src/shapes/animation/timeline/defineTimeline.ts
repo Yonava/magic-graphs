@@ -4,8 +4,9 @@ import type { LineSchema } from "@shapes/line/types";
 import type { RectSchema } from "@shapes/rect/types";
 import type { SquareSchema } from "@shapes/square/types";
 import { generateId } from "@utils/id";
-import type { DeepPartial } from "ts-essentials";
+import type { DeepPartial, DeepRequired } from "ts-essentials";
 import type { DeepReadonly } from "vue";
+import { compileTimeline, type CompiledTimeline } from "./compile";
 
 type TimelinePlayOptions = { shapeId: string, runCount: number }
 type TimelineStopOptions = { shapeId: string }
@@ -54,10 +55,10 @@ type InterceptedSchemaProps = {
   textArea: DeepPartial<TextArea>
 };
 
-type CustomOption<TProp, TSchema> = (propValue: TProp, schema: TSchema) => TProp
+type CustomOption<TProp, TSchema> = (propValue: TProp, schema: TSchema) => TProp;
 
 type WithCustomOption<T> = {
-  [K in keyof T]: T[K] | CustomOption<T[K], T>
+  [K in keyof T]: NonNullable<T[K]> | CustomOption<NonNullable<T[K]>, DeepRequired<T>>
 }
 
 type TimelineProps<T> = {
@@ -71,19 +72,26 @@ type TimelineKeyframe<T extends Partial<EverySchemaProp>> = {
   properties: Partial<TimelinePropsWithCustomOption<T>>
 }
 
-type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<{
+export type TimelinePlaybackDuration = {
+  durationMs: number,
+}
+
+export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<{
   forShapes: T[]
   keyframes: TimelineKeyframe<SchemaProps<NoInfer<T>>>[],
-}>
+} & TimelinePlaybackDuration>
 
 export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
-  const timelineIdToTimeline: Map<TimelineId, Timeline<any>> = new Map()
+  const timelineIdToTimeline: Map<TimelineId, CompiledTimeline> = new Map()
 
   const defineTimeline = <T extends keyof ShapeNameToSchema>(
     timeline: Timeline<T>
   ): TimelineControls => {
     const timelineId = generateId()
-    timelineIdToTimeline.set(timelineId, timeline)
+
+    const compiledTimeline = compileTimeline(timeline)
+    timelineIdToTimeline.set(timelineId, compiledTimeline)
+
     return {
       play: (opts) => play({ ...opts, timelineId }),
       stop: (opts) => stop({ ...opts, timelineId }),

@@ -8,47 +8,36 @@
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import { useMagicCanvas } from '@canvas/index';
   import Button from '@ui/core/button/Button.vue';
-  import { DefineAnimation } from '@shape/animation/defineAnimation';
-
-  const arrowAnimation = new DefineAnimation('arrow')
-    .from()
-    .lineWidth(() => 0)
-    .end((_, { start }) => start)
-    .textArea({
-      textBlock: { color: 'transparent' },
-      color: 'transparent',
-    })
-    .progress(0.66)
-    .textArea({
-      textBlock: { color: 'transparent' },
-      color: 'transparent',
-    })
-    .lineWidth((l) => l)
-    .end((e) => e)
-    .duration({ ms: 2000 });
-
-  const textAnimation = new DefineAnimation('text')
-    .progress(0.25)
-    .textArea({
-      textBlock: { color: 'red', fontSize: -5 },
-      color: 'brown',
-    })
-    .progress(0.66)
-    .textArea({
-      textBlock: { color: 'green', fontSize: 30 },
-      color: 'orange',
-    })
-    .duration({ ms: 3000 });
-
-  const lineAnimation = new DefineAnimation('line')
-    .from()
-    .lineWidth(() => 0)
-    .duration({ ms: 500 });
 
   const {
-    animation,
+    defineTimeline,
     shapes: { arrow },
-  } = useAnimatedShapes([arrowAnimation, lineAnimation, textAnimation]);
+  } = useAnimatedShapes();
+
+  defineTimeline({
+    forShapes: ['rect', 'line'],
+    durationMs: 3000,
+    keyframes: [
+      {
+        progress: 0,
+        properties: {
+          fillColor: (c) => c,
+        },
+      },
+      {
+        progress: 0.5,
+        properties: {
+          fillColor: 'red',
+        },
+      },
+      {
+        progress: 1,
+        properties: {
+          fillColor: (c) => c,
+        },
+      },
+    ],
+  });
 
   const shapes = ref<Shape[]>([]);
 
@@ -86,10 +75,8 @@
         :canvas="magic.canvas.value"
         :items="shapes"
       />
-      <Button @click="animation.start('test', 'text')">
-        Start Animation
-      </Button>
-      <Button @click="animation.stop('test')"> Stop Animation </Button>
+      <Button> Start Animation </Button>
+      <Button> Stop Animation </Button>
     </div>
 
     <MagicCanvas
