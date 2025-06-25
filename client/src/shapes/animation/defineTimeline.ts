@@ -5,6 +5,7 @@ import type { RectSchema } from "@shapes/rect/types";
 import type { SquareSchema } from "@shapes/square/types";
 import { generateId } from "@utils/id";
 import type { DeepPartial } from "ts-essentials";
+import type { DeepReadonly } from "vue";
 
 type TimelinePlayOptions = { shapeId: string, runCount: number }
 type TimelineStopOptions = { shapeId: string }
@@ -70,42 +71,27 @@ type TimelineKeyframe<T extends Partial<EverySchemaProp>> = {
   properties: Partial<TimelinePropsWithCustomOption<T>>
 }
 
-type Timeline<T extends keyof ShapeNameToSchema> = {
+type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<{
   forShapes: T[]
   keyframes: TimelineKeyframe<SchemaProps<NoInfer<T>>>[],
-};
-
-const defineTimeline = <T extends keyof ShapeNameToSchema>(timeline: Timeline<T>) => {
-  // does the good stuff
-}
-
-defineTimeline({
-  forShapes: ['rect', 'square'],
-  keyframes: [
-    {
-      progress: 0,
-      properties: {
-        at: { x: 50, y: 50 },
-        textArea: () => {
-          return { activeColor: 'red' }
-        }
-      }
-    }
-  ]
-})
+}>
 
 export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
-  const timelineIdToTimeline: Map<TimelineId, Timeline> = new Map()
+  const timelineIdToTimeline: Map<TimelineId, Timeline<any>> = new Map()
+
+  const defineTimeline = <T extends keyof ShapeNameToSchema>(
+    timeline: Timeline<T>
+  ): TimelineControls => {
+    const timelineId = generateId()
+    timelineIdToTimeline.set(timelineId, timeline)
+    return {
+      play: (opts) => play({ ...opts, timelineId }),
+      stop: (opts) => stop({ ...opts, timelineId }),
+    }
+  }
 
   return {
     timelineIdToTimeline,
-    defineTimeline: (timeline: Timeline): TimelineControls => {
-      const timelineId = generateId()
-      timelineIdToTimeline.set(timelineId, timeline)
-      return {
-        play: (opts) => play({ ...opts, timelineId }),
-        stop: (opts) => stop({ ...opts, timelineId }),
-      }
-    }
+    defineTimeline,
   }
 }
