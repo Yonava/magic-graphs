@@ -29,8 +29,22 @@ export type UseDefineTimelineOptions = {
 }
 
 type TimelineControls = {
+  /**
+   * start the animation
+   */
   play: (options: TimelinePlayOptions) => void,
+  /**
+   * stop and reset the animation
+   */
   stop: (options: TimelineStopOptions) => void,
+  /**
+   * cleanup the timeline if no longer needed
+   *
+   * NOTE: cleanup is handled automatically by {@link FinalizationRegistry}
+   * however it is best practice to ensure cleanup manually
+   * when making repeated single-use calls to `defineTimeline`
+   */
+  dispose: () => void,
 }
 
 type ShapeNameToSchema = {
@@ -90,6 +104,10 @@ export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<{
 export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
   const timelineIdToTimeline: Map<TimelineId, CompiledTimeline> = new Map()
 
+  const registry = new FinalizationRegistry<TimelineId>((timelineId) => {
+    timelineIdToTimeline.delete(timelineId)
+  })
+
   const defineTimeline = <T extends keyof ShapeNameToSchema>(
     timeline: Timeline<T>
   ): TimelineControls => {
@@ -98,10 +116,20 @@ export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
     const compiledTimeline = compileTimeline(timeline as Timeline<any>)
     timelineIdToTimeline.set(timelineId, compiledTimeline)
 
-    return {
+    const unregisterToken = {}
+
+    const controls: TimelineControls = {
       play: (opts) => play({ ...opts, timelineId }),
       stop: (opts) => stop({ ...opts, timelineId }),
+      dispose: () => {
+        timelineIdToTimeline.delete(timelineId)
+        registry.unregister(unregisterToken)
+      }
     }
+
+    registry.register(controls, timelineId, unregisterToken)
+
+    return controls
   }
 
   return {

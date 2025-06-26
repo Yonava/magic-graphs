@@ -5,16 +5,20 @@
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2021",
+    "lib": ["ES2021", "DOM"],
 
     "baseUrl": ".",
     "paths": {
       "@ui/*": ["./src/ui/*"],
       "@utils/*": ["./src/utils/*"],
       "@colors": ["./src/utils/colors.ts"],
-      "@shapes/*": ["./src/shapes/shapes/*"],
 
       "@graph/*": ["./src/graphs/*"],
+
       "@shape/*": ["./src/shapes/*"],
+      "@shapes/*": ["./src/shapes/shapes/*"],
+
       "@canvas/*": ["./src/canvas/*"],
       "@product/*": ["./src/products/*"],
       "@playground/*": ["./src/playground/*"]
