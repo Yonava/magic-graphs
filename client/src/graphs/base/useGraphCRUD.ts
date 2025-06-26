@@ -104,7 +104,12 @@ export const useGraphCRUD = ({
       y: node.y ?? 0,
     };
 
-    // if (fullOptions.animate) animationController.animateIn(newNode.id);
+    if (fullOptions.animate) {
+      animations.circle.nodeAdded.play({
+        shapeId: newNode.id,
+        runCount: 1,
+      })
+    }
 
     nodes.value.push(newNode);
 

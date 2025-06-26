@@ -66,6 +66,20 @@ const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
   ],
 };
 
+const circleNodeAdded: Timeline<'circle'> = {
+  forShapes: ['circle'],
+  durationMs: 3000,
+  easing: { radius: 'in-out' },
+  keyframes: [
+    {
+      progress: 0,
+      properties: {
+        radius: 0,
+      }
+    }
+  ]
+}
+
 export const getGraphAnimations = (defineTimeline: DefineTimeline) => ({
   arrow: {
     edgeAdded: defineTimeline(arrowEdgeAdded),
@@ -75,6 +89,9 @@ export const getGraphAnimations = (defineTimeline: DefineTimeline) => ({
   },
   uturn: {
     edgeAdded: defineTimeline(lineOrUTurnEdgeAdded),
+  },
+  circle: {
+    nodeAdded: defineTimeline(circleNodeAdded),
   }
 })
 
