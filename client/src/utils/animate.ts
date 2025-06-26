@@ -17,18 +17,6 @@ export const getFrameCountWithDuration = (
   return Math.floor(frameRate * seconds);
 };
 
-export type EasingFunction = (step: number) => number;
-
-export type NamedEasingFunction = 'linear' | 'in-out' | 'in' | 'out';
-
-export const EASING_FUNCTIONS: Record<NamedEasingFunction, EasingFunction> = {
-  linear: (step) => step,
-  in: (step) => step * step,
-  out: (step) => step * (2 - step),
-  'in-out': (step) =>
-    step < 0.5 ? 2 * step * step : -1 + (4 - 2 * step) * step,
-};
-
 /**
  * gets an intermediate color value between two colors.
  *
@@ -126,7 +114,7 @@ export const interpolateCoordinates = (
 
   const result: Coordinate[] = [];
 
-  const easing = typeof easeFn === 'string' ? EASING_FUNCTIONS[easeFn] : easeFn;
+  const easing = typeof easeFn === 'string' ? EASING_PRESETS[easeFn] : easeFn;
 
   for (let i = 1; i <= numberOfSteps; i++) {
     const progress = i / numberOfSteps;

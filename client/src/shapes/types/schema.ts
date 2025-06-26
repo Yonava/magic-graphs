@@ -1,4 +1,5 @@
 import type {
+  BorderRadiusArrayValue,
   Coordinate,
   GradientStop,
   Stroke as StrokeDefinition,
@@ -46,13 +47,6 @@ export type Rotation = {
    */
   rotation?: number;
 };
-
-export type BorderRadiusArrayValue = [
-  topLeft: number,
-  topRight: number,
-  bottomRight: number,
-  bottomLeft: number,
-];
 
 export type BorderRadius = {
   /**

@@ -4,16 +4,7 @@
  */
 
 // import { djb2Hasher, type DJB2Hash } from "@utils/hashing"
-import type { ShapeFactory } from "./types"
-
-type SchemaId = string
-
-export type WithId<T> = T & {
-  /**
-   * optimized shapes require a unique id to track them across renders
-   */
-  id: SchemaId
-}
+import type { ShapeFactory, WithId } from "./types"
 
 // const serializeSchema = (schema: unknown) => djb2Hasher(JSON.stringify(schema))
 

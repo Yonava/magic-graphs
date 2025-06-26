@@ -1,15 +1,15 @@
-import type { ArrowSchema } from '@shape/shapes/arrow';
 import gsap from 'gsap';
-import { EASING_FUNCTIONS } from '@utils/animate';
+import { EASING_PRESETS } from '@utils/animate';
 import { DURATION_MS } from '@graph/animationController';
 import type { ShapeResolverOptions } from './types';
 import { SEQ } from './edgeSeq';
 import { getMapper, inRange } from './utils';
 import { animateInTextArea, animateOutTextArea } from './edgeTextArea';
-import type { WithId } from '@shape/cacher';
+import type { ArrowSchema } from '@shapes/arrow/types';
+import type { WithId } from '@shape/types';
 
 const { interpolate, normalize } = gsap.utils;
-const EASING = EASING_FUNCTIONS['in-out'];
+const EASING = EASING_PRESETS['in-out'];
 
 const animateInArrowBody =
   (progress: number) =>
