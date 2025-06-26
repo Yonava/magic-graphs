@@ -1,4 +1,3 @@
-import type { AnimationDefinition } from "./defineAnimation"
 import type { TimelineId } from "./timeline/defineTimeline"
 
 export type ActiveAnimation = {
@@ -17,5 +16,3 @@ export type ActiveAnimation = {
    */
   startedAt: number,
 }
-
-export type ActiveAnimationWithDefinition = ActiveAnimation & AnimationDefinition

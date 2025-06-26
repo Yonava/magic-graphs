@@ -1,5 +1,6 @@
 import { shapeProps, type Shape } from "@shape/types"
-import type { ActiveAnimationWithDefinition } from "./types"
+import type { ActiveAnimation } from "./types"
+import type { CompiledTimeline } from "./timeline/compile"
 
 /**
  * returns the number of times the animation has completed as a float.
@@ -12,7 +13,7 @@ import type { ActiveAnimationWithDefinition } from "./types"
 export const getCurrentRunCount = ({
   durationMs,
   startedAt,
-}: Pick<ActiveAnimationWithDefinition, 'startedAt' | 'durationMs'>) => {
+}: Pick<ActiveAnimation & CompiledTimeline, 'startedAt' | 'durationMs'>) => {
   const timeElapsed = Date.now() - startedAt
   return timeElapsed / durationMs
 }
@@ -28,8 +29,8 @@ export const getCurrentRunCount = ({
  */
 export const getAnimationProgress = ({
   durationMs,
-  startedAt
-}: Pick<ActiveAnimationWithDefinition, 'startedAt' | 'durationMs'>) => {
+  startedAt,
+}: Pick<ActiveAnimation & CompiledTimeline, 'startedAt' | 'durationMs'>) => {
   const timeElapsed = Date.now() - startedAt
   return (timeElapsed % durationMs) / durationMs
 }
