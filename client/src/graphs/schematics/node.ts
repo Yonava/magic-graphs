@@ -1,21 +1,15 @@
 import type { GNode, SchemaItem } from '@graph/types';
 import colors from '@colors';
-import { nodeCircle } from './nodeCircle';
 import type { BaseGraph } from '@graph/base';
 
 export type SupportedNodeShapes = 'circle' | 'square';
-
-type PropsNeededFromGraph =
-  | 'shapes'
-  | 'getTheme'
-  | 'animationController';
+type PropsNeededFromGraph = 'shapes' | 'getTheme';
 
 export const getNodeSchematic = (
   node: GNode,
   graph: Pick<BaseGraph, PropsNeededFromGraph>,
 ): Omit<SchemaItem, 'priority'> | undefined => {
 
-  const circle = nodeCircle(graph);
   const { getTheme } = graph
 
   const color = getTheme('nodeColor', node);
@@ -27,7 +21,7 @@ export const getNodeSchematic = (
   const textColor = getTheme('nodeTextColor', node);
   const shape = getTheme('nodeShape', node);
 
-  const circleShape = circle({
+  const circleShape = graph.shapes.circle({
     id: node.id,
     at: {
       x: node.x,
