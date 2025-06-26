@@ -56,7 +56,7 @@ type InterceptedSchemaProps = {
   textArea: DeepPartial<TextArea>
 };
 
-type CustomOption<TProp, TSchema> = (propValue: TProp, schema: TSchema) => TProp;
+type CustomOption<TProp, TSchema> = (propValue: DeepRequired<TProp>, schema: TSchema) => TProp;
 
 type WithCustomOption<T> = {
   [K in keyof T]: NonNullable<T[K]> | CustomOption<NonNullable<T[K]>, DeepRequired<T>>
@@ -105,3 +105,5 @@ export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
     defineTimeline,
   }
 }
+
+export type DefineTimeline = ReturnType<typeof useDefineTimeline>['defineTimeline']

@@ -26,6 +26,7 @@ import type { Emitter } from '@graph/events';
 import { nodeLetterLabelGetter } from '@graph/labels';
 import type { GraphSettings } from '@graph/settings';
 import type { AggregatorProps } from './useAggregator';
+import type { GraphAnimations } from './animations';
 
 type GraphCRUDOptions = {
   emit: Emitter;
@@ -35,7 +36,8 @@ type GraphCRUDOptions = {
   edgeMap: EdgeMap;
   settings: Ref<GraphSettings>;
   updateGraphAtMousePosition: () => void,
-  updateAggregator: AggregatorProps['updateAggregator']
+  updateAggregator: AggregatorProps['updateAggregator'],
+  animations: GraphAnimations,
 };
 
 export const useGraphCRUD = ({
@@ -47,6 +49,7 @@ export const useGraphCRUD = ({
   settings,
   updateGraphAtMousePosition,
   updateAggregator,
+  animations,
 }: GraphCRUDOptions) => {
   // READ OPERATIONS
 
@@ -182,7 +185,10 @@ export const useGraphCRUD = ({
       ...edge,
     };
 
-    // if (fullOptions.animate) animationController.animateIn(newEdge.id);
+    if (fullOptions.animate) animations.arrow.edgeAdded.play({
+      shapeId: newEdge.id,
+      runCount: 1,
+    })
 
     edges.value.push(newEdge);
 

@@ -59,6 +59,8 @@ export const useInteractive = (graph: BaseGraph) => {
       from: fromNode.id,
       to: toNode.id,
       label: graph.settings.value.userAddedEdgeLabel,
+    }, {
+      animate: true,
     });
   };
 

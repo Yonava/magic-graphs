@@ -28,6 +28,7 @@ import { useGraphCursor } from './useGraphCursor';
 import { useAnimatedShapes } from '@shape/animation';
 import { usePluginHoldController } from './usePluginHold';
 import type { MagicCanvasProps } from '@canvas/types';
+import { getGraphAnimations } from './animations';
 
 export const useBaseGraph = (
   magicCanvas: MagicCanvasProps,
@@ -128,7 +129,8 @@ export const useBaseGraph = (
     draw,
   } = useAggregator({ emit });
 
-  const { shapes } = useAnimatedShapes()
+  const { shapes, defineTimeline } = useAnimatedShapes()
+  const animations = getGraphAnimations(defineTimeline)
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const options = {
@@ -217,6 +219,7 @@ export const useBaseGraph = (
     settings,
     updateGraphAtMousePosition,
     updateAggregator,
+    animations,
   });
 
   const nodeIdToIndex = computed(() =>
@@ -352,6 +355,7 @@ export const useBaseGraph = (
 
     pluginHoldController,
     shapes,
+    animations,
 
     baseTheme: computed(() => THEMES[themeName.value]),
     themeName,
