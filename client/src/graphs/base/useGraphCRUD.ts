@@ -25,8 +25,8 @@ import { generateId } from '@utils/id';
 import type { Emitter } from '@graph/events';
 import { nodeLetterLabelGetter } from '@graph/labels';
 import type { GraphSettings } from '@graph/settings';
-import type { GraphAnimationController } from '@graph/animationController';
 import type { AggregatorProps } from './useAggregator';
+import type { GraphAnimations } from './animations';
 
 type GraphCRUDOptions = {
   emit: Emitter;
@@ -35,9 +35,9 @@ type GraphCRUDOptions = {
   nodeMap: NodeMap;
   edgeMap: EdgeMap;
   settings: Ref<GraphSettings>;
-  animationController: GraphAnimationController;
   updateGraphAtMousePosition: () => void,
-  updateAggregator: AggregatorProps['updateAggregator']
+  updateAggregator: AggregatorProps['updateAggregator'],
+  animations: GraphAnimations,
 };
 
 export const useGraphCRUD = ({
@@ -47,9 +47,9 @@ export const useGraphCRUD = ({
   edgeMap,
   emit,
   settings,
-  animationController,
   updateGraphAtMousePosition,
   updateAggregator,
+  animations,
 }: GraphCRUDOptions) => {
   // READ OPERATIONS
 
@@ -104,7 +104,12 @@ export const useGraphCRUD = ({
       y: node.y ?? 0,
     };
 
-    if (fullOptions.animate) animationController.animateIn(newNode.id);
+    if (fullOptions.animate) {
+      animations.circle.nodeAdded.play({
+        shapeId: newNode.id,
+        runCount: 1,
+      })
+    }
 
     nodes.value.push(newNode);
 
@@ -185,7 +190,14 @@ export const useGraphCRUD = ({
       ...edge,
     };
 
-    if (fullOptions.animate) animationController.animateIn(newEdge.id);
+    if (fullOptions.animate) {
+      const selfRef = toNode.id === fromNode.id;
+      const shape = selfRef ? 'uturn' : (isGraphDirected ? 'arrow' : 'line');
+      animations[shape].edgeAdded.play({
+        shapeId: newEdge.id,
+        runCount: 1,
+      })
+    }
 
     edges.value.push(newEdge);
 
@@ -310,8 +322,8 @@ export const useGraphCRUD = ({
       removedEdges.push(removed);
     }
 
-    if (fullOptions.animate)
-      await animationController.animateOut(removedNode.id);
+    // if (fullOptions.animate)
+    // await animationController.animateOut(removedNode.id);
 
     nodes.value = nodes.value.filter((n) => n.id !== removedNode.id);
 
@@ -373,7 +385,7 @@ export const useGraphCRUD = ({
       ...options,
     };
 
-    if (fullOptions.animate) await animationController.animateOut(edge.id);
+    // if (fullOptions.animate) await animationController.animateOut(edge.id);
 
     edges.value = edges.value.filter((e) => e.id !== edge.id);
 

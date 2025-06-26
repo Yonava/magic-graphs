@@ -8,6 +8,8 @@ import type { DeepPartial, DeepRequired } from "ts-essentials";
 import type { DeepReadonly } from "vue";
 import { compileTimeline, type CompiledTimeline } from "./compile";
 import type { EasingOption } from "../easing";
+import type { UTurnSchema } from "@shapes/uturn/types";
+import type { CircleSchema } from "@shapes/circle/types";
 
 type TimelinePlayOptions = { shapeId: string, runCount: number }
 type TimelineStopOptions = { shapeId: string }
@@ -36,6 +38,8 @@ type ShapeNameToSchema = {
   square: SquareSchema,
   line: LineSchema,
   arrow: ArrowSchema,
+  uturn: UTurnSchema,
+  circle: CircleSchema,
 }
 
 type EverySchemaProp = RectSchema | SquareSchema | LineSchema | ArrowSchema
@@ -56,7 +60,7 @@ type InterceptedSchemaProps = {
   textArea: DeepPartial<TextArea>
 };
 
-type CustomOption<TProp, TSchema> = (propValue: TProp, schema: TSchema) => TProp;
+type CustomOption<TProp, TSchema> = (propValue: DeepRequired<TProp>, schema: TSchema) => TProp;
 
 type WithCustomOption<T> = {
   [K in keyof T]: NonNullable<T[K]> | CustomOption<NonNullable<T[K]>, DeepRequired<T>>
@@ -105,3 +109,5 @@ export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
     defineTimeline,
   }
 }
+
+export type DefineTimeline = ReturnType<typeof useDefineTimeline>['defineTimeline']

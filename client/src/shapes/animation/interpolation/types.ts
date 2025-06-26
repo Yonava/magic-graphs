@@ -1,7 +1,7 @@
 import type { Coordinate, TextArea } from "@shape/types/utility";
-import type { EasingFunction } from "@utils/animate";
 import type { Color } from "@utils/colors";
 import type { DeepRequired } from "ts-essentials";
+import type { EasingFunction } from "../easing";
 
 export type AnimationKeyframe<T> = {
   /**

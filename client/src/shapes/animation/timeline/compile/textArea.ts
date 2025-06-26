@@ -19,11 +19,11 @@ export const compileTextAreaProp: CompileProp = (
       if (typeof kf.value === 'function') {
         return kf.value(nonAnimatedPropValue, schema)
       }
-      return getTextAreaWithDefaults(kf.value)
+      return kf.value
     }
 
     return {
-      value: getValue(),
+      value: getTextAreaWithDefaults(getValue()),
       progress: kf.progress,
     }
   })

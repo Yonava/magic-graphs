@@ -23,7 +23,7 @@ export const compileNumericProp: CompileProp = (
       if (typeof kf.value === 'function') {
         return kf.value(nonAnimatedPropValue, schema)
       }
-      return nonAnimatedPropValue
+      return kf.value
     }
 
     return {

@@ -8,74 +8,41 @@
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import { useMagicCanvas } from '@canvas/index';
   import Button from '@ui/core/button/Button.vue';
-  import type { Timeline } from '@shape/animation/timeline/defineTimeline';
 
-  const {
-    defineTimeline,
-    shapes: { arrow },
-  } = useAnimatedShapes();
+  const { defineTimeline, shapes } = useAnimatedShapes();
 
-  const arrowAnimation: Timeline<'arrow'> = {
-    forShapes: ['arrow'],
-    durationMs: 3000,
-    easing: {
-      lineWidth: 'linear',
-    },
+  const { play, stop } = defineTimeline({
+    forShapes: ['circle'],
+    durationMs: 2000,
+    easing: { radius: 'in-out' },
     keyframes: [
-      {
-        progress: 0,
-        properties: {
-          end: (_, { start }) => start,
-          lineWidth: () => 0,
-          textArea: {
-            color: 'transparent',
-            textBlock: {
-              color: 'transparent',
-            },
-          },
-        },
-      },
       {
         progress: 0.5,
         properties: {
+          radius: (r) => r * 6,
           textArea: {
-            color: 'transparent',
-            textBlock: {
-              color: 'transparent',
-            },
+            color: 'blue',
+            textBlock: { color: 'red' },
           },
         },
       },
-      {
-        progress: 0.75,
-        properties: {
-          end: (end) => end,
-          lineWidth: (lw) => lw,
-        },
-      },
     ],
-  };
+  });
 
-  const { play, stop } = defineTimeline(arrowAnimation);
+  const paintedShapes = ref<Shape[]>([]);
 
-  const shapes = ref<Shape[]>([]);
-
-  shapes.value.push(
-    arrow({
+  paintedShapes.value.push(
+    shapes.circle({
       id: 'test',
-      lineWidth: 10,
-      start: { x: 0, y: -50 },
-      end: { x: 300, y: -250 },
-      textArea: {
-        textBlock: {
-          content: 'hello',
-        },
-      },
+      at: { x: 0, y: 0 },
+      radius: 50,
+      textArea: { textBlock: { content: 'Loch!' } },
     }),
   );
 
   const magic = useMagicCanvas();
-  magic.draw.content.value = (ctx) => shapes.value.forEach((i) => i.draw(ctx));
+  magic.draw.content.value = (ctx) =>
+    paintedShapes.value.forEach((i) => i.draw(ctx));
 
   magic.draw.backgroundPattern.value = (ctx, at) => {
     cross({
@@ -92,7 +59,7 @@
     <div class="absolute m-3 flex gap-3 z-50">
       <ShapePlaygroundToolbar
         :canvas="magic.canvas.value"
-        :items="shapes"
+        :items="paintedShapes"
       />
       <Button @click="play({ shapeId: 'test', runCount: Infinity })">
         Start Animation
