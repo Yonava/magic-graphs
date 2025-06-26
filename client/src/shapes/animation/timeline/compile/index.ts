@@ -23,7 +23,7 @@ export type CompiledTimeline = {
  */
 type PropToRawKeyframe = Record<string, AnimationKeyframe<any>[]>
 
-const numberProps = ['rotation', 'borderRadius', 'lineWidth', 'width'] as const
+const numberProps = ['rotation', 'borderRadius', 'lineWidth', 'width', 'radius'] as const
 const colorProps = ['fillColor'] as const
 const textAreaProps = ['textArea'] as const
 const coordProps = ['at', 'start', 'end'] as const
