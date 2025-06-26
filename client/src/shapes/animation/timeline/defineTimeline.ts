@@ -7,6 +7,7 @@ import { generateId } from "@utils/id";
 import type { DeepPartial, DeepRequired } from "ts-essentials";
 import type { DeepReadonly } from "vue";
 import { compileTimeline, type CompiledTimeline } from "./compile";
+import type { EasingOption } from "../easing";
 
 type TimelinePlayOptions = { shapeId: string, runCount: number }
 type TimelineStopOptions = { shapeId: string }
@@ -79,6 +80,7 @@ export type TimelinePlaybackDuration = {
 export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<{
   forShapes: T[]
   keyframes: TimelineKeyframe<SchemaProps<NoInfer<T>>>[],
+  easing?: Partial<Record<keyof SchemaProps<NoInfer<T>>, EasingOption>>,
 } & TimelinePlaybackDuration>
 
 export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
@@ -89,7 +91,7 @@ export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
   ): TimelineControls => {
     const timelineId = generateId()
 
-    const compiledTimeline = compileTimeline(timeline)
+    const compiledTimeline = compileTimeline(timeline as Timeline<any>)
     timelineIdToTimeline.set(timelineId, compiledTimeline)
 
     return {

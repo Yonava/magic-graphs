@@ -2,11 +2,11 @@ import gsap from 'gsap';
 import type { CircleSchema } from '@shape/shapes/circle';
 import type { ShapeResolverOptions } from './types';
 import { getMapper } from './utils';
-import { EASING_FUNCTIONS } from '@utils/animate';
+import { EASING_PRESETS } from '@utils/animate';
 import type { WithId } from '@shape/cacher';
 
 const { interpolate } = gsap.utils;
-const EASING = EASING_FUNCTIONS['in-out'];
+const EASING = EASING_PRESETS['in-out'];
 
 const animateInCircleBody =
   (progress: number) =>

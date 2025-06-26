@@ -4,6 +4,7 @@ import { compileNumericProp } from "./number";
 import { compileColorProp } from "./color";
 import { compileTextAreaProp } from "./textArea";
 import { compileCoordinateProp } from "./coordinate";
+import { getEasingFunction, type EasingFunction, type EasingOption } from "@shape/animation/easing";
 
 /**
  * @param schema the non-altered schema of the shape being animated
@@ -29,7 +30,8 @@ const coordProps = ['at', 'start', 'end'] as const
 
 export type CompileProp = (
   prop: string,
-  propToRawKeyframes: PropToRawKeyframe
+  propToRawKeyframes: PropToRawKeyframe,
+  easing: EasingFunction,
 ) => AnimationFunction;
 
 const DEFAULT_START = {
@@ -41,6 +43,8 @@ const DEFAULT_END = {
   progress: 1,
   value: (val: any) => val,
 } as const
+
+const DEFAULT_EASING: EasingOption = 'linear'
 
 export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
   const tl: CompiledTimeline = {
@@ -70,24 +74,29 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
     return acc
   }, {} as PropToRawKeyframe)
 
+  const getEasing = (prop: string) => {
+    const easingOption = timeline.easing?.[prop] ?? DEFAULT_EASING
+    return getEasingFunction(easingOption)
+  }
+
   const numberPropsInTimeline = numberProps.filter((p) => propsInTimeline.includes(p))
   for (const prop of numberPropsInTimeline) {
-    tl.properties[prop] = compileNumericProp(prop, propToRawKeyframes);
+    tl.properties[prop] = compileNumericProp(prop, propToRawKeyframes, getEasing(prop));
   }
 
   const colorPropsInTimeline = colorProps.filter((p) => propsInTimeline.includes(p))
   for (const prop of colorPropsInTimeline) {
-    tl.properties[prop] = compileColorProp(prop, propToRawKeyframes);
+    tl.properties[prop] = compileColorProp(prop, propToRawKeyframes, getEasing(prop));
   }
 
   const textAreaPropsInTimeline = textAreaProps.filter((p) => propsInTimeline.includes(p))
   for (const prop of textAreaPropsInTimeline) {
-    tl.properties[prop] = compileTextAreaProp(prop, propToRawKeyframes);
+    tl.properties[prop] = compileTextAreaProp(prop, propToRawKeyframes, getEasing(prop));
   }
 
   const coordPropsInTimeline = coordProps.filter((p) => propsInTimeline.includes(p))
   for (const prop of coordPropsInTimeline) {
-    tl.properties[prop] = compileCoordinateProp(prop, propToRawKeyframes);
+    tl.properties[prop] = compileCoordinateProp(prop, propToRawKeyframes, getEasing(prop));
   }
 
   return tl

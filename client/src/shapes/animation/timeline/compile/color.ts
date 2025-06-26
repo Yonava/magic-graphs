@@ -1,5 +1,4 @@
 import type { CompileProp } from "."
-import { EASING_FUNCTIONS } from "@utils/animate"
 import { interpolateColor, isColorString } from "@shape/animation/interpolation/color"
 import type { ColorKeyframe } from "@shape/animation/interpolation/types"
 
@@ -10,6 +9,7 @@ import type { ColorKeyframe } from "@shape/animation/interpolation/types"
 export const compileColorProp: CompileProp = (
   prop,
   propToRawKeyframes,
+  easing,
 ) => (schema, progress) => {
   const nonAnimatedPropValue = schema[prop]
 
@@ -37,7 +37,7 @@ export const compileColorProp: CompileProp = (
 
   const getInterpolatedValue = interpolateColor(
     keyframes,
-    EASING_FUNCTIONS['in-out'],
+    easing,
     nonAnimatedPropValue,
   )
 

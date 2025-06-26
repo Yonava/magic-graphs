@@ -18,6 +18,9 @@
   const arrowAnimation: Timeline<'arrow'> = {
     forShapes: ['arrow'],
     durationMs: 3000,
+    easing: {
+      lineWidth: 'linear',
+    },
     keyframes: [
       {
         progress: 0,

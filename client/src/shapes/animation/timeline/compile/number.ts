@@ -1,7 +1,6 @@
 import type { NumberKeyframe } from "@shape/animation/interpolation/types"
 import type { CompileProp } from "."
 import { interpolateNumber } from "@shape/animation/interpolation/number"
-import { EASING_FUNCTIONS } from "@utils/animate"
 
 /**
  * compiles props that are number based into a single animation function
@@ -11,6 +10,7 @@ import { EASING_FUNCTIONS } from "@utils/animate"
 export const compileNumericProp: CompileProp = (
   prop,
   propToRawKeyframes,
+  easing,
 ) => (schema, progress) => {
   const nonAnimatedPropValue = schema[prop]
 
@@ -23,7 +23,7 @@ export const compileNumericProp: CompileProp = (
       if (typeof kf.value === 'function') {
         return kf.value(nonAnimatedPropValue, schema)
       }
-      return nonAnimatedPropValue + kf.value
+      return nonAnimatedPropValue
     }
 
     return {
@@ -34,7 +34,7 @@ export const compileNumericProp: CompileProp = (
 
   const getInterpolatedValue = interpolateNumber(
     keyframes,
-    EASING_FUNCTIONS['in-out'],
+    easing,
     nonAnimatedPropValue,
   )
 

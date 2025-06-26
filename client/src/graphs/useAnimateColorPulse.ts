@@ -1,7 +1,7 @@
 import { ref, onUnmounted } from 'vue';
 import type { GEdge, GNode, Graph } from '@graph/types';
 import { useTheme } from '@graph/themes/useTheme';
-import { interpolateColors, EASING_FUNCTIONS } from '@utils/animate';
+import { interpolateColors, EASING_PRESETS } from '@utils/animate';
 
 export const useAnimateColorPulse = (graph: Graph) => {
   const { setTheme, removeAllThemes } = useTheme(graph, 'pulse_animation');
@@ -10,7 +10,7 @@ export const useAnimateColorPulse = (graph: Graph) => {
   const animateInterval = ref<NodeJS.Timeout | null>(null);
   const pulseColor = ref('#FFFFFF');
 
-  const easingFunction = EASING_FUNCTIONS['in-out'];
+  const easingFunction = EASING_PRESETS['in-out'];
   const pulseDuration = ref(1000);
 
   const animate = () => {

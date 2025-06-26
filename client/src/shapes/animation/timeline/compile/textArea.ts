@@ -2,7 +2,6 @@ import { getTextAreaWithDefaults } from "@shape/defaults/utility"
 import type { CompileProp } from "."
 import type { TextArea } from "@shape/types/utility"
 import type { TextAreaKeyframe } from "@shape/animation/interpolation/types"
-import { EASING_FUNCTIONS } from "@utils/animate"
 import { interpolateTextArea } from "@shape/animation/interpolation/textArea"
 
 /**
@@ -11,6 +10,7 @@ import { interpolateTextArea } from "@shape/animation/interpolation/textArea"
 export const compileTextAreaProp: CompileProp = (
   prop,
   propToRawKeyframes,
+  easing,
 ) => (schema, progress) => {
   const nonAnimatedPropValue = getTextAreaWithDefaults(schema[prop] as TextArea)
 
@@ -30,7 +30,7 @@ export const compileTextAreaProp: CompileProp = (
 
   const getInterpolatedValue = interpolateTextArea(
     keyframes,
-    EASING_FUNCTIONS['linear'],
+    easing,
     nonAnimatedPropValue,
   )
 

@@ -1,6 +1,5 @@
 import type { CoordinateKeyframe } from "@shape/animation/interpolation/types"
 import type { CompileProp } from "."
-import { EASING_FUNCTIONS } from "@utils/animate"
 import { interpolateCoordinate } from "@shape/animation/interpolation/coordinate"
 import type { Coordinate } from "@shape/types/utility"
 
@@ -12,6 +11,7 @@ import type { Coordinate } from "@shape/types/utility"
 export const compileCoordinateProp: CompileProp = (
   prop,
   propToRawKeyframes,
+  easing,
 ) => (schema, progress) => {
   const nonAnimatedPropValue = schema[prop] as Coordinate
 
@@ -43,7 +43,7 @@ export const compileCoordinateProp: CompileProp = (
 
   const getInterpolatedValue = interpolateCoordinate(
     keyframes,
-    EASING_FUNCTIONS['in-out'],
+    easing,
     nonAnimatedPropValue,
   )
 
