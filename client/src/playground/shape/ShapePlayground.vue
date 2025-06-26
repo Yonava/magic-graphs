@@ -8,33 +8,61 @@
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import { useMagicCanvas } from '@canvas/index';
   import Button from '@ui/core/button/Button.vue';
+  import type { Timeline } from '@shape/animation/timeline/defineTimeline';
 
   const {
     defineTimeline,
     shapes: { arrow },
   } = useAnimatedShapes();
 
-  const { play, stop } = defineTimeline({
-    forShapes: ['rect', 'line'],
+  const arrowAnimation: Timeline<'arrow'> = {
+    forShapes: ['arrow'],
     durationMs: 3000,
     keyframes: [
       {
+        progress: 0,
+        properties: {
+          end: (_, { start }) => start,
+          lineWidth: () => 0,
+          textArea: {
+            color: 'transparent',
+            textBlock: {
+              color: 'transparent',
+            },
+          },
+        },
+      },
+      {
         progress: 0.5,
         properties: {
-          fillColor: 'red',
+          textArea: {
+            color: 'transparent',
+            textBlock: {
+              color: 'transparent',
+            },
+          },
+        },
+      },
+      {
+        progress: 0.75,
+        properties: {
+          end: (end) => end,
+          lineWidth: (lw) => lw,
         },
       },
     ],
-  });
+  };
+
+  const { play, stop } = defineTimeline(arrowAnimation);
 
   const shapes = ref<Shape[]>([]);
 
   shapes.value.push(
     arrow({
       id: 'test',
-      lineWidth: 20,
+      lineWidth: 10,
       start: { x: 0, y: -50 },
-      end: { x: 300, y: -50 },
+      end: { x: 300, y: -250 },
       textArea: {
         textBlock: {
           content: 'hello',
