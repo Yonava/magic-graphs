@@ -1,11 +1,12 @@
 import type { BaseGraph } from '@graph/base';
 import type { GraphHistoryPlugin } from '../history';
-import { interpolateCoordinatesOverTime } from '@utils/animate';
 import type { GraphFocusPlugin } from '../focus';
 import type { GraphMarqueePlugin } from '../marquee';
 import type { GraphPersistentPlugin } from '../persistent';
 import { ANIMATE_NODE_MOVE_OPTIONS_DEFAULTS } from './types';
 import type { AnimateNodeMoveOptions } from './types';
+import { interpolateCoordinate } from '@shape/animation/interpolation/coordinate';
+import { EASING_PRESETS } from '@shape/animation/easing';
 
 export const useAnimation = (
   graph: BaseGraph &
@@ -28,17 +29,28 @@ export const useAnimation = (
 
     const startCoords = { x: node.x, y: node.y };
 
-    const { coords, timePerFrameMs } = interpolateCoordinatesOverTime({
-      start: startCoords,
-      end: endCoords,
-      durationMs,
-    });
+    const animationFn = interpolateCoordinate(
+      [
+        {
+          progress: 0,
+          value: startCoords,
+        },
+        {
+          progress: 1,
+          value: endCoords,
+        }
+      ],
+      EASING_PRESETS['in-out'],
+      endCoords,
+    );
 
-    for (let i = 0; i < coords.length; i++) {
-      await new Promise((res) => setTimeout(res, timePerFrameMs));
-      graph.moveNode(node.id, coords[i], { broadcast });
-      if (graph.focus.isFocused(node.id))
+    for (let i = 0; i < durationMs; i++) {
+      await new Promise((res) => setTimeout(res, 1));
+      const coord = animationFn(i / durationMs)
+      graph.moveNode(node.id, coord, { broadcast });
+      if (graph.focus.isFocused(node.id)) {
         graph.marquee.updateEncapsulatedNodeBox();
+      }
     }
 
     if (history) {
