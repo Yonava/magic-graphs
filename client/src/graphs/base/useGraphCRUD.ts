@@ -25,7 +25,6 @@ import { generateId } from '@utils/id';
 import type { Emitter } from '@graph/events';
 import { nodeLetterLabelGetter } from '@graph/labels';
 import type { GraphSettings } from '@graph/settings';
-import type { GraphAnimationController } from '@graph/animationController';
 import type { AggregatorProps } from './useAggregator';
 
 type GraphCRUDOptions = {
@@ -35,7 +34,6 @@ type GraphCRUDOptions = {
   nodeMap: NodeMap;
   edgeMap: EdgeMap;
   settings: Ref<GraphSettings>;
-  animationController: GraphAnimationController;
   updateGraphAtMousePosition: () => void,
   updateAggregator: AggregatorProps['updateAggregator']
 };
@@ -47,7 +45,6 @@ export const useGraphCRUD = ({
   edgeMap,
   emit,
   settings,
-  animationController,
   updateGraphAtMousePosition,
   updateAggregator,
 }: GraphCRUDOptions) => {
@@ -104,7 +101,7 @@ export const useGraphCRUD = ({
       y: node.y ?? 0,
     };
 
-    if (fullOptions.animate) animationController.animateIn(newNode.id);
+    // if (fullOptions.animate) animationController.animateIn(newNode.id);
 
     nodes.value.push(newNode);
 
@@ -185,7 +182,7 @@ export const useGraphCRUD = ({
       ...edge,
     };
 
-    if (fullOptions.animate) animationController.animateIn(newEdge.id);
+    // if (fullOptions.animate) animationController.animateIn(newEdge.id);
 
     edges.value.push(newEdge);
 
@@ -310,8 +307,8 @@ export const useGraphCRUD = ({
       removedEdges.push(removed);
     }
 
-    if (fullOptions.animate)
-      await animationController.animateOut(removedNode.id);
+    // if (fullOptions.animate)
+    // await animationController.animateOut(removedNode.id);
 
     nodes.value = nodes.value.filter((n) => n.id !== removedNode.id);
 
@@ -373,7 +370,7 @@ export const useGraphCRUD = ({
       ...options,
     };
 
-    if (fullOptions.animate) await animationController.animateOut(edge.id);
+    // if (fullOptions.animate) await animationController.animateOut(edge.id);
 
     edges.value = edges.value.filter((e) => e.id !== edge.id);
 

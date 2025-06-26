@@ -14,6 +14,8 @@ import { arrow } from "@shapes/arrow"
 import { getTextAreaWithDefaults } from "@shape/defaults/utility"
 import type { TextArea } from "@shape/types/utility"
 import { useDefineTimeline } from "./timeline/defineTimeline"
+import { uturn } from "@shapes/uturn"
+import { circle } from "@shapes/circle"
 
 export const useAnimatedShapes = () => {
 
@@ -104,6 +106,8 @@ export const useAnimatedShapes = () => {
       rect: animatedFactory(rect),
       line: animatedFactory(line),
       arrow: animatedFactory(arrow),
+      uturn: animatedFactory(uturn),
+      circle: animatedFactory(circle),
     },
     defineTimeline,
   }

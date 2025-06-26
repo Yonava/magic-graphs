@@ -5,9 +5,9 @@ import type { GraphMouseEvent } from '@graph/base/types';
 import type { SchemaItem, GNode } from '@graph/types';
 import type { GraphFocusPlugin } from '@graph/plugins/focus';
 import type { NodeAnchor } from '@graph/plugins/anchors/types';
-import type { CircleSchema } from '@shape/shapes/circle';
-import type { WithId } from '@shape/cacher';
+import type { CircleSchema } from '@shape/shapes/circle/types';
 import { MOUSE_BUTTONS } from '@utils/mouse';
+import type { WithId } from '@shape/types';
 
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
@@ -39,7 +39,6 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     const node = graph.getNode(nodeId);
 
     if (!node) throw new Error('node not found');
-    if (graph.animationController.isAnimating(node.id)) return;
 
     parentNode.value = node;
     updateNodeAnchors(node);
