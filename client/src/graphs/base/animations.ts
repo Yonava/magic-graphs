@@ -1,8 +1,9 @@
 import type { DefineTimeline, Timeline } from "@shape/animation/timeline/defineTimeline";
+import tinycolor from "tinycolor2";
 
-const arrowIn: Timeline<'arrow'> = {
+const arrowEdgeAdded: Timeline<'arrow'> = {
   forShapes: ['arrow'],
-  durationMs: 4000,
+  durationMs: 400,
   easing: {
     lineWidth: 'in-out',
     textArea: 'in-out',
@@ -11,31 +12,29 @@ const arrowIn: Timeline<'arrow'> = {
     {
       progress: 0,
       properties: {
+        lineWidth: 0,
         end: (_, { start }) => start,
-        lineWidth: () => 0,
         textArea: (ta) => ({
-          color: ta.color,
+          color: tinycolor(ta.color).setAlpha(0).toRgbString(),
           textBlock: {
-            fontSize: 3,
             color: 'transparent',
           },
         }),
       },
     },
     {
-      progress: 0.5,
+      progress: 0.33,
       properties: {
         textArea: (ta) => ({
-          color: ta.color,
+          color: tinycolor(ta.color).setAlpha(0).toRgbString(),
           textBlock: {
-            fontSize: 3,
             color: 'transparent',
           },
         }),
       },
     },
     {
-      progress: 0.75,
+      progress: 0.9,
       properties: {
         end: (end) => end,
         lineWidth: (lw) => lw,
@@ -44,9 +43,38 @@ const arrowIn: Timeline<'arrow'> = {
   ],
 };
 
+const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
+  forShapes: ['line', 'uturn'],
+  durationMs: 400,
+  easing: {
+    lineWidth: 'in-out',
+    textArea: 'in-out',
+  },
+  keyframes: [
+    {
+      progress: 0,
+      properties: {
+        lineWidth: 0,
+        textArea: (ta) => ({
+          color: tinycolor(ta.color).setAlpha(0).toRgbString(),
+          textBlock: {
+            color: 'transparent',
+          },
+        }),
+      },
+    },
+  ],
+};
+
 export const getGraphAnimations = (defineTimeline: DefineTimeline) => ({
   arrow: {
-    edgeAdded: defineTimeline(arrowIn),
+    edgeAdded: defineTimeline(arrowEdgeAdded),
+  },
+  line: {
+    edgeAdded: defineTimeline(lineOrUTurnEdgeAdded),
+  },
+  uturn: {
+    edgeAdded: defineTimeline(lineOrUTurnEdgeAdded),
   }
 })
 

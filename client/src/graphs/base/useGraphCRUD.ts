@@ -185,10 +185,14 @@ export const useGraphCRUD = ({
       ...edge,
     };
 
-    if (fullOptions.animate) animations.arrow.edgeAdded.play({
-      shapeId: newEdge.id,
-      runCount: 1,
-    })
+    if (fullOptions.animate) {
+      const selfRef = toNode.id === fromNode.id;
+      const shape = selfRef ? 'uturn' : (isGraphDirected ? 'arrow' : 'line');
+      animations[shape].edgeAdded.play({
+        shapeId: newEdge.id,
+        runCount: 1,
+      })
+    }
 
     edges.value.push(newEdge);
 

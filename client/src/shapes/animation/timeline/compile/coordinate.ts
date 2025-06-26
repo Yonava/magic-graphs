@@ -23,21 +23,17 @@ export const compileCoordinateProp: CompileProp = (
     throw `😳! prop ${prop} said to be a coordinate was not at runtime! got ${nonAnimatedPropValue}`
   }
 
-  const keyframes = propToRawKeyframes[prop].map((pt): CoordinateKeyframe => {
+  const keyframes = propToRawKeyframes[prop].map((kf): CoordinateKeyframe => {
     const getValue = () => {
-      if (typeof pt.value === 'function') {
-        return pt.value(nonAnimatedPropValue, schema)
+      if (typeof kf.value === 'function') {
+        return kf.value(nonAnimatedPropValue, schema)
       }
-
-      return {
-        x: pt.value.x + nonAnimatedPropValue.x,
-        y: pt.value.y + nonAnimatedPropValue.y,
-      }
+      return kf.value
     }
 
     return {
       value: getValue(),
-      progress: pt.progress,
+      progress: kf.progress,
     }
   })
 
