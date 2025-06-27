@@ -330,6 +330,22 @@ export const isPointInLine = (
   return distanceSquared <= (lineWidth / 2) ** 2;
 }
 
+/**
+ * returns true if the point provided falls within the bounding box
+ */
+export const isPointInBoundingBox = (bb: BoundingBox, pt: Coordinate) => {
+  const {
+    at: { x, y },
+    width,
+    height
+  } = normalizeBoundingBox(bb)
+  const { x: xPt, y: yPt } = pt
+
+  const xLegit = xPt >= x && xPt <= (x + width)
+  const yLegit = yPt >= y && yPt <= (y + height)
+  return xLegit && yLegit
+}
+
 export const toBorderRadiusArray = (
   borderRadius: BorderRadius['borderRadius'],
 ): BorderRadiusArrayValue => {
