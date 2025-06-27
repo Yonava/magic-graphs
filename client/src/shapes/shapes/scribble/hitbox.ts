@@ -1,62 +1,58 @@
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
-import { rectEfficientHitbox, rectHitbox } from '@shape/shapes/rect/hitbox';
-import { lineEfficientHitbox } from '@shape/shapes/line/hitbox';
-import { circle } from '@shape/shapes/circle';
 import { normalizeBoundingBox } from '@shape/helpers';
-import type { ScribbleSchema } from './types';
-import { SCRIBBLE_SCHEMA_DEFAULTS } from './defaults';
+import type { ScribbleSchemaWithDefaults } from './defaults';
+import { circle } from '@shapes/circle';
+import { rect } from '@shapes/rect';
+import { line } from '@shapes/line';
 
 /**
  * @param point - the point to check if it is in the scribble bounding box
  * @returns a function that checks if the point is in the scribble bounding box
  */
-export const scribbleHitbox =
-  (scribble: ScribbleSchema) => (point: Coordinate) => {
-    const { type, points, brushWeight } = {
-      ...SCRIBBLE_SCHEMA_DEFAULTS,
-      ...scribble,
+export const scribbleHitbox = (
+  schema: ScribbleSchemaWithDefaults
+) => (point: Coordinate) => {
+  const { type, points, brushWeight } = schema;
+
+  if (type === 'erase') return false;
+
+  // first check boundingbox for efficiency
+  const { at, width, height } = getScribbleBoundingBox(schema)();
+
+  const { hitbox } = rect({
+    at,
+    // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
+    width: Math.max(width, brushWeight),
+    height: Math.max(height, brushWeight),
+  });
+
+  if (!hitbox(point)) return false;
+
+  if (points.length === 1) {
+    const { hitbox } = circle({ at: points[0], radius: brushWeight });
+    if (hitbox(point)) return true;
+  }
+
+  for (let i = 0; i < points.length - 1; i++) {
+    const scribbleSegment = {
+      start: points[i],
+      end: points[i + 1],
     };
 
-    if (type === 'erase') return false;
+    const { efficientHitbox } = line(scribbleSegment);
 
-    const { at, width, height } = getScribbleBoundingBox(scribble)(); // first check boundingbox for efficiency
+    if (efficientHitbox({
+      at: point,
+      width: 1,
+      height: 1,
+    })) return true;
+  }
 
-    const isInRectHitbox = rectHitbox({
-      at,
-      width: Math.max(width, brushWeight), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
-      height: Math.max(height, brushWeight), // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
-    });
+  return false;
+};
 
-    if (!isInRectHitbox(point)) return false;
-
-    if (points.length === 1) {
-      if (circle({ at: points[0], radius: brushWeight }).hitbox(point))
-        return true;
-    }
-
-    for (let i = 0; i < points.length - 1; i++) {
-      const scribbleSegment = {
-        start: points[i],
-        end: points[i + 1],
-      };
-
-      const isInLineEfficientHitbox = lineEfficientHitbox(scribbleSegment)({
-        at: point,
-        width: 1,
-        height: 1,
-      });
-
-      if (isInLineEfficientHitbox) return true;
-    }
-
-    return false;
-  };
-
-export const getScribbleBoundingBox = (scribble: ScribbleSchema) => () => {
-  const { points, brushWeight } = {
-    ...SCRIBBLE_SCHEMA_DEFAULTS,
-    ...scribble,
-  };
+export const getScribbleBoundingBox = (schema: ScribbleSchemaWithDefaults) => () => {
+  const { points, brushWeight } = schema;
 
   let minX = points[0].x;
   let minY = points[0].y;
@@ -80,43 +76,40 @@ export const getScribbleBoundingBox = (scribble: ScribbleSchema) => () => {
   });
 };
 
-export const scribbleEfficientHitbox =
-  (scribble: ScribbleSchema) => (boxToCheck: BoundingBox) => {
-    if (scribble.type === 'erase') return false;
+export const scribbleEfficientHitbox = (
+  schema: ScribbleSchemaWithDefaults
+) => (boxToCheck: BoundingBox) => {
+  if (schema.type === 'erase') return false;
 
-    const { at, width, height } = getScribbleBoundingBox(scribble)();
+  const { at, width, height } = getScribbleBoundingBox(schema)();
+  const { points, brushWeight } = schema;
 
-    const { points, brushWeight } = {
-      ...SCRIBBLE_SCHEMA_DEFAULTS,
-      ...scribble,
+  const { efficientHitbox } = rect({
+    at,
+    // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
+    width: Math.max(width, brushWeight),
+    height: Math.max(height, brushWeight),
+  });
+
+  if (points.length === 1) {
+    const { efficientHitbox } = circle({
+      at: points[0],
+      radius: brushWeight,
+    })
+    return efficientHitbox(boxToCheck);
+  }
+
+  if (!efficientHitbox(boxToCheck)) return false;
+
+  for (let i = 0; i < points.length - 1; i++) {
+    const scribbleSegment = {
+      start: points[i],
+      end: points[i + 1],
     };
 
-    const isInRectEfficientHitbox = rectEfficientHitbox({
-      at,
-      // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
-      width: Math.max(width, brushWeight),
-      height: Math.max(height, brushWeight),
-    });
+    const { efficientHitbox } = line(scribbleSegment);
+    if (efficientHitbox(boxToCheck)) return true;
+  }
 
-    if (points.length === 1)
-      return circle({
-        at: points[0],
-        radius: brushWeight,
-      }).efficientHitbox(boxToCheck);
-
-    if (!isInRectEfficientHitbox(boxToCheck)) return false;
-
-    for (let i = 0; i < points.length - 1; i++) {
-      const scribbleSegment = {
-        start: points[i],
-        end: points[i + 1],
-      };
-
-      const isInLineEfficientHitbox =
-        lineEfficientHitbox(scribbleSegment)(boxToCheck);
-
-      if (isInLineEfficientHitbox) return true;
-    }
-
-    return false;
-  };
+  return false;
+};
