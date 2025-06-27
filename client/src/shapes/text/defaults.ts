@@ -1,5 +1,6 @@
-import type { TextArea, TextBlock } from "@shape/types/utility";
 import type { DeepRequired } from "ts-essentials";
+import type { TextArea, TextBlock } from "./types";
+import type { TextArea as TextAreaSchema } from '@shape/types/schema'
 
 export const TEXTAREA_DEFAULTS = {
   color: 'white',
@@ -13,7 +14,7 @@ export const TEXT_BLOCK_DEFAULTS = {
   fontFamily: 'Arial',
 } as const satisfies Omit<TextBlock, 'content'>;
 
-export const getTextAreaWithDefaults = (textArea: TextArea): DeepRequired<TextArea> => {
+const getTextAreaWithDefaults = (textArea: TextArea): DeepRequired<TextArea> => {
   const textBlockWithDefaults: Required<TextBlock> = {
     ...TEXT_BLOCK_DEFAULTS,
     ...textArea.textBlock,
@@ -27,3 +28,9 @@ export const getTextAreaWithDefaults = (textArea: TextArea): DeepRequired<TextAr
 
   return textAreaWithDefaults
 }
+
+export const resolveTextArea = (ta: TextAreaSchema['textArea']) => (ta && {
+  textArea: getTextAreaWithDefaults(ta)
+})
+
+export type TextAreaWithDefaults = ReturnType<typeof getTextAreaWithDefaults>

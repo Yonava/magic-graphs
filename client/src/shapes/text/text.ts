@@ -1,26 +1,29 @@
 import type { DeepRequired } from 'ts-essentials';
-import { getTextAreaWithDefaults } from '@shape/defaults/utility';
 import { getTextDimensions } from './getTextDimensions';
-import type { Coordinate, TextArea, TextAreaWithAnchorPoint, TextBlock } from '@shape/types/utility';
+import type { Coordinate } from '@shape/types/utility';
 import type { ShapeTextProps } from '@shape/types';
 import { engageTextarea } from './textarea';
 import { rect } from '@shape/shapes/rect';
+import type { TextAreaWithAnchorPoint, TextBlock } from './types';
+import type { TextAreaWithDefaults } from './defaults';
 
 export const HORIZONTAL_TEXT_PADDING = 20;
 
 /**
  * if a text area is provided, will return ShapeTextProps, otherwise undefined
  */
-type ShapeTextPropsGetter = (at?: Coordinate, textArea?: TextArea) => ShapeTextProps | undefined
+type ShapeTextPropsGetter = (
+  at?: Coordinate,
+  textArea?: TextAreaWithDefaults,
+) => ShapeTextProps | undefined;
 
 export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
   if (!at || !textArea) return
 
-  const textAreaWithDefaults = getTextAreaWithDefaults(textArea)
-  const dimensions = getTextAreaDimension(textAreaWithDefaults.textBlock);
+  const dimensions = getTextAreaDimension(textArea.textBlock);
 
-  const fullTextArea = {
-    ...textAreaWithDefaults,
+  const placedTextArea = {
+    ...textArea,
     at: {
       x: at.x - dimensions.width / 2,
       y: at.y - dimensions.height / 2
@@ -28,13 +31,13 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
   } as const satisfies TextAreaWithAnchorPoint
 
   const textAreaMatte = rect({
-    at: fullTextArea.at,
+    at: placedTextArea.at,
     width: dimensions.width,
     height: dimensions.height,
-    fillColor: fullTextArea.color,
+    fillColor: placedTextArea.color,
   });
 
-  const drawText = drawTextWithTextArea(fullTextArea, dimensions)
+  const drawText = drawTextWithTextArea(placedTextArea, dimensions)
 
   const drawTextArea = (ctx: CanvasRenderingContext2D) => {
     textAreaMatte.draw(ctx)
@@ -45,7 +48,7 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
     ctx: CanvasRenderingContext2D,
     handler: (str: string) => void,
   ) => {
-    engageTextarea(ctx, fullTextArea, handler);
+    engageTextarea(ctx, placedTextArea, handler);
   };
 
   return {

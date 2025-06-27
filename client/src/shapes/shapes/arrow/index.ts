@@ -10,14 +10,17 @@ import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
 import { getTextAreaAnchorPoint } from '../line/text';
 import type { ArrowSchema } from './types';
+import { resolveArrowDefaults } from './defaults';
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {
     throw new Error('width must be positive');
   }
 
-  const anchorPt = getTextAreaAnchorPoint(options)
-  const shapeTextProps = getShapeTextProps(anchorPt, options.textArea)
+  const schema = resolveArrowDefaults(options)
+
+  const anchorPt = getTextAreaAnchorPoint(schema)
+  const shapeTextProps = getShapeTextProps(anchorPt, schema.textArea)
 
   const drawShape = drawArrowWithCtx(options);
 
