@@ -1,12 +1,14 @@
-import { ELLIPSE_SCHEMA_DEFAULTS } from "./defaults";
-import type { EllipseSchema } from "./types";
+import type { EllipseSchemaWithDefaults } from "./defaults";
 
 export const drawEllipseWithCtx =
-  (options: EllipseSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { at, radiusX, radiusY, fillColor: color, stroke } = {
-      ...ELLIPSE_SCHEMA_DEFAULTS,
-      ...options,
-    };
+  (schema: EllipseSchemaWithDefaults) => (ctx: CanvasRenderingContext2D) => {
+    const {
+      at,
+      radiusX,
+      radiusY,
+      fillColor: color,
+      stroke
+    } = schema;
 
     ctx.beginPath();
     ctx.ellipse(at.x, at.y, radiusX, radiusY, 0, 0, 2 * Math.PI);
@@ -14,10 +16,12 @@ export const drawEllipseWithCtx =
     ctx.fill();
 
     if (stroke) {
-      const { color, lineWidth: width, dash } = stroke;
+      const { color, lineWidth: width, dash = [] } = stroke;
       ctx.strokeStyle = color;
       ctx.lineWidth = width;
-      ctx.setLineDash(dash || []);
+      // setLineDash does not support passing readonly arrays in ts!
+      // safe assertion since setLineDash does not perform mutations
+      ctx.setLineDash(dash as number[]);
       ctx.stroke();
       ctx.setLineDash([]);
     }

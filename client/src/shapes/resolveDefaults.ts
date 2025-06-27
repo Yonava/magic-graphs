@@ -3,7 +3,7 @@ import { resolveTextArea, type TextAreaWithDefaults } from "./text/defaults"
 import type { TextArea } from "./types/schema"
 import type { PartiallyRequired } from "@utils/types"
 
-export type WithDefaults<
+type WithDefaults<
   Schema extends TextArea,
   Defaults extends Partial<Schema>
 > = Prettify<
