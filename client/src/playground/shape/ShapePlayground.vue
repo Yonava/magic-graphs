@@ -11,7 +11,7 @@
 
   const { defineTimeline, shapes } = useAnimatedShapes();
 
-  const { play, stop } = defineTimeline({
+  const { play, stop, pause, resume } = defineTimeline({
     forShapes: ['circle'],
     durationMs: 2000,
     easing: { radius: 'in-out' },
@@ -65,6 +65,8 @@
         Start Animation
       </Button>
       <Button @click="stop({ shapeId: 'test' })"> Stop Animation </Button>
+      <Button @click="pause({ shapeId: 'test' })"> Pause Animation </Button>
+      <Button @click="resume({ shapeId: 'test' })"> Resume Animation </Button>
     </div>
 
     <MagicCanvas

@@ -10,22 +10,37 @@ import { compileTimeline, type CompiledTimeline } from "./compile";
 import type { EasingOption } from "../easing";
 import type { UTurnSchema } from "@shapes/uturn/types";
 import type { CircleSchema } from "@shapes/circle/types";
+// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
+// eslint-disable-next-line
+import type { WithId } from "@shape/types";
 
-type TimelinePlayOptions = { shapeId: string, runCount: number }
-type TimelineStopOptions = { shapeId: string }
+type ShapeTarget = {
+  /**
+   * the {@link WithId | id} of the shape to target
+   */
+  shapeId: string
+}
 
 export type TimelineId = string
-type TimelineIdField = { timelineId: TimelineId }
+
+type IdField = {
+  timelineId: TimelineId
+}
+
+type TimelinePlayOptions = ShapeTarget & {
+  /**
+   * number of times this animation should run
+   *
+   * TIP: pass `Infinity` to run animation indefinitely
+   */
+  runCount: number
+}
 
 export type UseDefineTimelineOptions = {
-  /**
-   * play animation handler
-   */
-  play: (options: TimelinePlayOptions & TimelineIdField) => void;
-  /**
-   * stop animation handler
-   */
-  stop: (options: TimelineStopOptions & TimelineIdField) => void;
+  play: (options: TimelinePlayOptions & IdField) => void;
+  pause: (options: ShapeTarget & IdField) => void;
+  resume: (options: ShapeTarget & IdField) => void;
+  stop: (options: ShapeTarget & IdField) => void;
 }
 
 type TimelineControls = {
@@ -34,15 +49,22 @@ type TimelineControls = {
    */
   play: (options: TimelinePlayOptions) => void,
   /**
+   * stop the animation until `resume` is invoked
+   */
+  pause: (options: ShapeTarget) => void,
+  /**
+   * starts animations that have been paused
+   */
+  resume: (options: ShapeTarget) => void,
+  /**
    * stop and reset the animation
    */
-  stop: (options: TimelineStopOptions) => void,
+  stop: (options: ShapeTarget) => void,
   /**
    * cleanup the timeline if no longer needed
    *
-   * NOTE: cleanup is handled automatically by {@link FinalizationRegistry}
-   * however it is best practice to ensure cleanup manually
-   * when making repeated single-use calls to `defineTimeline`
+   * NOTE: important when making a large number of calls to `defineTimeline`
+   * in order to reclaim memory
    */
   dispose: () => void,
 }
@@ -101,12 +123,8 @@ export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<{
   easing?: Partial<Record<keyof SchemaProps<NoInfer<T>>, EasingOption>>,
 } & TimelinePlaybackDuration>
 
-export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
+export const useDefineTimeline = (controls: UseDefineTimelineOptions) => {
   const timelineIdToTimeline: Map<TimelineId, CompiledTimeline> = new Map()
-
-  const registry = new FinalizationRegistry<TimelineId>((timelineId) => {
-    timelineIdToTimeline.delete(timelineId)
-  })
 
   const defineTimeline = <T extends keyof ShapeNameToSchema>(
     timeline: Timeline<T>
@@ -116,20 +134,13 @@ export const useDefineTimeline = ({ play, stop }: UseDefineTimelineOptions) => {
     const compiledTimeline = compileTimeline(timeline as Timeline<any>)
     timelineIdToTimeline.set(timelineId, compiledTimeline)
 
-    const unregisterToken = {}
-
-    const controls: TimelineControls = {
-      play: (opts) => play({ ...opts, timelineId }),
-      stop: (opts) => stop({ ...opts, timelineId }),
-      dispose: () => {
-        timelineIdToTimeline.delete(timelineId)
-        registry.unregister(unregisterToken)
-      }
+    return {
+      play: (opts) => controls.play({ ...opts, timelineId }),
+      pause: (opts) => controls.pause({ ...opts, timelineId }),
+      resume: (opts) => controls.resume({ ...opts, timelineId }),
+      stop: (opts) => controls.stop({ ...opts, timelineId }),
+      dispose: () => timelineIdToTimeline.delete(timelineId),
     }
-
-    registry.register(controls, timelineId, unregisterToken)
-
-    return controls
   }
 
   return {

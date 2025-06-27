@@ -30,7 +30,9 @@ export const useAnimatedShapes = () => {
       ...rest,
       startedAt: Date.now()
     }),
-    stop: ({ shapeId }) => activeAnimations.delete(shapeId)
+    stop: ({ shapeId }) => activeAnimations.delete(shapeId),
+    pause: () => console.warn('not implemented'),
+    resume: () => console.warn('not implemented'),
   })
 
   const animatedFactory = <T>(factory: ShapeFactory<T>) => (schema: WithId<T>) => {

@@ -107,7 +107,7 @@ export type SchemaId = string
 
 export type WithId<T> = T & {
   /**
-   * optimized shapes require a unique id to track them across renders
+   * a unique id to track this shape
    */
   id: SchemaId
 }
