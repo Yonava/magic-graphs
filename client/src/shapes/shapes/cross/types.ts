@@ -3,12 +3,14 @@ import type {
   BorderRadius,
   FillColor,
   LineWidth,
-  Rotation
+  Rotation,
+  TextArea
 } from "@shape/types/schema";
 
 export type CrossSchema = {
   size: number;
 } &
+  TextArea &
   AnchorPoint &
   Rotation &
   LineWidth &
