@@ -1,11 +1,10 @@
-import type { TextArea } from "@shape/types/utility";
 import type { ColorKeyframe, InterpolationFunction, NumberKeyframe } from "./types";
-import type { DeepRequired } from "ts-essentials";
 import { interpolateColor } from "./color";
 import { interpolateNumber } from "./number";
+import type { TextAreaWithDefaults } from "@shape/text/defaults";
 
 export const interpolateTextArea: InterpolationFunction<
-  DeepRequired<TextArea>
+  TextAreaWithDefaults
 > = (keyframes, easing, fallback) => {
   return (progress) => {
     const colorKeyframes = keyframes.map((kf): ColorKeyframe => ({
@@ -18,7 +17,6 @@ export const interpolateTextArea: InterpolationFunction<
       value: kf.value.activeColor,
     }))
 
-    const { textBlock } = fallback
 
     const textColorKeyframes = keyframes.map((kf): ColorKeyframe => ({
       ...kf,
@@ -34,6 +32,8 @@ export const interpolateTextArea: InterpolationFunction<
     const textColor = interpolateColor(textColorKeyframes, easing, fallback.textBlock.color)
     const textFontSize = interpolateNumber(textSizeKeyframes, easing, fallback.textBlock.fontSize)
     const textAreaActiveColor = interpolateColor(activeColorKeyframes, easing, fallback.activeColor)
+
+    const { textBlock } = fallback
 
     return {
       textBlock: {

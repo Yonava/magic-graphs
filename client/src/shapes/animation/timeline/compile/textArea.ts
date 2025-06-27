@@ -21,8 +21,11 @@ export const compileTextAreaProp: CompileProp = (
       return kf.value
     }
 
+    const value = resolveTextArea(getValue())?.textArea
+    if (!value) throw 'received undefined value from resolved text area'
+
     return {
-      value: resolveTextArea(getValue()),
+      value,
       progress: kf.progress,
     }
   })
