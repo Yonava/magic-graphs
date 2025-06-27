@@ -1,18 +1,14 @@
 import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
 import { normalizeBoundingBox } from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
-import { LINE_SCHEMA_DEFAULTS } from './defaults';
-import type { LineSchema } from './types';
+import type { LineSchemaWithDefaults } from './defaults';
 
 /**
  * @param point - the point to check if it is in the line
  * @returns a function that checks if the point is in the line
  */
-export const lineHitbox = (line: LineSchema) => (point: Coordinate) => {
-  const { start, end, lineWidth } = {
-    ...LINE_SCHEMA_DEFAULTS,
-    ...line,
-  };
+export const lineHitbox = (schema: LineSchemaWithDefaults) => (point: Coordinate) => {
+  const { start, end, lineWidth } = schema;
 
   const { x: x1, y: y1 } = start;
   const { x: x2, y: y2 } = end;
@@ -41,20 +37,13 @@ export const lineHitbox = (line: LineSchema) => (point: Coordinate) => {
   return distanceSquared <= (lineWidth / 2) ** 2;
 };
 
-export const getLineBoundingBox = (line: LineSchema) => () => {
-  const {
-    start,
-    end,
-    lineWidth: width,
-  } = {
-    ...LINE_SCHEMA_DEFAULTS,
-    ...line,
-  };
+export const getLineBoundingBox = (schema: LineSchemaWithDefaults) => () => {
+  const { start, end, lineWidth } = schema;
 
-  const minX = Math.min(start.x, end.x) - width / 2;
-  const minY = Math.min(start.y, end.y) - width / 2;
-  const maxX = Math.max(start.x, end.x) + width / 2;
-  const maxY = Math.max(start.y, end.y) + width / 2;
+  const minX = Math.min(start.x, end.x) - lineWidth / 2;
+  const minY = Math.min(start.y, end.y) - lineWidth / 2;
+  const maxX = Math.max(start.x, end.x) + lineWidth / 2;
+  const maxY = Math.max(start.y, end.y) + lineWidth / 2;
 
   return normalizeBoundingBox({
     at: {
@@ -66,15 +55,8 @@ export const getLineBoundingBox = (line: LineSchema) => () => {
   });
 };
 
-export const lineEfficientHitbox = (line: LineSchema) => {
-  const {
-    start,
-    end,
-    lineWidth: width,
-  } = {
-    ...LINE_SCHEMA_DEFAULTS,
-    ...line,
-  };
+export const lineEfficientHitbox = (schema: LineSchemaWithDefaults) => {
+  const { start, end, lineWidth } = schema;
 
   const lineLength = Math.hypot(end.x - start.x, end.y - start.y);
 
@@ -86,10 +68,10 @@ export const lineEfficientHitbox = (line: LineSchema) => {
   const dx = (end.x - start.x) / lineLength;
   const dy = (end.y - start.y) / lineLength;
 
-  const minX = Math.min(start.x, end.x) - width / 2;
-  const minY = Math.min(start.y, end.y) - width / 2;
-  const boundingBoxWidth = Math.abs(end.x - start.x) + width;
-  const boundingBoxHeight = Math.abs(end.y - start.y) + width;
+  const minX = Math.min(start.x, end.x) - lineWidth / 2;
+  const minY = Math.min(start.y, end.y) - lineWidth / 2;
+  const boundingBoxWidth = Math.abs(end.x - start.x) + lineWidth;
+  const boundingBoxHeight = Math.abs(end.y - start.y) + lineWidth;
 
   const isInBoundingBox = rectEfficientHitbox({
     at: { x: minX, y: minY },
@@ -109,10 +91,10 @@ export const lineEfficientHitbox = (line: LineSchema) => {
       const segmentEndX = segmentStartX + dx * segmentLength;
       const segmentEndY = segmentStartY + dy * segmentLength;
 
-      const segMinX = Math.min(segmentStartX, segmentEndX) - width / 2;
-      const segMinY = Math.min(segmentStartY, segmentEndY) - width / 2;
-      const segWidth = Math.abs(segmentEndX - segmentStartX) + width;
-      const segHeight = Math.abs(segmentEndY - segmentStartY) + width;
+      const segMinX = Math.min(segmentStartX, segmentEndX) - lineWidth / 2;
+      const segMinY = Math.min(segmentStartY, segmentEndY) - lineWidth / 2;
+      const segWidth = Math.abs(segmentEndX - segmentStartX) + lineWidth;
+      const segHeight = Math.abs(segmentEndY - segmentStartY) + lineWidth;
 
       return rectEfficientHitbox({
         at: { x: segMinX, y: segMinY },

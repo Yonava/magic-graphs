@@ -1,12 +1,15 @@
-import { LINE_SCHEMA_DEFAULTS } from "./defaults";
-import type { LineSchema } from "./types";
+import type { LineSchemaWithDefaults } from "./defaults";
 
 export const drawLineWithCtx =
-  (line: LineSchema) => (ctx: CanvasRenderingContext2D) => {
-    const { start, end, lineWidth: width, fillColor: color, dash, fillGradient } = {
-      ...LINE_SCHEMA_DEFAULTS,
-      ...line,
-    };
+  (schema: LineSchemaWithDefaults) => (ctx: CanvasRenderingContext2D) => {
+    const {
+      start,
+      end,
+      lineWidth: width,
+      fillColor: color,
+      dash = [],
+      fillGradient
+    } = schema;
 
     if (width === 0) return;
 
@@ -24,8 +27,9 @@ export const drawLineWithCtx =
       });
       ctx.strokeStyle = gradient;
     }
-
-    ctx.setLineDash(dash ?? []);
+    // setLineDash does not support passing readonly arrays in ts!
+    // safe assertion since setLineDash does not perform mutations
+    ctx.setLineDash(dash as number[]);
     ctx.stroke();
     ctx.closePath();
     ctx.restore();
