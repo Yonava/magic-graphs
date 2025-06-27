@@ -8,4 +8,7 @@ export const ARROW_SCHEMA_DEFAULTS = {
   arrowHeadSize: getArrowHeadSize,
 } as const satisfies Partial<ArrowSchema>;
 
-export const resolveArrowDefaults = resolveDefaults<ArrowSchema>(ARROW_SCHEMA_DEFAULTS)
+export type ArrowDefaults = typeof ARROW_SCHEMA_DEFAULTS
+
+export const resolveArrowDefaults = resolveDefaults<ArrowSchema, ArrowDefaults>(ARROW_SCHEMA_DEFAULTS)
+export type ArrowSchemaWithDefaults = ReturnType<typeof resolveArrowDefaults>

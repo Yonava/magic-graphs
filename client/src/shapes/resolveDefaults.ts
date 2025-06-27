@@ -1,18 +1,26 @@
 import type { Prettify } from "ts-essentials"
-import { resolveTextArea } from "./text/defaults"
+import { resolveTextArea, type TextAreaWithDefaults } from "./text/defaults"
 import type { TextArea } from "./types/schema"
+import type { PartiallyRequired } from "@utils/types"
 
-export const resolveDefaults = <T extends TextArea>(defaults: Partial<T>) => (schema: T) => {
+export type WithDefaults<
+  Schema extends TextArea,
+  Defaults extends Partial<Schema>
+> = Prettify<
+  Omit<PartiallyRequired<Schema, keyof Defaults>, 'textArea'> &
+  { textArea?: TextAreaWithDefaults }
+>
+
+export const resolveDefaults = <
+  TSchema extends TextArea,
+  TDefaults extends Partial<TSchema>,
+>(defaults: TDefaults) => (schema: TSchema) => {
   const { textArea, ...rest } = schema
-  return {
+  const resolvedSchema: WithDefaults<TSchema, TDefaults> = {
     ...defaults,
     ...resolveTextArea(textArea),
-    ...rest
+    ...rest,
   }
-}
 
-export type WithDefaults<T extends TextArea> = Prettify<
-  ReturnType<
-    ReturnType<typeof resolveDefaults<T>>
-  >
->
+  return resolvedSchema
+}

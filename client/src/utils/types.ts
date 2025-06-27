@@ -1,11 +1,24 @@
-import type { UnionToIntersection } from "ts-essentials";
+import type { UnionToIntersection, Prettify } from "ts-essentials";
 
 /**
  * makes only certain keys K in an object T optional
- * @example PartiallyPartial<{ a: number, b: string }, 'a'> // { a?: number, b: string }
+ * @example
+ * type T = PartiallyPartial<{ a: number, b: string }, 'a'> // { a?: number, b: string }
  */
-export type PartiallyPartial<T, K extends keyof T> = Omit<T, K> &
-  Partial<Pick<T, K>>;
+export type PartiallyPartial<T, K extends keyof T> = Prettify<
+  Omit<T, K> &
+  Partial<Pick<T, K>>
+>;
+
+/**
+ * makes only certain keys K in an object T required
+ * @example
+ * type T = PartiallyRequired<{ a?: number, b?: string }, 'a'> // { a: number, b?: string }
+ */
+export type PartiallyRequired<T, K extends keyof T> = Prettify<
+  Omit<T, K> &
+  Required<Pick<T, K>>
+>;
 
 /**
  * takes `any[]` out of a union of arrays

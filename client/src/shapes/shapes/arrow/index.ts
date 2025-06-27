@@ -20,21 +20,19 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   const schema = resolveArrowDefaults(options)
 
   const anchorPt = getTextAreaAnchorPoint(schema)
-  const shapeTextProps = getShapeTextProps(anchorPt, schema.textArea)
+  const text = getShapeTextProps(anchorPt, schema.textArea)
 
-  const drawShape = drawArrowWithCtx(options);
+  const drawShape = drawArrowWithCtx(schema);
 
-  const shapeHitbox = arrowHitbox(options);
+  const shapeHitbox = arrowHitbox(schema);
+  const efficientHitbox = arrowEfficientHitbox(schema);
+  const hitbox = (point: Coordinate) => text?.textHitbox(point) || shapeHitbox(point);
 
-  const efficientHitbox = arrowEfficientHitbox(options);
-  const hitbox = (point: Coordinate) =>
-    shapeTextProps?.textHitbox(point) || shapeHitbox(point);
-
-  const getBoundingBox = getArrowBoundingBox(options);
+  const getBoundingBox = getArrowBoundingBox(schema);
 
   const draw = (ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
-    shapeTextProps?.drawTextArea(ctx);
+    text?.drawTextArea(ctx);
   };
 
   return shapeFactoryWrapper({
@@ -49,6 +47,6 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
     efficientHitbox,
     getBoundingBox,
 
-    ...shapeTextProps,
+    ...text,
   });
 };
