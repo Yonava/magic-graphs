@@ -1,14 +1,10 @@
 import { rotatePoint } from '@shape/helpers';
-import type { UTurnSchema } from './types';
-import { UTURN_SCHEMA_DEFAULTS } from './defaults';
+import type { UTurnSchemaWithDefaults } from './defaults';
 
-export const getTextAreaAnchorPoint = (uturn: UTurnSchema) => {
+export const getTextAreaAnchorPoint = (uturn: UTurnSchemaWithDefaults) => {
   if (!uturn.textArea) return
 
-  const { at, upDistance, rotation, spacing, lineWidth } = {
-    ...UTURN_SCHEMA_DEFAULTS,
-    ...uturn,
-  };
+  const { at, upDistance, rotation, spacing, lineWidth } = uturn;
 
   const endPoint = rotatePoint(
     {

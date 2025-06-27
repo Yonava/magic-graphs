@@ -1,17 +1,19 @@
-import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
+import { areBoundingBoxesOverlapping, normalizeBoundingBox, rotatePoint } from '@shape/helpers';
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
-import { lineHitbox } from '@shape/shapes/line/hitbox';
-import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
-import { arrowHitbox } from '@shape/shapes/arrow/hitbox';
 import { circle } from '@shape/shapes/circle';
-import type { UTurnSchema } from './types';
-import { UTURN_SCHEMA_DEFAULTS } from './defaults';
+import type { UTurnSchemaWithDefaults } from './defaults';
+import { line } from '../line';
+import { arrow } from '../arrow';
 
-export const uturnHitbox = (uturn: UTurnSchema) => {
-  const { spacing, at, downDistance, upDistance, lineWidth, rotation } = {
-    ...UTURN_SCHEMA_DEFAULTS,
-    ...uturn,
-  };
+export const uturnHitbox = (schema: UTurnSchemaWithDefaults) => {
+  const {
+    spacing,
+    at,
+    downDistance,
+    upDistance,
+    lineWidth,
+    rotation
+  } = schema;
 
   const longLegFrom = rotatePoint(
     {
@@ -58,30 +60,36 @@ export const uturnHitbox = (uturn: UTurnSchema) => {
     rotation,
   );
 
-  const isInLine = lineHitbox({
+  const { hitbox: inLine } = line({
     start: longLegFrom,
     end: longLegTo,
     lineWidth: lineWidth,
   });
-  const isInArrow = arrowHitbox({
+
+  const { hitbox: inArrow } = arrow({
     start: shortLegFrom,
     end: shortLegTo,
     lineWidth: lineWidth,
   });
-  const isInUTurn = circle({
+
+  const { hitbox: inUTurnCircle } = circle({
     at: arcAt,
     radius: spacing + lineWidth / 2,
-  }).hitbox;
+  });
 
-  return (point: Coordinate) =>
-    isInLine(point) || isInArrow(point) || isInUTurn(point);
+  return (point: Coordinate) => {
+    return inLine(point) || inArrow(point) || inUTurnCircle(point);
+  }
 };
 
-export const getUTurnBoundingBox = (uturn: UTurnSchema) => () => {
-  const { spacing, at, upDistance, rotation, lineWidth } = {
-    ...UTURN_SCHEMA_DEFAULTS,
-    ...uturn,
-  };
+export const getUTurnBoundingBox = (schema: UTurnSchemaWithDefaults) => () => {
+  const {
+    spacing,
+    at,
+    upDistance,
+    rotation,
+    lineWidth
+  } = schema;
 
   const end = rotatePoint(
     {
@@ -104,10 +112,9 @@ export const getUTurnBoundingBox = (uturn: UTurnSchema) => () => {
   });
 };
 
-export const uturnEfficientHitbox = (uturn: UTurnSchema) => {
-  const uturnBoundingBox = getUTurnBoundingBox(uturn)();
-
-  const isInRectEfficientHitbox = rectEfficientHitbox(uturnBoundingBox);
-
-  return (boxToCheck: BoundingBox) => isInRectEfficientHitbox(boxToCheck);
-};
+export const uturnEfficientHitbox = (
+  schema: UTurnSchemaWithDefaults
+) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
+  getUTurnBoundingBox(schema)(),
+  boxToCheck,
+)
