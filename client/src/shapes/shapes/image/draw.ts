@@ -1,14 +1,17 @@
 import { drawRectWithCtx } from '@shape/shapes/rect/draw';
 import { loadImage } from './cache';
-import type { ImageSchema } from './types';
-import { IMAGE_SCHEMA_DEFAULTS } from './defaults';
+import type { ImageSchemaWithDefaults } from './defaults';
 
 /**
  * checkerboard as placeholder for image that fails to load
  *
  * https://commons.wikimedia.org/wiki/File:Missing_texture_checkerboard_pattern.svg
  */
-const drawMissingMediaCheckerboard = (width: number, height: number, ctx: CanvasRenderingContext2D) => {
+const drawMissingMediaCheckerboard = (
+  width: number,
+  height: number,
+  ctx: CanvasRenderingContext2D
+) => {
   const squareSize = 10;
   const startX = -width / 2;
   const startY = -height / 2;
@@ -25,12 +28,10 @@ const drawMissingMediaCheckerboard = (width: number, height: number, ctx: Canvas
   }
 }
 
-export const drawImageWithCtx = (options: ImageSchema) => {
-  const { src, onLoad, onLoadError, ...rectOptions } = {
-    ...IMAGE_SCHEMA_DEFAULTS,
-    ...options,
-  };
-  const { width, height, at, rotation } = rectOptions;
+export const drawImageWithCtx = (schema: ImageSchemaWithDefaults) => {
+  const { src, onLoad, onLoadError, ...rect } = schema;
+
+  const { width, height, at, rotation } = rect;
 
   return async (ctx: CanvasRenderingContext2D) => {
     const { image, error } = await loadImage(src, {
@@ -38,7 +39,7 @@ export const drawImageWithCtx = (options: ImageSchema) => {
       onLoadError,
     });
 
-    drawRectWithCtx(rectOptions)(ctx);
+    drawRectWithCtx(rect)(ctx);
 
     ctx.save();
 

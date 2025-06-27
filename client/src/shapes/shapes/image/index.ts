@@ -1,34 +1,29 @@
 import { drawImageWithCtx } from './draw';
-import {
-  getImageBoundingBox,
-  imageEfficientHitbox,
-  imageHitbox,
-} from './hitbox';
 import type { ShapeFactory } from '@shape/types';
 import type { Coordinate } from '@shape/types/utility';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
 import { getCenterPoint } from '@shape/helpers';
 import type { ImageSchema } from './types';
+import { resolveImageDefaults } from './defaults';
+import { rect } from '@shapes/rect';
 
 export const image: ShapeFactory<ImageSchema> = (options) => {
   if (options.width < 0 || options.height < 0) {
     throw new Error('width and height must be positive');
   }
 
-  const shapeTextProps = getShapeTextProps(getCenterPoint(options), options.textArea)
+  const schema = resolveImageDefaults(options)
+  const text = getShapeTextProps(getCenterPoint(schema), schema.textArea)
 
-  const drawShape = drawImageWithCtx(options);
-  const shapeHitbox = imageHitbox(options);
-  const efficientHitbox = imageEfficientHitbox(options);
-  const hitbox = (point: Coordinate) =>
-    shapeTextProps?.textHitbox(point) || shapeHitbox(point);
+  const drawShape = drawImageWithCtx(schema);
 
-  const getBoundingBox = getImageBoundingBox(options);
+  const { shapeHitbox, efficientHitbox, getBoundingBox } = rect(schema)
+  const hitbox = (point: Coordinate) => text?.textHitbox(point) || shapeHitbox(point);
 
   const draw = async (ctx: CanvasRenderingContext2D) => {
     await drawShape(ctx);
-    shapeTextProps?.drawTextArea(ctx);
+    text?.drawTextArea(ctx);
   };
 
   return shapeFactoryWrapper({
@@ -43,6 +38,6 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
 
     getBoundingBox,
 
-    ...shapeTextProps
+    ...text
   });
 };
