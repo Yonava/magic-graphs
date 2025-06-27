@@ -291,6 +291,45 @@ export const areBoundingBoxesOverlapping = (bb1: BoundingBox, bb2: BoundingBox) 
   return true;
 }
 
+/**
+ * returns true if the point provided falls within the line
+ */
+export const isPointInLine = (
+  line: {
+    start: Coordinate,
+    end: Coordinate,
+    lineWidth: number
+  },
+  point: Coordinate
+) => {
+  const { start, end, lineWidth } = line;
+
+  const { x: x1, y: y1 } = start;
+  const { x: x2, y: y2 } = end;
+  const { x, y } = point;
+
+  const lineLengthSquared = (x2 - x1) ** 2 + (y2 - y1) ** 2;
+
+  if (lineLengthSquared === 0) {
+    const distanceSquared = (x - x1) ** 2 + (y - y1) ** 2;
+    return distanceSquared <= (lineWidth / 2) ** 2;
+  }
+
+  const projectionDistance =
+    ((x - x1) * (x2 - x1) + (y - y1) * (y2 - y1)) / lineLengthSquared;
+
+  const clampedProjectionDistance = Math.max(
+    0,
+    Math.min(1, projectionDistance),
+  );
+
+  const closestX = x1 + clampedProjectionDistance * (x2 - x1);
+  const closestY = y1 + clampedProjectionDistance * (y2 - y1);
+
+  const distanceSquared = (x - closestX) ** 2 + (y - closestY) ** 2;
+  return distanceSquared <= (lineWidth / 2) ** 2;
+}
+
 export const toBorderRadiusArray = (
   borderRadius: BorderRadius['borderRadius'],
 ): BorderRadiusArrayValue => {
