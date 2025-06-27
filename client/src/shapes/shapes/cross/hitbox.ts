@@ -1,5 +1,9 @@
-import { toBorderRadiusArray, normalizeBoundingBox } from '@shape/helpers';
-import { rectHitbox, rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
+import {
+  toBorderRadiusArray,
+  normalizeBoundingBox,
+  areBoundingBoxesOverlapping
+} from '@shape/helpers';
+import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
 import type { CrossSchemaWithDefaults } from './defaults';
 
@@ -48,9 +52,9 @@ export const getCrossBoundingBox = (schema: CrossSchemaWithDefaults) => () => {
   });
 };
 
-export const crossEfficientHitbox = (schema: CrossSchemaWithDefaults) => {
-  const crossBoundingBox = getCrossBoundingBox(schema)();
-
-  const isInRectEfficientHitbox = rectEfficientHitbox(crossBoundingBox);
-  return (boxToCheck: BoundingBox) => isInRectEfficientHitbox(boxToCheck);
-};
+export const crossEfficientHitbox = (
+  schema: CrossSchemaWithDefaults
+) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
+  getCrossBoundingBox(schema)(),
+  boxToCheck,
+)

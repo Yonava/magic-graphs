@@ -1,5 +1,4 @@
-import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
-import { normalizeBoundingBox } from '@shape/helpers';
+import { areBoundingBoxesOverlapping, normalizeBoundingBox } from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import type { EllipseSchemaWithDefaults } from './defaults';
 
@@ -36,9 +35,9 @@ export const getEllipseBoundingBox = (schema: EllipseSchemaWithDefaults) => () =
   });
 };
 
-export const ellipseEfficientHitbox = (schema: EllipseSchemaWithDefaults) => {
-  const ellipseBoundingBox = getEllipseBoundingBox(schema)();
-  const isInRectEfficientHitbox = rectEfficientHitbox(ellipseBoundingBox);
-
-  return (boxToCheck: BoundingBox) => isInRectEfficientHitbox(boxToCheck);
-};
+export const ellipseEfficientHitbox = (
+  schema: EllipseSchemaWithDefaults
+) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
+  getEllipseBoundingBox(schema)(),
+  boxToCheck,
+)

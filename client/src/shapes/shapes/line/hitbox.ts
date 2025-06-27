@@ -1,5 +1,4 @@
-import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
-import { normalizeBoundingBox } from '@shape/helpers';
+import { areBoundingBoxesOverlapping, normalizeBoundingBox } from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import type { LineSchemaWithDefaults } from './defaults';
 
@@ -68,24 +67,16 @@ export const lineEfficientHitbox = (schema: LineSchemaWithDefaults) => {
   const dx = (end.x - start.x) / lineLength;
   const dy = (end.y - start.y) / lineLength;
 
-  const minX = Math.min(start.x, end.x) - lineWidth / 2;
-  const minY = Math.min(start.y, end.y) - lineWidth / 2;
-  const boundingBoxWidth = Math.abs(end.x - start.x) + lineWidth;
-  const boundingBoxHeight = Math.abs(end.y - start.y) + lineWidth;
-
-  const isInBoundingBox = rectEfficientHitbox({
-    at: { x: minX, y: minY },
-    width: boundingBoxWidth,
-    height: boundingBoxHeight,
-  });
-
   return (boxToCheck: BoundingBox) => {
-    // initial check to see if close to line using original rectangle method
-    if (!isInBoundingBox(boxToCheck)) {
-      return false;
-    }
+    // initial check to see if close to line
+    const inBoundingBox = areBoundingBoxesOverlapping(
+      getLineBoundingBox(schema)(),
+      boxToCheck,
+    )
 
-    const segmentHitboxes = Array.from({ length: numSegments }, (_, i) => {
+    if (!inBoundingBox) return false;
+
+    const segmentBoundBoxes = Array.from({ length: numSegments }, (_, i) => {
       const segmentStartX = start.x + dx * segmentLength * i;
       const segmentStartY = start.y + dy * segmentLength * i;
       const segmentEndX = segmentStartX + dx * segmentLength;
@@ -96,13 +87,16 @@ export const lineEfficientHitbox = (schema: LineSchemaWithDefaults) => {
       const segWidth = Math.abs(segmentEndX - segmentStartX) + lineWidth;
       const segHeight = Math.abs(segmentEndY - segmentStartY) + lineWidth;
 
-      return rectEfficientHitbox({
+      return normalizeBoundingBox({
         at: { x: segMinX, y: segMinY },
         width: segWidth,
         height: segHeight,
       });
     });
 
-    return segmentHitboxes.some((hitbox) => hitbox(boxToCheck));
+    return segmentBoundBoxes.some((bb) => areBoundingBoxesOverlapping(
+      bb,
+      boxToCheck,
+    ));
   };
 };
