@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2';
-import type { BoundingBox, Coordinate, GradientStop } from './types/utility';
-import type { BorderRadius, BorderRadiusArrayValue } from './types/schema';
+import type { BorderRadiusArrayValue, BoundingBox, Coordinate, GradientStop } from './types/utility';
+import type { BorderRadius } from './types/schema';
 import { LINE_SCHEMA_DEFAULTS } from './shapes/line/defaults';
 import type { ArrowSchema } from '@shapes/arrow/types';
 
