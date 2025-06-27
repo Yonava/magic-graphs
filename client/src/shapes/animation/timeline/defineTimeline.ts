@@ -1,4 +1,3 @@
-import type { TextArea } from "@shape/types/utility";
 import type { ArrowSchema } from "@shapes/arrow/types";
 import type { LineSchema } from "@shapes/line/types";
 import type { RectSchema } from "@shapes/rect/types";
@@ -13,6 +12,7 @@ import type { CircleSchema } from "@shapes/circle/types";
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
 import type { WithId } from "@shape/types";
+import type { TextArea } from "@shape/text/types";
 
 type ShapeTarget = {
   /**

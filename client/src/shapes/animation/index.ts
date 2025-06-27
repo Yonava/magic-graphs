@@ -1,21 +1,28 @@
-import type { SchemaId, Shape, ShapeFactory, WithId } from "@shape/types"
+import type { SchemaId, Shape, ShapeFactory, ShapeName, WithId } from "@shape/types"
 import type { ActiveAnimation } from "./types"
 import { square } from "@shapes/square"
 import { getAnimationProgress, getCurrentRunCount, validPropsSet } from "./utils"
 import { rect } from "@shapes/rect"
 import { line } from "@shapes/line"
-import {
-  FILL_COLOR_DEFAULTS,
-  BORDER_RADIUS_DEFAULTS,
-  LINE_WIDTH_DEFAULTS,
-  ROTATION_DEFAULTS
-} from "@shape/defaults/schema"
 import { arrow } from "@shapes/arrow"
-import { getTextAreaWithDefaults } from "@shape/defaults/utility"
-import type { TextArea } from "@shape/types/utility"
 import { useDefineTimeline } from "./timeline/defineTimeline"
 import { uturn } from "@shapes/uturn"
 import { circle } from "@shapes/circle"
+import { resolveCircleDefaults } from "@shape/shapes/circle/defaults"
+import { resolveUTurnDefaults } from "@shape/shapes/uturn/defaults"
+import { resolveLineDefaults } from "@shape/shapes/line/defaults"
+import { resolveArrowDefaults } from "@shape/shapes/arrow/defaults"
+import { resolveSquareDefaults } from "@shape/shapes/square/defaults"
+import { resolveRectDefaults } from "@shape/shapes/rect/defaults"
+
+export const defaultMap = {
+  circle: resolveCircleDefaults,
+  uturn: resolveUTurnDefaults,
+  line: resolveLineDefaults,
+  arrow: resolveArrowDefaults,
+  square: resolveSquareDefaults,
+  rect: resolveRectDefaults,
+} as const
 
 export const useAnimatedShapes = () => {
 
@@ -35,7 +42,10 @@ export const useAnimatedShapes = () => {
     resume: () => console.warn('not implemented'),
   })
 
-  const animatedFactory = <T>(factory: ShapeFactory<T>) => (schema: WithId<T>) => {
+  const animatedFactory = <T>(
+    factory: ShapeFactory<T>,
+    shapeName: ShapeName,
+  ) => (schema: WithId<T>) => {
     return new Proxy(factory(schema), {
       get: (target, rawProp) => {
         const prop = rawProp as keyof Shape
@@ -56,6 +66,8 @@ export const useAnimatedShapes = () => {
           ...animation,
         }
 
+        if (!animationWithTimeline.validShapes.has(shapeName)) return target[prop]
+
         // cleanup animation if expired
         const currentRunCount = getCurrentRunCount(animationWithTimeline)
         const shouldRemove = currentRunCount >= animationWithTimeline.runCount
@@ -68,22 +80,9 @@ export const useAnimatedShapes = () => {
         const { properties } = animationWithTimeline
         const progress = getAnimationProgress(animationWithTimeline)
 
-        const schemaWithDefaults = {
-          // we must animate all the default props whether or
-          // not the shape actually implements that prop because
-          // we do not have a way of knowing at runtime
-          // what properties a given schema implements
-          ...LINE_WIDTH_DEFAULTS,
-          ...ROTATION_DEFAULTS,
-          ...BORDER_RADIUS_DEFAULTS,
-          ...FILL_COLOR_DEFAULTS,
-          ...schema,
-        }
-
-        const schemaTextArea = (schema as any)['textArea'] as TextArea | undefined
-        if (schemaTextArea) {
-          (schemaWithDefaults as any)['textArea'] = getTextAreaWithDefaults(schemaTextArea)
-        }
+        const defaultResolver = (defaultMap as any)[shapeName]
+        if (!defaultResolver) throw `cant find defaults for ${shapeName}`
+        const schemaWithDefaults = defaultResolver(schema)
 
         const infusedProps = Object.entries(properties).reduce((acc, curr) => {
           const [propName, getAnimatedValue] = curr
@@ -104,12 +103,12 @@ export const useAnimatedShapes = () => {
 
   return {
     shapes: {
-      square: animatedFactory(square),
-      rect: animatedFactory(rect),
-      line: animatedFactory(line),
-      arrow: animatedFactory(arrow),
-      uturn: animatedFactory(uturn),
-      circle: animatedFactory(circle),
+      square: animatedFactory(square, 'square'),
+      rect: animatedFactory(rect, 'rect'),
+      line: animatedFactory(line, 'line'),
+      arrow: animatedFactory(arrow, 'arrow'),
+      uturn: animatedFactory(uturn, 'uturn'),
+      circle: animatedFactory(circle, 'circle'),
     },
     defineTimeline,
   }

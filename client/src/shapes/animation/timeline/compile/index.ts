@@ -5,6 +5,7 @@ import { compileColorProp } from "./color";
 import { compileTextAreaProp } from "./textArea";
 import { compileCoordinateProp } from "./coordinate";
 import { getEasingFunction, type EasingFunction, type EasingOption } from "@shape/animation/easing";
+import type { ShapeName } from "@shape/types";
 
 /**
  * @param schema the non-altered schema of the shape being animated
@@ -13,8 +14,14 @@ import { getEasingFunction, type EasingFunction, type EasingOption } from "@shap
 type AnimationFunction = (schema: any, progress: number) => any
 
 export type CompiledTimeline = {
-  // maps schema properties to their animation functions
-  properties: Record<string, AnimationFunction>
+  /**
+   * maps schema properties to their animation functions
+   */
+  properties: Record<string, AnimationFunction>,
+  /**
+   * the shapes that this animated timeline is valid for
+   */
+  validShapes: Set<ShapeName>
 } & TimelinePlaybackDuration;
 
 /**
@@ -50,6 +57,7 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
   const tl: CompiledTimeline = {
     durationMs: timeline.durationMs,
     properties: {},
+    validShapes: new Set(timeline.forShapes),
   }
 
   const propsInTimeline = [
