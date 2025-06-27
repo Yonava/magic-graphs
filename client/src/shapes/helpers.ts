@@ -262,6 +262,35 @@ export const getCenterPoint = (bb: BoundingBox) => {
   };
 }
 
+/**
+ * returns true if any part of the two bounding boxes are overlapping
+ *
+ * TODO validate with a test
+ */
+export const areBoundingBoxesOverlapping = (bb1: BoundingBox, bb2: BoundingBox) => {
+  const {
+    at: bb1At,
+    width: bb1Width,
+    height: bb1Height
+  } = normalizeBoundingBox(bb1)
+
+  const {
+    at: bb2At,
+    width: bb2Width,
+    height: bb2Height
+  } = normalizeBoundingBox(bb2)
+
+  if ((bb1At.x + bb1Width) <= bb2At.x || (bb2At.x + bb2Width) <= bb1At.x) {
+    return false;
+  }
+
+  if ((bb1At.y + bb1Height) <= bb2At.y || (bb2At.y + bb2Height) <= bb1At.y) {
+    return false;
+  }
+
+  return true;
+}
+
 export const toBorderRadiusArray = (
   borderRadius: BorderRadius['borderRadius'],
 ): BorderRadiusArrayValue => {

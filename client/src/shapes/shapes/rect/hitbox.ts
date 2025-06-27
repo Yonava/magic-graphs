@@ -1,5 +1,10 @@
 import { circle } from '@shape/shapes/circle';
-import { normalizeBoundingBox, rotatePoint, toBorderRadiusArray } from '@shape/helpers';
+import {
+  areBoundingBoxesOverlapping,
+  normalizeBoundingBox,
+  rotatePoint,
+  toBorderRadiusArray
+} from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import type { RectSchemaWithDefaults } from './defaults';
 
@@ -185,32 +190,7 @@ export const getRectBoundingBox = (schema: RectSchemaWithDefaults) => () => {
 
 export const rectEfficientHitbox = (
   schema: RectSchemaWithDefaults
-) => (boxToCheck: BoundingBox) => {
-  const {
-    at: shapeAt,
-    width: shapeWidth,
-    height: shapeHeight,
-  } = getRectBoundingBox(schema)();
-
-  const shapeBottomRight = {
-    x: shapeAt.x + shapeWidth,
-    y: shapeAt.y + shapeHeight,
-  };
-
-  const { at: boxAt, width: boxWidth, height: boxHeight } = boxToCheck;
-
-  const boxLeft = Math.min(boxAt.x, boxAt.x + boxWidth);
-  const boxRight = Math.max(boxAt.x, boxAt.x + boxWidth);
-  const boxTop = Math.min(boxAt.y, boxAt.y + boxHeight);
-  const boxBottom = Math.max(boxAt.y, boxAt.y + boxHeight);
-
-  if (shapeBottomRight.x <= boxLeft || boxRight <= shapeAt.x) {
-    return false;
-  }
-
-  if (shapeBottomRight.y <= boxTop || boxBottom <= shapeAt.y) {
-    return false;
-  }
-
-  return true;
-};
+) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
+  getRectBoundingBox(schema)(),
+  boxToCheck,
+)

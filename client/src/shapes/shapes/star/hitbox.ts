@@ -1,7 +1,7 @@
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
 import type { StarSchema } from './types';
-import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
-import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
+import { areBoundingBoxesOverlapping, normalizeBoundingBox, rotatePoint } from '@shape/helpers';
+import type { StarSchemaWithDefaults } from './defaults';
 
 const getStarPoints = (star: StarSchema): Coordinate[] => {
   const { at, innerRadius, outerRadius, points = 5, rotation = 0 } = star;
@@ -26,7 +26,7 @@ const getStarPoints = (star: StarSchema): Coordinate[] => {
 const isPointInPolygon = (
   point: Coordinate,
   vertices: Coordinate[],
-): boolean => {
+) => {
   let inside = false;
 
   for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
@@ -47,13 +47,13 @@ const isPointInPolygon = (
   return inside;
 };
 
-export const starHitbox = (star: StarSchema) => (point: Coordinate) => {
-  const vertices = getStarPoints(star);
+export const starHitbox = (schema: StarSchemaWithDefaults) => (point: Coordinate) => {
+  const vertices = getStarPoints(schema);
   return isPointInPolygon(point, vertices);
 };
 
-export const getStarBoundingBox = (star: StarSchema) => () => {
-  const { at, outerRadius } = star;
+export const getStarBoundingBox = (schema: StarSchemaWithDefaults) => () => {
+  const { at, outerRadius } = schema;
   const size = outerRadius * 2;
 
   return normalizeBoundingBox({
@@ -63,10 +63,9 @@ export const getStarBoundingBox = (star: StarSchema) => () => {
   });
 };
 
-export const starEfficientHitbox = (star: StarSchema) => {
-  const starBoundingBox = getStarBoundingBox(star)();
-
-  const isInRectEfficientHitbox = rectEfficientHitbox(starBoundingBox);
-
-  return (boxToCheck: BoundingBox) => isInRectEfficientHitbox(boxToCheck);
-};
+export const starEfficientHitbox = (
+  schema: StarSchemaWithDefaults
+) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
+  getStarBoundingBox(schema)(),
+  boxToCheck,
+)
