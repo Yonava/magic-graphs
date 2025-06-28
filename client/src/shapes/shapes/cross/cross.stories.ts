@@ -21,10 +21,11 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const { basic, markings, rotation } = DEFAULT_STORIES;
+const { basic, markings, rotation, text } = DEFAULT_STORIES;
 
 export const Basic: Story = basic;
 export const Markings: Story = markings;
+export const WithText: Story = text;
 export const Rotation: Story = rotation;
 
 export const LineWidth: Story = {

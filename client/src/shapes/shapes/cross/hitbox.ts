@@ -1,18 +1,19 @@
-import { toBorderRadiusArray, normalizeBoundingBox } from '@shape/helpers';
-import { rectHitbox, rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
+import {
+  toBorderRadiusArray,
+  normalizeBoundingBox,
+  areBoundingBoxesOverlapping
+} from '@shape/helpers';
+import { rectHitbox } from '@shape/shapes/rect/hitbox';
 import type { Coordinate, BoundingBox } from '@shape/types/utility';
-import type { CrossSchema } from './types';
-import { CROSS_SCHEMA_DEFAULTS } from './defaults';
+import type { CrossSchemaWithDefaults } from './defaults';
 
 /**
  * @param point - the point to check if it is in the cross
  * @returns a function that checks if the point is in the cross
  */
-export const crossHitbox = (cross: CrossSchema) => {
-  const { at, size, lineWidth, borderRadius, ...rest } = {
-    ...CROSS_SCHEMA_DEFAULTS,
-    ...cross,
-  };
+export const crossHitbox = (schema: CrossSchemaWithDefaults) => {
+  const { at, size, lineWidth, borderRadius, ...rest } = schema
+
   const halfLineWidth = lineWidth / 2;
 
   const [topLeft, topRight, bottomLeft, bottomRight] =
@@ -38,8 +39,8 @@ export const crossHitbox = (cross: CrossSchema) => {
     horizontalHitbox(point) || verticalHitbox(point);
 };
 
-export const getCrossBoundingBox = (cross: CrossSchema) => () => {
-  const { at, size } = cross;
+export const getCrossBoundingBox = (schema: CrossSchemaWithDefaults) => () => {
+  const { at, size } = schema;
 
   return normalizeBoundingBox({
     at: {
@@ -51,9 +52,9 @@ export const getCrossBoundingBox = (cross: CrossSchema) => () => {
   });
 };
 
-export const crossEfficientHitbox = (cross: CrossSchema) => {
-  const crossBoundingBox = getCrossBoundingBox(cross)();
-
-  const isInRectEfficientHitbox = rectEfficientHitbox(crossBoundingBox);
-  return (boxToCheck: BoundingBox) => isInRectEfficientHitbox(boxToCheck);
-};
+export const crossEfficientHitbox = (
+  schema: CrossSchemaWithDefaults
+) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
+  getCrossBoundingBox(schema)(),
+  boxToCheck,
+)

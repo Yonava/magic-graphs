@@ -1,12 +1,11 @@
 import { rotatePoint } from '@shape/helpers';
-import { drawLineWithCtx } from '@shape/shapes/line/draw';
-import { drawArrowWithCtx } from '@shape/shapes/arrow/draw';
 import { getColorAtPercentage } from '@shape/helpers';
 import type { GradientStop } from '@shape/types/utility';
-import type { UTurnSchema } from './types';
-import { UTURN_SCHEMA_DEFAULTS } from './defaults';
+import type { UTurnSchemaWithDefaults } from './defaults';
+import { line } from '../line';
+import { arrow } from '../arrow';
 
-export const drawUTurnWithCtx = (options: UTurnSchema) => {
+export const drawUTurnWithCtx = (schema: UTurnSchemaWithDefaults) => {
   const {
     spacing,
     at,
@@ -18,10 +17,7 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
     arrowHeadShape,
     arrowHeadSize,
     fillGradient,
-  } = {
-    ...UTURN_SCHEMA_DEFAULTS,
-    ...options,
-  };
+  } = schema;
 
   const longLegFrom = rotatePoint(
     {
@@ -123,15 +119,15 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
     ];
   }
 
-  const drawLongShaft = drawLineWithCtx({
+  const { drawShape: drawLongShaft } = line({
     start: longLegFrom,
     end: longLegTo,
     lineWidth: lineWidth,
     fillColor: color,
     fillGradient: lineGradient,
-  });
+  })
 
-  const drawArrow = drawArrowWithCtx({
+  const { drawShape: drawShortShaft } = arrow({
     start: shortLegFrom,
     end: shortLegTo,
     lineWidth: lineWidth,
@@ -139,11 +135,11 @@ export const drawUTurnWithCtx = (options: UTurnSchema) => {
     arrowHeadSize,
     arrowHeadShape,
     fillGradient: arrowGradient,
-  });
+  })
 
   return (ctx: CanvasRenderingContext2D) => {
     drawLongShaft(ctx);
-    drawArrow(ctx);
+    drawShortShaft(ctx);
 
     // draw the part that uturns
     ctx.beginPath();

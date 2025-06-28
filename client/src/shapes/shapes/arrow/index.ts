@@ -10,28 +10,29 @@ import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
 import { getTextAreaAnchorPoint } from '../line/text';
 import type { ArrowSchema } from './types';
+import { resolveArrowDefaults } from './defaults';
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {
     throw new Error('width must be positive');
   }
 
-  const anchorPt = getTextAreaAnchorPoint(options)
-  const shapeTextProps = getShapeTextProps(anchorPt, options.textArea)
+  const schema = resolveArrowDefaults(options)
 
-  const drawShape = drawArrowWithCtx(options);
+  const anchorPt = getTextAreaAnchorPoint(schema)
+  const text = getShapeTextProps(anchorPt, schema.textArea)
 
-  const shapeHitbox = arrowHitbox(options);
+  const drawShape = drawArrowWithCtx(schema);
 
-  const efficientHitbox = arrowEfficientHitbox(options);
-  const hitbox = (point: Coordinate) =>
-    shapeTextProps?.textHitbox(point) || shapeHitbox(point);
+  const shapeHitbox = arrowHitbox(schema);
+  const efficientHitbox = arrowEfficientHitbox(schema);
+  const hitbox = (point: Coordinate) => text?.textHitbox(point) || shapeHitbox(point);
 
-  const getBoundingBox = getArrowBoundingBox(options);
+  const getBoundingBox = getArrowBoundingBox(schema);
 
   const draw = (ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
-    shapeTextProps?.drawTextArea(ctx);
+    text?.drawTextArea(ctx);
   };
 
   return shapeFactoryWrapper({
@@ -46,6 +47,6 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
     efficientHitbox,
     getBoundingBox,
 
-    ...shapeTextProps,
+    ...text,
   });
 };

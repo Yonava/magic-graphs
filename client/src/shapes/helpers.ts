@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2';
-import type { BoundingBox, Coordinate, GradientStop } from './types/utility';
-import type { BorderRadius, BorderRadiusArrayValue } from './types/schema';
+import type { BorderRadiusArrayValue, BoundingBox, Coordinate, GradientStop } from './types/utility';
+import type { BorderRadius } from './types/schema';
 import { LINE_SCHEMA_DEFAULTS } from './shapes/line/defaults';
 import type { ArrowSchema } from '@shapes/arrow/types';
 
@@ -260,6 +260,90 @@ export const getCenterPoint = (bb: BoundingBox) => {
     x: x + width / 2,
     y: y + height / 2,
   };
+}
+
+/**
+ * returns true if any part of the two bounding boxes are overlapping
+ *
+ * TODO validate with a test
+ */
+export const areBoundingBoxesOverlapping = (bb1: BoundingBox, bb2: BoundingBox) => {
+  const {
+    at: bb1At,
+    width: bb1Width,
+    height: bb1Height
+  } = normalizeBoundingBox(bb1)
+
+  const {
+    at: bb2At,
+    width: bb2Width,
+    height: bb2Height
+  } = normalizeBoundingBox(bb2)
+
+  if ((bb1At.x + bb1Width) <= bb2At.x || (bb2At.x + bb2Width) <= bb1At.x) {
+    return false;
+  }
+
+  if ((bb1At.y + bb1Height) <= bb2At.y || (bb2At.y + bb2Height) <= bb1At.y) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * returns true if the point provided falls within the line
+ */
+export const isPointInLine = (
+  line: {
+    start: Coordinate,
+    end: Coordinate,
+    lineWidth: number
+  },
+  point: Coordinate
+) => {
+  const { start, end, lineWidth } = line;
+
+  const { x: x1, y: y1 } = start;
+  const { x: x2, y: y2 } = end;
+  const { x, y } = point;
+
+  const lineLengthSquared = (x2 - x1) ** 2 + (y2 - y1) ** 2;
+
+  if (lineLengthSquared === 0) {
+    const distanceSquared = (x - x1) ** 2 + (y - y1) ** 2;
+    return distanceSquared <= (lineWidth / 2) ** 2;
+  }
+
+  const projectionDistance =
+    ((x - x1) * (x2 - x1) + (y - y1) * (y2 - y1)) / lineLengthSquared;
+
+  const clampedProjectionDistance = Math.max(
+    0,
+    Math.min(1, projectionDistance),
+  );
+
+  const closestX = x1 + clampedProjectionDistance * (x2 - x1);
+  const closestY = y1 + clampedProjectionDistance * (y2 - y1);
+
+  const distanceSquared = (x - closestX) ** 2 + (y - closestY) ** 2;
+  return distanceSquared <= (lineWidth / 2) ** 2;
+}
+
+/**
+ * returns true if the point provided falls within the bounding box
+ */
+export const isPointInBoundingBox = (bb: BoundingBox, pt: Coordinate) => {
+  const {
+    at: { x, y },
+    width,
+    height
+  } = normalizeBoundingBox(bb)
+  const { x: xPt, y: yPt } = pt
+
+  const xLegit = xPt >= x && xPt <= (x + width)
+  const yLegit = yPt >= y && yPt <= (y + height)
+  return xLegit && yLegit
 }
 
 export const toBorderRadiusArray = (

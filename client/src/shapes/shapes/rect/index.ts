@@ -7,39 +7,38 @@ import { validateBorderRadius } from '../../optionsValidator';
 import { getShapeTextProps } from '@shape/text/text';
 import { getCenterPoint } from '@shape/helpers';
 import type { RectSchema } from './types';
+import { resolveRectDefaults } from './defaults';
 
 export const rect: ShapeFactory<RectSchema> = (options) => {
   validateBorderRadius(options);
 
-  const drawShape = drawRectWithCtx(options);
+  const schema = resolveRectDefaults(options)
+  const text = getShapeTextProps(getCenterPoint(schema), schema.textArea)
 
-  const shapeHitbox = rectHitbox(options);
-  const efficientHitbox = rectEfficientHitbox(options);
+  const shapeHitbox = rectHitbox(schema);
+  const efficientHitbox = rectEfficientHitbox(schema);
+  const hitbox = (point: Coordinate) => text?.textHitbox(point) || shapeHitbox(point);
 
-  const getBoundingBox = getRectBoundingBox(options);
+  const getBoundingBox = getRectBoundingBox(schema);
 
-  const shapeTextProps = getShapeTextProps(getCenterPoint(options), options.textArea)
-
+  const drawShape = drawRectWithCtx(schema);
   const draw = (ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
-    shapeTextProps?.drawTextArea(ctx);
+    text?.drawTextArea(ctx);
   };
-
-  const hitbox = (point: Coordinate) =>
-    shapeTextProps?.textHitbox(point) || shapeHitbox(point);
 
   return shapeFactoryWrapper({
     name: 'rect',
 
     draw,
-
     drawShape,
 
     hitbox,
     shapeHitbox,
     efficientHitbox,
+
     getBoundingBox,
 
-    ...shapeTextProps,
+    ...text,
   });
 };

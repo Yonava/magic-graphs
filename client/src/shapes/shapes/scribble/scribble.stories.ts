@@ -28,10 +28,11 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const { basic, markings } = DEFAULT_STORIES;
+const { basic, markings, text } = DEFAULT_STORIES;
 
 export const Basic: Story = basic;
 export const Markings: Story = markings;
+export const WithText: Story = text;
 
 export const BrushWeight: Story = {
   args: {

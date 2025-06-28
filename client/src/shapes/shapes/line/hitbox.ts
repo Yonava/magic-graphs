@@ -1,60 +1,22 @@
-import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
-import { normalizeBoundingBox } from '@shape/helpers';
+import { areBoundingBoxesOverlapping, isPointInLine, normalizeBoundingBox } from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
-import { LINE_SCHEMA_DEFAULTS } from './defaults';
-import type { LineSchema } from './types';
+import type { LineSchemaWithDefaults } from './defaults';
 
 /**
  * @param point - the point to check if it is in the line
  * @returns a function that checks if the point is in the line
  */
-export const lineHitbox = (line: LineSchema) => (point: Coordinate) => {
-  const { start, end, lineWidth } = {
-    ...LINE_SCHEMA_DEFAULTS,
-    ...line,
-  };
-
-  const { x: x1, y: y1 } = start;
-  const { x: x2, y: y2 } = end;
-  const { x, y } = point;
-
-  const lineLengthSquared = (x2 - x1) ** 2 + (y2 - y1) ** 2;
-
-  if (lineLengthSquared === 0) {
-    const distanceSquared = (x - x1) ** 2 + (y - y1) ** 2;
-    return distanceSquared <= (lineWidth / 2) ** 2;
-  }
-
-  const projectionDistance =
-    ((x - x1) * (x2 - x1) + (y - y1) * (y2 - y1)) / lineLengthSquared;
-
-  const clampedProjectionDistance = Math.max(
-    0,
-    Math.min(1, projectionDistance),
-  );
-
-  const closestX = x1 + clampedProjectionDistance * (x2 - x1);
-  const closestY = y1 + clampedProjectionDistance * (y2 - y1);
-
-  const distanceSquared = (x - closestX) ** 2 + (y - closestY) ** 2;
-
-  return distanceSquared <= (lineWidth / 2) ** 2;
+export const lineHitbox = (schema: LineSchemaWithDefaults) => (point: Coordinate) => {
+  return isPointInLine(schema, point)
 };
 
-export const getLineBoundingBox = (line: LineSchema) => () => {
-  const {
-    start,
-    end,
-    lineWidth: width,
-  } = {
-    ...LINE_SCHEMA_DEFAULTS,
-    ...line,
-  };
+export const getLineBoundingBox = (schema: LineSchemaWithDefaults) => () => {
+  const { start, end, lineWidth } = schema;
 
-  const minX = Math.min(start.x, end.x) - width / 2;
-  const minY = Math.min(start.y, end.y) - width / 2;
-  const maxX = Math.max(start.x, end.x) + width / 2;
-  const maxY = Math.max(start.y, end.y) + width / 2;
+  const minX = Math.min(start.x, end.x) - lineWidth / 2;
+  const minY = Math.min(start.y, end.y) - lineWidth / 2;
+  const maxX = Math.max(start.x, end.x) + lineWidth / 2;
+  const maxY = Math.max(start.y, end.y) + lineWidth / 2;
 
   return normalizeBoundingBox({
     at: {
@@ -66,15 +28,8 @@ export const getLineBoundingBox = (line: LineSchema) => () => {
   });
 };
 
-export const lineEfficientHitbox = (line: LineSchema) => {
-  const {
-    start,
-    end,
-    lineWidth: width,
-  } = {
-    ...LINE_SCHEMA_DEFAULTS,
-    ...line,
-  };
+export const lineEfficientHitbox = (schema: LineSchemaWithDefaults) => {
+  const { start, end, lineWidth } = schema;
 
   const lineLength = Math.hypot(end.x - start.x, end.y - start.y);
 
@@ -86,41 +41,36 @@ export const lineEfficientHitbox = (line: LineSchema) => {
   const dx = (end.x - start.x) / lineLength;
   const dy = (end.y - start.y) / lineLength;
 
-  const minX = Math.min(start.x, end.x) - width / 2;
-  const minY = Math.min(start.y, end.y) - width / 2;
-  const boundingBoxWidth = Math.abs(end.x - start.x) + width;
-  const boundingBoxHeight = Math.abs(end.y - start.y) + width;
-
-  const isInBoundingBox = rectEfficientHitbox({
-    at: { x: minX, y: minY },
-    width: boundingBoxWidth,
-    height: boundingBoxHeight,
-  });
-
   return (boxToCheck: BoundingBox) => {
-    // initial check to see if close to line using original rectangle method
-    if (!isInBoundingBox(boxToCheck)) {
-      return false;
-    }
+    // initial check to see if close to line
+    const inBoundingBox = areBoundingBoxesOverlapping(
+      getLineBoundingBox(schema)(),
+      boxToCheck,
+    )
 
-    const segmentHitboxes = Array.from({ length: numSegments }, (_, i) => {
+    if (!inBoundingBox) return false;
+
+    const segmentBoundBoxes = Array.from({ length: numSegments }, (_, i) => {
       const segmentStartX = start.x + dx * segmentLength * i;
       const segmentStartY = start.y + dy * segmentLength * i;
       const segmentEndX = segmentStartX + dx * segmentLength;
       const segmentEndY = segmentStartY + dy * segmentLength;
 
-      const segMinX = Math.min(segmentStartX, segmentEndX) - width / 2;
-      const segMinY = Math.min(segmentStartY, segmentEndY) - width / 2;
-      const segWidth = Math.abs(segmentEndX - segmentStartX) + width;
-      const segHeight = Math.abs(segmentEndY - segmentStartY) + width;
+      const segMinX = Math.min(segmentStartX, segmentEndX) - lineWidth / 2;
+      const segMinY = Math.min(segmentStartY, segmentEndY) - lineWidth / 2;
+      const segWidth = Math.abs(segmentEndX - segmentStartX) + lineWidth;
+      const segHeight = Math.abs(segmentEndY - segmentStartY) + lineWidth;
 
-      return rectEfficientHitbox({
+      return normalizeBoundingBox({
         at: { x: segMinX, y: segMinY },
         width: segWidth,
         height: segHeight,
       });
     });
 
-    return segmentHitboxes.some((hitbox) => hitbox(boxToCheck));
+    return segmentBoundBoxes.some((bb) => areBoundingBoxesOverlapping(
+      bb,
+      boxToCheck,
+    ));
   };
 };

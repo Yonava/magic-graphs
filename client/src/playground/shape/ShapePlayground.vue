@@ -11,7 +11,7 @@
 
   const { defineTimeline, shapes } = useAnimatedShapes();
 
-  const { play, stop, pause, resume } = defineTimeline({
+  const { play: play1, stop: stop1 } = defineTimeline({
     forShapes: ['circle'],
     durationMs: 2000,
     easing: { radius: 'in-out' },
@@ -19,11 +19,28 @@
       {
         progress: 0.5,
         properties: {
+          fillColor: 'red',
           radius: (r) => r * 6,
-          textArea: {
+        },
+      },
+    ],
+  });
+
+  const { play: play2, stop: stop2 } = defineTimeline({
+    forShapes: ['star', 'circle'],
+    durationMs: 25000,
+    keyframes: [
+      {
+        progress: 0.5,
+        properties: {
+          fillColor: 'red',
+          textArea: (ta) => ({
             color: 'blue',
-            textBlock: { color: 'red' },
-          },
+            textBlock: {
+              fontSize: ta.textBlock.fontSize * 2,
+              color: 'green',
+            },
+          }),
         },
       },
     ],
@@ -36,8 +53,21 @@
       id: 'test',
       at: { x: 0, y: 0 },
       radius: 50,
-      textArea: { textBlock: { content: 'Loch!' } },
     }),
+    shapes.star({
+      id: 'test',
+      textArea: { textBlock: { content: 'Loch!' } },
+      fillColor: 'green',
+      innerRadius: 40,
+      outerRadius: 80,
+      at: { x: 100, y: 300 },
+    }),
+
+    // shapes.line({
+    //   id: 'this-line',
+    //   dash: [20, 10],
+
+    // })
   );
 
   const magic = useMagicCanvas();
@@ -61,12 +91,14 @@
         :canvas="magic.canvas.value"
         :items="paintedShapes"
       />
-      <Button @click="play({ shapeId: 'test', runCount: Infinity })">
-        Start Animation
+      <Button @click="play1({ shapeId: 'test', runCount: Infinity })">
+        Start1
       </Button>
-      <Button @click="stop({ shapeId: 'test' })"> Stop Animation </Button>
-      <Button @click="pause({ shapeId: 'test' })"> Pause Animation </Button>
-      <Button @click="resume({ shapeId: 'test' })"> Resume Animation </Button>
+      <Button @click="play2({ shapeId: 'test', runCount: Infinity })">
+        Start2
+      </Button>
+      <Button @click="stop1({ shapeId: 'test' })"> Stop1 </Button>
+      <Button @click="stop2({ shapeId: 'test' })"> Stop2 </Button>
     </div>
 
     <MagicCanvas

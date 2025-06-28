@@ -3,7 +3,7 @@ import { getConnectedNodes, getEdgesAlongPath } from '@graph/helpers';
 import { getLargestAngularSpace } from '@shape/helpers';
 import type { BaseGraph } from '@graph/base';
 import { GOLDEN_RATIO } from '@utils/math';
-import type { TextArea } from '@shape/types/utility';
+import type { TextArea } from '@shape/text/types';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE = 2;
 

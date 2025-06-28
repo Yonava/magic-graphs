@@ -1,8 +1,7 @@
-import { getTextAreaWithDefaults } from "@shape/defaults/utility"
 import type { CompileProp } from "."
-import type { TextArea } from "@shape/types/utility"
 import type { TextAreaKeyframe } from "@shape/animation/interpolation/types"
 import { interpolateTextArea } from "@shape/animation/interpolation/textArea"
+import { resolveTextArea, type TextAreaWithDefaults } from "@shape/text/defaults"
 
 /**
  * compiles props that are textArea based
@@ -12,7 +11,7 @@ export const compileTextAreaProp: CompileProp = (
   propToRawKeyframes,
   easing,
 ) => (schema, progress) => {
-  const nonAnimatedPropValue = getTextAreaWithDefaults(schema[prop] as TextArea)
+  const nonAnimatedPropValue = schema[prop] as TextAreaWithDefaults
 
   const keyframes = propToRawKeyframes[prop].map((kf): TextAreaKeyframe => {
     const getValue = () => {
@@ -22,8 +21,11 @@ export const compileTextAreaProp: CompileProp = (
       return kf.value
     }
 
+    const value = resolveTextArea(getValue())?.textArea
+    if (!value) throw 'received undefined value from resolved text area'
+
     return {
-      value: getTextAreaWithDefaults(getValue()),
+      value,
       progress: kf.progress,
     }
   })

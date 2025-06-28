@@ -3,8 +3,8 @@ import type {
   Coordinate,
   GradientStop,
   Stroke as StrokeDefinition,
-  TextArea as TextAreaDefinition,
 } from './utility';
+import type { TextArea as TextAreaDefinition } from '@shape/text/types';
 
 export type AnchorPoint = {
   /**

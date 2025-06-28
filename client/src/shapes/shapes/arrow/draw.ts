@@ -1,10 +1,9 @@
 import { drawLineWithCtx } from '@shape/shapes/line/draw';
 import { drawTriangleWithCtx } from '@shape/shapes/triangle/draw';
 import type { LineSchema } from '../line/types';
-import type { ArrowSchema } from './types';
-import { ARROW_SCHEMA_DEFAULTS } from './defaults';
+import type { ArrowSchemaWithDefaults } from './defaults';
 
-export const drawArrowWithCtx = (options: ArrowSchema) => {
+export const drawArrowWithCtx = (schema: ArrowSchemaWithDefaults) => {
   const {
     start,
     end,
@@ -14,10 +13,7 @@ export const drawArrowWithCtx = (options: ArrowSchema) => {
     fillGradient,
     arrowHeadSize,
     arrowHeadShape,
-  } = {
-    ...ARROW_SCHEMA_DEFAULTS,
-    ...options,
-  };
+  } = schema;
 
   const angle = Math.atan2(end.y - start.y, end.x - start.x);
 

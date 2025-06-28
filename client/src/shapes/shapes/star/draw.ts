@@ -1,21 +1,14 @@
-import { STAR_SCHEMA_DEFAULTS } from './defaults';
-import type { StarSchema } from './types';
+import type { StarSchemaWithDefaults } from './defaults';
 
-export const drawStarWithCtx = (options: StarSchema) => {
-  const { at, fillColor: color, innerRadius, outerRadius, rotation, points } = {
-    ...STAR_SCHEMA_DEFAULTS,
-    ...options,
-  };
-
-  if (points < 3) {
-    throw new Error('star must have at least 3 points');
-  }
-  if (innerRadius >= outerRadius) {
-    throw new Error('inner radius must be less than outer radius');
-  }
-  if (innerRadius < 0 || outerRadius < 0) {
-    throw new Error('radius values must be positive');
-  }
+export const drawStarWithCtx = (schema: StarSchemaWithDefaults) => {
+  const {
+    at,
+    fillColor: color,
+    innerRadius,
+    outerRadius,
+    rotation,
+    points
+  } = schema;
 
   return (ctx: CanvasRenderingContext2D) => {
     ctx.save();

@@ -1,9 +1,8 @@
 import { toBorderRadiusArray } from '@shape/helpers';
-import { CROSS_SCHEMA_DEFAULTS } from './defaults';
-import type { CrossSchema } from './types';
+import type { CrossSchemaWithDefaults } from './defaults';
 import { drawRectWithCtx } from '@shape/shapes/rect/draw';
 
-export const drawCrossWithCtx = (options: CrossSchema) => {
+export const drawCrossWithCtx = (schema: CrossSchemaWithDefaults) => {
   const {
     at: crossAt,
     size,
@@ -11,10 +10,8 @@ export const drawCrossWithCtx = (options: CrossSchema) => {
     fillColor,
     lineWidth,
     borderRadius,
-  } = {
-    ...CROSS_SCHEMA_DEFAULTS,
-    ...options,
-  };
+  } = schema;
+
   const halfLineWidth = lineWidth / 2;
   const [topLeft, topRight, bottomLeft, bottomRight] =
     toBorderRadiusArray(borderRadius);

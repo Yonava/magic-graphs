@@ -1,18 +1,13 @@
-import type { TextArea } from "@shape/types/utility";
-import type { ArrowSchema } from "@shapes/arrow/types";
-import type { LineSchema } from "@shapes/line/types";
-import type { RectSchema } from "@shapes/rect/types";
-import type { SquareSchema } from "@shapes/square/types";
+
 import { generateId } from "@utils/id";
 import type { DeepPartial, DeepRequired } from "ts-essentials";
 import type { DeepReadonly } from "vue";
 import { compileTimeline, type CompiledTimeline } from "./compile";
 import type { EasingOption } from "../easing";
-import type { UTurnSchema } from "@shapes/uturn/types";
-import type { CircleSchema } from "@shapes/circle/types";
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
-import type { WithId } from "@shape/types";
+import type { EverySchemaProp, ShapeNameToSchema, WithId } from "@shape/types";
+import type { TextArea } from "@shape/text/types";
 
 type ShapeTarget = {
   /**
@@ -68,17 +63,6 @@ type TimelineControls = {
    */
   dispose: () => void,
 }
-
-type ShapeNameToSchema = {
-  rect: RectSchema,
-  square: SquareSchema,
-  line: LineSchema,
-  arrow: ArrowSchema,
-  uturn: UTurnSchema,
-  circle: CircleSchema,
-}
-
-type EverySchemaProp = RectSchema | SquareSchema | LineSchema | ArrowSchema
 
 type SharedSchemaProps<T extends keyof ShapeNameToSchema> = keyof ShapeNameToSchema[T] & {
   [K in keyof ShapeNameToSchema[T]]:

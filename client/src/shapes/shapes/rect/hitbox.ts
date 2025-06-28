@@ -1,28 +1,51 @@
 import { circle } from '@shape/shapes/circle';
-import { normalizeBoundingBox, rotatePoint } from '@shape/helpers';
+import {
+  areBoundingBoxesOverlapping,
+  normalizeBoundingBox,
+  rotatePoint,
+  toBorderRadiusArray
+} from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
-import type { RectSchema } from './types';
-import { RECT_SCHEMA_DEFAULTS } from './defaults';
+import type { RectSchemaWithDefaults } from './defaults';
+
+type HitboxRect = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+type HitboxCircle = {
+  center: Coordinate;
+  radius: number;
+};
 
 /**
  * @param point - the point to check if it is in the rotated rectangle
  * @returns a function that checks if the point is in the rotated rectangle with rounded corners
  */
-export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
-  const { at, width, height, borderRadius, rotation, stroke } = {
-    ...RECT_SCHEMA_DEFAULTS,
-    ...rectangle,
-  };
+export const rectHitbox = (schema: RectSchemaWithDefaults) => (point: Coordinate) => {
+  const {
+    at,
+    width,
+    height,
+    borderRadius,
+    rotation,
+    stroke,
+  } = schema;
 
   const {
     at: normalizedAt,
     width: normalizedWidth,
     height: normalizedHeight,
   } = normalizeBoundingBox({ at, width, height });
+
   const centerX = normalizedAt.x + normalizedWidth / 2;
   const centerY = normalizedAt.y + normalizedHeight / 2;
+
   const strokeWidth = stroke?.lineWidth || 0;
   const localPoint = rotatePoint(point, { x: centerX, y: centerY }, -rotation);
+
   const { x, y } = {
     x: centerX - normalizedWidth / 2,
     y: centerY - normalizedHeight / 2,
@@ -41,26 +64,16 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
     );
   }
 
-  const radii =
-    typeof borderRadius === 'number'
-      ? [borderRadius, borderRadius, borderRadius, borderRadius]
-      : borderRadius;
+  const radii = toBorderRadiusArray(schema.borderRadius)
 
   const maxRadius = Math.min(normalizedWidth / 2, normalizedHeight / 2);
   const [topLeftRadius, topRightRadius, bottomRightRadius, bottomLeftRadius] =
     radii.map((r) => Math.min(Math.max(r, 0), maxRadius));
 
-  type HitboxRect = {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  };
-
   const rectangles: HitboxRect[] = [
     {
       x: x + topLeftRadius,
-      y: y,
+      y,
       width: normalizedWidth - topLeftRadius - topRightRadius,
       height: Math.max(topLeftRadius, topRightRadius),
     },
@@ -71,7 +84,7 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
       height: Math.max(bottomLeftRadius, bottomRightRadius),
     },
     {
-      x: x,
+      x,
       y: y + topLeftRadius,
       width: Math.max(topLeftRadius, bottomLeftRadius),
       height: normalizedHeight - topLeftRadius - bottomLeftRadius,
@@ -108,11 +121,6 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
       return true;
     }
   }
-
-  type HitboxCircle = {
-    center: Coordinate;
-    radius: number;
-  };
 
   const corners: HitboxCircle[] = [
     {
@@ -159,8 +167,8 @@ export const rectHitbox = (rectangle: RectSchema) => (point: Coordinate) => {
   return false;
 };
 
-export const getRectBoundingBox = (rectangle: RectSchema) => () => {
-  const { at, width, height, stroke } = rectangle;
+export const getRectBoundingBox = (schema: RectSchemaWithDefaults) => () => {
+  const { at, width, height, stroke } = schema;
 
   const strokeWidth = stroke?.lineWidth ?? 0;
 
@@ -180,33 +188,9 @@ export const getRectBoundingBox = (rectangle: RectSchema) => () => {
   });
 };
 
-export const rectEfficientHitbox =
-  (rectangle: RectSchema) => (boxToCheck: BoundingBox) => {
-    const {
-      at: shapeAt,
-      width: shapeWidth,
-      height: shapeHeight,
-    } = getRectBoundingBox(rectangle)();
-
-    const shapeBottomRight = {
-      x: shapeAt.x + shapeWidth,
-      y: shapeAt.y + shapeHeight,
-    };
-
-    const { at: boxAt, width: boxWidth, height: boxHeight } = boxToCheck;
-
-    const boxLeft = Math.min(boxAt.x, boxAt.x + boxWidth);
-    const boxRight = Math.max(boxAt.x, boxAt.x + boxWidth);
-    const boxTop = Math.min(boxAt.y, boxAt.y + boxHeight);
-    const boxBottom = Math.max(boxAt.y, boxAt.y + boxHeight);
-
-    if (shapeBottomRight.x <= boxLeft || boxRight <= shapeAt.x) {
-      return false;
-    }
-
-    if (shapeBottomRight.y <= boxTop || boxBottom <= shapeAt.y) {
-      return false;
-    }
-
-    return true;
-  };
+export const rectEfficientHitbox = (
+  schema: RectSchemaWithDefaults
+) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
+  getRectBoundingBox(schema)(),
+  boxToCheck,
+)

@@ -1,6 +1,5 @@
-import { TEXT_BLOCK_DEFAULTS } from '@shape/defaults/utility';
-import type { TextBlock } from '@shape/types/utility';
 import { getCtx } from '@utils/ctx';
+import type { TextBlock } from './types';
 
 const canvas = document.createElement('canvas');
 const ctx = getCtx(canvas);
@@ -11,11 +10,8 @@ canvas.height = 1;
 ctx.textAlign = 'center';
 ctx.textBaseline = 'middle';
 
-export const getTextDimensions = (text: TextBlock) => {
-  const { content, fontSize, fontWeight, fontFamily } = {
-    ...TEXT_BLOCK_DEFAULTS,
-    ...text,
-  };
+export const getTextDimensions = (text: Required<TextBlock>) => {
+  const { content, fontSize, fontWeight, fontFamily } = text;
 
   ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
   const metrics = ctx.measureText(content);

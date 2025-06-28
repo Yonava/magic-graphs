@@ -1,10 +1,10 @@
 import type { DeepRequired } from 'ts-essentials';
 import { HORIZONTAL_TEXT_PADDING } from './text';
 import { getClientCoordinates } from '@canvas/coordinates';
-import type { TextAreaWithAnchorPoint } from '@shape/types/utility';
 import { getTextDimensions } from './getTextDimensions';
-import { rectHitbox } from '@shape/shapes/rect/hitbox';
-import type { RectSchema } from '@shapes/rect/types';
+import type { TextAreaWithAnchorPoint } from './types';
+import type { BoundingBox } from '@shape/types/utility';
+import { isPointInBoundingBox } from '@shape/helpers';
 
 export const engageTextarea = (
   ctx: CanvasRenderingContext2D,
@@ -71,14 +71,17 @@ export const engageTextarea = (
   const isClickOutsideInput = (input: HTMLElement, event: MouseEvent) => {
     const { x, y, width, height } = input.getBoundingClientRect();
 
-    const rect: RectSchema = {
+    const bb: BoundingBox = {
       at: { x, y },
       width,
       height,
     };
 
     const { clientX, clientY } = event;
-    return !rectHitbox(rect)({ x: clientX, y: clientY });
+    return isPointInBoundingBox(bb, {
+      x: clientX,
+      y: clientY,
+    })
   };
 
   const removeInput = () => {

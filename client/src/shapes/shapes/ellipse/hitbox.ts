@@ -1,11 +1,10 @@
-import { rectEfficientHitbox } from '@shape/shapes/rect/hitbox';
-import { normalizeBoundingBox } from '@shape/helpers';
+import { areBoundingBoxesOverlapping, normalizeBoundingBox } from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
-import type { EllipseSchema } from './types';
+import type { EllipseSchemaWithDefaults } from './defaults';
 
 export const ellipseHitbox =
-  (ellipse: EllipseSchema) => (point: Coordinate) => {
-    const { at, stroke, radiusX, radiusY } = ellipse;
+  (schema: EllipseSchemaWithDefaults) => (point: Coordinate) => {
+    const { at, stroke, radiusX, radiusY } = schema;
 
     const dx = point.x - at.x;
     const dy = point.y - at.y;
@@ -21,8 +20,8 @@ export const ellipseHitbox =
     return inEllipse;
   };
 
-export const getEllipseBoundingBox = (ellipse: EllipseSchema) => () => {
-  const { at, radiusX, radiusY, stroke } = ellipse;
+export const getEllipseBoundingBox = (schema: EllipseSchemaWithDefaults) => () => {
+  const { at, radiusX, radiusY, stroke } = schema;
 
   const borderWidth = stroke?.lineWidth ?? 0;
 
@@ -36,10 +35,9 @@ export const getEllipseBoundingBox = (ellipse: EllipseSchema) => () => {
   });
 };
 
-export const ellipseEfficientHitbox = (ellipse: EllipseSchema) => {
-  const ellipseBoundingBox = getEllipseBoundingBox(ellipse)();
-
-  const isInRectEfficientHitbox = rectEfficientHitbox(ellipseBoundingBox);
-
-  return (boxToCheck: BoundingBox) => isInRectEfficientHitbox(boxToCheck);
-};
+export const ellipseEfficientHitbox = (
+  schema: EllipseSchemaWithDefaults
+) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
+  getEllipseBoundingBox(schema)(),
+  boxToCheck,
+)

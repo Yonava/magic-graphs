@@ -5,21 +5,33 @@ import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import type { StarSchema } from './types';
 import { getShapeTextProps } from '@shape/text/text';
 import type { Coordinate } from '@shape/types/utility';
+import { resolveStarDefaults } from './defaults';
 
 export const star: ShapeFactory<StarSchema> = (options) => {
-  const shapeTextProps = getShapeTextProps(options.at, options.textArea)
+  const schema = resolveStarDefaults(options)
 
+  if (schema.points < 3) {
+    console.warn('star must have at least 3 points');
+  }
+  if (schema.innerRadius >= schema.outerRadius) {
+    console.warn('inner radius must be less than outer radius');
+  }
+  if (schema.innerRadius < 0 || schema.outerRadius < 0) {
+    console.warn('radius values must be positive');
+  }
+
+  const text = getShapeTextProps(schema.at, schema.textArea)
+
+  const drawShape = drawStarWithCtx(schema);
   const draw = (ctx: CanvasRenderingContext2D) => {
-    drawStarWithCtx(options)(ctx)
-    shapeTextProps?.drawTextArea(ctx)
+    drawShape(ctx)
+    text?.drawTextArea(ctx)
   };
 
-  const drawShape = drawStarWithCtx(options);
-
-  const shapeHitbox = starHitbox(options);
-  const hitbox = (point: Coordinate) => shapeTextProps?.textHitbox(point) || shapeHitbox(point);
-  const efficientHitbox = starEfficientHitbox(options);
-  const getBoundingBox = getStarBoundingBox(options);
+  const shapeHitbox = starHitbox(schema);
+  const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);
+  const efficientHitbox = starEfficientHitbox(schema);
+  const getBoundingBox = getStarBoundingBox(schema);
 
   return shapeFactoryWrapper({
     name: 'star',
@@ -32,6 +44,6 @@ export const star: ShapeFactory<StarSchema> = (options) => {
     efficientHitbox,
     getBoundingBox,
 
-    ...shapeTextProps,
+    ...text,
   });
 };

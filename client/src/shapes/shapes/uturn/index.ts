@@ -10,6 +10,7 @@ import type { ShapeFactory } from '@shape/types';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
 import type { UTurnSchema } from './types';
+import { resolveUTurnDefaults } from './defaults';
 
 export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   if (options.downDistance < 0) {
@@ -20,38 +21,34 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
     throw new Error('upDistance must be positive');
   }
 
-  const anchorPt = getTextAreaAnchorPoint(options)
-  const shapeTextProps = getShapeTextProps(anchorPt, options.textArea)
+  const schema = resolveUTurnDefaults(options)
+  const anchorPt = getTextAreaAnchorPoint(schema)
+  const text = getShapeTextProps(anchorPt, schema.textArea)
 
-  const drawShape = drawUTurnWithCtx(options);
+  const getBoundingBox = getUTurnBoundingBox(schema);
 
-  const shapeHitbox = uturnHitbox(options);
-  const efficientHitbox = uturnEfficientHitbox(options);
+  const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);
+  const shapeHitbox = uturnHitbox(schema);
+  const efficientHitbox = uturnEfficientHitbox(schema);
 
-  const hitbox = (point: Coordinate) => {
-    return shapeTextProps?.textHitbox(point) || shapeHitbox(point);
-  };
-
-  const getBoundingBox = getUTurnBoundingBox(options);
-
+  const drawShape = drawUTurnWithCtx(schema);
   const draw = (ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
-    shapeTextProps?.drawTextArea(ctx);
+    text?.drawTextArea(ctx);
   };
 
   return shapeFactoryWrapper({
     name: 'uturn',
 
     draw,
-
     drawShape,
 
     hitbox,
     shapeHitbox,
-
     efficientHitbox,
+
     getBoundingBox,
 
-    ...shapeTextProps,
+    ...text,
   });
 };
