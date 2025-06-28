@@ -1,6 +1,7 @@
 import type { SchemaId, Shape, ShapeFactory, ShapeName, WithId } from "@shape/types"
+import { shapeProps } from "@shape/types"
 import type { ActiveAnimation } from "./types"
-import { getAnimationProgress, getCurrentRunCount, validPropsSet } from "./utils"
+import { getAnimationProgress, getCurrentRunCount } from "./utils"
 import { useDefineTimeline } from "./timeline/defineTimeline"
 import { shapeDefaults } from "@shape/defaults/shapes"
 import { shapes } from ".."
@@ -31,9 +32,7 @@ export const useAnimatedShapes = () => {
       get: (target, rawProp) => {
         const prop = rawProp as keyof Shape
 
-        if (!validPropsSet.has(prop)) {
-          return target[prop]
-        }
+        if (!shapeProps.has(prop)) return target[prop]
 
         const animation = activeAnimations.get(schema.id)
 

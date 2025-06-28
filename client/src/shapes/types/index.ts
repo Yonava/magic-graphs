@@ -2,7 +2,18 @@
 // eslint-disable-next-line
 import type { ShapeFactoryWrapper } from '@shape/shapeWrapper';
 import type { BoundingBox, Coordinate } from './utility';
-import type { ObjectKeysToTuple } from '@utils/types';
+import type { CrossSchema } from "@shape/shapes/cross/types";
+import type { EllipseSchema } from "@shape/shapes/ellipse/types";
+import type { ImageSchema } from "@shape/shapes/image/types";
+import type { ScribbleSchema } from "@shape/shapes/scribble/types";
+import type { StarSchema } from "@shape/shapes/star/types";
+import type { TriangleSchema } from "@shape/shapes/triangle/types";
+import type { ArrowSchema } from "@shapes/arrow/types";
+import type { LineSchema } from "@shapes/line/types";
+import type { RectSchema } from "@shapes/rect/types";
+import type { SquareSchema } from "@shapes/square/types";
+import type { UTurnSchema } from "@shapes/uturn/types";
+import type { CircleSchema } from "@shapes/circle/types";
 
 export type ShapeName =
   | 'circle'
@@ -112,10 +123,27 @@ export type WithId<T> = T & {
   id: SchemaId
 }
 
+export type ShapeNameToSchema = {
+  arrow: ArrowSchema,
+  circle: CircleSchema,
+  cross: CrossSchema,
+  ellipse: EllipseSchema,
+  image: ImageSchema,
+  line: LineSchema,
+  rect: RectSchema,
+  scribble: ScribbleSchema,
+  square: SquareSchema,
+  star: StarSchema,
+  triangle: TriangleSchema,
+  uturn: UTurnSchema,
+}
+
+export type EverySchemaProp = ShapeNameToSchema[keyof ShapeNameToSchema]
+
 /**
- * every {@link Shape} prop as an array of runtime strings
+ * all properties on the shape object as a runtime value
  */
-export const shapeProps: ObjectKeysToTuple<Shape> = [
+export const shapeProps: Set<keyof Shape> = new Set([
   'drawTextAreaMatte',
   'drawText',
   'drawTextArea',
@@ -129,4 +157,4 @@ export const shapeProps: ObjectKeysToTuple<Shape> = [
   'efficientHitbox',
   'getBoundingBox',
   'getCenterPoint',
-]
+])

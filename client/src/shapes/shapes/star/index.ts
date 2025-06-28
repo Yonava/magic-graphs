@@ -11,13 +11,13 @@ export const star: ShapeFactory<StarSchema> = (options) => {
   const schema = resolveStarDefaults(options)
 
   if (schema.points < 3) {
-    throw new Error('star must have at least 3 points');
+    console.warn('star must have at least 3 points');
   }
   if (schema.innerRadius >= schema.outerRadius) {
-    throw new Error('inner radius must be less than outer radius');
+    console.warn('inner radius must be less than outer radius');
   }
   if (schema.innerRadius < 0 || schema.outerRadius < 0) {
-    throw new Error('radius values must be positive');
+    console.warn('radius values must be positive');
   }
 
   const text = getShapeTextProps(schema.at, schema.textArea)

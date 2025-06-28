@@ -1,4 +1,3 @@
-import { shapeProps, type Shape } from "@shape/types"
 import type { ActiveAnimation } from "./types"
 import type { CompiledTimeline } from "./timeline/compile"
 
@@ -34,5 +33,3 @@ export const getAnimationProgress = ({
   const timeElapsed = Date.now() - startedAt
   return (timeElapsed % durationMs) / durationMs
 }
-
-export const validPropsSet: ReadonlySet<keyof Shape> = new Set(shapeProps)

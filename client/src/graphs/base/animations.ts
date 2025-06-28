@@ -68,7 +68,7 @@ const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
 
 const circleNodeAdded: Timeline<'circle'> = {
   forShapes: ['circle'],
-  durationMs: 3000,
+  durationMs: 500,
   easing: { radius: 'in-out' },
   keyframes: [
     {
