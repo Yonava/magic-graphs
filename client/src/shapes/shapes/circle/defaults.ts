@@ -1,4 +1,4 @@
-import { resolveDefaults } from "@shape/resolveDefaults";
+import { resolveDefaults } from "@shape/defaults/resolveDefaults";
 import { ELLIPSE_SCHEMA_DEFAULTS } from "../ellipse/defaults";
 import type { CircleSchema } from "./types";
 

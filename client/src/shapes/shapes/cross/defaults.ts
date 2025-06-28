@@ -5,7 +5,7 @@ import {
   ROTATION_DEFAULTS
 } from "@shape/defaults/schema";
 import type { CrossSchema } from "./types";
-import { resolveDefaults } from "@shape/resolveDefaults";
+import { resolveDefaults } from "@shape/defaults/resolveDefaults";
 
 export const CROSS_SCHEMA_DEFAULTS = {
   ...ROTATION_DEFAULTS,

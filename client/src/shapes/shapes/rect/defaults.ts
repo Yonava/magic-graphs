@@ -4,7 +4,7 @@ import {
   ROTATION_DEFAULTS
 } from "@shape/defaults/schema";
 import type { RectSchema } from "./types";
-import { resolveDefaults } from "@shape/resolveDefaults";
+import { resolveDefaults } from "@shape/defaults/resolveDefaults";
 
 export const RECT_SCHEMA_DEFAULTS = {
   ...FILL_COLOR_DEFAULTS,

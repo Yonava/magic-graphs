@@ -10,24 +10,18 @@ import { ellipse } from './shapes/ellipse';
 import { star } from './shapes/star';
 import { image } from './shapes/image';
 import { circle } from './shapes/circle';
-import { initShapeCache } from './cacher';
 
-export const useOptimizedShapes = () => {
-  const toOptimized = initShapeCache()
-  return {
-    arrow: toOptimized(arrow),
-    circle: toOptimized(circle),
-    line: toOptimized(line),
-    rect: toOptimized(rect),
-    square: toOptimized(square),
-    triangle: toOptimized(triangle),
-    uturn: toOptimized(uturn),
-    cross: toOptimized(cross),
-    scribble: toOptimized(scribble),
-    ellipse: toOptimized(ellipse),
-    star: toOptimized(star),
-    image: toOptimized(image),
-  }
+export const shapes = {
+  arrow,
+  circle,
+  cross,
+  ellipse,
+  image,
+  line,
+  rect,
+  scribble,
+  square,
+  star,
+  triangle,
+  uturn,
 }
-
-export type OptimizedShapes = ReturnType<typeof useOptimizedShapes>

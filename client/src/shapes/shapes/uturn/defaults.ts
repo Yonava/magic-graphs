@@ -5,7 +5,7 @@ import {
 } from "@shape/defaults/schema";
 import type { UTurnSchema } from "./types";
 import { getArrowHeadSize } from "@shape/helpers";
-import { resolveDefaults } from "@shape/resolveDefaults";
+import { resolveDefaults } from "@shape/defaults/resolveDefaults";
 
 export const UTURN_SCHEMA_DEFAULTS = {
   ...FILL_COLOR_DEFAULTS,

@@ -1,28 +1,9 @@
 import type { SchemaId, Shape, ShapeFactory, ShapeName, WithId } from "@shape/types"
 import type { ActiveAnimation } from "./types"
-import { square } from "@shapes/square"
 import { getAnimationProgress, getCurrentRunCount, validPropsSet } from "./utils"
-import { rect } from "@shapes/rect"
-import { line } from "@shapes/line"
-import { arrow } from "@shapes/arrow"
 import { useDefineTimeline } from "./timeline/defineTimeline"
-import { uturn } from "@shapes/uturn"
-import { circle } from "@shapes/circle"
-import { resolveCircleDefaults } from "@shape/shapes/circle/defaults"
-import { resolveUTurnDefaults } from "@shape/shapes/uturn/defaults"
-import { resolveLineDefaults } from "@shape/shapes/line/defaults"
-import { resolveArrowDefaults } from "@shape/shapes/arrow/defaults"
-import { resolveSquareDefaults } from "@shape/shapes/square/defaults"
-import { resolveRectDefaults } from "@shape/shapes/rect/defaults"
-
-export const defaultMap = {
-  circle: resolveCircleDefaults,
-  uturn: resolveUTurnDefaults,
-  line: resolveLineDefaults,
-  arrow: resolveArrowDefaults,
-  square: resolveSquareDefaults,
-  rect: resolveRectDefaults,
-} as const
+import { shapeDefaults } from "@shape/defaults/shapes"
+import { shapes } from ".."
 
 export const useAnimatedShapes = () => {
 
@@ -45,7 +26,7 @@ export const useAnimatedShapes = () => {
   const animatedFactory = <T>(
     factory: ShapeFactory<T>,
     shapeName: ShapeName,
-  ) => (schema: WithId<T>) => {
+  ): ShapeFactory<WithId<T>> => (schema) => {
     return new Proxy(factory(schema), {
       get: (target, rawProp) => {
         const prop = rawProp as keyof Shape
@@ -80,7 +61,7 @@ export const useAnimatedShapes = () => {
         const { properties } = animationWithTimeline
         const progress = getAnimationProgress(animationWithTimeline)
 
-        const defaultResolver = (defaultMap as any)[shapeName]
+        const defaultResolver = (shapeDefaults as any)[shapeName]
         if (!defaultResolver) throw `cant find defaults for ${shapeName}`
         const schemaWithDefaults = defaultResolver(schema)
 
@@ -103,12 +84,18 @@ export const useAnimatedShapes = () => {
 
   return {
     shapes: {
-      square: animatedFactory(square, 'square'),
-      rect: animatedFactory(rect, 'rect'),
-      line: animatedFactory(line, 'line'),
-      arrow: animatedFactory(arrow, 'arrow'),
-      uturn: animatedFactory(uturn, 'uturn'),
-      circle: animatedFactory(circle, 'circle'),
+      arrow: animatedFactory(shapes.arrow, 'arrow'),
+      circle: animatedFactory(shapes.circle, 'circle'),
+      cross: animatedFactory(shapes.cross, 'cross'),
+      ellipse: animatedFactory(shapes.ellipse, 'ellipse'),
+      image: animatedFactory(shapes.image, 'image'),
+      line: animatedFactory(shapes.line, 'line'),
+      rect: animatedFactory(shapes.rect, 'rect'),
+      scribble: animatedFactory(shapes.scribble, 'scribble'),
+      square: animatedFactory(shapes.square, 'square'),
+      star: animatedFactory(shapes.star, 'star'),
+      triangle: animatedFactory(shapes.triangle, 'triangle'),
+      uturn: animatedFactory(shapes.uturn, 'uturn'),
     },
     defineTimeline,
   }

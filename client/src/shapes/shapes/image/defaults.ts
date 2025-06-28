@@ -1,4 +1,4 @@
-import { resolveDefaults } from "@shape/resolveDefaults";
+import { resolveDefaults } from "@shape/defaults/resolveDefaults";
 import type { ImageSchema } from "./types";
 import { ROTATION_DEFAULTS } from "@shape/defaults/schema";
 

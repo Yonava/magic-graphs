@@ -1,6 +1,6 @@
 import { FILL_COLOR_DEFAULTS, LINE_WIDTH_DEFAULTS } from "@shape/defaults/schema";
 import type { LineSchema } from "./types";
-import { resolveDefaults } from "@shape/resolveDefaults";
+import { resolveDefaults } from "@shape/defaults/resolveDefaults";
 
 export const LINE_SCHEMA_DEFAULTS = {
   ...LINE_WIDTH_DEFAULTS,
