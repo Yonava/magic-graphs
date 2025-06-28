@@ -57,7 +57,7 @@ export const useShortcuts = (
    * get the function to run based on the keyboard shortcut setting
    */
   const getFn = (defaultFn: () => void, setting: boolean | (() => void)) => {
-    if (setting === false) return () => { };
+    if (setting === false) return () => {};
     if (typeof setting === 'function') return setting;
     return defaultFn;
   };
@@ -78,10 +78,16 @@ export const useShortcuts = (
     getFn(defaultShortcutTriggerDelete, settings.value.shortcutDelete),
   );
   const triggerZoomIn = computed(() =>
-    getFn(graph.magicCanvas.camera.actions.zoomIn, settings.value.shortcutZoomIn),
+    getFn(
+      graph.magicCanvas.camera.actions.zoomIn,
+      settings.value.shortcutZoomIn,
+    ),
   );
   const triggerZoomOut = computed(() =>
-    getFn(graph.magicCanvas.camera.actions.zoomOut, settings.value.shortcutZoomOut),
+    getFn(
+      graph.magicCanvas.camera.actions.zoomOut,
+      settings.value.shortcutZoomOut,
+    ),
   );
 
   const allShortcuts = computed<PlatformShortcuts>(() => ({
@@ -125,7 +131,7 @@ export const useShortcuts = (
         trigger: triggerRedo.value,
       },
       Delete: {
-        binding: 'delete',
+        binding: 'backspace',
         trigger: triggerDelete.value,
       },
       'Select All': {
