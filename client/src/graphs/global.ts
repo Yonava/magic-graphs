@@ -4,7 +4,7 @@ import type { Graph } from "./types";
 /**
  * if true, stats are displayed on screen
  */
-export const inDevMode = shallowRef(false)
+export const inDevMode = shallowRef(true)
 
 export const graph = shallowRef<Graph>();
 

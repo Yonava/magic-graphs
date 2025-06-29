@@ -13,11 +13,12 @@
   import ThemeToolbar from './ThemeToolbar.vue';
   import ZoomToolbar from './ZoomToolbar.vue';
   import HelpMenu from './HelpMenu.vue';
-  import BenchmarkingMetrics from './BenchmarkingMetrics.vue';
+  import BenchmarkingMetrics from './dev/BenchmarkingMetrics.vue';
   import { inDevMode } from '@graph/global';
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import type { GraphWithCanvas } from '@product/shared/useGraphWithCanvas';
   import ShareButton from './ShareButton.vue';
+  import GraphAtMousePositionData from './dev/GraphAtMousePositionData.vue';
 
   const props = defineProps<GraphWithCanvas>();
 
@@ -199,7 +200,10 @@
     <div
       :class="['absolute', 'flex', 'flex-col', 'gap-2', 'bottom-6', 'right-6']"
     >
-      <BenchmarkingMetrics v-if="inDevMode" />
+      <div v-if="inDevMode">
+        <GraphAtMousePositionData />
+        <BenchmarkingMetrics />
+      </div>
       <div :class="['flex', 'gap-2']">
         <ThemeToolbar />
         <FullscreenButton />
