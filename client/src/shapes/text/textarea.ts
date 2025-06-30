@@ -2,14 +2,14 @@ import type { DeepRequired } from 'ts-essentials';
 import { HORIZONTAL_TEXT_PADDING } from './text';
 import { getClientCoordinates } from '@canvas/coordinates';
 import { getTextDimensions } from './getTextDimensions';
-import type { TextAreaWithAnchorPoint } from './types';
+import type { OnTextAreaBlur, TextAreaWithAnchorPoint } from './types';
 import type { BoundingBox } from '@shape/types/utility';
 import { isPointInBoundingBox } from '@shape/helpers';
 
-export const engageTextarea = (
+export const createTextarea = (
   ctx: CanvasRenderingContext2D,
+  onTextAreaBlur: OnTextAreaBlur,
   textArea: DeepRequired<TextAreaWithAnchorPoint>,
-  handler: (str: string) => void,
 ) => {
   const { at, textBlock, activeColor: bgColor } = textArea;
 
@@ -68,25 +68,10 @@ export const engageTextarea = (
 
   input.oninput = adjustSize;
 
-  const isClickOutsideInput = (input: HTMLElement, event: MouseEvent) => {
-    const { x, y, width, height } = input.getBoundingClientRect();
-
-    const bb: BoundingBox = {
-      at: { x, y },
-      width,
-      height,
-    };
-
-    const { clientX, clientY } = event;
-    return isPointInBoundingBox(bb, {
-      x: clientX,
-      y: clientY,
-    })
-  };
-
   const removeInput = () => {
+    console.log('removing')
     input.onblur = null;
-    handler(input.value);
+    onTextAreaBlur(input.value);
     document.removeEventListener('mousedown', handleMouseDown);
     document.removeEventListener('wheel', removeInput);
 
@@ -107,7 +92,21 @@ export const engageTextarea = (
   };
 
   const handleMouseDown = (event: MouseEvent) => {
-    if (isClickOutsideInput(input, event)) removeInput();
+    const { x, y, width, height } = input.getBoundingClientRect();
+
+    const bb: BoundingBox = {
+      at: { x, y },
+      width,
+      height,
+    };
+
+    const { clientX, clientY } = event;
+    const clickedInside = isPointInBoundingBox(bb, {
+      x: clientX,
+      y: clientY,
+    })
+
+    if (!clickedInside) removeInput();
   };
 
   document.addEventListener('mousedown', handleMouseDown);

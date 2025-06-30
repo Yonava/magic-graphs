@@ -42,11 +42,14 @@ export const useFocus = (graph: BaseGraph) => {
 
   const handleTextArea = (schemaItem: SchemaItem) => {
     const ctx = getCtx(graph.magicCanvas.canvas);
-    schemaItem.shape.activateTextArea?.(ctx, (str: string) => {
+
+    schemaItem.shape.startTextAreaEdit?.(ctx, (textAreaContent) => {
       const edge = graph.getEdge(schemaItem.id);
       if (!edge) throw new Error('textarea only implemented for edges');
-      const newLabel = graph.settings.value.edgeInputToLabel(str);
+
+      const newLabel = graph.settings.value.edgeInputToLabel(textAreaContent);
       if (newLabel === undefined || edge.label === newLabel) return;
+
       graph.editEdgeLabel(edge.id, newLabel);
     });
   };

@@ -14,6 +14,7 @@ import type { RectSchema } from "@shapes/rect/types";
 import type { SquareSchema } from "@shapes/square/types";
 import type { UTurnSchema } from "@shapes/uturn/types";
 import type { CircleSchema } from "@shapes/circle/types";
+import type { StartTextAreaEdit } from '@shape/text/types';
 
 export type ShapeName =
   | 'circle'
@@ -50,12 +51,9 @@ export type ShapeTextProps = {
    */
   textHitbox: (point: Coordinate) => boolean;
   /**
-   * activates the text area of the shape
+   * starts a text editing session for the shape's text area.
    */
-  activateTextArea: (
-    ctx: CanvasRenderingContext2D,
-    handler: (str: string) => void,
-  ) => void;
+  startTextAreaEdit: StartTextAreaEdit;
 }
 
 export type ShapeProps = {
@@ -148,7 +146,7 @@ export const shapeProps: Set<keyof Shape> = new Set([
   'drawText',
   'drawTextArea',
   'textHitbox',
-  'activateTextArea',
+  'startTextAreaEdit',
   'name',
   'draw',
   'drawShape',

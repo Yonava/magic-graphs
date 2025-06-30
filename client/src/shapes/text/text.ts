@@ -2,9 +2,9 @@ import type { DeepRequired } from 'ts-essentials';
 import { getTextDimensions } from './getTextDimensions';
 import type { Coordinate } from '@shape/types/utility';
 import type { ShapeTextProps } from '@shape/types';
-import { engageTextarea } from './textarea';
+import { createTextarea } from './textarea';
 import { rect } from '@shape/shapes/rect';
-import type { TextAreaWithAnchorPoint, TextBlock } from './types';
+import type { StartTextAreaEdit, TextAreaWithAnchorPoint, TextBlock } from './types';
 import type { TextAreaWithDefaults } from './defaults';
 
 export const HORIZONTAL_TEXT_PADDING = 20;
@@ -44,11 +44,8 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
     drawText(ctx)
   }
 
-  const activateTextArea = (
-    ctx: CanvasRenderingContext2D,
-    handler: (str: string) => void,
-  ) => {
-    engageTextarea(ctx, placedTextArea, handler);
+  const startTextAreaEdit: StartTextAreaEdit = (ctx, onTextAreaBlur) => {
+    createTextarea(ctx, onTextAreaBlur, placedTextArea);
   };
 
   return {
@@ -56,7 +53,7 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
     drawTextAreaMatte: textAreaMatte.draw,
     drawText,
     drawTextArea,
-    activateTextArea,
+    startTextAreaEdit,
   }
 }
 
