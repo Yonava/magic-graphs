@@ -96,7 +96,7 @@ export const decodeCompressedTransitData = (encodedData: string): GraphTransitDa
     encodedZoom,
   ] = encodedData.split(DATA_DELIMITER)
 
-  const nodes = encodedNodes.split(FIELD_DELIMITER).map((encodedNode): GNode => {
+  const nodes = !encodedNodes ? [] : encodedNodes.split(FIELD_DELIMITER).map((encodedNode): GNode => {
     const [encodedLabel, encodedX, encodedY] = encodedNode.split(PROP_DELIMITER)
     return {
       id: generateId(),
@@ -106,7 +106,7 @@ export const decodeCompressedTransitData = (encodedData: string): GraphTransitDa
     }
   })
 
-  const edges = encodedEdges.split(FIELD_DELIMITER).map((encodedEdge): GEdge => {
+  const edges = !encodedEdges ? [] : encodedEdges.split(FIELD_DELIMITER).map((encodedEdge): GEdge => {
     const [encodedFrom, encodedTo, encodedLabel] = encodedEdge.split(PROP_DELIMITER)
     return {
       id: generateId(),
