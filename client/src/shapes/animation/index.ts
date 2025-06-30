@@ -5,9 +5,9 @@ import { getAnimationProgress, getCurrentRunCount } from "./utils"
 import { useDefineTimeline } from "./timeline/defineTimeline"
 import { shapeDefaults } from "@shape/defaults/shapes"
 import { shapes } from ".."
+import { useAutoAnimateAnchorPoint } from "./autoAnimate"
 
 export const useAnimatedShapes = () => {
-
   /**
    * a mapping between shapes (via ids) and the animations currently
    * active/running on those shapes
@@ -24,6 +24,8 @@ export const useAnimatedShapes = () => {
     resume: () => console.warn('not implemented'),
   })
 
+  const { autoAnimate, captureChanges, applyAutoAnimate } = useAutoAnimateAnchorPoint(defineTimeline)
+
   const animatedFactory = <T>(
     factory: ShapeFactory<T>,
     shapeName: ShapeName,
@@ -36,7 +38,14 @@ export const useAnimatedShapes = () => {
 
         const animation = activeAnimations.get(schema.id)
 
-        if (!animation) return target[prop]
+        if (!animation) {
+          const alteredFactory = applyAutoAnimate(schema, prop, factory)
+          if (alteredFactory) return alteredFactory
+          captureChanges(schema)
+          return target[prop]
+        }
+
+        captureChanges(schema)
 
         const timeline = timelineIdToTimeline.get(animation.timelineId)
         if (!timeline) throw 'animation activated without a timeline!'
@@ -97,5 +106,6 @@ export const useAnimatedShapes = () => {
       uturn: animatedFactory(shapes.uturn, 'uturn'),
     },
     defineTimeline,
+    autoAnimate,
   }
 }
