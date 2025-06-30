@@ -198,12 +198,24 @@
     </div>
 
     <div
+      v-if="inDevMode"
+      :class="[
+        'absolute',
+        'flex',
+        'flex-col',
+        'gap-2',
+        'bottom-20',
+        'right-6',
+        'pointer-events-none',
+      ]"
+    >
+      <GraphAtMousePositionData />
+      <BenchmarkingMetrics />
+    </div>
+
+    <div
       :class="['absolute', 'flex', 'flex-col', 'gap-2', 'bottom-6', 'right-6']"
     >
-      <div v-if="inDevMode">
-        <GraphAtMousePositionData />
-        <BenchmarkingMetrics />
-      </div>
       <div :class="['flex', 'gap-2']">
         <ThemeToolbar />
         <FullscreenButton />
