@@ -2,7 +2,7 @@ import type { DeepRequired } from 'ts-essentials';
 import { getTextDimensions } from './getTextDimensions';
 import type { Coordinate } from '@shape/types/utility';
 import type { ShapeTextProps } from '@shape/types';
-import { createTextarea } from './textarea';
+import { createTextarea } from './createTextarea';
 import { rect } from '@shape/shapes/rect';
 import type { StartTextAreaEdit, TextAreaWithAnchorPoint, TextBlock } from './types';
 import type { TextAreaWithDefaults } from './defaults';
