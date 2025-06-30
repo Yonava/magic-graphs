@@ -12,14 +12,14 @@ export const useAutoAnimateAnchorPoint = (defineTimeline: DefineTimeline) => {
       if (!isAutoAnimating.has(schema.id)) return
       lastAnchorPointValue.set(schema.id, { ...schema.at })
     },
-    applyAutoAnimate: (schema: any, prop: any, factory: any) => {
+    applyAutoAnimate: (schema: any, prop: any, factory: any, shapeName: any) => {
       if (!isAutoAnimating.has(schema.id)) return
       const currCoords = schema.at as Coordinate;
       const prevCoords = lastAnchorPointValue.get(schema.id) ?? currCoords;
 
       if (currCoords.x !== prevCoords.x || currCoords.y !== prevCoords.y) {
         defineTimeline({
-          forShapes: ['circle'],
+          forShapes: [shapeName],
           durationMs: 1000,
           easing: { at: 'in-out' },
           keyframes: [
