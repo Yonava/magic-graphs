@@ -11,8 +11,6 @@ export const useFocus = (graph: BaseGraph) => {
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
   const focusedItemIds = ref(new Set<string>());
 
-  const shiftKeyHeldDown = ref(false);
-
   const setFocus = (ids: string[]) => {
     const nonBlacklistedIds = ids.filter(
       (id) => !graph.settings.value.focusBlacklist.includes(id),
@@ -65,7 +63,9 @@ export const useFocus = (graph: BaseGraph) => {
   const handleFocusChange = ({ items, coords, event }: GraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
-    if (!topItem) return shiftKeyHeldDown.value ? undefined : resetFocus();
+    if (!topItem) {
+      return event.shiftKey ? undefined : resetFocus();
+    }
 
     // handle text areas
     const inATextArea = topItem.shape.textHitbox?.(coords);
@@ -84,7 +84,7 @@ export const useFocus = (graph: BaseGraph) => {
     );
     if (!canFocus) return;
 
-    if (shiftKeyHeldDown.value) addToFocus(topItem.id)
+    if (event.shiftKey) addToFocus(topItem.id)
     else setFocus([topItem.id]);
   };
 
@@ -135,20 +135,10 @@ export const useFocus = (graph: BaseGraph) => {
     return graph.getTheme('nodeAnchorColorWhenParentFocused', node);
   });
 
-  const handleKeyDown = (ev: KeyboardEvent) => {
-    if (ev.key === 'Shift') shiftKeyHeldDown.value = true;
-  };
-
-  const handleKeyUp = (ev: KeyboardEvent) => {
-    if (ev.key === 'Shift') shiftKeyHeldDown.value = false;
-  };
-
   const activate = () => {
     graph.subscribe('onNodeAdded', setFocusToAddedItem);
     graph.subscribe('onEdgeAdded', setFocusToAddedItem);
     graph.subscribe('onMouseDown', handleFocusChange);
-    graph.subscribe('onKeyDown', handleKeyDown);
-    graph.subscribe('onKeyUp', handleKeyUp);
     graph.subscribe('onStructureChange', clearOutDeletedItemsFromFocus);
   };
 
@@ -156,8 +146,6 @@ export const useFocus = (graph: BaseGraph) => {
     graph.unsubscribe('onNodeAdded', setFocusToAddedItem);
     graph.unsubscribe('onEdgeAdded', setFocusToAddedItem);
     graph.unsubscribe('onMouseDown', handleFocusChange);
-    graph.unsubscribe('onKeyDown', handleKeyDown);
-    graph.unsubscribe('onKeyUp', handleKeyUp);
     graph.unsubscribe('onStructureChange', clearOutDeletedItemsFromFocus);
     resetFocus();
   };

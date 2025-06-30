@@ -49,6 +49,10 @@ export const setTransitData = (g: Graph, transitData: GraphTransitData) => {
 const SCALE_FACTOR = 10
 const DEFAULT_EDGE_LABEL = '1'
 
+const DATA_DELIMITER = '\x1F'
+const FIELD_DELIMITER = '\x1E'
+const PROP_DELIMITER = '\x1D'
+
 /**
  * takes graph transit data and converts it into an encoded string with lower fidelity
  * data that is perfect for sending over the wire or when transferring data is expensive.
@@ -61,22 +65,22 @@ export const encodeCompressedTransitData = (data: GraphTransitData) => {
   const nodeData = nodes.reduce((compressedStr, node) => {
     const x = Math.round(node.x / SCALE_FACTOR)
     const y = Math.round(node.y / SCALE_FACTOR)
-    return compressedStr + `-${node.label},${x},${y}`
+    return compressedStr + `${FIELD_DELIMITER}${node.label}${PROP_DELIMITER}${x}${PROP_DELIMITER}${y}`
   }, '').slice(1)
 
   const edgeData = edges.reduce((compressedStr, edge) => {
     const from = nodes.findIndex((n) => n.id === edge.from)
     const to = nodes.findIndex((n) => n.id === edge.to)
     // if most common default, no need to send it
-    const label = edge.label === DEFAULT_EDGE_LABEL ? '' : `,${edge.label}`
-    return compressedStr + `-${from},${to}` + label
+    const label = edge.label === DEFAULT_EDGE_LABEL ? '' : `${PROP_DELIMITER}${edge.label}`
+    return compressedStr + `${FIELD_DELIMITER}${from}${PROP_DELIMITER}${to}` + label
   }, '').slice(1)
 
   const panX = Math.round(cameraPanX / SCALE_FACTOR)
   const panY = Math.round(cameraPanY / SCALE_FACTOR)
   const zoom = cameraZoom.toFixed(2)
 
-  return `${nodeData}+${edgeData}+${panX}+${panY}+${zoom}`
+  return [nodeData, edgeData, panX, panY, zoom].join(DATA_DELIMITER)
 }
 
 /**
@@ -90,10 +94,10 @@ export const decodeCompressedTransitData = (encodedData: string): GraphTransitDa
     encodedPanX,
     encodedPanY,
     encodedZoom,
-  ] = encodedData.split('+')
+  ] = encodedData.split(DATA_DELIMITER)
 
-  const nodes = encodedNodes.split('-').map((encodedNode): GNode => {
-    const [encodedLabel, encodedX, encodedY] = encodedNode.split(',')
+  const nodes = encodedNodes.split(FIELD_DELIMITER).map((encodedNode): GNode => {
+    const [encodedLabel, encodedX, encodedY] = encodedNode.split(PROP_DELIMITER)
     return {
       id: generateId(),
       label: encodedLabel,
@@ -102,8 +106,8 @@ export const decodeCompressedTransitData = (encodedData: string): GraphTransitDa
     }
   })
 
-  const edges = encodedEdges.split('-').map((encodedEdge): GEdge => {
-    const [encodedFrom, encodedTo, encodedLabel] = encodedEdge.split(',')
+  const edges = encodedEdges.split(FIELD_DELIMITER).map((encodedEdge): GEdge => {
+    const [encodedFrom, encodedTo, encodedLabel] = encodedEdge.split(PROP_DELIMITER)
     return {
       id: generateId(),
       label: encodedLabel ?? DEFAULT_EDGE_LABEL,
