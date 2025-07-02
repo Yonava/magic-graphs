@@ -9,9 +9,10 @@ export const getTreeStandardPos = (
   nodeDepths: NodeDepth,
   treeOffset: { xOffset: number; yOffset: number },
 ) => {
+  const newNodePositions: { nodeId: GNode['id'], coords: Coordinate }[] = []
+
   const { xOffset, yOffset } = treeOffset;
   const { depthToNodeIds } = nodeDepths;
-  const newNodePositions: Map<GNode['id'], Coordinate> = new Map();
   const roundToNearest10 = roundToNearestN(10);
 
   for (let i = 1; i < depthToNodeIds.length; i++) {
@@ -40,10 +41,13 @@ export const getTreeStandardPos = (
       const x = rootPosition.x + xOffsetPerNode[j];
       const y = rootPosition.y + yOffset * i;
 
-      newNodePositions.set(node.id, {
-        x: roundToNearest10(x),
-        y: roundToNearest10(y),
-      });
+      newNodePositions.push({
+        nodeId: node.id,
+        coords: {
+          x: roundToNearest10(x),
+          y: roundToNearest10(y),
+        }
+      })
     }
   }
 

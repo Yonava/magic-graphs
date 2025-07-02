@@ -129,7 +129,7 @@ export const useBaseGraph = (
     draw,
   } = useAggregator({ emit });
 
-  const { shapes, defineTimeline } = useAnimatedShapes()
+  const { shapes, autoAnimate, defineTimeline } = useAnimatedShapes()
   const animations = getGraphAnimations(defineTimeline)
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
@@ -203,6 +203,7 @@ export const useBaseGraph = (
     addNode,
     addEdge,
     moveNode,
+    bulkMoveNode,
     editEdgeLabel,
     removeNode,
     removeEdge,
@@ -220,6 +221,7 @@ export const useBaseGraph = (
     updateGraphAtMousePosition,
     updateAggregator,
     animations,
+    autoAnimate,
   });
 
   const nodeIdToIndex = computed(() =>
@@ -328,6 +330,8 @@ export const useBaseGraph = (
     addEdge,
 
     moveNode,
+    bulkMoveNode,
+
     editEdgeLabel,
 
     removeNode,
@@ -355,6 +359,7 @@ export const useBaseGraph = (
 
     pluginHoldController,
     shapes,
+    autoAnimate,
     animations,
 
     baseTheme: computed(() => THEMES[themeName.value]),

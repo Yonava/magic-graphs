@@ -1,6 +1,6 @@
 import type { GNode, Graph } from '@graph/types';
-import type { NodeDepth } from '@product/search-visualizer/useNodeDepth';
 import type { Coordinate } from '@shape/types/utility';
+import type { NodeDepth } from './useNodeDepth';
 
 /**
  * an array which maps a tree index (root = 0, left child = 1, right child = 2, etc)
@@ -100,9 +100,10 @@ export const getTreeBinaryPos = (
   nodeDepths: NodeDepth,
   treeOffset: { xOffset: number; yOffset: number },
 ) => {
+  const newNodePositions: { nodeId: GNode['id'], coords: Coordinate }[] = []
+
   const { xOffset, yOffset } = treeOffset;
   const { depth: treeDepth } = nodeDepths;
-  const newNodePositions: Map<GNode['id'], Coordinate> = new Map();
 
   const treeIndexToPosition = getTreeIndexToPosition({
     rootCoordinate: root,
@@ -118,10 +119,13 @@ export const getTreeBinaryPos = (
   });
 
   for (let i = 0; i < treeIndexToNodeId.length; i++) {
-    const maybeNodeId = treeIndexToNodeId[i];
-    if (!maybeNodeId) continue;
+    const nodeId = treeIndexToNodeId[i];
+    if (!nodeId) continue;
     const newPos = treeIndexToPosition[i];
-    newNodePositions.set(maybeNodeId, newPos);
+    newNodePositions.push({
+      nodeId,
+      coords: newPos,
+    })
   }
 
   return newNodePositions;

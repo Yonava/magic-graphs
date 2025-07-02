@@ -106,6 +106,10 @@ export const MOVE_NODE_OPTIONS_DEFAULTS: MoveNodeOptions = {
   broadcast: true,
 };
 
+export const BULK_MOVE_NODE_OPTIONS_DEFAULTS: MoveNodeOptions = {
+  broadcast: true,
+}
+
 export type EditEdgeLabelOptions = BroadcastOption & HistoryOption;
 
 export const EDIT_EDGE_LABEL_OPTIONS_DEFAULTS: EditEdgeLabelOptions = {

@@ -11,6 +11,7 @@ import {
   MOVE_NODE_OPTIONS_DEFAULTS,
   REMOVE_EDGE_OPTIONS_DEFAULTS,
   REMOVE_NODE_OPTIONS_DEFAULTS,
+  BULK_MOVE_NODE_OPTIONS_DEFAULTS,
 } from './types';
 import type {
   AddEdgeOptions,
@@ -27,6 +28,8 @@ import { nodeLetterLabelGetter } from '@graph/labels';
 import type { GraphSettings } from '@graph/settings';
 import type { AggregatorProps } from './useAggregator';
 import type { GraphAnimations } from './animations';
+import type { Coordinate } from '@shape/types/utility';
+import type { AutoAnimateControls } from '@shape/animation/autoAnimate';
 
 type GraphCRUDOptions = {
   emit: Emitter;
@@ -38,6 +41,7 @@ type GraphCRUDOptions = {
   updateGraphAtMousePosition: () => void,
   updateAggregator: AggregatorProps['updateAggregator'],
   animations: GraphAnimations,
+  autoAnimate: AutoAnimateControls,
 };
 
 export const useGraphCRUD = ({
@@ -50,6 +54,7 @@ export const useGraphCRUD = ({
   updateGraphAtMousePosition,
   updateAggregator,
   animations,
+  autoAnimate,
 }: GraphCRUDOptions) => {
   // READ OPERATIONS
 
@@ -248,7 +253,7 @@ export const useGraphCRUD = ({
    */
   const moveNode = (
     id: GNode['id'],
-    coords: { x: number; y: number },
+    coords: Coordinate,
     options: Partial<MoveNodeOptions> = {},
   ) => {
     const node = getNode(id);
@@ -263,6 +268,28 @@ export const useGraphCRUD = ({
     node.y = coords.y;
     emit('onNodeMoved', node, fullOptions);
   };
+
+  const bulkMoveNode = async (
+    nodeMovements: { nodeId: GNode['id'], coords: Coordinate }[],
+    options: Partial<MoveNodeOptions> = {},
+  ) => {
+    const fullOptions = {
+      ...BULK_MOVE_NODE_OPTIONS_DEFAULTS,
+      ...options,
+    };
+
+    for (const { id } of edges.value) autoAnimate.start(id)
+    for (const { nodeId } of nodeMovements) autoAnimate.start(nodeId)
+
+    for (const { nodeId, coords } of nodeMovements) {
+      moveNode(nodeId, coords, fullOptions)
+    }
+
+    await new Promise((res) => setTimeout(res, 250));
+
+    for (const { id } of edges.value) autoAnimate.stop(id)
+    for (const { nodeId } of nodeMovements) autoAnimate.stop(nodeId)
+  }
 
   const editEdgeLabel = (
     edgeId: GEdge['id'],
@@ -434,6 +461,8 @@ export const useGraphCRUD = ({
     addEdge,
 
     moveNode,
+    bulkMoveNode,
+
     editEdgeLabel,
 
     removeNode,
