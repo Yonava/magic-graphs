@@ -320,7 +320,7 @@ export const useGraphCRUD = ({
    * @param options - override default effects (onNodeRemoved event)
    * @returns the removed node along with its removed edges or undefined if not removed
    */
-  const removeNode = async (
+  const removeNode = (
     id: GNode['id'],
     options: Partial<RemoveNodeOptions> = {},
   ) => {
@@ -340,10 +340,9 @@ export const useGraphCRUD = ({
 
     const removedEdges: GEdge[] = [];
     for (const edge of edgesToRemove) {
-      const removed = await removeEdge(edge.id, {
+      const removed = removeEdge(edge.id, {
         broadcast: false,
         history: false,
-        animate: fullOptions.animate,
       });
       if (!removed) continue;
       removedEdges.push(removed);
@@ -375,10 +374,9 @@ export const useGraphCRUD = ({
     const removedEdges: GEdge[] = [];
 
     for (const nodeId of nodeIds) {
-      const removed = await removeNode(nodeId, {
+      const removed = removeNode(nodeId, {
         broadcast: false,
         history: false,
-        animate: fullOptions.animate,
       });
       if (!removed) continue;
       const [removedNode, removedNodeEdges] = removed;
@@ -397,7 +395,7 @@ export const useGraphCRUD = ({
    * @param options - override default effects (onEdgeRemoved event)
    * @returns the removed edge or undefined if not removed
    */
-  const removeEdge = async (
+  const removeEdge = (
     edgeId: GEdge['id'],
     options: Partial<RemoveEdgeOptions> = {},
   ) => {
@@ -408,8 +406,6 @@ export const useGraphCRUD = ({
       ...REMOVE_EDGE_OPTIONS_DEFAULTS,
       ...options,
     };
-
-    // if (fullOptions.animate) await animationController.animateOut(edge.id);
 
     edges.value = edges.value.filter((e) => e.id !== edge.id);
 
@@ -422,7 +418,7 @@ export const useGraphCRUD = ({
     return edge;
   };
 
-  const bulkRemoveEdge = async (
+  const bulkRemoveEdge = (
     edgeIds: GEdge['id'][],
     options: Partial<RemoveEdgeOptions> = {},
   ) => {
@@ -436,10 +432,9 @@ export const useGraphCRUD = ({
     const removedEdges: GEdge[] = [];
 
     for (const edgeId of edgeIds) {
-      const removed = await removeEdge(edgeId, {
+      const removed = removeEdge(edgeId, {
         broadcast: false,
         history: false,
-        animate: fullOptions.animate,
       });
       if (!removed) continue;
       removedEdges.push(removed);

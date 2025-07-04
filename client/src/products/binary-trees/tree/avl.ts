@@ -1,6 +1,13 @@
 import { getTreeArray } from './treeArray';
 import { TreeNode } from './treeNode';
 
+/**
+ * An array representation of a binary tree, where each index corresponds to a tree position:
+ * index 0 is the root, index 1 is the left child, index 2 is the right child, etc.
+ *
+ * Each value is the tree node key at that position, or `undefined` if no node exists at that position.
+ * The tree node key is both the `id` and `label` of a `GNode` within the tree.
+ */
 export type TreeNodeKeyArray = (TreeNode['key'] | undefined)[];
 
 export type BalanceMethod =

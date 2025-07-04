@@ -28,13 +28,14 @@ const edgesInTree = (treeArray: TreeNodeKeyArray) => {
   return edges;
 };
 
-export const treeArrayToGraph = async (
+export const treeArrayToGraph = (
   graph: Graph,
   treeArray: TreeNodeKeyArray,
   treeRoot: TreeNode,
   rootPosition: Coordinate,
 ) => {
   const newTreeEdges = edgesInTree(treeArray);
+
   const edgesNotInNewTree = graph.edges.value.filter(
     (edge) => !newTreeEdges.some((newEdge) => newEdge.id === edge.id),
   );
@@ -43,11 +44,9 @@ export const treeArrayToGraph = async (
     (node) => !treeArray.includes(parseInt(node.id)),
   );
 
-  Promise.all(
-    nodesNotInNewTree.map((node) =>
-      graph.removeNode(node.id, { animate: true }),
-    ),
-  );
+  for (const node of nodesNotInNewTree) {
+    graph.removeNode(node.id, { animate: true })
+  }
 
   // the tree is empty and all the nodes have been removed
   if (!treeRoot) return;
@@ -65,27 +64,27 @@ export const treeArrayToGraph = async (
     treeDepth: treeRoot.height,
   });
 
-  Promise.all(
-    treeArray.map((treeNodeKey, i) => {
-      if (treeNodeKey === undefined) return;
-      const node = graph.getNode(treeNodeKey.toString());
-      if (node) return;
-      return graph.addNode(
-        {
-          id: treeNodeKey.toString(),
-          label: treeNodeKey.toString(),
-          ...positions[i],
-        },
-        { animate: true, focus: false },
-      );
-    }),
-  );
+  treeArray.forEach((treeNodeKey, i) => {
+    if (treeNodeKey === undefined) return;
 
-  Promise.all(
-    edgesNotInNewTree.map((edge) =>
-      graph.removeEdge(edge.id, { animate: true }),
-    ),
-  );
+    const nodeAlreadyDisplayed = graph.getNode(treeNodeKey.toString());
+    if (nodeAlreadyDisplayed) return
+
+    const coordsOfNodeOnTree = positions[i]
+
+    graph.addNode({
+      id: treeNodeKey.toString(),
+      label: treeNodeKey.toString(),
+      ...coordsOfNodeOnTree,
+    }, {
+      animate: true,
+      focus: false
+    });
+  })
+
+  for (const edge of edgesNotInNewTree) {
+    graph.removeEdge(edge.id, { animate: true })
+  }
 
   const movementObj = treeArray.map((treeNodeKey, i) => {
     if (treeNodeKey === undefined) return;
