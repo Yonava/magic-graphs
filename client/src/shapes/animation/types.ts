@@ -15,4 +15,9 @@ export type ActiveAnimation = {
    * unix timestamp when the animation started
    */
   startedAt: number,
+
+  /**
+   * the schema at the point the animation started
+   */
+  schema?: any,
 }

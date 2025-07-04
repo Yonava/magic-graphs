@@ -2,9 +2,12 @@ import type { Coordinate } from "@shape/types/utility";
 import type { DefineTimeline } from "./timeline/defineTimeline";
 import type { SchemaId } from "@shape/types";
 
-const AUTO_ANIMATE_DUR_MS = 1000
+const AUTO_ANIMATE_DUR_MS = 500;
 
-export const useAutoAnimateAnchorPoint = (defineTimeline: DefineTimeline) => {
+export const useAutoAnimateAnchorPoint = (
+  defineTimeline: DefineTimeline,
+  getAnimatedSchema: (schemaId: string) => any,
+) => {
   const lastPropValue: Map<
     SchemaId, { at: Coordinate } | { start: Coordinate, end: Coordinate }
   > = new Map();
@@ -25,26 +28,28 @@ export const useAutoAnimateAnchorPoint = (defineTimeline: DefineTimeline) => {
       const sortOutAt = (currCoords: Coordinate, prevCoords: Coordinate) => {
         if (currCoords.x === prevCoords.x && currCoords.y === prevCoords.y) return
 
+        const activeSchema = getAnimatedSchema(schema.id)
+        const startCoords: Coordinate = activeSchema ? activeSchema.at : prevCoords;
+
         defineTimeline({
           forShapes: [shapeName],
-          delayMs: 1000,
           durationMs: AUTO_ANIMATE_DUR_MS,
           easing: { at: 'in-out' },
           keyframes: [
             {
               progress: 0,
-              properties: { at: prevCoords }
+              properties: { at: { ...startCoords } }
             },
             {
               progress: 1,
-              properties: { at: currCoords }
+              properties: { at: { ...currCoords } }
             }
           ]
         }).play({ shapeId: schema.id, runCount: 1 })
 
         return factory({
           ...schema,
-          at: prevCoords,
+          at: startCoords,
         })[prop]
       }
 
@@ -56,15 +61,17 @@ export const useAutoAnimateAnchorPoint = (defineTimeline: DefineTimeline) => {
         const sameEnd = curr.end.x === prev.end.x;
         if (sameStart && sameEnd) return
 
+        const activeSchema = getAnimatedSchema(schema.id)
+        const start: { start: Coordinate, end: Coordinate } = activeSchema ? { start: activeSchema.start, end: activeSchema.end } : prev;
+
         defineTimeline({
           forShapes: [shapeName],
           durationMs: AUTO_ANIMATE_DUR_MS,
-          delayMs: 1000,
           easing: { start: 'in-out', end: 'in-out' },
           keyframes: [
             {
               progress: 0,
-              properties: { start: prev.start, end: prev.end }
+              properties: { start: { ...start.start }, end: { ...start.end } }
             },
             {
               progress: 1,
@@ -75,8 +82,8 @@ export const useAutoAnimateAnchorPoint = (defineTimeline: DefineTimeline) => {
 
         return factory({
           ...schema,
-          start: prev.start,
-          end: prev.end,
+          start: start.start,
+          end: start.end,
         })[prop]
       }
 

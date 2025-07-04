@@ -14,6 +14,8 @@ export const useAnimatedShapes = () => {
    */
   const activeAnimations: Map<SchemaId, ActiveAnimation> = new Map()
 
+  const schemaIdToShapeName: Map<SchemaId, ShapeName> = new Map()
+
   const { defineTimeline, timelineIdToTimeline } = useDefineTimeline({
     play: ({ shapeId, ...rest }) => activeAnimations.set(shapeId, {
       ...rest,
@@ -24,7 +26,57 @@ export const useAnimatedShapes = () => {
     resume: () => console.warn('not implemented'),
   })
 
-  const { autoAnimate, captureChanges, applyAutoAnimate } = useAutoAnimateAnchorPoint(defineTimeline)
+  /**
+   * returns the schema of the shape being animated at the time it's invoked
+   */
+  const getAnimatedSchema = (schemaId: string) => {
+    const animation = activeAnimations.get(schemaId)
+    if (!animation) return
+
+    const shapeName = schemaIdToShapeName.get(schemaId)
+    if (!shapeName) return console.warn('animation set without shape name mapping. this should never happen!')
+
+    const { schema } = animation;
+    if (!schema) return console.warn('animation set without a schema. this should never happen!')
+
+    const timeline = timelineIdToTimeline.get(animation.timelineId)
+    if (!timeline) throw 'animation activated without a timeline!'
+
+    const animationWithTimeline = {
+      ...timeline,
+      ...animation,
+    }
+
+    if (!animationWithTimeline.validShapes.has(shapeName)) return console.warn('invalid shape name!')
+
+    // cleanup animation if expired
+    const currentRunCount = getCurrentRunCount(animationWithTimeline)
+    const shouldRemove = currentRunCount >= animationWithTimeline.runCount
+    if (shouldRemove) {
+      activeAnimations.delete(schemaId)
+      return
+    }
+
+    // resolve the properties for the animated shape schema
+    const { properties } = animationWithTimeline
+    const progress = getAnimationProgress(animationWithTimeline)
+
+    const infusedProps = Object.entries(properties).reduce((acc, curr) => {
+      const [propName, getAnimatedValue] = curr
+      if (!(propName in schema)) return acc
+
+      acc[propName] = getAnimatedValue(schema, progress)
+
+      return acc
+    }, {} as Record<string, number>)
+
+    return {
+      ...schema,
+      ...infusedProps,
+    }
+  }
+
+  const { autoAnimate, captureChanges, applyAutoAnimate } = useAutoAnimateAnchorPoint(defineTimeline, getAnimatedSchema)
 
   const animatedFactory = <T>(
     factory: ShapeFactory<T>,
@@ -38,55 +90,24 @@ export const useAnimatedShapes = () => {
 
         const animation = activeAnimations.get(schema.id)
 
-        if (!animation) {
-          const alteredFactory = applyAutoAnimate(schema, prop, factory, shapeName)
-          if (alteredFactory) return alteredFactory
-
-          captureChanges(schema)
-          return target[prop]
-        }
-
+        const alteredFactory = applyAutoAnimate(schema, prop, factory, shapeName)
         captureChanges(schema)
+        if (alteredFactory) return alteredFactory
 
-        const timeline = timelineIdToTimeline.get(animation.timelineId)
-        if (!timeline) throw 'animation activated without a timeline!'
+        if (!animation) return target[prop]
 
-        const animationWithTimeline = {
-          ...timeline,
-          ...animation,
+        if (!animation?.schema) {
+          const defaultResolver = (shapeDefaults as any)[shapeName]
+          if (!defaultResolver) throw `cant find defaults for ${shapeName}`
+          const schemaWithDefaults = defaultResolver(schema)
+          animation.schema = schemaWithDefaults;
+          schemaIdToShapeName.set(schema.id, shapeName);
         }
 
-        if (!animationWithTimeline.validShapes.has(shapeName)) return target[prop]
+        const animatedSchema = getAnimatedSchema(schema.id)
+        if (!animatedSchema) return target[prop]
 
-        // cleanup animation if expired
-        const currentRunCount = getCurrentRunCount(animationWithTimeline)
-        const shouldRemove = currentRunCount >= animationWithTimeline.runCount
-        if (shouldRemove) {
-          activeAnimations.delete(schema.id)
-          return target[prop]
-        }
-
-        // resolve the properties for the animated shape schema
-        const { properties } = animationWithTimeline
-        const progress = getAnimationProgress(animationWithTimeline)
-
-        const defaultResolver = (shapeDefaults as any)[shapeName]
-        if (!defaultResolver) throw `cant find defaults for ${shapeName}`
-        const schemaWithDefaults = defaultResolver(schema)
-
-        const infusedProps = Object.entries(properties).reduce((acc, curr) => {
-          const [propName, getAnimatedValue] = curr
-          if (!(propName in schemaWithDefaults)) return acc
-
-          acc[propName] = getAnimatedValue(schemaWithDefaults, progress)
-
-          return acc
-        }, {} as Record<string, number>)
-
-        return factory({
-          ...schemaWithDefaults,
-          ...infusedProps,
-        })[prop]
+        return factory(animatedSchema)[prop]
       }
     })
   }
@@ -108,5 +129,6 @@ export const useAnimatedShapes = () => {
     },
     defineTimeline,
     autoAnimate,
+    getAnimatedSchema,
   }
 }
