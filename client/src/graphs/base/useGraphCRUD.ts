@@ -44,6 +44,17 @@ type GraphCRUDOptions = {
   autoAnimate: AutoAnimateControls,
 };
 
+export type GNodeMoveInstruction = {
+  /**
+   * the target nodes `id`
+   */
+  nodeId: GNode['id'];
+  /**
+   * the coordinates the target node will be moved to
+   */
+  coords: Coordinate;
+}
+
 export const useGraphCRUD = ({
   nodes,
   edges,
@@ -270,7 +281,7 @@ export const useGraphCRUD = ({
   };
 
   const bulkMoveNode = async (
-    nodeMovements: { nodeId: GNode['id'], coords: Coordinate }[],
+    nodeMovements: GNodeMoveInstruction[],
     options: Partial<MoveNodeOptions> = {},
   ) => {
     const fullOptions = {

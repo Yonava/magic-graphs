@@ -3,6 +3,7 @@ import type { TreeNodeKeyArray } from './avl';
 import type { TreeNode } from './treeNode';
 import type { GEdge, Graph } from '@graph/types';
 import { getTreeIndexToPosition } from '@product/sandbox/ui/tree/getTreeBinaryPos';
+import type { GNodeMoveInstruction } from '@graph/base/useGraphCRUD';
 
 const newEdge = (from: number, to: number) => ({
   from: from.toString(),
@@ -45,7 +46,7 @@ export const treeArrayToGraph = (
   );
 
   for (const node of nodesNotInNewTree) {
-    graph.removeNode(node.id, { animate: true })
+    graph.removeNode(node.id)
   }
 
   // the tree is empty and all the nodes have been removed
@@ -83,15 +84,15 @@ export const treeArrayToGraph = (
   })
 
   for (const edge of edgesNotInNewTree) {
-    graph.removeEdge(edge.id, { animate: true })
+    graph.removeEdge(edge.id)
   }
 
-  const movementObj = treeArray.map((treeNodeKey, i) => {
+  const movementObj = treeArray.map((treeNodeKey, i): GNodeMoveInstruction | void => {
     if (treeNodeKey === undefined) return;
     const node = graph.getNode(treeNodeKey.toString());
-    if (!node) return
+    if (!node) return console.error('node in tree not found in graph. this should never happen!')
     return { nodeId: node.id, coords: positions[i] }
-  }).filter(Boolean)
+  }).filter(Boolean) as GNodeMoveInstruction[]
 
   graph.bulkMoveNode(movementObj)
 
