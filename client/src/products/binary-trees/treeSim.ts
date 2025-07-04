@@ -25,28 +25,29 @@ export const setTreeSim = (
 
     const step = ref(0);
 
-    const runStep = async () => {
+    const runStep = () => {
       const traceAtStep = trace[step.value];
       if (traceAtStep === undefined) return;
 
       targetNodeId.value = undefined;
 
       if (traceAtStep.action === 'compare') {
-        const { treeNodeKey } = traceAtStep;
+        const { comparedNode: treeNodeKey } = traceAtStep;
         targetNodeId.value = treeNodeKey.toString();
       }
 
       if (traceAtStep.action === 'insert' || traceAtStep.action === 'remove') {
-        const { target } = traceAtStep;
+        const { targetNode: target } = traceAtStep;
         targetNodeId.value = target.toString();
       }
 
-      await treeArrayToGraph(
+      treeArrayToGraph(
         graph,
         traceAtStep.treeState,
         tree.root!,
         ROOT_POS,
       );
+
       recomputeMaps();
     };
 
