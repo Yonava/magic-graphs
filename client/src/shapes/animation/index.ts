@@ -41,6 +41,7 @@ export const useAnimatedShapes = () => {
         if (!animation) {
           const alteredFactory = applyAutoAnimate(schema, prop, factory, shapeName)
           if (alteredFactory) return alteredFactory
+
           captureChanges(schema)
           return target[prop]
         }

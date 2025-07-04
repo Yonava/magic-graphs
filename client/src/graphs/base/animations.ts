@@ -1,9 +1,11 @@
 import type { DefineTimeline, Timeline } from "@shape/animation/timeline/defineTimeline";
 import tinycolor from "tinycolor2";
 
+const ANIMATION_DURATION_MS = 500
+
 const arrowEdgeAdded: Timeline<'arrow'> = {
   forShapes: ['arrow'],
-  durationMs: 400,
+  durationMs: ANIMATION_DURATION_MS,
   easing: {
     lineWidth: 'in-out',
     textArea: 'in-out',
@@ -45,7 +47,7 @@ const arrowEdgeAdded: Timeline<'arrow'> = {
 
 const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
   forShapes: ['line', 'uturn'],
-  durationMs: 400,
+  durationMs: ANIMATION_DURATION_MS,
   easing: {
     lineWidth: 'in-out',
     textArea: 'in-out',
@@ -68,7 +70,7 @@ const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
 
 const circleNodeAdded: Timeline<'circle'> = {
   forShapes: ['circle'],
-  durationMs: 500,
+  durationMs: ANIMATION_DURATION_MS,
   easing: { radius: 'in-out' },
   keyframes: [
     {

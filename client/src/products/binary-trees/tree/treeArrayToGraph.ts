@@ -43,7 +43,7 @@ export const treeArrayToGraph = async (
     (node) => !treeArray.includes(parseInt(node.id)),
   );
 
-  await Promise.all(
+  Promise.all(
     nodesNotInNewTree.map((node) =>
       graph.removeNode(node.id, { animate: true }),
     ),
@@ -65,7 +65,7 @@ export const treeArrayToGraph = async (
     treeDepth: treeRoot.height,
   });
 
-  await Promise.all(
+  Promise.all(
     treeArray.map((treeNodeKey, i) => {
       if (treeNodeKey === undefined) return;
       const node = graph.getNode(treeNodeKey.toString());
@@ -81,29 +81,24 @@ export const treeArrayToGraph = async (
     }),
   );
 
-  await Promise.all(
+  Promise.all(
     edgesNotInNewTree.map((edge) =>
       graph.removeEdge(edge.id, { animate: true }),
     ),
   );
 
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  const movementObj = treeArray.map((treeNodeKey, i) => {
+    if (treeNodeKey === undefined) return;
+    const node = graph.getNode(treeNodeKey.toString());
+    if (!node) return
+    return { nodeId: node.id, coords: positions[i] }
+  }).filter(Boolean)
 
-  await Promise.all(
-    treeArray.map((treeNodeKey, i) => {
-      if (treeNodeKey === undefined) return;
-      const node = graph.getNode(treeNodeKey.toString());
-      if (!node) return;
-      if (node.x === positions[i].x && node.y === positions[i].y) return;
-      graph.animate.node({
-        nodeId: node.id,
-        endCoords: positions[i],
-        durationMs: 750,
-      });
-    }),
-  );
+  graph.bulkMoveNode(movementObj)
+
+  await new Promise((res) => setTimeout(res, 500))
 
   for (const edge of newTreeEdges) {
-    await graph.addEdge(edge, { animate: true });
+    graph.addEdge(edge, { animate: true });
   }
 };

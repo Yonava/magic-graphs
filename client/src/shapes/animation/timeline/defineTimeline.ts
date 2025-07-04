@@ -101,11 +101,15 @@ export type TimelinePlaybackDuration = {
   durationMs: number,
 }
 
+export type TimelinePlaybackDelay = {
+  delayMs?: number,
+}
+
 export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<{
   forShapes: T[]
   keyframes: TimelineKeyframe<SchemaProps<NoInfer<T>>>[],
   easing?: Partial<Record<keyof SchemaProps<NoInfer<T>>, EasingOption>>,
-} & TimelinePlaybackDuration>
+} & TimelinePlaybackDuration & TimelinePlaybackDelay>
 
 export const useDefineTimeline = (controls: UseDefineTimelineOptions) => {
   const timelineIdToTimeline: Map<TimelineId, CompiledTimeline> = new Map()

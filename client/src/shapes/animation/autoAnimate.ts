@@ -2,6 +2,8 @@ import type { Coordinate } from "@shape/types/utility";
 import type { DefineTimeline } from "./timeline/defineTimeline";
 import type { SchemaId } from "@shape/types";
 
+const AUTO_ANIMATE_DUR_MS = 1000
+
 export const useAutoAnimateAnchorPoint = (defineTimeline: DefineTimeline) => {
   const lastPropValue: Map<
     SchemaId, { at: Coordinate } | { start: Coordinate, end: Coordinate }
@@ -25,7 +27,8 @@ export const useAutoAnimateAnchorPoint = (defineTimeline: DefineTimeline) => {
 
         defineTimeline({
           forShapes: [shapeName],
-          durationMs: 250,
+          delayMs: 1000,
+          durationMs: AUTO_ANIMATE_DUR_MS,
           easing: { at: 'in-out' },
           keyframes: [
             {
@@ -55,7 +58,8 @@ export const useAutoAnimateAnchorPoint = (defineTimeline: DefineTimeline) => {
 
         defineTimeline({
           forShapes: [shapeName],
-          durationMs: 250,
+          durationMs: AUTO_ANIMATE_DUR_MS,
+          delayMs: 1000,
           easing: { start: 'in-out', end: 'in-out' },
           keyframes: [
             {
