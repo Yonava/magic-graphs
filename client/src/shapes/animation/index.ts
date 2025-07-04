@@ -5,7 +5,7 @@ import { getAnimationProgress, getCurrentRunCount } from "./utils"
 import { useDefineTimeline } from "./timeline/defineTimeline"
 import { shapeDefaults } from "@shape/defaults/shapes"
 import { shapes } from ".."
-import { useAutoAnimateAnchorPoint } from "./autoAnimate"
+import { useAutoAnimate } from "./autoAnimate"
 
 export const useAnimatedShapes = () => {
   /**
@@ -76,7 +76,7 @@ export const useAnimatedShapes = () => {
     }
   }
 
-  const { autoAnimate, captureChanges, applyAutoAnimate } = useAutoAnimateAnchorPoint(defineTimeline, getAnimatedSchema)
+  const { autoAnimate, captureChanges, applyAutoAnimate } = useAutoAnimate(defineTimeline, getAnimatedSchema)
 
   const animatedFactory = <T>(
     factory: ShapeFactory<T>,

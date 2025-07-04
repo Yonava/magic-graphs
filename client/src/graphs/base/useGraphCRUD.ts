@@ -349,9 +349,6 @@ export const useGraphCRUD = ({
       removedEdges.push(removed);
     }
 
-    // if (fullOptions.animate)
-    // await animationController.animateOut(removedNode.id);
-
     nodes.value = nodes.value.filter((n) => n.id !== removedNode.id);
 
     updateAggregator()

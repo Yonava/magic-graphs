@@ -96,8 +96,6 @@ export const treeArrayToGraph = async (
 
   graph.bulkMoveNode(movementObj)
 
-  await new Promise((res) => setTimeout(res, 500))
-
   for (const edge of newTreeEdges) {
     graph.addEdge(edge, { animate: true });
   }

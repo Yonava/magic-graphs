@@ -6,6 +6,7 @@ const ANIMATION_DURATION_MS = 500
 const arrowEdgeAdded: Timeline<'arrow'> = {
   forShapes: ['arrow'],
   durationMs: ANIMATION_DURATION_MS,
+  delayMs: 500,
   easing: {
     lineWidth: 'in-out',
     textArea: 'in-out',
@@ -77,6 +78,12 @@ const circleNodeAdded: Timeline<'circle'> = {
       progress: 0,
       properties: {
         radius: 0,
+        textArea: (ta) => ({
+          color: tinycolor(ta.color).setAlpha(0).toRgbString(),
+          textBlock: {
+            color: 'transparent',
+          },
+        }),
       }
     }
   ]

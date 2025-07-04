@@ -22,11 +22,12 @@
     else autoAnimate.start('test');
   };
 
-  const at = ref({ x: 100, y: 0 });
+  const at = ref({ x: 500, y: 0 });
 
   const moveAtLocation = () => {
-    at.value.x = getRandomInRange(-1000, 1000);
-    at.value.y = getRandomInRange(-1000, 1000);
+    // at.value.x *= -1;
+    at.value.x = getRandomInRange(-500, 500);
+    at.value.y = getRandomInRange(-500, 500);
   };
 
   const magic = useMagicCanvas();

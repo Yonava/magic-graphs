@@ -4,7 +4,7 @@ import type { SchemaId } from "@shape/types";
 
 const AUTO_ANIMATE_DUR_MS = 500;
 
-export const useAutoAnimateAnchorPoint = (
+export const useAutoAnimate = (
   defineTimeline: DefineTimeline,
   getAnimatedSchema: (schemaId: string) => any,
 ) => {
@@ -110,4 +110,4 @@ export const useAutoAnimateAnchorPoint = (
   }
 }
 
-export type AutoAnimateControls = ReturnType<typeof useAutoAnimateAnchorPoint>['autoAnimate']
+export type AutoAnimateControls = ReturnType<typeof useAutoAnimate>['autoAnimate']
