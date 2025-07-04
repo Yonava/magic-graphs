@@ -22,14 +22,14 @@ export const useTree = (graph: Graph) => {
   };
 
   const nodeIdToBalanceFactor = ref(mapNodeIds(getBalance));
-  const nodeIdToHeight = ref(mapNodeIds(getHeight));
+  const nodeIdToHeight = ref(mapNodeIds((node) => getHeight(node) - 1));
 
   const recomputeMaps = () => {
     nodeIdToBalanceFactor.value = mapNodeIds(getBalance);
-    nodeIdToHeight.value = mapNodeIds(getHeight);
+    nodeIdToHeight.value = mapNodeIds((node) => getHeight(node) - 1);
   };
 
-  const setSim = setTreeSim(recomputeMaps);
+  const setSim = setTreeSim();
 
   const saveToHistory = () => {
     const state = JSON.parse(
@@ -77,7 +77,7 @@ export const useTree = (graph: Graph) => {
 
   const getRoot = () => {
     const { root } = tree;
-    if (!root) return undefined;
+    if (!root) return;
     return graph.getNode(root.toString());
   };
 

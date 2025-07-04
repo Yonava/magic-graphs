@@ -15,68 +15,64 @@ type SetTreeSimOptions = {
   trace: TreeTrace[];
 };
 
-export const setTreeSim = (
-  recomputeMaps: () => void
-) => (
+export const setTreeSim = () => (
   { graph, tree, trace }: SetTreeSimOptions
 ) => {
-    const { targetNodeId, activate } = useTargetNodeColor(graph);
-    activate();
+  const { targetNodeId, activate } = useTargetNodeColor(graph);
+  activate();
 
-    const step = ref(0);
+  const step = ref(0);
 
-    const runStep = () => {
-      const traceAtStep = trace[step.value];
-      if (traceAtStep === undefined) return;
+  const runStep = () => {
+    const traceAtStep = trace[step.value];
+    if (traceAtStep === undefined) return;
 
-      targetNodeId.value = undefined;
+    targetNodeId.value = undefined;
 
-      if (traceAtStep.action === 'compare') {
-        const { comparedNode: treeNodeKey } = traceAtStep;
-        targetNodeId.value = treeNodeKey.toString();
-      }
+    if (traceAtStep.action === 'compare') {
+      const { comparedNode: treeNodeKey } = traceAtStep;
+      targetNodeId.value = treeNodeKey.toString();
+    }
 
-      if (traceAtStep.action === 'insert' || traceAtStep.action === 'remove') {
-        const { targetNode: target } = traceAtStep;
-        targetNodeId.value = target.toString();
-      }
+    if (traceAtStep.action === 'insert' || traceAtStep.action === 'remove') {
+      const { targetNode: target } = traceAtStep;
+      targetNodeId.value = target.toString();
+    }
 
-      treeArrayToGraph(
-        graph,
-        traceAtStep.treeState,
-        tree.root!,
-        ROOT_POS,
-      );
-
-      recomputeMaps();
-    };
-
-    runStep();
-
-    const next = async () => {
-      ++step.value;
-      await runStep();
-    };
-
-    const prev = async () => {
-      --step.value;
-      await runStep();
-    };
-
-    const exit = async () => {
-      if (step.value !== trace.length - 1) {
-        step.value = trace.length - 1;
-        runStep();
-      }
-      activeSim.value = undefined;
-      targetNodeId.value = undefined;
-    };
-
-    activeSim.value = {
-      step: computed(() => step.value),
-      next,
-      prev,
-      exit,
-      trace: computed(() => trace),
-    };
+    treeArrayToGraph(
+      graph,
+      traceAtStep.treeState,
+      tree.root!,
+      ROOT_POS,
+    );
   };
+
+  runStep();
+
+  const next = () => {
+    ++step.value;
+    runStep();
+  };
+
+  const prev = () => {
+    --step.value;
+    runStep();
+  };
+
+  const exit = () => {
+    if (step.value !== trace.length - 1) {
+      step.value = trace.length - 1;
+      runStep();
+    }
+    activeSim.value = undefined;
+    targetNodeId.value = undefined;
+  };
+
+  activeSim.value = {
+    step: computed(() => step.value),
+    next,
+    prev,
+    exit,
+    trace: computed(() => trace),
+  };
+};

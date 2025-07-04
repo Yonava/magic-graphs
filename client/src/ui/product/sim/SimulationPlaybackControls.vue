@@ -4,7 +4,7 @@
   import { nonNullGraph as graph } from '@graph/global';
   import type { SimulationControls } from './types';
   import PlaybackButton from './PlaybackButton.vue';
-  import ProgressBar from './ProgressBar.vue';
+  import ProgressBar from './Progressbar.vue';
   import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
   import GSpreadSelect from '@ui/graph/select/GSpreadSelect.vue';
   import GButton from '@ui/graph/button/GButton.vue';

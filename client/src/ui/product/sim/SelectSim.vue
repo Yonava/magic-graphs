@@ -23,13 +23,24 @@
     const canRun = allSimulations.filter((sim) => !sim.canRun?.check());
     return [...canRun, ...cannotRun];
   });
+
+  const playButtonClicked = (
+    ev: MouseEvent,
+    togglePopover: (ev: MouseEvent) => void,
+  ) => {
+    if (props.simulations.length === 1) {
+      emits('simulation-selected', props.simulations[0]);
+      return;
+    }
+    togglePopover(ev);
+  };
 </script>
 
 <template>
   <CPopover>
     <template #activator="{ toggle, isOpen }">
       <GButton
-        @click="toggle"
+        @click="(ev) => playButtonClicked(ev, toggle)"
         :tertiary="isOpen"
         :disabled="disabled"
         class="h-14 w-14 rounded-full"
