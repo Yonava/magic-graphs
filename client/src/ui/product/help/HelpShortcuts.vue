@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import HelpSection from './HelpSection.vue';
-  import { computed } from 'vue';
   import { nonNullGraph as graph } from '@graph/global';
   import HelpShortcutKey from './HelpShortcutKey.vue';
   import type { Shortcut } from '@graph/plugins/shortcut/types';
@@ -17,9 +16,7 @@
 
   const { activeShortcuts } = graph.value.shortcut;
 
-  const shortcuts = computed(() =>
-    Object.assign(activeShortcuts, PRODUCT_SHORTCUTS),
-  );
+  const shortcuts = Object.assign(activeShortcuts, PRODUCT_SHORTCUTS);
 </script>
 
 <template>

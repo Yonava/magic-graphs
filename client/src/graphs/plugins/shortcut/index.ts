@@ -1,10 +1,8 @@
-import { computed } from 'vue';
 import type { BaseGraph } from '@graph/base';
 import type { GraphHistoryPlugin } from '../history';
 import type { GraphFocusPlugin } from '../focus';
 import type { GraphAnnotationPlugin } from '../annotations';
 import keys from 'ctrl-keys';
-import type { Key } from 'ctrl-keys';
 import type { PlatformShortcuts } from './types';
 
 export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
@@ -48,6 +46,7 @@ export const useShortcuts = (
   const defaultShortcutTriggerEscape = () => graph.focus.reset();
   const defaultShortcutTriggerSelectAll = () => graph.focus.all();
   const defaultShortcutTriggerDelete = () => {
+    console.log('default delete')
     if (settings.value.interactive === false) return;
     graph.bulkRemoveNode([...graph.focus.focusedItemIds.value]);
     graph.bulkRemoveEdge([...graph.focus.focusedItemIds.value]);
@@ -57,106 +56,96 @@ export const useShortcuts = (
    * get the function to run based on the keyboard shortcut setting
    */
   const getFn = (defaultFn: () => void, setting: boolean | (() => void)) => {
-    if (setting === false) return () => {};
+    if (setting === false) return () => { };
     if (typeof setting === 'function') return setting;
     return defaultFn;
   };
 
-  const triggerRedo = computed(() =>
-    getFn(defaultShortcutTriggerRedo, settings.value.shortcutRedo),
-  );
-  const triggerUndo = computed(() =>
-    getFn(defaultShortcutTriggerUndo, settings.value.shortcutUndo),
-  );
-  const triggerEscape = computed(() =>
-    getFn(defaultShortcutTriggerEscape, settings.value.shortcutEscape),
-  );
-  const triggerSelectAll = computed(() =>
-    getFn(defaultShortcutTriggerSelectAll, settings.value.shortcutSelectAll),
-  );
-  const triggerDelete = computed(() =>
-    getFn(defaultShortcutTriggerDelete, settings.value.shortcutDelete),
-  );
-  const triggerZoomIn = computed(() =>
-    getFn(
-      graph.magicCanvas.camera.actions.zoomIn,
-      settings.value.shortcutZoomIn,
-    ),
-  );
-  const triggerZoomOut = computed(() =>
-    getFn(
-      graph.magicCanvas.camera.actions.zoomOut,
-      settings.value.shortcutZoomOut,
-    ),
-  );
+  const triggerRedo = { fn: () => console.warn('not implemented') }
+  const triggerUndo = { fn: () => console.warn('not implemented') }
+  const triggerEscape = { fn: () => console.warn('not implemented') }
+  const triggerSelectAll = { fn: () => console.warn('not implemented') }
+  const triggerDelete = { fn: () => console.warn('not implemented') }
+  const triggerZoomIn = { fn: () => console.warn('not implemented') }
+  const triggerZoomOut = { fn: () => console.warn('not implemented') }
 
-  const allShortcuts = computed<PlatformShortcuts>(() => ({
+  const updateBindings = () => {
+    triggerRedo.fn = getFn(defaultShortcutTriggerRedo, settings.value.shortcutRedo)
+    triggerUndo.fn = getFn(defaultShortcutTriggerUndo, settings.value.shortcutUndo)
+    triggerEscape.fn = getFn(defaultShortcutTriggerEscape, settings.value.shortcutEscape)
+    triggerSelectAll.fn = getFn(defaultShortcutTriggerSelectAll, settings.value.shortcutSelectAll)
+    triggerDelete.fn = getFn(defaultShortcutTriggerDelete, graph.settings.value.shortcutDelete)
+    triggerZoomIn.fn = getFn(graph.magicCanvas.camera.actions.zoomIn, settings.value.shortcutZoomIn)
+    triggerZoomOut.fn = getFn(graph.magicCanvas.camera.actions.zoomOut, settings.value.shortcutZoomOut)
+  }
+
+  const allShortcuts: PlatformShortcuts = {
     Mac: {
       Undo: {
         binding: 'meta+z',
-        trigger: triggerUndo.value,
+        trigger: () => triggerUndo.fn(),
       },
       Redo: {
         binding: 'meta+shift+z',
-        trigger: triggerRedo.value,
+        trigger: () => triggerRedo.fn(),
       },
       Delete: {
         binding: 'backspace',
-        trigger: triggerDelete.value,
+        trigger: () => triggerDelete.fn(),
       },
       'Select All': {
         binding: 'meta+a',
-        trigger: triggerSelectAll.value,
+        trigger: () => triggerSelectAll.fn(),
       },
       Deselect: {
         binding: 'esc',
-        trigger: triggerEscape.value,
+        trigger: () => triggerEscape.fn(),
       },
       'Zoom In': {
         binding: '=',
-        trigger: triggerZoomIn.value,
+        trigger: () => triggerZoomIn.fn(),
       },
       'Zoom Out': {
         binding: '-',
-        trigger: triggerZoomOut.value,
+        trigger: () => triggerZoomOut.fn(),
       },
     },
     Windows: {
       Undo: {
         binding: 'ctrl+z',
-        trigger: triggerUndo.value,
+        trigger: () => triggerUndo.fn(),
       },
       Redo: {
         binding: 'ctrl+shift+z',
-        trigger: triggerRedo.value,
+        trigger: () => triggerRedo.fn(),
       },
       Delete: {
         binding: 'backspace',
-        trigger: triggerDelete.value,
+        trigger: () => triggerDelete.fn(),
       },
       'Select All': {
         binding: 'ctrl+a',
-        trigger: triggerSelectAll.value,
+        trigger: () => triggerSelectAll.fn(),
       },
       Deselect: {
         binding: 'escape',
-        trigger: triggerEscape.value,
+        trigger: () => triggerEscape.fn(),
       },
       'Zoom In': {
         binding: '=',
-        trigger: triggerZoomIn.value,
+        trigger: () => triggerZoomIn.fn(),
       },
       'Zoom Out': {
         binding: '-',
-        trigger: triggerZoomOut.value,
+        trigger: () => triggerZoomOut.fn(),
       },
     },
-  }));
+  }
 
   // adds the keyboard shortcuts to the ctrlKeysHandler
-  const shortcutValues = Object.values(allShortcuts.value[USER_PLATFORM]);
+  const shortcutValues = Object.values(allShortcuts[USER_PLATFORM]);
   for (const keyboardShortcut of shortcutValues) {
-    const typedBinding = keyboardShortcut.binding as Key;
+    const typedBinding = keyboardShortcut.binding;
     ctrlKeysHandler.add(typedBinding, (e) => {
       e?.preventDefault();
       keyboardShortcut.trigger();
@@ -165,10 +154,12 @@ export const useShortcuts = (
 
   const activate = () => {
     graph.subscribe('onKeyDown', ctrlKeysHandler.handle);
+    graph.subscribe('onSettingsChange', updateBindings);
   };
 
   const deactivate = () => {
     graph.unsubscribe('onKeyDown', ctrlKeysHandler.handle);
+    graph.unsubscribe('onSettingsChange', updateBindings);
   };
 
   if (settings.value.shortcuts) activate();
@@ -183,7 +174,7 @@ export const useShortcuts = (
      * shortcuts computed based on the platform (mac/windows) the user
      * is currently on
      */
-    activeShortcuts: allShortcuts.value[USER_PLATFORM],
+    activeShortcuts: allShortcuts[USER_PLATFORM],
     /**
      * trigger functions computed to mirror the keyboard shortcuts.
      * invoking these are the API equivalent to pressing the keyboard shortcuts
