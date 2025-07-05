@@ -1,19 +1,24 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import colors from '@colors';
+  import colors, { Color } from '@colors';
   import { cross } from '@shapes/cross';
   import type { ShapeFactory, WithId } from '@shape/types';
   import { useAnimatedShapes } from '@shape/animation';
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import { useMagicCanvas } from '@canvas/index';
   import Button from '@ui/core/button/Button.vue';
-  import type { CircleSchema } from '@shape/shapes/circle/types';
   import { getRandomInRange } from '@utils/random';
+  import type { LineSchema } from '@shape/shapes/line/types';
+  import type { CircleSchema } from '@shape/shapes/circle/types';
 
   const { autoAnimate, shapes } = useAnimatedShapes();
 
+  autoAnimate.start('test');
+
+  // const paintedShapes = ref<ShapeFactory<WithId<LineSchema>>[]>([]);
   const paintedShapes = ref<ShapeFactory<WithId<CircleSchema>>[]>([]);
 
+  // paintedShapes.value.push(shapes.arrow);
   paintedShapes.value.push(shapes.circle);
 
   const toggleAutoAnimate = () => {
@@ -22,21 +27,36 @@
     else autoAnimate.start('test');
   };
 
-  const at = ref({ x: 500, y: 0 });
+  const start = ref({ x: 500, y: 0 });
+  const end = ref({ x: 0, y: 0 });
+  const lineWidth = ref(20);
+  const fillColor = ref<Color | undefined>(undefined);
 
   const moveAtLocation = () => {
-    // at.value.x *= -1;
-    at.value.x = getRandomInRange(-500, 500);
-    at.value.y = getRandomInRange(-500, 500);
+    start.value.x = getRandomInRange(-500, 500);
+    start.value.y = getRandomInRange(-500, 500);
+
+    end.value.x = getRandomInRange(-500, 500);
+    end.value.y = getRandomInRange(-500, 500);
+
+    lineWidth.value = getRandomInRange(10, 100);
+    fillColor.value = fillColor.value ? undefined : colors.RED_700;
   };
 
   const magic = useMagicCanvas();
   magic.draw.content.value = (ctx) =>
     paintedShapes.value.forEach((factory) =>
+      // factory({
+      //   id: 'test',
+      //   start: start.value,
+      //   end: end.value,
+      //   lineWidth: lineWidth.value,
+      // }).draw(ctx),
       factory({
         id: 'test',
-        at: at.value,
-        radius: 50,
+        radius: lineWidth.value,
+        at: end.value,
+        fillColor: fillColor.value,
       }).draw(ctx),
     );
 

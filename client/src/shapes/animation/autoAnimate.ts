@@ -1,36 +1,39 @@
-import type { Coordinate } from "@shape/types/utility";
 import type { DefineTimeline } from "./timeline/defineTimeline";
 import type { SchemaId } from "@shape/types";
 
 const AUTO_ANIMATE_DUR_MS = 500;
+const AUTO_ANIMATED_PROPERTIES = new Set(['at', 'start', 'end', 'lineWidth', 'radius', 'fillColor'])
 
 export const useAutoAnimate = (
   defineTimeline: DefineTimeline,
   getAnimatedSchema: (schemaId: string) => any,
 ) => {
-  const lastPropValue: Map<
-    SchemaId, { at: Coordinate } | { start: Coordinate } | { end: Coordinate }
+  const lastCapturedSchema: Map<
+    SchemaId, Partial<Record<string, any>>
   > = new Map();
-  const isAutoAnimating: Set<SchemaId> = new Set();
-  const stopRunningTimeline: Map<`${SchemaId}-${string}`, () => void> = new Map()
+  const autoAnimatingSchemas: Set<SchemaId> = new Set();
+  const activeAnimationStopper: Map<`${SchemaId}-${string}`, () => void> = new Map()
+
+  const isEqual = (val1: any, val2: any) => {
+    if (typeof val1 !== typeof val2) return false;
+    if (typeof val1 !== 'object' || val1 === null || val2 === null) {
+      return val1 === val2;
+    }
+    return JSON.stringify(val1) === JSON.stringify(val2);
+  }
+
+  const clone = <T>(obj: T): T => JSON.parse(JSON.stringify(obj)) as T;
 
   return {
-    captureChanges: (schema: any) => {
+    captureSchemaState: (schema: any) => {
       if (!schema?.id) return
-      if (schema?.at) lastPropValue.set(schema.id, { at: { ...schema.at } })
-      if (schema?.start) lastPropValue.set(schema.id, { start: { ...schema.start } })
-      if (schema?.end) lastPropValue.set(schema.id, { end: { ...schema.end } })
+      lastCapturedSchema.set(schema.id, clone(schema))
     },
-    applyAutoAnimate: (schema: any, prop: any, factory: any, shapeName: any) => {
-      if (!isAutoAnimating.has(schema.id)) return
+    applyAutoAnimation: (schema: any, shapeName: any) => {
+      if (!autoAnimatingSchemas.has(schema.id)) return
 
-      const sortOutCoord = (currCoords: Coordinate, prevCoords: Coordinate, propName: string) => {
-        if (currCoords.x === prevCoords.x && currCoords.y === prevCoords.y) return
-
-        const activeSchema = getAnimatedSchema(schema.id)
-        const startCoords: Coordinate = activeSchema ? activeSchema[propName] : prevCoords;
-
-        const stopper = stopRunningTimeline.get(`${schema.id}-${propName}`)
+      const animateProperty = (startVal: any, endVal: any, propName: string) => {
+        const stopper = activeAnimationStopper.get(`${schema.id}-${propName}`)
         if (stopper) stopper()
 
         const { play, stop } = defineTimeline({
@@ -40,40 +43,54 @@ export const useAutoAnimate = (
           keyframes: [
             {
               progress: 0,
-              properties: { [propName]: { ...startCoords } }
+              properties: { [propName]: clone(startVal) }
             },
             {
               progress: 1,
-              properties: { [propName]: { ...currCoords } }
+              properties: { [propName]: clone(endVal) }
             }
           ],
         })
 
         play({ shapeId: schema.id, runCount: 1 })
-        stopRunningTimeline.set(`${schema.id}-${propName}`, () => stop({ shapeId: schema.id }))
-
-        return factory({
-          ...schema,
-          [propName]: startCoords,
-        })[prop]
+        activeAnimationStopper.set(`${schema.id}-${propName}`, () => stop({ shapeId: schema.id }))
       }
 
-      const lastData = lastPropValue.get(schema.id)
-      if (!lastData) return console.warn('no last data')
+      const previousSchema = lastCapturedSchema.get(schema.id)
+      if (!previousSchema) return console.warn('no previous schema')
 
-      if (lastData) {
-        const [[propName, coord]] = Object.entries(lastData)
-        return sortOutCoord(schema[propName], coord, propName)
+      // if the schema is being animated, we need to intercept where the property
+      // is currently at in the animation instead of the last captured state
+      const schemaAnimated = getAnimatedSchema(schema.id)
+
+      const initialProperties: Record<string, any> = {}
+      for (const [propName, propVal] of Object.entries(previousSchema)) {
+        if (!AUTO_ANIMATED_PROPERTIES.has(propName)) continue
+
+        const endVal = schema[propName];
+        if (isEqual(propVal, endVal)) continue
+
+        const startVal = schemaAnimated ? schemaAnimated[propName] : propVal;
+        animateProperty(startVal, endVal, propName)
+
+        initialProperties[propName] = startVal
+      }
+
+      if (Object.keys(initialProperties).length === 0) return
+
+      return {
+        ...schema,
+        ...initialProperties,
       }
     },
     autoAnimate: {
       start: (id: SchemaId) => {
-        isAutoAnimating.add(id)
+        autoAnimatingSchemas.add(id)
       },
       stop: (id: SchemaId) => {
-        isAutoAnimating.delete(id)
+        autoAnimatingSchemas.delete(id)
       },
-      isActive: (id: SchemaId) => isAutoAnimating.has(id)
+      isActive: (id: SchemaId) => autoAnimatingSchemas.has(id)
     }
   }
 }
