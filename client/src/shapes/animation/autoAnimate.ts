@@ -9,93 +9,61 @@ export const useAutoAnimate = (
   getAnimatedSchema: (schemaId: string) => any,
 ) => {
   const lastPropValue: Map<
-    SchemaId, { at: Coordinate } | { start: Coordinate, end: Coordinate }
+    SchemaId, { at: Coordinate } | { start: Coordinate } | { end: Coordinate }
   > = new Map();
   const isAutoAnimating: Set<SchemaId> = new Set();
+  const stopRunningTimeline: Map<`${SchemaId}-${string}`, () => void> = new Map()
 
   return {
     captureChanges: (schema: any) => {
       if (!schema?.id) return
       if (schema?.at) lastPropValue.set(schema.id, { at: { ...schema.at } })
-      if (schema?.start && schema?.end) lastPropValue.set(schema.id, {
-        start: { ...schema.start },
-        end: { ...schema.end },
-      })
+      if (schema?.start) lastPropValue.set(schema.id, { start: { ...schema.start } })
+      if (schema?.end) lastPropValue.set(schema.id, { end: { ...schema.end } })
     },
     applyAutoAnimate: (schema: any, prop: any, factory: any, shapeName: any) => {
       if (!isAutoAnimating.has(schema.id)) return
 
-      const sortOutAt = (currCoords: Coordinate, prevCoords: Coordinate) => {
+      const sortOutCoord = (currCoords: Coordinate, prevCoords: Coordinate, propName: string) => {
         if (currCoords.x === prevCoords.x && currCoords.y === prevCoords.y) return
 
         const activeSchema = getAnimatedSchema(schema.id)
-        const startCoords: Coordinate = activeSchema ? activeSchema.at : prevCoords;
+        const startCoords: Coordinate = activeSchema ? activeSchema[propName] : prevCoords;
 
-        defineTimeline({
+        const stopper = stopRunningTimeline.get(`${schema.id}-${propName}`)
+        if (stopper) stopper()
+
+        const { play, stop } = defineTimeline({
           forShapes: [shapeName],
           durationMs: AUTO_ANIMATE_DUR_MS,
-          easing: { at: 'in-out' },
+          easing: { [propName]: 'in-out' },
           keyframes: [
             {
               progress: 0,
-              properties: { at: { ...startCoords } }
+              properties: { [propName]: { ...startCoords } }
             },
             {
               progress: 1,
-              properties: { at: { ...currCoords } }
+              properties: { [propName]: { ...currCoords } }
             }
-          ]
-        }).play({ shapeId: schema.id, runCount: 1 })
+          ],
+        })
+
+        play({ shapeId: schema.id, runCount: 1 })
+        stopRunningTimeline.set(`${schema.id}-${propName}`, () => stop({ shapeId: schema.id }))
 
         return factory({
           ...schema,
-          at: startCoords,
-        })[prop]
-      }
-
-      const sortOutStartEnd = (
-        curr: { start: Coordinate, end: Coordinate },
-        prev: { start: Coordinate, end: Coordinate },
-      ) => {
-        const sameStart = curr.start.x === prev.start.x;
-        const sameEnd = curr.end.x === prev.end.x;
-        if (sameStart && sameEnd) return
-
-        const activeSchema = getAnimatedSchema(schema.id)
-        const start: { start: Coordinate, end: Coordinate } = activeSchema ? { start: activeSchema.start, end: activeSchema.end } : prev;
-
-        defineTimeline({
-          forShapes: [shapeName],
-          durationMs: AUTO_ANIMATE_DUR_MS,
-          easing: { start: 'in-out', end: 'in-out' },
-          keyframes: [
-            {
-              progress: 0,
-              properties: { start: { ...start.start }, end: { ...start.end } }
-            },
-            {
-              progress: 1,
-              properties: { start: curr.start, end: curr.end }
-            }
-          ]
-        }).play({ shapeId: schema.id, runCount: 1 })
-
-        return factory({
-          ...schema,
-          start: start.start,
-          end: start.end,
+          [propName]: startCoords,
         })[prop]
       }
 
       const lastData = lastPropValue.get(schema.id)
       if (!lastData) return console.warn('no last data')
 
-      if (schema?.at && ('at' in lastData)) {
-        return sortOutAt(schema.at, lastData.at)
-      }
-
-      if (schema?.start && schema?.end && ('start' in lastData)) {
-        return sortOutStartEnd(schema, lastData)
+      if (lastData) {
+        const [[propName, coord]] = Object.entries(lastData)
+        return sortOutCoord(schema[propName], coord, propName)
       }
     },
     autoAnimate: {
