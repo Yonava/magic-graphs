@@ -2,22 +2,22 @@
   import type { TreeSim } from '../state';
   import GButton from '@ui/graph/button/GButton.vue';
   import GWell from '@ui/graph/GWell.vue';
-  // import { useTreeTraceExplainer } from './useTreeTraceExplainer';
+  import { useTreeTraceExplainer } from './useTreeTraceExplainer';
 
   const props = defineProps<{
     controls: TreeSim;
   }>();
 
-  // const explainer = useTreeTraceExplainer();
+  const explainer = useTreeTraceExplainer();
 </script>
 
 <template>
   <div class="">
-    <!-- <div>
+    <div>
       <h1 class="mb-2 font-bold text-2xl">
         {{ explainer ?? 'N/A' }}
       </h1>
-    </div> -->
+    </div>
     <div>
       <GWell
         secondary
