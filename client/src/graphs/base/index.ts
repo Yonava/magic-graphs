@@ -1,4 +1,4 @@
-import { deepMerge } from './../../utils/deepMerge';
+import { deepMerge } from '@utils/deepMerge';
 import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 import type { GNode, GEdge, Aggregator } from '@graph/types';
@@ -133,7 +133,7 @@ export const useBaseGraph = (
   const { shapes, autoAnimate, defineTimeline } = useAnimatedShapes()
   const animations: GraphAnimations = deepMerge(
     getDefaultGraphAnimations(defineTimeline),
-    startupSettings.animations,
+    settings.value.animations(defineTimeline),
   )
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {

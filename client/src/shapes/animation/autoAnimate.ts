@@ -1,7 +1,7 @@
 import type { DefineTimeline } from "./timeline/defineTimeline";
 import type { SchemaId } from "@shape/types";
 
-const AUTO_ANIMATE_DUR_MS = 500;
+export const AUTO_ANIMATE_DURATION_MS = 500;
 const AUTO_ANIMATED_PROPERTIES = new Set(['at', 'start', 'end', 'lineWidth', 'radius', 'fillColor'])
 
 export const useAutoAnimate = (
@@ -38,7 +38,7 @@ export const useAutoAnimate = (
 
         const { play, stop } = defineTimeline({
           forShapes: [shapeName],
-          durationMs: AUTO_ANIMATE_DUR_MS,
+          durationMs: AUTO_ANIMATE_DURATION_MS,
           easing: { [propName]: 'in-out' },
           keyframes: [
             {
