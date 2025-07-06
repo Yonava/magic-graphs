@@ -36,11 +36,11 @@
     start.value.x = getRandomInRange(-500, 500);
     start.value.y = getRandomInRange(-500, 500);
 
-    end.value.x = getRandomInRange(-500, 500);
-    end.value.y = getRandomInRange(-500, 500);
+    end.value.x = getRandomInRange(-200, 200);
+    end.value.y = getRandomInRange(-200, 200);
 
     lineWidth.value = getRandomInRange(10, 100);
-    fillColor.value = fillColor.value ? undefined : colors.RED_700;
+    fillColor.value = `rgb(${getRandomInRange(0, 255)}, ${getRandomInRange(0, 255)}, ${getRandomInRange(0, 255)})`;
   };
 
   const magic = useMagicCanvas();

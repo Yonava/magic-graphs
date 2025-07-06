@@ -3,10 +3,9 @@ import tinycolor from "tinycolor2";
 
 const ANIMATION_DURATION_MS = 500
 
-const arrowEdgeAdded: Timeline<'arrow'> = {
+export const arrowEdgeAdded: Timeline<'arrow'> = {
   forShapes: ['arrow'],
   durationMs: ANIMATION_DURATION_MS,
-  delayMs: 500,
   easing: {
     lineWidth: 'in-out',
     textArea: 'in-out',
@@ -46,7 +45,7 @@ const arrowEdgeAdded: Timeline<'arrow'> = {
   ],
 };
 
-const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
+export const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
   forShapes: ['line', 'uturn'],
   durationMs: ANIMATION_DURATION_MS,
   easing: {
@@ -69,7 +68,7 @@ const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
   ],
 };
 
-const circleNodeAdded: Timeline<'circle'> = {
+export const circleNodeAdded: Timeline<'circle'> = {
   forShapes: ['circle'],
   durationMs: ANIMATION_DURATION_MS,
   easing: { radius: 'in-out' },
@@ -89,7 +88,7 @@ const circleNodeAdded: Timeline<'circle'> = {
   ]
 }
 
-export const getGraphAnimations = (defineTimeline: DefineTimeline) => ({
+export const getDefaultGraphAnimations = (defineTimeline: DefineTimeline) => ({
   arrow: {
     edgeAdded: defineTimeline(arrowEdgeAdded),
   },
@@ -104,4 +103,4 @@ export const getGraphAnimations = (defineTimeline: DefineTimeline) => ({
   }
 })
 
-export type GraphAnimations = ReturnType<typeof getGraphAnimations>
+export type GraphAnimations = ReturnType<typeof getDefaultGraphAnimations>

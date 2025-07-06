@@ -28,7 +28,7 @@ import { useGraphCursor } from './useGraphCursor';
 import { useAnimatedShapes } from '@shape/animation';
 import { usePluginHoldController } from './usePluginHold';
 import type { MagicCanvasProps } from '@canvas/types';
-import { getGraphAnimations } from './animations';
+import { getDefaultGraphAnimations } from './animations';
 
 export const useBaseGraph = (
   magicCanvas: MagicCanvasProps,
@@ -130,7 +130,7 @@ export const useBaseGraph = (
   } = useAggregator({ emit });
 
   const { shapes, autoAnimate, defineTimeline } = useAnimatedShapes()
-  const animations = getGraphAnimations(defineTimeline)
+  const animations = getDefaultGraphAnimations(defineTimeline)
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const options = {

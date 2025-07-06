@@ -8,12 +8,6 @@ export default defineConfig({
   test: {
     silent: true,
     environment: 'jsdom',
-    browser: {
-      enabled: true,
-      name: 'chromium',
-      provider: 'playwright',
-      headless: true,
-    },
   },
   build: {
     outDir: '../server/dist/public',
