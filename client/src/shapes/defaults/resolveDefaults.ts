@@ -16,10 +16,17 @@ export const resolveDefaults = <
   TDefaults extends Partial<TSchema>,
 >(defaults: TDefaults) => (schema: TSchema) => {
   const { textArea, ...rest } = schema
+
+  const cleanedRest = Object.fromEntries(
+    Object.entries(rest).filter(
+      ([key, value]) => !(key in defaults && value === undefined)
+    )
+  )
+
   const resolvedSchema: WithDefaults<TSchema, TDefaults> = {
     ...defaults,
     ...resolveTextArea(textArea),
-    ...rest,
+    ...cleanedRest,
   }
 
   return resolvedSchema

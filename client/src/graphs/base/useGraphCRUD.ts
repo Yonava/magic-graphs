@@ -11,6 +11,7 @@ import {
   MOVE_NODE_OPTIONS_DEFAULTS,
   REMOVE_EDGE_OPTIONS_DEFAULTS,
   REMOVE_NODE_OPTIONS_DEFAULTS,
+  BULK_MOVE_NODE_OPTIONS_DEFAULTS,
 } from './types';
 import type {
   AddEdgeOptions,
@@ -27,6 +28,8 @@ import { nodeLetterLabelGetter } from '@graph/labels';
 import type { GraphSettings } from '@graph/settings';
 import type { AggregatorProps } from './useAggregator';
 import type { GraphAnimations } from './animations';
+import type { Coordinate } from '@shape/types/utility';
+import type { AutoAnimateControls } from '@shape/animation/autoAnimate';
 
 type GraphCRUDOptions = {
   emit: Emitter;
@@ -38,7 +41,19 @@ type GraphCRUDOptions = {
   updateGraphAtMousePosition: () => void,
   updateAggregator: AggregatorProps['updateAggregator'],
   animations: GraphAnimations,
+  autoAnimate: AutoAnimateControls,
 };
+
+export type GNodeMoveInstruction = {
+  /**
+   * the target nodes `id`
+   */
+  nodeId: GNode['id'];
+  /**
+   * the coordinates the target node will be moved to
+   */
+  coords: Coordinate;
+}
 
 export const useGraphCRUD = ({
   nodes,
@@ -50,6 +65,7 @@ export const useGraphCRUD = ({
   updateGraphAtMousePosition,
   updateAggregator,
   animations,
+  autoAnimate,
 }: GraphCRUDOptions) => {
   // READ OPERATIONS
 
@@ -248,7 +264,7 @@ export const useGraphCRUD = ({
    */
   const moveNode = (
     id: GNode['id'],
-    coords: { x: number; y: number },
+    coords: Coordinate,
     options: Partial<MoveNodeOptions> = {},
   ) => {
     const node = getNode(id);
@@ -263,6 +279,28 @@ export const useGraphCRUD = ({
     node.y = coords.y;
     emit('onNodeMoved', node, fullOptions);
   };
+
+  const bulkMoveNode = async (
+    nodeMovements: GNodeMoveInstruction[],
+    options: Partial<MoveNodeOptions> = {},
+  ) => {
+    const fullOptions = {
+      ...BULK_MOVE_NODE_OPTIONS_DEFAULTS,
+      ...options,
+    };
+
+    for (const { id } of edges.value) autoAnimate.start(id)
+    for (const { nodeId } of nodeMovements) autoAnimate.start(nodeId)
+
+    for (const { nodeId, coords } of nodeMovements) {
+      moveNode(nodeId, coords, fullOptions)
+    }
+
+    await new Promise((res) => setTimeout(res, 250));
+
+    for (const { id } of edges.value) autoAnimate.stop(id)
+    for (const { nodeId } of nodeMovements) autoAnimate.stop(nodeId)
+  }
 
   const editEdgeLabel = (
     edgeId: GEdge['id'],
@@ -293,7 +331,7 @@ export const useGraphCRUD = ({
    * @param options - override default effects (onNodeRemoved event)
    * @returns the removed node along with its removed edges or undefined if not removed
    */
-  const removeNode = async (
+  const removeNode = (
     id: GNode['id'],
     options: Partial<RemoveNodeOptions> = {},
   ) => {
@@ -313,17 +351,13 @@ export const useGraphCRUD = ({
 
     const removedEdges: GEdge[] = [];
     for (const edge of edgesToRemove) {
-      const removed = await removeEdge(edge.id, {
+      const removed = removeEdge(edge.id, {
         broadcast: false,
         history: false,
-        animate: fullOptions.animate,
       });
       if (!removed) continue;
       removedEdges.push(removed);
     }
-
-    // if (fullOptions.animate)
-    // await animationController.animateOut(removedNode.id);
 
     nodes.value = nodes.value.filter((n) => n.id !== removedNode.id);
 
@@ -351,10 +385,9 @@ export const useGraphCRUD = ({
     const removedEdges: GEdge[] = [];
 
     for (const nodeId of nodeIds) {
-      const removed = await removeNode(nodeId, {
+      const removed = removeNode(nodeId, {
         broadcast: false,
         history: false,
-        animate: fullOptions.animate,
       });
       if (!removed) continue;
       const [removedNode, removedNodeEdges] = removed;
@@ -373,7 +406,7 @@ export const useGraphCRUD = ({
    * @param options - override default effects (onEdgeRemoved event)
    * @returns the removed edge or undefined if not removed
    */
-  const removeEdge = async (
+  const removeEdge = (
     edgeId: GEdge['id'],
     options: Partial<RemoveEdgeOptions> = {},
   ) => {
@@ -384,8 +417,6 @@ export const useGraphCRUD = ({
       ...REMOVE_EDGE_OPTIONS_DEFAULTS,
       ...options,
     };
-
-    // if (fullOptions.animate) await animationController.animateOut(edge.id);
 
     edges.value = edges.value.filter((e) => e.id !== edge.id);
 
@@ -398,7 +429,7 @@ export const useGraphCRUD = ({
     return edge;
   };
 
-  const bulkRemoveEdge = async (
+  const bulkRemoveEdge = (
     edgeIds: GEdge['id'][],
     options: Partial<RemoveEdgeOptions> = {},
   ) => {
@@ -412,10 +443,9 @@ export const useGraphCRUD = ({
     const removedEdges: GEdge[] = [];
 
     for (const edgeId of edgeIds) {
-      const removed = await removeEdge(edgeId, {
+      const removed = removeEdge(edgeId, {
         broadcast: false,
         history: false,
-        animate: fullOptions.animate,
       });
       if (!removed) continue;
       removedEdges.push(removed);
@@ -434,6 +464,8 @@ export const useGraphCRUD = ({
     addEdge,
 
     moveNode,
+    bulkMoveNode,
+
     editEdgeLabel,
 
     removeNode,

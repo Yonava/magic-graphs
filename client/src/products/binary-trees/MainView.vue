@@ -26,10 +26,14 @@
   };
 
   graph.settings.value.shortcutUndo = () => {
+    if (activeSim.value) return;
     tree.undo();
   };
 
-  graph.settings.value.shortcutRedo = () => tree.redo();
+  graph.settings.value.shortcutRedo = () => {
+    if (activeSim.value) return;
+    tree.redo();
+  };
 </script>
 
 <template>

@@ -16,6 +16,7 @@ const info: ProductInfo = {
     category: 'data structures',
   },
   state,
+  simulations: () => []
 };
 
 export default info;

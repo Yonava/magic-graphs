@@ -10,7 +10,7 @@
 
 <template>
   <GraphProduct v-bind="graphWithCanvas">
-    <template #center-right-sim>
+    <template #center-left-sim>
       <div class="bg-gray-800 bg-opacity-80 p-2 rounded-xl overflow-auto">
         <CostDisplay :key="String(isRunning)" />
       </div>

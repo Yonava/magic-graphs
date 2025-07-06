@@ -37,7 +37,7 @@ const traceActionToExplainer: ActionMap = {
     throw 'invalid balance method';
   },
   compare: (trace) => {
-    const { target, treeNodeKey: against } = trace;
+    const { targetNode: target, comparedNode: against } = trace;
     if (target > against) {
       return `${target} Is Greater Than ${against}, So We Go Right`;
     }
@@ -52,8 +52,8 @@ const traceActionToExplainer: ActionMap = {
 
     return `Found ${target}`;
   },
-  insert: (trace) => `At A Leaf Position, So We Insert ${trace.target}`,
-  remove: (trace) => `Removing ${trace.target}`,
+  insert: (trace) => `At A Leaf Position, So We Insert ${trace.targetNode}`,
+  remove: (trace) => `Removing ${trace.targetNode}`,
 };
 
 const getExplainerFromTrace = (trace: TreeTrace) => {

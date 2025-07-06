@@ -1,5 +1,5 @@
 import type { AnimationKeyframe } from "@shape/animation/interpolation/types";
-import type { Timeline, TimelinePlaybackDuration } from "../defineTimeline";
+import type { Timeline, TimelinePlaybackDelay, TimelinePlaybackDuration } from "../defineTimeline";
 import { compileNumericProp } from "./number";
 import { compileColorProp } from "./color";
 import { compileTextAreaProp } from "./textArea";
@@ -22,7 +22,7 @@ export type CompiledTimeline = {
    * the shapes that this animated timeline is valid for
    */
   validShapes: Set<ShapeName>
-} & TimelinePlaybackDuration;
+} & TimelinePlaybackDuration & Required<TimelinePlaybackDelay>;
 
 /**
  * raw keyframe = keyframe in the pre-compiled timeline, which could
@@ -56,6 +56,7 @@ const DEFAULT_EASING: EasingOption = 'linear'
 export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
   const tl: CompiledTimeline = {
     durationMs: timeline.durationMs,
+    delayMs: timeline?.delayMs ?? 0,
     properties: {},
     validShapes: new Set(timeline.forShapes),
   }

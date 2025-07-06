@@ -19,7 +19,6 @@ export const useTreeHistory = (graph: Graph) => {
   };
 
   const undo = () => {
-    console.log(undoStack.value);
     if (undoStack.value.length === 0) return;
     const state = undoStack.value.pop();
     if (!state) return;

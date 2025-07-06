@@ -3,6 +3,7 @@ import type { TreeNodeKeyArray } from './avl';
 import type { TreeNode } from './treeNode';
 import type { GEdge, Graph } from '@graph/types';
 import { getTreeIndexToPosition } from '@product/sandbox/ui/tree/getTreeBinaryPos';
+import type { GNodeMoveInstruction } from '@graph/base/useGraphCRUD';
 
 const newEdge = (from: number, to: number) => ({
   from: from.toString(),
@@ -28,13 +29,14 @@ const edgesInTree = (treeArray: TreeNodeKeyArray) => {
   return edges;
 };
 
-export const treeArrayToGraph = async (
+export const treeArrayToGraph = (
   graph: Graph,
   treeArray: TreeNodeKeyArray,
   treeRoot: TreeNode,
   rootPosition: Coordinate,
 ) => {
   const newTreeEdges = edgesInTree(treeArray);
+
   const edgesNotInNewTree = graph.edges.value.filter(
     (edge) => !newTreeEdges.some((newEdge) => newEdge.id === edge.id),
   );
@@ -43,11 +45,9 @@ export const treeArrayToGraph = async (
     (node) => !treeArray.includes(parseInt(node.id)),
   );
 
-  await Promise.all(
-    nodesNotInNewTree.map((node) =>
-      graph.removeNode(node.id, { animate: true }),
-    ),
-  );
+  for (const node of nodesNotInNewTree) {
+    graph.removeNode(node.id)
+  }
 
   // the tree is empty and all the nodes have been removed
   if (!treeRoot) return;
@@ -65,45 +65,38 @@ export const treeArrayToGraph = async (
     treeDepth: treeRoot.height,
   });
 
-  await Promise.all(
-    treeArray.map((treeNodeKey, i) => {
-      if (treeNodeKey === undefined) return;
-      const node = graph.getNode(treeNodeKey.toString());
-      if (node) return;
-      return graph.addNode(
-        {
-          id: treeNodeKey.toString(),
-          label: treeNodeKey.toString(),
-          ...positions[i],
-        },
-        { animate: true, focus: false },
-      );
-    }),
-  );
+  treeArray.forEach((treeNodeKey, i) => {
+    if (treeNodeKey === undefined) return;
 
-  await Promise.all(
-    edgesNotInNewTree.map((edge) =>
-      graph.removeEdge(edge.id, { animate: true }),
-    ),
-  );
+    const nodeAlreadyDisplayed = graph.getNode(treeNodeKey.toString());
+    if (nodeAlreadyDisplayed) return
 
-  await new Promise((resolve) => setTimeout(resolve, 500));
+    const coordsOfNodeOnTree = positions[i]
 
-  await Promise.all(
-    treeArray.map((treeNodeKey, i) => {
-      if (treeNodeKey === undefined) return;
-      const node = graph.getNode(treeNodeKey.toString());
-      if (!node) return;
-      if (node.x === positions[i].x && node.y === positions[i].y) return;
-      graph.animate.node({
-        nodeId: node.id,
-        endCoords: positions[i],
-        durationMs: 750,
-      });
-    }),
-  );
+    graph.addNode({
+      id: treeNodeKey.toString(),
+      label: treeNodeKey.toString(),
+      ...coordsOfNodeOnTree,
+    }, {
+      animate: true,
+      focus: false
+    });
+  })
+
+  for (const edge of edgesNotInNewTree) {
+    graph.removeEdge(edge.id)
+  }
+
+  const movementObj = treeArray.map((treeNodeKey, i): GNodeMoveInstruction | void => {
+    if (treeNodeKey === undefined) return;
+    const node = graph.getNode(treeNodeKey.toString());
+    if (!node) return console.error('node in tree not found in graph. this should never happen!')
+    return { nodeId: node.id, coords: positions[i] }
+  }).filter(Boolean) as GNodeMoveInstruction[]
+
+  graph.bulkMoveNode(movementObj)
 
   for (const edge of newTreeEdges) {
-    await graph.addEdge(edge, { animate: true });
+    graph.addEdge(edge, { animate: true });
   }
 };

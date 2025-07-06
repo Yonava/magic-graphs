@@ -1,6 +1,5 @@
 import { onUnmounted, ref, watch } from 'vue';
 import type { GNode, Graph } from '@graph/types';
-import type { GNodeMoveRecord } from '@graph/plugins/history/types';
 import { debounce } from '@utils/debounce';
 import { getTreeStandardPos } from './getTreeStandardPos';
 import { getTreeBinaryPos } from './getTreeBinaryPos';
@@ -71,47 +70,7 @@ export const useMoveNodesIntoTreeFormation = (
     if (!newPositions) return;
 
     reshapingActive.value = true;
-
-    const affectedItems: GNodeMoveRecord[] = [];
-
-    for (const [nodeId, endCoords] of newPositions) {
-      const node = graph.getNode(nodeId);
-      if (!node) throw new Error(`Node with id ${nodeId} not found`);
-      const startCoords = { x: node.x, y: node.y };
-
-      if (startCoords.x === endCoords.x && startCoords.y === endCoords.y)
-        continue;
-
-      affectedItems.push({
-        graphType: 'node',
-        data: {
-          id: node.id,
-          from: startCoords,
-          to: endCoords,
-        },
-      });
-
-      graph.animate.node({
-        nodeId: node.id,
-        durationMs: treeOptions.durationMs,
-        endCoords,
-        // we do this already but in batch at the end
-        history: false,
-        persist: false,
-      });
-    }
-
-    // wait for all animations to finish
-    await new Promise((res) => setTimeout(res, treeOptions.durationMs + 50));
-
-    if (affectedItems.length > 0) {
-      graph.persistent.trackGraphState();
-      graph.history.addToUndoStack({
-        action: 'move',
-        affectedItems,
-      });
-    }
-
+    await graph.bulkMoveNode(newPositions)
     reshapingActive.value = false;
   };
 

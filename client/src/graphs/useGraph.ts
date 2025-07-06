@@ -9,7 +9,6 @@ import { useAnnotations } from '@graph/plugins/annotations';
 import { useFocus } from '@graph/plugins/focus';
 import { useHistory } from '@graph/plugins/history';
 import { usePersistent } from '@graph/plugins/persistent';
-import { useAnimation } from '@graph/plugins/animate';
 import { useInteractive } from '@graph/plugins/interactive';
 import { useCharacteristics } from '@graph/plugins/characteristics';
 
@@ -54,13 +53,6 @@ export const useGraph = (
   const transitionMatrix = useTransitionMatrix({ ...base, adjacencyList });
 
   const characteristics = useCharacteristics({ ...base, ...adjacencyList });
-  const animate = useAnimation({
-    ...base,
-    history,
-    focus,
-    marquee,
-    persistent,
-  });
 
   useInteractive(base);
   const helpers = useHelpers(base);
@@ -76,7 +68,6 @@ export const useGraph = (
     nodeAnchors,
     annotation,
     persistent,
-    animate,
 
     // theme and style
     ...preferredTheme,

@@ -117,7 +117,7 @@
         </slot>
       </template>
 
-      <template v-else>
+      <template v-else-if="simulations.length > 0">
         <slot name="top-right">
           <SelectSimulation
             @simulation-selected="setActiveSimulation"

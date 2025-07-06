@@ -12,9 +12,13 @@ import type { CompiledTimeline } from "./timeline/compile"
 export const getCurrentRunCount = ({
   durationMs,
   startedAt,
-}: Pick<ActiveAnimation & CompiledTimeline, 'startedAt' | 'durationMs'>) => {
+  delayMs
+}: Pick<ActiveAnimation & CompiledTimeline, 'startedAt' | 'durationMs' | 'delayMs'>) => {
   const timeElapsed = Date.now() - startedAt
-  return timeElapsed / durationMs
+  if (timeElapsed < delayMs) return 0
+
+  const activeTime = timeElapsed - delayMs
+  return activeTime / durationMs
 }
 
 /**
@@ -29,7 +33,11 @@ export const getCurrentRunCount = ({
 export const getAnimationProgress = ({
   durationMs,
   startedAt,
-}: Pick<ActiveAnimation & CompiledTimeline, 'startedAt' | 'durationMs'>) => {
+  delayMs
+}: Pick<ActiveAnimation & CompiledTimeline, 'startedAt' | 'durationMs' | 'delayMs'>) => {
   const timeElapsed = Date.now() - startedAt
-  return (timeElapsed % durationMs) / durationMs
+  if (timeElapsed < delayMs) return 0
+
+  const activeTime = timeElapsed - delayMs
+  return (activeTime % durationMs) / durationMs
 }

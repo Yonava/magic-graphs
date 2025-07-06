@@ -61,12 +61,11 @@ export const BULK_ADD_NODE_OPTIONS_DEFAULTS: AddNodeOptions = {
   animate: false,
 };
 
-export type RemoveNodeOptions = BroadcastOption & HistoryOption & AnimateOption;
+export type RemoveNodeOptions = BroadcastOption & HistoryOption;
 
 export const REMOVE_NODE_OPTIONS_DEFAULTS: RemoveNodeOptions = {
   broadcast: true,
   history: true,
-  animate: false,
 };
 
 export type AddEdgeOptions = FocusOption &
@@ -92,12 +91,11 @@ export const LOAD_GRAPH_OPTIONS_DEFAULTS: HistoryOption = {
   history: true,
 };
 
-export type RemoveEdgeOptions = BroadcastOption & HistoryOption & AnimateOption;
+export type RemoveEdgeOptions = BroadcastOption & HistoryOption;
 
 export const REMOVE_EDGE_OPTIONS_DEFAULTS: RemoveEdgeOptions = {
   broadcast: true,
   history: true,
-  animate: false,
 };
 
 export type MoveNodeOptions = BroadcastOption;
@@ -105,6 +103,10 @@ export type MoveNodeOptions = BroadcastOption;
 export const MOVE_NODE_OPTIONS_DEFAULTS: MoveNodeOptions = {
   broadcast: true,
 };
+
+export const BULK_MOVE_NODE_OPTIONS_DEFAULTS: MoveNodeOptions = {
+  broadcast: true,
+}
 
 export type EditEdgeLabelOptions = BroadcastOption & HistoryOption;
 

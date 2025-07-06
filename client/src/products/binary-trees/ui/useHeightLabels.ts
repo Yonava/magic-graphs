@@ -9,7 +9,7 @@ export const useHeightLabels = (graph: Graph, tree: TreeControls) => {
   const { nodeIdToHeight } = tree;
 
   const mapColor = numberToColor({
-    range: [1, 6],
+    range: [0, 5],
     color: [colors.GREEN_400, colors.GREEN_700],
   });
 

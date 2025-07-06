@@ -1,9 +1,11 @@
 import type { DefineTimeline, Timeline } from "@shape/animation/timeline/defineTimeline";
 import tinycolor from "tinycolor2";
 
-const arrowEdgeAdded: Timeline<'arrow'> = {
+const ANIMATION_DURATION_MS = 500
+
+export const arrowEdgeAdded: Timeline<'arrow'> = {
   forShapes: ['arrow'],
-  durationMs: 400,
+  durationMs: ANIMATION_DURATION_MS,
   easing: {
     lineWidth: 'in-out',
     textArea: 'in-out',
@@ -43,9 +45,9 @@ const arrowEdgeAdded: Timeline<'arrow'> = {
   ],
 };
 
-const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
+export const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
   forShapes: ['line', 'uturn'],
-  durationMs: 400,
+  durationMs: ANIMATION_DURATION_MS,
   easing: {
     lineWidth: 'in-out',
     textArea: 'in-out',
@@ -66,21 +68,27 @@ const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
   ],
 };
 
-const circleNodeAdded: Timeline<'circle'> = {
+export const circleNodeAdded: Timeline<'circle'> = {
   forShapes: ['circle'],
-  durationMs: 500,
+  durationMs: ANIMATION_DURATION_MS,
   easing: { radius: 'in-out' },
   keyframes: [
     {
       progress: 0,
       properties: {
         radius: 0,
+        textArea: (ta) => ({
+          color: tinycolor(ta.color).setAlpha(0).toRgbString(),
+          textBlock: {
+            color: 'transparent',
+          },
+        }),
       }
     }
   ]
 }
 
-export const getGraphAnimations = (defineTimeline: DefineTimeline) => ({
+export const getDefaultGraphAnimations = (defineTimeline: DefineTimeline) => ({
   arrow: {
     edgeAdded: defineTimeline(arrowEdgeAdded),
   },
@@ -95,4 +103,4 @@ export const getGraphAnimations = (defineTimeline: DefineTimeline) => ({
   }
 })
 
-export type GraphAnimations = ReturnType<typeof getGraphAnimations>
+export type GraphAnimations = ReturnType<typeof getDefaultGraphAnimations>
