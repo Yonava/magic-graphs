@@ -1,5 +1,7 @@
+import type { GraphAnimations } from '@graph/base/animations';
 import type { SchemaItem, GNode, GEdge } from '@graph/types';
 import { fractionToDecimal } from '@utils/fracDecConverter';
+import type { DeepPartial } from 'ts-essentials';
 
 /**
  * BASE GRAPH SETTINGS
@@ -34,6 +36,12 @@ export type BaseGraphSettings = {
    * @default true
    */
   isGraphDirected: boolean;
+  /**
+   * graph animation overrides, used to override the default animations for the graph
+   *
+   * ⚠️ NOT REACTIVE ⚠️ changes after the graph is created will not take effect.
+   */
+  animations: DeepPartial<GraphAnimations>;
 };
 
 export const DEFAULT_BASE_SETTINGS: BaseGraphSettings = {
@@ -50,6 +58,7 @@ export const DEFAULT_BASE_SETTINGS: BaseGraphSettings = {
   },
   newNodeLabelGetter: null,
   isGraphDirected: true,
+  animations: {},
 };
 
 /**

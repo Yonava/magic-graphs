@@ -1,3 +1,4 @@
+import { deepMerge } from './../../utils/deepMerge';
 import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 import type { GNode, GEdge, Aggregator } from '@graph/types';
@@ -28,7 +29,7 @@ import { useGraphCursor } from './useGraphCursor';
 import { useAnimatedShapes } from '@shape/animation';
 import { usePluginHoldController } from './usePluginHold';
 import type { MagicCanvasProps } from '@canvas/types';
-import { getDefaultGraphAnimations } from './animations';
+import { getDefaultGraphAnimations, type GraphAnimations } from './animations';
 
 export const useBaseGraph = (
   magicCanvas: MagicCanvasProps,
@@ -130,7 +131,10 @@ export const useBaseGraph = (
   } = useAggregator({ emit });
 
   const { shapes, autoAnimate, defineTimeline } = useAnimatedShapes()
-  const animations = getDefaultGraphAnimations(defineTimeline)
+  const animations: GraphAnimations = deepMerge(
+    getDefaultGraphAnimations(defineTimeline),
+    startupSettings.animations,
+  )
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const options = {
