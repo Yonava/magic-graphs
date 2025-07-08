@@ -97,7 +97,7 @@
 
     <ToolbarButtonGroup class="gap-0">
       <GToolbarButton
-        @click="undo"
+        @click="undo.fn"
         :disabled="!canUndo"
         icon="undo"
       />
@@ -105,7 +105,7 @@
       <GToolbarDivider />
 
       <GToolbarButton
-        @click="redo"
+        @click="redo.fn"
         :disabled="!canRedo"
         icon="redo"
       />
