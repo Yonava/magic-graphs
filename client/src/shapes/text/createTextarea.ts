@@ -69,7 +69,6 @@ export const createTextarea = (
   input.oninput = adjustSize;
 
   const removeInput = () => {
-    console.log('removing')
     input.onblur = null;
     onTextAreaBlur(input.value);
     document.removeEventListener('mousedown', handleMouseDown);
