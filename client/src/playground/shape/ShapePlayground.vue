@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import colors, { Color } from '@colors';
+  import colors, { type Color } from '@colors';
   import { cross } from '@shapes/cross';
   import type { ShapeFactory, WithId } from '@shape/types';
   import { useAnimatedShapes } from '@shape/animation';
