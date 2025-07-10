@@ -1,12 +1,14 @@
 <script setup lang="ts">
+  import { toRef } from 'vue';
   import type { TreeSim } from '../state';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import GWell from '@ui/graph/GWell.vue';
   import { useTreeTraceExplainer } from './useTreeTraceExplainer';
+  import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
 
   const props = defineProps<{
     controls: TreeSim;
   }>();
+
+  const rProp = toRef(props);
 
   const explainer = useTreeTraceExplainer();
 </script>
@@ -18,34 +20,6 @@
         {{ explainer ?? 'N/A' }}
       </h1>
     </div>
-    <div>
-      <GWell
-        secondary
-        class="rounded-lg flex gap-2 p-2"
-      >
-        <GButton
-          @click="props.controls.prev"
-          tertiary
-          :disabled="props.controls.step.value === 0"
-        >
-          👈 prev
-        </GButton>
-        <GButton
-          @click="props.controls.next"
-          tertiary
-          :disabled="
-            props.controls.trace.value.length - 1 === props.controls.step.value
-          "
-        >
-          next 👉
-        </GButton>
-        <GButton
-          @click="props.controls.exit"
-          tertiary
-        >
-          Done
-        </GButton>
-      </GWell>
-    </div>
+    <SimulationPlaybackControls :controls="rProp.controls" />
   </div>
 </template>

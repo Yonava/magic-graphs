@@ -1,22 +1,14 @@
-import { shallowRef, type ComputedRef } from 'vue';
+import { shallowRef } from 'vue';
 import type { TreeTrace } from './tree/avl';
+import type { SimulationControls } from '@ui/product/sim/types';
 
-export type TreeSim = {
-  step: ComputedRef<number>;
-  next: () => void;
-  prev: () => void;
-  /**
-   * dismisses the simulation
-   */
-  exit: () => void;
-  trace: ComputedRef<TreeTrace[]>;
-};
+export type TreeSim = SimulationControls<TreeTrace>
 
 const activeSim = shallowRef<TreeSim>();
 
 const reset = () => {
   if (activeSim.value) {
-    activeSim.value.exit();
+    activeSim.value.stop();
     activeSim.value = undefined;
   }
 };

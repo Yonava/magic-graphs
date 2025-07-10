@@ -1,9 +1,9 @@
-import { computed, ref } from 'vue';
 import type { Graph } from '@graph/types';
 import { useTargetNodeColor } from './theme/useTargetNodeColor';
 import { treeArrayToGraph } from './tree/treeArrayToGraph';
 import type { AVLTree, TreeTrace } from './tree/avl';
 import state from './state';
+import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
 
 const ROOT_POS = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
@@ -21,10 +21,8 @@ export const setTreeSim = () => (
   const { targetNodeId, activate } = useTargetNodeColor(graph);
   activate();
 
-  const step = ref(0);
-
-  const runStep = () => {
-    const traceAtStep = trace[step.value];
+  const runStep = (step: number) => {
+    const traceAtStep = trace[step];
     if (traceAtStep === undefined) return;
 
     targetNodeId.value = undefined;
@@ -47,32 +45,20 @@ export const setTreeSim = () => (
     );
   };
 
-  runStep();
+  // const exit = () => {
+  //   if (step.value !== trace.length - 1) {
+  //     step.value = trace.length - 1;
+  //     runStep();
+  //   }
+  //   activeSim.value = undefined;
+  //   targetNodeId.value = undefined;
+  // };
 
-  const next = () => {
-    ++step.value;
-    runStep();
-  };
+  const controls = useSimulationControls(trace)
 
-  const prev = () => {
-    --step.value;
-    runStep();
-  };
+  controls.start()
 
-  const exit = () => {
-    if (step.value !== trace.length - 1) {
-      step.value = trace.length - 1;
-      runStep();
-    }
-    activeSim.value = undefined;
-    targetNodeId.value = undefined;
-  };
+  controls.onStepChange(runStep)
 
-  activeSim.value = {
-    step: computed(() => step.value),
-    next,
-    prev,
-    exit,
-    trace: computed(() => trace),
-  };
+  activeSim.value = controls
 };

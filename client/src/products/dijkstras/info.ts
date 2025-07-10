@@ -1,5 +1,4 @@
 import type { ProductInfo } from 'src/types';
-import type { Graph } from '@graph/types';
 import { useSimulationRunner } from './sim/runner';
 import state from './state';
 import { canRunDijkstras } from './sim/guard';
@@ -19,7 +18,7 @@ const info: ProductInfo = {
     thumbnail: '/products/thumbnails/dijkstras.png',
     category: 'algorithms',
   },
-  simulations: (graph: Graph) => [
+  simulations: (graph) => [
     {
       name: 'Dijkstras Algorithm',
       description:
