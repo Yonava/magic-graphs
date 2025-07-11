@@ -8,6 +8,7 @@
   import state from './state';
   import TreeSimMenu from './ui/TreeSimMenu.vue';
   import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
+  import StopSimButton from '@ui/product/StopSimButton.vue';
 
   const { activeSim } = state;
 
@@ -57,6 +58,13 @@
       <TreeSimMenu
         v-else
         :controls="activeSim"
+      />
+    </template>
+
+    <template #top-right>
+      <StopSimButton
+        v-if="activeSim"
+        @click="activeSim.kill"
       />
     </template>
   </GraphProduct>

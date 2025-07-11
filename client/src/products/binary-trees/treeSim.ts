@@ -15,10 +15,12 @@ type SetTreeSimOptions = {
   trace: TreeTrace[];
 };
 
-export const setTreeSim = () => (
-  { graph, tree, trace }: SetTreeSimOptions
-) => {
-  const { targetNodeId, activate } = useTargetNodeColor(graph);
+export const setTreeSim = () => ({
+  graph,
+  tree,
+  trace,
+}: SetTreeSimOptions) => {
+  const { targetNodeId, activate, deactivate } = useTargetNodeColor(graph);
   activate();
 
   const runStep = (step: number) => {
@@ -45,20 +47,19 @@ export const setTreeSim = () => (
     );
   };
 
-  // const exit = () => {
-  //   if (step.value !== trace.length - 1) {
-  //     step.value = trace.length - 1;
-  //     runStep();
-  //   }
-  //   activeSim.value = undefined;
-  //   targetNodeId.value = undefined;
-  // };
-
   const controls = useSimulationControls(trace)
-
+  controls.onStepChange(runStep)
   controls.start()
 
-  controls.onStepChange(runStep)
-
-  activeSim.value = controls
+  activeSim.value = {
+    ...controls,
+    kill: () => {
+      if (!activeSim.value) throw "sim state erased w/o kill method!";
+      deactivate();
+      const { stop, setStep, lastStep } = activeSim.value;
+      setStep(lastStep.value);
+      stop();
+      activeSim.value = undefined;
+    }
+  }
 };

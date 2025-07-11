@@ -117,9 +117,10 @@
         </slot>
       </template>
 
-      <template v-else-if="simulations.length > 0">
+      <template v-else>
         <slot name="top-right">
           <SelectSimulation
+            v-if="simulations.length > 0"
             @simulation-selected="setActiveSimulation"
             :simulations="simulations"
           />
