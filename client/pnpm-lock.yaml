@@ -72,6 +72,9 @@ importers:
       '@chromatic-com/storybook':
         specifier: ^4.0.0
         version: 4.0.0(storybook@9.0.3(@testing-library/dom@10.4.0)(prettier@3.5.3))
+      '@eslint/js':
+        specifier: ^9.31.0
+        version: 9.31.0
       '@storybook/addon-a11y':
         specifier: ^9.0.1
         version: 9.0.3(storybook@9.0.3(@testing-library/dom@10.4.0)(prettier@3.5.3))
@@ -592,6 +595,10 @@ packages:
 
   '@eslint/js@9.28.0':
     resolution: {integrity: sha512-fnqSjGWd/CoIp4EXIxWVK/sHA6DOHN4+8Ix2cX5ycOY7LG0UY8nHCU5pIp2eaE1Mc7Qd8kHspYNzYXT2ojPLzg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@eslint/js@9.31.0':
+    resolution: {integrity: sha512-LOm5OVt7D4qiKCqoiPbA7LWmI+tbw1VbTUowBcUMgQSuM6poJufkFkYDcQpo5KfgD39TnNySV26QjOh7VFpSyw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/object-schema@2.1.6':
@@ -2776,6 +2783,9 @@ packages:
   vue-component-type-helpers@2.2.10:
     resolution: {integrity: sha512-iDUO7uQK+Sab2tYuiP9D1oLujCWlhHELHMgV/cB13cuGbG4qwkLHvtfWb6FzvxrIOPDnU0oHsz2MlQjhYDeaHA==}
 
+  vue-component-type-helpers@3.0.1:
+    resolution: {integrity: sha512-j23mCB5iEbGsyIhnVdXdWUOg+UdwmVxpKnYYf2j+4ppCt5VSFXKjwu9YFt0QYxUaf5G99PuHsVfRScjHCRSsGQ==}
+
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
@@ -3271,6 +3281,8 @@ snapshots:
 
   '@eslint/js@9.28.0': {}
 
+  '@eslint/js@9.31.0': {}
+
   '@eslint/object-schema@2.1.6': {}
 
   '@eslint/plugin-kit@0.3.1':
@@ -3557,7 +3569,7 @@ snapshots:
       storybook: 9.0.3(@testing-library/dom@10.4.0)(prettier@3.5.3)
       type-fest: 2.19.0
       vue: 3.5.16(typescript@5.4.5)
-      vue-component-type-helpers: 2.2.10
+      vue-component-type-helpers: 3.0.1
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -5571,6 +5583,8 @@ snapshots:
       typescript: 5.8.3
 
   vue-component-type-helpers@2.2.10: {}
+
+  vue-component-type-helpers@3.0.1: {}
 
   vue-demi@0.14.10(vue@3.5.16(typescript@5.4.5)):
     dependencies:
