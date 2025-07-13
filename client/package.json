@@ -35,7 +35,7 @@
     "tailwind-merge": "^2.5.5",
     "tailwindcss-primeui": "^0.3.4",
     "tinycolor2": "^1.6.0",
-    "vue": "^3.4.29",
+    "vue": "^3.5.17",
     "vue-codemirror": "^6.1.1",
     "vue-router": "^4.0.13"
   },
