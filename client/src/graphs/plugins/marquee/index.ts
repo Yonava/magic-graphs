@@ -62,7 +62,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.emit('onGroupDragStart', graph.focus.focusedNodes.value, coords);
   };
 
-  const groupDrop = () => {
+  const endGroupDrag = () => {
     if (!groupDragCoordinates.value) return;
     graph.emit(
       'onGroupDrop',
@@ -72,7 +72,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     groupDragCoordinates.value = undefined;
   };
 
-  const engageMarqueeBox = (startingCoords: { x: number; y: number }) => {
+  const engageMarqueeBox = (startingCoords: Coordinate) => {
     hold('nodeAnchors')
     graph.graphCursorDisabled.value = true;
     marqueeBox.value = {
@@ -199,7 +199,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.subscribe('onMouseMove', setMarqueeBoxDimensions);
 
     graph.subscribe('onMouseDown', beginGroupDrag);
-    graph.subscribe('onMouseUp', groupDrop);
+    graph.subscribe('onMouseUp', endGroupDrag);
     graph.subscribe('onMouseMove', groupDrag);
 
     graph.subscribe('onUndo', updateEncapsulatedNodeBox);
@@ -215,7 +215,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.unsubscribe('onMouseMove', setMarqueeBoxDimensions);
 
     graph.unsubscribe('onMouseDown', beginGroupDrag);
-    graph.unsubscribe('onMouseUp', groupDrop);
+    graph.unsubscribe('onMouseUp', endGroupDrag);
     graph.unsubscribe('onMouseMove', groupDrag);
 
     graph.unsubscribe('onUndo', updateEncapsulatedNodeBox);
