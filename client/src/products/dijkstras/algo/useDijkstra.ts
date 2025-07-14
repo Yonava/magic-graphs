@@ -2,22 +2,21 @@ import { computed, ref, watch } from 'vue';
 import type { GNode, Graph } from '@graph/types';
 import { dijkstras } from './dijkstra';
 import state from '../state';
-import { useTransitionMatrix } from '@graph/useTransitionMatrix';
 
 export type DijkstrasOutput = {
   startNode: GNode;
   distances: Record<GNode['id'], number>;
 };
 
-export type DijkstrasTraceAtStep = {
+export type DijkstrasTraceStep = {
   /**
-   * the node the algorithm is currently at. is undefined if the algorithm
-   * is in its initialization phase, or if it has finished
+   * the node the algorithm is currently at. `undefined` if the algorithm
+   * is in its initial step, or has finished
    */
   currentNode?: GNode;
   /**
    * a map of the distances from the start node to each node in the graph
-   * as of the current step
+   * at this step
    */
   distances: Record<GNode['id'], number>;
   /**
@@ -27,11 +26,11 @@ export type DijkstrasTraceAtStep = {
 };
 
 export const useDijkstra = (graph: Graph) => {
-  const trace = ref<DijkstrasTraceAtStep[]>([]);
+  const trace = ref<DijkstrasTraceStep[]>([]);
   const output = ref<DijkstrasOutput>();
 
   const { startNode: startNodeState } = state;
-  const { transitionMatrix } = useTransitionMatrix(graph);
+  const { transitionMatrix } = graph.transitionMatrix
 
   const update = () => {
     const startNode = startNodeState.get(graph);

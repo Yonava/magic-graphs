@@ -1,30 +1,31 @@
-import { computed, ref } from 'vue';
 import type { Graph } from '@graph/types';
 import { useTargetNodeColor } from './theme/useTargetNodeColor';
 import { treeArrayToGraph } from './tree/treeArrayToGraph';
-import type { AVLTree, TreeTrace } from './tree/avl';
+import type { AVLTree, TreeTraceStep } from './tree/avl';
 import state from './state';
+import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
+import { getTreeTraceExplanation } from './ui/useTreeTraceExplainer';
 
 const ROOT_POS = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
-const { activeSim } = state;
+const { simRunner } = state;
 
-type SetTreeSimOptions = {
+type CreateRunnerOptions = {
   graph: Graph;
   tree: AVLTree;
-  trace: TreeTrace[];
 };
 
-export const setTreeSim = () => (
-  { graph, tree, trace }: SetTreeSimOptions
-) => {
-  const { targetNodeId, activate } = useTargetNodeColor(graph);
+/**
+ * @returns a function that when called with a trace, populates `simRunner` state and starts the simulation experience
+ */
+export const createSimulationRunner = ({ graph, tree }: CreateRunnerOptions) => (trace: TreeTraceStep[]) => {
+  if (simRunner.value) throw 'attempted to start a simulation during running simulation'
+
+  const { targetNodeId, activate, deactivate } = useTargetNodeColor(graph);
   activate();
 
-  const step = ref(0);
-
-  const runStep = () => {
-    const traceAtStep = trace[step.value];
+  const runStep = (step: number) => {
+    const traceAtStep = trace[step];
     if (traceAtStep === undefined) return;
 
     targetNodeId.value = undefined;
@@ -47,32 +48,26 @@ export const setTreeSim = () => (
     );
   };
 
-  runStep();
+  const simControls = useSimulationControls(trace, {
+    explanation: getTreeTraceExplanation
+  })
 
-  const next = () => {
-    ++step.value;
-    runStep();
-  };
+  simControls.onStepChange(runStep)
 
-  const prev = () => {
-    --step.value;
-    runStep();
-  };
+  const stop = () => {
+    if (!simRunner.value) throw "simRunner state erased w/o stop method!";
+    deactivate();
+    const { stop: stopPlayback, setStep, lastStep } = simRunner.value.simControls;
+    setStep(lastStep.value);
+    stopPlayback();
+    simRunner.value = undefined;
+  }
 
-  const exit = () => {
-    if (step.value !== trace.length - 1) {
-      step.value = trace.length - 1;
-      runStep();
-    }
-    activeSim.value = undefined;
-    targetNodeId.value = undefined;
-  };
+  simRunner.value = {
+    start: simControls.start,
+    stop,
+    simControls,
+  }
 
-  activeSim.value = {
-    step: computed(() => step.value),
-    next,
-    prev,
-    exit,
-    trace: computed(() => trace),
-  };
+  simRunner.value.start()
 };

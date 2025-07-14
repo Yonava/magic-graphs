@@ -6,10 +6,11 @@
   import { useTree } from './useTree';
   import AddNodePanel from './ui/AddNodePanel.vue';
   import state from './state';
-  import TreeSimMenu from './ui/TreeSimMenu.vue';
   import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
+  import StopSimButton from '@ui/product/StopSimButton.vue';
+  import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
 
-  const { activeSim } = state;
+  const { simRunner } = state;
 
   const graphWithCanvas = useGraphWithCanvas(BINARY_TREE_GRAPH_SETTINGS);
   const { graph } = graphWithCanvas;
@@ -17,6 +18,7 @@
   const tree = useTree(graph);
 
   graph.settings.value.shortcutDelete = () => {
+    if (simRunner.value) return;
     const { focusedNodes } = graph.focus;
     if (focusedNodes.value.length === 1)
       tree.removeNode(Number(focusedNodes.value[0].label));
@@ -26,12 +28,12 @@
   };
 
   graph.settings.value.shortcutUndo = () => {
-    if (activeSim.value) return;
+    if (simRunner.value) return;
     tree.undo();
   };
 
   graph.settings.value.shortcutRedo = () => {
-    if (activeSim.value) return;
+    if (simRunner.value) return;
     tree.redo();
   };
 </script>
@@ -44,19 +46,26 @@
 
     <template #center-left>
       <AddNodePanel
-        v-if="!activeSim"
+        v-if="!simRunner"
         :tree="tree"
       />
     </template>
 
     <template #bottom-center>
       <CRUDControls
-        v-if="!activeSim"
+        v-if="!simRunner"
         :tree="tree"
       />
-      <TreeSimMenu
+      <SimulationPlaybackControls
         v-else
-        :controls="activeSim"
+        :controls="simRunner.simControls"
+      />
+    </template>
+
+    <template #top-right>
+      <StopSimButton
+        v-if="simRunner"
+        @click="simRunner.stop"
       />
     </template>
   </GraphProduct>

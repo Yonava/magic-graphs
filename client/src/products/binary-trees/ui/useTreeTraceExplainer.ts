@@ -1,43 +1,28 @@
-import { computed } from 'vue';
-import state from '../state';
-import type {
-  BalanceAction,
-  CompareAction,
-  InsertAction,
-  RemoveAction,
-  TreeTrace,
-} from '../tree/avl';
+import type { TreeTraceStep } from '../tree/avl';
+import type { GetSimulationExplanation } from '@ui/product/sim/useSimulationControls';
 
-const { activeSim } = state;
-
-type ExplainerFn<T extends TreeTrace> = (trace: T) => string;
-
-type ActionMap = {
-  balance: ExplainerFn<BalanceAction>;
-  compare: ExplainerFn<CompareAction>;
-  insert: ExplainerFn<InsertAction>;
-  remove: ExplainerFn<RemoveAction>;
-};
-
-const traceActionToExplainer: ActionMap = {
-  balance: (trace) => {
+export const getTreeTraceExplanation: GetSimulationExplanation<TreeTraceStep> = (traceStep) => {
+  const { action } = traceStep
+  if (action === 'balance') {
+    const { method } = traceStep;
     const prefix = 'Tree Unbalanced! ';
-    if (trace.method === 'left-left') {
+    if (method === 'left-left') {
       return prefix + `Correcting a Left-Left Imbalance`;
     }
-    if (trace.method === 'left-right') {
+    if (method === 'left-right') {
       return prefix + `Correcting a Left-Right Imbalance`;
     }
-    if (trace.method === 'right-left') {
+    if (method === 'right-left') {
       return prefix + `Correcting a Right-Left Imbalance`;
     }
-    if (trace.method === 'right-right') {
+    if (method === 'right-right') {
       return prefix + `Correcting a Right-Right Imbalance`;
     }
     throw 'invalid balance method';
-  },
-  compare: (trace) => {
-    const { targetNode: target, comparedNode: against } = trace;
+  }
+
+  if (action === 'compare') {
+    const { targetNode: target, comparedNode: against } = traceStep;
     if (target > against) {
       return `${target} is greater than ${against}, so we go right.`;
     }
@@ -46,36 +31,20 @@ const traceActionToExplainer: ActionMap = {
       return `${target} is less than ${against}, so we go left.`;
     }
 
-    if (activeSim.value?.step === activeSim.value?.trace.value.length) {
+    if (target === against) {
       return `We have a duplicate, so we end here.`;
     }
 
     return `Found ${target}.`;
-  },
-  insert: (trace) => `At a leaf position, so we insert ${trace.targetNode}.`,
-  remove: (trace) => `Removing ${trace.targetNode}.`,
-};
+  }
 
-const getExplainerFromTrace = (trace: TreeTrace) => {
-  if (trace.action === 'balance') {
-    return traceActionToExplainer['balance'](trace);
+  if (action === 'insert') {
+    return `At a leaf position, so we insert ${traceStep.targetNode}.`
   }
-  if (trace.action === 'compare') {
-    return traceActionToExplainer['compare'](trace);
-  }
-  if (trace.action === 'insert') {
-    return traceActionToExplainer['insert'](trace);
-  }
-  if (trace.action === 'remove') {
-    return traceActionToExplainer['remove'](trace);
-  }
-};
 
-export const useTreeTraceExplainer = () =>
-  computed(() => {
-    if (!activeSim.value) return;
-    const { trace, step } = activeSim.value;
-    const traceAtStep = trace.value[step.value];
-    if (!traceAtStep) return;
-    return getExplainerFromTrace(traceAtStep);
-  });
+  if (action === 'remove') {
+    return `Removing ${traceStep.targetNode}.`
+  }
+
+  throw `invalid tree trace action: ${action}`
+};

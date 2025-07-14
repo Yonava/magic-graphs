@@ -8,13 +8,24 @@ import type {
 import { useLocalStorage } from '@vueuse/core';
 import { localKeys } from '@utils/localStorage';
 
-type SimulationControlsOptions = {
+/**
+ * @returns the text to be displayed alongside the simulation at given step.
+ * if undefined is returned, the simulation will not display text for that step.
+ */
+export type GetSimulationExplanation<T> = (traceStep: T) => string | undefined;
+
+export type SimulationControlsOptions<T> = {
   /**
    * if set, the simulation will stop when the step reaches this value.
    * See {@link SimulationControls.lastStep}
-   * @default trace.length
+   * @default trace.length - 1
    */
   lastStep?: MaybeRef<number>;
+  /**
+   * @returns the text to be displayed alongside the simulation at given step.
+   * if undefined is returned, the simulation will not display text for that step.
+   */
+  explanation?: GetSimulationExplanation<T>
 };
 
 /**
@@ -24,7 +35,7 @@ export const DEFAULT_PLAYBACK_SPEED = 1000;
 
 export const useSimulationControls = <T>(
   traceInput: ComputedRef<SimulationTrace<T>> | SimulationTrace<T>,
-  options: SimulationControlsOptions = {},
+  options: SimulationControlsOptions<T> = {},
 ): SimulationControls<T> => {
   const lastStepOption = toRef(options.lastStep);
 
@@ -193,6 +204,7 @@ export const useSimulationControls = <T>(
     }),
     step: computed(() => step.value),
     traceAtStep,
+    explanationAtStep: computed(() => options.explanation?.(traceAtStep.value)),
 
     start,
     stop,

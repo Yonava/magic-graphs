@@ -1,7 +1,7 @@
 /**
- * props for the Progress component.
+ * props for the ProgressBar component.
  */
-export type ProgressOptions = {
+export type ProgressBarOptions = {
   /**
    * at the value in the 0th index, the progress bar will be empty.
    * at the 1st index, the progress bar will be full.
@@ -13,7 +13,7 @@ export type ProgressOptions = {
    */
   progress: number;
   /**
-   *
+   * the current value of the secondary progress bar that appears faded on top of the main progress bar
    */
   previewProgress?: number;
   /**
