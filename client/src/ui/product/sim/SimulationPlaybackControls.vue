@@ -11,6 +11,7 @@
   import { DEFAULT_PLAYBACK_SPEED } from './useSimulationControls';
   import keys from 'ctrl-keys';
   import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
+  import GText from '@ui/graph/GText.vue';
 
   const colors = useNonNullGraphColors();
 
@@ -128,12 +129,13 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-5 items-center justify-center">
-    <div v-if="explanationAtStep">
-      <h1 class="mb-2 font-bold text-2xl">
-        {{ explanationAtStep }}
-      </h1>
-    </div>
+  <div class="relative flex flex-col gap-5 items-center justify-center">
+    <GText
+      v-if="explanationAtStep"
+      class="absolute font-bold text-xl w-[800px] text-center -top-12 pointer-events-none"
+    >
+      {{ explanationAtStep }}
+    </GText>
 
     <div class="flex gap-2 justify-between">
       <GSpreadSelect
