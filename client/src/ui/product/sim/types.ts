@@ -1,9 +1,9 @@
 import type { ComputedRef, Ref } from 'vue';
 
 /**
- * a function that takes a `step` number and returns the state of the simulation at that step.
- * only intended for infinite or truly massive simulations. the use of array traces are preferred as
- * it enables users to scrub or seek between steps.
+ * A function that returns the simulation state at a given step.
+ * Intended for infinite or procedurally generated traces (e.g., computed from a mathematical function).
+ * Prefer array-based traces when possible, as they support scrubbing and seeking.
  */
 export type TraceFunction<T> = (step: number) => T;
 
@@ -59,11 +59,13 @@ export type SimulationControls<T = any> = {
    * the trace at the current step of the simulation
    */
   traceAtStep: ComputedRef<T>;
+  /**
+   * explanatory text at the current step of the simulation
+   */
+  explanationAtStep: ComputedRef<string | undefined>
 
   /**
    * set the current step of the simulation
-   *
-   * @param step the step to set the simulation to
    * @throws if step is not between 0 and `lastStep`
    */
   setStep: (step: number) => void;
@@ -71,13 +73,13 @@ export type SimulationControls<T = any> = {
   /**
    * start the simulation. this will begin the simulation from step 0
    *
-   * ⚠️ this should only be invoked by simulation runner during start up
+   * ⚠️ this should only be invoked by a {@link SimulationRunner | simulation runner} during start up
    */
   start: () => void;
   /**
    * stop the simulation. this will end the simulation and reset all state
    *
-   * ⚠️ this should only be invoked by simulation runner during tear down
+   * ⚠️ this should only be invoked by a {@link SimulationRunner | simulation runner} during tear down
    */
   stop: () => void;
   /**
@@ -116,11 +118,8 @@ export type SimulationControls<T = any> = {
 };
 
 /**
- * a wrapper around {@link SimulationControls | simulation controls} to provide a standard interface for
- * the work of setting up and running of simulations, ie prompting the user to select a starting node,
- * source/sink nodes, activating graph themes, etc.
- *
- * @template T the type of the trace that the simulation is running on
+ * A wrapper around {@link SimulationControls} to provide a standardized interface
+ * for setting up and running simulations (e.g., prompting for source nodes, activating themes, etc.)
  */
 export type SimulationRunner<T = any> = {
   /**

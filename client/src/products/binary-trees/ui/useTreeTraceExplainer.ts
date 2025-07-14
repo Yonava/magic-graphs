@@ -1,12 +1,9 @@
-import { computed } from 'vue';
-import state from '../state';
 import type { TreeTraceStep } from '../tree/avl';
+import type { GetSimulationExplanation } from '@ui/product/sim/useSimulationControls';
 
-const { simRunner: activeSim } = state;
-
-const TRACE_STEP_TO_EXPLAINER: Record<TreeTraceStep['action'], (traceStep: TreeTraceStep) => string> = {
-  balance: (traceStep) => {
-    if (traceStep.action !== 'balance') throw 'wrong explainer function called'
+export const getTreeTraceExplanation: GetSimulationExplanation<TreeTraceStep> = (traceStep) => {
+  const { action } = traceStep
+  if (action === 'balance') {
     const { method } = traceStep;
     const prefix = 'Tree Unbalanced! ';
     if (method === 'left-left') {
@@ -22,12 +19,10 @@ const TRACE_STEP_TO_EXPLAINER: Record<TreeTraceStep['action'], (traceStep: TreeT
       return prefix + `Correcting a Right-Right Imbalance`;
     }
     throw 'invalid balance method';
-  },
-  compare: (traceStep) => {
-    if (!activeSim.value) throw 'no active sim'
-    if (traceStep.action !== 'compare') throw 'wrong explainer function called'
+  }
+
+  if (action === 'compare') {
     const { targetNode: target, comparedNode: against } = traceStep;
-    const { step, traceArray } = activeSim.value.simControls;
     if (target > against) {
       return `${target} is greater than ${against}, so we go right.`;
     }
@@ -36,26 +31,20 @@ const TRACE_STEP_TO_EXPLAINER: Record<TreeTraceStep['action'], (traceStep: TreeT
       return `${target} is less than ${against}, so we go left.`;
     }
 
-    if (step.value === traceArray.value.length) {
+    if (target === against) {
       return `We have a duplicate, so we end here.`;
     }
 
     return `Found ${target}.`;
-  },
-  insert: (traceStep) => {
-    if (traceStep.action !== 'insert') throw 'wrong explainer function called'
-    return `At a leaf position, so we insert ${traceStep.targetNode}.`
-  },
-  remove: (traceStep) => {
-    if (traceStep.action !== 'remove') throw 'wrong explainer function called'
-    return `Removing ${traceStep.targetNode}.`
-  },
-};
+  }
 
-export const useTreeTraceExplainer = () =>
-  computed(() => {
-    if (!activeSim.value) return;
-    const { traceAtStep } = activeSim.value.simControls;
-    const getExplainer = TRACE_STEP_TO_EXPLAINER[traceAtStep.value.action]
-    return getExplainer(traceAtStep.value);
-  });
+  if (action === 'insert') {
+    return `At a leaf position, so we insert ${traceStep.targetNode}.`
+  }
+
+  if (action === 'remove') {
+    return `Removing ${traceStep.targetNode}.`
+  }
+
+  throw `invalid tree trace action: ${action}`
+};

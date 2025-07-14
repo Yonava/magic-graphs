@@ -1,12 +1,15 @@
 <script setup lang="ts">
   import { computed } from 'vue';
   import { PROGRESS_DEFAULTS } from './progressTypes';
-  import type { ProgressOptions } from './progressTypes';
+  import type { ProgressBarOptions } from './progressTypes';
   import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
 
   const colors = useNonNullGraphColors();
 
-  const props = withDefaults(defineProps<ProgressOptions>(), PROGRESS_DEFAULTS);
+  const props = withDefaults(
+    defineProps<ProgressBarOptions>(),
+    PROGRESS_DEFAULTS,
+  );
 
   const range = computed(() => {
     const [start, end] = props.range;

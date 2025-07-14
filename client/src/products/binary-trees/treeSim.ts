@@ -4,21 +4,22 @@ import { treeArrayToGraph } from './tree/treeArrayToGraph';
 import type { AVLTree, TreeTraceStep } from './tree/avl';
 import state from './state';
 import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
+import { getTreeTraceExplanation } from './ui/useTreeTraceExplainer';
 
 const ROOT_POS = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
-const { simRunner: activeSim } = state;
+const { simRunner } = state;
 
-type StartSimOptions = {
+type CreateRunnerOptions = {
   graph: Graph;
   tree: AVLTree;
 };
 
 /**
- * @returns a function that when called with a trace, will set `activeSim` thereby starting the simulation experience
+ * @returns a function that when called with a trace, populates `simRunner` state and starts the simulation experience
  */
-export const createSimulationRunner = ({ graph, tree }: StartSimOptions) => (trace: TreeTraceStep[]) => {
-  if (activeSim.value) throw 'attempted to start a simulation during running simulation'
+export const createSimulationRunner = ({ graph, tree }: CreateRunnerOptions) => (trace: TreeTraceStep[]) => {
+  if (simRunner.value) throw 'attempted to start a simulation during running simulation'
 
   const { targetNodeId, activate, deactivate } = useTargetNodeColor(graph);
   activate();
@@ -47,23 +48,26 @@ export const createSimulationRunner = ({ graph, tree }: StartSimOptions) => (tra
     );
   };
 
-  const simControls = useSimulationControls(trace)
+  const simControls = useSimulationControls(trace, {
+    explanation: getTreeTraceExplanation
+  })
+
   simControls.onStepChange(runStep)
 
   const stop = () => {
-    if (!activeSim.value) throw "sim state erased w/o kill method!";
+    if (!simRunner.value) throw "simRunner state erased w/o stop method!";
     deactivate();
-    const { stop: stopPlayback, setStep, lastStep } = activeSim.value.simControls;
+    const { stop: stopPlayback, setStep, lastStep } = simRunner.value.simControls;
     setStep(lastStep.value);
     stopPlayback();
-    activeSim.value = undefined;
+    simRunner.value = undefined;
   }
 
-  activeSim.value = {
+  simRunner.value = {
     start: simControls.start,
     stop,
     simControls,
   }
 
-  activeSim.value.start()
+  simRunner.value.start()
 };

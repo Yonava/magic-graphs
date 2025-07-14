@@ -4,7 +4,7 @@
   import { nonNullGraph as graph } from '@graph/global';
   import type { SimulationControls } from './types';
   import PlaybackButton from './PlaybackButton.vue';
-  import ProgressBar from './Progressbar.vue';
+  import ProgressBar from './ProgressBar.vue';
   import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
   import GSpreadSelect from '@ui/graph/select/GSpreadSelect.vue';
   import GButton from '@ui/graph/button/GButton.vue';
@@ -18,9 +18,15 @@
     controls: UnwrapRef<SimulationControls>;
   }>();
 
-  const { isOver, paused, step, hasBegun, lastStep, playbackSpeed } = toRefs(
-    props.controls,
-  );
+  const {
+    isOver,
+    paused,
+    step,
+    hasBegun,
+    lastStep,
+    playbackSpeed,
+    explanationAtStep,
+  } = toRefs(props.controls);
 
   const { nextStep, prevStep, setStep, start, stop } = props.controls;
 
@@ -123,6 +129,12 @@
 
 <template>
   <div class="flex flex-col gap-5 items-center justify-center">
+    <div v-if="explanationAtStep">
+      <h1 class="mb-2 font-bold text-2xl">
+        {{ explanationAtStep }}
+      </h1>
+    </div>
+
     <div class="flex gap-2 justify-between">
       <GSpreadSelect
         v-model="playbackSpeed"
@@ -149,8 +161,8 @@
       :on-progress-set="goToStep"
       :preview-progress="previewedProgress"
       :on-hover="onProgressBarHover"
-      class="w-full border-2 rounded-lg"
       :style="{ borderColor: colors.tertiary }"
+      class="w-full border-2 rounded-lg"
     />
 
     <div class="flex gap-4 fill-white dark:fill-black">
