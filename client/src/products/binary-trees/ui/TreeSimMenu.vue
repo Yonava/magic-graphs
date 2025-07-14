@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import { toRef } from 'vue';
-  import type { TreeSim } from '../state';
+  import type { TreeSimRunner } from '../state';
   import { useTreeTraceExplainer } from './useTreeTraceExplainer';
   import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
 
   const props = defineProps<{
-    controls: TreeSim;
+    controls: TreeSimRunner['simControls'];
   }>();
 
   const rProp = toRef(props);

@@ -24,8 +24,10 @@ const TRACE_STEP_TO_EXPLAINER: Record<TreeTraceStep['action'], (traceStep: TreeT
     throw 'invalid balance method';
   },
   compare: (traceStep) => {
+    if (!activeSim.value) throw 'no active sim'
     if (traceStep.action !== 'compare') throw 'wrong explainer function called'
     const { targetNode: target, comparedNode: against } = traceStep;
+    const { step, traceArray } = activeSim.value.simControls;
     if (target > against) {
       return `${target} is greater than ${against}, so we go right.`;
     }
@@ -34,7 +36,7 @@ const TRACE_STEP_TO_EXPLAINER: Record<TreeTraceStep['action'], (traceStep: TreeT
       return `${target} is less than ${against}, so we go left.`;
     }
 
-    if (activeSim.value?.step === activeSim.value?.trace.value.length) {
+    if (step.value === traceArray.value.length) {
       return `We have a duplicate, so we end here.`;
     }
 
@@ -53,7 +55,7 @@ const TRACE_STEP_TO_EXPLAINER: Record<TreeTraceStep['action'], (traceStep: TreeT
 export const useTreeTraceExplainer = () =>
   computed(() => {
     if (!activeSim.value) return;
-    const { traceAtStep } = activeSim.value;
+    const { traceAtStep } = activeSim.value.simControls;
     const getExplainer = TRACE_STEP_TO_EXPLAINER[traceAtStep.value.action]
     return getExplainer(traceAtStep.value);
   });

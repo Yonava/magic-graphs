@@ -1,17 +1,12 @@
 import { shallowRef } from 'vue';
 import type { TreeTraceStep } from './tree/avl';
-import type { SimulationControls } from '@ui/product/sim/types';
+import type { SimulationRunner } from '@ui/product/sim/types';
 
-export type TreeSim = SimulationControls<TreeTraceStep> & {
-  /**
-   * tears down the running simulation and resets `activeSim` state
-   */
-  kill: () => void;
-}
+export type TreeSimRunner = SimulationRunner<TreeTraceStep>
 
-const activeSim = shallowRef<TreeSim>();
+const activeSim = shallowRef<TreeSimRunner>();
 
 export default {
   activeSim,
-  reset: () => activeSim.value?.kill(),
+  reset: () => activeSim.value?.stop(),
 };

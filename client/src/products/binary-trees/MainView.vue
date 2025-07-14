@@ -58,14 +58,14 @@
       />
       <TreeSimMenu
         v-else
-        :controls="activeSim"
+        :controls="activeSim.simControls"
       />
     </template>
 
     <template #top-right>
       <StopSimButton
         v-if="activeSim"
-        @click="activeSim.kill"
+        @click="activeSim.stop"
       />
     </template>
   </GraphProduct>

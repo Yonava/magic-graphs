@@ -9,17 +9,17 @@ const ROOT_POS = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
 const { activeSim } = state;
 
-type SetTreeSimOptions = {
+type StartSimOptions = {
   graph: Graph;
   tree: AVLTree;
-  trace: TreeTraceStep[];
 };
 
-export const setTreeSim = () => ({
-  graph,
-  tree,
-  trace,
-}: SetTreeSimOptions) => {
+/**
+ * @returns a function that when called with a trace, will set `activeSim` thereby starting the simulation experience
+ */
+export const createSimulationRunner = ({ graph, tree }: StartSimOptions) => (trace: TreeTraceStep[]) => {
+  if (activeSim.value) throw 'attempted to start a simulation during running simulation'
+
   const { targetNodeId, activate, deactivate } = useTargetNodeColor(graph);
   activate();
 
@@ -47,19 +47,23 @@ export const setTreeSim = () => ({
     );
   };
 
-  const controls = useSimulationControls(trace)
-  controls.onStepChange(runStep)
-  controls.start()
+  const simControls = useSimulationControls(trace)
+  simControls.onStepChange(runStep)
+
+  const stop = () => {
+    if (!activeSim.value) throw "sim state erased w/o kill method!";
+    deactivate();
+    const { stop: stopPlayback, setStep, lastStep } = activeSim.value.simControls;
+    setStep(lastStep.value);
+    stopPlayback();
+    activeSim.value = undefined;
+  }
 
   activeSim.value = {
-    ...controls,
-    kill: () => {
-      if (!activeSim.value) throw "sim state erased w/o kill method!";
-      deactivate();
-      const { stop, setStep, lastStep } = activeSim.value;
-      setStep(lastStep.value);
-      stop();
-      activeSim.value = undefined;
-    }
+    start: simControls.start,
+    stop,
+    simControls,
   }
+
+  activeSim.value.start()
 };
