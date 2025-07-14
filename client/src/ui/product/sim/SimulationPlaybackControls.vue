@@ -16,7 +16,7 @@
   const colors = useNonNullGraphColors();
 
   const props = defineProps<{
-    controls: UnwrapRef<SimulationControls>;
+    controls: SimulationControls | UnwrapRef<SimulationControls>;
   }>();
 
   const {

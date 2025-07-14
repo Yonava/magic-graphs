@@ -6,9 +6,9 @@
   import { useTree } from './useTree';
   import AddNodePanel from './ui/AddNodePanel.vue';
   import state from './state';
-  import TreeSimMenu from './ui/TreeSimMenu.vue';
   import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
   import StopSimButton from '@ui/product/StopSimButton.vue';
+  import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
 
   const { simRunner } = state;
 
@@ -56,7 +56,7 @@
         v-if="!simRunner"
         :tree="tree"
       />
-      <TreeSimMenu
+      <SimulationPlaybackControls
         v-else
         :controls="simRunner.simControls"
       />
