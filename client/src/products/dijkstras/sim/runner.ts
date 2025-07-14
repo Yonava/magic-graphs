@@ -2,7 +2,7 @@ import type { Graph } from '@graph/types';
 import type { SimulationRunner } from '@ui/product/sim/types';
 import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
 import { useDijkstra } from '../algo/useDijkstra';
-import type { DijkstrasTraceAtStep } from '../algo/useDijkstra';
+import type { DijkstrasTraceStep } from '../algo/useDijkstra';
 import { useSimulationTheme } from './theme';
 import state from '../state';
 import { ref } from 'vue';
@@ -11,7 +11,7 @@ const { startNode } = state;
 
 export const isRunning = ref(false);
 
-export type DijkstraSimulationRunner = SimulationRunner<DijkstrasTraceAtStep>;
+export type DijkstraSimulationRunner = SimulationRunner<DijkstrasTraceStep>;
 
 export const useSimulationRunner = (graph: Graph): DijkstraSimulationRunner => {
   const { trace } = useDijkstra(graph);

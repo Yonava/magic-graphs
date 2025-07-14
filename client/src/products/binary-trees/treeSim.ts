@@ -1,7 +1,7 @@
 import type { Graph } from '@graph/types';
 import { useTargetNodeColor } from './theme/useTargetNodeColor';
 import { treeArrayToGraph } from './tree/treeArrayToGraph';
-import type { AVLTree, TreeTrace } from './tree/avl';
+import type { AVLTree, TreeTraceStep } from './tree/avl';
 import state from './state';
 import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
 
@@ -12,7 +12,7 @@ const { activeSim } = state;
 type SetTreeSimOptions = {
   graph: Graph;
   tree: AVLTree;
-  trace: TreeTrace[];
+  trace: TreeTraceStep[];
 };
 
 export const setTreeSim = () => ({

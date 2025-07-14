@@ -2,7 +2,7 @@ import type { GNode, Graph } from '@graph/types';
 import type { SimulationControls } from '@ui/product/sim/types';
 import { useTheme } from '@graph/themes/useTheme';
 import colors from '@utils/colors';
-import type { DijkstrasTraceAtStep } from '../algo/useDijkstra';
+import type { DijkstrasTraceStep } from '../algo/useDijkstra';
 
 export const SIM_COLORS = {
   SOURCE: colors.AMBER_600,
@@ -14,7 +14,7 @@ export const INF_STR = 'Inf';
 
 export const useSimulationTheme = (
   graph: Graph,
-  sim: SimulationControls<DijkstrasTraceAtStep>,
+  sim: SimulationControls<DijkstrasTraceStep>,
 ) => {
   const { traceAtStep } = sim;
   const { setTheme, removeAllThemes } = useTheme(graph, 'dijkstra');

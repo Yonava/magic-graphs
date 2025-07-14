@@ -30,29 +30,29 @@ type TreeState = {
   treeState: TreeNodeKeyArray;
 }
 
-export type CompareAction = {
+export type CompareStep = {
   action: 'compare';
   comparedNode: TreeNode['key'];
 } & TargetNode & TreeState;
 
-export type BalanceAction = {
+export type BalanceStep = {
   action: 'balance';
   method: BalanceMethod;
 } & TreeState;
 
-export type InsertAction = {
+export type InsertStep = {
   action: 'insert';
 } & TargetNode & TreeState;
 
-export type RemoveAction = {
+export type RemoveStep = {
   action: 'remove';
 } & TargetNode & TreeState;
 
-export type TreeTrace =
-  | CompareAction
-  | BalanceAction
-  | InsertAction
-  | RemoveAction;
+export type TreeTraceStep =
+  | CompareStep
+  | BalanceStep
+  | InsertStep
+  | RemoveStep;
 
 export const getHeight = (node: TreeNode | undefined) => {
   return node ? node.height : 0;
@@ -108,12 +108,12 @@ export class AVLTree {
     return current;
   }
 
-  remove(key: number): TreeTrace[] {
+  remove(key: number): TreeTraceStep[] {
     if (!this.root) {
       return [];
     }
 
-    const trace: TreeTrace[] = [];
+    const trace: TreeTraceStep[] = [];
     let targetFound = false;
 
     const removeHelper = (
@@ -207,7 +207,7 @@ export class AVLTree {
     parent: TreeNode | undefined,
     node: TreeNode,
     isLeft: boolean,
-    trace: TreeTrace[],
+    trace: TreeTraceStep[],
   ): TreeNode {
     const balance = getBalance(node);
 
@@ -308,8 +308,8 @@ export class AVLTree {
     return node;
   }
 
-  balance(): TreeTrace[] {
-    const trace: TreeTrace[] = [];
+  balance(): TreeTraceStep[] {
+    const trace: TreeTraceStep[] = [];
 
     const balanceNode = (
       parent: TreeNode | undefined,
@@ -366,7 +366,7 @@ export class AVLTree {
     return y;
   }
 
-  insert(key: number, rebalance = true): TreeTrace[] {
+  insert(key: number, rebalance = true): TreeTraceStep[] {
     if (!this.root) {
       this.root = new TreeNode(key);
       return [
@@ -378,7 +378,7 @@ export class AVLTree {
       ];
     }
 
-    const trace: TreeTrace[] = [];
+    const trace: TreeTraceStep[] = [];
     let justInserted = false;
 
     const insertHelper = (

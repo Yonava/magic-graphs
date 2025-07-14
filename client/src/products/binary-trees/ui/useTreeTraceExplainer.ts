@@ -1,43 +1,44 @@
 import { computed } from 'vue';
 import state from '../state';
 import type {
-  BalanceAction,
-  CompareAction,
-  InsertAction,
-  RemoveAction,
-  TreeTrace,
+  BalanceStep,
+  CompareStep,
+  InsertStep,
+  RemoveStep,
+  TreeTraceStep,
 } from '../tree/avl';
 
 const { activeSim } = state;
 
-type ExplainerFn<T extends TreeTrace> = (trace: T) => string;
+type ExplainerFn<T extends TreeTraceStep> = (traceStep: T) => string;
 
 type ActionMap = {
-  balance: ExplainerFn<BalanceAction>;
-  compare: ExplainerFn<CompareAction>;
-  insert: ExplainerFn<InsertAction>;
-  remove: ExplainerFn<RemoveAction>;
+  balance: ExplainerFn<BalanceStep>;
+  compare: ExplainerFn<CompareStep>;
+  insert: ExplainerFn<InsertStep>;
+  remove: ExplainerFn<RemoveStep>;
 };
 
 const traceActionToExplainer: ActionMap = {
-  balance: (trace) => {
+  balance: (traceStep) => {
+    const { method } = traceStep;
     const prefix = 'Tree Unbalanced! ';
-    if (trace.method === 'left-left') {
+    if (method === 'left-left') {
       return prefix + `Correcting a Left-Left Imbalance`;
     }
-    if (trace.method === 'left-right') {
+    if (method === 'left-right') {
       return prefix + `Correcting a Left-Right Imbalance`;
     }
-    if (trace.method === 'right-left') {
+    if (method === 'right-left') {
       return prefix + `Correcting a Right-Left Imbalance`;
     }
-    if (trace.method === 'right-right') {
+    if (method === 'right-right') {
       return prefix + `Correcting a Right-Right Imbalance`;
     }
     throw 'invalid balance method';
   },
-  compare: (trace) => {
-    const { targetNode: target, comparedNode: against } = trace;
+  compare: (traceStep) => {
+    const { targetNode: target, comparedNode: against } = traceStep;
     if (target > against) {
       return `${target} is greater than ${against}, so we go right.`;
     }
@@ -56,7 +57,7 @@ const traceActionToExplainer: ActionMap = {
   remove: (trace) => `Removing ${trace.targetNode}.`,
 };
 
-const getExplainerFromTrace = (trace: TreeTrace) => {
+const getExplainerFromTrace = (trace: TreeTraceStep) => {
   if (trace.action === 'balance') {
     return traceActionToExplainer['balance'](trace);
   }
@@ -74,8 +75,8 @@ const getExplainerFromTrace = (trace: TreeTrace) => {
 export const useTreeTraceExplainer = () =>
   computed(() => {
     if (!activeSim.value) return;
-    const { trace, step } = activeSim.value;
-    const traceAtStep = trace.value[step.value];
+    const { traceArray, step } = activeSim.value;
+    const traceAtStep = traceArray.value[step.value];
     if (!traceAtStep) return;
     return getExplainerFromTrace(traceAtStep);
   });
