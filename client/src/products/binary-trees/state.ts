@@ -13,5 +13,5 @@ const activeSim = shallowRef<TreeSim>();
 
 export default {
   activeSim,
-  reset: activeSim.value?.kill,
+  reset: () => activeSim.value?.kill(),
 };

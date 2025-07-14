@@ -18,6 +18,7 @@
   const tree = useTree(graph);
 
   graph.settings.value.shortcutDelete = () => {
+    if (activeSim.value) return;
     const { focusedNodes } = graph.focus;
     if (focusedNodes.value.length === 1)
       tree.removeNode(Number(focusedNodes.value[0].label));
