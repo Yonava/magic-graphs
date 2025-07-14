@@ -53,8 +53,7 @@ const TRACE_STEP_TO_EXPLAINER: Record<TreeTraceStep['action'], (traceStep: TreeT
 export const useTreeTraceExplainer = () =>
   computed(() => {
     if (!activeSim.value) return;
-    const { traceArray, step } = activeSim.value;
-    const traceAtStep = traceArray.value[step.value];
-    if (!traceAtStep) return;
-    return TRACE_STEP_TO_EXPLAINER[traceAtStep.action](traceAtStep);
+    const { traceAtStep } = activeSim.value;
+    const getExplainer = TRACE_STEP_TO_EXPLAINER[traceAtStep.value.action]
+    return getExplainer(traceAtStep.value);
   });
