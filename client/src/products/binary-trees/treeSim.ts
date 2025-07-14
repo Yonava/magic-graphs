@@ -7,7 +7,7 @@ import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
 
 const ROOT_POS = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
-const { activeSim } = state;
+const { simRunner: activeSim } = state;
 
 type StartSimOptions = {
   graph: Graph;

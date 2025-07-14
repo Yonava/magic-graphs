@@ -10,7 +10,7 @@
   import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
   import StopSimButton from '@ui/product/StopSimButton.vue';
 
-  const { activeSim } = state;
+  const { simRunner: activeSim } = state;
 
   const graphWithCanvas = useGraphWithCanvas(BINARY_TREE_GRAPH_SETTINGS);
   const { graph } = graphWithCanvas;

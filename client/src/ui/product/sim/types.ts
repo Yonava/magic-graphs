@@ -70,10 +70,14 @@ export type SimulationControls<T = any> = {
 
   /**
    * start the simulation. this will begin the simulation from step 0
+   *
+   * ⚠️ this should only be invoked by simulation runner during start up
    */
   start: () => void;
   /**
    * stop the simulation. this will end the simulation and reset all state
+   *
+   * ⚠️ this should only be invoked by simulation runner during tear down
    */
   stop: () => void;
   /**
@@ -112,7 +116,7 @@ export type SimulationControls<T = any> = {
 };
 
 /**
- * wraps around simulation controls to provide a standard interface for
+ * a wrapper around {@link SimulationControls | simulation controls} to provide a standard interface for
  * the work of setting up and running of simulations, ie prompting the user to select a starting node,
  * source/sink nodes, activating graph themes, etc.
  *

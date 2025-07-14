@@ -2,7 +2,7 @@ import { computed } from 'vue';
 import state from '../state';
 import type { TreeTraceStep } from '../tree/avl';
 
-const { activeSim } = state;
+const { simRunner: activeSim } = state;
 
 const TRACE_STEP_TO_EXPLAINER: Record<TreeTraceStep['action'], (traceStep: TreeTraceStep) => string> = {
   balance: (traceStep) => {
