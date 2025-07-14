@@ -1,26 +1,12 @@
 import { computed } from 'vue';
 import state from '../state';
-import type {
-  BalanceStep,
-  CompareStep,
-  InsertStep,
-  RemoveStep,
-  TreeTraceStep,
-} from '../tree/avl';
+import type { TreeTraceStep } from '../tree/avl';
 
 const { activeSim } = state;
 
-type ExplainerFn<T extends TreeTraceStep> = (traceStep: T) => string;
-
-type ActionMap = {
-  balance: ExplainerFn<BalanceStep>;
-  compare: ExplainerFn<CompareStep>;
-  insert: ExplainerFn<InsertStep>;
-  remove: ExplainerFn<RemoveStep>;
-};
-
-const traceActionToExplainer: ActionMap = {
+const TRACE_STEP_TO_EXPLAINER: Record<TreeTraceStep['action'], (traceStep: TreeTraceStep) => string> = {
   balance: (traceStep) => {
+    if (traceStep.action !== 'balance') throw 'wrong explainer function called'
     const { method } = traceStep;
     const prefix = 'Tree Unbalanced! ';
     if (method === 'left-left') {
@@ -38,6 +24,7 @@ const traceActionToExplainer: ActionMap = {
     throw 'invalid balance method';
   },
   compare: (traceStep) => {
+    if (traceStep.action !== 'compare') throw 'wrong explainer function called'
     const { targetNode: target, comparedNode: against } = traceStep;
     if (target > against) {
       return `${target} is greater than ${against}, so we go right.`;
@@ -53,23 +40,14 @@ const traceActionToExplainer: ActionMap = {
 
     return `Found ${target}.`;
   },
-  insert: (trace) => `At a leaf position, so we insert ${trace.targetNode}.`,
-  remove: (trace) => `Removing ${trace.targetNode}.`,
-};
-
-const getExplainerFromTrace = (trace: TreeTraceStep) => {
-  if (trace.action === 'balance') {
-    return traceActionToExplainer['balance'](trace);
-  }
-  if (trace.action === 'compare') {
-    return traceActionToExplainer['compare'](trace);
-  }
-  if (trace.action === 'insert') {
-    return traceActionToExplainer['insert'](trace);
-  }
-  if (trace.action === 'remove') {
-    return traceActionToExplainer['remove'](trace);
-  }
+  insert: (traceStep) => {
+    if (traceStep.action !== 'insert') throw 'wrong explainer function called'
+    return `At a leaf position, so we insert ${traceStep.targetNode}.`
+  },
+  remove: (traceStep) => {
+    if (traceStep.action !== 'remove') throw 'wrong explainer function called'
+    return `Removing ${traceStep.targetNode}.`
+  },
 };
 
 export const useTreeTraceExplainer = () =>
@@ -78,5 +56,5 @@ export const useTreeTraceExplainer = () =>
     const { traceArray, step } = activeSim.value;
     const traceAtStep = traceArray.value[step.value];
     if (!traceAtStep) return;
-    return getExplainerFromTrace(traceAtStep);
+    return TRACE_STEP_TO_EXPLAINER[traceAtStep.action](traceAtStep);
   });
