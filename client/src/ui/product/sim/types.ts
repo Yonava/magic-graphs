@@ -1,4 +1,7 @@
 import type { ComputedRef, Ref } from 'vue';
+// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
+// eslint-disable-next-line
+import type { GraphEventMap } from '@graph/events';
 
 /**
  * A function that returns the simulation state at a given step.
@@ -90,6 +93,20 @@ export type SimulationControls<T = any> = {
    * time, in milliseconds, between each step firing.
    */
   playbackSpeed: Ref<number>;
+  /**
+   * the default speed of the playback (seen as 1x speed in UI).
+   */
+  defaultPlaybackSpeedMs: number;
+  /**
+   * if false, users won't be able to adjust the speed of the playback
+   */
+  showPlaybackSpeedControls: boolean;
+  /**
+   * if true, the simulation will pause when
+   * the graph {@link GraphEventMap.onStructureChange | structure changes}
+   * @default true
+   */
+  pauseOnStructureChange: boolean;
 
   /**
    * whether the simulation is currently active.

@@ -1,9 +1,5 @@
-import type { GraphEventMap as ImportedGraphEventMap } from './types';
-
-/**
- * a complete mapping of all graph events to their callback functions
- */
-export type GraphEventMap = ImportedGraphEventMap;
+import type { GraphEventMap } from './types';
+export type { GraphEventMap } from './types';
 
 /**
  * turns a type that maps an events callback fn type to an actual event bus

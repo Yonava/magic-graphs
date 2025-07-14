@@ -257,6 +257,9 @@ export type AnnotationGraphEventMap = {};
 
 export type PersistentGraphEventMap = {};
 
+/**
+ * a complete mapping of all graph events to their callback functions
+ */
 export type GraphEventMap = BaseGraphEventMap &
   HistoryGraphEventMap &
   FocusGraphEventMap &

@@ -17,6 +17,9 @@
   });
 
   const progressPercentage = (progressStep: number) => {
+    // divide by 0 edge case
+    if (range.value === 0) return 100;
+
     const [start] = props.range;
     const curr = progressStep;
 
