@@ -30,6 +30,7 @@ import type { AggregatorProps } from './useAggregator';
 import type { GraphAnimations } from './animations';
 import type { Coordinate } from '@shape/types/utility';
 import type { AutoAnimateControls } from '@shape/animation/autoAnimate';
+import type { ActiveAnimationsMap } from '@shape/animation';
 
 type GraphCRUDOptions = {
   emit: Emitter;
@@ -42,6 +43,7 @@ type GraphCRUDOptions = {
   updateAggregator: AggregatorProps['updateAggregator'],
   animations: GraphAnimations,
   autoAnimate: AutoAnimateControls,
+  activeAnimations: ActiveAnimationsMap
 };
 
 export type GNodeMoveInstruction = {
@@ -66,6 +68,7 @@ export const useGraphCRUD = ({
   updateAggregator,
   animations,
   autoAnimate,
+  activeAnimations,
 }: GraphCRUDOptions) => {
   // READ OPERATIONS
 
@@ -361,6 +364,8 @@ export const useGraphCRUD = ({
 
     nodes.value = nodes.value.filter((n) => n.id !== removedNode.id);
 
+    activeAnimations.delete(removedNode.id)
+
     updateAggregator()
     updateGraphAtMousePosition()
 
@@ -419,6 +424,8 @@ export const useGraphCRUD = ({
     };
 
     edges.value = edges.value.filter((e) => e.id !== edge.id);
+
+    activeAnimations.delete(edge.id)
 
     updateAggregator()
     updateGraphAtMousePosition()

@@ -51,6 +51,8 @@ export const createSimulationRunner = ({ graph, tree }: CreateRunnerOptions) => 
   const simControls = useSimulationControls(trace, {
     explanation: getTreeTraceExplanation,
     pauseOnStructureChange: false,
+    defaultPlaybackSpeedMs: 1500,
+    showPlaybackSpeedControls: false,
   })
 
   simControls.onStepChange(runStep)

@@ -7,12 +7,14 @@ import { shapeDefaults } from "@shape/defaults/shapes"
 import { shapes } from ".."
 import { useAutoAnimate } from "./autoAnimate"
 
+/**
+ * a mapping between shapes (via ids) and the animations currently
+ * active/running on those shapes
+ */
+export type ActiveAnimationsMap = Map<SchemaId, ActiveAnimation[]>;
+
 export const useAnimatedShapes = () => {
-  /**
-   * a mapping between shapes (via ids) and the animations currently
-   * active/running on those shapes
-   */
-  const activeAnimations: Map<SchemaId, ActiveAnimation[]> = new Map()
+  const activeAnimations: ActiveAnimationsMap = new Map()
 
   const schemaIdToShapeName: Map<SchemaId, ShapeName> = new Map()
 
@@ -165,5 +167,6 @@ export const useAnimatedShapes = () => {
     defineTimeline,
     autoAnimate,
     getAnimatedSchema,
+    activeAnimations,
   }
 }

@@ -130,7 +130,7 @@ export const useBaseGraph = (
     draw,
   } = useAggregator({ emit });
 
-  const { shapes, autoAnimate, defineTimeline } = useAnimatedShapes()
+  const { shapes, autoAnimate, defineTimeline, activeAnimations } = useAnimatedShapes()
   const animations: GraphAnimations = deepMerge(
     getDefaultGraphAnimations(defineTimeline),
     settings.value.animations(defineTimeline),
@@ -226,6 +226,7 @@ export const useBaseGraph = (
     updateAggregator,
     animations,
     autoAnimate,
+    activeAnimations,
   });
 
   const nodeIdToIndex = computed(() =>
