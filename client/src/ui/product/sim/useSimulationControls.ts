@@ -7,6 +7,9 @@ import type {
 } from '@ui/product/sim/types';
 import { useLocalStorage } from '@vueuse/core';
 import { localKeys } from '@utils/localStorage';
+// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
+// eslint-disable-next-line
+import type { GraphEventMap } from '@graph/events';
 
 /**
  * @returns the text to be displayed alongside the simulation at given step.
@@ -25,13 +28,33 @@ export type SimulationControlsOptions<T> = {
    * @returns the text to be displayed alongside the simulation at given step.
    * if undefined is returned, the simulation will not display text for that step.
    */
-  explanation?: GetSimulationExplanation<T>
+  explanation?: GetSimulationExplanation<T>;
+  /**
+   * set the default speed of the playback (seen as 1x speed in UI).
+   *
+   * ⚠️ normally a users preferred playback speed is saved to localStorage, however
+   * on simulations where default playback speed is explicitly overridden,
+   * no data will be saved.
+   * @default 1000
+   */
+  defaultPlaybackSpeedMs?: number,
+  /**
+   * if false, users won't be able to adjust the speed of the playback
+   * @default true
+   */
+  showPlaybackSpeedControls?: boolean;
+  /**
+   * if true, the simulation will pause when
+   * the graph {@link GraphEventMap.onStructureChange | structure changes}
+   * @default true
+   */
+  pauseOnStructureChange?: boolean,
 };
 
 /**
- * the playback speed in ms per step of the simulation
+ * default amount of time (in ms) each step is shown for before moving to the next
  */
-export const DEFAULT_PLAYBACK_SPEED = 1000;
+export const DEFAULT_PLAYBACK_SPEED_MS = 1000;
 
 export const useSimulationControls = <T>(
   traceInput: ComputedRef<SimulationTrace<T>> | SimulationTrace<T>,
@@ -64,11 +87,13 @@ export const useSimulationControls = <T>(
   const paused = ref(true);
 
   /**
-   * the playback speed in ms per step of the simulation
+   * amount of time (in ms) each step is shown for before moving to the next
    */
-  const playbackSpeed = useLocalStorage(
+  const playbackSpeed = options.defaultPlaybackSpeedMs !== undefined ? ref(
+    options.defaultPlaybackSpeedMs
+  ) : useLocalStorage(
     localKeys.simulationPlaybackSpeed,
-    DEFAULT_PLAYBACK_SPEED,
+    DEFAULT_PLAYBACK_SPEED_MS,
   );
 
   /**
@@ -210,6 +235,10 @@ export const useSimulationControls = <T>(
     stop,
     paused,
     playbackSpeed,
+
+    defaultPlaybackSpeedMs: options.defaultPlaybackSpeedMs ?? DEFAULT_PLAYBACK_SPEED_MS,
+    showPlaybackSpeedControls: options.showPlaybackSpeedControls ?? true,
+    pauseOnStructureChange: options.pauseOnStructureChange ?? true,
 
     isOver,
     hasBegun,

@@ -8,7 +8,6 @@
   import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
   import GSpreadSelect from '@ui/graph/select/GSpreadSelect.vue';
   import GButton from '@ui/graph/button/GButton.vue';
-  import { DEFAULT_PLAYBACK_SPEED } from './useSimulationControls';
   import keys from 'ctrl-keys';
   import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
   import GText from '@ui/graph/GText.vue';
@@ -29,7 +28,16 @@
     explanationAtStep,
   } = toRefs(props.controls);
 
-  const { nextStep, prevStep, setStep, start, stop } = props.controls;
+  const {
+    nextStep,
+    prevStep,
+    setStep,
+    start,
+    stop,
+    showPlaybackSpeedControls,
+    pauseOnStructureChange,
+    defaultPlaybackSpeedMs,
+  } = props.controls;
 
   const goPrevStep = () => {
     prevStep();
@@ -69,7 +77,9 @@
     paused.value = true;
   };
 
-  graph.value.subscribe('onStructureChange', pause);
+  if (pauseOnStructureChange) {
+    graph.value.subscribe('onStructureChange', pause);
+  }
 
   onUnmounted(() => {
     graph.value.unsubscribe('onStructureChange', pause);
@@ -78,23 +88,23 @@
   const PLAYBACK_SPEEDS = [
     {
       label: '0.25x',
-      value: DEFAULT_PLAYBACK_SPEED / 0.25,
+      value: defaultPlaybackSpeedMs / 0.25,
     },
     {
       label: '0.5x',
-      value: DEFAULT_PLAYBACK_SPEED / 0.5,
+      value: defaultPlaybackSpeedMs / 0.5,
     },
     {
       label: '1x',
-      value: DEFAULT_PLAYBACK_SPEED,
+      value: defaultPlaybackSpeedMs,
     },
     {
       label: '2x',
-      value: DEFAULT_PLAYBACK_SPEED / 2,
+      value: defaultPlaybackSpeedMs / 2,
     },
     {
       label: '4x',
-      value: DEFAULT_PLAYBACK_SPEED / 4,
+      value: defaultPlaybackSpeedMs / 4,
     },
   ] as const;
 
@@ -137,8 +147,9 @@
       {{ explanationAtStep }}
     </GText>
 
-    <div class="flex gap-2 justify-between">
+    <div class="flex w-full justify-center gap-2">
       <GSpreadSelect
+        v-if="showPlaybackSpeedControls"
         v-model="playbackSpeed"
         v-model:open="speedMenuOpen"
         :items="PLAYBACK_SPEEDS"
@@ -149,9 +160,7 @@
         v-if="!speedMenuOpen"
         class="rounded-full"
       >
-        <span class="w-12">
-          {{ step }}
-        </span>
+        <span class="px-2"> Step {{ step + 1 }} </span>
       </GButton>
     </div>
 
@@ -177,6 +186,7 @@
       <PlaybackButton
         v-if="isOver"
         @click="restart"
+        :disabled="lastStep === 0"
         icon="restart"
       />
 

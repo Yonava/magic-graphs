@@ -49,7 +49,8 @@ export const createSimulationRunner = ({ graph, tree }: CreateRunnerOptions) => 
   };
 
   const simControls = useSimulationControls(trace, {
-    explanation: getTreeTraceExplanation
+    explanation: getTreeTraceExplanation,
+    pauseOnStructureChange: false,
   })
 
   simControls.onStepChange(runStep)

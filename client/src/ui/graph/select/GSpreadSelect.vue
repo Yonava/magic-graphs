@@ -55,7 +55,7 @@
 </script>
 
 <template>
-  <div class="w-full flex justify-center">
+  <div>
     <!-- spread menu -->
     <div
       v-if="isOpen"
