@@ -33,7 +33,7 @@ export const interpolateNumber: InterpolationFunction<
 
     if (progress >= p1.progress && progress <= p2.progress) {
       const t = (progress - p1.progress) / (p2.progress - p1.progress);
-      const easing = p1.easing || defaultEasing;
+      const easing = p1.easing ?? defaultEasing;
       return p1.value + easing(t) * (p2.value - p1.value);
     }
   }

@@ -27,7 +27,7 @@ export type CompiledTimeline = {
 
 /**
  * property name on schema (radius, rotation, lineWidth etc) to
- * animation keyframes the property will follow
+ * keyframes of either a custom getter function or the value itself
  */
 type PropToAnimationKeyframe = Record<string, AnimationKeyframe<any>[]>
 
@@ -75,7 +75,7 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
       return {
         progress: kf.progress,
         value,
-        easing,
+        easing: easing !== undefined ? easingOptionToFunction(easing) : easing,
       }
     }).filter(({ value }) => value !== undefined)
 

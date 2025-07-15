@@ -11,7 +11,7 @@ import type { Coordinate } from "@shape/types/utility"
 export const compileCoordinateProp: CompileProp = (
   prop,
   propToRawKeyframes,
-  easing,
+  defaultEasing,
 ) => (schema, progress) => {
   const nonAnimatedPropValue = schema[prop] as Coordinate
 
@@ -32,14 +32,14 @@ export const compileCoordinateProp: CompileProp = (
     }
 
     return {
+      ...kf,
       value: getValue(),
-      progress: kf.progress,
     }
   })
 
   const getInterpolatedValue = interpolateCoordinate(
     keyframes,
-    easing,
+    defaultEasing,
     nonAnimatedPropValue,
   )
 
