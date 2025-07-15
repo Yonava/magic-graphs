@@ -8,7 +8,7 @@
   /**
    * if the transition matrix is too large, we incur a significant performance
    * hit when rendering it. To mitigate this, we only load the
-   * transition matrix after the user has been prompted to do so.
+   * transition matrix after the user has prompted us to do so.
    */
   const loadOnlyAfterPrompt = ref(graph.value.nodes.value.length > 10);
 </script>
