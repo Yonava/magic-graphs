@@ -54,6 +54,16 @@ const DEFAULT_END = {
 
 const DEFAULT_EASING: EasingOption = 'linear'
 
+const isCustomInputObject = (obj: unknown) => {
+  const isObj = isPlainObject(obj)
+  if (!isObj) return false
+  const o = obj as object
+  const hasValueProp = 'value' in o
+  const hasEasingProp = 'easing' in o
+  const numOfProps = Object.keys(o).length
+  return hasValueProp && numOfProps === (hasEasingProp ? 2 : 1)
+}
+
 export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
   const tl: CompiledTimeline = {
     durationMs: timeline.durationMs,
@@ -69,7 +79,7 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
   const propToAnimationKeyframes = propsInTimeline.reduce((acc, prop) => {
     const propInTimeline = timeline.keyframes.map((kf): AnimationKeyframe<any> => {
       const propVal = kf.properties[prop]
-      const isObj = isPlainObject(propVal)
+      const isObj = isCustomInputObject(propVal)
       const value = isObj ? propVal.value : propVal
       const easing = isObj ? propVal?.easing : undefined
       return {

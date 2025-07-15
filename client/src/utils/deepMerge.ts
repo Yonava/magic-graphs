@@ -1,7 +1,7 @@
 
 
 export const isPlainObject = (obj: any) =>
-  obj &&
+  !!obj &&
   typeof obj === 'object' &&
   Object.getPrototypeOf(obj) === Object.prototype;
 
