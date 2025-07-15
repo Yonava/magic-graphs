@@ -5,7 +5,7 @@ import type { InterpolationFunction } from "./types";
  *
  * @param keyframes - An array of keyframes, each defining a progress point (0 to 1) and its corresponding value.
  *                    The keyframes should be ordered by progress in ascending order.
- * @param easing - A function that modifies the interpolation curve (e.g., linear, ease-in, ease-out).
+ * @param defaultEasing - A function that modifies the interpolation curve (e.g., linear, ease-in, ease-out).
  * @param fallback - The value to return if no keyframes are provided.
  * @returns A function that takes a progress value (between 0 and 1) and returns the interpolated value.
  *          If the provided progress is outside the range of keyframes, the nearest keyframe's value is returned.
@@ -21,7 +21,7 @@ import type { InterpolationFunction } from "./types";
  */
 export const interpolateNumber: InterpolationFunction<
   number
-> = (keyframes, easing, fallback) => (progress) => {
+> = (keyframes, defaultEasing, fallback) => (progress) => {
   if (keyframes.length === 0) return fallback;
 
   if (progress <= keyframes[0].progress) return keyframes[0].value;
@@ -33,6 +33,7 @@ export const interpolateNumber: InterpolationFunction<
 
     if (progress >= p1.progress && progress <= p2.progress) {
       const t = (progress - p1.progress) / (p2.progress - p1.progress);
+      const easing = p1.easing || defaultEasing;
       return p1.value + easing(t) * (p2.value - p1.value);
     }
   }

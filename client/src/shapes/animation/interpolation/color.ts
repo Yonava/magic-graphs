@@ -10,7 +10,7 @@ export const isColor = (color: tinycolor.Instance) => color.isValid();
 
 export const interpolateColor: InterpolationFunction<
   Color
-> = (keyframes, easing, fallback) => (progress) => {
+> = (keyframes, defaultEasing, fallback) => (progress) => {
   if (keyframes.length === 0) return fallback;
 
   const validColors = keyframes.map(kf => tinycolor(kf.value));
@@ -26,7 +26,8 @@ export const interpolateColor: InterpolationFunction<
     if (progress >= startKeyframe.progress && progress <= endKeyframe.progress) {
       const range = endKeyframe.progress - startKeyframe.progress;
       const localProgress = (progress - startKeyframe.progress) / range;
-      const easedProgress = easing(localProgress);
+      const easingFn = startKeyframe.easing ?? defaultEasing;
+      const easedProgress = easingFn(localProgress)
 
       const startRgba = tinycolor(startKeyframe.value).toRgb();
       const endRgba = tinycolor(endKeyframe.value).toRgb();

@@ -86,15 +86,19 @@ type WithCustomOption<T> = {
   [K in keyof T]: NonNullable<T[K]> | CustomOption<NonNullable<T[K]>, DeepRequired<T>>
 }
 
+type WithObjectOption<T> = {
+  [K in keyof T]: T[K] | { value: T[K], easing?: EasingOption }
+}
+
 type TimelineProps<T> = {
   [K in keyof T]: K extends keyof InterceptedSchemaProps ? InterceptedSchemaProps[K] : T[K]
 }
 
-type TimelinePropsWithCustomOption<T> = WithCustomOption<TimelineProps<T>>
+type TimelinePropsWithCustomOption<T> = WithObjectOption<WithCustomOption<TimelineProps<T>>>
 
 type TimelineKeyframe<T extends Partial<EverySchemaProp>> = {
   progress: number,
-  properties: Partial<TimelinePropsWithCustomOption<T>>
+  properties: Partial<TimelinePropsWithCustomOption<T>>,
 }
 
 export type TimelinePlaybackDuration = {

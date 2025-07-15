@@ -1,5 +1,40 @@
+import tinycolor from 'tinycolor2';
 import type { GraphMouseEvent } from './base/types';
 import type { Graph, SchemaItem } from './types';
+
+const animateNodePulse = (g: Graph) => g.defineTimeline({
+  forShapes: ['circle'],
+  durationMs: 2000,
+  keyframes: [
+    {
+      progress: 0.4,
+      properties: {
+        radius: (r) => r,
+        fillColor: (c) => c,
+      },
+    },
+    {
+      progress: 0.5,
+      properties: {
+        radius: {
+          value: (r) => r + 2,
+          easing: 'out',
+        },
+        fillColor: (c) => tinycolor(c).darken(5).toRgbString()
+      },
+    },
+    {
+      progress: 0.6,
+      properties: {
+        radius: {
+          value: (r) => r,
+          easing: 'in',
+        },
+        fillColor: (c) => c
+      },
+    },
+  ],
+});
 
 /**
  * selects schema items only of graph type 'node'
@@ -13,9 +48,18 @@ export const selectNode = (graph: Graph) => {
     predicate: (item) => item.graphType === 'node',
   });
 
+  const pulse = animateNodePulse(graph)
+
+  for (const node of graph.nodes.value) pulse.play({
+    shapeId: node.id,
+    runCount: Infinity
+  })
+
   return {
     selectedItemPromise: async () => {
       const selectedItem = await selectedItemPromise;
+      for (const node of graph.nodes.value) pulse.stop({ shapeId: node.id })
+      pulse.dispose()
       return selectedItem ? graph.getNode(selectedItem.id) : undefined;
     },
     cancelSelection,
@@ -134,8 +178,7 @@ export const selectFromGraph = (
 
   return {
     /**
-     * resolves to the selected item or undefined if the
-     * selection was cancelled by calling the cancel handler
+     * resolves to user selected item or undefined if cancelled
      */
     selectedItemPromise,
     cancelSelection,
