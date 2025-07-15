@@ -1,0 +1,1 @@
+import{d as t,J as s,c as l,o as r,am as m}from"./index-DZqqfzZN.js";const _=t({__name:"Icon",props:{icon:{}},setup(e){const n=e,o=["select-none"],a=s(()=>`mdi mdi-${n.icon}`),c=s(()=>[...o,a.value]);return(p,u)=>(r(),l("span",{class:m([c.value,"text-2xl"])},null,2))}});export{_};
