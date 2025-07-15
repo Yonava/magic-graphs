@@ -14,7 +14,7 @@
   import ZoomToolbar from './ZoomToolbar.vue';
   import HelpMenu from './HelpMenu.vue';
   import BenchmarkingMetrics from './dev/BenchmarkingMetrics.vue';
-  import { inDevMode } from '@graph/global';
+  import { devMode } from '@graph/global';
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import type { GraphWithCanvas } from '@product/shared/useGraphWithCanvas';
   import ShareButton from './ShareButton.vue';
@@ -199,7 +199,7 @@
     </div>
 
     <div
-      v-if="inDevMode"
+      v-if="devMode"
       :class="[
         'absolute',
         'flex',

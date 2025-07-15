@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { computed } from 'vue';
-  import { nonNullGraph as graph } from '@graph/global';
+  import { nonNullGraph as graph, devMode } from '@graph/global';
   import { useGraphTutorial } from '@graph/tutorials/useGraphTutorial';
   import GToolbar from '@ui/graph/toolbar/GToolbarBase.vue';
   import GToolbarButton from '@ui/graph/toolbar/GToolbarButton.vue';
@@ -154,6 +154,12 @@
           :icon="isOpen ? 'plus-box' : 'plus-box-outline'"
         />
       </TemplateMenu> -->
+
+      <GToolbarButton
+        @click="devMode = !devMode"
+        :active="devMode"
+        icon="code-tags"
+      />
     </ToolbarButtonGroup>
   </GToolbar>
 </template>

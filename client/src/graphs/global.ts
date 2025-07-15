@@ -2,9 +2,9 @@ import { computed, shallowRef } from "vue";
 import type { Graph } from "./types";
 
 /**
- * if true, stats are displayed on screen
+ * if true, developer mode is active
  */
-export const inDevMode = shallowRef(true)
+export const devMode = shallowRef(false)
 
 export const graph = shallowRef<Graph>();
 
