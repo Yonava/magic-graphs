@@ -4,7 +4,7 @@ import type { Coordinate } from "@shape/types/utility";
 
 export const interpolateCoordinate: InterpolationFunction<
   Coordinate
-> = (keyframes, easing, fallback) => {
+> = (keyframes, defaultEasing, fallback) => {
   return (progress) => {
     const xKeyframes = keyframes.map((kf): NumberKeyframe => ({
       value: kf.value.x,
@@ -16,8 +16,8 @@ export const interpolateCoordinate: InterpolationFunction<
       progress: kf.progress,
     }))
 
-    const x = interpolateNumber(xKeyframes, easing, fallback.x)
-    const y = interpolateNumber(yKeyframes, easing, fallback.y)
+    const x = interpolateNumber(xKeyframes, defaultEasing, fallback.x)
+    const y = interpolateNumber(yKeyframes, defaultEasing, fallback.y)
 
     return {
       x: x(progress),

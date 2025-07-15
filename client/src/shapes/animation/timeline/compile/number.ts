@@ -10,7 +10,7 @@ import { interpolateNumber } from "@shape/animation/interpolation/number"
 export const compileNumericProp: CompileProp = (
   prop,
   propToRawKeyframes,
-  easing,
+  defaultEasing,
 ) => (schema, progress) => {
   const nonAnimatedPropValue = schema[prop]
 
@@ -27,14 +27,14 @@ export const compileNumericProp: CompileProp = (
     }
 
     return {
+      ...kf,
       value: getValue(),
-      progress: kf.progress,
     }
   })
 
   const getInterpolatedValue = interpolateNumber(
     keyframes,
-    easing,
+    defaultEasing,
     nonAnimatedPropValue,
   )
 

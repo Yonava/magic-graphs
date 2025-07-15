@@ -30,8 +30,8 @@ export const compileColorProp: CompileProp = (
     }
 
     return {
+      ...kf,
       value: getValue(),
-      progress: kf.progress,
     }
   })
 

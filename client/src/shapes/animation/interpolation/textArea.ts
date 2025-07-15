@@ -5,7 +5,7 @@ import type { TextAreaWithDefaults } from "@shape/text/defaults";
 
 export const interpolateTextArea: InterpolationFunction<
   TextAreaWithDefaults
-> = (keyframes, easing, fallback) => {
+> = (keyframes, defaultEasing, fallback) => {
   return (progress) => {
     const colorKeyframes = keyframes.map((kf): ColorKeyframe => ({
       ...kf,
@@ -28,10 +28,10 @@ export const interpolateTextArea: InterpolationFunction<
       value: kf.value.textBlock.fontSize,
     }))
 
-    const textAreaColor = interpolateColor(colorKeyframes, easing, fallback.color);
-    const textColor = interpolateColor(textColorKeyframes, easing, fallback.textBlock.color)
-    const textFontSize = interpolateNumber(textSizeKeyframes, easing, fallback.textBlock.fontSize)
-    const textAreaActiveColor = interpolateColor(activeColorKeyframes, easing, fallback.activeColor)
+    const textAreaColor = interpolateColor(colorKeyframes, defaultEasing, fallback.color);
+    const textColor = interpolateColor(textColorKeyframes, defaultEasing, fallback.textBlock.color)
+    const textFontSize = interpolateNumber(textSizeKeyframes, defaultEasing, fallback.textBlock.fontSize)
+    const textAreaActiveColor = interpolateColor(activeColorKeyframes, defaultEasing, fallback.activeColor)
 
     const { textBlock } = fallback
 

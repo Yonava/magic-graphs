@@ -365,6 +365,7 @@ export const useBaseGraph = (
     shapes,
     autoAnimate,
     animations,
+    defineTimeline,
 
     baseTheme: computed(() => THEMES[themeName.value]),
     themeName,

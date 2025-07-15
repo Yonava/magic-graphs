@@ -13,6 +13,6 @@ export type EasingPreset = keyof typeof EASING_PRESETS
 
 export type EasingOption = EasingFunction | EasingPreset
 
-export const getEasingFunction = (easing: EasingOption) => {
+export const easingOptionToFunction = (easing: EasingOption) => {
   return typeof easing === 'function' ? easing : EASING_PRESETS[easing]
 }

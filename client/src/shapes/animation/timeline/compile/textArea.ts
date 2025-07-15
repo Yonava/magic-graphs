@@ -9,7 +9,7 @@ import { resolveTextArea, type TextAreaWithDefaults } from "@shape/text/defaults
 export const compileTextAreaProp: CompileProp = (
   prop,
   propToRawKeyframes,
-  easing,
+  defaultEasing,
 ) => (schema, progress) => {
   const nonAnimatedPropValue = schema[prop] as TextAreaWithDefaults
 
@@ -25,14 +25,14 @@ export const compileTextAreaProp: CompileProp = (
     if (!value) throw 'received undefined value from resolved text area'
 
     return {
+      ...kf,
       value,
-      progress: kf.progress,
     }
   })
 
   const getInterpolatedValue = interpolateTextArea(
     keyframes,
-    easing,
+    defaultEasing,
     nonAnimatedPropValue,
   )
 
