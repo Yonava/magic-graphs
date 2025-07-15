@@ -57,10 +57,9 @@ const DEFAULT_EASING: EasingOption = 'linear'
 const isCustomInputObject = (obj: unknown) => {
   const isObj = isPlainObject(obj)
   if (!isObj) return false
-  const o = obj as object
-  const hasValueProp = 'value' in o
-  const hasEasingProp = 'easing' in o
-  const numOfProps = Object.keys(o).length
+  const hasValueProp = 'value' in obj
+  const hasEasingProp = 'easing' in obj
+  const numOfProps = Object.keys(obj).length
   return hasValueProp && numOfProps === (hasEasingProp ? 2 : 1)
 }
 

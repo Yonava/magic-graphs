@@ -1,6 +1,6 @@
 
 
-export const isPlainObject = (obj: any) =>
+export const isPlainObject = (obj: any): obj is Record<string | number | symbol, unknown> =>
   !!obj &&
   typeof obj === 'object' &&
   Object.getPrototypeOf(obj) === Object.prototype;
