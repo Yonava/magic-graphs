@@ -84,7 +84,7 @@ export type ShapeProps = {
   shapeHitbox: (point: Coordinate) => boolean;
 
   /**
-   * returns true if the point is within the rectangular bounding box of the shape
+   * returns true if any part of the shape is within the bounding box
    */
   efficientHitbox: (boxToCheck: BoundingBox) => boolean;
 

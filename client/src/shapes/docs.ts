@@ -112,8 +112,16 @@ export const DEFAULT_STORIES = {
           offset: 0,
         },
         {
+          color: 'red',
+          offset: 0.95,
+        },
+        {
           color: 'blue',
-          offset: 0.99,
+          offset: 0.96,
+        },
+        {
+          color: 'blue',
+          offset: 1,
         }
       ]
     }
