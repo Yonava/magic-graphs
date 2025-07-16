@@ -5,15 +5,15 @@ import type { PartiallyRequired } from "@utils/types"
 
 type WithDefaults<
   Schema extends TextArea,
-  Defaults extends Partial<Schema>
+  Defaults extends Record<string, unknown>
 > = Prettify<
-  Omit<PartiallyRequired<Schema, keyof Defaults>, 'textArea'> &
+  Omit<PartiallyRequired<Schema, Extract<keyof Defaults, keyof Schema>>, 'textArea'> &
   ReturnType<typeof resolveTextArea>
 >
 
 export const resolveDefaults = <
   TSchema extends TextArea,
-  TDefaults extends Partial<TSchema>,
+  TDefaults extends Record<string, unknown>
 >(defaults: TDefaults) => (schema: TSchema) => {
   const { textArea, ...rest } = schema
 
