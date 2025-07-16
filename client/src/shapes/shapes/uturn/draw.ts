@@ -14,8 +14,6 @@ export const drawUTurnWithCtx = (schema: UTurnSchemaWithDefaults) => {
     rotation,
     lineWidth,
     fillColor: color,
-    arrowHeadShape,
-    arrowHeadSize,
     fillGradient,
   } = schema;
 
@@ -132,8 +130,6 @@ export const drawUTurnWithCtx = (schema: UTurnSchemaWithDefaults) => {
     end: shortLegTo,
     lineWidth: lineWidth,
     fillColor: color,
-    arrowHeadSize,
-    arrowHeadShape,
     fillGradient: arrowGradient,
   })
 

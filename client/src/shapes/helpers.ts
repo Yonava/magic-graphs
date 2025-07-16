@@ -1,7 +1,6 @@
 import tinycolor from 'tinycolor2';
 import type { BorderRadiusArrayValue, BoundingBox, Coordinate, GradientStop } from './types/utility';
 import type { BorderRadius } from './types/schema';
-import { LINE_SCHEMA_DEFAULTS } from './shapes/line/defaults';
 import type { ArrowSchema } from '@shapes/arrow/types';
 
 /**
@@ -105,9 +104,7 @@ export const getLargestAngularSpace = (
  * @param arrowWidth - the width of the arrow shaft
  * @returns the arrowhead height and the arrowhead base length
  */
-export const getArrowHeadSize = (
-  arrowWidth: ArrowSchema['lineWidth'] = LINE_SCHEMA_DEFAULTS.lineWidth,
-) => {
+export const getArrowHeadSize = (arrowWidth: number) => {
   const arrowHeadHeight = arrowWidth * 2.5;
   const perpLineLength = arrowHeadHeight / 1.75;
   return {
@@ -124,23 +121,18 @@ export const getArrowHeadSize = (
  */
 export const calculateArrowHeadCorners = (
   options: Required<
-    Pick<ArrowSchema, 'start' | 'end' | 'lineWidth' | 'arrowHeadSize'>
+    Pick<ArrowSchema, 'start' | 'end' | 'lineWidth'>
   >,
 ) => {
-  const { start, end, lineWidth: width, arrowHeadSize } = options;
+  const { start, end, lineWidth: width } = options;
 
-  const { arrowHeadHeight, perpLineLength } = arrowHeadSize(width);
+  const { arrowHeadHeight, perpLineLength } = getArrowHeadSize(width);
 
   const directionX = end.x - start.x;
   const directionY = end.y - start.y;
   const length = Math.sqrt(directionX ** 2 + directionY ** 2);
   const unitX = directionX / length;
   const unitY = directionY / length;
-
-  const tip = {
-    x: end.x,
-    y: end.y,
-  };
 
   const perpX = -unitY * perpLineLength;
   const perpY = unitX * perpLineLength;
@@ -155,7 +147,7 @@ export const calculateArrowHeadCorners = (
   };
 
   return {
-    pointA: tip,
+    pointA: end,
     pointB: baseLeft,
     pointC: baseRight,
   };

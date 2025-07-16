@@ -31,7 +31,7 @@ export const ColorGradient: Story = colorGradient
 export const TextOffset: Story = {
   args: {
     textOffsetFromCenter: -50,
-    ...WithText.args,
+    ...text.args,
   }
 }
 
