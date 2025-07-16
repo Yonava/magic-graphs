@@ -35,6 +35,10 @@ export type ShapeName =
  */
 export type ShapeTextProps = {
   /**
+   * draws the text area by calling `drawTextAreaMatte` then `drawText`
+   */
+  drawTextArea: (ctx: CanvasRenderingContext2D) => void;
+  /**
    * only draws the matte of the text area
    */
   drawTextAreaMatte: (ctx: CanvasRenderingContext2D) => void;
@@ -43,15 +47,11 @@ export type ShapeTextProps = {
    */
   drawText: (ctx: CanvasRenderingContext2D) => void;
   /**
-   * draws the text area (ie both matte and text)
-   */
-  drawTextArea: (ctx: CanvasRenderingContext2D) => void;
-  /**
    * returns true if the point is within the text area
    */
   textHitbox: (point: Coordinate) => boolean;
   /**
-   * starts a text editing session for the shape's text area.
+   * starts a text editing session.
    */
   startTextAreaEdit: StartTextAreaEdit;
 }
@@ -63,28 +63,27 @@ export type ShapeProps = {
   name: ShapeName;
 
   /**
-   * draws the entire shape including text.
-   * this is the default use case
+   * draws the shape and the text area
    */
   draw: (ctx: CanvasRenderingContext2D) => void;
 
   /**
-   * draws just the shape ignoring all text properties
+   * draws the shape without the text area
    */
   drawShape: (ctx: CanvasRenderingContext2D) => void;
 
   /**
-   * returns true if the point is within the shape or text area of the shape
+   * returns true if the point is within the shape or text area
    */
   hitbox: (point: Coordinate) => boolean;
 
   /**
-   * returns true if the point is within the area of the shape
+   * returns true if the point is within the shape, not including text area
    */
   shapeHitbox: (point: Coordinate) => boolean;
 
   /**
-   * returns true if any part of the shape is within the bounding box
+   * returns true if any part of the bounding box is within the shape, not including text area
    */
   efficientHitbox: (boxToCheck: BoundingBox) => boolean;
 
@@ -100,7 +99,7 @@ export type ShapeProps = {
  */
 export type ShapeWrapperProps = {
   /**
-   * returns the coordinates of the center point of the shape's bounding box
+   * returns the coordinates of the center of the shape's bounding box
    */
   getCenterPoint: () => Coordinate;
 };
