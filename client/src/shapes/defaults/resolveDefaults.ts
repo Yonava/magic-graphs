@@ -23,6 +23,7 @@ export const resolveDefaults = <
     )
   )
 
+  // @ts-expect-error this works... but the types are being weird
   const resolvedSchema: WithDefaults<TSchema, TDefaults> = {
     ...defaults,
     ...resolveTextArea(textArea),

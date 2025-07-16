@@ -41,7 +41,7 @@ export const drawArrowWithCtx = (schema: ArrowSchemaWithDefaults) => {
   })
 
   return (ctx: CanvasRenderingContext2D) => {
-    shaft.draw(ctx);
-    head.draw(ctx);
+    shaft.drawShape(ctx);
+    head.drawShape(ctx);
   };
 };
