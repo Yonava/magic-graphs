@@ -99,7 +99,7 @@ type TimelinePropsWithCustomOption<T> = WithObjectOption<WithCustomOption<Timeli
  * A manually-defined animation track for a single property.
  * Used as an escape hatch when the property is too complex for standard keyframe interpolation.
  */
-type ImperativeTrack<T> = {
+export type ImperativeTrack<T> = {
   /**
    * A function that computes the property's value at a given progress point.
    *
@@ -121,7 +121,6 @@ type CustomInterpolation<T> = {
 export type TimelineCustomInterpolations<T> = {
   customInterpolations?: Partial<CustomInterpolation<T>>
 }
-
 
 type TimelineKeyframe<T extends Partial<EverySchemaProp>> = {
   progress: number,

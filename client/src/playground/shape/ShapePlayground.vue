@@ -38,6 +38,11 @@
           end: { x: 50, y: 300 },
           start: { x: 250, y: 0 },
           lineWidth: 50,
+          textArea: (ta) => ({
+            textBlock: {
+              fontSize: ta.textBlock.fontSize + 12,
+            },
+          }),
         },
       },
     ],
@@ -50,6 +55,7 @@
       id: 'test',
       start: { x: 0, y: 0 },
       end: { x: 200, y: 200 },
+      textArea: { textBlock: { content: 'real' } },
     }),
   );
 
