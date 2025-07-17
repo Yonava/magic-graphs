@@ -87,7 +87,7 @@ export const useAnimatedShapes = () => {
       }
 
       // resolve the properties for the animated shape schema
-      const { properties, customInterpolations: customPath } = animationWithTimeline
+      const { properties, customInterpolations } = animationWithTimeline
       const progress = getAnimationProgress(animationWithTimeline)
 
       const infusedProps = Object.entries(properties).reduce((acc, curr) => {
@@ -104,12 +104,12 @@ export const useAnimatedShapes = () => {
         ...infusedProps,
       }
 
-      if (!customPath) continue;
+      if (!customInterpolations) continue;
 
-      const customPathOptions = Object.entries(customPath)
-      for (const [propName, customOptions] of customPathOptions) {
-        if (!customOptions) throw 'custom path received with no options. this should never happen!'
-        const { easing = 'linear', value } = customOptions
+      const allCustomInterpolations = Object.entries(customInterpolations)
+      for (const [propName, interpolationOptions] of allCustomInterpolations) {
+        if (!interpolationOptions) throw 'custom path received with no options. this should never happen!'
+        const { easing = 'linear', value } = interpolationOptions
         const easedProgress = easingOptionToFunction(easing)(progress)
         outputSchema[propName] = value(easedProgress)
       }
