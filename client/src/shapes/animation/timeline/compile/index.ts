@@ -1,12 +1,9 @@
 import type { AnimationKeyframe } from "@shape/animation/interpolation/types";
 import type { Timeline, TimelinePlaybackDelay, TimelinePlaybackDuration } from "../defineTimeline";
-import { compileNumericProp } from "./number";
-import { compileColorProp } from "./color";
-import { compileTextAreaProp } from "./textArea";
-import { compileCoordinateProp } from "./coordinate";
 import { easingOptionToFunction, type EasingFunction, type EasingOption } from "@shape/animation/easing";
 import type { ShapeName } from "@shape/types";
 import { isPlainObject } from "@utils/deepMerge";
+import { interpolateNumber } from "@shape/animation/interpolation/number";
 
 /**
  * @param schema the non-altered schema of the shape being animated
@@ -31,8 +28,6 @@ export type CompiledTimeline = {
  */
 type PropToAnimationKeyframe = Record<string, AnimationKeyframe<any>[]>
 
-const numberProps = ['rotation', 'borderRadius', 'lineWidth', 'width', 'radius'] as const
-const colorProps = ['fillColor'] as const
 const textAreaProps = ['textArea'] as const
 const coordProps = ['at', 'start', 'end'] as const
 
@@ -105,24 +100,37 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
     return easingOptionToFunction(defaultEasingOption)
   }
 
-  const numberPropsInTimeline = numberProps.filter((p) => propsInTimeline.includes(p))
-  for (const prop of numberPropsInTimeline) {
-    tl.properties[prop] = compileNumericProp(prop, propToAnimationKeyframes, getDefaultEasing(prop));
-  }
+  const interpolationFns = [
+    {
+      predicate: (propVal: unknown) => typeof propVal === 'number',
+      fn: interpolateNumber,
+    },
+    // {
+    //   predicate: (propVal) => typeof propVal
+    // }
+  ] as const
 
-  const colorPropsInTimeline = colorProps.filter((p) => propsInTimeline.includes(p))
-  for (const prop of colorPropsInTimeline) {
-    tl.properties[prop] = compileColorProp(prop, propToAnimationKeyframes, getDefaultEasing(prop));
-  }
+  for (const propName of propsInTimeline) {
+    tl.properties[propName] = (schemaWithDefaults, progress) => {
+      const rawPropVal = schemaWithDefaults[propName]
+      const interpolation = interpolationFns.find(({ predicate }) => predicate(rawPropVal))
+      if (!interpolation) throw `cannot interpolate value: ${JSON.stringify(rawPropVal)}`
+      const keyframes = propToAnimationKeyframes[propName].map((kf) => {
+        const getValue = () => {
+          if (typeof kf.value === 'function') {
+            return kf.value(rawPropVal, schemaWithDefaults)
+          }
+          return kf.value
+        }
 
-  const textAreaPropsInTimeline = textAreaProps.filter((p) => propsInTimeline.includes(p))
-  for (const prop of textAreaPropsInTimeline) {
-    tl.properties[prop] = compileTextAreaProp(prop, propToAnimationKeyframes, getDefaultEasing(prop));
-  }
+        return {
+          ...kf,
+          value: getValue(),
+        }
+      })
 
-  const coordPropsInTimeline = coordProps.filter((p) => propsInTimeline.includes(p))
-  for (const prop of coordPropsInTimeline) {
-    tl.properties[prop] = compileCoordinateProp(prop, propToAnimationKeyframes, getDefaultEasing(prop));
+      return interpolation.fn(keyframes, getDefaultEasing(propName), rawPropVal)(progress)
+    }
   }
 
   const { customInterpolations } = timeline;
@@ -136,6 +144,5 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
     }
   }
 
-  console.log(tl.properties)
   return tl
 }
