@@ -96,7 +96,7 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
       }
     }).filter(({ value }) => value !== undefined)
 
-    if (propInTimeline[0].progress !== 0) {
+    if (propInTimeline.at(0)?.progress !== 0) {
       propInTimeline.unshift(DEFAULT_START)
     }
 
