@@ -1,4 +1,4 @@
-import type { GNode, Graph } from '@graph/types';
+import type { GEdge, GNode, Graph } from '@graph/types';
 import type { SimulationControls } from '@ui/product/sim/types';
 import { useTheme } from '@graph/themes/useTheme';
 import colors from '@utils/colors';
@@ -24,12 +24,19 @@ export const useSimulationTheme = (
 
     if (traceAtStep.value?.currentNodeId === node.id) return SIM_COLORS.CURRENT;
     if (traceAtStep.value.visited.has(node.id)) return SIM_COLORS.VISITED;
-    if (traceAtStep.value.nextToExplore?.has(node.id)) return SIM_COLORS.QUEUED;
+    if (traceAtStep.value.queue?.includes(node.id)) return SIM_COLORS.QUEUED;
   };
+
+  const colorEdge = (edge: GEdge) => {
+    if (traceAtStep.value.currentNodeId === edge.from && traceAtStep.value.queue?.includes(edge.to)) {
+      return 'red'
+    }
+  }
 
   const activate = () => {
     setTheme('nodeBorderColor', colorBorders);
     setTheme('nodeAnchorColor', colorBorders);
+    setTheme('edgeColor', colorEdge)
   };
 
   const deactivate = () => {
