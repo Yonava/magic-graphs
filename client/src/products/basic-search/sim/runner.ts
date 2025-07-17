@@ -13,7 +13,7 @@ const { startNode } = state;
 export type BasicSearchSimulationRunner = SimulationRunner<BasicSearchTrace>;
 
 const animateEdge = (g: Graph) => g.defineTimeline({
-  forShapes: ['arrow'],
+  forShapes: ['arrow', 'line'],
   durationMs: 700,
   keyframes: [],
   customInterpolations: {
@@ -56,14 +56,14 @@ const useSimulationRunner = (
     theme();
   };
 
-  const { play, stop: s } = animateEdge(graph)
+  const { play: playAnimation, stop: stopAnimation } = animateEdge(graph)
 
   simControls.onStepChange(() => {
     const { traceAtStep } = simControls
     for (const edge of graph.edges.value) {
-      s({ shapeId: edge.id })
-      if (traceAtStep.value.currentNodeId === edge.from && traceAtStep.value.queue?.includes(edge.to)) {
-        play({ shapeId: edge.id, runCount: 1, })
+      stopAnimation({ shapeId: edge.id })
+      if (traceAtStep.value.currentNodeId === edge.from && !traceAtStep.value.visited.has(edge.to) && traceAtStep.value.queue?.includes(edge.to)) {
+        playAnimation({ shapeId: edge.id, runCount: 1 })
       }
     }
   })

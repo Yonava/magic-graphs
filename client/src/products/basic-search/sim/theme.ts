@@ -28,7 +28,7 @@ export const useSimulationTheme = (
   };
 
   const colorEdge = (edge: GEdge) => {
-    if (traceAtStep.value.currentNodeId === edge.from && traceAtStep.value.queue?.includes(edge.to)) {
+    if (traceAtStep.value.currentNodeId === edge.from && !traceAtStep.value.visited.has(edge.to) && traceAtStep.value.queue?.includes(edge.to)) {
       return 'red'
     }
   }
