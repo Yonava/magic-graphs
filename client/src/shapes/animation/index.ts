@@ -6,6 +6,7 @@ import { useDefineTimeline } from "./timeline/defineTimeline"
 import { shapeDefaults } from "@shape/defaults/shapes"
 import { shapes } from ".."
 import { useAutoAnimate } from "./autoAnimate"
+import { easingOptionToFunction } from "./easing"
 
 /**
  * a mapping between shapes (via ids) and the animations currently
@@ -19,10 +20,11 @@ export const useAnimatedShapes = () => {
   const schemaIdToShapeName: Map<SchemaId, ShapeName> = new Map()
 
   const { defineTimeline, timelineIdToTimeline } = useDefineTimeline({
-    play: ({ shapeId, ...rest }) => {
+    play: ({ shapeId, timelineId, runCount = Infinity }) => {
       const newAnimation: ActiveAnimation = {
-        ...rest,
-        startedAt: Date.now()
+        runCount,
+        startedAt: Date.now(),
+        timelineId,
       }
 
       const currAnimations = activeAnimations.get(shapeId)
@@ -85,7 +87,7 @@ export const useAnimatedShapes = () => {
       }
 
       // resolve the properties for the animated shape schema
-      const { properties } = animationWithTimeline
+      const { properties, customInterpolations: customPath } = animationWithTimeline
       const progress = getAnimationProgress(animationWithTimeline)
 
       const infusedProps = Object.entries(properties).reduce((acc, curr) => {
@@ -100,6 +102,16 @@ export const useAnimatedShapes = () => {
       outputSchema = {
         ...outputSchema,
         ...infusedProps,
+      }
+
+      if (!customPath) continue;
+
+      const customPathOptions = Object.entries(customPath)
+      for (const [propName, customOptions] of customPathOptions) {
+        if (!customOptions) throw 'custom path received with no options. this should never happen!'
+        const { easing = 'linear', value } = customOptions
+        const easedProgress = easingOptionToFunction(easing)(progress)
+        outputSchema[propName] = value(easedProgress)
       }
     }
 
