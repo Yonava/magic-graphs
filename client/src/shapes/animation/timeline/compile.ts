@@ -1,5 +1,5 @@
 import type { AnimationKeyframe } from "@shape/animation/interpolation/types";
-import type { ImperativeTrack, Timeline, TimelinePlaybackDelay, TimelinePlaybackDuration } from "../defineTimeline";
+import type { ImperativeTrack, Timeline, TimelinePlaybackDelay, TimelinePlaybackDuration } from "./define";
 import { easingOptionToFunction, type EasingFunction, type EasingOption } from "@shape/animation/easing";
 import type { EverySchemaPropName, ShapeName } from "@shape/types";
 import { isPlainObject } from "@utils/deepMerge";

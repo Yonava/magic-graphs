@@ -2,7 +2,7 @@ import type { SchemaId, Shape, ShapeFactory, ShapeName, WithId } from "@shape/ty
 import { shapeProps } from "@shape/types"
 import type { ActiveAnimation } from "./types"
 import { getAnimationProgress, getCurrentRunCount } from "./utils"
-import { useDefineTimeline } from "./timeline/defineTimeline"
+import { useDefineTimeline } from "./timeline/define"
 import { shapeDefaults } from "@shape/defaults/shapes"
 import { shapes } from ".."
 import { useAutoAnimate } from "./autoAnimate"

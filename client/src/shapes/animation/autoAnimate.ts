@@ -1,4 +1,4 @@
-import type { DefineTimeline } from "./timeline/defineTimeline";
+import type { DefineTimeline } from "./timeline/define";
 import type { SchemaId } from "@shape/types";
 
 export const AUTO_ANIMATE_DURATION_MS = 500;
