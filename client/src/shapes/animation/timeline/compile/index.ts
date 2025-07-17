@@ -1,5 +1,5 @@
 import type { AnimationKeyframe } from "@shape/animation/interpolation/types";
-import type { Timeline, TimelineCustomInterpolations, TimelinePlaybackDelay, TimelinePlaybackDuration } from "../defineTimeline";
+import type { Timeline, TimelinePlaybackDelay, TimelinePlaybackDuration } from "../defineTimeline";
 import { compileNumericProp } from "./number";
 import { compileColorProp } from "./color";
 import { compileTextAreaProp } from "./textArea";
@@ -23,7 +23,7 @@ export type CompiledTimeline = {
    * the shapes that this animated timeline is valid for
    */
   validShapes: Set<ShapeName>,
-} & TimelinePlaybackDuration & Required<TimelinePlaybackDelay> & TimelineCustomInterpolations<any>;
+} & TimelinePlaybackDuration & Required<TimelinePlaybackDelay>;
 
 /**
  * property name on schema (radius, rotation, lineWidth etc) to
@@ -69,7 +69,6 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
     delayMs: timeline?.delayMs ?? 0,
     properties: {},
     validShapes: new Set(timeline.forShapes),
-    customInterpolations: timeline.customInterpolations,
   }
 
   const propsInTimeline = [
@@ -126,5 +125,17 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
     tl.properties[prop] = compileCoordinateProp(prop, propToAnimationKeyframes, getDefaultEasing(prop));
   }
 
+  const { customInterpolations } = timeline;
+  if (customInterpolations) {
+    const allCustomInterpolations = Object.entries(customInterpolations)
+    for (const [propName, interpolationOptions] of allCustomInterpolations) {
+      if (!interpolationOptions) throw 'custom path received with no options. this should never happen!'
+      const { easing: easingRaw, value } = interpolationOptions
+      const easing = easingRaw ?? getDefaultEasing(propName)
+      tl.properties[propName] = (_, progress) => value(easingOptionToFunction(easing)(progress))
+    }
+  }
+
+  console.log(tl.properties)
   return tl
 }

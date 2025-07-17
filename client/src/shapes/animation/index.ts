@@ -6,7 +6,6 @@ import { useDefineTimeline } from "./timeline/defineTimeline"
 import { shapeDefaults } from "@shape/defaults/shapes"
 import { shapes } from ".."
 import { useAutoAnimate } from "./autoAnimate"
-import { easingOptionToFunction } from "./easing"
 
 /**
  * a mapping between shapes (via ids) and the animations currently
@@ -87,31 +86,18 @@ export const useAnimatedShapes = () => {
       }
 
       // resolve the properties for the animated shape schema
-      const { properties, customInterpolations } = animationWithTimeline
+      const { properties } = animationWithTimeline
       const progress = getAnimationProgress(animationWithTimeline)
 
       const infusedProps = Object.entries(properties).reduce((acc, curr) => {
         const [propName, getAnimatedValue] = curr
-        if (!(propName in outputSchema)) return acc
-
         acc[propName] = getAnimatedValue(outputSchema, progress)
-
         return acc
       }, {} as Record<string, number>)
 
       outputSchema = {
         ...outputSchema,
         ...infusedProps,
-      }
-
-      if (!customInterpolations) continue;
-
-      const allCustomInterpolations = Object.entries(customInterpolations)
-      for (const [propName, interpolationOptions] of allCustomInterpolations) {
-        if (!interpolationOptions) throw 'custom path received with no options. this should never happen!'
-        const { easing = 'linear', value } = interpolationOptions
-        const easedProgress = easingOptionToFunction(easing)(progress)
-        outputSchema[propName] = value(easedProgress)
       }
     }
 

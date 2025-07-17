@@ -12,7 +12,7 @@
 
   const { play, stop, pause, resume } = defineTimeline({
     forShapes: ['line'],
-    durationMs: 2000,
+    durationMs: 4000,
     customInterpolations: {
       fillGradient: {
         value: (p) => [
@@ -25,28 +25,19 @@
             offset: p < 0.5 ? p * 2 : 2 - p * 2,
           },
           {
-            color: 'blue',
+            color: 'black',
             offset: p < 0.5 ? p * 2 : 2 - p * 2,
           },
-          {
-            color: 'blue',
-            offset: 1,
-          },
         ],
-        easing: 'in-out',
       },
     },
     keyframes: [
       {
-        progress: 0,
+        progress: 0.5,
         properties: {
           end: { x: 50, y: 300 },
-        },
-      },
-      {
-        progress: 1,
-        properties: {
-          end: { x: 100, y: 200 },
+          start: { x: 250, y: 0 },
+          lineWidth: 50,
         },
       },
     ],
@@ -79,10 +70,6 @@
 <template>
   <div class="h-full w-full">
     <div class="absolute m-3 flex gap-3 z-50">
-      <ShapePlaygroundToolbar
-        :canvas="magic.canvas.value"
-        :items="paintedShapes"
-      />
       <Button @click="play({ shapeId: 'test' })"> Start Animation </Button>
       <Button @click="stop({ shapeId: 'test' })"> Stop Animation </Button>
       <Button @click="pause({ shapeId: 'test' })"> Pause Animation </Button>
