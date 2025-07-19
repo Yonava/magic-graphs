@@ -62,7 +62,11 @@ const useSimulationRunner = (
     const { traceAtStep } = simControls
     for (const edge of graph.edges.value) {
       stopAnimation({ shapeId: edge.id })
-      if (traceAtStep.value.currentNodeId === edge.from && !traceAtStep.value.visited.has(edge.to) && traceAtStep.value.queue?.includes(edge.to)) {
+      if (
+        traceAtStep.value.currentNodeId === edge.from &&
+        !traceAtStep.value.visited.has(edge.to) &&
+        traceAtStep.value.queue?.includes(edge.to)
+      ) {
         playAnimation({ shapeId: edge.id, runCount: 1 })
       }
     }
