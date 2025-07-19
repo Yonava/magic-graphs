@@ -10,12 +10,7 @@
 
   const { defineTimeline, shapes } = useAnimatedShapes();
 
-  const {
-    play,
-    stopAnimation: stop,
-    pause,
-    resume,
-  } = defineTimeline({
+  const { play, stop, pause, resume } = defineTimeline({
     forShapes: ['line'],
     durationMs: 4000,
     customInterpolations: {

@@ -106,8 +106,7 @@ export const useAnimatedShapes = () => {
 
   const {
     autoAnimate,
-    captureSchemaState: captureChanges,
-    applyAutoAnimation: applyAutoAnimate,
+    captureSchemaState,
   } = useAutoAnimate(defineTimeline, getAnimatedSchema)
 
   const animatedFactory = <T>(
@@ -126,9 +125,7 @@ export const useAnimatedShapes = () => {
         if (!defaultResolver) throw `cant find defaults for ${shapeName}`
         const schemaWithDefaults = defaultResolver(schema)
 
-        const alteredSchema = applyAutoAnimate(schemaWithDefaults, shapeName)
-        captureChanges(schemaWithDefaults)
-        if (alteredSchema) return factory(alteredSchema)[prop]
+        captureSchemaState(schemaWithDefaults)
 
         if (!animations || animations.length === 0) return target[prop]
 
