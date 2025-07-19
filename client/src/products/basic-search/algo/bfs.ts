@@ -8,34 +8,39 @@ export const bfs = (adjList: AdjacencyList, startNode: GNode['id']) => {
   const runBfs = () => {
     trace.push({
       visited: new Set(),
-      nextToExplore: new Set(),
+      queue: [],
     });
 
     const visited = new Set<GNode['id']>();
     const queue = [startNode];
+
+    trace.push({
+      visited: new Set(),
+      queue: [...queue],
+    });
+
     while (queue.length > 0) {
       const currentNode = queue.shift()!;
       if (visited.has(currentNode)) continue;
       visited.add(currentNode);
 
-      trace.push({
-        currentNodeId: currentNode,
-        visited: new Set(visited),
-        nextToExplore: new Set(queue),
-      });
-
       for (const neighbor of adjList[currentNode]) {
         queue.push(neighbor);
       }
+
+      trace.push({
+        currentNodeId: currentNode,
+        visited: new Set(visited),
+        queue: [...queue],
+      });
     }
 
     trace.push({
       visited: new Set(visited),
-      nextToExplore: new Set(),
+      queue,
     });
   };
 
   runBfs();
-
   return trace;
 };

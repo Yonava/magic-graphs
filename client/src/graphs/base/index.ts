@@ -227,6 +227,8 @@ export const useBaseGraph = (
     animations,
     autoAnimate,
     activeAnimations,
+    draw,
+    magicCanvas,
   });
 
   const nodeIdToIndex = computed(() =>

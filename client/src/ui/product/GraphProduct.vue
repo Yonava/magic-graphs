@@ -19,6 +19,7 @@
   import type { GraphWithCanvas } from '@product/shared/useGraphWithCanvas';
   import ShareButton from './ShareButton.vue';
   import GraphAtMousePositionData from './dev/GraphAtMousePositionData.vue';
+  import Button from '@ui/graph/button/GButton.vue';
 
   const props = defineProps<GraphWithCanvas>();
 
@@ -80,6 +81,18 @@
     props.graph.unsubscribe('onMouseDown', startGraphDrag);
     props.graph.unsubscribe('onMouseUp', stopGraphDrag);
   });
+
+  let moved = false;
+  const testMove = () => {
+    moved = !moved;
+    const diff = moved ? 250 : -250;
+    props.graph.bulkMoveNode(
+      props.graph.nodes.value.map((n) => ({
+        nodeId: n.id,
+        coords: { ...n, x: n.x + diff },
+      })),
+    );
+  };
 </script>
 
 <template>
@@ -180,6 +193,7 @@
       <HelpMenu />
       <ShareButton />
       <ZoomToolbar :camera="canvas.camera" />
+      <Button @click="testMove"> Move </Button>
     </div>
 
     <div :class="['absolute', 'bottom-6', '-translate-x-1/2', 'left-1/2']">

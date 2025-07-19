@@ -1,4 +1,4 @@
-import type { TimelineId } from "./timeline/defineTimeline"
+import type { TimelineId } from "./timeline/define"
 
 export type ActiveAnimation = {
   /**

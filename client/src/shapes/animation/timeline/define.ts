@@ -25,10 +25,9 @@ type IdField = {
 type TimelinePlayOptions = ShapeTarget & {
   /**
    * number of times this animation should run
-   *
-   * TIP: pass `Infinity` to run animation indefinitely
+   * @default Infinity
    */
-  runCount: number
+  runCount?: number
 }
 
 export type UseDefineTimelineOptions = {
@@ -96,6 +95,33 @@ type TimelineProps<T> = {
 
 type TimelinePropsWithCustomOption<T> = WithObjectOption<WithCustomOption<TimelineProps<T>>>
 
+/**
+ * A manually-defined animation track for a single property.
+ * Used as an escape hatch when the property is too complex for standard keyframe interpolation.
+ */
+export type ImperativeTrack<T> = {
+  /**
+   * A function that computes the property's value at a given progress point.
+   *
+   * @param progress A number from 0 to 1 representing animation progress.
+   * @returns The computed value for the property at the given progress.
+   */
+  value: (progress: number) => T,
+  /**
+   * Optional easing function to apply to the progress value before passing to `value`.
+   * @default 'linear'
+   */
+  easing?: EasingOption,
+}
+
+type CustomInterpolation<T> = {
+  [K in keyof T]: ImperativeTrack<T[K]>
+}
+
+export type TimelineCustomInterpolations<T> = {
+  customInterpolations?: Partial<CustomInterpolation<T>>
+}
+
 type TimelineKeyframe<T extends Partial<EverySchemaProp>> = {
   progress: number,
   properties: Partial<TimelinePropsWithCustomOption<T>>,
@@ -113,7 +139,7 @@ export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<{
   forShapes: T[]
   keyframes: TimelineKeyframe<SchemaProps<NoInfer<T>>>[],
   easing?: Partial<Record<keyof SchemaProps<NoInfer<T>>, EasingOption>>,
-} & TimelinePlaybackDuration & TimelinePlaybackDelay>
+} & TimelinePlaybackDuration & TimelinePlaybackDelay & TimelineCustomInterpolations<SchemaProps<NoInfer<T>>>>
 
 export const useDefineTimeline = (controls: UseDefineTimelineOptions) => {
   const timelineIdToTimeline: Map<TimelineId, CompiledTimeline> = new Map()

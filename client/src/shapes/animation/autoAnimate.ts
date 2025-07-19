@@ -1,17 +1,13 @@
-import type { DefineTimeline } from "./timeline/defineTimeline";
-import type { SchemaId } from "@shape/types";
+import type { DefineTimeline } from "./timeline/define";
+import type { SchemaId, ShapeName } from "@shape/types";
 
 export const AUTO_ANIMATE_DURATION_MS = 500;
 const AUTO_ANIMATED_PROPERTIES = new Set(['at', 'start', 'end', 'lineWidth', 'radius', 'fillColor'])
 
-export const useAutoAnimate = (
-  defineTimeline: DefineTimeline,
-  getAnimatedSchema: (schemaId: string) => any,
-) => {
-  const lastCapturedSchema: Map<
-    SchemaId, Partial<Record<string, any>>
-  > = new Map();
-  const autoAnimatingSchemas: Set<SchemaId> = new Set();
+export const useAutoAnimate = (defineTimeline: DefineTimeline) => {
+  let capturedSchema: Record<string, any>[] = []
+  let activelyCapturingSchemas = false;
+
   const activeAnimationStopper: Map<`${SchemaId}-${string}`, () => void> = new Map()
 
   const isEqual = (val1: any, val2: any) => {
@@ -24,73 +20,103 @@ export const useAutoAnimate = (
 
   const clone = <T>(obj: T): T => JSON.parse(JSON.stringify(obj)) as T;
 
+  const applyAutoAnimate = (schemaBefore: any, schemaAfter: any, shapeName: any) => {
+    const shapeId = schemaAfter.id
+
+    const animateProperty = (startVal: any, endVal: any, propName: string) => {
+      const stopper = activeAnimationStopper.get(`${shapeId}-${propName}`)
+      if (stopper) stopper()
+
+      const { play, stop } = defineTimeline({
+        forShapes: [shapeName],
+        durationMs: AUTO_ANIMATE_DURATION_MS,
+        easing: { [propName]: 'in-out' },
+        keyframes: [
+          {
+            progress: 0,
+            properties: { [propName]: clone(startVal) }
+          },
+          {
+            progress: 1,
+            properties: { [propName]: clone(endVal) }
+          }
+        ],
+      })
+
+      play({ shapeId: schemaAfter.id, runCount: 1 })
+      activeAnimationStopper.set(`${shapeId}-${propName}`, () => stop({ shapeId }))
+    }
+
+    const initialProperties: Record<string, any> = {}
+    for (const [propName, startVal] of Object.entries(schemaBefore)) {
+      if (!AUTO_ANIMATED_PROPERTIES.has(propName)) continue
+
+      const endVal = schemaAfter[propName];
+      if (isEqual(startVal, endVal)) continue
+
+      animateProperty(startVal, endVal, propName)
+
+      initialProperties[propName] = startVal
+    }
+
+    if (Object.keys(initialProperties).length === 0) return
+
+    return {
+      ...schemaAfter,
+      ...initialProperties,
+    }
+  }
+
   return {
-    captureSchemaState: (schema: any) => {
-      if (!schema?.id) return
-      lastCapturedSchema.set(schema.id, clone(schema))
+    captureSchemaState: (schema: any, shapeName: ShapeName) => {
+      if (!activelyCapturingSchemas || !schema?.id) return
+      capturedSchema.push({ ...clone(schema), shapeName })
     },
-    applyAutoAnimation: (schema: any, shapeName: any) => {
-      if (!autoAnimatingSchemas.has(schema.id)) return
-
-      const animateProperty = (startVal: any, endVal: any, propName: string) => {
-        const stopper = activeAnimationStopper.get(`${schema.id}-${propName}`)
-        if (stopper) stopper()
-
-        const { play, stop } = defineTimeline({
-          forShapes: [shapeName],
-          durationMs: AUTO_ANIMATE_DURATION_MS,
-          easing: { [propName]: 'in-out' },
-          keyframes: [
-            {
-              progress: 0,
-              properties: { [propName]: clone(startVal) }
-            },
-            {
-              progress: 1,
-              properties: { [propName]: clone(endVal) }
-            }
-          ],
-        })
-
-        play({ shapeId: schema.id, runCount: 1 })
-        activeAnimationStopper.set(`${schema.id}-${propName}`, () => stop({ shapeId: schema.id }))
-      }
-
-      const previousSchema = lastCapturedSchema.get(schema.id)
-      if (!previousSchema) return console.warn('no previous schema')
-
-      // if the schema is being animated, we need to intercept where the property
-      // is currently at in the animation instead of the last captured state
-      const schemaAnimated = getAnimatedSchema(schema.id)
-
-      const initialProperties: Record<string, any> = {}
-      for (const [propName, propVal] of Object.entries(previousSchema)) {
-        if (!AUTO_ANIMATED_PROPERTIES.has(propName)) continue
-
-        const endVal = schema[propName];
-        if (isEqual(propVal, endVal)) continue
-
-        const startVal = schemaAnimated ? schemaAnimated[propName] : propVal;
-        animateProperty(startVal, endVal, propName)
-
-        initialProperties[propName] = startVal
-      }
-
-      if (Object.keys(initialProperties).length === 0) return
-
-      return {
-        ...schema,
-        ...initialProperties,
-      }
-    },
+    applyAutoAnimate,
     autoAnimate: {
-      start: (id: SchemaId) => {
-        autoAnimatingSchemas.add(id)
-      },
-      stop: (id: SchemaId) => {
-        autoAnimatingSchemas.delete(id)
-      },
-      isActive: (id: SchemaId) => autoAnimatingSchemas.has(id)
+      /**
+       * Captures a pair of "before" and "after" snapshots of the given shapes' schemas
+       * by invoking the provided `flushDraw` function twice.
+       *
+       * This enables automatic animations to be generated by diffing the two states.
+       *
+       * @param ids - The IDs of shapes to track during this animation frame.
+       * @param flushDraw - A function that triggers a draw cycle. This is called:
+       *   - once immediately to capture the "before" state, and
+       *   - again inside the returned `finalize()` function to capture the "after" state.
+       *
+       * @returns A function that, when called, finalizes the capture and triggers animation.
+       *
+       * @example
+       * const finalize = autoAnimate.captureFrame(ids, () => draw());
+       * mutateShapes();
+       * finalize(); // triggers animation between captured states
+       */
+      captureFrame: (callback: () => void) => {
+        capturedSchema = []
+        activelyCapturingSchemas = true;
+        callback()
+        activelyCapturingSchemas = false;
+        const before = capturedSchema
+
+        return () => {
+          capturedSchema = []
+          activelyCapturingSchemas = true
+          callback()
+          activelyCapturingSchemas = false;
+          const after = capturedSchema
+
+          // apply animation by diffing before and after
+
+          if (before.length !== after.length) {
+            throw new Error('tracked shape mismatch when capturing animation frame')
+          }
+
+          for (let i = 0; i < after.length; i++) {
+            applyAutoAnimate(before[i], after[i], after[i]['shapeName'])
+          }
+        }
+      }
     }
   }
 }
