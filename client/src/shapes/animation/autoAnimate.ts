@@ -5,9 +5,9 @@ export const AUTO_ANIMATE_DURATION_MS = 500;
 const AUTO_ANIMATED_PROPERTIES = new Set(['at', 'start', 'end', 'lineWidth', 'radius', 'fillColor'])
 
 export const useAutoAnimate = (defineTimeline: DefineTimeline) => {
-  const lastCapturedSchema: Map<
-    SchemaId, Partial<Record<string, any>>
-  > = new Map();
+  let capturedSchema: Record<string, any>[] = []
+  let activelyCapturingSchemas = false;
+
   const activeAnimationStopper: Map<`${SchemaId}-${string}`, () => void> = new Map()
 
   const isEqual = (val1: any, val2: any) => {
@@ -69,8 +69,8 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline) => {
 
   return {
     captureSchemaState: (schema: any, shapeName: ShapeName) => {
-      if (!schema?.id) return
-      lastCapturedSchema.set(schema.id, { ...clone(schema), shapeName })
+      if (!activelyCapturingSchemas || !schema?.id) return
+      capturedSchema.push({ ...clone(schema), shapeName })
     },
     applyAutoAnimate,
     autoAnimate: {
@@ -93,15 +93,18 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline) => {
        * finalize(); // triggers animation between captured states
        */
       captureFrame: (callback: () => void) => {
-        lastCapturedSchema.clear()
-
+        capturedSchema = []
+        activelyCapturingSchemas = true;
         callback()
-        const before = Array.from(lastCapturedSchema.values())
-        lastCapturedSchema.clear()
+        activelyCapturingSchemas = false;
+        const before = capturedSchema
 
         return () => {
+          capturedSchema = []
+          activelyCapturingSchemas = true
           callback()
-          const after = Array.from(lastCapturedSchema.values())
+          activelyCapturingSchemas = false;
+          const after = capturedSchema
 
           // apply animation by diffing before and after
 
@@ -110,7 +113,6 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline) => {
           }
 
           for (let i = 0; i < after.length; i++) {
-            console.log(after[i]['shapeName'])
             applyAutoAnimate(before[i], after[i], after[i]['shapeName'])
           }
         }

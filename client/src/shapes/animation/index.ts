@@ -15,7 +15,6 @@ export type ActiveAnimationsMap = Map<SchemaId, ActiveAnimation[]>;
 
 export const useAnimatedShapes = () => {
   const activeAnimations: ActiveAnimationsMap = new Map()
-
   const schemaIdToShapeName: Map<SchemaId, ShapeName> = new Map()
 
   const { defineTimeline, timelineIdToTimeline } = useDefineTimeline({
