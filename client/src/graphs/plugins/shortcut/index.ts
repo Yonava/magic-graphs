@@ -46,7 +46,6 @@ export const useShortcuts = (
   const defaultShortcutTriggerEscape = () => graph.focus.reset();
   const defaultShortcutTriggerSelectAll = () => graph.focus.all();
   const defaultShortcutTriggerDelete = () => {
-    console.log('default delete')
     if (settings.value.interactive === false) return;
     graph.bulkRemoveNode([...graph.focus.focusedItemIds.value]);
     graph.bulkRemoveEdge([...graph.focus.focusedItemIds.value]);

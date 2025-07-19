@@ -298,10 +298,7 @@ export const useGraphCRUD = ({
       ...options,
     };
 
-    const finalizeFrame = autoAnimate.captureFrame(
-      nodeMovements.map((nm) => nm.nodeId),
-      () => draw(getCtx(magicCanvas.canvas)),
-    )
+    const finalizeFrame = autoAnimate.captureFrame(() => draw(getCtx(magicCanvas.canvas)))
 
     for (const { nodeId, coords } of nodeMovements) {
       moveNode(nodeId, coords, fullOptions)
