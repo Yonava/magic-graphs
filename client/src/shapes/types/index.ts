@@ -15,6 +15,7 @@ import type { SquareSchema } from "@shapes/square/types";
 import type { UTurnSchema } from "@shapes/uturn/types";
 import type { CircleSchema } from "@shapes/circle/types";
 import type { StartTextAreaEdit } from '@shape/text/types';
+import type { UnionToIntersection } from 'ts-essentials';
 
 export type ShapeName =
   | 'circle'
@@ -136,6 +137,7 @@ export type ShapeNameToSchema = {
 }
 
 export type EverySchemaProp = ShapeNameToSchema[keyof ShapeNameToSchema]
+export type EverySchemaPropName = keyof UnionToIntersection<EverySchemaProp>
 
 /**
  * all properties on the shape object as a runtime value

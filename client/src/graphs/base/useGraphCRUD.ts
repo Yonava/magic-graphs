@@ -31,6 +31,8 @@ import type { GraphAnimations } from './animations';
 import type { Coordinate } from '@shape/types/utility';
 import type { AutoAnimateControls } from '@shape/animation/autoAnimate';
 import type { ActiveAnimationsMap } from '@shape/animation';
+import type { MagicCanvasProps } from '@canvas/types';
+import { getCtx } from '@utils/ctx';
 
 type GraphCRUDOptions = {
   emit: Emitter;
@@ -43,7 +45,9 @@ type GraphCRUDOptions = {
   updateAggregator: AggregatorProps['updateAggregator'],
   animations: GraphAnimations,
   autoAnimate: AutoAnimateControls,
-  activeAnimations: ActiveAnimationsMap
+  activeAnimations: ActiveAnimationsMap,
+  draw: AggregatorProps['draw'],
+  magicCanvas: MagicCanvasProps,
 };
 
 export type GNodeMoveInstruction = {
@@ -69,6 +73,8 @@ export const useGraphCRUD = ({
   animations,
   autoAnimate,
   activeAnimations,
+  draw,
+  magicCanvas,
 }: GraphCRUDOptions) => {
   // READ OPERATIONS
 
@@ -283,7 +289,7 @@ export const useGraphCRUD = ({
     emit('onNodeMoved', node, fullOptions);
   };
 
-  const bulkMoveNode = async (
+  const bulkMoveNode = (
     nodeMovements: GNodeMoveInstruction[],
     options: Partial<MoveNodeOptions> = {},
   ) => {
@@ -292,17 +298,13 @@ export const useGraphCRUD = ({
       ...options,
     };
 
-    for (const { id } of edges.value) autoAnimate.start(id)
-    for (const { nodeId } of nodeMovements) autoAnimate.start(nodeId)
+    const finalizeFrame = autoAnimate.captureFrame(() => draw(getCtx(magicCanvas.canvas)))
 
     for (const { nodeId, coords } of nodeMovements) {
       moveNode(nodeId, coords, fullOptions)
     }
 
-    await new Promise((res) => setTimeout(res, 250));
-
-    for (const { id } of edges.value) autoAnimate.stop(id)
-    for (const { nodeId } of nodeMovements) autoAnimate.stop(nodeId)
+    finalizeFrame()
   }
 
   const editEdgeLabel = (

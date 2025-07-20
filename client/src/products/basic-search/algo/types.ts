@@ -9,8 +9,5 @@ export type BasicSearchTrace = {
    * nodes that have already been explored
    */
   visited: Set<GNode['id']>;
-  /**
-   * a neutral term for stacked or queued nodes
-   */
-  nextToExplore?: Set<GNode['id']>;
+  queue?: GNode['id'][];
 };

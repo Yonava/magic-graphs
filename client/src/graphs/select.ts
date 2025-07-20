@@ -50,10 +50,7 @@ export const selectNode = (graph: Graph) => {
 
   const pulse = animateNodePulse(graph)
 
-  for (const node of graph.nodes.value) pulse.play({
-    shapeId: node.id,
-    runCount: Infinity
-  })
+  for (const node of graph.nodes.value) pulse.play({ shapeId: node.id })
 
   return {
     selectedItemPromise: async () => {
