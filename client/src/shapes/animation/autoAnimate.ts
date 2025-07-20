@@ -102,18 +102,10 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline, getLiveSchema: (i
           const afterSchema = after[i]
 
           const diff = delta(beforeSchema, afterSchema)
-          if (!diff) {
-            console.log('no difference found')
-            continue
-          }
+          if (!diff) continue
 
-          if (diff['id']) {
-            throw new Error('id mismatch in before and after schema!')
-          }
-
-          if (diff['shapeName']) {
-            throw new Error('shape name mismatch in before and after schema!')
-          }
+          if (diff['id']) throw new Error('id mismatch in before and after schema!')
+          if (diff['shapeName']) throw new Error('shape name mismatch in before and after schema!')
 
           const schemaPropNames = Object.keys(diff) as EverySchemaPropName[]
           for (const propName of schemaPropNames) {
