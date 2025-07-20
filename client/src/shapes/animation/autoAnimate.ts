@@ -74,11 +74,11 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline, getLiveSchema: (i
      * mutateShapes();
      * finalize(); // triggers animation between captured states
      */
-    captureFrame: (callback: () => void) => {
+    captureFrame: (flushDraw: () => void) => {
       const captureState = () => {
         capturedSchemas = [];
         activelyCapturingSchemas = true;
-        callback();
+        flushDraw();
         activelyCapturingSchemas = false;
         return capturedSchemas;
       }
@@ -93,9 +93,7 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline, getLiveSchema: (i
       return () => {
         const after = captureState();
 
-        if (before.length !== after.length) {
-          throw new Error('tracked shape mismatch when capturing animation frame')
-        }
+        if (before.length !== after.length) throw new Error('tracked shape mismatch when capturing animation frame')
 
         for (let i = 0; i < after.length; i++) {
           const beforeSchema = before[i]
