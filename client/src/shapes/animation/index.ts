@@ -1,6 +1,6 @@
-import type { SchemaId, Shape, ShapeFactory, ShapeName, WithId } from "@shape/types"
+import type { EverySchemaPropName, SchemaId, Shape, ShapeFactory, ShapeName, WithId } from "@shape/types"
 import { shapeProps } from "@shape/types"
-import type { ActiveAnimation } from "./types"
+import type { ActiveAnimation, LooseSchema } from "./types"
 import { getAnimationProgress, getCurrentRunCount } from "./utils"
 import { useDefineTimeline } from "./timeline/define"
 import { shapeDefaults } from "@shape/defaults/shapes"
@@ -45,6 +45,7 @@ export const useAnimatedShapes = () => {
 
   /**
    * returns the schema of the shape being animated at the time it's invoked
+   * or undefined if no animation is running
    */
   const getAnimatedSchema = (schemaId: string) => {
     const animations = activeAnimations.get(schemaId)
@@ -90,9 +91,9 @@ export const useAnimatedShapes = () => {
 
       const infusedProps = Object.entries(properties).reduce((acc, curr) => {
         const [propName, getAnimatedValue] = curr
-        acc[propName] = getAnimatedValue(outputSchema, progress)
+        acc[propName as EverySchemaPropName] = getAnimatedValue(outputSchema, progress)
         return acc
-      }, {} as Record<string, number>)
+      }, {} as LooseSchema)
 
       outputSchema = {
         ...outputSchema,
@@ -106,25 +107,28 @@ export const useAnimatedShapes = () => {
   const {
     autoAnimate,
     captureSchemaState,
-  } = useAutoAnimate(defineTimeline)
+    targetMap,
+  } = useAutoAnimate(defineTimeline, getAnimatedSchema)
 
-  const animatedFactory = <T>(
+  const animatedFactory = <T extends LooseSchema>(
     factory: ShapeFactory<T>,
     shapeName: ShapeName,
   ): ShapeFactory<WithId<T>> => (schema) => {
     return new Proxy(factory(schema), {
       get: (target, rawProp) => {
         const prop = rawProp as keyof Shape
-
         if (!shapeProps.has(prop)) return target[prop]
 
         const animations = activeAnimations.get(schema.id)
 
-        const defaultResolver = (shapeDefaults as any)[shapeName]
+        const defaultResolver: (schema: LooseSchema) => LooseSchema = (shapeDefaults as any)[shapeName]
         if (!defaultResolver) throw `cant find defaults for ${shapeName}`
         const schemaWithDefaults = defaultResolver(schema)
 
         captureSchemaState(schemaWithDefaults, shapeName)
+
+        const targetMapSchema = targetMap.get(schema.id)
+        if (targetMapSchema) return factory((targetMapSchema as T))[prop]
 
         if (!animations || animations.length === 0) return target[prop]
 
@@ -138,7 +142,7 @@ export const useAnimatedShapes = () => {
         const animatedSchema = getAnimatedSchema(schema.id)
         if (!animatedSchema) return target[prop]
 
-        return factory(animatedSchema)[prop]
+        return factory((animatedSchema as T))[prop]
       }
     })
   }

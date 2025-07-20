@@ -1,78 +1,52 @@
+import { delta } from "@utils/deepDelta";
 import type { DefineTimeline } from "./timeline/define";
-import type { SchemaId, ShapeName } from "@shape/types";
+import type { EverySchemaPropName, SchemaId, ShapeName } from "@shape/types";
 
 export const AUTO_ANIMATE_DURATION_MS = 500;
 const AUTO_ANIMATED_PROPERTIES = new Set(['at', 'start', 'end', 'lineWidth', 'radius', 'fillColor'])
 
-export const useAutoAnimate = (defineTimeline: DefineTimeline) => {
+export const useAutoAnimate = (defineTimeline: DefineTimeline, getLiveSchema: (id: SchemaId) => Record<string, any> | void) => {
   let capturedSchema: Record<string, any>[] = []
   let activelyCapturingSchemas = false;
 
-  const activeAnimationStopper: Map<`${SchemaId}-${string}`, () => void> = new Map()
-
-  const isEqual = (val1: any, val2: any) => {
-    if (typeof val1 !== typeof val2) return false;
-    if (typeof val1 !== 'object' || val1 === null || val2 === null) {
-      return val1 === val2;
-    }
-    return JSON.stringify(val1) === JSON.stringify(val2);
-  }
+  const targetMap: Map<SchemaId, Record<string, any>> = new Map()
+  const animationStopper: Map<`${SchemaId}-${string}`, () => void> = new Map()
 
   const clone = <T>(obj: T): T => JSON.parse(JSON.stringify(obj)) as T;
 
-  const applyAutoAnimate = (schemaBefore: any, schemaAfter: any, shapeName: any) => {
-    const shapeId = schemaAfter.id
+  const applyAnimation = (startVal: any, endVal: any, propName: EverySchemaPropName, schema: Record<string, any>) => {
+    const { id, shapeName } = schema
 
-    const animateProperty = (startVal: any, endVal: any, propName: string) => {
-      const stopper = activeAnimationStopper.get(`${shapeId}-${propName}`)
-      if (stopper) stopper()
+    const stopKey = `${id}-${propName}` as const
+    const stopper = animationStopper.get(stopKey)
+    if (stopper) stopper()
 
-      const { play, stop } = defineTimeline({
-        forShapes: [shapeName],
-        durationMs: AUTO_ANIMATE_DURATION_MS,
-        easing: { [propName]: 'in-out' },
-        keyframes: [
-          {
-            progress: 0,
-            properties: { [propName]: clone(startVal) }
-          },
-          {
-            progress: 1,
-            properties: { [propName]: clone(endVal) }
-          }
-        ],
-      })
+    const { play, stop } = defineTimeline({
+      forShapes: [shapeName],
+      durationMs: AUTO_ANIMATE_DURATION_MS,
+      easing: { [propName]: 'in-out' },
+      keyframes: [
+        {
+          progress: 0,
+          properties: { [propName]: startVal }
+        },
+        {
+          progress: 1,
+          properties: { [propName]: endVal }
+        }
+      ],
+    })
 
-      play({ shapeId: schemaAfter.id, runCount: 1 })
-      activeAnimationStopper.set(`${shapeId}-${propName}`, () => stop({ shapeId }))
-    }
-
-    const initialProperties: Record<string, any> = {}
-    for (const [propName, startVal] of Object.entries(schemaBefore)) {
-      if (!AUTO_ANIMATED_PROPERTIES.has(propName)) continue
-
-      const endVal = schemaAfter[propName];
-      if (isEqual(startVal, endVal)) continue
-
-      animateProperty(startVal, endVal, propName)
-
-      initialProperties[propName] = startVal
-    }
-
-    if (Object.keys(initialProperties).length === 0) return
-
-    return {
-      ...schemaAfter,
-      ...initialProperties,
-    }
+    play({ shapeId: id, runCount: 1 })
+    animationStopper.set(stopKey, () => stop({ shapeId: id }))
   }
 
   return {
     captureSchemaState: (schema: any, shapeName: ShapeName) => {
       if (!activelyCapturingSchemas || !schema?.id) return
-      capturedSchema.push({ ...clone(schema), shapeName })
+      capturedSchema.push(clone({ ...schema, shapeName }))
     },
-    applyAutoAnimate,
+    targetMap,
     autoAnimate: {
       /**
        * Captures a pair of "before" and "after" snapshots of the given shapes' schemas
@@ -93,28 +67,61 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline) => {
        * finalize(); // triggers animation between captured states
        */
       captureFrame: (callback: () => void) => {
-        capturedSchema = []
-        activelyCapturingSchemas = true;
-        callback()
-        activelyCapturingSchemas = false;
-        const before = capturedSchema
+        const captureState = () => {
+          capturedSchema = [];
+          activelyCapturingSchemas = true;
+          callback();
+          activelyCapturingSchemas = false;
+          return capturedSchema;
+        }
+
+        const before = captureState()
+
+        for (const schema of before) {
+          const liveSchema = getLiveSchema(schema.id)
+          targetMap.set(schema.id, clone(liveSchema ?? schema))
+        }
 
         return () => {
-          capturedSchema = []
-          activelyCapturingSchemas = true
-          callback()
-          activelyCapturingSchemas = false;
-          const after = capturedSchema
-
-          // apply animation by diffing before and after
+          const after = captureState();
 
           if (before.length !== after.length) {
             throw new Error('tracked shape mismatch when capturing animation frame')
           }
 
           for (let i = 0; i < after.length; i++) {
-            applyAutoAnimate(before[i], after[i], after[i]['shapeName'])
+            const beforeSchema = before[i]
+            const afterSchema = after[i]
+
+            const diff = delta(beforeSchema, afterSchema)
+            if (!diff) {
+              console.log('no difference found')
+              continue
+            }
+
+            if (diff['id']) {
+              throw new Error('id mismatch in before and after schema!')
+            }
+
+            if (diff['shapeName']) {
+              throw new Error('shape name mismatch in before and after schema!')
+            }
+
+            const schemaPropNames = Object.keys(diff) as EverySchemaPropName[]
+            for (const propName of schemaPropNames) {
+              const propSupported = AUTO_ANIMATED_PROPERTIES.has(propName)
+              if (!propSupported) continue
+
+              const liveShape = targetMap.get(afterSchema.id)
+              if (!liveShape || liveShape?.[propName] === undefined) {
+                throw new Error(`live shape in target map missing required prop ${propName}!`)
+              }
+
+              applyAnimation(liveShape[propName], afterSchema[propName], propName, afterSchema)
+            }
           }
+
+          targetMap.clear()
         }
       }
     }

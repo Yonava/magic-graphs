@@ -12,7 +12,7 @@
   const hoveredItems = computed(() => {
     const { items } = graph.value.graphAtMousePosition.value;
     return items.map(
-      (item) => `${item.graphType} - ${item.shape.name} (${item.priority})`,
+      (item) => `${item.graphType} - ${item.shape.name} (${item.id})`,
     );
   });
 </script>

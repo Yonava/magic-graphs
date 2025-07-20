@@ -1,4 +1,10 @@
+import type { EverySchemaPropName } from "@shape/types"
 import type { TimelineId } from "./timeline/define"
+
+/**
+ * a looser version of a shape schema when fully type safe schemas becomes a nuisance
+ */
+export type LooseSchema = Partial<Record<EverySchemaPropName, any>>
 
 export type ActiveAnimation = {
   /**
@@ -19,5 +25,5 @@ export type ActiveAnimation = {
   /**
    * the schema at the point the animation started
    */
-  schema?: any,
+  schema?: LooseSchema,
 }
