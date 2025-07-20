@@ -75,7 +75,7 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline, getLiveSchema: (i
      * finalize(); // triggers animation between captured states
      */
     captureFrame: (flushDraw: () => void) => {
-      const captureState = () => {
+      const takeSnapshot = () => {
         capturedSchemas = [];
         activelyCapturingSchemas = true;
         flushDraw();
@@ -83,7 +83,7 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline, getLiveSchema: (i
         return capturedSchemas;
       }
 
-      const before = captureState()
+      const before = takeSnapshot()
 
       for (const schema of before) {
         const liveSchema = getLiveSchema(schema.id)
@@ -91,7 +91,7 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline, getLiveSchema: (i
       }
 
       return () => {
-        const after = captureState();
+        const after = takeSnapshot();
 
         if (before.length !== after.length) throw new Error('tracked shape mismatch when capturing animation frame')
 
