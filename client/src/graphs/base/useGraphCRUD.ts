@@ -29,8 +29,7 @@ import type { GraphSettings } from '@graph/settings';
 import type { AggregatorProps } from './useAggregator';
 import type { GraphAnimations } from './animations';
 import type { Coordinate } from '@shape/types/utility';
-import type { AutoAnimateControls } from '@shape/animation/autoAnimate';
-import type { ActiveAnimationsMap } from '@shape/animation';
+import type { ActiveAnimationsMap, AnimatedShapeControls } from '@shape/animation';
 import type { MagicCanvasProps } from '@canvas/types';
 import { getCtx } from '@utils/ctx';
 
@@ -44,7 +43,7 @@ type GraphCRUDOptions = {
   updateGraphAtMousePosition: () => void,
   updateAggregator: AggregatorProps['updateAggregator'],
   animations: GraphAnimations,
-  autoAnimate: AutoAnimateControls,
+  autoAnimate: AnimatedShapeControls['autoAnimate'],
   activeAnimations: ActiveAnimationsMap,
   draw: AggregatorProps['draw'],
   magicCanvas: MagicCanvasProps,

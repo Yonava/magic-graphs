@@ -125,5 +125,3 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline, getAnimatedSchema
     }
   }
 }
-
-export type AutoAnimateControls = Pick<ReturnType<typeof useAutoAnimate>, 'captureFrame'>

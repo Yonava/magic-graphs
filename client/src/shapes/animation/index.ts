@@ -161,3 +161,5 @@ export const useAnimatedShapes = () => {
     activeAnimations,
   }
 }
+
+export type AnimatedShapeControls = ReturnType<typeof useAnimatedShapes>
