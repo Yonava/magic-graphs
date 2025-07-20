@@ -47,7 +47,7 @@ export const useAnimatedShapes = () => {
    * returns the schema of the shape being animated at the time it's invoked
    * or undefined if no animation is running
    */
-  const getAnimatedSchema = (schemaId: string) => {
+  const getAnimatedSchema = (schemaId: SchemaId) => {
     const animations = activeAnimations.get(schemaId)
     if (!animations || animations.length === 0) return
 
@@ -104,48 +104,39 @@ export const useAnimatedShapes = () => {
     return outputSchema
   }
 
-  const {
-    autoAnimate,
-    captureSchemaState,
-    targetMap,
-  } = useAutoAnimate(defineTimeline, getAnimatedSchema)
+  const autoAnimate = useAutoAnimate(defineTimeline, getAnimatedSchema)
 
-  const animatedFactory = <T extends LooseSchema>(
+  const animatedFactory = <T extends Omit<LooseSchema, 'id'>>(
     factory: ShapeFactory<T>,
     shapeName: ShapeName,
-  ): ShapeFactory<WithId<T>> => (schema) => {
-    return new Proxy(factory(schema), {
-      get: (target, rawProp) => {
-        const prop = rawProp as keyof Shape
-        if (!shapeProps.has(prop)) return target[prop]
+  ): ShapeFactory<WithId<T>> => (schema) => new Proxy(factory(schema), {
+    get: (target, rawProp) => {
+      const prop = rawProp as keyof Shape
+      if (!shapeProps.has(prop)) return target[prop]
 
-        const animations = activeAnimations.get(schema.id)
+      const animations = activeAnimations.get(schema.id)
 
-        const defaultResolver: (schema: LooseSchema) => LooseSchema = (shapeDefaults as any)[shapeName]
-        if (!defaultResolver) throw `cant find defaults for ${shapeName}`
-        const schemaWithDefaults = defaultResolver(schema)
+      const defaultResolver: ((schema: LooseSchema) => LooseSchema) | undefined = (shapeDefaults as any)?.[shapeName]
+      if (!defaultResolver) throw new Error(`cant find defaults for ${shapeName}`)
+      const schemaWithDefaults = defaultResolver(schema)
 
-        captureSchemaState(schemaWithDefaults, shapeName)
+      autoAnimate.captureSchemaState(schemaWithDefaults, shapeName)
 
-        const targetMapSchema = targetMap.get(schema.id)
-        if (targetMapSchema) return factory((targetMapSchema as T))[prop]
+      const targetMapSchema = autoAnimate.snapshotMap.get(schema.id)
+      if (targetMapSchema) return factory((targetMapSchema as WithId<T>))[prop]
 
-        if (!animations || animations.length === 0) return target[prop]
+      if (!animations || animations.length === 0) return target[prop]
+      if (!animations[0]?.schema) animations[0].schema = schemaWithDefaults;
 
-        if (!animations[0]?.schema) {
-          animations[0].schema = schemaWithDefaults;
-        }
+      const hasShapeName = schemaIdToShapeName.get(schema.id)
+      if (!hasShapeName) schemaIdToShapeName.set(schema.id, shapeName);
 
-        const hasShapeName = schemaIdToShapeName.get(schema.id)
-        if (!hasShapeName) schemaIdToShapeName.set(schema.id, shapeName);
+      const animatedSchema = getAnimatedSchema(schema.id)
+      if (!animatedSchema) return target[prop]
 
-        const animatedSchema = getAnimatedSchema(schema.id)
-        if (!animatedSchema) return target[prop]
-
-        return factory((animatedSchema as T))[prop]
-      }
-    })
-  }
+      return factory((animatedSchema as WithId<T>))[prop]
+    }
+  })
 
   return {
     shapes: {
@@ -163,7 +154,7 @@ export const useAnimatedShapes = () => {
       uturn: animatedFactory(shapes.uturn, 'uturn'),
     },
     defineTimeline,
-    autoAnimate,
+    autoAnimate: { captureFrame: autoAnimate.captureFrame },
     getAnimatedSchema,
     activeAnimations,
   }

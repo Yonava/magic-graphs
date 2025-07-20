@@ -1,10 +1,15 @@
-import type { EverySchemaPropName } from "@shape/types"
+import type { EverySchemaPropName, WithId } from "@shape/types"
 import type { TimelineId } from "./timeline/define"
+
+/**
+ * the value of a {@link LooseSchema}
+ */
+export type LooseSchemaValue = any;
 
 /**
  * a looser version of a shape schema when fully type safe schemas becomes a nuisance
  */
-export type LooseSchema = Partial<Record<EverySchemaPropName, any>>
+export type LooseSchema = WithId<Partial<Record<EverySchemaPropName, LooseSchemaValue>>>
 
 export type ActiveAnimation = {
   /**
