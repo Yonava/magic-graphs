@@ -130,6 +130,8 @@ export const useAnimatedShapes = () => {
       if (!animations || animations.length === 0) return target[prop]
       if (!animations[0]?.schema) animations[0].schema = schemaWithDefaults;
 
+      if (prop === 'startTextAreaEdit') return console.warn('shapes with active animations cannot spawn text inputs')
+
       const hasShapeName = schemaIdToShapeName.get(schema.id)
       if (!hasShapeName) schemaIdToShapeName.set(schema.id, shapeName);
 
