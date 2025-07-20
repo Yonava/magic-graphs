@@ -19,7 +19,7 @@
   import type { GraphWithCanvas } from '@product/shared/useGraphWithCanvas';
   import ShareButton from './ShareButton.vue';
   import GraphAtMousePositionData from './dev/GraphAtMousePositionData.vue';
-  import Button from '@ui/graph/button/GButton.vue';
+  import { useEscSimulationShortcut } from './useEscSimulationShortcut';
 
   const props = defineProps<GraphWithCanvas>();
 
@@ -45,6 +45,7 @@
   };
 
   const stopSimulation = async () => {
+    if (!runningSimulation.value) return;
     await simRunner.value.stop();
     runningSimulation.value = false;
     emit('simulation-stopped');
@@ -52,6 +53,8 @@
     if (wasAnnotationActive.value) props.graph.annotation.activate();
     wasAnnotationActive.value = false;
   };
+
+  useEscSimulationShortcut(stopSimulation);
 
   const setActiveSimulation = (simulation: SimulationDeclaration) => {
     wasAnnotationActive.value = props.graph.annotation.isActive.value;
@@ -63,36 +66,24 @@
 
   useGraphProduct(props.graph);
 
-  const graphDragging = ref(false);
+  const disableUIPointerEvents = ref(false);
 
   const pointerEvents = computed(() =>
-    graphDragging.value ? 'pointer-events-none' : '',
+    disableUIPointerEvents.value ? 'pointer-events-none' : '',
   );
 
-  const startGraphDrag = () => (graphDragging.value = true);
-  const stopGraphDrag = () => (graphDragging.value = false);
+  const stopPointerEvents = () => (disableUIPointerEvents.value = true);
+  const startPointerEvents = () => (disableUIPointerEvents.value = false);
 
   onMounted(() => {
-    props.graph.subscribe('onMouseDown', startGraphDrag);
-    props.graph.subscribe('onMouseUp', stopGraphDrag);
+    props.graph.subscribe('onMouseDown', stopPointerEvents);
+    props.graph.subscribe('onMouseUp', startPointerEvents);
   });
 
   onUnmounted(() => {
-    props.graph.unsubscribe('onMouseDown', startGraphDrag);
-    props.graph.unsubscribe('onMouseUp', stopGraphDrag);
+    props.graph.unsubscribe('onMouseDown', stopPointerEvents);
+    props.graph.unsubscribe('onMouseUp', startPointerEvents);
   });
-
-  let moved = false;
-  const testMove = () => {
-    moved = !moved;
-    const diff = moved ? 250 : -250;
-    props.graph.bulkMoveNode(
-      props.graph.nodes.value.map((n) => ({
-        nodeId: n.id,
-        coords: { ...n, x: n.x + diff },
-      })),
-    );
-  };
 </script>
 
 <template>
@@ -193,7 +184,6 @@
       <HelpMenu />
       <ShareButton />
       <ZoomToolbar :camera="canvas.camera" />
-      <Button @click="testMove"> Move </Button>
     </div>
 
     <div :class="['absolute', 'bottom-6', '-translate-x-1/2', 'left-1/2']">

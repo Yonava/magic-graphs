@@ -153,9 +153,17 @@ export const useFocus = (graph: BaseGraph) => {
     resetFocus();
   };
 
+  const { hold, release } = graph.pluginHoldController('focus')
+
   graph.subscribe('onSettingsChange', (diff) => {
-    if (diff.focusable === false) deactivate();
-    else if (diff.focusable === true) activate();
+    if (diff.focusable === false) {
+      deactivate()
+      hold('marquee')
+    }
+    else if (diff.focusable === true) {
+      activate();
+      release('marquee')
+    }
   });
 
   if (graph.settings.value.focusable) activate();

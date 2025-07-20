@@ -9,6 +9,7 @@
   import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
   import StopSimButton from '@ui/product/StopSimButton.vue';
   import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
+  import { useEscSimulationShortcut } from '@ui/product/useEscSimulationShortcut';
 
   const { simRunner } = state;
 
@@ -36,6 +37,8 @@
     if (simRunner.value) return;
     tree.redo();
   };
+
+  useEscSimulationShortcut(() => simRunner.value?.stop());
 </script>
 
 <template>

@@ -6,4 +6,5 @@ export const PRODUCT_SHORTCUTS = {
   'Pause/Play Simulation': { binding: 'space' },
   'Simulation Step Forward': { binding: 'arrowright' },
   'Simulation Step Backward': { binding: 'arrowleft' },
+  'Exit Simulation': { binding: 'esc' },
 } as const satisfies Record<string, Omit<Shortcut, 'trigger'>>

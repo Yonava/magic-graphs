@@ -128,16 +128,15 @@ export const selectFromGraph = (
     resolve(topItem);
   };
 
-  const initialInteractive = graph.settings.value.interactive;
-  const initialFocusable = graph.settings.value.focusable;
+  const { hold, release } = graph.pluginHoldController('graph-select-api')
 
   /**
    * initializes the selection process
    */
   const init = () => {
     graph.subscribe('onClick', onClick);
-    graph.settings.value.interactive = false;
-    graph.settings.value.focusable = false;
+    hold('interactive')
+    hold('focusable')
     const cursorPredicate =
       predicate === DEFAULT_PREDICATE
         ? (item: SchemaItem) => !!item
@@ -150,8 +149,8 @@ export const selectFromGraph = (
    */
   const cleanup = () => {
     graph.unsubscribe('onClick', onClick);
-    graph.settings.value.interactive = initialInteractive;
-    graph.settings.value.focusable = initialFocusable;
+    release('interactive')
+    release('focusable')
     graph.deactivateCursorSelectMode();
   };
 
