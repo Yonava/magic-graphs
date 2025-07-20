@@ -2,6 +2,7 @@ import { delta } from "@utils/deepDelta";
 import type { DefineTimeline } from "./timeline/define";
 import type { EverySchemaPropName, SchemaId, ShapeName } from "@shape/types";
 import type { LooseSchema, LooseSchemaValue } from "./types";
+import type { GetAnimatedSchema } from ".";
 
 export const AUTO_ANIMATE_DURATION_MS = 500;
 const AUTO_ANIMATED_PROPERTIES = new Set(['at', 'start', 'end', 'lineWidth', 'radius', 'fillColor'])
@@ -11,7 +12,7 @@ type StopperKey = `${SchemaId}-${string}`
 
 const clone = <T>(obj: T) => JSON.parse(JSON.stringify(obj)) as T;
 
-export const useAutoAnimate = (defineTimeline: DefineTimeline, getLiveSchema: (id: SchemaId) => LooseSchema | void) => {
+export const useAutoAnimate = (defineTimeline: DefineTimeline, getAnimatedSchema: GetAnimatedSchema) => {
   let capturedSchemas: LooseSchemaWithName[] = []
   let activelyCapturingSchemas = false;
 
@@ -86,7 +87,7 @@ export const useAutoAnimate = (defineTimeline: DefineTimeline, getLiveSchema: (i
       const before = takeSnapshot()
 
       for (const schema of before) {
-        const liveSchema = getLiveSchema(schema.id)
+        const liveSchema = getAnimatedSchema(schema.id)
         snapshotMap.set(schema.id, clone(liveSchema ?? schema))
       }
 

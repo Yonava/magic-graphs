@@ -13,6 +13,8 @@ import { useAutoAnimate } from "./autoAnimate"
  */
 export type ActiveAnimationsMap = Map<SchemaId, ActiveAnimation[]>;
 
+export type GetAnimatedSchema = (schemaId: SchemaId) => LooseSchema | undefined
+
 export const useAnimatedShapes = () => {
   const activeAnimations: ActiveAnimationsMap = new Map()
   const schemaIdToShapeName: Map<SchemaId, ShapeName> = new Map()
@@ -44,22 +46,22 @@ export const useAnimatedShapes = () => {
   })
 
   /**
-   * returns the schema of the shape being animated at the time it's invoked
-   * or undefined if no animation is running
+   * if schema is actively being animated, returns the live schema with animated props applied.
    */
-  const getAnimatedSchema = (schemaId: SchemaId) => {
+  const getAnimatedSchema: GetAnimatedSchema = (schemaId) => {
     const animations = activeAnimations.get(schemaId)
     if (!animations || animations.length === 0) return
 
     let outputSchema = animations[0].schema
 
     if (!outputSchema) {
-      return console.warn('animation set without a schema. this should never happen!')
+      console.warn('animation set without a schema. this should never happen!')
+      return
     }
 
     for (const animation of animations) {
       const timeline = timelineIdToTimeline.get(animation.timelineId)
-      if (!timeline) throw 'animation activated without a timeline!'
+      if (!timeline) throw new Error('animation activated without a timeline!')
 
       const animationWithTimeline = {
         ...timeline,
