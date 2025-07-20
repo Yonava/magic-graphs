@@ -28,15 +28,8 @@
     graph.focus.reset();
   };
 
-  graph.settings.value.shortcutUndo = () => {
-    if (simRunner.value) return;
-    tree.undo();
-  };
-
-  graph.settings.value.shortcutRedo = () => {
-    if (simRunner.value) return;
-    tree.redo();
-  };
+  graph.settings.value.shortcutUndo = () => !simRunner.value && tree.undo();
+  graph.settings.value.shortcutRedo = () => !simRunner.value && tree.redo();
 
   useEscSimulationShortcut(() => simRunner.value?.stop());
 </script>
