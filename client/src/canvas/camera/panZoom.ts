@@ -15,7 +15,9 @@ export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>, storag
   const zoom = useLocalStorage(localKeys.cameraZoom(storageKey), 1)
 
   const setZoom = (ev: Pick<WheelEvent, 'clientX' | 'clientY' | 'deltaY'>) => {
-    const { clientX: cx, clientY: cy } = ev
+    const rect = canvas.value!.getBoundingClientRect();
+    const cx = ev.clientX - rect.left;
+    const cy = ev.clientY - rect.top;
 
     // clamp deltaY to a max range to prevent mice with large deltaY notches from feeling too sensitive
     const normalizedDelta = Math.max(-100, Math.min(100, ev.deltaY));
