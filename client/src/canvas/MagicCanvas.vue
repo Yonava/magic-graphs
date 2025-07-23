@@ -27,5 +27,6 @@
       class: twMerge($attrs.class as ClassNameValue, ['w-full', 'h-full']),
     }"
     ref="canvas"
-  ></canvas>
+    >Sorry, your browser does not support canvas.</canvas
+  >
 </template>

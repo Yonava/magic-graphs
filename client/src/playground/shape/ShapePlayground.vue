@@ -51,12 +51,24 @@
   const paintedShapes = ref<Shape[]>([]);
 
   paintedShapes.value.push(
-    shapes.line({
+    shapes.arrow({
       id: 'test',
       start: { x: 0, y: 0 },
       end: { x: 200, y: 200 },
-      textArea: { textBlock: { content: 'real' } },
-      fillColor: 'purple',
+      fillGradient: [
+        {
+          color: 'red',
+          offset: 0,
+        },
+        {
+          color: 'red',
+          offset: 0.99,
+        },
+        {
+          color: 'black',
+          offset: 1,
+        },
+      ],
     }),
   );
 
