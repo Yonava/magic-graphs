@@ -8,3 +8,14 @@ export const useLogReport = <T = string>(frequencyMs = 1000, resetReportAfterLog
   setInterval(logReport, frequencyMs)
   return report
 }
+
+export const useCooldownLog = (frequencyMs = 1000) => {
+  let cooldown = false;
+  const log = (...data: any[]) => {
+    if (cooldown) return;
+    console.log(...data)
+    cooldown = true
+  }
+  setInterval(() => cooldown = false, frequencyMs)
+  return log
+}
