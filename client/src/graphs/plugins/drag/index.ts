@@ -1,12 +1,21 @@
 import { ref, computed } from 'vue';
 import type { GraphMouseEvent } from '@graph/base/types';
-import type { ActiveDragNode } from './types';
 import type { BaseGraph } from '@graph/base';
 import type { NodeAnchorPlugin } from '../anchors';
 import { MOUSE_BUTTONS } from '@utils/mouse';
+import type { Coordinate } from '@shape/types/utility';
+import type { GNode } from '@graph/types';
+
+/**
+ * info for the node being dragged
+ */
+export type ActiveDragNode = {
+  nodeId: GNode['id'];
+  coords: Coordinate;
+};
 
 export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
-  const currentlyDraggingNode = ref<ActiveDragNode | undefined>();
+  const activeDrag = ref<ActiveDragNode | undefined>();
   const { hold, release } = graph.pluginHoldController('node-drag');
 
   const beginDrag = ({ items, coords, event }: GraphMouseEvent) => {
@@ -19,15 +28,18 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
     const node = graph.getNode(topItem.id);
     if (!node) return;
 
-    currentlyDraggingNode.value = { node, coords };
+    activeDrag.value = { nodeId: node.id, coords };
     graph.emit('onNodeDragStart', node);
   };
 
   const drop = () => {
-    if (!currentlyDraggingNode.value) return;
+    if (!activeDrag.value) return;
 
-    const { node: droppedNode } = currentlyDraggingNode.value
-    currentlyDraggingNode.value = undefined;
+    const { nodeId } = activeDrag.value
+    const droppedNode = graph.getNode(nodeId)
+    if (!droppedNode) throw new Error('dropped node not found');
+
+    activeDrag.value = undefined;
 
     graph.emit('onNodeDrop', droppedNode);
     release('nodeAnchors');
@@ -39,20 +51,22 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
     graph.nodeAnchors.setParentNode(droppedNode.id);
   };
 
-  const drag = ({ coords: evCoords }: GraphMouseEvent) => {
-    if (!currentlyDraggingNode.value) return;
+  const drag = ({ coords: magicCoords }: GraphMouseEvent) => {
+    if (!activeDrag.value) return;
 
-    const { node, coords } = currentlyDraggingNode.value;
+    const { nodeId, coords } = activeDrag.value;
+    const node = graph.getNode(nodeId);
+    if (!node) throw new Error('dragged node not found');
 
-    const dx = evCoords.x - coords.x;
-    const dy = evCoords.y - coords.y;
+    const dx = magicCoords.x - coords.x;
+    const dy = magicCoords.y - coords.y;
 
-    graph.moveNode(node.id, {
+    graph.moveNode(nodeId, {
       x: node.x + dx,
       y: node.y + dy,
     });
 
-    currentlyDraggingNode.value.coords = evCoords;
+    activeDrag.value.coords = magicCoords;
   };
 
   const activate = () => {
@@ -67,7 +81,7 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
     graph.unsubscribe('onMouseUp', drop);
     graph.unsubscribe('onMouseMove', drag);
     graph.graphToCursorMap.value['node'] = 'pointer';
-    if (currentlyDraggingNode.value) drop();
+    if (activeDrag.value) drop();
   };
 
   graph.subscribe('onSettingsChange', (diff) => {
@@ -82,7 +96,9 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
     /**
      * the node that is currently being dragged or undefined if no node is being dragged
      */
-    currentlyDraggingNode: computed(() => currentlyDraggingNode.value?.node),
+    currentlyDraggingNode: computed(() => {
+      return activeDrag.value ? graph.getNode(activeDrag.value.nodeId) : undefined
+    }),
   };
 };
 
