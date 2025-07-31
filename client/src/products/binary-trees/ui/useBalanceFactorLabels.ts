@@ -1,9 +1,10 @@
 import type { GNode, Graph } from '@graph/types';
 import colors from '@utils/colors';
 import type { Color } from '@utils/colors';
+
 import type { TreeControls } from '../useTree';
-import { useNodeLabel } from './useNodeLabel';
 import { useNodeColor } from './useNodeColor';
+import { useNodeLabel } from './useNodeLabel';
 
 export const useBalanceFactorLabels = (graph: Graph, tree: TreeControls) => {
   const { nodeIdToBalanceFactor: nodeToBf } = tree;

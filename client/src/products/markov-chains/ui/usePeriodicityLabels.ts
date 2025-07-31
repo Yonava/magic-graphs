@@ -1,5 +1,6 @@
-import type { GNode, Graph } from '@graph/types';
 import { useTheme } from '@graph/themes/useTheme';
+import type { GNode, Graph } from '@graph/types';
+
 import { USETHEME_ID } from '../constants';
 import type { MarkovChain } from '../markov/useMarkovChain';
 

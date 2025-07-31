@@ -1,10 +1,11 @@
-import { computed, shallowRef } from "vue";
-import type { Graph } from "./types";
+import { computed, shallowRef } from 'vue';
+
+import type { Graph } from './types';
 
 /**
  * if true, developer mode is active
  */
-export const devMode = shallowRef(false)
+export const devMode = shallowRef(false);
 
 export const graph = shallowRef<Graph>();
 

@@ -1,10 +1,15 @@
+import {
+  DEFAULT_STORIES,
+  DOC_MARKING_DEFAULTS,
+  createDocComponent,
+} from '@shape/docs';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { image } from '.';
-import type { ImageSchema } from './types';
-import { IMAGE_SCHEMA_DEFAULTS } from './defaults';
 
-const Image = createDocComponent<ImageSchema>(image)
+import { image } from '.';
+import { IMAGE_SCHEMA_DEFAULTS } from './defaults';
+import type { ImageSchema } from './types';
+
+const Image = createDocComponent<ImageSchema>(image);
 
 const meta = {
   title: 'Shapes/Image',
@@ -17,7 +22,7 @@ const meta = {
     at: { x: 20, y: 20 },
     ...DOC_MARKING_DEFAULTS,
   },
-} satisfies Meta<typeof Image>
+} satisfies Meta<typeof Image>;
 
 export default meta;
 
@@ -31,6 +36,6 @@ export const WithText: Story = text;
 export const Rotation: Story = {
   args: {
     ...rotation.args,
-    at: { x: 20, y: 20 }
-  }
+    at: { x: 20, y: 20 },
+  },
 };

@@ -1,5 +1,5 @@
-import type { GNode, Graph } from '@graph/types';
 import { useTheme } from '@graph/themes/useTheme';
+import type { GNode, Graph } from '@graph/types';
 import colors from '@utils/colors';
 
 const BIPARTITE_THEME_ID = 'bipartite-colorizer';

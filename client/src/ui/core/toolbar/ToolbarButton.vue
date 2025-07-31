@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { computed, ref, toRef } from 'vue';
   import CIcon from '@ui/core/Icon.vue';
   import { useTinycolor } from '@ui/useTinycolor';
   import colors from '@utils/colors';
+
+  import { computed, ref, toRef } from 'vue';
 
   const props = withDefaults(
     defineProps<{

@@ -1,8 +1,9 @@
 import type { BaseGraph } from '@graph/base';
-import type { GraphHistoryPlugin } from '../history';
-import type { GraphFocusPlugin } from '../focus';
-import type { GraphAnnotationPlugin } from '../annotations';
 import keys from 'ctrl-keys';
+
+import type { GraphAnnotationPlugin } from '../annotations';
+import type { GraphFocusPlugin } from '../focus';
+import type { GraphHistoryPlugin } from '../history';
 import type { PlatformShortcuts } from './types';
 
 export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
@@ -55,28 +56,49 @@ export const useShortcuts = (
    * get the function to run based on the keyboard shortcut setting
    */
   const getFn = (defaultFn: () => void, setting: boolean | (() => void)) => {
-    if (setting === false) return () => { };
+    if (setting === false) return () => {};
     if (typeof setting === 'function') return setting;
     return defaultFn;
   };
 
-  const triggerRedo = { fn: () => console.warn('not implemented') }
-  const triggerUndo = { fn: () => console.warn('not implemented') }
-  const triggerEscape = { fn: () => console.warn('not implemented') }
-  const triggerSelectAll = { fn: () => console.warn('not implemented') }
-  const triggerDelete = { fn: () => console.warn('not implemented') }
-  const triggerZoomIn = { fn: () => console.warn('not implemented') }
-  const triggerZoomOut = { fn: () => console.warn('not implemented') }
+  const triggerRedo = { fn: () => console.warn('not implemented') };
+  const triggerUndo = { fn: () => console.warn('not implemented') };
+  const triggerEscape = { fn: () => console.warn('not implemented') };
+  const triggerSelectAll = { fn: () => console.warn('not implemented') };
+  const triggerDelete = { fn: () => console.warn('not implemented') };
+  const triggerZoomIn = { fn: () => console.warn('not implemented') };
+  const triggerZoomOut = { fn: () => console.warn('not implemented') };
 
   const updateBindings = () => {
-    triggerRedo.fn = getFn(defaultShortcutTriggerRedo, settings.value.shortcutRedo)
-    triggerUndo.fn = getFn(defaultShortcutTriggerUndo, settings.value.shortcutUndo)
-    triggerEscape.fn = getFn(defaultShortcutTriggerEscape, settings.value.shortcutEscape)
-    triggerSelectAll.fn = getFn(defaultShortcutTriggerSelectAll, settings.value.shortcutSelectAll)
-    triggerDelete.fn = getFn(defaultShortcutTriggerDelete, graph.settings.value.shortcutDelete)
-    triggerZoomIn.fn = getFn(graph.magicCanvas.camera.actions.zoomIn, settings.value.shortcutZoomIn)
-    triggerZoomOut.fn = getFn(graph.magicCanvas.camera.actions.zoomOut, settings.value.shortcutZoomOut)
-  }
+    triggerRedo.fn = getFn(
+      defaultShortcutTriggerRedo,
+      settings.value.shortcutRedo,
+    );
+    triggerUndo.fn = getFn(
+      defaultShortcutTriggerUndo,
+      settings.value.shortcutUndo,
+    );
+    triggerEscape.fn = getFn(
+      defaultShortcutTriggerEscape,
+      settings.value.shortcutEscape,
+    );
+    triggerSelectAll.fn = getFn(
+      defaultShortcutTriggerSelectAll,
+      settings.value.shortcutSelectAll,
+    );
+    triggerDelete.fn = getFn(
+      defaultShortcutTriggerDelete,
+      graph.settings.value.shortcutDelete,
+    );
+    triggerZoomIn.fn = getFn(
+      graph.magicCanvas.camera.actions.zoomIn,
+      settings.value.shortcutZoomIn,
+    );
+    triggerZoomOut.fn = getFn(
+      graph.magicCanvas.camera.actions.zoomOut,
+      settings.value.shortcutZoomOut,
+    );
+  };
 
   const allShortcuts: PlatformShortcuts = {
     Mac: {
@@ -139,7 +161,7 @@ export const useShortcuts = (
         trigger: () => triggerZoomOut.fn(),
       },
     },
-  }
+  };
 
   // adds the keyboard shortcuts to the ctrlKeysHandler
   const shortcutValues = Object.values(allShortcuts[USER_PLATFORM]);

@@ -1,31 +1,33 @@
-import type { Ref } from "vue"
-import type { Coordinate } from "@shape/types/utility"
-import type { Camera } from "./camera"
-import type { DrawPattern } from "./backgroundPattern"
+import type { Coordinate } from '@shape/types/utility';
 
-export type DrawContent = (ctx: CanvasRenderingContext2D) => void
+import type { Ref } from 'vue';
+
+import type { DrawPattern } from './backgroundPattern';
+import type { Camera } from './camera';
+
+export type DrawContent = (ctx: CanvasRenderingContext2D) => void;
 
 export type DrawFns = {
-  content: Ref<DrawContent>,
-  backgroundPattern: Ref<DrawPattern>
-}
+  content: Ref<DrawContent>;
+  backgroundPattern: Ref<DrawPattern>;
+};
 
 export type MagicCanvasProps = {
-  canvas: Ref<HTMLCanvasElement | undefined>
-  camera: Omit<Camera, 'cleanup'>,
-  cursorCoordinates: Ref<Coordinate>,
+  canvas: Ref<HTMLCanvasElement | undefined>;
+  camera: Omit<Camera, 'cleanup'>;
+  cursorCoordinates: Ref<Coordinate>;
   ref: {
-    canvasRef: (canvas: HTMLCanvasElement) => void,
-    cleanup: (canvas: HTMLCanvasElement) => void,
-  },
-  draw: DrawFns,
-}
+    canvasRef: (canvas: HTMLCanvasElement) => void;
+    cleanup: (canvas: HTMLCanvasElement) => void;
+  };
+  draw: DrawFns;
+};
 
 export type MagicCanvasOptions = {
   /**
    * a key that is used to track the camera state in localStorage
    */
-  storageKey?: string
-}
+  storageKey?: string;
+};
 
-export type UseMagicCanvas = (options?: MagicCanvasOptions) => MagicCanvasProps
+export type UseMagicCanvas = (options?: MagicCanvasOptions) => MagicCanvasProps;

@@ -1,23 +1,25 @@
-import { rectHitbox, rectEfficientHitbox, getRectBoundingBox } from './hitbox';
-import { drawRectWithCtx } from './draw';
-import type { Coordinate } from '@shape/types/utility';
-import type { ShapeFactory } from '@shape/types';
-import { shapeFactoryWrapper } from '@shape/shapeWrapper';
-import { validateBorderRadius } from '../../optionsValidator';
-import { getShapeTextProps } from '@shape/text/text';
 import { getCenterPoint } from '@shape/helpers';
-import type { RectSchema } from './types';
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
+import { getShapeTextProps } from '@shape/text/text';
+import type { ShapeFactory } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
+
+import { validateBorderRadius } from '../../optionsValidator';
 import { resolveRectDefaults } from './defaults';
+import { drawRectWithCtx } from './draw';
+import { getRectBoundingBox, rectEfficientHitbox, rectHitbox } from './hitbox';
+import type { RectSchema } from './types';
 
 export const rect: ShapeFactory<RectSchema> = (options) => {
   validateBorderRadius(options);
 
-  const schema = resolveRectDefaults(options)
-  const text = getShapeTextProps(getCenterPoint(schema), schema.textArea)
+  const schema = resolveRectDefaults(options);
+  const text = getShapeTextProps(getCenterPoint(schema), schema.textArea);
 
   const shapeHitbox = rectHitbox(schema);
   const efficientHitbox = rectEfficientHitbox(schema);
-  const hitbox = (point: Coordinate) => text?.textHitbox(point) || shapeHitbox(point);
+  const hitbox = (point: Coordinate) =>
+    text?.textHitbox(point) || shapeHitbox(point);
 
   const getBoundingBox = getRectBoundingBox(schema);
 

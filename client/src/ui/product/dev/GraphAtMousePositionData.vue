@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from '@graph/global';
+
   import { computed } from 'vue';
 
   const coords = computed(() => {

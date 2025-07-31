@@ -1,7 +1,8 @@
 import type { GNode, Graph } from '@graph/types';
-import type { NodeDepth } from './useNodeDepth';
 import type { Coordinate } from '@shape/types/utility';
 import { roundToNearestN } from '@utils/math';
+
+import type { NodeDepth } from './useNodeDepth';
 
 export const getTreeStandardPos = (
   graph: Pick<Graph, 'getNode'>,
@@ -9,7 +10,7 @@ export const getTreeStandardPos = (
   nodeDepths: NodeDepth,
   treeOffset: { xOffset: number; yOffset: number },
 ) => {
-  const newNodePositions: { nodeId: GNode['id'], coords: Coordinate }[] = []
+  const newNodePositions: { nodeId: GNode['id']; coords: Coordinate }[] = [];
 
   const { xOffset, yOffset } = treeOffset;
   const { depthToNodeIds } = nodeDepths;
@@ -46,8 +47,8 @@ export const getTreeStandardPos = (
         coords: {
           x: roundToNearest10(x),
           y: roundToNearest10(y),
-        }
-      })
+        },
+      });
     }
   }
 

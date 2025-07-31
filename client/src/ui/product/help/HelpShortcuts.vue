@@ -1,9 +1,10 @@
 <script setup lang="ts">
-  import HelpSection from './HelpSection.vue';
   import { nonNullGraph as graph } from '@graph/global';
-  import HelpShortcutKey from './HelpShortcutKey.vue';
   import type { Shortcut } from '@graph/plugins/shortcut/types';
   import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
+
+  import HelpSection from './HelpSection.vue';
+  import HelpShortcutKey from './HelpShortcutKey.vue';
 
   /**
    * @example 'Control+Shift+Z' -> ['Control', 'Shift', 'Z']

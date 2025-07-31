@@ -1,7 +1,7 @@
-import type { Fraction } from 'mathjs';
 import { useGraph } from '@graph/useGraph';
 import type { Shape } from '@shape/types';
 import type { MaybeGetter } from '@utils/maybeGetter';
+import type { Fraction } from 'mathjs';
 
 /**
  * the useGraph composition function
@@ -94,10 +94,10 @@ export type SchemaItem = {
    * the type of graph data this schema item represents (node, edge, etc.)
    */
   graphType:
-  | BaseGraphTypes
-  | NodeAnchorGraphTypes
-  | MarqueeGraphTypes
-  | AnnotationGraphTypes;
+    | BaseGraphTypes
+    | NodeAnchorGraphTypes
+    | MarqueeGraphTypes
+    | AnnotationGraphTypes;
   /**
    * determines the rendering order of this schema item on the canvas.
    * Items with lower priority values are rendered earlier and appear

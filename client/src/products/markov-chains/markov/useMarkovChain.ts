@@ -1,10 +1,12 @@
-import { computed } from 'vue';
 import type { Graph } from '@graph/types';
 import { reduceSet } from '@utils/sets';
+
+import { computed } from 'vue';
+
 import { useMarkovClasses } from './useMarkovClasses';
+import { useMarkovNodeWeights } from './useMarkovNodeWeights';
 import { useMarkovPeriodicity } from './useMarkovPeriodicity';
 import { useMarkovSteadyState } from './useMarkovSteadyState';
-import { useMarkovNodeWeights } from './useMarkovNodeWeights';
 
 /**
  * reactive markov chain characteristics

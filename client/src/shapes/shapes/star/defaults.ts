@@ -1,6 +1,7 @@
-import { FILL_COLOR_DEFAULTS, ROTATION_DEFAULTS } from "@shape/defaults/schema";
-import type { StarSchema } from "./types";
-import { resolveDefaults } from "@shape/defaults/resolveDefaults";
+import { resolveDefaults } from '@shape/defaults/resolveDefaults';
+import { FILL_COLOR_DEFAULTS, ROTATION_DEFAULTS } from '@shape/defaults/schema';
+
+import type { StarSchema } from './types';
 
 export const STAR_SCHEMA_DEFAULTS = {
   ...FILL_COLOR_DEFAULTS,
@@ -8,10 +9,9 @@ export const STAR_SCHEMA_DEFAULTS = {
   points: 5,
 } as const satisfies Partial<StarSchema>;
 
-type StarDefaults = typeof STAR_SCHEMA_DEFAULTS
+type StarDefaults = typeof STAR_SCHEMA_DEFAULTS;
 
-export const resolveStarDefaults = resolveDefaults<
-  StarSchema,
-  StarDefaults
->(STAR_SCHEMA_DEFAULTS)
-export type StarSchemaWithDefaults = ReturnType<typeof resolveStarDefaults>
+export const resolveStarDefaults = resolveDefaults<StarSchema, StarDefaults>(
+  STAR_SCHEMA_DEFAULTS,
+);
+export type StarSchemaWithDefaults = ReturnType<typeof resolveStarDefaults>;

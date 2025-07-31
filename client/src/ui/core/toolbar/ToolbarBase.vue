@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import type { TutorialControls } from '@graph/tutorials/types';
-  import ToolbarHint from './ToolbarHint.vue';
   import colors from '@utils/colors';
+
+  import ToolbarHint from './ToolbarHint.vue';
 
   withDefaults(
     defineProps<{

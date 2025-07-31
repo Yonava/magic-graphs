@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import type { TutorialControls } from '@graph/tutorials/types';
   import TutorialHint from '@graph/tutorials/TutorialHint.vue';
+  import type { TutorialControls } from '@graph/tutorials/types';
   import colors from '@utils/colors';
 
   withDefaults(

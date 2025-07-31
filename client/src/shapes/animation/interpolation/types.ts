@@ -1,8 +1,9 @@
-import type { Coordinate } from "@shape/types/utility";
-import type { Color } from "@utils/colors";
-import type { DeepRequired } from "ts-essentials";
-import type { EasingFunction } from "../easing";
-import type { TextArea } from "@shape/text/types";
+import type { TextArea } from '@shape/text/types';
+import type { Coordinate } from '@shape/types/utility';
+import type { Color } from '@utils/colors';
+import type { DeepRequired } from 'ts-essentials';
+
+import type { EasingFunction } from '../easing';
 
 /**
  * Represents a keyframe in an animation, defining the value at a specific point in the animation timeline.
@@ -36,10 +37,10 @@ export type AnimationKeyframe<T> = {
 export type InterpolationFunction<T> = (
   keyframes: AnimationKeyframe<T>[],
   defaultEasing: EasingFunction,
-  fallbackValue: T
+  fallbackValue: T,
 ) => (progress: number) => T;
 
-export type NumberKeyframe = AnimationKeyframe<number>
-export type ColorKeyframe = AnimationKeyframe<Color>
-export type CoordinateKeyframe = AnimationKeyframe<Coordinate>
-export type TextAreaKeyframe = AnimationKeyframe<DeepRequired<TextArea>>
+export type NumberKeyframe = AnimationKeyframe<number>;
+export type ColorKeyframe = AnimationKeyframe<Color>;
+export type CoordinateKeyframe = AnimationKeyframe<Coordinate>;
+export type TextAreaKeyframe = AnimationKeyframe<DeepRequired<TextArea>>;

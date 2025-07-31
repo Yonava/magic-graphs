@@ -1,5 +1,5 @@
-import type { GraphSettings } from '@graph/settings';
 import { arrowEdgeAdded } from '@graph/base/animations';
+import type { GraphSettings } from '@graph/settings';
 import { AUTO_ANIMATE_DURATION_MS } from '@shape/animation/autoAnimate';
 
 /**
@@ -15,6 +15,6 @@ export const BINARY_TREE_GRAPH_SETTINGS: Partial<GraphSettings> = {
         ...arrowEdgeAdded,
         delayMs: AUTO_ANIMATE_DURATION_MS,
       }),
-    }
-  })
+    },
+  }),
 };

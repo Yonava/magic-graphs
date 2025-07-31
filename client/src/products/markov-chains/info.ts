@@ -1,8 +1,9 @@
-import type { ProductInfo } from 'src/types';
 import type { Graph } from '@graph/types';
-import state from './state';
-import { useSimulationRunner } from './sim/runner';
+import type { ProductInfo } from 'src/types';
+
 import { canRunMarkovChain } from './sim/guard';
+import { useSimulationRunner } from './sim/runner';
+import state from './state';
 
 export const info: ProductInfo = {
   route: {

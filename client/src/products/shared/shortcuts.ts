@@ -1,4 +1,4 @@
-import type { Shortcut } from "@graph/plugins/shortcut/types";
+import type { Shortcut } from '@graph/plugins/shortcut/types';
 
 export const PRODUCT_SHORTCUTS = {
   Fullscreen: { binding: 'f' },
@@ -7,4 +7,4 @@ export const PRODUCT_SHORTCUTS = {
   'Simulation Step Forward': { binding: 'arrowright' },
   'Simulation Step Backward': { binding: 'arrowleft' },
   'Exit Simulation': { binding: 'esc' },
-} as const satisfies Record<string, Omit<Shortcut, 'trigger'>>
+} as const satisfies Record<string, Omit<Shortcut, 'trigger'>>;

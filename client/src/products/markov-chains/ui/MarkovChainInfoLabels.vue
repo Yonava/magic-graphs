@@ -1,13 +1,14 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from '@graph/global';
-  import { usePeriodicityLabels } from './usePeriodicityLabels';
   import { useSCCColorizer } from '@product/sandbox/ui/GraphInfoMenu/useSCCColorizer';
-  import { useIllegalStateColorizer } from './useIllegalStateColorizer';
-  import { useLabelSteadyState } from './useLabelSteadyState';
-  import type { MarkovChain } from '../markov/useMarkovChain';
   import GHoverInfoTop from '@ui/graph/GHoverInfoTop.vue';
   import GWell from '@ui/graph/GWell.vue';
+
   import definitions from '../markov/definitions';
+  import type { MarkovChain } from '../markov/useMarkovChain';
+  import { useIllegalStateColorizer } from './useIllegalStateColorizer';
+  import { useLabelSteadyState } from './useLabelSteadyState';
+  import { usePeriodicityLabels } from './usePeriodicityLabels';
 
   const props = defineProps<{
     markov: MarkovChain;

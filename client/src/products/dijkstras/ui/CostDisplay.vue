@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import type { GNode } from '@graph/types';
-  import { nonNullGraph as graph } from '@graph/global';
   import colors from '@colors';
-  import { SIM_COLORS, INF_STR } from '../sim/theme';
+  import { nonNullGraph as graph } from '@graph/global';
+  import type { GNode } from '@graph/types';
+
+  import { INF_STR, SIM_COLORS } from '../sim/theme';
 
   const { getTheme, focus } = graph.value;
   const { isFocused } = focus;

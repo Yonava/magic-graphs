@@ -1,40 +1,42 @@
 import tinycolor from 'tinycolor2';
+
 import type { GraphMouseEvent } from './base/types';
 import type { Graph, SchemaItem } from './types';
 
-const animateNodePulse = (g: Graph) => g.defineTimeline({
-  forShapes: ['circle'],
-  durationMs: 2000,
-  keyframes: [
-    {
-      progress: 0.4,
-      properties: {
-        radius: (r) => r,
-        fillColor: (c) => c,
-      },
-    },
-    {
-      progress: 0.5,
-      properties: {
-        radius: {
-          value: (r) => r + 2,
-          easing: 'out',
+const animateNodePulse = (g: Graph) =>
+  g.defineTimeline({
+    forShapes: ['circle'],
+    durationMs: 2000,
+    keyframes: [
+      {
+        progress: 0.4,
+        properties: {
+          radius: (r) => r,
+          fillColor: (c) => c,
         },
-        fillColor: (c) => tinycolor(c).darken(5).toRgbString()
       },
-    },
-    {
-      progress: 0.6,
-      properties: {
-        radius: {
-          value: (r) => r,
-          easing: 'in',
+      {
+        progress: 0.5,
+        properties: {
+          radius: {
+            value: (r) => r + 2,
+            easing: 'out',
+          },
+          fillColor: (c) => tinycolor(c).darken(5).toRgbString(),
         },
-        fillColor: (c) => c
       },
-    },
-  ],
-});
+      {
+        progress: 0.6,
+        properties: {
+          radius: {
+            value: (r) => r,
+            easing: 'in',
+          },
+          fillColor: (c) => c,
+        },
+      },
+    ],
+  });
 
 /**
  * selects schema items only of graph type 'node'
@@ -48,15 +50,15 @@ export const selectNode = (graph: Graph) => {
     predicate: (item) => item.graphType === 'node',
   });
 
-  const pulse = animateNodePulse(graph)
+  const pulse = animateNodePulse(graph);
 
-  for (const node of graph.nodes.value) pulse.play({ shapeId: node.id })
+  for (const node of graph.nodes.value) pulse.play({ shapeId: node.id });
 
   return {
     selectedItemPromise: async () => {
       const selectedItem = await selectedItemPromise;
-      for (const node of graph.nodes.value) pulse.stop({ shapeId: node.id })
-      pulse.dispose()
+      for (const node of graph.nodes.value) pulse.stop({ shapeId: node.id });
+      pulse.dispose();
       return selectedItem ? graph.getNode(selectedItem.id) : undefined;
     },
     cancelSelection,
@@ -128,15 +130,15 @@ export const selectFromGraph = (
     resolve(topItem);
   };
 
-  const { hold, release } = graph.pluginHoldController('graph-select-api')
+  const { hold, release } = graph.pluginHoldController('graph-select-api');
 
   /**
    * initializes the selection process
    */
   const init = () => {
     graph.subscribe('onClick', onClick);
-    hold('interactive')
-    hold('focusable')
+    hold('interactive');
+    hold('focusable');
     const cursorPredicate =
       predicate === DEFAULT_PREDICATE
         ? (item: SchemaItem) => !!item
@@ -149,8 +151,8 @@ export const selectFromGraph = (
    */
   const cleanup = () => {
     graph.unsubscribe('onClick', onClick);
-    release('interactive')
-    release('focusable')
+    release('interactive');
+    release('focusable');
     graph.deactivateCursorSelectMode();
   };
 

@@ -1,23 +1,24 @@
-import type { Coordinate } from '@shape/types/utility';
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { drawEllipseWithCtx } from '@shape/shapes/ellipse/draw';
+import { getShapeTextProps } from '@shape/text/text';
+import type { ShapeFactory } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
+
+import { resolveEllipseDefaults } from './defaults';
 import {
-  ellipseHitbox,
   ellipseEfficientHitbox,
+  ellipseHitbox,
   getEllipseBoundingBox,
 } from './hitbox';
-import type { ShapeFactory } from '@shape/types';
-import { shapeFactoryWrapper } from '@shape/shapeWrapper';
-import { getShapeTextProps } from '@shape/text/text';
 import type { EllipseSchema } from './types';
-import { resolveEllipseDefaults } from './defaults';
 
 export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   if (options.radiusX < 0 || options.radiusY < 0) {
     throw new Error('radius must be positive');
   }
 
-  const schema = resolveEllipseDefaults(options)
-  const text = getShapeTextProps(schema.at, schema.textArea)
+  const schema = resolveEllipseDefaults(options);
+  const text = getShapeTextProps(schema.at, schema.textArea);
 
   const drawShape = drawEllipseWithCtx(schema);
   const shapeHitbox = ellipseHitbox(schema);
@@ -46,6 +47,6 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     efficientHitbox,
     getBoundingBox,
 
-    ...text
+    ...text,
   });
 };

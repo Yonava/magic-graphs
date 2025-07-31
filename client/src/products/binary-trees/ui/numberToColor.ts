@@ -1,5 +1,5 @@
-import gsap from 'gsap';
 import type { Color } from '@utils/colors';
+import gsap from 'gsap';
 import tinycolor from 'tinycolor2';
 
 const { interpolate } = gsap.utils;

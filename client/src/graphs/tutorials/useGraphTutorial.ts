@@ -1,16 +1,18 @@
-import { computed, ref, toRef, watch } from 'vue';
-import type { MaybeRef } from 'vue';
-import type { Graph } from '@graph/types';
 import {
   DEFAULT_HIGHLIGHT_CLASS_NAME,
   DEFAULT_INTERVAL,
 } from '@graph/tutorials/types';
 import type {
-  TutorialSequence,
-  IntervalStep,
   GraphEventStep,
+  IntervalStep,
+  TutorialSequence,
   TutorialStep,
 } from '@graph/tutorials/types';
+import type { Graph } from '@graph/types';
+
+import { computed, ref, toRef, watch } from 'vue';
+import type { MaybeRef } from 'vue';
+
 import type { TutorialControls } from './types';
 
 /**

@@ -1,6 +1,8 @@
-import { computed } from 'vue';
 import { graph } from '@graph/global';
 import colors from '@utils/colors';
+
+import { computed } from 'vue';
+
 import type { GraphThemeName } from '.';
 
 type GraphColors = {

@@ -1,19 +1,17 @@
-import { areBoundingBoxesOverlapping, normalizeBoundingBox, rotatePoint } from '@shape/helpers';
-import type { Coordinate, BoundingBox } from '@shape/types/utility';
+import {
+  areBoundingBoxesOverlapping,
+  normalizeBoundingBox,
+  rotatePoint,
+} from '@shape/helpers';
 import { circle } from '@shape/shapes/circle';
-import type { UTurnSchemaWithDefaults } from './defaults';
-import { line } from '../line';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
+
 import { arrow } from '../arrow';
+import { line } from '../line';
+import type { UTurnSchemaWithDefaults } from './defaults';
 
 export const uturnHitbox = (schema: UTurnSchemaWithDefaults) => {
-  const {
-    spacing,
-    at,
-    downDistance,
-    upDistance,
-    lineWidth,
-    rotation
-  } = schema;
+  const { spacing, at, downDistance, upDistance, lineWidth, rotation } = schema;
 
   const longLegFrom = rotatePoint(
     {
@@ -79,17 +77,11 @@ export const uturnHitbox = (schema: UTurnSchemaWithDefaults) => {
 
   return (point: Coordinate) => {
     return inLine(point) || inArrow(point) || inUTurnCircle(point);
-  }
+  };
 };
 
 export const getUTurnBoundingBox = (schema: UTurnSchemaWithDefaults) => () => {
-  const {
-    spacing,
-    at,
-    upDistance,
-    rotation,
-    lineWidth
-  } = schema;
+  const { spacing, at, upDistance, rotation, lineWidth } = schema;
 
   const end = rotatePoint(
     {
@@ -112,9 +104,6 @@ export const getUTurnBoundingBox = (schema: UTurnSchemaWithDefaults) => () => {
   });
 };
 
-export const uturnEfficientHitbox = (
-  schema: UTurnSchemaWithDefaults
-) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
-  getUTurnBoundingBox(schema)(),
-  boxToCheck,
-)
+export const uturnEfficientHitbox =
+  (schema: UTurnSchemaWithDefaults) => (boxToCheck: BoundingBox) =>
+    areBoundingBoxesOverlapping(getUTurnBoundingBox(schema)(), boxToCheck);

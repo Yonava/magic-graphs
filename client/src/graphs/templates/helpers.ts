@@ -1,18 +1,21 @@
+import { getMagicCoordinates } from '@canvas/coordinates';
+import { nonNullGraph as graph } from '@graph/global';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import { getCtx } from '@utils/ctx';
 import { average } from '@utils/math';
-import { nonNullGraph as graph } from '@graph/global';
-import { getMagicCoordinates } from '@canvas/coordinates';
 
 export const getAverageCoordinates = (coords: Coordinate[]) => {
   const { magicCanvas: canvas } = graph.value;
 
-  const coordsInMiddleOfScreen = getMagicCoordinates({
-    clientX: window.innerWidth / 2,
-    clientY: window.innerHeight / 2,
-  }, getCtx(canvas.canvas))
+  const coordsInMiddleOfScreen = getMagicCoordinates(
+    {
+      clientX: window.innerWidth / 2,
+      clientY: window.innerHeight / 2,
+    },
+    getCtx(canvas.canvas),
+  );
 
-  if (coords.length === 0) return coordsInMiddleOfScreen
+  if (coords.length === 0) return coordsInMiddleOfScreen;
 
   return {
     x: average(coords.map((coord) => coord.x)),

@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
 import { deepMerge } from './deepMerge';
 
 describe('deepMerge', () => {
@@ -8,26 +9,20 @@ describe('deepMerge', () => {
   });
 
   it('merges nested objects deeply', () => {
-    const result = deepMerge(
-      { a: { b: 1, c: 2 } },
-      { a: { b: 3, d: 4 } }
-    );
+    const result = deepMerge({ a: { b: 1, c: 2 } }, { a: { b: 3, d: 4 } });
     expect(result).toEqual({ a: { b: 3, c: 2, d: 4 } });
   });
 
   it('overwrites arrays instead of merging them', () => {
     const result = deepMerge(
       { a: [1, 2], b: { c: [3, 4] } },
-      { a: [5], b: { c: [6] } }
+      { a: [5], b: { c: [6] } },
     );
     expect(result).toEqual({ a: [5], b: { c: [6] } });
   });
 
   it('handles primitive overwrites correctly', () => {
-    const result = deepMerge(
-      { a: { b: 1 } },
-      { a: 5 }
-    );
+    const result = deepMerge({ a: { b: 1 } }, { a: 5 });
     expect(result).toEqual({ a: 5 });
   });
 
@@ -37,12 +32,7 @@ describe('deepMerge', () => {
   });
 
   it('handles merging with undefined and null safely', () => {
-    const result = deepMerge(
-      { a: { b: 1 } },
-      undefined,
-      null,
-      { a: { c: 2 } }
-    );
+    const result = deepMerge({ a: { b: 1 } }, undefined, null, { a: { c: 2 } });
     expect(result).toEqual({ a: { b: 1, c: 2 } });
   });
 
@@ -87,7 +77,9 @@ describe('deepMerge - special cases', () => {
   });
 
   it('overwrites class instances', () => {
-    class Example { x = 1 }
+    class Example {
+      x = 1;
+    }
     const obj1 = { instance: new Example() };
     const obj2 = { instance: { y: 2 } };
 

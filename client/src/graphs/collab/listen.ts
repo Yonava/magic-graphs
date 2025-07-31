@@ -1,10 +1,12 @@
-import type { Ref } from 'vue';
 import type { Graph } from '@graph/types';
+
+import type { Ref } from 'vue';
+
 import type {
-  CollaboratorMap,
-  GraphSocketEvents,
   CollabSocketEvents,
+  CollaboratorMap,
   GraphSocket,
+  GraphSocketEvents,
 } from './types';
 
 type SocketListenOptions = {

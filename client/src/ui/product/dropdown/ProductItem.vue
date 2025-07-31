@@ -1,16 +1,17 @@
 <script setup lang="ts">
-  import { computed, ref } from 'vue';
-  import {
-    useProductRouting,
-    getCurrentProduct,
-    isExternal,
-  } from '@utils/product';
-  import type { ProductInfoWithMenu } from '@utils/product';
-  import GVerticalCardButton from '@ui/graph/button/GVerticalCardButton.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
   import CIcon from '@ui/core/Icon.vue';
   import GWell from '@ui/graph/GWell.vue';
+  import GButton from '@ui/graph/button/GButton.vue';
+  import GVerticalCardButton from '@ui/graph/button/GVerticalCardButton.vue';
+  import {
+    getCurrentProduct,
+    isExternal,
+    useProductRouting,
+  } from '@utils/product';
+  import type { ProductInfoWithMenu } from '@utils/product';
   import { getRandomInRange } from '@utils/random';
+
+  import { computed, ref } from 'vue';
 
   const { navigate, navigateWithGraph } = useProductRouting();
   const currentProduct = getCurrentProduct();

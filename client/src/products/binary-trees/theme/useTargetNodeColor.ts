@@ -1,7 +1,8 @@
-import { ref } from 'vue';
 import { useTheme } from '@graph/themes/useTheme';
 import type { GNode, Graph } from '@graph/types';
 import colors from '@utils/colors';
+
+import { ref } from 'vue';
 
 const TARGET_COLOR = colors.AMBER_600;
 

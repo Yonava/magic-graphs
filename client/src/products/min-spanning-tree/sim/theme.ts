@@ -1,8 +1,10 @@
-import { computed } from 'vue';
-import type { GEdge, Graph } from '@graph/types';
-import type { MSTTrace } from './runner';
-import type { SimulationControls } from '@ui/product/sim/types';
 import { useTheme } from '@graph/themes/useTheme';
+import type { GEdge, Graph } from '@graph/types';
+import type { SimulationControls } from '@ui/product/sim/types';
+
+import { computed } from 'vue';
+
+import type { MSTTrace } from './runner';
 
 /**
  * dims the color of the edge if it is not in the MST to ${DIM_FACTOR}%

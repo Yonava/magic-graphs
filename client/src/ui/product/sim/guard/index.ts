@@ -1,9 +1,10 @@
-import type { DeepReadonly } from 'ts-essentials';
 import type { Graph } from '@graph/types';
-import { useNodeEdgeTheme } from './theme/useNodeEdgeThemer';
-import { CANT_RUN_REASONS } from './constants';
-import type { Reason } from './types';
 import { useCycleColorizer } from '@product/sandbox/ui/GraphInfoMenu/useCycleColorizer';
+import type { DeepReadonly } from 'ts-essentials';
+
+import { CANT_RUN_REASONS } from './constants';
+import { useNodeEdgeTheme } from './theme/useNodeEdgeThemer';
+import type { Reason } from './types';
 
 /**
  * determines if the simulation can run.

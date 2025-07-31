@@ -2,6 +2,7 @@
   import { nonNullGraph as graph } from '@graph/global';
   import GButton from '@ui/graph/button/GButton.vue';
   import colors from '@utils/colors';
+
   import state from '../state';
 
   const { sourceNode, sinkNode } = state;
