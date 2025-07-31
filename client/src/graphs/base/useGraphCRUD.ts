@@ -1,37 +1,39 @@
-import type { Ref } from 'vue';
+import type { MagicCanvasProps } from '@canvas/types';
+import type { Emitter } from '@graph/events';
+import { getConnectedEdges } from '@graph/helpers';
+import { nodeLetterLabelGetter } from '@graph/labels';
+import type { GraphSettings } from '@graph/settings';
 import type { GEdge, GNode } from '@graph/types';
-import type { NodeMap, EdgeMap } from './useNodeEdgeMap';
+import type { AnimatedShapeControls } from '@shape/animation';
+import type { Coordinate } from '@shape/types/utility';
+import { getCtx } from '@utils/ctx';
+import { generateId } from '@utils/id';
 import type { PartiallyPartial } from '@utils/types';
+
+import type { Ref } from 'vue';
+
+import type { GraphAnimations } from './animations';
 import {
   ADD_EDGE_DEFAULTS,
   ADD_EDGE_OPTIONS_DEFAULTS,
-  BULK_ADD_EDGE_OPTIONS_DEFAULTS,
   ADD_NODE_OPTIONS_DEFAULTS,
+  BULK_ADD_EDGE_OPTIONS_DEFAULTS,
   BULK_ADD_NODE_OPTIONS_DEFAULTS,
+  BULK_MOVE_NODE_OPTIONS_DEFAULTS,
   MOVE_NODE_OPTIONS_DEFAULTS,
   REMOVE_EDGE_OPTIONS_DEFAULTS,
   REMOVE_NODE_OPTIONS_DEFAULTS,
-  BULK_MOVE_NODE_OPTIONS_DEFAULTS,
 } from './types';
 import type {
   AddEdgeOptions,
-  RemoveEdgeOptions,
-  MoveNodeOptions,
-  RemoveNodeOptions,
   AddNodeOptions,
   EditEdgeLabelOptions,
+  MoveNodeOptions,
+  RemoveEdgeOptions,
+  RemoveNodeOptions,
 } from './types';
-import { getConnectedEdges } from '@graph/helpers';
-import { generateId } from '@utils/id';
-import type { Emitter } from '@graph/events';
-import { nodeLetterLabelGetter } from '@graph/labels';
-import type { GraphSettings } from '@graph/settings';
 import type { AggregatorProps } from './useAggregator';
-import type { GraphAnimations } from './animations';
-import type { Coordinate } from '@shape/types/utility';
-import type { AnimatedShapeControls } from '@shape/animation';
-import type { MagicCanvasProps } from '@canvas/types';
-import { getCtx } from '@utils/ctx';
+import type { EdgeMap, NodeMap } from './useNodeEdgeMap';
 
 type GraphCRUDOptions = {
   emit: Emitter;
@@ -40,13 +42,13 @@ type GraphCRUDOptions = {
   nodeMap: NodeMap;
   edgeMap: EdgeMap;
   settings: Ref<GraphSettings>;
-  updateGraphAtMousePosition: () => void,
-  updateAggregator: AggregatorProps['updateAggregator'],
-  animations: GraphAnimations,
-  autoAnimate: AnimatedShapeControls['autoAnimate'],
-  activeAnimations: AnimatedShapeControls['activeAnimations'],
-  draw: AggregatorProps['draw'],
-  magicCanvas: MagicCanvasProps,
+  updateGraphAtMousePosition: () => void;
+  updateAggregator: AggregatorProps['updateAggregator'];
+  animations: GraphAnimations;
+  autoAnimate: AnimatedShapeControls['autoAnimate'];
+  activeAnimations: AnimatedShapeControls['activeAnimations'];
+  draw: AggregatorProps['draw'];
+  magicCanvas: MagicCanvasProps;
 };
 
 export type GNodeMoveInstruction = {
@@ -58,7 +60,7 @@ export type GNodeMoveInstruction = {
    * the coordinates the target node will be moved to
    */
   coords: Coordinate;
-}
+};
 
 export const useGraphCRUD = ({
   nodes,
@@ -132,13 +134,13 @@ export const useGraphCRUD = ({
       animations.circle.nodeAdded.play({
         shapeId: newNode.id,
         runCount: 1,
-      })
+      });
     }
 
     nodes.value.push(newNode);
 
-    updateAggregator()
-    updateGraphAtMousePosition()
+    updateAggregator();
+    updateGraphAtMousePosition();
 
     emit('onNodeAdded', newNode, fullOptions);
     emit('onStructureChange');
@@ -216,17 +218,17 @@ export const useGraphCRUD = ({
 
     if (fullOptions.animate) {
       const selfRef = toNode.id === fromNode.id;
-      const shape = selfRef ? 'uturn' : (isGraphDirected ? 'arrow' : 'line');
+      const shape = selfRef ? 'uturn' : isGraphDirected ? 'arrow' : 'line';
       animations[shape].edgeAdded.play({
         shapeId: newEdge.id,
         runCount: 1,
-      })
+      });
     }
 
     edges.value.push(newEdge);
 
-    updateAggregator()
-    updateGraphAtMousePosition()
+    updateAggregator();
+    updateGraphAtMousePosition();
 
     emit('onEdgeAdded', newEdge, fullOptions);
     emit('onStructureChange');
@@ -297,14 +299,16 @@ export const useGraphCRUD = ({
       ...options,
     };
 
-    const finalizeFrame = autoAnimate.captureFrame(() => draw(getCtx(magicCanvas.canvas)))
+    const finalizeFrame = autoAnimate.captureFrame(() =>
+      draw(getCtx(magicCanvas.canvas)),
+    );
 
     for (const { nodeId, coords } of nodeMovements) {
-      moveNode(nodeId, coords, fullOptions)
+      moveNode(nodeId, coords, fullOptions);
     }
 
-    finalizeFrame()
-  }
+    finalizeFrame();
+  };
 
   const editEdgeLabel = (
     edgeId: GEdge['id'],
@@ -365,10 +369,10 @@ export const useGraphCRUD = ({
 
     nodes.value = nodes.value.filter((n) => n.id !== removedNode.id);
 
-    activeAnimations.delete(removedNode.id)
+    activeAnimations.delete(removedNode.id);
 
-    updateAggregator()
-    updateGraphAtMousePosition()
+    updateAggregator();
+    updateGraphAtMousePosition();
 
     emit('onNodeRemoved', removedNode, removedEdges, fullOptions);
     emit('onStructureChange');
@@ -426,10 +430,10 @@ export const useGraphCRUD = ({
 
     edges.value = edges.value.filter((e) => e.id !== edge.id);
 
-    activeAnimations.delete(edge.id)
+    activeAnimations.delete(edge.id);
 
-    updateAggregator()
-    updateGraphAtMousePosition()
+    updateAggregator();
+    updateGraphAtMousePosition();
 
     emit('onEdgeRemoved', edge, fullOptions);
     emit('onStructureChange');

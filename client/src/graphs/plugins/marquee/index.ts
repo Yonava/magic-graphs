@@ -1,13 +1,15 @@
-import { ref } from 'vue';
-import type { Aggregator } from '@graph/types';
-import type { BoundingBox, Coordinate } from '@shape/types/utility';
 import type { BaseGraph } from '@graph/base';
 import type { GraphMouseEvent } from '@graph/base/types';
+import type { Aggregator } from '@graph/types';
+import { normalizeBoundingBox } from '@shape/helpers';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
+import { MOUSE_BUTTONS } from '@utils/mouse';
+
+import { ref } from 'vue';
+import { computed } from 'vue';
+
 import type { GraphFocusPlugin } from '../focus';
 import { getEncapsulatedNodeBox } from './helpers';
-import { normalizeBoundingBox } from '@shape/helpers';
-import { computed } from 'vue';
-import { MOUSE_BUTTONS } from '@utils/mouse';
 
 export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   const marqueeBox = ref<BoundingBox | undefined>();
@@ -15,7 +17,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
 
   const groupDragCoordinates = ref<Coordinate | undefined>();
 
-  const { hold, release } = graph.pluginHoldController('marquee')
+  const { hold, release } = graph.pluginHoldController('marquee');
 
   const getSurfaceArea = (box: BoundingBox) => {
     const { width, height } = box;
@@ -32,7 +34,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   }: GraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
-    if (topItem?.graphType !== 'encapsulated-node-box') release('nodeAnchors')
+    if (topItem?.graphType !== 'encapsulated-node-box') release('nodeAnchors');
     if (!topItem) engageMarqueeBox(coords);
   };
 
@@ -73,7 +75,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
-    hold('nodeAnchors')
+    hold('nodeAnchors');
     graph.graphCursorDisabled.value = true;
     marqueeBox.value = {
       at: startingCoords,
@@ -88,7 +90,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const finalMarqueeBox = marqueeBox.value;
     marqueeBox.value = undefined;
     graph.graphCursorDisabled.value = false;
-    release('nodeAnchors')
+    release('nodeAnchors');
     graph.emit('onMarqueeEndSelection', finalMarqueeBox);
   };
 
@@ -123,20 +125,20 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   const getMarqueeBoxSchema = (box: BoundingBox) => {
-    const id = 'marquee-box'
+    const id = 'marquee-box';
     const shape = graph.shapes.rect({
       id,
       ...normalizeBoundingBox(box),
-      fillColor: graph.getTheme("marqueeSelectionBoxColor"),
+      fillColor: graph.getTheme('marqueeSelectionBoxColor'),
       stroke: {
-        color: graph.getTheme("marqueeSelectionBoxBorderColor"),
+        color: graph.getTheme('marqueeSelectionBoxBorderColor'),
         lineWidth: 2,
       },
     });
 
     return {
       id,
-      graphType: "marquee-box",
+      graphType: 'marquee-box',
       shape,
       priority: Infinity,
     } as const;
@@ -145,8 +147,8 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   const addMarqueeBoxToAggregator = (aggregator: Aggregator) => {
     if (!marqueeBox.value) return aggregator;
 
-    const { width, height } = marqueeBox.value
-    if (width === 0 || height === 0) return aggregator
+    const { width, height } = marqueeBox.value;
+    if (width === 0 || height === 0) return aggregator;
 
     const selectionBoxSchemaItem = getMarqueeBoxSchema(marqueeBox.value);
     aggregator.push(selectionBoxSchemaItem);
@@ -154,20 +156,20 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   const getEncapsulatedNodeBoxSchema = (box: BoundingBox) => {
-    const id = "encapsulated-node-box"
+    const id = 'encapsulated-node-box';
     const shape = graph.shapes.rect({
       id,
       ...box,
-      fillColor: graph.getTheme("marqueeEncapsulatedNodeBoxColor"),
+      fillColor: graph.getTheme('marqueeEncapsulatedNodeBoxColor'),
       stroke: {
-        color: graph.getTheme("marqueeEncapsulatedNodeBoxBorderColor"),
+        color: graph.getTheme('marqueeEncapsulatedNodeBoxBorderColor'),
         lineWidth: 2,
       },
     });
 
     return {
       id,
-      graphType: "encapsulated-node-box",
+      graphType: 'encapsulated-node-box',
       shape,
       priority: Infinity,
     } as const;
@@ -176,8 +178,8 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   const addEncapsulatedNodeBoxToAggregator = (aggregator: Aggregator) => {
     if (!encapsulatedNodeBox.value) return aggregator;
 
-    const { width, height } = encapsulatedNodeBox.value
-    if (width === 0 || height === 0) return aggregator
+    const { width, height } = encapsulatedNodeBox.value;
+    if (width === 0 || height === 0) return aggregator;
 
     const nodeBoxSchema = getEncapsulatedNodeBoxSchema(
       encapsulatedNodeBox.value,
@@ -240,7 +242,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     /**
      * true when the marquee box is being actively sized by user
      */
-    activelySelecting: computed(() => !!marqueeBox.value)
+    activelySelecting: computed(() => !!marqueeBox.value),
   };
 };
 

@@ -1,11 +1,12 @@
-import { test, describe, expect } from 'vitest';
+import { describe, expect, test } from 'vitest';
+
 import {
-  roundToNearestN,
+  average,
+  gcd,
   getPrimeFactors,
   lowestPrimeFactor,
-  gcd,
+  roundToNearestN,
   within,
-  average,
 } from './math';
 
 describe('roundToNearestN', () => {

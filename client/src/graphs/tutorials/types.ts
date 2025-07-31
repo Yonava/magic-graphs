@@ -1,5 +1,6 @@
+import type { GraphEvent, GraphEventMap } from '@graph/events';
 import type { Graph } from '@graph/types';
-import type { GraphEventMap, GraphEvent } from '@graph/events';
+
 import type { ComputedRef, Ref } from 'vue';
 
 /**

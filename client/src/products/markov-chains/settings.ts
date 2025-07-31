@@ -1,5 +1,5 @@
-import { Fraction } from 'mathjs';
 import type { GraphSettings } from '@graph/settings';
+import { Fraction } from 'mathjs';
 
 /**
  * settings for graph sandbox useGraph instance

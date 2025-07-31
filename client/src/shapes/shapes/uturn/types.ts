@@ -4,15 +4,14 @@ import type {
   FillGradient,
   LineWidth,
   Rotation,
-  TextArea
-} from "@shape/types/schema";
+  TextArea,
+} from '@shape/types/schema';
 
 export type UTurnSchema = {
   spacing: number;
   upDistance: number;
   downDistance: number;
-} &
-  AnchorPoint &
+} & AnchorPoint &
   Rotation &
   LineWidth &
   FillColor &

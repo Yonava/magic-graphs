@@ -1,13 +1,14 @@
-import { ref, readonly } from 'vue';
-import { prioritizeNode } from '@graph/helpers';
 import type { BaseGraph } from '@graph/base';
 import type { GraphMouseEvent } from '@graph/base/types';
-import type { SchemaItem, GNode } from '@graph/types';
-import type { GraphFocusPlugin } from '@graph/plugins/focus';
+import { prioritizeNode } from '@graph/helpers';
 import type { NodeAnchor } from '@graph/plugins/anchors/types';
+import type { GraphFocusPlugin } from '@graph/plugins/focus';
+import type { GNode, SchemaItem } from '@graph/types';
 import type { CircleSchema } from '@shape/shapes/circle/types';
-import { MOUSE_BUTTONS } from '@utils/mouse';
 import type { WithId } from '@shape/types';
+import { MOUSE_BUTTONS } from '@utils/mouse';
+
+import { readonly, ref } from 'vue';
 
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
@@ -85,10 +86,10 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
 
       const nodeAnchorShape = graph.shapes.circle(nodeAnchorSchema);
 
-      const beingDragged = anchor.id === currentDraggingAnchor.value?.id
+      const beingDragged = anchor.id === currentDraggingAnchor.value?.id;
       anchorSchemas.push({
         id: anchor.id,
-        graphType: "node-anchor",
+        graphType: 'node-anchor',
         shape: nodeAnchorShape,
         priority: beingDragged ? Infinity : 99_999,
       });
@@ -117,34 +118,32 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     const nodeBorderWidth = getTheme('nodeBorderWidth', node);
 
     const offset = nodeSize - anchorRadius / 3 + nodeBorderWidth / 2;
-    nodeAnchors.value = (
-      [
-        {
-          id: 'n-anchor',
-          x: node.x,
-          y: node.y - offset,
-          direction: 'north',
-        },
-        {
-          id: 'e-anchor',
-          x: node.x + offset,
-          y: node.y,
-          direction: 'east',
-        },
-        {
-          id: 's-anchor',
-          x: node.x,
-          y: node.y + offset,
-          direction: 'south',
-        },
-        {
-          id: 'w-anchor',
-          x: node.x - offset,
-          y: node.y,
-          direction: 'west',
-        },
-      ] as const
-    )
+    nodeAnchors.value = [
+      {
+        id: 'n-anchor',
+        x: node.x,
+        y: node.y - offset,
+        direction: 'north',
+      },
+      {
+        id: 'e-anchor',
+        x: node.x + offset,
+        y: node.y,
+        direction: 'east',
+      },
+      {
+        id: 's-anchor',
+        x: node.x,
+        y: node.y + offset,
+        direction: 'south',
+      },
+      {
+        id: 'w-anchor',
+        x: node.x - offset,
+        y: node.y,
+        direction: 'west',
+      },
+    ] as const;
   };
 
   /**
@@ -184,9 +183,9 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
       lineWidth: width,
     });
 
-    const schema: Omit<SchemaItem, "priority"> = {
-      id: "link-preview",
-      graphType: "link-preview",
+    const schema: Omit<SchemaItem, 'priority'> = {
+      id: 'link-preview',
+      graphType: 'link-preview',
       shape,
     };
 
@@ -199,18 +198,18 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   const checkForParentNodeUpdate = () => {
     if (currentDraggingAnchor.value) return;
 
-    const { items } = graph.graphAtMousePosition.value
+    const { items } = graph.graphAtMousePosition.value;
     const topItem = items.at(-1);
     if (!topItem) return clearAnchorState();
-    if (topItem.graphType === 'node-anchor') return
-    if (topItem.graphType !== 'node') return clearAnchorState()
+    if (topItem.graphType === 'node-anchor') return;
+    if (topItem.graphType !== 'node') return clearAnchorState();
 
     const newParentNode = graph.getNode(topItem.id);
     if (!newParentNode) {
       throw new Error('anchors: node shown on screen not in graph state');
     }
 
-    if (newParentNode.id === parentNode.value?.id) return
+    if (newParentNode.id === parentNode.value?.id) return;
     setParentNode(newParentNode.id);
   };
 
@@ -287,7 +286,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   graph.subscribeToAggregator.push(insertLinkPreviewIntoAggregator);
 
   const activate = () => {
-    graph.subscribe('onNodeAdded', checkForParentNodeUpdate)
+    graph.subscribe('onNodeAdded', checkForParentNodeUpdate);
     graph.subscribe('onNodeRemoved', checkForParentNodeUpdate);
     graph.subscribe('onNodeMoved', clearAnchorState);
     graph.subscribe('onNodeDrop', updateNodeAnchors);
@@ -299,7 +298,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onNodeAdded', checkForParentNodeUpdate)
+    graph.unsubscribe('onNodeAdded', checkForParentNodeUpdate);
     graph.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
     graph.unsubscribe('onNodeMoved', clearAnchorState);
     graph.unsubscribe('onNodeDrop', updateNodeAnchors);

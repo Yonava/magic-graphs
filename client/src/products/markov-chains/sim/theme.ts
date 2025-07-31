@@ -1,6 +1,7 @@
-import type { GNode, Graph } from '@graph/types';
 import { useTheme } from '@graph/themes/useTheme';
+import type { GNode, Graph } from '@graph/types';
 import type { SimulationControls } from '@ui/product/sim/types';
+
 import type { MarkovChainTrace } from './runner';
 
 const USETHEME_ID = 'markov-chain-sim';

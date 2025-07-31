@@ -2,6 +2,7 @@
   import { nonNullGraph as graph } from '@graph/global';
   import GHoverInfoTop from '@ui/graph/GHoverInfoTop.vue';
   import GWell from '@ui/graph/GWell.vue';
+
   import type { TreeControls } from '../useTree';
   import { useBalanceFactorLabels } from './useBalanceFactorLabels';
   import { useHeightLabels } from './useHeightLabels';

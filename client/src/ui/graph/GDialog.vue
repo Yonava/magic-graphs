@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
-  import { computed } from 'vue';
   import Dialog from 'primevue/dialog';
   import type { DialogProps } from 'primevue/dialog';
+
+  import { computed } from 'vue';
   import { useAttrs } from 'vue';
 
   const colors = useNonNullGraphColors();

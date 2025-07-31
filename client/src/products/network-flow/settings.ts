@@ -1,6 +1,7 @@
-import { graphLabelGetter, LETTERS } from '@graph/labels';
+import { LETTERS, graphLabelGetter } from '@graph/labels';
 import type { GraphSettings } from '@graph/settings';
 import type { Graph } from '@graph/types';
+
 import { SINK_LABEL, SOURCE_LABEL } from './constants';
 
 const ALPHABET_WITHOUT_SOURCE_SINK = LETTERS.filter(

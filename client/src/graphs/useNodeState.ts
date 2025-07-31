@@ -1,7 +1,8 @@
-import { computed, readonly, ref } from 'vue';
-import type { GNode, Graph } from '@graph/types';
 import { selectNode } from '@graph/select';
+import type { GNode, Graph } from '@graph/types';
 import { useGTextTip } from '@ui/useGTextTip';
+
+import { computed, readonly, ref } from 'vue';
 
 type NodeStateOptions = {
   /**

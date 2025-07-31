@@ -1,10 +1,15 @@
+import {
+  DEFAULT_STORIES,
+  DOC_MARKING_DEFAULTS,
+  createDocComponent,
+} from '@shape/docs';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
+
+import { star } from '.';
 import { STAR_SCHEMA_DEFAULTS } from './defaults';
 import type { StarSchema } from './types';
-import { star } from '.';
 
-const Star = createDocComponent<StarSchema>(star)
+const Star = createDocComponent<StarSchema>(star);
 
 const meta = {
   title: 'Shapes/Star',
@@ -16,7 +21,7 @@ const meta = {
     at: { x: 60, y: 60 },
     ...DOC_MARKING_DEFAULTS,
   },
-} satisfies Meta<typeof Star>
+} satisfies Meta<typeof Star>;
 
 export default meta;
 
@@ -31,6 +36,6 @@ export const WithText: Story = text;
 
 export const Points: Story = {
   args: {
-    points: 9
-  }
-}
+    points: 9,
+  },
+};

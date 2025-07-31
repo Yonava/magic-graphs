@@ -1,7 +1,9 @@
-import { computed, ref, watch } from 'vue';
 import type { GNode, Graph } from '@graph/types';
-import { dijkstras } from './dijkstra';
+
+import { computed, ref, watch } from 'vue';
+
 import state from '../state';
+import { dijkstras } from './dijkstra';
 
 export type DijkstrasOutput = {
   startNode: GNode;
@@ -30,7 +32,7 @@ export const useDijkstra = (graph: Graph) => {
   const output = ref<DijkstrasOutput>();
 
   const { startNode: startNodeState } = state;
-  const { transitionMatrix } = graph.transitionMatrix
+  const { transitionMatrix } = graph.transitionMatrix;
 
   const update = () => {
     const startNode = startNodeState.get(graph);

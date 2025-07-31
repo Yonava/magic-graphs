@@ -1,8 +1,9 @@
-import type { Graph } from "@graph/types";
-import { readonly, ref } from "vue";
+import type { Graph } from '@graph/types';
+
+import { readonly, ref } from 'vue';
 
 export const useGraphCanvasColor = (graph: Graph) => {
-  const { subscribe, getTheme } = graph
+  const { subscribe, getTheme } = graph;
 
   const patternColor = ref(getTheme('graphBgPatternColor'));
   const bgColor = ref(getTheme('graphBgColor'));
@@ -17,7 +18,7 @@ export const useGraphCanvasColor = (graph: Graph) => {
   return {
     patternColor: readonly(patternColor),
     bgColor: readonly(bgColor),
-  }
-}
+  };
+};
 
-export type GraphCanvasColor = ReturnType<typeof useGraphCanvasColor>
+export type GraphCanvasColor = ReturnType<typeof useGraphCanvasColor>;

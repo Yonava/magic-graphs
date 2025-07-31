@@ -1,5 +1,7 @@
-import { computed, ref } from 'vue';
 import type { Graph } from '@graph/types';
+
+import { computed, ref } from 'vue';
+
 import { kruskal } from './kruskal';
 
 export const useKruskal = (graph: Graph) => {

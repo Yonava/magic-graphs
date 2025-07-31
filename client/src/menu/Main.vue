@@ -1,6 +1,8 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
   import type { ProductInfo } from 'src/types';
+
+  import { ref } from 'vue';
+
   import ProductCatalog from './ProductCatalog.vue';
 
   const infoModules = import.meta.glob<{

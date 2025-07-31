@@ -1,23 +1,21 @@
+import type { MagicCanvasProps } from '@canvas/types';
 import { useBaseGraph } from '@graph/base';
-import type { GraphSettings } from '@graph/settings';
-
-import { useMarquee } from '@graph/plugins/marquee';
-import { useNodeDrag } from '@graph/plugins/drag';
+import { useHelpers } from '@graph/helpers/useHelpers';
 import { useNodeAnchors } from '@graph/plugins/anchors';
-import { useShortcuts } from '@graph/plugins/shortcut';
 import { useAnnotations } from '@graph/plugins/annotations';
+import { useCharacteristics } from '@graph/plugins/characteristics';
+import { useNodeDrag } from '@graph/plugins/drag';
 import { useFocus } from '@graph/plugins/focus';
 import { useHistory } from '@graph/plugins/history';
-import { usePersistent } from '@graph/plugins/persistent';
 import { useInteractive } from '@graph/plugins/interactive';
-import { useCharacteristics } from '@graph/plugins/characteristics';
-
+import { useMarquee } from '@graph/plugins/marquee';
+import { usePersistent } from '@graph/plugins/persistent';
+import { useShortcuts } from '@graph/plugins/shortcut';
+import type { GraphSettings } from '@graph/settings';
 import { usePreferredTheme } from '@graph/themes/usePreferredTheme';
-import { useHelpers } from '@graph/helpers/useHelpers';
 
 import { useAdjacencyList } from './useAdjacencyList';
 import { useTransitionMatrix } from './useTransitionMatrix';
-import type { MagicCanvasProps } from '@canvas/types';
 
 /**
  * a package brimming with tools for creating and managing graphs bringing

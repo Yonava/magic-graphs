@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import type { ProductInfo } from 'src/types';
+
   import ProductItem from './ProductItem.vue';
 
   defineProps<{

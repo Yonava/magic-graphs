@@ -1,8 +1,9 @@
 <script setup lang="ts">
+  import { nonNullGraph as graph } from '@graph/global';
   import GWell from '@ui/graph/GWell.vue';
   import GButton from '@ui/graph/button/GButton.vue';
+
   import type { TreeControls } from '../useTree';
-  import { nonNullGraph as graph } from '@graph/global';
 
   const props = defineProps<{
     tree: TreeControls;

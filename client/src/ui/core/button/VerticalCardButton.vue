@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { computed, ref } from 'vue';
   import colors from '@utils/colors';
   import tinycolor from 'tinycolor2';
+
+  import { computed, ref } from 'vue';
 
   const props = withDefaults(
     defineProps<{

@@ -1,6 +1,7 @@
-import type { Graph, GNode } from '@graph/types';
-import type { MarkovChain } from '../markov/useMarkovChain';
 import { useTheme } from '@graph/themes/useTheme';
+import type { GNode, Graph } from '@graph/types';
+
+import type { MarkovChain } from '../markov/useMarkovChain';
 
 export const USETHEME_ID = 'markov-steady-state-label';
 
@@ -12,7 +13,7 @@ export const useLabelSteadyState = (graph: Graph, markov: MarkovChain) => {
     if (!steadyState.value) return;
     if (graph.focus.isFocused(node.id)) return;
     const index = graph.nodeIdToIndex.value.get(node.id);
-    return 'undefined'
+    return 'undefined';
     // @ts-expect-error steady state must be reimplemented
     return steadyState.value[index ?? -1].toFixed(2);
   };

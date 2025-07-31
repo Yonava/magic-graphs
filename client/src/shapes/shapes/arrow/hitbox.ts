@@ -1,19 +1,19 @@
-import type { Coordinate, BoundingBox } from '@shape/types/utility';
-import { getLineBoundingBox } from '@shape/shapes/line/hitbox';
 import {
   calculateArrowHeadCorners,
   normalizeBoundingBox,
 } from '@shape/helpers';
-import { ARROW_SCHEMA_DEFAULTS, type ArrowSchemaWithDefaults } from './defaults';
+import { getLineBoundingBox } from '@shape/shapes/line/hitbox';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
+
 import { line } from '../line';
 import { triangle } from '../triangle';
+import {
+  ARROW_SCHEMA_DEFAULTS,
+  type ArrowSchemaWithDefaults,
+} from './defaults';
 
 export const arrowHitbox = (schema: ArrowSchemaWithDefaults) => {
-  const {
-    start,
-    end,
-    lineWidth: width,
-  } = schema
+  const { start, end, lineWidth: width } = schema;
 
   const headSchema = calculateArrowHeadCorners({
     start,
@@ -22,7 +22,7 @@ export const arrowHitbox = (schema: ArrowSchemaWithDefaults) => {
   });
 
   const shaft = line(schema);
-  const head = triangle(headSchema)
+  const head = triangle(headSchema);
 
   return (point: Coordinate) => shaft.hitbox(point) || head.hitbox(point);
 };
@@ -97,11 +97,7 @@ export const getArrowBoundingBox = (arrow: ArrowSchemaWithDefaults) => () => {
 };
 
 export const arrowEfficientHitbox = (schema: ArrowSchemaWithDefaults) => {
-  const {
-    start,
-    end,
-    lineWidth: width,
-  } = schema;
+  const { start, end, lineWidth: width } = schema;
 
   const headSchema = calculateArrowHeadCorners({
     start,
@@ -110,7 +106,8 @@ export const arrowEfficientHitbox = (schema: ArrowSchemaWithDefaults) => {
   });
 
   const shaft = line(schema);
-  const head = triangle(headSchema)
+  const head = triangle(headSchema);
 
-  return (bb: BoundingBox) => shaft.efficientHitbox(bb) || head.efficientHitbox(bb);
+  return (bb: BoundingBox) =>
+    shaft.efficientHitbox(bb) || head.efficientHitbox(bb);
 };

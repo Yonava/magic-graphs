@@ -1,19 +1,22 @@
 <script setup lang="ts">
-  import { computed, ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import { nonNullGraph as graph } from '@graph/global';
   import { collabControls, myCollaboratorProfile } from '@graph/collab';
-  import { debounce } from '@utils/debounce';
-  import colors from '@utils/colors';
-  import { productIdToProduct, useProductRouting } from '@utils/product';
-  import { generateId } from '@utils/id';
-  import GraphSandboxProductInfo from '../info';
-  import CPopover from '@ui/core/Popover.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import CButton from '@ui/core/button/Button.vue';
+  import { nonNullGraph as graph } from '@graph/global';
   import CIcon from '@ui/core/Icon.vue';
+  import CPopover from '@ui/core/Popover.vue';
+  import CButton from '@ui/core/button/Button.vue';
   import GWell from '@ui/graph/GWell.vue';
+  import GButton from '@ui/graph/button/GButton.vue';
   import GInputText from '@ui/graph/input/GInputText.vue';
+  import colors from '@utils/colors';
+  import { debounce } from '@utils/debounce';
+  import { generateId } from '@utils/id';
+  import { productIdToProduct, useProductRouting } from '@utils/product';
+
+  import { computed, ref } from 'vue';
+
+  import { useRouter } from 'vue-router';
+
+  import GraphSandboxProductInfo from '../info';
 
   const router = useRouter();
   const { navigate } = useProductRouting();

@@ -1,13 +1,13 @@
-import type { GNode, GEdge } from '@graph/types';
 import type { ThemeGetter } from '@graph/themes/getThemeResolver';
+import { DARK_THEME } from '@graph/themes/loadouts/dark';
+import { LIGHT_THEME } from '@graph/themes/loadouts/light';
+import { PINK_THEME } from '@graph/themes/loadouts/pink';
 import type {
   BaseGraphEdgeTheme,
   BaseGraphNodeTheme,
   GraphTheme as GraphThemeImport,
 } from '@graph/themes/types';
-import { DARK_THEME } from '@graph/themes/loadouts/dark';
-import { LIGHT_THEME } from '@graph/themes/loadouts/light';
-import { PINK_THEME } from '@graph/themes/loadouts/pink';
+import type { GEdge, GNode } from '@graph/types';
 
 export type GraphTheme = GraphThemeImport;
 export type GraphThemeKey = keyof GraphTheme;
@@ -20,7 +20,7 @@ export const THEMES = {
 
 export type GraphThemeName = keyof typeof THEMES;
 
-export const THEME_NAMES = Object.keys(THEMES) as GraphThemeName[]
+export const THEME_NAMES = Object.keys(THEMES) as GraphThemeName[];
 
 /**
  * gets the theme attributes for a GNode at the point in time the function is called

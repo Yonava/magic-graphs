@@ -1,9 +1,10 @@
 import { rotatePoint } from '@shape/helpers';
 import { getColorAtPercentage } from '@shape/helpers';
 import type { GradientStop } from '@shape/types/utility';
-import type { UTurnSchemaWithDefaults } from './defaults';
-import { line } from '../line';
+
 import { arrow } from '../arrow';
+import { line } from '../line';
+import type { UTurnSchemaWithDefaults } from './defaults';
 
 export const drawUTurnWithCtx = (schema: UTurnSchemaWithDefaults) => {
   const {
@@ -79,9 +80,7 @@ export const drawUTurnWithCtx = (schema: UTurnSchemaWithDefaults) => {
     );
 
     lineGradient = [
-      ...fillGradient.filter(
-        (stop) => stop.offset <= upDistance / totalLength,
-      ),
+      ...fillGradient.filter((stop) => stop.offset <= upDistance / totalLength),
       { offset: 1, color: gradientColorAtCircleStart },
     ];
 
@@ -123,7 +122,7 @@ export const drawUTurnWithCtx = (schema: UTurnSchemaWithDefaults) => {
     lineWidth: lineWidth,
     fillColor: color,
     fillGradient: lineGradient,
-  })
+  });
 
   const { drawShape: drawShortShaft } = arrow({
     start: shortLegFrom,
@@ -131,7 +130,7 @@ export const drawUTurnWithCtx = (schema: UTurnSchemaWithDefaults) => {
     lineWidth: lineWidth,
     fillColor: color,
     fillGradient: arrowGradient,
-  })
+  });
 
   return (ctx: CanvasRenderingContext2D) => {
     drawLongShaft(ctx);

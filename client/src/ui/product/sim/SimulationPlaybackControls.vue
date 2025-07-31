@@ -1,16 +1,18 @@
 <script setup lang="ts">
-  import { onUnmounted, ref, toRefs } from 'vue';
-  import type { UnwrapRef } from 'vue';
   import { nonNullGraph as graph } from '@graph/global';
-  import type { SimulationControls } from './types';
-  import PlaybackButton from './PlaybackButton.vue';
-  import ProgressBar from './ProgressBar.vue';
   import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
-  import GSpreadSelect from '@ui/graph/select/GSpreadSelect.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import keys from 'ctrl-keys';
   import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
   import GText from '@ui/graph/GText.vue';
+  import GButton from '@ui/graph/button/GButton.vue';
+  import GSpreadSelect from '@ui/graph/select/GSpreadSelect.vue';
+  import keys from 'ctrl-keys';
+
+  import { onUnmounted, ref, toRefs } from 'vue';
+  import type { UnwrapRef } from 'vue';
+
+  import PlaybackButton from './PlaybackButton.vue';
+  import ProgressBar from './ProgressBar.vue';
+  import type { SimulationControls } from './types';
 
   const colors = useNonNullGraphColors();
 

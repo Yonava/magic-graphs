@@ -1,5 +1,10 @@
-import type { FillColor, FillGradient, LineWidth, TextArea } from "@shape/types/schema";
-import type { Coordinate, DashPattern } from "@shape/types/utility";
+import type {
+  FillColor,
+  FillGradient,
+  LineWidth,
+  TextArea,
+} from '@shape/types/schema';
+import type { Coordinate, DashPattern } from '@shape/types/utility';
 
 export type LineSchema = {
   start: Coordinate;
@@ -11,8 +16,7 @@ export type LineSchema = {
    */
   textOffsetFromCenter?: number;
   dash?: DashPattern;
-} &
-  LineWidth &
+} & LineWidth &
   TextArea &
   FillColor &
   FillGradient;

@@ -1,23 +1,25 @@
 <script setup lang="ts">
-  import { computed, onMounted, onUnmounted, ref } from 'vue';
-  import type { UnwrapRef } from 'vue';
+  import MagicCanvas from '@canvas/MagicCanvas.vue';
+  import { devMode } from '@graph/global';
   import { useGraphProduct } from '@graph/useGraphProduct';
-  import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
   import AnnotationToolbar from '@product/sandbox/ui/AnnotationToolbar.vue';
+  import type { GraphWithCanvas } from '@product/shared/useGraphWithCanvas';
   import ProductDropdown from '@ui/product/dropdown/ProductDropdown.vue';
   import SelectSimulation from '@ui/product/sim/SelectSim.vue';
-  import type { SimulationDeclaration } from 'src/types';
+  import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
   import { getSimulationDeclarationsForProduct } from '@utils/product';
-  import StopSimButton from './StopSimButton.vue';
+  import type { SimulationDeclaration } from 'src/types';
+
+  import { computed, onMounted, onUnmounted, ref } from 'vue';
+  import type { UnwrapRef } from 'vue';
+
   import FullscreenButton from './FullscreenButton.vue';
+  import HelpMenu from './HelpMenu.vue';
+  import ShareButton from './ShareButton.vue';
+  import StopSimButton from './StopSimButton.vue';
   import ThemeToolbar from './ThemeToolbar.vue';
   import ZoomToolbar from './ZoomToolbar.vue';
-  import HelpMenu from './HelpMenu.vue';
   import BenchmarkingMetrics from './dev/BenchmarkingMetrics.vue';
-  import { devMode } from '@graph/global';
-  import MagicCanvas from '@canvas/MagicCanvas.vue';
-  import type { GraphWithCanvas } from '@product/shared/useGraphWithCanvas';
-  import ShareButton from './ShareButton.vue';
   import GraphAtMousePositionData from './dev/GraphAtMousePositionData.vue';
   import { useEscSimulationShortcut } from './useEscSimulationShortcut';
 

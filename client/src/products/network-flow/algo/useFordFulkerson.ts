@@ -1,9 +1,11 @@
-import { computed, readonly, ref, watch } from 'vue';
-import state from '../state';
 import type { Graph } from '@graph/types';
+
+import { computed, readonly, ref, watch } from 'vue';
+
+import { useResidualEdges } from '../misc/useResidualEdges';
+import state from '../state';
 import { fordFulkerson } from './fordFulkerson';
 import type { FlowTrace } from './fordFulkerson';
-import { useResidualEdges } from '../misc/useResidualEdges';
 
 const { sourceNode, sinkNode } = state;
 

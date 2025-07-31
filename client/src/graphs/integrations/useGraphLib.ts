@@ -1,6 +1,7 @@
-import { computed } from 'vue';
-import graphlib from 'graphlib';
 import type { Graph } from '@graph/types';
+import graphlib from 'graphlib';
+
+import { computed } from 'vue';
 
 /**
  * a magic graphs integration with the `graphlib` library.

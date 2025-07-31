@@ -1,4 +1,5 @@
 import type { Ref } from 'vue';
+
 import type { Graph } from './types';
 
 export const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');

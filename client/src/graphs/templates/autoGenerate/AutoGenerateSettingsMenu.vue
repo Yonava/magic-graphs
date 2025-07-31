@@ -1,11 +1,13 @@
 <script setup lang="ts">
-  import type { AutoGenerateGraphOptions } from './types';
-  import { toRef } from 'vue';
+  import InputRange from '@ui/InputRange.vue';
   import CIcon from '@ui/core/Icon.vue';
   import CPopover from '@ui/core/Popover.vue';
   import GWell from '@ui/graph/GWell.vue';
   import GButton from '@ui/graph/button/GButton.vue';
-  import InputRange from '@ui/InputRange.vue';
+
+  import { toRef } from 'vue';
+
+  import type { AutoGenerateGraphOptions } from './types';
   import { AUTO_GENERATE_GRAPH_DEFAULTS } from './types';
 
   const props = defineProps<{

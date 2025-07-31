@@ -1,32 +1,34 @@
-import type { Coordinate } from '@shape/types/utility';
-import type { ShapeFactory } from '@shape/types';
-import { drawArrowWithCtx } from './draw';
-import {
-  arrowHitbox,
-  arrowEfficientHitbox,
-  getArrowBoundingBox,
-} from './hitbox';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
+import type { ShapeFactory } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
+
 import { getTextAreaAnchorPoint } from '../line/text';
-import type { ArrowSchema } from './types';
 import { resolveArrowDefaults } from './defaults';
+import { drawArrowWithCtx } from './draw';
+import {
+  arrowEfficientHitbox,
+  arrowHitbox,
+  getArrowBoundingBox,
+} from './hitbox';
+import type { ArrowSchema } from './types';
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {
     throw new Error('width must be positive');
   }
 
-  const schema = resolveArrowDefaults(options)
+  const schema = resolveArrowDefaults(options);
 
-  const anchorPt = getTextAreaAnchorPoint(schema)
-  const text = getShapeTextProps(anchorPt, schema.textArea)
+  const anchorPt = getTextAreaAnchorPoint(schema);
+  const text = getShapeTextProps(anchorPt, schema.textArea);
 
   const drawShape = drawArrowWithCtx(schema);
 
   const shapeHitbox = arrowHitbox(schema);
   const efficientHitbox = arrowEfficientHitbox(schema);
-  const hitbox = (point: Coordinate) => text?.textHitbox(point) || shapeHitbox(point);
+  const hitbox = (point: Coordinate) =>
+    text?.textHitbox(point) || shapeHitbox(point);
 
   const getBoundingBox = getArrowBoundingBox(schema);
 

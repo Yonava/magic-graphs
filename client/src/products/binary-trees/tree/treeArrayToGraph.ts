@@ -1,9 +1,10 @@
-import type { Coordinate } from '@shape/types/utility';
-import type { TreeNodeKeyArray } from './avl';
-import type { TreeNode } from './treeNode';
+import type { GNodeMoveInstruction } from '@graph/base/useGraphCRUD';
 import type { GEdge, Graph } from '@graph/types';
 import { getTreeIndexToPosition } from '@product/sandbox/ui/tree/getTreeBinaryPos';
-import type { GNodeMoveInstruction } from '@graph/base/useGraphCRUD';
+import type { Coordinate } from '@shape/types/utility';
+
+import type { TreeNodeKeyArray } from './avl';
+import type { TreeNode } from './treeNode';
 
 const newEdge = (from: number, to: number) => ({
   from: from.toString(),
@@ -46,7 +47,7 @@ export const treeArrayToGraph = (
   );
 
   for (const node of nodesNotInNewTree) {
-    graph.removeNode(node.id)
+    graph.removeNode(node.id);
   }
 
   // the tree is empty and all the nodes have been removed
@@ -69,32 +70,40 @@ export const treeArrayToGraph = (
     if (treeNodeKey === undefined) return;
 
     const nodeAlreadyDisplayed = graph.getNode(treeNodeKey.toString());
-    if (nodeAlreadyDisplayed) return
+    if (nodeAlreadyDisplayed) return;
 
-    const coordsOfNodeOnTree = positions[i]
+    const coordsOfNodeOnTree = positions[i];
 
-    graph.addNode({
-      id: treeNodeKey.toString(),
-      label: treeNodeKey.toString(),
-      ...coordsOfNodeOnTree,
-    }, {
-      animate: true,
-      focus: false
-    });
-  })
+    graph.addNode(
+      {
+        id: treeNodeKey.toString(),
+        label: treeNodeKey.toString(),
+        ...coordsOfNodeOnTree,
+      },
+      {
+        animate: true,
+        focus: false,
+      },
+    );
+  });
 
   for (const edge of edgesNotInNewTree) {
-    graph.removeEdge(edge.id)
+    graph.removeEdge(edge.id);
   }
 
-  const movementObj = treeArray.map((treeNodeKey, i): GNodeMoveInstruction | void => {
-    if (treeNodeKey === undefined) return;
-    const node = graph.getNode(treeNodeKey.toString());
-    if (!node) return console.error('node in tree not found in graph. this should never happen!')
-    return { nodeId: node.id, coords: positions[i] }
-  }).filter(Boolean) as GNodeMoveInstruction[]
+  const movementObj = treeArray
+    .map((treeNodeKey, i): GNodeMoveInstruction | void => {
+      if (treeNodeKey === undefined) return;
+      const node = graph.getNode(treeNodeKey.toString());
+      if (!node)
+        return console.error(
+          'node in tree not found in graph. this should never happen!',
+        );
+      return { nodeId: node.id, coords: positions[i] };
+    })
+    .filter(Boolean) as GNodeMoveInstruction[];
 
-  graph.bulkMoveNode(movementObj)
+  graph.bulkMoveNode(movementObj);
 
   for (const edge of newTreeEdges) {
     graph.addEdge(edge, { animate: true });

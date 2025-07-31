@@ -1,8 +1,9 @@
 import type { Graph } from '@graph/types';
 import { SimulationGuard } from '@ui/product/sim/guard';
+
+import definitions from '../markov/definitions';
 import { useMarkovChain } from '../markov/useMarkovChain';
 import { useIllegalStateColorizer } from '../ui/useIllegalStateColorizer';
-import definitions from '../markov/definitions';
 
 export const canRunMarkovChain = (graph: Graph) => {
   const markov = useMarkovChain(graph);

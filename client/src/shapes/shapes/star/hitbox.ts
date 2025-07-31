@@ -1,7 +1,12 @@
-import type { Coordinate, BoundingBox } from '@shape/types/utility';
-import type { StarSchema } from './types';
-import { areBoundingBoxesOverlapping, normalizeBoundingBox, rotatePoint } from '@shape/helpers';
+import {
+  areBoundingBoxesOverlapping,
+  normalizeBoundingBox,
+  rotatePoint,
+} from '@shape/helpers';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
+
 import type { StarSchemaWithDefaults } from './defaults';
+import type { StarSchema } from './types';
 
 const getStarPoints = (star: StarSchema): Coordinate[] => {
   const { at, innerRadius, outerRadius, points = 5, rotation = 0 } = star;
@@ -23,10 +28,7 @@ const getStarPoints = (star: StarSchema): Coordinate[] => {
   return vertices;
 };
 
-const isPointInPolygon = (
-  point: Coordinate,
-  vertices: Coordinate[],
-) => {
+const isPointInPolygon = (point: Coordinate, vertices: Coordinate[]) => {
   let inside = false;
 
   for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
@@ -47,10 +49,11 @@ const isPointInPolygon = (
   return inside;
 };
 
-export const starHitbox = (schema: StarSchemaWithDefaults) => (point: Coordinate) => {
-  const vertices = getStarPoints(schema);
-  return isPointInPolygon(point, vertices);
-};
+export const starHitbox =
+  (schema: StarSchemaWithDefaults) => (point: Coordinate) => {
+    const vertices = getStarPoints(schema);
+    return isPointInPolygon(point, vertices);
+  };
 
 export const getStarBoundingBox = (schema: StarSchemaWithDefaults) => () => {
   const { at, outerRadius } = schema;
@@ -63,9 +66,6 @@ export const getStarBoundingBox = (schema: StarSchemaWithDefaults) => () => {
   });
 };
 
-export const starEfficientHitbox = (
-  schema: StarSchemaWithDefaults
-) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
-  getStarBoundingBox(schema)(),
-  boxToCheck,
-)
+export const starEfficientHitbox =
+  (schema: StarSchemaWithDefaults) => (boxToCheck: BoundingBox) =>
+    areBoundingBoxesOverlapping(getStarBoundingBox(schema)(), boxToCheck);

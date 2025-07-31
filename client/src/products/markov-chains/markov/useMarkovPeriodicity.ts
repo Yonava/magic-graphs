@@ -1,8 +1,9 @@
-import { computed } from 'vue';
-import type { Ref } from 'vue';
 import type { GNode, Graph } from '@graph/types';
 import type { AdjacencyList } from '@graph/useAdjacencyList';
-import { lowestPrimeFactor, gcd } from '@utils/math';
+import { gcd, lowestPrimeFactor } from '@utils/math';
+
+import { computed } from 'vue';
+import type { Ref } from 'vue';
 
 /**
  * because we dont know how many possible paths
