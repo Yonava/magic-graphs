@@ -1,27 +1,27 @@
-import type { DeepPartial, DeepReadonly } from 'ts-essentials';
-// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
-// eslint-disable-next-line
-import type { GEdge, GNode, Graph } from '@graph/types';
-import type { GraphSettings } from '@graph/settings';
 import type {
-  AddNodeOptions,
-  RemoveNodeOptions,
-  MoveNodeOptions,
   AddEdgeOptions,
-  RemoveEdgeOptions,
+  AddNodeOptions,
   EditEdgeLabelOptions,
   HistoryOption,
+  MoveNodeOptions,
+  RemoveEdgeOptions,
+  RemoveNodeOptions,
 } from '@graph/base/types';
+import type { GraphMouseEvent } from '@graph/base/types';
+import type { GraphState } from '@graph/collab/types';
 import type { NodeAnchor } from '@graph/plugins/anchors/types';
-import type { GraphThemeName } from '@graph/themes';
 import type {
   HistoryRecord,
   RedoHistoryOptions,
   UndoHistoryOptions,
 } from '@graph/plugins/history/types';
+import type { GraphSettings } from '@graph/settings';
+import type { GraphThemeName } from '@graph/themes';
+// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
+// eslint-disable-next-line
+import type { GEdge, GNode, Graph } from '@graph/types';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
-import type { GraphMouseEvent } from '@graph/base/types';
-import type { GraphState } from '@graph/collab/types';
+import type { DeepPartial, DeepReadonly } from 'ts-essentials';
 
 export type BaseGraphEventMap = {
   /**

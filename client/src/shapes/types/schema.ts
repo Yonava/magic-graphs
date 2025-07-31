@@ -1,10 +1,11 @@
+import type { TextArea as TextAreaDefinition } from '@shape/text/types';
+
 import type {
   BorderRadiusArrayValue,
   Coordinate,
   GradientStop,
   Stroke as StrokeDefinition,
 } from './utility';
-import type { TextArea as TextAreaDefinition } from '@shape/text/types';
 
 export type AnchorPoint = {
   /**

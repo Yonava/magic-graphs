@@ -1,16 +1,18 @@
+import { getEncapsulatedNodeBox } from '@graph/plugins/marquee/helpers';
 import type { Graph } from '@graph/types';
-import type { GraphTemplate } from './types';
+import { useGraph } from '@graph/useGraph';
+import { generateId } from '@utils/id';
+import { products } from '@utils/product';
+import { useLocalStorage } from '@vueuse/core';
+
 import { computed, onMounted, onUnmounted, ref } from 'vue';
+
 import {
   centerNodesOnOriginCoordinates,
-  getAverageCoordinates,
   createImageFromCanvasRegion,
+  getAverageCoordinates,
 } from './helpers';
-import { generateId } from '@utils/id';
-import { useLocalStorage } from '@vueuse/core';
-import { getEncapsulatedNodeBox } from '@graph/plugins/marquee/helpers';
-import { useGraph } from '@graph/useGraph';
-import { products } from '@utils/product';
+import type { GraphTemplate } from './types';
 
 export const useGraphTemplate = (graph: Graph) => {
   const userTemplates = useLocalStorage<GraphTemplate[]>('graph-templates', []);

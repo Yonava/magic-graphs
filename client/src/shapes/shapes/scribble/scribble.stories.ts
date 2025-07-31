@@ -1,10 +1,15 @@
+import {
+  DEFAULT_STORIES,
+  DOC_MARKING_DEFAULTS,
+  createDocComponent,
+} from '@shape/docs';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { scribble } from '.';
-import type { ScribbleSchema } from './types';
-import { SCRIBBLE_SCHEMA_DEFAULTS } from './defaults';
 
-const Scribble = createDocComponent<ScribbleSchema>(scribble)
+import { scribble } from '.';
+import { SCRIBBLE_SCHEMA_DEFAULTS } from './defaults';
+import type { ScribbleSchema } from './types';
+
+const Scribble = createDocComponent<ScribbleSchema>(scribble);
 
 const meta = {
   title: 'Shapes/Scribble',
@@ -22,7 +27,7 @@ const meta = {
     ],
     ...DOC_MARKING_DEFAULTS,
   },
-} satisfies Meta<typeof Scribble>
+} satisfies Meta<typeof Scribble>;
 
 export default meta;
 
@@ -37,5 +42,5 @@ export const WithText: Story = text;
 export const BrushWeight: Story = {
   args: {
     brushWeight: 10,
-  }
-}
+  },
+};

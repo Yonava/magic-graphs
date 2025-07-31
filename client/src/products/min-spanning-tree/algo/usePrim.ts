@@ -1,5 +1,7 @@
-import { computed, ref } from 'vue';
 import type { Graph } from '@graph/types';
+
+import { computed, ref } from 'vue';
+
 import { prim } from './prim';
 
 export const usePrim = (graph: Graph) => {

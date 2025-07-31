@@ -20,20 +20,21 @@ type TargetNode = {
   /**
    * the key of the targeted node
    */
-  targetNode: TreeNode['key']
-}
+  targetNode: TreeNode['key'];
+};
 
 type TreeState = {
   /**
    * the state of the tree in array form
    */
   treeState: TreeNodeKeyArray;
-}
+};
 
 export type CompareStep = {
   action: 'compare';
   comparedNode: TreeNode['key'];
-} & TargetNode & TreeState;
+} & TargetNode &
+  TreeState;
 
 export type BalanceStep = {
   action: 'balance';
@@ -42,17 +43,15 @@ export type BalanceStep = {
 
 export type InsertStep = {
   action: 'insert';
-} & TargetNode & TreeState;
+} & TargetNode &
+  TreeState;
 
 export type RemoveStep = {
   action: 'remove';
-} & TargetNode & TreeState;
+} & TargetNode &
+  TreeState;
 
-export type TreeTraceStep =
-  | CompareStep
-  | BalanceStep
-  | InsertStep
-  | RemoveStep;
+export type TreeTraceStep = CompareStep | BalanceStep | InsertStep | RemoveStep;
 
 export const getHeight = (node: TreeNode | undefined) => {
   return node ? node.height : 0;

@@ -1,13 +1,13 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import router from './router';
-
-import './main.css';
-
-import PrimeVue from 'primevue/config';
-import Tooltip from 'primevue/tooltip';
-import ToastService from 'primevue/toastservice';
 import '@mdi/font/css/materialdesignicons.css';
+import PrimeVue from 'primevue/config';
+import ToastService from 'primevue/toastservice';
+import Tooltip from 'primevue/tooltip';
+
+import { createApp } from 'vue';
+
+import App from './App.vue';
+import './main.css';
+import router from './router';
 
 const app = createApp(App)
   .use(PrimeVue, { theme: 'none' })

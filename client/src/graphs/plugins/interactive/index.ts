@@ -1,20 +1,19 @@
-import type { GNode } from '@graph/types';
 import type { BaseGraph } from '@graph/base';
 import type { GraphMouseEvent } from '@graph/base/types';
+import type { GNode } from '@graph/types';
 
 /**
  * interactive allows users to create, edit and delete nodes and edges
  */
 export const useInteractive = (graph: BaseGraph) => {
-
   let lastClickTime = 0;
 
   const handleNodeCreation = ({ coords, items }: GraphMouseEvent) => {
-    const ABOUT_A_FEW_HUNDRED_MS = 350
-    const timeDiff = Date.now() - lastClickTime
-    const closeEnoughInTime = timeDiff < ABOUT_A_FEW_HUNDRED_MS
-    if (!closeEnoughInTime) return lastClickTime = Date.now()
-    lastClickTime = 0
+    const ABOUT_A_FEW_HUNDRED_MS = 350;
+    const timeDiff = Date.now() - lastClickTime;
+    const closeEnoughInTime = timeDiff < ABOUT_A_FEW_HUNDRED_MS;
+    if (!closeEnoughInTime) return (lastClickTime = Date.now());
+    lastClickTime = 0;
 
     if (items.at(-1)?.graphType === 'node') return;
 
@@ -44,7 +43,7 @@ export const useInteractive = (graph: BaseGraph) => {
   };
 
   const handleEdgeCreation = (fromNode: GNode) => {
-    const { items } = graph.graphAtMousePosition.value
+    const { items } = graph.graphAtMousePosition.value;
 
     const nodeUnderneathAnchor = items.findLast((i) => i.graphType === 'node');
     if (!nodeUnderneathAnchor) return;

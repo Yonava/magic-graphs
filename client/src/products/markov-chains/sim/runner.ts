@@ -1,11 +1,13 @@
-import { computed } from 'vue';
-import { Fraction } from 'mathjs';
 import type { Graph } from '@graph/types';
 import type { SimulationRunner, TraceFunction } from '@ui/product/sim/types';
 import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
-import { useSimulationTheme } from './theme';
+import { Fraction } from 'mathjs';
+
+import { computed } from 'vue';
+
 import { useStateAfterNSteps } from '../markov/useStateAfterNSteps';
 import state from '../state';
+import { useSimulationTheme } from './theme';
 
 const { initialState } = state;
 

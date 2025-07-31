@@ -1,8 +1,9 @@
 import { getAngle } from '@shape/helpers';
+
 import type { LineSchemaWithDefaults } from './defaults';
 
 export const getTextAreaAnchorPoint = (line: LineSchemaWithDefaults) => {
-  if (!line.textArea) return
+  if (!line.textArea) return;
 
   const { textOffsetFromCenter, start, end } = line;
 

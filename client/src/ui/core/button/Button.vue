@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { computed, ref } from 'vue';
-  import tinycolor from 'tinycolor2';
-  import { twMerge } from 'tailwind-merge';
   import { useClassAttrs } from '@ui/useClassAttrs';
+  import { twMerge } from 'tailwind-merge';
+  import tinycolor from 'tinycolor2';
+
+  import { computed, ref } from 'vue';
 
   const props = defineProps<{
     /**

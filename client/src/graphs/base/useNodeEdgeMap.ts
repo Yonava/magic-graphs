@@ -1,4 +1,5 @@
 import type { GEdge, GNode } from '@graph/types';
+
 import { computed } from 'vue';
 import type { Ref } from 'vue';
 

@@ -1,4 +1,5 @@
 import type { GraphEventMap } from './types';
+
 export type { GraphEventMap } from './types';
 
 /**

@@ -1,10 +1,15 @@
+import {
+  DEFAULT_STORIES,
+  DOC_MARKING_DEFAULTS,
+  createDocComponent,
+} from '@shape/docs';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { triangle } from '.';
-import type { TriangleSchema } from './types';
-import { TRIANGLE_SCHEMA_DEFAULTS } from './defaults';
 
-const Triangle = createDocComponent<TriangleSchema>(triangle)
+import { triangle } from '.';
+import { TRIANGLE_SCHEMA_DEFAULTS } from './defaults';
+import type { TriangleSchema } from './types';
+
+const Triangle = createDocComponent<TriangleSchema>(triangle);
 
 const meta = {
   title: 'Shapes/Triangle',
@@ -16,7 +21,7 @@ const meta = {
     pointC: { x: 160, y: 100 },
     ...DOC_MARKING_DEFAULTS,
   },
-} satisfies Meta<typeof Triangle>
+} satisfies Meta<typeof Triangle>;
 
 export default meta;
 
@@ -28,4 +33,4 @@ export const Basic: Story = basic;
 export const Markings: Story = markings;
 export const WithText: Story = text;
 export const WithStroke: Story = stroke;
-export const ColorGradient: Story = colorGradient
+export const ColorGradient: Story = colorGradient;

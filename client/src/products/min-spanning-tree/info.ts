@@ -1,10 +1,11 @@
-import type { ProductInfo } from 'src/types';
 import type { Graph } from '@graph/types';
+import type { ProductInfo } from 'src/types';
+
+import { canRunMST } from './sim/guard';
 import {
   useKruskalSimulationRunner,
   usePrimSimulationRunner,
 } from './sim/runner';
-import { canRunMST } from './sim/guard';
 import templates from './templates';
 
 const info: ProductInfo = {

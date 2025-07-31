@@ -1,10 +1,15 @@
+import {
+  DEFAULT_STORIES,
+  DOC_MARKING_DEFAULTS,
+  createDocComponent,
+} from '@shape/docs';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { circle } from '.';
-import type { CircleSchema } from './types';
-import { CIRCLE_SCHEMA_DEFAULTS } from './defaults';
 
-const Circle = createDocComponent<CircleSchema>(circle)
+import { circle } from '.';
+import { CIRCLE_SCHEMA_DEFAULTS } from './defaults';
+import type { CircleSchema } from './types';
+
+const Circle = createDocComponent<CircleSchema>(circle);
 
 const meta = {
   title: 'Shapes/Circle',
@@ -15,7 +20,7 @@ const meta = {
     at: { x: 60, y: 60 },
     ...DOC_MARKING_DEFAULTS,
   },
-} satisfies Meta<typeof Circle>
+} satisfies Meta<typeof Circle>;
 
 export default meta;
 

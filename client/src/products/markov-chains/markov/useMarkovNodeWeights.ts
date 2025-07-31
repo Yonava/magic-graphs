@@ -1,6 +1,7 @@
-import { computed } from 'vue';
-import { Fraction } from 'mathjs';
 import type { GNode, Graph } from '@graph/types';
+import { Fraction } from 'mathjs';
+
+import { computed } from 'vue';
 
 /**
  * a map of node ids to the sum of their outgoing edge weights

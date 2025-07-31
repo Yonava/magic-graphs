@@ -1,5 +1,6 @@
-import { ref } from 'vue';
 import type { Graph } from '@graph/types';
+
+import { ref } from 'vue';
 
 type GraphState = {
   nodes: Graph['nodes']['value'];

@@ -1,9 +1,10 @@
-import type { RouteRecordRaw } from 'vue-router';
+import type { GraphTemplate } from '@graph/templates/types';
 import type { Graph } from '@graph/types';
+import type { SimulationGuard } from '@ui/product/sim/guard';
 import type { SimulationRunner } from '@ui/product/sim/types';
 import type { ProductCategory } from '@utils/product';
-import type { GraphTemplate } from '@graph/templates/types';
-import type { SimulationGuard } from '@ui/product/sim/guard';
+
+import type { RouteRecordRaw } from 'vue-router';
 
 /**
  * options for exposing a product to the product dropdown menu

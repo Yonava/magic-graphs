@@ -1,11 +1,13 @@
-import { test, describe, expect } from 'vitest';
+import { describe, expect, test } from 'vitest';
+
+import { ref } from 'vue';
+
+import { useBaseGraph } from './base';
 import {
   graphLabelGetter,
   nodeLetterLabelGetter,
   nodeNumberLabelGetter,
 } from './labels';
-import { ref } from 'vue';
-import { useBaseGraph } from './base';
 
 describe('graph labels', () => {
   const graph = useBaseGraph(ref());

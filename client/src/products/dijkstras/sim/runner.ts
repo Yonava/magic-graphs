@@ -1,11 +1,13 @@
 import type { Graph } from '@graph/types';
 import type { SimulationRunner } from '@ui/product/sim/types';
 import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
+
+import { ref } from 'vue';
+
 import { useDijkstra } from '../algo/useDijkstra';
 import type { DijkstrasTraceStep } from '../algo/useDijkstra';
-import { useSimulationTheme } from './theme';
 import state from '../state';
-import { ref } from 'vue';
+import { useSimulationTheme } from './theme';
 
 const { startNode } = state;
 

@@ -1,12 +1,13 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
-  import { useAdjacencyList } from '@graph/useAdjacencyList';
-  import GNode from '@ui/graph/GNode.vue';
   import { nonNullGraph as graph } from '@graph/global';
-  import { getCommaList } from '@utils/string';
-  import CPopoverTooltip from '@ui/core/PopoverTooltip.vue';
+  import { useAdjacencyList } from '@graph/useAdjacencyList';
   import CIcon from '@ui/core/Icon.vue';
+  import CPopoverTooltip from '@ui/core/PopoverTooltip.vue';
+  import GNode from '@ui/graph/GNode.vue';
   import GWell from '@ui/graph/GWell.vue';
+  import { getCommaList } from '@utils/string';
+
+  import { computed } from 'vue';
 
   const { weightedAdjacencyList } = useAdjacencyList(graph.value);
 

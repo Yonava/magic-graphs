@@ -1,6 +1,8 @@
-import { describe, test, expect } from 'vitest';
-import { useBaseGraph } from '..';
+import { describe, expect, test } from 'vitest';
+
 import { ref } from 'vue';
+
+import { useBaseGraph } from '..';
 
 describe('base graph - moveNode', () => {
   const graph = useBaseGraph(ref());

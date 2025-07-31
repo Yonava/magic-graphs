@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { computed, onUnmounted, ref } from 'vue';
   import { nonNullGraph as graph } from '@graph/global';
   import { resolveThemeForNode } from '@graph/themes';
   import type { GNode } from '@graph/types';
+
+  import { computed, onUnmounted, ref } from 'vue';
 
   type NodeProps = {
     size?: number;

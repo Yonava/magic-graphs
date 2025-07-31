@@ -1,11 +1,16 @@
-import type { DeepRequired } from 'ts-essentials';
-import { getTextDimensions } from './getTextDimensions';
-import type { Coordinate } from '@shape/types/utility';
-import type { ShapeTextProps } from '@shape/types';
-import { createTextarea } from './createTextarea';
 import { rect } from '@shape/shapes/rect';
-import type { StartTextAreaEdit, TextAreaWithAnchorPoint, TextBlock } from './types';
+import type { ShapeTextProps } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
+import type { DeepRequired } from 'ts-essentials';
+
+import { createTextarea } from './createTextarea';
 import type { TextAreaWithDefaults } from './defaults';
+import { getTextDimensions } from './getTextDimensions';
+import type {
+  StartTextAreaEdit,
+  TextAreaWithAnchorPoint,
+  TextBlock,
+} from './types';
 
 export const HORIZONTAL_TEXT_PADDING = 20;
 
@@ -18,7 +23,7 @@ type ShapeTextPropsGetter = (
 ) => ShapeTextProps | undefined;
 
 export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
-  if (!at || !textArea) return
+  if (!at || !textArea) return;
 
   const dimensions = getTextAreaDimension(textArea.textBlock);
 
@@ -26,9 +31,9 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
     ...textArea,
     at: {
       x: at.x - dimensions.width / 2,
-      y: at.y - dimensions.height / 2
-    }
-  } as const satisfies TextAreaWithAnchorPoint
+      y: at.y - dimensions.height / 2,
+    },
+  } as const satisfies TextAreaWithAnchorPoint;
 
   const textAreaMatte = rect({
     at: placedTextArea.at,
@@ -37,12 +42,12 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
     fillColor: placedTextArea.color,
   });
 
-  const drawText = drawTextWithTextArea(placedTextArea, dimensions)
+  const drawText = drawTextWithTextArea(placedTextArea, dimensions);
 
   const drawTextArea = (ctx: CanvasRenderingContext2D) => {
-    textAreaMatte.draw(ctx)
-    drawText(ctx)
-  }
+    textAreaMatte.draw(ctx);
+    drawText(ctx);
+  };
 
   const startTextAreaEdit: StartTextAreaEdit = (ctx, onTextAreaBlur) => {
     createTextarea(ctx, onTextAreaBlur, placedTextArea);
@@ -54,13 +59,13 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
     drawText,
     drawTextArea,
     startTextAreaEdit,
-  }
-}
+  };
+};
 
 export const getTextAreaDimension = (text: Required<TextBlock>) => {
   const paddingVertical = HORIZONTAL_TEXT_PADDING;
 
-  const { width, height, ascent, descent } = getTextDimensions(text)
+  const { width, height, ascent, descent } = getTextDimensions(text);
 
   return {
     width: Math.max(
@@ -76,19 +81,21 @@ export const getTextAreaDimension = (text: Required<TextBlock>) => {
   };
 };
 
-export const drawTextWithTextArea = (
-  textArea: DeepRequired<TextAreaWithAnchorPoint>,
-  textAreaDimensions: ReturnType<typeof getTextAreaDimension>
-) => (ctx: CanvasRenderingContext2D) => {
-  const { at, textBlock } = textArea;
-  const { content, fontSize, fontWeight, color, fontFamily } = textBlock;
+export const drawTextWithTextArea =
+  (
+    textArea: DeepRequired<TextAreaWithAnchorPoint>,
+    textAreaDimensions: ReturnType<typeof getTextAreaDimension>,
+  ) =>
+  (ctx: CanvasRenderingContext2D) => {
+    const { at, textBlock } = textArea;
+    const { content, fontSize, fontWeight, color, fontFamily } = textBlock;
 
-  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-  ctx.fillStyle = color;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
+    ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+    ctx.fillStyle = color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
 
-  const { width, descent, height } = textAreaDimensions
+    const { width, descent, height } = textAreaDimensions;
 
-  ctx.fillText(content, at.x + width / 2, at.y + height / 2 + descent / 4);
-};
+    ctx.fillText(content, at.x + width / 2, at.y + height / 2 + descent / 4);
+  };

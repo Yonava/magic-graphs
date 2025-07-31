@@ -1,12 +1,13 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import colors from '@colors';
-  import { cross } from '@shapes/cross';
-  import type { Shape } from '@shape/types';
-  import { useAnimatedShapes } from '@shape/animation';
   import MagicCanvas from '@canvas/MagicCanvas.vue';
   import { useMagicCanvas } from '@canvas/index';
+  import colors from '@colors';
+  import { useAnimatedShapes } from '@shape/animation';
+  import type { Shape } from '@shape/types';
+  import { cross } from '@shapes/cross';
   import Button from '@ui/core/button/Button.vue';
+
+  import { ref } from 'vue';
 
   const { defineTimeline, shapes } = useAnimatedShapes();
 

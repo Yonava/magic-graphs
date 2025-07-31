@@ -1,12 +1,14 @@
-import { watch } from 'vue';
-import { useDark } from '@vueuse/core';
 import type { BaseGraph } from '@graph/base';
-import { useLocalStorage } from '@vueuse/core';
-import { THEME_NAMES, type GraphThemeName } from '.';
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
 import type { Graph } from '@graph/types';
 import { localKeys } from '@utils/localStorage';
+import { useDark } from '@vueuse/core';
+import { useLocalStorage } from '@vueuse/core';
+
+import { watch } from 'vue';
+
+import { type GraphThemeName, THEME_NAMES } from '.';
 
 export type PreferredGraphTheme = GraphThemeName | 'auto';
 
@@ -41,8 +43,11 @@ export const usePreferredTheme = (graph: BaseGraph) => {
     () => {
       // preferred theme comes from localStorage and can be tampered with, so the value cannot be trusted!
       if (![...THEME_NAMES, 'auto'].includes(preferredTheme.value)) {
-        console.warn('unrecognized preferred-theme in localStorage: falling back to', DEFAULT_THEME)
-        preferredTheme.value = DEFAULT_THEME
+        console.warn(
+          'unrecognized preferred-theme in localStorage: falling back to',
+          DEFAULT_THEME,
+        );
+        preferredTheme.value = DEFAULT_THEME;
       }
 
       if (preferredTheme.value === 'auto') {

@@ -4,14 +4,13 @@ import type {
   FillColor,
   Rotation,
   Stroke,
-  TextArea
-} from "@shape/types/schema";
+  TextArea,
+} from '@shape/types/schema';
 
 export type RectSchema = {
   width: number;
   height: number;
-} &
-  AnchorPoint &
+} & AnchorPoint &
   FillColor &
   Stroke &
   TextArea &

@@ -1,7 +1,8 @@
-import { ref } from 'vue';
-import type { Graph, GNode, GEdge } from '@graph/types';
 import { useTheme } from '@graph/themes/useTheme';
+import type { GEdge, GNode, Graph } from '@graph/types';
 import colors from '@utils/colors';
+
+import { ref } from 'vue';
 
 const USETHEME_ID = 'sim-guard-node-edge-colorizer';
 

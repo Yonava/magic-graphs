@@ -1,5 +1,6 @@
-import { computed } from 'vue';
 import type { BaseGraph } from '@graph/base';
+
+import { computed } from 'vue';
 
 export const useComplete = (graph: BaseGraph) => {
   const isComplete = computed(() => {

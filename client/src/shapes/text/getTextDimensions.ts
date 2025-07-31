@@ -1,4 +1,5 @@
 import { getCtx } from '@utils/ctx';
+
 import type { TextBlock } from './types';
 
 const canvas = document.createElement('canvas');

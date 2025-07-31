@@ -1,10 +1,11 @@
-import type { DeepRequired } from 'ts-essentials';
-import { HORIZONTAL_TEXT_PADDING } from './text';
 import { getClientCoordinates } from '@canvas/coordinates';
-import { getTextDimensions } from './getTextDimensions';
-import type { OnTextAreaBlur, TextAreaWithAnchorPoint } from './types';
-import type { BoundingBox } from '@shape/types/utility';
 import { isPointInBoundingBox } from '@shape/helpers';
+import type { BoundingBox } from '@shape/types/utility';
+import type { DeepRequired } from 'ts-essentials';
+
+import { getTextDimensions } from './getTextDimensions';
+import { HORIZONTAL_TEXT_PADDING } from './text';
+import type { OnTextAreaBlur, TextAreaWithAnchorPoint } from './types';
 
 export const createTextarea = (
   ctx: CanvasRenderingContext2D,
@@ -14,7 +15,7 @@ export const createTextarea = (
   const { at, textBlock, activeColor: bgColor } = textArea;
 
   const { width, descent } = getTextDimensions(textBlock);
-  const { clientX, clientY, zoom } = getClientCoordinates(at, ctx)
+  const { clientX, clientY, zoom } = getClientCoordinates(at, ctx);
 
   const { color: textColor, content, fontSize, fontWeight } = textBlock;
 
@@ -103,7 +104,7 @@ export const createTextarea = (
     const clickedInside = isPointInBoundingBox(bb, {
       x: clientX,
       y: clientY,
-    })
+    });
 
     if (!clickedInside) removeInput();
   };

@@ -1,10 +1,14 @@
-import type { AnchorPoint, FillColor, Stroke, TextArea } from "@shape/types/schema";
+import type {
+  AnchorPoint,
+  FillColor,
+  Stroke,
+  TextArea,
+} from '@shape/types/schema';
 
 export type EllipseSchema = {
   radiusX: number;
   radiusY: number;
-} &
-  AnchorPoint &
+} & AnchorPoint &
   FillColor &
   Stroke &
   TextArea;

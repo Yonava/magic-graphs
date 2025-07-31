@@ -1,10 +1,11 @@
 import {
-  toBorderRadiusArray,
+  areBoundingBoxesOverlapping,
   normalizeBoundingBox,
-  areBoundingBoxesOverlapping
+  toBorderRadiusArray,
 } from '@shape/helpers';
 import { rectHitbox } from '@shape/shapes/rect/hitbox';
-import type { Coordinate, BoundingBox } from '@shape/types/utility';
+import type { BoundingBox, Coordinate } from '@shape/types/utility';
+
 import type { CrossSchemaWithDefaults } from './defaults';
 
 /**
@@ -12,7 +13,7 @@ import type { CrossSchemaWithDefaults } from './defaults';
  * @returns a function that checks if the point is in the cross
  */
 export const crossHitbox = (schema: CrossSchemaWithDefaults) => {
-  const { at, size, lineWidth, borderRadius, ...rest } = schema
+  const { at, size, lineWidth, borderRadius, ...rest } = schema;
 
   const halfLineWidth = lineWidth / 2;
 
@@ -52,9 +53,6 @@ export const getCrossBoundingBox = (schema: CrossSchemaWithDefaults) => () => {
   });
 };
 
-export const crossEfficientHitbox = (
-  schema: CrossSchemaWithDefaults
-) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
-  getCrossBoundingBox(schema)(),
-  boxToCheck,
-)
+export const crossEfficientHitbox =
+  (schema: CrossSchemaWithDefaults) => (boxToCheck: BoundingBox) =>
+    areBoundingBoxesOverlapping(getCrossBoundingBox(schema)(), boxToCheck);

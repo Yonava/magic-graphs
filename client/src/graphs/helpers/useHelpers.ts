@@ -1,14 +1,15 @@
-import type { GEdge, GNode } from '@graph/types';
 import type { BaseGraph } from '@graph/base';
+import type { GEdge, GNode } from '@graph/types';
+
 import {
   getAncestorsOfNode,
   getChildrenOfNode,
   getConnectedEdges,
   getConnectedNodes,
   getDescendantsOfNode,
-  getEdgesAlongPath,
   getEdgeWeight,
   getEdgeWeightFraction,
+  getEdgesAlongPath,
   getInboundEdges,
   getOutboundEdges,
   getParentsOfNode,

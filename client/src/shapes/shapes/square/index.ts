@@ -1,7 +1,8 @@
 import type { ShapeFactory } from '@shape/types';
-import type { SquareSchema } from './types';
-import { SQUARE_SCHEMA_DEFAULTS } from './defaults';
+
 import { rect } from '../rect';
+import { SQUARE_SCHEMA_DEFAULTS } from './defaults';
+import type { SquareSchema } from './types';
 
 export const square: ShapeFactory<SquareSchema> = (options) => ({
   ...rect({

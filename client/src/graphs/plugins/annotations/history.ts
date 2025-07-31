@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue';
 import type { Ref } from 'vue';
+
 import type { Annotation } from './types';
 
 type AnnotationHistoryRecord = {

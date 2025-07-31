@@ -1,8 +1,10 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
-  import type { GNode } from '@graph/types';
   import { nonNullGraph as graph } from '@graph/global';
+  import type { GNode } from '@graph/types';
   import GWell from '@ui/graph/GWell.vue';
+
+  import { computed } from 'vue';
+
   import type { MarkovChain } from '../markov/useMarkovChain';
   import MarkovClassNodes from './MarkovClassNodes.vue';
 

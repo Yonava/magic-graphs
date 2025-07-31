@@ -1,7 +1,8 @@
 import { useTheme } from '@graph/themes/useTheme';
 import type { GNode, Graph } from '@graph/types';
 import colors from '@utils/colors';
-import { SOURCE_LABEL, SINK_LABEL, FLOW_USETHEME_ID } from '../constants';
+
+import { FLOW_USETHEME_ID, SINK_LABEL, SOURCE_LABEL } from '../constants';
 import state from '../state';
 
 const { sourceNode, sinkNode } = state;

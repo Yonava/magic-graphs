@@ -1,7 +1,8 @@
-import type { ProductInfo } from 'src/types';
 import type { Graph } from '@graph/types';
-import { useBFSSimulationRunner, useDFSSimulationRunner } from './sim/runner';
+import type { ProductInfo } from 'src/types';
+
 import { canRunBasicSearch } from './sim/guard';
+import { useBFSSimulationRunner, useDFSSimulationRunner } from './sim/runner';
 import state from './state';
 
 const info: ProductInfo = {

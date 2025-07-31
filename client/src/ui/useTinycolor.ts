@@ -1,6 +1,7 @@
+import tinycolor from 'tinycolor2';
+
 import { computed } from 'vue';
 import type { Ref } from 'vue';
-import tinycolor from 'tinycolor2';
 
 /**
  * creates a tinycolor instance from a color string

@@ -7,7 +7,7 @@ export const drawStarWithCtx = (schema: StarSchemaWithDefaults) => {
     innerRadius,
     outerRadius,
     rotation,
-    points
+    points,
   } = schema;
 
   return (ctx: CanvasRenderingContext2D) => {

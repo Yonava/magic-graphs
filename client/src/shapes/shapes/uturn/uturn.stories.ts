@@ -1,10 +1,15 @@
+import {
+  DEFAULT_STORIES,
+  DOC_MARKING_DEFAULTS,
+  createDocComponent,
+} from '@shape/docs';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
+
+import { uturn } from '.';
 import { UTURN_SCHEMA_DEFAULTS } from './defaults';
 import type { UTurnSchema } from './types';
-import { uturn } from '.';
 
-const UTurn = createDocComponent<UTurnSchema>(uturn)
+const UTurn = createDocComponent<UTurnSchema>(uturn);
 
 const meta = {
   title: 'Shapes/UTurn',
@@ -19,7 +24,7 @@ const meta = {
     lineWidth: 10,
     ...DOC_MARKING_DEFAULTS,
   },
-} satisfies Meta<typeof UTurn>
+} satisfies Meta<typeof UTurn>;
 
 export default meta;
 
@@ -36,12 +41,12 @@ export const ColorGradient: Story = colorGradient;
 export const Spacing: Story = {
   args: {
     spacing: 10,
-  }
-}
+  },
+};
 
 export const LineWidth: Story = {
   args: {
     lineWidth: 15,
     spacing: 20,
-  }
-}
+  },
+};

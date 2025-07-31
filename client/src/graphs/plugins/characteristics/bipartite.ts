@@ -1,5 +1,6 @@
 import type { AdjacencyList } from '@graph/useAdjacencyList';
-import { computed, type Ref } from 'vue';
+
+import { type Ref, computed } from 'vue';
 
 type BipartitePartition = [string[], string[]];
 type GetBipartitePartition = (

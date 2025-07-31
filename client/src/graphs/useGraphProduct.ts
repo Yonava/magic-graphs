@@ -1,20 +1,23 @@
-import { onBeforeUnmount, onMounted } from 'vue';
-import { useRoute, useRouter, type LocationQueryValue } from 'vue-router';
-import type { Graph } from '@graph/types';
 import { collabControls } from '@graph/collab';
-import type { ProductInfo } from 'src/types';
-import { routeToProduct } from '@utils/product';
 import { graph as globalGraph } from '@graph/global';
-import { decodeCompressedTransitData, setTransitData } from './transit';
-import { useToast } from 'primevue/usetoast';
-import { USER_PLATFORM } from './plugins/shortcut';
+import type { Graph } from '@graph/types';
+import { routeToProduct } from '@utils/product';
 import { decompressFromEncodedURIComponent } from 'lz-string';
+import { useToast } from 'primevue/usetoast';
+import type { ProductInfo } from 'src/types';
+
+import { onBeforeUnmount, onMounted } from 'vue';
+
+import { type LocationQueryValue, useRoute, useRouter } from 'vue-router';
+
+import { USER_PLATFORM } from './plugins/shortcut';
+import { decodeCompressedTransitData, setTransitData } from './transit';
 
 /**
  * query param key we assign an encoded graph to when sharing
  * a graph via url
  */
-export const SHARE_GRAPH_QUERY_PARAM_KEY = 'g'
+export const SHARE_GRAPH_QUERY_PARAM_KEY = 'g';
 
 export const getProductFromCurrentRoute = (routePath: string) => {
   const productInfo = routeToProduct[routePath];
@@ -22,53 +25,56 @@ export const getProductFromCurrentRoute = (routePath: string) => {
     throw new Error(`no product found for route ${routePath}`);
   }
 
-  return productInfo
-}
+  return productInfo;
+};
 
 const loadSharedGraphFromQuery = (
   graph: Graph,
-  compressedAndUriEncodedTransitData: LocationQueryValue | LocationQueryValue[]
+  compressedAndUriEncodedTransitData: LocationQueryValue | LocationQueryValue[],
 ) => {
   const router = useRouter();
   const route = useRoute();
-  const toast = useToast()
+  const toast = useToast();
 
   const successToast = () => {
-    const undoShortcut = USER_PLATFORM === 'Mac' ? '⌘+Z' : 'Ctrl+Z'
+    const undoShortcut = USER_PLATFORM === 'Mac' ? '⌘+Z' : 'Ctrl+Z';
     toast.add({
       summary: `Loaded graph from link successfully. Press ${undoShortcut} to undo.`,
       severity: 'success',
       life: 5000,
-    })
-  }
+    });
+  };
 
-  const failedToast = () => toast.add({
-    summary: 'Failed to load graph from link 😕',
-    severity: 'error',
-    life: 5000,
-  })
+  const failedToast = () =>
+    toast.add({
+      summary: 'Failed to load graph from link 😕',
+      severity: 'error',
+      life: 5000,
+    });
 
   router.replace({ path: route.path, query: {} });
 
   if (typeof compressedAndUriEncodedTransitData !== 'string') {
-    console.error('graph share failed - serialized transit data not a string')
-    failedToast()
-    return
+    console.error('graph share failed - serialized transit data not a string');
+    failedToast();
+    return;
   }
 
   try {
-    const decodedUriComponent = decompressFromEncodedURIComponent(compressedAndUriEncodedTransitData);
-    const transitData = decodeCompressedTransitData(decodedUriComponent)
+    const decodedUriComponent = decompressFromEncodedURIComponent(
+      compressedAndUriEncodedTransitData,
+    );
+    const transitData = decodeCompressedTransitData(decodedUriComponent);
 
     // wait one tick to allow graph in localStorage to be loaded before overwriting
-    setTimeout(() => setTransitData(graph, transitData), 0)
+    setTimeout(() => setTransitData(graph, transitData), 0);
 
-    successToast()
+    successToast();
   } catch {
-    console.error('graph share failed - could not parse graph transit data')
-    failedToast()
+    console.error('graph share failed - could not parse graph transit data');
+    failedToast();
   }
-}
+};
 
 /**
  * bootstraps and breaks down a graph product by:
@@ -84,7 +90,7 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   const route = useRoute();
 
   if (!product) {
-    product = getProductFromCurrentRoute(route.path)
+    product = getProductFromCurrentRoute(route.path);
   }
 
   const { connectToRoom } = collabControls;
@@ -95,8 +101,8 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
 
   globalGraph.value = graph;
 
-  const sharedGraph = route.query[SHARE_GRAPH_QUERY_PARAM_KEY]
-  if (sharedGraph) loadSharedGraphFromQuery(graph, sharedGraph)
+  const sharedGraph = route.query[SHARE_GRAPH_QUERY_PARAM_KEY];
+  if (sharedGraph) loadSharedGraphFromQuery(graph, sharedGraph);
 
   onMounted(() => {
     if (!roomId) return;
@@ -114,5 +120,5 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
     product.state?.reset();
   });
 
-  return product
+  return product;
 };

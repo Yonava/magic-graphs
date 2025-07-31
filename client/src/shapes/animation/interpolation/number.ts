@@ -1,4 +1,4 @@
-import type { InterpolationFunction } from "./types";
+import type { InterpolationFunction } from './types';
 
 /**
  * Interpolates a numeric value based on the provided keyframes and easing function.
@@ -19,24 +19,24 @@ import type { InterpolationFunction } from "./types";
  *
  * interpolated(0.5); // 5
  */
-export const interpolateNumber: InterpolationFunction<
-  number
-> = (keyframes, defaultEasing, fallback) => (progress) => {
-  if (keyframes.length === 0) return fallback;
+export const interpolateNumber: InterpolationFunction<number> =
+  (keyframes, defaultEasing, fallback) => (progress) => {
+    if (keyframes.length === 0) return fallback;
 
-  if (progress <= keyframes[0].progress) return keyframes[0].value;
-  if (progress >= keyframes[keyframes.length - 1].progress) return keyframes[keyframes.length - 1].value;
+    if (progress <= keyframes[0].progress) return keyframes[0].value;
+    if (progress >= keyframes[keyframes.length - 1].progress)
+      return keyframes[keyframes.length - 1].value;
 
-  for (let i = 0; i < keyframes.length - 1; i++) {
-    const p1 = keyframes[i];
-    const p2 = keyframes[i + 1];
+    for (let i = 0; i < keyframes.length - 1; i++) {
+      const p1 = keyframes[i];
+      const p2 = keyframes[i + 1];
 
-    if (progress >= p1.progress && progress <= p2.progress) {
-      const t = (progress - p1.progress) / (p2.progress - p1.progress);
-      const easing = p1.easing ?? defaultEasing;
-      return p1.value + easing(t) * (p2.value - p1.value);
+      if (progress >= p1.progress && progress <= p2.progress) {
+        const t = (progress - p1.progress) / (p2.progress - p1.progress);
+        const easing = p1.easing ?? defaultEasing;
+        return p1.value + easing(t) * (p2.value - p1.value);
+      }
     }
-  }
 
-  return fallback;
-};
+    return fallback;
+  };

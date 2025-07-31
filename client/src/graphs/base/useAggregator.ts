@@ -1,7 +1,8 @@
-import { ref } from 'vue';
-import type { Aggregator, UpdateAggregator } from '@graph/types';
 import type { Emitter as GraphEventEmitter } from '@graph/events';
+import type { Aggregator, UpdateAggregator } from '@graph/types';
 import type { Coordinate } from '@shape/types/utility';
+
+import { ref } from 'vue';
 
 export type UseAggregatorOptions = {
   emit: GraphEventEmitter;
@@ -20,10 +21,10 @@ export const useAggregator = ({ emit }: UseAggregatorOptions) => {
     aggregator.value = [
       ...resolvedSchemaItems.sort((a, b) => a.priority - b.priority),
     ];
-  }
+  };
 
   const draw = (ctx: CanvasRenderingContext2D) => {
-    updateAggregator()
+    updateAggregator();
 
     const indexOfLastEdge = aggregator.value.findLastIndex(
       (item) => item.graphType === 'edge',
@@ -76,4 +77,4 @@ export const useAggregator = ({ emit }: UseAggregatorOptions) => {
   };
 };
 
-export type AggregatorProps = ReturnType<typeof useAggregator>
+export type AggregatorProps = ReturnType<typeof useAggregator>;

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
-  import type { SimulationDeclaration } from 'src/types';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import CPopover from '@ui/core/Popover.vue';
   import CIcon from '@ui/core/Icon.vue';
+  import CPopover from '@ui/core/Popover.vue';
   import GWell from '@ui/graph/GWell.vue';
+  import GButton from '@ui/graph/button/GButton.vue';
+  import type { SimulationDeclaration } from 'src/types';
+
+  import { computed } from 'vue';
+
   import SelectSimGuard from './SelectSimGuard.vue';
   import SimCard from './SimCard.vue';
 

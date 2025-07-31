@@ -1,6 +1,6 @@
-import type { Graph } from '@graph/types';
 import type { GraphThemeKey } from '@graph/themes';
 import type { ThemeMapEntry } from '@graph/themes/types';
+import type { Graph } from '@graph/types';
 
 type ThemeableGraph = Pick<Graph, 'themeMap'>;
 

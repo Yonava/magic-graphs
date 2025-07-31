@@ -1,8 +1,11 @@
-import type { TreeTraceStep } from '../tree/avl';
 import type { GetSimulationExplanation } from '@ui/product/sim/useSimulationControls';
 
-export const getTreeTraceExplanation: GetSimulationExplanation<TreeTraceStep> = (traceStep) => {
-  const { action } = traceStep
+import type { TreeTraceStep } from '../tree/avl';
+
+export const getTreeTraceExplanation: GetSimulationExplanation<
+  TreeTraceStep
+> = (traceStep) => {
+  const { action } = traceStep;
   if (action === 'balance') {
     const { method } = traceStep;
     const prefix = 'Tree Unbalanced! ';
@@ -39,12 +42,12 @@ export const getTreeTraceExplanation: GetSimulationExplanation<TreeTraceStep> = 
   }
 
   if (action === 'insert') {
-    return `At a leaf position, so we insert ${traceStep.targetNode}.`
+    return `At a leaf position, so we insert ${traceStep.targetNode}.`;
   }
 
   if (action === 'remove') {
-    return `Removing ${traceStep.targetNode}.`
+    return `Removing ${traceStep.targetNode}.`;
   }
 
-  throw `invalid tree trace action: ${action}`
+  throw `invalid tree trace action: ${action}`;
 };
