@@ -6,16 +6,17 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "run-p build:js build:storybook \"build:types {@}\" --",
+    "build:js": "vite build",
+    "build:storybook": "storybook build",
+    "build:types": "vue-tsc --build --force",
+    "check": "run-p build:types build:js format:check",
     "preview": "vite preview",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --build --force",
-    "format": "prettier --write .",
-    "format-code-only": "prettier --write \"src/**/*.{js,ts,vue}\"",
-    "lint": "eslint \"**/*.{vue,ts,html}\"",
-    "lint:fix": "eslint \"**/*.{vue,ts,html}\" --fix",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "format": "prettier --cache --write .",
+    "format:check": "prettier --cache --check .",
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint --cache --fix .",
+    "storybook": "storybook dev -p 6006"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.2",
