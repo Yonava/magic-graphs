@@ -1,4 +1,4 @@
-# Magic Computer Science ✨🦄
+# Magic Graphs ✨🦄
 ### A New Tool For Understanding Theory
 
 <br>
