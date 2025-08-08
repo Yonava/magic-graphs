@@ -14,7 +14,7 @@
   const getNumbers = () => {
     const treeArr = props.tree.tree
       .toArray()
-      .filter((num) => num !== undefined);
+      .filter((num): num is number => num !== undefined);
 
     if (treeArr.length === 0) return [1, 2, 3, 4, 5];
     const min = Math.min(...treeArr);
