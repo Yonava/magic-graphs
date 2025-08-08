@@ -1,15 +1,16 @@
-import { computed, ref, toRef, watch } from 'vue';
-import type { ComputedRef, MaybeRef } from 'vue';
+// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
+// eslint-disable-next-line
+import type { GraphEventMap } from '@graph/events';
 import type {
   OnStepChangeCallback,
   SimulationControls,
   SimulationTrace,
 } from '@ui/product/sim/types';
-import { useLocalStorage } from '@vueuse/core';
 import { localKeys } from '@utils/localStorage';
-// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
-// eslint-disable-next-line
-import type { GraphEventMap } from '@graph/events';
+import { useLocalStorage } from '@vueuse/core';
+
+import { computed, ref, toRef, watch } from 'vue';
+import type { ComputedRef, MaybeRef } from 'vue';
 
 /**
  * @returns the text to be displayed alongside the simulation at given step.
@@ -37,7 +38,7 @@ export type SimulationControlsOptions<T> = {
    * no data will be saved.
    * @default 1000
    */
-  defaultPlaybackSpeedMs?: number,
+  defaultPlaybackSpeedMs?: number;
   /**
    * if false, users won't be able to adjust the speed of the playback
    * @default true
@@ -48,7 +49,7 @@ export type SimulationControlsOptions<T> = {
    * the graph {@link GraphEventMap.onStructureChange | structure changes}
    * @default true
    */
-  pauseOnStructureChange?: boolean,
+  pauseOnStructureChange?: boolean;
 };
 
 /**
@@ -89,12 +90,13 @@ export const useSimulationControls = <T>(
   /**
    * amount of time (in ms) each step is shown for before moving to the next
    */
-  const playbackSpeed = options.defaultPlaybackSpeedMs !== undefined ? ref(
-    options.defaultPlaybackSpeedMs
-  ) : useLocalStorage(
-    localKeys.simulationPlaybackSpeed,
-    DEFAULT_PLAYBACK_SPEED_MS,
-  );
+  const playbackSpeed =
+    options.defaultPlaybackSpeedMs !== undefined
+      ? ref(options.defaultPlaybackSpeedMs)
+      : useLocalStorage(
+          localKeys.simulationPlaybackSpeed,
+          DEFAULT_PLAYBACK_SPEED_MS,
+        );
 
   /**
    * whether the simulation is actively being played back (even if paused)
@@ -191,7 +193,7 @@ export const useSimulationControls = <T>(
 
   const traceAtStep = computed(() => {
     if (Array.isArray(trace.value)) {
-      if (step.value >= trace.value.length) return trace.value.at(-1)!
+      if (step.value >= trace.value.length) return trace.value.at(-1)!;
       return trace.value[step.value];
     }
     return trace.value(step.value);
@@ -199,9 +201,9 @@ export const useSimulationControls = <T>(
 
   watch(trace, () => {
     if (step.value >= trace.value.length) {
-      setStep(trace.value.length - 1)
+      setStep(trace.value.length - 1);
     }
-  })
+  });
 
   /**
    * allows users to subscribe to step changes
@@ -236,7 +238,8 @@ export const useSimulationControls = <T>(
     paused,
     playbackSpeed,
 
-    defaultPlaybackSpeedMs: options.defaultPlaybackSpeedMs ?? DEFAULT_PLAYBACK_SPEED_MS,
+    defaultPlaybackSpeedMs:
+      options.defaultPlaybackSpeedMs ?? DEFAULT_PLAYBACK_SPEED_MS,
     showPlaybackSpeedControls: options.showPlaybackSpeedControls ?? true,
     pauseOnStructureChange: options.pauseOnStructureChange ?? true,
 

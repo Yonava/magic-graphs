@@ -1,6 +1,8 @@
-import { ref } from 'vue';
-import { expect, test, describe } from 'vitest';
 import { useGraph } from '@graph/useGraph';
+import { describe, expect, test } from 'vitest';
+
+import { ref } from 'vue';
+
 import {
   getAdjacencyList,
   getFullNodeAdjacencyList,

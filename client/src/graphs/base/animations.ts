@@ -1,7 +1,10 @@
-import type { DefineTimeline, Timeline } from "@shape/animation/timeline/define";
-import tinycolor from "tinycolor2";
+import type {
+  DefineTimeline,
+  Timeline,
+} from '@shape/animation/timeline/define';
+import tinycolor from 'tinycolor2';
 
-const ANIMATION_DURATION_MS = 500
+const ANIMATION_DURATION_MS = 500;
 
 export const arrowEdgeAdded: Timeline<'arrow'> = {
   forShapes: ['arrow'],
@@ -83,10 +86,10 @@ export const circleNodeAdded: Timeline<'circle'> = {
             color: 'transparent',
           },
         }),
-      }
-    }
-  ]
-}
+      },
+    },
+  ],
+};
 
 export const getDefaultGraphAnimations = (defineTimeline: DefineTimeline) => ({
   arrow: {
@@ -100,7 +103,7 @@ export const getDefaultGraphAnimations = (defineTimeline: DefineTimeline) => ({
   },
   circle: {
     nodeAdded: defineTimeline(circleNodeAdded),
-  }
-})
+  },
+});
 
-export type GraphAnimations = ReturnType<typeof getDefaultGraphAnimations>
+export type GraphAnimations = ReturnType<typeof getDefaultGraphAnimations>;

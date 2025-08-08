@@ -1,7 +1,9 @@
+import type { Subscriber } from '@graph/events';
+import type { SchemaItem } from '@graph/types';
+
 import { computed, ref, watch } from 'vue';
 import type { Ref } from 'vue';
-import type { SchemaItem } from '@graph/types';
-import type { Subscriber } from '@graph/events';
+
 import type { GraphAtMousePosition } from './types';
 
 /**
@@ -117,10 +119,10 @@ export const useGraphCursor = ({
     changeCursorType();
   });
 
-  subscribe('onClick', changeCursorType)
-  subscribe('onDblClick', changeCursorType)
-  subscribe('onKeyUp', changeCursorType)
-  subscribe('onKeyDown', changeCursorType)
+  subscribe('onClick', changeCursorType);
+  subscribe('onDblClick', changeCursorType);
+  subscribe('onKeyUp', changeCursorType);
+  subscribe('onKeyDown', changeCursorType);
   subscribe('onMouseMove', changeCursorType);
 
   watch(graphToCursorMap, changeCursorType, { deep: true });

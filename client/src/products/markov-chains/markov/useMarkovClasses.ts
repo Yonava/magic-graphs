@@ -1,6 +1,8 @@
+import type { GNode, Graph } from '@graph/types';
+
 import { computed } from 'vue';
 import type { Ref } from 'vue';
-import type { GNode, Graph } from '@graph/types';
+
 import type { ComponentAdjacencyMap } from './useComponentAdjacencyMap';
 
 /**

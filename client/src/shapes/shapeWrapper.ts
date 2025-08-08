@@ -1,7 +1,7 @@
 import { getCenterPoint } from './helpers';
 import type { Shape, ShapeProps } from './types';
 
-export type ShapeFactoryWrapper = (shapeProps: ShapeProps) => Shape
+export type ShapeFactoryWrapper = (shapeProps: ShapeProps) => Shape;
 
 export const shapeFactoryWrapper: ShapeFactoryWrapper = (shapeProps) => {
   return {

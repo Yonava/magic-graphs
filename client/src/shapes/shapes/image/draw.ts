@@ -1,4 +1,5 @@
 import { drawRectWithCtx } from '@shape/shapes/rect/draw';
+
 import { loadImage } from './cache';
 import type { ImageSchemaWithDefaults } from './defaults';
 
@@ -10,7 +11,7 @@ import type { ImageSchemaWithDefaults } from './defaults';
 const drawMissingMediaCheckerboard = (
   width: number,
   height: number,
-  ctx: CanvasRenderingContext2D
+  ctx: CanvasRenderingContext2D,
 ) => {
   const squareSize = 10;
   const startX = -width / 2;
@@ -26,7 +27,7 @@ const drawMissingMediaCheckerboard = (
       );
     }
   }
-}
+};
 
 export const drawImageWithCtx = (schema: ImageSchemaWithDefaults) => {
   const { src, onLoad, onLoadError, ...rect } = schema;
@@ -53,7 +54,7 @@ export const drawImageWithCtx = (schema: ImageSchemaWithDefaults) => {
     }
 
     if (error) {
-      drawMissingMediaCheckerboard(width, height, ctx)
+      drawMissingMediaCheckerboard(width, height, ctx);
     }
 
     if (image) {

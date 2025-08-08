@@ -1,5 +1,6 @@
-import { computed } from 'vue';
 import type { Graph } from '@graph/types';
+
+import { computed } from 'vue';
 
 /**
  * a adjacency map for strongly connected components.

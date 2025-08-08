@@ -1,10 +1,12 @@
-import { ref, computed } from 'vue';
-import type { GraphMouseEvent } from '@graph/base/types';
 import type { BaseGraph } from '@graph/base';
-import type { NodeAnchorPlugin } from '../anchors';
-import { MOUSE_BUTTONS } from '@utils/mouse';
-import type { Coordinate } from '@shape/types/utility';
+import type { GraphMouseEvent } from '@graph/base/types';
 import type { GNode } from '@graph/types';
+import type { Coordinate } from '@shape/types/utility';
+import { MOUSE_BUTTONS } from '@utils/mouse';
+
+import { computed, ref } from 'vue';
+
+import type { NodeAnchorPlugin } from '../anchors';
 
 /**
  * info for the node being dragged
@@ -35,8 +37,8 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
   const drop = () => {
     if (!activeDrag.value) return;
 
-    const { nodeId } = activeDrag.value
-    const droppedNode = graph.getNode(nodeId)
+    const { nodeId } = activeDrag.value;
+    const droppedNode = graph.getNode(nodeId);
     if (!droppedNode) throw new Error('dropped node not found');
 
     activeDrag.value = undefined;
@@ -44,9 +46,9 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
     graph.emit('onNodeDrop', droppedNode);
     release('nodeAnchors');
 
-    const { items } = graph.graphAtMousePosition.value
+    const { items } = graph.graphAtMousePosition.value;
     const topItem = items.at(-1);
-    if (topItem?.id !== droppedNode.id) return
+    if (topItem?.id !== droppedNode.id) return;
 
     graph.nodeAnchors.setParentNode(droppedNode.id);
   };
@@ -97,7 +99,9 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
      * the node that is currently being dragged or undefined if no node is being dragged
      */
     currentlyDraggingNode: computed(() => {
-      return activeDrag.value ? graph.getNode(activeDrag.value.nodeId) : undefined
+      return activeDrag.value
+        ? graph.getNode(activeDrag.value.nodeId)
+        : undefined;
     }),
   };
 };

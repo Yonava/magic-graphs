@@ -1,41 +1,44 @@
-import type { ComputedRef } from 'vue';
 import type { Graph } from '@graph/types';
 import type { SimulationRunner } from '@ui/product/sim/types';
 import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
+
+import type { ComputedRef } from 'vue';
+
+import type { BasicSearchTrace } from '../algo/types';
 import { useBFS } from '../algo/useBFS';
 import { useDFS } from '../algo/useDFS';
-import { useSimulationTheme } from './theme';
 import state from '../state';
-import type { BasicSearchTrace } from '../algo/types';
+import { useSimulationTheme } from './theme';
 
 const { startNode } = state;
 
 export type BasicSearchSimulationRunner = SimulationRunner<BasicSearchTrace>;
 
-const animateEdge = (g: Graph) => g.defineTimeline({
-  forShapes: ['arrow', 'line'],
-  durationMs: 700,
-  keyframes: [],
-  customInterpolations: {
-    fillGradient: {
-      value: (p) => [
-        {
-          color: 'red',
-          offset: 0,
-        },
-        {
-          color: 'red',
-          offset: p,
-        },
-        {
-          color: 'black',
-          offset: p,
-        },
-      ],
-      easing: 'in-out',
+const animateEdge = (g: Graph) =>
+  g.defineTimeline({
+    forShapes: ['arrow', 'line'],
+    durationMs: 700,
+    keyframes: [],
+    customInterpolations: {
+      fillGradient: {
+        value: (p) => [
+          {
+            color: 'red',
+            offset: 0,
+          },
+          {
+            color: 'red',
+            offset: p,
+          },
+          {
+            color: 'black',
+            offset: p,
+          },
+        ],
+        easing: 'in-out',
+      },
     },
-  },
-})
+  });
 
 const useSimulationRunner = (
   graph: Graph,
@@ -56,21 +59,21 @@ const useSimulationRunner = (
     theme();
   };
 
-  const { play: playAnimation, stop: stopAnimation } = animateEdge(graph)
+  const { play: playAnimation, stop: stopAnimation } = animateEdge(graph);
 
   simControls.onStepChange(() => {
-    const { traceAtStep } = simControls
+    const { traceAtStep } = simControls;
     for (const edge of graph.edges.value) {
-      stopAnimation({ shapeId: edge.id })
+      stopAnimation({ shapeId: edge.id });
       if (
         traceAtStep.value.currentNodeId === edge.from &&
         !traceAtStep.value.visited.has(edge.to) &&
         traceAtStep.value.queue?.includes(edge.to)
       ) {
-        playAnimation({ shapeId: edge.id, runCount: 1 })
+        playAnimation({ shapeId: edge.id, runCount: 1 });
       }
     }
-  })
+  });
 
   const stop = () => {
     startNode.cancelSet();

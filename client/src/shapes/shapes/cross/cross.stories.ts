@@ -1,10 +1,15 @@
+import {
+  DEFAULT_STORIES,
+  DOC_MARKING_DEFAULTS,
+  createDocComponent,
+} from '@shape/docs';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { cross } from '.';
-import type { CrossSchema } from './types';
-import { CROSS_SCHEMA_DEFAULTS } from './defaults';
 
-const Cross = createDocComponent<CrossSchema>(cross)
+import { cross } from '.';
+import { CROSS_SCHEMA_DEFAULTS } from './defaults';
+import type { CrossSchema } from './types';
+
+const Cross = createDocComponent<CrossSchema>(cross);
 
 const meta = {
   title: 'Shapes/Cross',
@@ -31,5 +36,5 @@ export const Rotation: Story = rotation;
 export const LineWidth: Story = {
   args: {
     lineWidth: 20,
-  }
-}
+  },
+};

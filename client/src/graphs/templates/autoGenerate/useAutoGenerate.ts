@@ -1,6 +1,8 @@
 import type { GEdge, GNode, Graph } from '@graph/types';
-import type { AutoGenerateGraphOptions } from './types';
+import { useLocalStorage } from '@vueuse/core';
+
 import { ref } from 'vue';
+
 import {
   centerNodesOnOriginCoordinates,
   getAverageCoordinates,
@@ -9,8 +11,8 @@ import {
   generateClusterNodes,
   generateCohesiveEdges,
 } from './generationAlgorithms/randomGeneration';
+import type { AutoGenerateGraphOptions } from './types';
 import { AUTO_GENERATE_GRAPH_DEFAULTS } from './types';
-import { useLocalStorage } from '@vueuse/core';
 
 export const useAutoGenerate = (graph: Graph) => {
   const options = useLocalStorage<AutoGenerateGraphOptions>(

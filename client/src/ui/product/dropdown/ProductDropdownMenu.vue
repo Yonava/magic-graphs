@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { products, PRODUCT_CATEGORY_RANK } from '@utils/product';
-  import type { ProductInfoWithMenu, ProductCategory } from '@utils/product';
   import GWell from '@ui/graph/GWell.vue';
+  import { PRODUCT_CATEGORY_RANK, products } from '@utils/product';
+  import type { ProductCategory, ProductInfoWithMenu } from '@utils/product';
+
   import ProductItem from './ProductItem.vue';
 
   const productsWithMenu = products.filter(

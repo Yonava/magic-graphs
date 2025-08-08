@@ -1,39 +1,67 @@
-import type { ColorKeyframe, InterpolationFunction, NumberKeyframe } from "./types";
-import { interpolateColor } from "./color";
-import { interpolateNumber } from "./number";
-import type { TextAreaWithDefaults } from "@shape/text/defaults";
+import type { TextAreaWithDefaults } from '@shape/text/defaults';
+
+import { interpolateColor } from './color';
+import { interpolateNumber } from './number';
+import type {
+  ColorKeyframe,
+  InterpolationFunction,
+  NumberKeyframe,
+} from './types';
 
 export const interpolateTextArea: InterpolationFunction<
   TextAreaWithDefaults
 > = (keyframes, defaultEasing, fallback) => {
   return (progress) => {
-    const colorKeyframes = keyframes.map((kf): ColorKeyframe => ({
-      ...kf,
-      value: kf.value.color
-    }))
+    const colorKeyframes = keyframes.map(
+      (kf): ColorKeyframe => ({
+        ...kf,
+        value: kf.value.color,
+      }),
+    );
 
-    const activeColorKeyframes = keyframes.map((kf): ColorKeyframe => ({
-      ...kf,
-      value: kf.value.activeColor,
-    }))
+    const activeColorKeyframes = keyframes.map(
+      (kf): ColorKeyframe => ({
+        ...kf,
+        value: kf.value.activeColor,
+      }),
+    );
 
+    const textColorKeyframes = keyframes.map(
+      (kf): ColorKeyframe => ({
+        ...kf,
+        value: kf.value.textBlock.color,
+      }),
+    );
 
-    const textColorKeyframes = keyframes.map((kf): ColorKeyframe => ({
-      ...kf,
-      value: kf.value.textBlock.color,
-    }))
+    const textSizeKeyframes = keyframes.map(
+      (kf): NumberKeyframe => ({
+        ...kf,
+        value: kf.value.textBlock.fontSize,
+      }),
+    );
 
-    const textSizeKeyframes = keyframes.map((kf): NumberKeyframe => ({
-      ...kf,
-      value: kf.value.textBlock.fontSize,
-    }))
+    const textAreaColor = interpolateColor(
+      colorKeyframes,
+      defaultEasing,
+      fallback.color,
+    );
+    const textColor = interpolateColor(
+      textColorKeyframes,
+      defaultEasing,
+      fallback.textBlock.color,
+    );
+    const textFontSize = interpolateNumber(
+      textSizeKeyframes,
+      defaultEasing,
+      fallback.textBlock.fontSize,
+    );
+    const textAreaActiveColor = interpolateColor(
+      activeColorKeyframes,
+      defaultEasing,
+      fallback.activeColor,
+    );
 
-    const textAreaColor = interpolateColor(colorKeyframes, defaultEasing, fallback.color);
-    const textColor = interpolateColor(textColorKeyframes, defaultEasing, fallback.textBlock.color)
-    const textFontSize = interpolateNumber(textSizeKeyframes, defaultEasing, fallback.textBlock.fontSize)
-    const textAreaActiveColor = interpolateColor(activeColorKeyframes, defaultEasing, fallback.activeColor)
-
-    const { textBlock } = fallback
+    const { textBlock } = fallback;
 
     return {
       textBlock: {
@@ -43,6 +71,6 @@ export const interpolateTextArea: InterpolationFunction<
       },
       color: textAreaColor(progress),
       activeColor: textAreaActiveColor(progress),
-    }
-  }
-}
+    };
+  };
+};

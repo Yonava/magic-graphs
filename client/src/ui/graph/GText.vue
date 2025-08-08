@@ -1,9 +1,10 @@
 <script setup lang="ts">
+  import { nonNullGraph as graph } from '@graph/global';
   import type { GraphThemeName } from '@graph/themes';
   import type { Color } from '@utils/colors';
   import colors from '@utils/colors';
-  import { nonNullGraph as graph } from '@graph/global';
-  import { computed, type StyleValue } from 'vue';
+
+  import { type StyleValue, computed } from 'vue';
 
   const THEME_TO_TEXT_COLOR: Record<GraphThemeName, Color> = {
     light: colors.GRAY_900,

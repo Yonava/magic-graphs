@@ -1,8 +1,9 @@
-import { computed } from 'vue';
-import type { Ref } from 'vue';
 import type { GNode, Graph } from '@graph/types';
 import { useAdjacencyList } from '@graph/useAdjacencyList';
 import type { AdjacencyList } from '@graph/useAdjacencyList';
+
+import { computed } from 'vue';
+import type { Ref } from 'vue';
 
 // node id -> depth in a BFS tree
 export type NodeIdToDepth = Map<GNode['id'], number>;

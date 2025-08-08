@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
-import {
-  getAverageCoordinates,
-  centerNodesOnOriginCoordinates,
-} from './helpers';
 import type { GNode } from '@graph/types';
+import { describe, expect, it } from 'vitest';
+
+import {
+  centerNodesOnOriginCoordinates,
+  getAverageCoordinates,
+} from './helpers';
 
 describe('getAverageCoordinates', () => {
   it('returns the average coordinates of nodes', () => {

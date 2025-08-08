@@ -1,7 +1,8 @@
-import { createWebHistory, createRouter } from 'vue-router';
-import type { ProductInfo } from 'src/types';
-import SandboxInfo from '@product/sandbox/info';
 import { collabControls } from '@graph/collab';
+import SandboxInfo from '@product/sandbox/info';
+import type { ProductInfo } from 'src/types';
+
+import { createRouter, createWebHistory } from 'vue-router';
 
 // import all info.ts files dynamically
 const infoModules = import.meta.glob<{
@@ -17,7 +18,7 @@ const router = createRouter({
     },
     {
       path: '/canvas',
-      component: () => import('../canvas/docs/StoryCanvas.vue')
+      component: () => import('../canvas/docs/StoryCanvas.vue'),
     },
     ...Object.values(infoModules).flatMap((mod) => mod.default.route ?? []),
     {

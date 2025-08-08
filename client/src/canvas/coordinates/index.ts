@@ -1,12 +1,13 @@
-import type { Coordinate } from "@shape/types/utility";
-import { getCtx } from "@utils/ctx";
-import { onMounted, ref, type Ref } from "vue";
-import { getDevicePixelRatio } from "@canvas/camera/utils";
+import { getDevicePixelRatio } from '@canvas/camera/utils';
+import type { Coordinate } from '@shape/types/utility';
+import { getCtx } from '@utils/ctx';
+
+import { type Ref, onMounted, ref } from 'vue';
 
 export const getCanvasTransform = (ctx: CanvasRenderingContext2D) => {
   const { a, e, f } = ctx.getTransform();
   // TODO investigate why dpr isn't already factored into ctx. Camera should add it with the PZ transform!
-  const dpr = getDevicePixelRatio()
+  const dpr = getDevicePixelRatio();
   const zoom = a / dpr;
   const panX = e / dpr;
   const panY = f / dpr;
@@ -16,19 +17,19 @@ export const getCanvasTransform = (ctx: CanvasRenderingContext2D) => {
 /**
  * the coordinates in the real world. aka the browser
  */
-export type ClientCoords = Pick<MouseEvent, 'clientX' | 'clientY'>
+export type ClientCoords = Pick<MouseEvent, 'clientX' | 'clientY'>;
 
 /**
  * the coordinates in the magic canvas world
  */
-export type MagicCoords = Coordinate
+export type MagicCoords = Coordinate;
 
 export type WithZoom<T> = T & {
   /**
    * the scale factor of the canvas
    */
-  zoom: number
-}
+  zoom: number;
+};
 
 /**
  * magic coordinates are coordinates transformed by the pan and zoom of the camera.
@@ -46,11 +47,11 @@ export const getMagicCoordinates = (
 
   const { panX, panY, zoom } = getCanvasTransform(ctx);
 
-  const x = (localX - panX) / zoom
-  const y = (localY - panY) / zoom
+  const x = (localX - panX) / zoom;
+  const y = (localY - panY) / zoom;
 
   return { x, y, zoom };
-}
+};
 
 /**
  * client coordinates are the raw coordinates corresponding to the clients physical screen.
@@ -71,24 +72,25 @@ export const getClientCoordinates = (
   };
 };
 
-export const useMagicCoordinates = (canvas: Ref<HTMLCanvasElement | undefined>) => {
+export const useMagicCoordinates = (
+  canvas: Ref<HTMLCanvasElement | undefined>,
+) => {
   const coordinates = ref<MagicCoords>({ x: 0, y: 0 });
-  const captureCoords = (ev: MouseEvent) => coordinates.value = getMagicCoordinates(
-    ev,
-    getCtx(canvas),
-  )
+  const captureCoords = (ev: MouseEvent) =>
+    (coordinates.value = getMagicCoordinates(ev, getCtx(canvas)));
 
   onMounted(() => {
-    if (!canvas.value) throw new Error('Canvas not found in DOM. Check ref link.');
-    canvas.value.addEventListener('mousemove', captureCoords)
-    canvas.value.addEventListener('wheel', captureCoords)
-  })
+    if (!canvas.value)
+      throw new Error('Canvas not found in DOM. Check ref link.');
+    canvas.value.addEventListener('mousemove', captureCoords);
+    canvas.value.addEventListener('wheel', captureCoords);
+  });
 
   return {
     coordinates,
     cleanup: (ref: HTMLCanvasElement) => {
-      ref.removeEventListener('mousemove', captureCoords)
-      ref.removeEventListener('wheel', captureCoords)
+      ref.removeEventListener('mousemove', captureCoords);
+      ref.removeEventListener('wheel', captureCoords);
     },
-  }
-}
+  };
+};

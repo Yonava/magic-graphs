@@ -1,6 +1,7 @@
 import colors from '@colors';
-import { NON_COLOR_THEMES } from './universal';
+
 import type { GraphThemeRaw } from '../types';
+import { NON_COLOR_THEMES } from './universal';
 
 export const LIGHT_THEME: GraphThemeRaw = {
   nodeColor: colors.GRAY_50,

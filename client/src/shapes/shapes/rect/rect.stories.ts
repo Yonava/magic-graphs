@@ -1,10 +1,15 @@
+import {
+  DEFAULT_STORIES,
+  DOC_MARKING_DEFAULTS,
+  createDocComponent,
+} from '@shape/docs';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { createDocComponent, DEFAULT_STORIES, DOC_MARKING_DEFAULTS } from '@shape/docs';
-import { rect } from '.';
-import type { RectSchema } from './types';
-import { RECT_SCHEMA_DEFAULTS } from './defaults';
 
-const Rect = createDocComponent<RectSchema>(rect)
+import { rect } from '.';
+import { RECT_SCHEMA_DEFAULTS } from './defaults';
+import type { RectSchema } from './types';
+
+const Rect = createDocComponent<RectSchema>(rect);
 
 const meta = {
   title: 'Shapes/Rect',
@@ -16,7 +21,7 @@ const meta = {
     at: { x: 20, y: 20 },
     ...DOC_MARKING_DEFAULTS,
   },
-} satisfies Meta<typeof Rect>
+} satisfies Meta<typeof Rect>;
 
 export default meta;
 

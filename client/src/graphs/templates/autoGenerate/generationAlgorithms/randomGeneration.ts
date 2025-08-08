@@ -1,8 +1,4 @@
-import { graphLabelGetter, LETTERS } from '@graph/labels';
-import type { GEdge, GNode } from '@graph/types';
-import { generateId } from '@utils/id';
-import { ref } from 'vue';
-import { angleDifference } from '@shape/helpers';
+import { LETTERS, graphLabelGetter } from '@graph/labels';
 import type {
   PartialGenerateClusterNodesOptions,
   PartialGenerateCohesiveEdgesOptions,
@@ -11,6 +7,11 @@ import {
   GENERATE_CLUSTER_GRAPH_DEFAULTS,
   GENERATE_COHESIVE_EDGES_DEFAULTS,
 } from '@graph/templates/autoGenerate/types';
+import type { GEdge, GNode } from '@graph/types';
+import { angleDifference } from '@shape/helpers';
+import { generateId } from '@utils/id';
+
+import { ref } from 'vue';
 
 /**
  * Generates an array of nodes distributed across multiple clusters.

@@ -1,13 +1,15 @@
 <script setup lang="ts">
-  import GButton from '@ui/graph/button/GButton.vue';
-  import CIcon from '@ui/core/Icon.vue';
-  import { computed, ref } from 'vue';
-  import { encodeCompressedTransitData, getTransitData } from '@graph/transit';
   import { nonNullGraph as graph } from '@graph/global';
-  import { useRoute } from 'vue-router';
+  import { encodeCompressedTransitData, getTransitData } from '@graph/transit';
   import { SHARE_GRAPH_QUERY_PARAM_KEY } from '@graph/useGraphProduct';
-  import { useToast } from 'primevue/usetoast';
+  import CIcon from '@ui/core/Icon.vue';
+  import GButton from '@ui/graph/button/GButton.vue';
   import { compressToEncodedURIComponent } from 'lz-string';
+  import { useToast } from 'primevue/usetoast';
+
+  import { computed, ref } from 'vue';
+
+  import { useRoute } from 'vue-router';
 
   const route = useRoute();
   const linkCopied = ref(false);

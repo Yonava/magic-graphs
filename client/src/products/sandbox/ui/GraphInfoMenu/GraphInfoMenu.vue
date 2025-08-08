@@ -1,11 +1,13 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
   import { nonNullGraph as graph } from '@graph/global';
   import CPopover from '@ui/core/Popover.vue';
   import GWell from '@ui/graph/GWell.vue';
+
+  import { computed } from 'vue';
+
   import AdjacencyList from './AdjacencyList.vue';
-  import TransitionMatrix from './TransitionMatrix.vue';
   import ConnectedInfo from './ConnectedInfo.vue';
+  import TransitionMatrix from './TransitionMatrix.vue';
 
   const graphHasNodes = computed(() => graph.value.nodes.value.length > 0);
 </script>

@@ -1,35 +1,37 @@
-import { deepMerge } from '@utils/deepMerge';
-import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue';
-import { onClickOutside, useElementHover } from '@vueuse/core';
-import type { GNode, GEdge, Aggregator } from '@graph/types';
+import type { MagicCanvasProps } from '@canvas/types';
+import { generateSubscriber, getInitialEventBus } from '@graph/events';
 import { prioritizeNode } from '@graph/helpers';
-import { getNodeSchematic } from '@graph/schematics/node';
 import { getEdgeSchematic } from '@graph/schematics/edge';
-import { THEMES } from '@graph/themes';
-import type { GraphThemeName } from '@graph/themes';
-import { getInitialThemeMap } from '@graph/themes/types';
-import { delta } from '@utils/deepDelta';
-import { clone } from '@utils/clone';
-import { getInitialEventBus, generateSubscriber } from '@graph/events';
-import type {
-  MouseEventMap,
-  KeyboardEventMap,
-  MouseEventEntries,
-  KeyboardEventEntries,
-} from '@utils/types';
+import { getNodeSchematic } from '@graph/schematics/node';
 import { DEFAULT_GRAPH_SETTINGS } from '@graph/settings';
 import type { GraphSettings } from '@graph/settings';
+import { THEMES } from '@graph/themes';
+import type { GraphThemeName } from '@graph/themes';
 import { getThemeResolver } from '@graph/themes/getThemeResolver';
-import { useNodeEdgeMap } from './useNodeEdgeMap';
-import { useAggregator } from './useAggregator';
-import { useGraphCRUD } from './useGraphCRUD';
+import { getInitialThemeMap } from '@graph/themes/types';
+import type { Aggregator, GEdge, GNode } from '@graph/types';
+import { useAnimatedShapes } from '@shape/animation';
+import { clone } from '@utils/clone';
+import { delta } from '@utils/deepDelta';
+import { deepMerge } from '@utils/deepMerge';
+import type {
+  KeyboardEventEntries,
+  KeyboardEventMap,
+  MouseEventEntries,
+  MouseEventMap,
+} from '@utils/types';
+import { onClickOutside, useElementHover } from '@vueuse/core';
+
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+
+import { type GraphAnimations, getDefaultGraphAnimations } from './animations';
 import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types';
 import type { GraphAtMousePosition, HistoryOption } from './types';
+import { useAggregator } from './useAggregator';
+import { useGraphCRUD } from './useGraphCRUD';
 import { useGraphCursor } from './useGraphCursor';
-import { useAnimatedShapes } from '@shape/animation';
+import { useNodeEdgeMap } from './useNodeEdgeMap';
 import { usePluginHoldController } from './usePluginHold';
-import type { MagicCanvasProps } from '@canvas/types';
-import { getDefaultGraphAnimations, type GraphAnimations } from './animations';
 
 export const useBaseGraph = (
   magicCanvas: MagicCanvasProps,
@@ -78,10 +80,11 @@ export const useBaseGraph = (
     graphAtMousePosition,
   });
 
-  const updateGraphAtMousePosition = () => graphAtMousePosition.value = {
-    coords: cursorCoordinates.value,
-    items: getSchemaItemsByCoordinates(cursorCoordinates.value),
-  };
+  const updateGraphAtMousePosition = () =>
+    (graphAtMousePosition.value = {
+      coords: cursorCoordinates.value,
+      items: getSchemaItemsByCoordinates(cursorCoordinates.value),
+    });
 
   const graphMouseEv = (event: MouseEvent) => ({
     ...graphAtMousePosition.value,
@@ -95,17 +98,17 @@ export const useBaseGraph = (
     },
     mousemove: (ev: MouseEvent) => {
       ev.preventDefault();
-      updateGraphAtMousePosition()
+      updateGraphAtMousePosition();
       emit('onMouseMove', graphMouseEv(ev));
     },
     mousedown: (ev: MouseEvent) => {
       ev.preventDefault();
-      updateGraphAtMousePosition()
+      updateGraphAtMousePosition();
       emit('onMouseDown', graphMouseEv(ev));
     },
     mouseup: (ev: MouseEvent) => {
       ev.preventDefault();
-      updateGraphAtMousePosition()
+      updateGraphAtMousePosition();
       emit('onMouseUp', graphMouseEv(ev));
     },
     dblclick: (ev: MouseEvent) => {
@@ -119,7 +122,7 @@ export const useBaseGraph = (
 
   const keyboardEvents: Partial<KeyboardEventMap> = {
     keydown: (ev: KeyboardEvent) => emit('onKeyDown', ev),
-    keyup: (ev: KeyboardEvent) => emit('onKeyUp', ev)
+    keyup: (ev: KeyboardEvent) => emit('onKeyUp', ev),
   };
 
   const {
@@ -130,11 +133,12 @@ export const useBaseGraph = (
     draw,
   } = useAggregator({ emit });
 
-  const { shapes, autoAnimate, defineTimeline, activeAnimations } = useAnimatedShapes()
+  const { shapes, autoAnimate, defineTimeline, activeAnimations } =
+    useAnimatedShapes();
   const animations: GraphAnimations = deepMerge(
     getDefaultGraphAnimations(defineTimeline),
     settings.value.animations(defineTimeline),
-  )
+  );
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const options = {
@@ -149,12 +153,12 @@ export const useBaseGraph = (
     const edgeSchemaItems = edges.value
       .map((edge) => getEdgeSchematic(edge, options))
       .filter(Boolean)
-      .map((item, i) => ({ ...item!, priority: i * 10 }))
+      .map((item, i) => ({ ...item!, priority: i * 10 }));
 
     const nodeSchemaItems = nodes.value
       .map((node) => getNodeSchematic(node, options))
       .filter(Boolean)
-      .map((item, i) => ({ ...item!, priority: i * 10 + 1000 }))
+      .map((item, i) => ({ ...item!, priority: i * 10 + 1000 }));
 
     aggregator.push(...edgeSchemaItems);
     aggregator.push(...nodeSchemaItems);
@@ -312,7 +316,7 @@ export const useBaseGraph = (
       if (!settingsDiff) return;
       activeSettings.value = clone(settings.value);
       emit('onSettingsChange', settingsDiff);
-      if ('isGraphDirected' in settingsDiff) emit('onStructureChange')
+      if ('isGraphDirected' in settingsDiff) emit('onStructureChange');
     },
     { deep: true },
   );

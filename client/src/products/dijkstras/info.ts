@@ -1,7 +1,8 @@
 import type { ProductInfo } from 'src/types';
+
+import { canRunDijkstras } from './sim/guard';
 import { useSimulationRunner } from './sim/runner';
 import state from './state';
-import { canRunDijkstras } from './sim/guard';
 import templates from './templates';
 
 const info: ProductInfo = {

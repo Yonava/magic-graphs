@@ -1,8 +1,9 @@
-import { useRoute, useRouter } from 'vue-router';
-import type { Graph } from '@graph/types';
-import type { ProductInfo, SimulationDeclarationGetter } from 'src/types';
 import { nonNullGraph as globalGraph } from '@graph/global';
 import { getTransitData, setTransitData } from '@graph/transit';
+import type { Graph } from '@graph/types';
+import type { ProductInfo, SimulationDeclarationGetter } from 'src/types';
+
+import { useRoute, useRouter } from 'vue-router';
 
 // imports all info.ts files dynamically
 const infoModules = import.meta.glob<{
@@ -108,12 +109,12 @@ export const useProductRouting = () => {
    * annotations and canvas camera positioning
    */
   const navigateWithGraph = async (product: ProductInfo) => {
-    const data = getTransitData(globalGraph.value)
-    await navigate(product)
+    const data = getTransitData(globalGraph.value);
+    await navigate(product);
     // wait one tick for the global graph to update
-    await new Promise((res) => setTimeout(res, 0))
-    setTransitData(globalGraph.value, data)
-  }
+    await new Promise((res) => setTimeout(res, 0));
+    setTransitData(globalGraph.value, data);
+  };
 
   return {
     navigate,

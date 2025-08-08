@@ -1,15 +1,18 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
-  import { nonNullGraph as graph, devMode } from '@graph/global';
+  import { devMode, nonNullGraph as graph } from '@graph/global';
   import { useGraphTutorial } from '@graph/tutorials/useGraphTutorial';
+  import ToolbarButtonGroup from '@ui/core/toolbar/ToolbarButtonGroup.vue';
   import GToolbar from '@ui/graph/toolbar/GToolbarBase.vue';
   import GToolbarButton from '@ui/graph/toolbar/GToolbarButton.vue';
   import GToolbarDivider from '@ui/graph/toolbar/GToolbarDivider.vue';
-  import ToolbarButtonGroup from '@ui/core/toolbar/ToolbarButtonGroup.vue';
-  import GraphInfoMenu from './GraphInfoMenu/GraphInfoMenu.vue';
+
+  import { computed } from 'vue';
+
   import CollaborativeSessionMenu from './CollaborativeSessionMenu.vue';
+  import GraphInfoMenu from './GraphInfoMenu/GraphInfoMenu.vue';
   import TreeShapeMenu from './TreeShapeMenu.vue';
   import { useAutoTree } from './tree/useTreeShaper';
+
   // import TemplateMenu from '@graph/templates/ui/TemplateMenu.vue';
 
   const tutorial = useGraphTutorial(graph.value, [

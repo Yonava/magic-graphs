@@ -1,6 +1,8 @@
 <script setup lang="ts">
-  import { computed, ref, watch } from 'vue';
   import type { TutorialControls } from '@graph/tutorials/types';
+
+  import { computed, ref, watch } from 'vue';
+
   import { DELAY_UNTIL_NEXT_STEP } from './types';
 
   const { tutorial } = defineProps<{

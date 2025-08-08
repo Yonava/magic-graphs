@@ -1,16 +1,17 @@
+import { getCenterPoint } from '@shape/helpers';
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
+import { getShapeTextProps } from '@shape/text/text';
+import type { ShapeFactory } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
+
+import { resolveScribbleDefaults } from './defaults';
 import { drawScribbleWithCtx } from './draw';
 import {
-  scribbleHitbox,
-  scribbleEfficientHitbox,
   getScribbleBoundingBox,
+  scribbleEfficientHitbox,
+  scribbleHitbox,
 } from './hitbox';
-import type { ShapeFactory } from '@shape/types';
-import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import type { ScribbleSchema } from './types';
-import { resolveScribbleDefaults } from './defaults';
-import { getShapeTextProps } from '@shape/text/text';
-import { getCenterPoint } from '@shape/helpers';
-import type { Coordinate } from '@shape/types/utility';
 
 export const ERASER_BRUSH_WEIGHT = 50;
 
@@ -22,12 +23,12 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
     throw new Error('brushWeight must be at least "1"');
   }
 
-  const schema = resolveScribbleDefaults(options)
+  const schema = resolveScribbleDefaults(options);
 
   const getBoundingBox = getScribbleBoundingBox(schema);
 
-  const anchorPt = getCenterPoint(getBoundingBox())
-  const text = getShapeTextProps(anchorPt, schema.textArea)
+  const anchorPt = getCenterPoint(getBoundingBox());
+  const text = getShapeTextProps(anchorPt, schema.textArea);
 
   const shapeHitbox = scribbleHitbox(schema);
   const efficientHitbox = scribbleEfficientHitbox(schema);
@@ -35,8 +36,8 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
 
   const drawShape = drawScribbleWithCtx(schema);
   const draw = (ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx)
-    text?.drawTextArea(ctx)
+    drawShape(ctx);
+    text?.drawTextArea(ctx);
   };
 
   return shapeFactoryWrapper({

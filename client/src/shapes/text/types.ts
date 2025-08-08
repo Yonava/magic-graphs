@@ -1,4 +1,4 @@
-import type { AnchorPoint } from "@shape/types/schema";
+import type { AnchorPoint } from '@shape/types/schema';
 
 /**
  * all font weights supported by html canvas
@@ -35,7 +35,7 @@ export type TextArea = {
   activeColor?: string;
 };
 
-export type TextAreaWithAnchorPoint = TextArea & AnchorPoint
+export type TextAreaWithAnchorPoint = TextArea & AnchorPoint;
 
 export type OnTextAreaBlur = (textContent: string) => void;
 

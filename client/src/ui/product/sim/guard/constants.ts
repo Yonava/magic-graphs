@@ -1,4 +1,5 @@
 import definitions from '@graph/plugins/characteristics/definitions';
+
 import type { ReasonText, ReasonTextGetter } from './types';
 
 const minNodeText = (minNodes: number) => {

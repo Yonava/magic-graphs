@@ -1,8 +1,10 @@
-import { computed } from 'vue';
 import { useTheme } from '@graph/themes/useTheme';
 import type { GEdge, Graph } from '@graph/types';
-import colors from '@utils/colors';
 import type { SimulationControls } from '@ui/product/sim/types';
+import colors from '@utils/colors';
+
+import { computed } from 'vue';
+
 import type { FlowTrace } from '../algo/fordFulkerson';
 import { FLOW_USETHEME_ID } from '../constants';
 import { isResidual } from '../misc/useResidualEdges';

@@ -1,4 +1,5 @@
 import { computed } from 'vue';
+
 import type { BaseGraph } from './base';
 import type { GNode, Weight } from './types';
 import type { AdjacencyLists, WeightedAdjacencyList } from './useAdjacencyList';

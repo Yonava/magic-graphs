@@ -1,15 +1,17 @@
-import { onUnmounted, ref } from 'vue';
-import type { DeepPartial } from 'ts-essentials';
-import type { GNode, Weight } from '@graph/types';
-import type { BaseGraph } from './base';
 import {
   getDirectedOutboundEdges,
   getFracWeightBetweenNodes,
   getUndirectedOutboundEdges,
   getWeightBetweenNodes,
 } from '@graph/helpers';
-import type { GraphSettings } from './settings';
+import type { GNode, Weight } from '@graph/types';
 import type { Fraction } from 'mathjs';
+import type { DeepPartial } from 'ts-essentials';
+
+import { onUnmounted, ref } from 'vue';
+
+import type { BaseGraph } from './base';
+import type { GraphSettings } from './settings';
 
 /**
  * a mapping of nodes to their neighbors.

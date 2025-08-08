@@ -1,15 +1,16 @@
 <script setup lang="ts">
-  import GraphProduct from '@ui/product/GraphProduct.vue';
-  import { BINARY_TREE_GRAPH_SETTINGS } from './settings';
-  import CRUDControls from './ui/CRUDControls.vue';
-  import TreeInfoLabels from './ui/TreeInfoLabels.vue';
-  import { useTree } from './useTree';
-  import AddNodePanel from './ui/AddNodePanel.vue';
-  import state from './state';
   import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
+  import GraphProduct from '@ui/product/GraphProduct.vue';
   import StopSimButton from '@ui/product/StopSimButton.vue';
   import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
   import { useEscSimulationShortcut } from '@ui/product/useEscSimulationShortcut';
+
+  import { BINARY_TREE_GRAPH_SETTINGS } from './settings';
+  import state from './state';
+  import AddNodePanel from './ui/AddNodePanel.vue';
+  import CRUDControls from './ui/CRUDControls.vue';
+  import TreeInfoLabels from './ui/TreeInfoLabels.vue';
+  import { useTree } from './useTree';
 
   const { simRunner } = state;
 

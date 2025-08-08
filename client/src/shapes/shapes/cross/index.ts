@@ -1,23 +1,24 @@
+import { shapeFactoryWrapper } from '@shape/shapeWrapper';
+import { getShapeTextProps } from '@shape/text/text';
+import type { ShapeFactory } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
+
+import { resolveCrossDefaults } from './defaults';
+import { drawCrossWithCtx } from './draw';
 import {
-  crossHitbox,
   crossEfficientHitbox,
+  crossHitbox,
   getCrossBoundingBox,
 } from './hitbox';
-import { drawCrossWithCtx } from './draw';
-import type { ShapeFactory } from '@shape/types';
-import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import type { CrossSchema } from './types';
-import { resolveCrossDefaults } from './defaults';
-import { getShapeTextProps } from '@shape/text/text';
-import type { Coordinate } from '@shape/types/utility';
 
 export const cross: ShapeFactory<CrossSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {
     throw new Error('lineWidth must be positive');
   }
 
-  const schema = resolveCrossDefaults(options)
-  const text = getShapeTextProps(schema.at, schema.textArea)
+  const schema = resolveCrossDefaults(options);
+  const text = getShapeTextProps(schema.at, schema.textArea);
 
   const drawShape = drawCrossWithCtx(schema);
   const draw = (ctx: CanvasRenderingContext2D) => {
@@ -27,7 +28,8 @@ export const cross: ShapeFactory<CrossSchema> = (options) => {
 
   const shapeHitbox = crossHitbox(schema);
   const efficientHitbox = crossEfficientHitbox(schema);
-  const hitbox = (point: Coordinate) => text?.textHitbox(point) || shapeHitbox(point);
+  const hitbox = (point: Coordinate) =>
+    text?.textHitbox(point) || shapeHitbox(point);
 
   const getBoundingBox = getCrossBoundingBox(schema);
 

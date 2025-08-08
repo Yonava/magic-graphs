@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
-  import CToolbarButton from '@ui/core/toolbar/ToolbarButton.vue';
-  import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
   import { nonNullGraph as graph } from '@graph/global';
+  import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
+  import CToolbarButton from '@ui/core/toolbar/ToolbarButton.vue';
+
+  import { computed } from 'vue';
 
   const colors = useNonNullGraphColors();
   const color = computed(() => colors.value.primary);

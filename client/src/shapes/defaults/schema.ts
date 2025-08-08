@@ -1,6 +1,6 @@
 import type {
-  FillColor,
   BorderRadius,
+  FillColor,
   LineWidth,
   Rotation,
 } from '@shape/types/schema';

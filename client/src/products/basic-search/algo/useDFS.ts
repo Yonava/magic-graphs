@@ -1,8 +1,10 @@
-import { computed, ref, watch } from 'vue';
 import type { Graph } from '@graph/types';
-import { dfs } from './dfs';
-import state from '../state';
 import { useAdjacencyList } from '@graph/useAdjacencyList';
+
+import { computed, ref, watch } from 'vue';
+
+import state from '../state';
+import { dfs } from './dfs';
 import type { BasicSearchTrace } from './types';
 
 const { startNode } = state;

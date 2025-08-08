@@ -1,6 +1,7 @@
 import colors from '@colors';
-import { NON_COLOR_THEMES } from './universal';
+
 import type { GraphThemeRaw } from '../types';
+import { NON_COLOR_THEMES } from './universal';
 
 const REDDISH_GRAY = 'rgb(100, 60, 70)';
 

@@ -1,14 +1,20 @@
-import { areBoundingBoxesOverlapping, isPointInLine, normalizeBoundingBox } from '@shape/helpers';
+import {
+  areBoundingBoxesOverlapping,
+  isPointInLine,
+  normalizeBoundingBox,
+} from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
+
 import type { LineSchemaWithDefaults } from './defaults';
 
 /**
  * @param point - the point to check if it is in the line
  * @returns a function that checks if the point is in the line
  */
-export const lineHitbox = (schema: LineSchemaWithDefaults) => (point: Coordinate) => {
-  return isPointInLine(schema, point)
-};
+export const lineHitbox =
+  (schema: LineSchemaWithDefaults) => (point: Coordinate) => {
+    return isPointInLine(schema, point);
+  };
 
 export const getLineBoundingBox = (schema: LineSchemaWithDefaults) => () => {
   const { start, end, lineWidth } = schema;
@@ -46,7 +52,7 @@ export const lineEfficientHitbox = (schema: LineSchemaWithDefaults) => {
     const inBoundingBox = areBoundingBoxesOverlapping(
       getLineBoundingBox(schema)(),
       boxToCheck,
-    )
+    );
 
     if (!inBoundingBox) return false;
 
@@ -68,9 +74,8 @@ export const lineEfficientHitbox = (schema: LineSchemaWithDefaults) => {
       });
     });
 
-    return segmentBoundBoxes.some((bb) => areBoundingBoxesOverlapping(
-      bb,
-      boxToCheck,
-    ));
+    return segmentBoundBoxes.some((bb) =>
+      areBoundingBoxesOverlapping(bb, boxToCheck),
+    );
   };
 };

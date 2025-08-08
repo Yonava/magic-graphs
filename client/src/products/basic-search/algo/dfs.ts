@@ -1,5 +1,6 @@
 import type { GNode } from '@graph/types';
 import type { AdjacencyList } from '@graph/useAdjacencyList';
+
 import type { BasicSearchTrace } from './types';
 
 export const dfs = (adjList: AdjacencyList, startNode: GNode['id']) => {

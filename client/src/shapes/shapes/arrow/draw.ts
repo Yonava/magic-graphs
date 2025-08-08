@@ -1,16 +1,11 @@
-import type { ArrowSchemaWithDefaults } from './defaults';
-import { line } from '../line';
 import { calculateArrowHeadCorners, getArrowHeadSize } from '@shape/helpers';
+
+import { line } from '../line';
 import { triangle } from '../triangle';
+import type { ArrowSchemaWithDefaults } from './defaults';
 
 export const drawArrowWithCtx = (schema: ArrowSchemaWithDefaults) => {
-  const {
-    start,
-    end,
-    lineWidth,
-    fillGradient,
-    fillColor,
-  } = schema;
+  const { start, end, lineWidth, fillGradient, fillColor } = schema;
 
   const headSchema = calculateArrowHeadCorners({
     start,
@@ -18,7 +13,7 @@ export const drawArrowWithCtx = (schema: ArrowSchemaWithDefaults) => {
     lineWidth,
   });
 
-  const { arrowHeadHeight } = getArrowHeadSize(lineWidth)
+  const { arrowHeadHeight } = getArrowHeadSize(lineWidth);
 
   const angle = Math.atan2(end.y - start.y, end.x - start.x);
 
@@ -32,8 +27,11 @@ export const drawArrowWithCtx = (schema: ArrowSchemaWithDefaults) => {
 
   const head = triangle({
     ...headSchema,
-    fillColor: fillGradient && fillGradient.length ? fillGradient.at(-1)?.color : fillColor,
-  })
+    fillColor:
+      fillGradient && fillGradient.length
+        ? fillGradient.at(-1)?.color
+        : fillColor,
+  });
 
   return (ctx: CanvasRenderingContext2D) => {
     shaft.drawShape(ctx);

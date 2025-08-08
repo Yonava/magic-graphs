@@ -1,17 +1,19 @@
-import { computed } from 'vue';
 import type { Graph } from '@graph/types';
 import type {
   SimulationControls,
   SimulationRunner,
 } from '@ui/product/sim/types';
 import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
-import state from '../state';
-import { FLOW_USETHEME_ID } from '../constants';
+
+import { computed } from 'vue';
+
 import type { FlowTrace } from '../algo/fordFulkerson';
 import { useFordFulkerson } from '../algo/useFordFulkerson';
-import { useSourceSinkTheme } from '../theme/useSourceSinkTheme';
-import { useEdgeThickener } from '../theme/useEdgeThickener';
+import { FLOW_USETHEME_ID } from '../constants';
 import { useResidualEdges } from '../misc/useResidualEdges';
+import state from '../state';
+import { useEdgeThickener } from '../theme/useEdgeThickener';
+import { useSourceSinkTheme } from '../theme/useSourceSinkTheme';
 import { useSimulationTheme } from './theme';
 
 export type FlowSimulationControls = SimulationControls<FlowTrace>;

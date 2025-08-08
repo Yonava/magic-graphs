@@ -1,11 +1,12 @@
 <script setup lang="ts">
+  import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
   import GraphProduct from '@ui/product/GraphProduct.vue';
+
+  import { useMarkovChain } from './markov/useMarkovChain';
   import { MARKOV_CHAIN_GRAPH_SETTINGS } from './settings';
   import MarkovChainInfo from './ui/MarkovChainInfo.vue';
-  import { useMarkovChain } from './markov/useMarkovChain';
-  import { useMarkovColorizer } from './ui/useMarkovColorizer';
   import MarkovChainInfoLabels from './ui/MarkovChainInfoLabels.vue';
-  import { useGraphWithCanvas } from '@product/shared/useGraphWithCanvas';
+  import { useMarkovColorizer } from './ui/useMarkovColorizer';
 
   const graphWithCanvas = useGraphWithCanvas(MARKOV_CHAIN_GRAPH_SETTINGS);
   const { graph } = graphWithCanvas;

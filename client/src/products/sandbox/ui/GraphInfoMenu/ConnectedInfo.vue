@@ -1,11 +1,13 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
   import { nonNullGraph as graph } from '@graph/global';
+  import definitions from '@graph/plugins/characteristics/definitions';
   import GHoverInfo from '@ui/graph/GHoverInfo.vue';
-  import { useSCCColorizer } from './useSCCColorizer';
+
+  import { computed } from 'vue';
+
   import { useBipartiteColorizer } from './useBipartiteColorizer';
   import { useCycleColorizer } from './useCycleColorizer';
-  import definitions from '@graph/plugins/characteristics/definitions';
+  import { useSCCColorizer } from './useSCCColorizer';
 
   const isConnected = computed(
     () => graph.value.characteristics.isConnected.value,
