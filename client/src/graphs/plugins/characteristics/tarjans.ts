@@ -1,21 +1,15 @@
-// TypeScript program to find strongly connected
-// components in a given directed graph using Tarjan's algorithm (single DFS)
-
-// This class represents a directed graph using adjacency list representation
 class TarjanGraph {
   private V: number; // Number of vertices
   private adj: number[][]; // Adjacency list
   private Time: number; // Timer to keep track of discovery time
   private SCCs: number[][] = []; // To store SCCs
 
-  // Constructor
   constructor(v: number) {
     this.V = v;
     this.adj = new Array(v).fill(0).map(() => []);
     this.Time = 0;
   }
 
-  // Function to add an edge into the graph
   addEdge(v: number, w: number): void {
     this.adj[v].push(w);
   }

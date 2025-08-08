@@ -8,5 +8,6 @@ export default {
   communicatingClasses:
     'A communicating class is a subset of states such that each state in the subset can be reached from every other state in the subset.',
   steadyState:
-    'A steady state (or stationary distribution) is a probability distribution over states that does not change over time when the chain evolves.',
+    'The probability distribution over states that does not change over time when the chain evolves.',
+  irreducible: 'All states belong to a single communicating class',
 } as const;

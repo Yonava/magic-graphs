@@ -54,6 +54,10 @@
       Absorbing? {{ markov.isChainAbsorbing.value ? 'Yes' : 'No' }}
     </GHoverInfoTop>
 
+    <GHoverInfoTop :tooltip="definitions.irreducible">
+      Irreducible? {{ markov.isIrreducible.value ? 'Yes' : 'No' }}
+    </GHoverInfoTop>
+
     <GHoverInfoTop
       @mouseenter="colorizeCommClass"
       @mouseleave="decolorizeCommClass"

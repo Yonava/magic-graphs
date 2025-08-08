@@ -39,6 +39,10 @@ export const useMarkovChain = (graph: Graph) => {
     return graph.characteristics.stronglyConnectedComponents.value;
   });
 
+  const isIrreducible = computed(() => {
+    return recurrentClasses.value.length === 1 && transientClasses.value.length === 0
+  })
+
   const { nodeIdToOutgoingWeight, illegalNodeIds } =
     useMarkovNodeWeights(graph);
 
@@ -59,6 +63,7 @@ export const useMarkovChain = (graph: Graph) => {
     isPeriodic,
     isChainAbsorbing,
     absorbingStates,
+    isIrreducible,
 
     // TODO implement a correct version of steady state
     steadyState,
