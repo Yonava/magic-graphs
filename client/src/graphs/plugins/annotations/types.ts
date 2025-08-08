@@ -1,4 +1,4 @@
-import type { ScribbleSchema } from '@shape/shapes/scribble';
+import type { ScribbleSchema } from '@shape/shapes/scribble/types';
 
 /**
  * a scribble that is on the graph as an annotation
