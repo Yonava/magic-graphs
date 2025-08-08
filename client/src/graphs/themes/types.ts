@@ -1,7 +1,7 @@
 import type { NodeAnchor } from '@graph/plugins/anchors/types';
 import type { SupportedNodeShapes } from '@graph/schematics/node';
 import type { EdgeGetterOrValue, GNode, NodeGetterOrValue } from '@graph/types';
-import type { FontWeight } from '@shape/types/utility';
+import type { FontWeight } from '@shape/text/types';
 import type {
   MaybeGetter,
   MaybeGetterParams,
