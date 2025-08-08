@@ -1,7 +1,9 @@
 import colors from '@colors';
 import type { Collaborator, CollaboratorMap } from '@graph/collab/types';
-import { type CircleSchema, circle } from '@shape/shapes/circle';
-import { type RectSchema, rect } from '@shape/shapes/rect';
+import { circle } from '@shape/shapes/circle';
+import type { CircleSchema } from '@shape/shapes/circle/types';
+import { rect } from '@shape/shapes/rect';
+import type { RectSchema } from '@shape/shapes/rect/types';
 
 import type { Ref } from 'vue';
 

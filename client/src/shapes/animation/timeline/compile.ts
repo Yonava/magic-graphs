@@ -200,10 +200,10 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
         };
       });
 
-      // @ts-expect-error could make TS happy, but would make this verbose unfortunately
       return interpolation.fn(
         keyframes,
         getDefaultEasing(propName),
+        // @ts-expect-error could make TS happy, but would make this verbose unfortunately
         rawPropVal,
       )(progress);
     };
