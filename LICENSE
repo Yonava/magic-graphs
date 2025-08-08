@@ -1,0 +1,69 @@
+# Magic Graphs License
+
+Copyright (c) 2023-2025 Yona Voss-Andreae, Thomas Eykamp
+
+---
+
+## 1. Ownership
+
+All rights, title, and interest in this software and its source code are exclusively retained by the Licensor. This includes the right to modify, relicense, close-source, or remove the software at any time, for any reason, without notice.
+
+---
+
+## 2. Contributions
+
+By submitting any code, documentation, or other materials (a "Contribution"), you irrevocably assign all rights and ownership of that Contribution to the Licensor.
+
+You permanently waive any claims to authorship, moral rights, or ownership over the codebase or Contributions, whether merged or not. Contributions do **not** entitle you to any compensation, credit, or usage rights beyond those granted in this license.
+
+---
+
+## 3. License Modification and Revocation
+
+The Licensor may:
+
+- Modify this license or relicense the software under different terms, including a proprietary license;
+- Take down or request removal of any copies, forks, or deployments of the software, including private or public instances;
+- Make the source code private or inaccessible at any time, for any reason, at the Licensor’s sole discretion.
+
+Continued use of the code implies acceptance of the most current license.
+
+---
+
+## 4. Disclaimer and Limitation of Liability
+
+This software is provided **“as is”**, without warranties of any kind, express or implied.  
+The Licensor is **not liable** for any damages or losses arising from its use, modification, or distribution.
+
+---
+
+## 5. Usage Restrictions
+
+You are **permitted** to:
+
+- View, fork, and modify the code **for personal or educational purposes only**.
+
+You are **not permitted** to:
+
+- Use the software for **any commercial purpose**;
+- Host, deploy, or operate the software as part of a commercial service (e.g. SaaS, API, Web App);
+- Use the software in any project, product, or environment intended for commercial use;
+
+without **explicit written permission** from the Licensor.
+
+---
+
+## 6. Termination
+
+Violation of any of these terms will automatically terminate your rights under this license.  
+Upon termination, you must destroy all copies of the software in your possession, including any forks or deployments.
+
+---
+
+## 7. Governing Law
+
+This license is governed by the laws of the jurisdiction in which the Licensor resides, regardless of where the software is used.
+
+---
+
+For license inquiries or permission requests, contact Yona Voss-Andreae or Thomas Eykamp
