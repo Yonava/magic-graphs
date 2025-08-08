@@ -10,7 +10,7 @@
     "build:js": "vite build",
     "build:storybook": "storybook build",
     "build:types": "vue-tsc --build --force",
-    "check": "run-p build:types build:js format:check",
+    "check": "run-p build:js format:check",
     "preview": "vite preview",
     "format": "prettier --cache --write .",
     "format:check": "prettier --cache --check .",

@@ -1,0 +1,1 @@
+import{_ as t}from"./GHoverInfo.vue_vue_type_script_setup_true_lang-Dhnawe_0.js";import{d as e,z as s,o as f,w as a,O as p}from"./index-8aSAdiyM.js";const _=e({__name:"GHoverInfoTop",props:{tooltip:{},offset:{default:-4}},setup(r){return(o,n)=>(f(),s(t,{tooltip:o.tooltip,offset:o.offset},{default:a(()=>[p(o.$slots,"default")]),_:3},8,["tooltip","offset"]))}});export{_};
