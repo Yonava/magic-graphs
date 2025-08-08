@@ -1,4 +1,4 @@
-import type { Key } from "ctrl-keys";
+import type { Key } from 'ctrl-keys';
 
 /**
  * a keyboard shortcut

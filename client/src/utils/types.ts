@@ -1,4 +1,4 @@
-import type { UnionToIntersection, Prettify } from "ts-essentials";
+import type { Prettify, UnionToIntersection } from 'ts-essentials';
 
 /**
  * makes only certain keys K in an object T optional
@@ -6,8 +6,7 @@ import type { UnionToIntersection, Prettify } from "ts-essentials";
  * type T = PartiallyPartial<{ a: number, b: string }, 'a'> // { a?: number, b: string }
  */
 export type PartiallyPartial<T, K extends keyof T> = Prettify<
-  Omit<T, K> &
-  Partial<Pick<T, K>>
+  Omit<T, K> & Partial<Pick<T, K>>
 >;
 
 /**
@@ -16,8 +15,7 @@ export type PartiallyPartial<T, K extends keyof T> = Prettify<
  * type T = PartiallyRequired<{ a?: number, b?: string }, 'a'> // { a: number, b?: string }
  */
 export type PartiallyRequired<T, K extends keyof T> = Prettify<
-  Omit<T, K> &
-  Required<Pick<T, K>>
+  Omit<T, K> & Required<Pick<T, K>>
 >;
 
 /**
@@ -59,13 +57,12 @@ export type IntervalHandler = ReturnType<typeof setInterval>;
 
 type LastOf<U> =
   UnionToIntersection<U extends any ? () => U : never> extends () => infer R
-  ? R
-  : never;
+    ? R
+    : never;
 
 type Push<T extends any[], V> = [...T, V];
 
-type UnionToTuple<T, L = LastOf<T>> =
-  [T] extends [never]
+type UnionToTuple<T, L = LastOf<T>> = [T] extends [never]
   ? []
   : Push<UnionToTuple<Exclude<T, L>>, L>;
 
@@ -79,4 +76,4 @@ type UnionToTuple<T, L = LastOf<T>> =
  * ObjectKeysToTuple<{ name: string, age: number, id: string }>
  * // ["name", "age", "id"]
  */
-export type ObjectKeysToTuple<T extends object> = UnionToTuple<keyof T>
+export type ObjectKeysToTuple<T extends object> = UnionToTuple<keyof T>;

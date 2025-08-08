@@ -1,9 +1,11 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
   import GWell from '@ui/graph/GWell.vue';
   import GButton from '@ui/graph/button/GButton.vue';
-  import type { TreeControls } from '../useTree';
   import gsap from 'gsap';
+
+  import { ref } from 'vue';
+
+  import type { TreeControls } from '../useTree';
 
   const props = defineProps<{
     tree: TreeControls;

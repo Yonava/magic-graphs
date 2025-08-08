@@ -2,10 +2,10 @@
  * contains type defs and option defaults for base graph apis
  * such as addNode, removeNode, etc.
  */
-
-import type { DeepReadonly } from 'vue';
 import type { SchemaItem } from '@graph/types';
 import type { Coordinate } from '@shape/types/utility';
+
+import type { DeepReadonly } from 'vue';
 
 export type FocusOption = {
   /**
@@ -106,7 +106,7 @@ export const MOVE_NODE_OPTIONS_DEFAULTS: MoveNodeOptions = {
 
 export const BULK_MOVE_NODE_OPTIONS_DEFAULTS: MoveNodeOptions = {
   broadcast: true,
-}
+};
 
 export type EditEdgeLabelOptions = BroadcastOption & HistoryOption;
 

@@ -1,16 +1,17 @@
-import { drawUTurnWithCtx } from './draw';
-import {
-  uturnHitbox,
-  uturnEfficientHitbox,
-  getUTurnBoundingBox,
-} from './hitbox';
-import { getTextAreaAnchorPoint } from './text';
-import type { Coordinate } from '@shape/types/utility';
-import type { ShapeFactory } from '@shape/types';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
-import type { UTurnSchema } from './types';
+import type { ShapeFactory } from '@shape/types';
+import type { Coordinate } from '@shape/types/utility';
+
 import { resolveUTurnDefaults } from './defaults';
+import { drawUTurnWithCtx } from './draw';
+import {
+  getUTurnBoundingBox,
+  uturnEfficientHitbox,
+  uturnHitbox,
+} from './hitbox';
+import { getTextAreaAnchorPoint } from './text';
+import type { UTurnSchema } from './types';
 
 export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   if (options.downDistance < 0) {
@@ -21,9 +22,9 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
     throw new Error('upDistance must be positive');
   }
 
-  const schema = resolveUTurnDefaults(options)
-  const anchorPt = getTextAreaAnchorPoint(schema)
-  const text = getShapeTextProps(anchorPt, schema.textArea)
+  const schema = resolveUTurnDefaults(options);
+  const anchorPt = getTextAreaAnchorPoint(schema);
+  const text = getShapeTextProps(anchorPt, schema.textArea);
 
   const getBoundingBox = getUTurnBoundingBox(schema);
 

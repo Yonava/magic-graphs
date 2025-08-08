@@ -1,7 +1,13 @@
-import tinycolor from 'tinycolor2';
-import type { BorderRadiusArrayValue, BoundingBox, Coordinate, GradientStop } from './types/utility';
-import type { BorderRadius } from './types/schema';
 import type { ArrowSchema } from '@shapes/arrow/types';
+import tinycolor from 'tinycolor2';
+
+import type { BorderRadius } from './types/schema';
+import type {
+  BorderRadiusArrayValue,
+  BoundingBox,
+  Coordinate,
+  GradientStop,
+} from './types/utility';
 
 /**
  * rotates a point around a center point by a given angle in radians
@@ -120,9 +126,7 @@ export const getArrowHeadSize = (arrowWidth: number) => {
  * @returns the triangle that makes up the arrow tip
  */
 export const calculateArrowHeadCorners = (
-  options: Required<
-    Pick<ArrowSchema, 'start' | 'end' | 'lineWidth'>
-  >,
+  options: Required<Pick<ArrowSchema, 'start' | 'end' | 'lineWidth'>>,
 ) => {
   const { start, end, lineWidth: width } = options;
 
@@ -246,53 +250,56 @@ export const getCenterPoint = (bb: BoundingBox) => {
     at: { x, y },
     width,
     height,
-  } = bb
+  } = bb;
 
   return {
     x: x + width / 2,
     y: y + height / 2,
   };
-}
+};
 
 /**
  * returns true if any part of the two bounding boxes are overlapping
  *
  * TODO validate with a test
  */
-export const areBoundingBoxesOverlapping = (bb1: BoundingBox, bb2: BoundingBox) => {
+export const areBoundingBoxesOverlapping = (
+  bb1: BoundingBox,
+  bb2: BoundingBox,
+) => {
   const {
     at: bb1At,
     width: bb1Width,
-    height: bb1Height
-  } = normalizeBoundingBox(bb1)
+    height: bb1Height,
+  } = normalizeBoundingBox(bb1);
 
   const {
     at: bb2At,
     width: bb2Width,
-    height: bb2Height
-  } = normalizeBoundingBox(bb2)
+    height: bb2Height,
+  } = normalizeBoundingBox(bb2);
 
-  if ((bb1At.x + bb1Width) <= bb2At.x || (bb2At.x + bb2Width) <= bb1At.x) {
+  if (bb1At.x + bb1Width <= bb2At.x || bb2At.x + bb2Width <= bb1At.x) {
     return false;
   }
 
-  if ((bb1At.y + bb1Height) <= bb2At.y || (bb2At.y + bb2Height) <= bb1At.y) {
+  if (bb1At.y + bb1Height <= bb2At.y || bb2At.y + bb2Height <= bb1At.y) {
     return false;
   }
 
   return true;
-}
+};
 
 /**
  * returns true if the point provided falls within the line
  */
 export const isPointInLine = (
   line: {
-    start: Coordinate,
-    end: Coordinate,
-    lineWidth: number
+    start: Coordinate;
+    end: Coordinate;
+    lineWidth: number;
   },
-  point: Coordinate
+  point: Coordinate,
 ) => {
   const { start, end, lineWidth } = line;
 
@@ -320,7 +327,7 @@ export const isPointInLine = (
 
   const distanceSquared = (x - closestX) ** 2 + (y - closestY) ** 2;
   return distanceSquared <= (lineWidth / 2) ** 2;
-}
+};
 
 /**
  * returns true if the point provided falls within the bounding box
@@ -329,14 +336,14 @@ export const isPointInBoundingBox = (bb: BoundingBox, pt: Coordinate) => {
   const {
     at: { x, y },
     width,
-    height
-  } = normalizeBoundingBox(bb)
-  const { x: xPt, y: yPt } = pt
+    height,
+  } = normalizeBoundingBox(bb);
+  const { x: xPt, y: yPt } = pt;
 
-  const xLegit = xPt >= x && xPt <= (x + width)
-  const yLegit = yPt >= y && yPt <= (y + height)
-  return xLegit && yLegit
-}
+  const xLegit = xPt >= x && xPt <= x + width;
+  const yLegit = yPt >= y && yPt <= y + height;
+  return xLegit && yLegit;
+};
 
 export const toBorderRadiusArray = (
   borderRadius: BorderRadius['borderRadius'],

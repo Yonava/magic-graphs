@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import GButton from '@ui/graph/button/GButton.vue';
   import CIcon from '@ui/core/Icon.vue';
+  import GButton from '@ui/graph/button/GButton.vue';
+
   import HelpSection from './HelpSection.vue';
 
   const redirect = (route: string) => window.open(route, '_blank');

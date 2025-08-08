@@ -1,8 +1,10 @@
-import { onUnmounted, ref, watch } from 'vue';
 import type { GNode, Graph } from '@graph/types';
 import { debounce } from '@utils/debounce';
-import { getTreeStandardPos } from './getTreeStandardPos';
+
+import { onUnmounted, ref, watch } from 'vue';
+
 import { getTreeBinaryPos } from './getTreeBinaryPos';
+import { getTreeStandardPos } from './getTreeStandardPos';
 import { getNodeDepths } from './useNodeDepth';
 
 export type TreeFormationOptions = {
@@ -70,7 +72,7 @@ export const useMoveNodesIntoTreeFormation = (
     if (!newPositions) return;
 
     reshapingActive.value = true;
-    await graph.bulkMoveNode(newPositions)
+    await graph.bulkMoveNode(newPositions);
     reshapingActive.value = false;
   };
 

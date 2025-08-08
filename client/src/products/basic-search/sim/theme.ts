@@ -1,7 +1,8 @@
+import { useTheme } from '@graph/themes/useTheme';
 import type { GEdge, GNode, Graph } from '@graph/types';
 import type { SimulationControls } from '@ui/product/sim/types';
-import { useTheme } from '@graph/themes/useTheme';
 import colors from '@utils/colors';
+
 import type { BasicSearchTrace } from '../algo/types';
 
 export const SIM_COLORS = {
@@ -33,14 +34,14 @@ export const useSimulationTheme = (
       !traceAtStep.value.visited.has(edge.to) &&
       traceAtStep.value.queue?.includes(edge.to)
     ) {
-      return 'red'
+      return 'red';
     }
-  }
+  };
 
   const activate = () => {
     setTheme('nodeBorderColor', colorBorders);
     setTheme('nodeAnchorColor', colorBorders);
-    setTheme('edgeColor', colorEdge)
+    setTheme('edgeColor', colorEdge);
   };
 
   const deactivate = () => {

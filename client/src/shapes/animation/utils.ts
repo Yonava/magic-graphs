@@ -1,5 +1,5 @@
-import type { ActiveAnimation } from "./types"
-import type { CompiledTimeline } from "./timeline/compile"
+import type { CompiledTimeline } from './timeline/compile';
+import type { ActiveAnimation } from './types';
 
 /**
  * returns the number of times the animation has completed as a float.
@@ -12,14 +12,17 @@ import type { CompiledTimeline } from "./timeline/compile"
 export const getCurrentRunCount = ({
   durationMs,
   startedAt,
-  delayMs
-}: Pick<ActiveAnimation & CompiledTimeline, 'startedAt' | 'durationMs' | 'delayMs'>) => {
-  const timeElapsed = Date.now() - startedAt
-  if (timeElapsed < delayMs) return 0
+  delayMs,
+}: Pick<
+  ActiveAnimation & CompiledTimeline,
+  'startedAt' | 'durationMs' | 'delayMs'
+>) => {
+  const timeElapsed = Date.now() - startedAt;
+  if (timeElapsed < delayMs) return 0;
 
-  const activeTime = timeElapsed - delayMs
-  return activeTime / durationMs
-}
+  const activeTime = timeElapsed - delayMs;
+  return activeTime / durationMs;
+};
 
 /**
  * returns the current progress through the active animation cycle, as a value between 0 and 1.
@@ -33,11 +36,14 @@ export const getCurrentRunCount = ({
 export const getAnimationProgress = ({
   durationMs,
   startedAt,
-  delayMs
-}: Pick<ActiveAnimation & CompiledTimeline, 'startedAt' | 'durationMs' | 'delayMs'>) => {
-  const timeElapsed = Date.now() - startedAt
-  if (timeElapsed < delayMs) return 0
+  delayMs,
+}: Pick<
+  ActiveAnimation & CompiledTimeline,
+  'startedAt' | 'durationMs' | 'delayMs'
+>) => {
+  const timeElapsed = Date.now() - startedAt;
+  if (timeElapsed < delayMs) return 0;
 
-  const activeTime = timeElapsed - delayMs
-  return (activeTime % durationMs) / durationMs
-}
+  const activeTime = timeElapsed - delayMs;
+  return (activeTime % durationMs) / durationMs;
+};

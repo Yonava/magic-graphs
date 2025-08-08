@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
   import { isHexAlpha, isHexStandard } from '@utils/colors';
+
+  import { computed } from 'vue';
 
   const model = defineModel<string>();
 

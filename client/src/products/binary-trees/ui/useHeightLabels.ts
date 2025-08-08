@@ -1,9 +1,10 @@
 import type { GNode, Graph } from '@graph/types';
-import type { TreeControls } from '../useTree';
-import { useNodeLabel } from './useNodeLabel';
-import { useNodeColor } from './useNodeColor';
-import { numberToColor } from './numberToColor';
 import colors from '@utils/colors';
+
+import type { TreeControls } from '../useTree';
+import { numberToColor } from './numberToColor';
+import { useNodeColor } from './useNodeColor';
+import { useNodeLabel } from './useNodeLabel';
 
 export const useHeightLabels = (graph: Graph, tree: TreeControls) => {
   const { nodeIdToHeight } = tree;

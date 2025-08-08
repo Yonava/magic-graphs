@@ -1,14 +1,15 @@
-import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';
-import { drawStarWithCtx } from './draw';
-import type { ShapeFactory } from '@shape/types';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
-import type { StarSchema } from './types';
 import { getShapeTextProps } from '@shape/text/text';
+import type { ShapeFactory } from '@shape/types';
 import type { Coordinate } from '@shape/types/utility';
+
 import { resolveStarDefaults } from './defaults';
+import { drawStarWithCtx } from './draw';
+import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';
+import type { StarSchema } from './types';
 
 export const star: ShapeFactory<StarSchema> = (options) => {
-  const schema = resolveStarDefaults(options)
+  const schema = resolveStarDefaults(options);
 
   if (schema.points < 3) {
     console.warn('star must have at least 3 points');
@@ -20,12 +21,12 @@ export const star: ShapeFactory<StarSchema> = (options) => {
     console.warn('radius values must be positive');
   }
 
-  const text = getShapeTextProps(schema.at, schema.textArea)
+  const text = getShapeTextProps(schema.at, schema.textArea);
 
   const drawShape = drawStarWithCtx(schema);
   const draw = (ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx)
-    text?.drawTextArea(ctx)
+    drawShape(ctx);
+    text?.drawTextArea(ctx);
   };
 
   const shapeHitbox = starHitbox(schema);

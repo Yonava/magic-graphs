@@ -1,23 +1,24 @@
-import {
-  triangleHitbox,
-  triangleEfficientHitbox,
-  getTriangleBoundingBox,
-} from './hitbox';
-import { drawTriangleWithCtx } from './draw';
-import type { ShapeFactory } from '@shape/types';
+import { getCenterPoint } from '@shape/helpers';
 import { shapeFactoryWrapper } from '@shape/shapeWrapper';
 import { getShapeTextProps } from '@shape/text/text';
-import { getCenterPoint } from '@shape/helpers';
-import type { TriangleSchema } from './types';
-import { resolveTriangleDefaults } from './defaults';
+import type { ShapeFactory } from '@shape/types';
 import type { Coordinate } from '@shape/types/utility';
 
+import { resolveTriangleDefaults } from './defaults';
+import { drawTriangleWithCtx } from './draw';
+import {
+  getTriangleBoundingBox,
+  triangleEfficientHitbox,
+  triangleHitbox,
+} from './hitbox';
+import type { TriangleSchema } from './types';
+
 export const triangle: ShapeFactory<TriangleSchema> = (options) => {
-  const schema = resolveTriangleDefaults(options)
+  const schema = resolveTriangleDefaults(options);
 
   const getBoundingBox = getTriangleBoundingBox(schema);
-  const anchorPt = getCenterPoint(getBoundingBox())
-  const text = getShapeTextProps(anchorPt, schema.textArea)
+  const anchorPt = getCenterPoint(getBoundingBox());
+  const text = getShapeTextProps(anchorPt, schema.textArea);
 
   const shapeHitbox = triangleHitbox(schema);
   const efficientHitbox = triangleEfficientHitbox(schema);

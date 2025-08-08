@@ -1,8 +1,8 @@
-import type { Graph } from '@graph/types';
+import { PURPLE_700, RED_700 } from '@colors';
+import { useTheme } from '@graph/themes/useTheme';
 import { TUTORIAL_THEME_ID } from '@graph/tutorials/types';
 import { type TutorialStep } from '@graph/tutorials/types';
-import { useTheme } from '@graph/themes/useTheme';
-import { PURPLE_700, RED_700 } from '@colors';
+import type { Graph } from '@graph/types';
 
 /**
  * pre-defined tutorial steps for basic graph editing

@@ -1,4 +1,5 @@
 import type { ProductInfo } from 'src/types';
+
 import state from './state';
 
 const info: ProductInfo = {
@@ -16,7 +17,7 @@ const info: ProductInfo = {
     category: 'data structures',
   },
   state,
-  simulations: () => []
+  simulations: () => [],
 };
 
 export default info;

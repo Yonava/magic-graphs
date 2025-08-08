@@ -1,6 +1,7 @@
-import { PRODUCT_SHORTCUTS } from "@product/shared/shortcuts";
-import keys from "ctrl-keys";
-import { onUnmounted } from "vue";
+import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
+import keys from 'ctrl-keys';
+
+import { onUnmounted } from 'vue';
 
 export const useEscSimulationShortcut = (stopSimulation: () => void) => {
   const ctrlKeys = keys();
@@ -8,4 +9,4 @@ export const useEscSimulationShortcut = (stopSimulation: () => void) => {
 
   window.addEventListener('keyup', ctrlKeys.handle);
   onUnmounted(() => window.removeEventListener('keyup', ctrlKeys.handle));
-}
+};

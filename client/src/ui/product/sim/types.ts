@@ -1,7 +1,8 @@
-import type { ComputedRef, Ref } from 'vue';
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
 import type { GraphEventMap } from '@graph/events';
+
+import type { ComputedRef, Ref } from 'vue';
 
 /**
  * A function that returns the simulation state at a given step.
@@ -65,7 +66,7 @@ export type SimulationControls<T = any> = {
   /**
    * explanatory text at the current step of the simulation
    */
-  explanationAtStep: ComputedRef<string | undefined>
+  explanationAtStep: ComputedRef<string | undefined>;
 
   /**
    * set the current step of the simulation

@@ -1,11 +1,13 @@
-import { ref, computed, readonly } from 'vue';
-import type { SchemaItem } from '@graph/types';
-import type { FocusOption, GraphMouseEvent } from '@graph/base/types';
 import type { BaseGraph } from '@graph/base';
+import type { FocusOption, GraphMouseEvent } from '@graph/base/types';
 import { useTheme } from '@graph/themes/useTheme';
+import type { SchemaItem } from '@graph/types';
 import { getCtx } from '@utils/ctx';
-import { FOCUS_THEME_ID, FOCUSABLE_GRAPH_TYPES } from './constants';
 import { MOUSE_BUTTONS } from '@utils/mouse';
+
+import { computed, readonly, ref } from 'vue';
+
+import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants';
 
 export const useFocus = (graph: BaseGraph) => {
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
@@ -87,7 +89,7 @@ export const useFocus = (graph: BaseGraph) => {
     );
     if (!canFocus) return;
 
-    if (event.shiftKey) addToFocus(topItem.id)
+    if (event.shiftKey) addToFocus(topItem.id);
     else setFocus([topItem.id]);
   };
 
@@ -153,16 +155,15 @@ export const useFocus = (graph: BaseGraph) => {
     resetFocus();
   };
 
-  const { hold, release } = graph.pluginHoldController('focus')
+  const { hold, release } = graph.pluginHoldController('focus');
 
   graph.subscribe('onSettingsChange', (diff) => {
     if (diff.focusable === false) {
-      deactivate()
-      hold('marquee')
-    }
-    else if (diff.focusable === true) {
+      deactivate();
+      hold('marquee');
+    } else if (diff.focusable === true) {
       activate();
-      release('marquee')
+      release('marquee');
     }
   });
 

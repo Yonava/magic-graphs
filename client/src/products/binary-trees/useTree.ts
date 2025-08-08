@@ -1,10 +1,12 @@
-import { computed, ref } from 'vue';
 import type { GNode, Graph } from '@graph/types';
+
+import { computed, ref } from 'vue';
+
 import { AVLTree, getBalance, getHeight } from './tree/avl';
-import { createSimulationRunner } from './treeSim';
-import { useTreeHistory } from './treeHistory';
-import { TreeNode } from './tree/treeNode';
 import { syncGraphWithTree } from './tree/graphToAVL';
+import { TreeNode } from './tree/treeNode';
+import { useTreeHistory } from './treeHistory';
+import { createSimulationRunner } from './treeSim';
 
 export const useTree = (graph: Graph) => {
   const tree = new AVLTree();

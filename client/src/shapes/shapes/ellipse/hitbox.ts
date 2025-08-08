@@ -1,5 +1,9 @@
-import { areBoundingBoxesOverlapping, normalizeBoundingBox } from '@shape/helpers';
+import {
+  areBoundingBoxesOverlapping,
+  normalizeBoundingBox,
+} from '@shape/helpers';
 import type { BoundingBox, Coordinate } from '@shape/types/utility';
+
 import type { EllipseSchemaWithDefaults } from './defaults';
 
 export const ellipseHitbox =
@@ -20,24 +24,22 @@ export const ellipseHitbox =
     return inEllipse;
   };
 
-export const getEllipseBoundingBox = (schema: EllipseSchemaWithDefaults) => () => {
-  const { at, radiusX, radiusY, stroke } = schema;
+export const getEllipseBoundingBox =
+  (schema: EllipseSchemaWithDefaults) => () => {
+    const { at, radiusX, radiusY, stroke } = schema;
 
-  const borderWidth = stroke?.lineWidth ?? 0;
+    const borderWidth = stroke?.lineWidth ?? 0;
 
-  return normalizeBoundingBox({
-    at: {
-      x: at.x - (radiusX + borderWidth / 2),
-      y: at.y - (radiusY + borderWidth / 2),
-    },
-    width: 2 * radiusX + borderWidth,
-    height: 2 * radiusY + borderWidth,
-  });
-};
+    return normalizeBoundingBox({
+      at: {
+        x: at.x - (radiusX + borderWidth / 2),
+        y: at.y - (radiusY + borderWidth / 2),
+      },
+      width: 2 * radiusX + borderWidth,
+      height: 2 * radiusY + borderWidth,
+    });
+  };
 
-export const ellipseEfficientHitbox = (
-  schema: EllipseSchemaWithDefaults
-) => (boxToCheck: BoundingBox) => areBoundingBoxesOverlapping(
-  getEllipseBoundingBox(schema)(),
-  boxToCheck,
-)
+export const ellipseEfficientHitbox =
+  (schema: EllipseSchemaWithDefaults) => (boxToCheck: BoundingBox) =>
+    areBoundingBoxesOverlapping(getEllipseBoundingBox(schema)(), boxToCheck);

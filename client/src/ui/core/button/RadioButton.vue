@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useTinycolor } from '@ui/useTinycolor';
   import colors from '@utils/colors';
+
   import { computed, ref, toRef } from 'vue';
 
   const props = withDefaults(

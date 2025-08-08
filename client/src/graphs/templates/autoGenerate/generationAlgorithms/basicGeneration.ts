@@ -1,8 +1,9 @@
-import type { GEdge, GNode } from '@graph/types';
+import { LETTERS, graphLabelGetter } from '@graph/labels';
 import type { AutoGenerateGraphOptions } from '@graph/templates/autoGenerate/types';
-import { ref } from 'vue';
+import type { GEdge, GNode } from '@graph/types';
 import { generateId } from '@utils/id';
-import { graphLabelGetter, LETTERS } from '@graph/labels';
+
+import { ref } from 'vue';
 
 /**
  * Generates a set of nodes

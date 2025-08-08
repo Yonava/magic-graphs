@@ -1,20 +1,22 @@
-import { computed, ref } from 'vue';
 import type { BaseGraph } from '@graph/base';
-import type { GNode, GEdge } from '@graph/types';
+import type { HistoryOption } from '@graph/base/types';
+import type { GraphState } from '@graph/collab/types';
+import type { GEdge, GNode } from '@graph/types';
+import type { Coordinate } from '@shape/types/utility';
+import { debounce } from '@utils/debounce';
+
+import { computed, ref } from 'vue';
+
 import {
   DEFAULT_REDO_HISTORY_OPTIONS,
   DEFAULT_UNDO_HISTORY_OPTIONS,
 } from './types';
 import type {
+  GNodeMoveRecord,
   HistoryRecord,
   RedoHistoryOptions,
   UndoHistoryOptions,
-  GNodeMoveRecord,
 } from './types';
-import type { Coordinate } from '@shape/types/utility';
-import { debounce } from '@utils/debounce';
-import type { HistoryOption } from '@graph/base/types';
-import type { GraphState } from '@graph/collab/types';
 
 /**
  * the max number of history records to keep in the undo and redo stacks

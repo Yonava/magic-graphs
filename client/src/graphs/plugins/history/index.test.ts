@@ -1,7 +1,9 @@
-import { ref } from 'vue';
-import { test, describe, expect } from 'vitest';
-import { useHistory } from './index';
 import { useBaseGraph } from '@graph/base';
+import { describe, expect, test } from 'vitest';
+
+import { ref } from 'vue';
+
+import { useHistory } from './index';
 
 describe('useHistoryGraph', () => {
   const graph = useBaseGraph(ref());

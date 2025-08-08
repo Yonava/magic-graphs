@@ -1,35 +1,35 @@
-import type { GNode, GEdge } from '@graph/types';
-import type { GraphEvent } from '@graph/events';
 import type { BaseGraph } from '@graph/base';
+import type { GraphEvent } from '@graph/events';
+import type { GEdge, GNode } from '@graph/types';
 import { local } from '@utils/localStorage';
 
 export const usePersistent = (graph: BaseGraph) => {
   const canStore = (nodeOrEdge: { id: string }) => {
-    const list = graph.settings.value.persistentBlacklist
-    return !list.has(nodeOrEdge.id)
-  }
+    const list = graph.settings.value.persistentBlacklist;
+    return !list.has(nodeOrEdge.id);
+  };
 
-  const getKey = () => graph.settings.value.persistentStorageKey
+  const getKey = () => graph.settings.value.persistentStorageKey;
 
   const nodeStorage = {
     get: () => {
-      const serializedNodes = local.get(`nodes-${getKey()}`) ?? '[]'
-      return JSON.parse(serializedNodes)
+      const serializedNodes = local.get(`nodes-${getKey()}`) ?? '[]';
+      return JSON.parse(serializedNodes);
     },
     set: (nodes: GNode[]) => {
-      const serializedNodes = JSON.stringify(nodes.filter(canStore))
-      local.set(`nodes-${getKey()}`, serializedNodes)
+      const serializedNodes = JSON.stringify(nodes.filter(canStore));
+      local.set(`nodes-${getKey()}`, serializedNodes);
     },
   };
 
   const edgeStorage = {
     get: () => {
-      const serializedEdges = local.get(`edges-${getKey()}`) ?? '[]'
-      return JSON.parse(serializedEdges)
+      const serializedEdges = local.get(`edges-${getKey()}`) ?? '[]';
+      return JSON.parse(serializedEdges);
     },
     set: (edges: GEdge[]) => {
-      const serializedEdges = JSON.stringify(edges.filter(canStore))
-      local.set(`edges-${getKey()}`, serializedEdges)
+      const serializedEdges = JSON.stringify(edges.filter(canStore));
+      local.set(`edges-${getKey()}`, serializedEdges);
     },
   };
 

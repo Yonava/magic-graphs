@@ -1,19 +1,21 @@
-import { computed, readonly, ref } from 'vue';
-import { useLocalStorage } from '@vueuse/core';
-import { io } from 'socket.io-client';
-import type {
-  CollaboratorProfile,
-  Collaborator,
-  CollaboratorMap,
-  GraphSocket,
-} from './types';
 import type { Graph } from '@graph/types';
 import { getRandomElement } from '@utils/random';
-import { SOCKET_URL, COLLAB_COLORS } from './constants';
-import { useSocketEmitters } from './emit';
+import { useLocalStorage } from '@vueuse/core';
+import { io } from 'socket.io-client';
 import type { ProductInfo } from 'src/types';
-import { startListening } from './listen';
+
+import { computed, readonly, ref } from 'vue';
+
 import { usePaintCollabTags } from './collabTag';
+import { COLLAB_COLORS, SOCKET_URL } from './constants';
+import { useSocketEmitters } from './emit';
+import { startListening } from './listen';
+import type {
+  Collaborator,
+  CollaboratorMap,
+  CollaboratorProfile,
+  GraphSocket,
+} from './types';
 
 export const myCollaboratorProfile = useLocalStorage<CollaboratorProfile>(
   'collab-profile',

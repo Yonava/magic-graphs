@@ -1,9 +1,10 @@
 <script setup lang="ts">
-  import type { Shape } from '@shape/types';
-  import MagicCanvas from '../MagicCanvas.vue';
-  import { useMagicCanvas } from '..';
   import CameraDebugInfo from '@canvas/docs/CanvasDebugInfo.vue';
+  import type { Shape } from '@shape/types';
   import { circle } from '@shapes/circle';
+
+  import { useMagicCanvas } from '..';
+  import MagicCanvas from '../MagicCanvas.vue';
 
   const dots: Shape[] = [];
 

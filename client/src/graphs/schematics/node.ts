@@ -1,6 +1,6 @@
-import type { GNode, SchemaItem } from '@graph/types';
 import colors from '@colors';
 import type { BaseGraph } from '@graph/base';
+import type { GNode, SchemaItem } from '@graph/types';
 
 export type SupportedNodeShapes = 'circle' | 'square';
 type PropsNeededFromGraph = 'shapes' | 'getTheme';
@@ -9,8 +9,7 @@ export const getNodeSchematic = (
   node: GNode,
   graph: Pick<BaseGraph, PropsNeededFromGraph>,
 ): Omit<SchemaItem, 'priority'> | undefined => {
-
-  const { getTheme } = graph
+  const { getTheme } = graph;
 
   const color = getTheme('nodeColor', node);
   const borderColor = getTheme('nodeBorderColor', node);

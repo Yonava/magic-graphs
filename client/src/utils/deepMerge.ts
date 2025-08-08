@@ -1,6 +1,6 @@
-
-
-export const isPlainObject = (obj: any): obj is Record<string | number | symbol, unknown> =>
+export const isPlainObject = (
+  obj: any,
+): obj is Record<string | number | symbol, unknown> =>
   !!obj &&
   typeof obj === 'object' &&
   Object.getPrototypeOf(obj) === Object.prototype;
@@ -19,18 +19,19 @@ export const isPlainObject = (obj: any): obj is Record<string | number | symbol,
  * );
  * // result: { a: 1, b: { c: 2, d: 3 }, e: 4 }
  */
-export const deepMerge = (...objects: any[]): any => objects.reduce((acc, obj) => {
-  if (obj === undefined || obj === null) return acc;
+export const deepMerge = (...objects: any[]): any =>
+  objects.reduce((acc, obj) => {
+    if (obj === undefined || obj === null) return acc;
 
-  if (!isPlainObject(obj)) return obj;
+    if (!isPlainObject(obj)) return obj;
 
-  Object.keys(obj).forEach(key => {
-    if (isPlainObject(obj[key]) && isPlainObject(acc[key])) {
-      acc[key] = deepMerge(acc[key], obj[key]);
-    } else {
-      acc[key] = obj[key];
-    }
-  });
+    Object.keys(obj).forEach((key) => {
+      if (isPlainObject(obj[key]) && isPlainObject(acc[key])) {
+        acc[key] = deepMerge(acc[key], obj[key]);
+      } else {
+        acc[key] = obj[key];
+      }
+    });
 
-  return acc;
-}, {});
+    return acc;
+  }, {});

@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import type { Shortcut } from '@graph/plugins/shortcut/types';
   import CIcon from '@ui/core/Icon.vue';
+
   import { computed } from 'vue';
 
   const props = defineProps<{
