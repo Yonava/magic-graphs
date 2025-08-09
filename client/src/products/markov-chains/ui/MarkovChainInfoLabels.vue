@@ -24,8 +24,8 @@
   const { colorize: colorizeIllegalState, decolorize: decolorizeIllegalState } =
     useInvalidStateColorizer(graph.value, props.markov);
 
-  const { colorize: colorizeCommClass, decolorize: decolorizeCommClass } =
-    useSCCColorizer(graph.value, 'markov-communicating-class');
+  const { color: colorizeCommClass, uncolor: decolorizeCommClass } =
+    useSCCColorizer(graph.value);
 
   const steadyState = computed(() => {
     const s = props.markov.uniqueSteadyState.value;
@@ -36,8 +36,9 @@
   });
 
   const { label: labelSteadyState, unlabel: unlabelSteadyState } = useNodeLabel(
-    (id) => {
-      const index = graph.value.nodeIdToIndex.value.get(id)!;
+    graph.value,
+    (nodeId) => {
+      const index = graph.value.nodeIdToIndex.value.get(nodeId)!;
       const vector = steadyState.value;
       if (typeof vector !== 'string') return vector[index];
     },

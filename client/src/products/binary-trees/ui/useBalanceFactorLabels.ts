@@ -21,7 +21,7 @@ export const useBalanceFactorLabels = (graph: Graph, tree: TreeControls) => {
     return MAP_COLOR[nodeToBf.value.get(nodeId) ?? 0] ?? UNBALANCED_COLOR;
   };
 
-  const { label, unlabel } = useNodeLabel(nodeToBf);
+  const { label, unlabel } = useNodeLabel(graph, nodeToBf);
   const { color, uncolor } = useNodeColor(graph, colorGetter);
 
   const activate = () => {

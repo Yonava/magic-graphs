@@ -17,7 +17,7 @@ export const useHeightLabels = (graph: Graph, tree: TreeControls) => {
   const colorGetter = (nodeId: GNode['id']) =>
     mapColor(nodeIdToHeight.value.get(nodeId) ?? 0);
 
-  const { label, unlabel } = useNodeLabel(nodeIdToHeight);
+  const { label, unlabel } = useNodeLabel(graph, nodeIdToHeight);
   const { color, uncolor } = useNodeColor(graph, colorGetter);
 
   const activate = () => {
