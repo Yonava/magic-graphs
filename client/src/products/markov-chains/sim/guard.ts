@@ -13,7 +13,7 @@ export const canRunMarkovChain = (graph: Graph) => {
     .weighted()
     .nonNegativeEdgeWeights()
     .minNodes(1)
-    .valid(() => markov.illegalNodeIds.value.size === 0, {
+    .valid(() => markov.isChainValid.value, {
       title: 'Requires valid Markov Chain',
       description: definitions.valid,
       themer: {

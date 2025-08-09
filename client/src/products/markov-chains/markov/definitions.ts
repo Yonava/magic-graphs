@@ -6,8 +6,9 @@ export default {
   absorbing:
     'Contains at least one absorbing state, which is a state that, once entered, cannot be left (its self-transition probability is 1).',
   communicatingClasses:
-    'A communicating class is a subset of states such that each state in the subset can be reached from every other state in the subset.',
+    'A subset of states such that each state in the subset can be reached from every other state in the subset.',
   steadyState:
     'The probability distribution over states that does not change over time when the chain evolves.',
   irreducible: 'All states belong to a single communicating class',
+  ergotic: 'Irreducible and Aperiodic'
 } as const;
