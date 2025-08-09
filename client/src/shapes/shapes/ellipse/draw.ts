@@ -1,3 +1,4 @@
+import { drawStrokeOntoShape } from '@shape/helpers';
 import type { EllipseSchemaWithDefaults } from './defaults';
 
 export const drawEllipseWithCtx =
@@ -9,16 +10,7 @@ export const drawEllipseWithCtx =
     ctx.fillStyle = color;
     ctx.fill();
 
-    if (stroke) {
-      const { color, lineWidth: width, dash = [] } = stroke;
-      ctx.strokeStyle = color;
-      ctx.lineWidth = width;
-      // setLineDash does not support passing readonly arrays in ts!
-      // safe assertion since setLineDash does not perform mutations
-      ctx.setLineDash(dash as number[]);
-      ctx.stroke();
-      ctx.setLineDash([]);
-    }
+    if (stroke) drawStrokeOntoShape(ctx, stroke)
 
     ctx.closePath();
   };

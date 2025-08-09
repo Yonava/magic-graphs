@@ -3,67 +3,41 @@
   import { useMagicCanvas } from '@canvas/index';
   import colors from '@colors';
   import { useAnimatedShapes } from '@shape/animation';
-  import type { Shape } from '@shape/types';
   import { cross } from '@shapes/cross';
   import Button from '@ui/core/button/Button.vue';
-
-  import { ref } from 'vue';
 
   const { defineTimeline, shapes } = useAnimatedShapes();
 
   const { play, stop, pause, resume } = defineTimeline({
-    forShapes: ['line'],
-    durationMs: 4000,
+    forShapes: ['circle'],
+    durationMs: 3000,
     customInterpolations: {
-      fillGradient: {
-        value: (p) => [
-          {
-            color: 'red',
-            offset: 0,
-          },
-          {
-            color: 'red',
-            offset: p < 0.5 ? p * 2 : 2 - p * 2,
-          },
-          {
-            color: 'black',
-            offset: p < 0.5 ? p * 2 : 2 - p * 2,
-          },
-        ],
+      stroke: {
+        value: (p) => ({
+          lineWidth: 10 + (p < 0.5 ? p * 10 : 10 - p * 10),
+          color: 'red',
+          dash: [10, 10 + (p < 0.5 ? p * 10 : 10 - p * 10)],
+        }),
       },
     },
-    keyframes: [
-      {
-        progress: 0.5,
-        properties: {
-          end: { x: 50, y: 300 },
-          start: { x: 250, y: 0 },
-          lineWidth: 50,
-          textArea: (ta) => ({
-            textBlock: {
-              fontSize: ta.textBlock.fontSize + 12,
-            },
-          }),
-        },
-      },
-    ],
+    keyframes: [],
   });
 
-  const paintedShapes = ref<Shape[]>([]);
-
-  paintedShapes.value.push(
-    shapes.line({
-      id: 'test',
-      start: { x: 0, y: 0 },
-      end: { x: 200, y: 200 },
-      textArea: { textBlock: { content: 'real' } },
-      fillColor: 'purple',
-    }),
-  );
+  const cir = shapes.circle({
+    id: 'test',
+    at: { x: 0, y: 0 },
+    radius: 50,
+    stroke: {
+      color: 'red',
+      lineWidth: 10,
+    },
+    textArea: { textBlock: { content: 'real' } },
+  });
 
   const magic = useMagicCanvas();
-  magic.draw.content.value = (ctx) =>
-    paintedShapes.value.forEach((i) => i.draw(ctx));
+  magic.draw.content.value = (ctx) => {
+    cir.draw(ctx);
+  };
 
   magic.draw.backgroundPattern.value = (ctx, at) => {
     cross({

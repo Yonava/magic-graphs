@@ -1,4 +1,4 @@
-import { normalizeBoundingBox, toBorderRadiusArray } from '@shape/helpers';
+import { drawStrokeOntoShape, normalizeBoundingBox, toBorderRadiusArray } from '@shape/helpers';
 
 import type { RectSchemaWithDefaults } from './defaults';
 
@@ -113,16 +113,7 @@ export const drawRectWithCtx =
       ctx.fill();
     }
 
-    if (stroke) {
-      const { color, lineWidth, dash = [] } = stroke;
-      ctx.strokeStyle = color;
-      ctx.lineWidth = lineWidth;
-      // setLineDash does not support passing readonly arrays in ts!
-      // safe assertion since setLineDash does not perform mutations
-      ctx.setLineDash(dash as number[]);
-      ctx.stroke();
-      ctx.setLineDash([]);
-    }
+    if (stroke) drawStrokeOntoShape(ctx, stroke)
 
     ctx.restore();
   };

@@ -7,6 +7,7 @@ import type {
   BoundingBox,
   Coordinate,
   GradientStop,
+  Stroke,
 } from './types/utility';
 
 /**
@@ -355,3 +356,14 @@ export const toBorderRadiusArray = (
     ? [borderRadius, borderRadius, borderRadius, borderRadius]
     : borderRadius;
 };
+
+export const drawStrokeOntoShape = (ctx: CanvasRenderingContext2D, stroke: Stroke) => {
+  const { color, lineWidth: width, dash = [] } = stroke;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  // setLineDash does not support passing readonly arrays in ts!
+  // safe assertion since setLineDash does not perform mutations
+  ctx.setLineDash(dash as number[]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}

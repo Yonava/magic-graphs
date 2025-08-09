@@ -1,3 +1,4 @@
+import { drawStrokeOntoShape } from '@shape/helpers';
 import type { TriangleSchemaWithDefaults } from './defaults';
 
 export const drawTriangleWithCtx =
@@ -31,14 +32,5 @@ export const drawTriangleWithCtx =
     ctx.fill();
     ctx.closePath();
 
-    if (stroke) {
-      ctx.lineWidth = stroke.lineWidth;
-      ctx.strokeStyle = stroke.color;
-      // setLineDash does not support passing readonly arrays in ts!
-      // safe assertion since setLineDash does not perform mutations
-      ctx.setLineDash((stroke.dash ?? []) as number[]);
-      ctx.stroke();
-
-      ctx.setLineDash([]);
-    }
+    if (stroke) drawStrokeOntoShape(ctx, stroke)
   };

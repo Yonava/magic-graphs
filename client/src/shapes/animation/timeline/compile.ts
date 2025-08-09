@@ -200,10 +200,10 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
         };
       });
 
-      // @ts-expect-error could make TS happy, but would make this verbose unfortunately
       return interpolation.fn(
         keyframes,
         getDefaultEasing(propName),
+        // @ts-expect-error could make TS happy, but would make this verbose unfortunately
         rawPropVal,
       )(progress);
     };
@@ -216,12 +216,10 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
       ImperativeTrack<unknown>,
     ][];
     for (const [propName, interpolationOptions] of allCustomInterpolations) {
-      if (!interpolationOptions)
-        throw 'custom path received with no options. this should never happen!';
       const { easing: easingRaw, value } = interpolationOptions;
       const easing = easingRaw ?? getDefaultEasing(propName);
-      tl.properties[propName] = (_, progress) =>
-        value(easingOptionToFunction(easing)(progress));
+      const easingFn = easingOptionToFunction(easing);
+      tl.properties[propName] = (_, progress) => value(easingFn(progress));
     }
   }
 
