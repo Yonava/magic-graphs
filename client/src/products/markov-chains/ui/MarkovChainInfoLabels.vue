@@ -32,7 +32,7 @@
     if (s.type === 'error-invalid') return 'Chain Invalid';
     if (s.type === 'error-no-convergence') return 'Does Not Converge';
     if (s.type === 'error-not-unique') return 'Not Unique';
-    return s.data.map((f) => f.valueOf());
+    return s.data.map((f) => f.toFraction());
   });
 
   const { label: labelSteadyState, unlabel: unlabelSteadyState } = useNodeLabel(

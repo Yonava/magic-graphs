@@ -4,7 +4,7 @@ import colors from '@utils/colors';
 
 import type { MarkovChain } from '../markov/useMarkovChain';
 
-const USETHEME_ID = 'markov-illegal-state';
+const USETHEME_ID = 'markov-invalid-state';
 
 export const useInvalidStateColorizer = (graph: Graph, markov: MarkovChain) => {
   const { setTheme, removeAllThemes } = useTheme(graph, USETHEME_ID);
@@ -24,17 +24,10 @@ export const useInvalidStateColorizer = (graph: Graph, markov: MarkovChain) => {
     return sum.simplify(0.001).toFraction();
   };
 
-  const nodeTextSize = (node: GNode) => {
-    const defaultSize = graph.baseTheme.value.nodeTextSize;
-    if (graph.focus.isFocused(node.id)) return;
-    return defaultSize - 5;
-  };
-
   const colorize = () => {
     setTheme('nodeBorderColor', nodeBorderColor);
     setTheme('nodeAnchorColor', nodeBorderColor);
     setTheme('nodeText', nodeText);
-    setTheme('nodeTextSize', nodeTextSize);
   };
 
   const decolorize = () => {
