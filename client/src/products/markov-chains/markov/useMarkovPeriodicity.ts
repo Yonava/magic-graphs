@@ -101,7 +101,6 @@ export const useMarkovPeriodicity = (
   const { adjacencyList } = graph.adjacencyList;
 
   const recurrentClassPeriods = computed(() => {
-    // console.log(getPeriod(adjacencyList.value, recurrentClasses.value[0]));
     const res = recurrentClasses.value.map((recurrentClass) =>
       getPeriod(adjacencyList.value, recurrentClass),
     );

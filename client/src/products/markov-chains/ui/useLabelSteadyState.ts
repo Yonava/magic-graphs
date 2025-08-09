@@ -7,7 +7,7 @@ export const USETHEME_ID = 'markov-steady-state-label';
 
 export const useLabelSteadyState = (graph: Graph, markov: MarkovChain) => {
   const { setTheme, removeTheme } = useTheme(graph, USETHEME_ID);
-  const { steadyState } = markov;
+  const { uniqueSteadyState: steadyState } = markov;
 
   const nodeText = (node: GNode) => {
     if (!steadyState.value) return;

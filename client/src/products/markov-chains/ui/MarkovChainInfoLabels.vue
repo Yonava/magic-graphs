@@ -72,7 +72,8 @@
       @mouseleave="unlabelSteadyState"
       :tooltip="definitions.steadyState"
     >
-      Steady State (Coming Soon)
+      Steady State:
+      {{ markov.uniqueSteadyState.value.map((f) => f.toString()) }}
     </GHoverInfoTop>
   </GWell>
 </template>

@@ -4,7 +4,7 @@ import { mergeSetArrayIntoSet } from '@utils/sets';
 import { computed } from 'vue';
 
 import { useMarkovClasses } from './useMarkovClasses';
-import { useMarkovNodeWeights } from './useMarkovNodeWeights';
+import { useNodeIdToOutboundWeight } from './useMarkovNodeWeights';
 import { useMarkovPeriodicity } from './useMarkovPeriodicity';
 import { useMarkovSteadyState } from './useMarkovSteadyState';
 
@@ -43,10 +43,31 @@ export const useMarkovChain = (graph: Graph) => {
     return recurrentClasses.value.length === 1 && transientClasses.value.length === 0
   })
 
-  const { nodeIdToOutgoingWeight, illegalNodeIds } =
-    useMarkovNodeWeights(graph);
+  const isErgodic = computed(() => {
+    return !isPeriodic.value && isIrreducible.value
+  })
 
-  const steadyState = useMarkovSteadyState();
+  const nodeIdToOutgoingWeight = useNodeIdToOutboundWeight(graph);
+
+  const invalidStates = computed(() => {
+    const invalidStatesArr = graph.nodes.value
+      .map((node) => node.id)
+      .filter((nodeId) => {
+        const outgoingWeight = nodeIdToOutgoingWeight.value.get(nodeId)!
+        return outgoingWeight.valueOf() !== 1
+      })
+    return new Set(invalidStatesArr)
+  });
+
+  const isChainValid = computed(() => invalidStates.value.size > 0)
+
+  const steadyState = useMarkovSteadyState(graph);
+  const uniqueSteadyState = computed(() => {
+    if (!isChainValid.value) return { type: 'error-invalid' } as const;
+    if (recurrentClasses.value.length > 1) return { type: 'error-not-unique' } as const;
+    if (isPeriodic.value) return { type: 'error-no-convergence' } as const
+    return { type: 'success', data: steadyState.value } as const;
+  })
 
   return {
     communicatingClasses,
@@ -65,11 +86,13 @@ export const useMarkovChain = (graph: Graph) => {
     absorbingStates,
     isIrreducible,
 
-    // TODO implement a correct version of steady state
-    steadyState,
+    uniqueSteadyState,
 
     nodeIdToOutgoingWeight,
-    illegalNodeIds,
+
+    invalidStates,
+    isChainValid,
+    isErgodic,
   };
 };
 
