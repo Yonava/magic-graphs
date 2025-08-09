@@ -59,7 +59,7 @@ export const useMarkovChain = (graph: Graph) => {
     return new Set(invalidStatesArr)
   });
 
-  const isChainValid = computed(() => invalidStates.value.size > 0)
+  const isChainValid = computed(() => invalidStates.value.size === 0)
 
   const steadyState = useMarkovSteadyState(graph);
   const uniqueSteadyState = computed(() => {

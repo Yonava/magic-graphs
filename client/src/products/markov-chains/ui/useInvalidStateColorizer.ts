@@ -6,14 +6,14 @@ import type { MarkovChain } from '../markov/useMarkovChain';
 
 const USETHEME_ID = 'markov-illegal-state';
 
-export const useIllegalStateColorizer = (graph: Graph, markov: MarkovChain) => {
+export const useInvalidStateColorizer = (graph: Graph, markov: MarkovChain) => {
   const { setTheme, removeAllThemes } = useTheme(graph, USETHEME_ID);
 
-  const { illegalNodeIds, nodeIdToOutgoingWeight } = markov;
+  const { invalidStates, nodeIdToOutgoingWeight } = markov;
 
   const nodeBorderColor = (node: GNode) => {
     if (graph.focus.isFocused(node.id)) return;
-    if (illegalNodeIds.value.has(node.id)) return colors.RED_600;
+    if (invalidStates.value.has(node.id)) return colors.RED_600;
     return colors.GREEN_600;
   };
 

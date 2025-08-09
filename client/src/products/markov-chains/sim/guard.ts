@@ -3,11 +3,11 @@ import { SimulationGuard } from '@ui/product/sim/guard';
 
 import definitions from '../markov/definitions';
 import { useMarkovChain } from '../markov/useMarkovChain';
-import { useIllegalStateColorizer } from '../ui/useIllegalStateColorizer';
+import { useInvalidStateColorizer } from '../ui/useInvalidStateColorizer';
 
 export const canRunMarkovChain = (graph: Graph) => {
   const markov = useMarkovChain(graph);
-  const { colorize, decolorize } = useIllegalStateColorizer(graph, markov);
+  const { colorize, decolorize } = useInvalidStateColorizer(graph, markov);
 
   return new SimulationGuard(graph)
     .weighted()

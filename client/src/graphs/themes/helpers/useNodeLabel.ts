@@ -1,5 +1,6 @@
 import { useTheme } from '@graph/themes/useTheme';
-import type { GNode, Graph } from '@graph/types';
+import type { GNode } from '@graph/types';
+import { nonNullGraph as graph } from '@graph/global';
 
 import type { MaybeRef } from 'vue';
 
@@ -9,12 +10,11 @@ import type { MaybeRef } from 'vue';
 type LabelLike = string | number | boolean;
 
 type LabelMap = Map<GNode['id'], LabelLike>;
-type LabelGetter = (nodeId: GNode['id']) => LabelLike;
+type LabelGetter = (nodeId: GNode['id']) => LabelLike | undefined;
 
 const DEFAULT_USETHEME_ID = 'node-labeller';
 
 export const useNodeLabel = (
-  graph: Graph,
   mapOrGetter: MaybeRef<LabelMap> | LabelGetter,
   themeId = DEFAULT_USETHEME_ID,
 ) => {
@@ -24,10 +24,10 @@ export const useNodeLabel = (
     return mapOrGetter.get(nodeId);
   };
 
-  const { setTheme, removeTheme } = useTheme(graph, themeId);
+  const { setTheme, removeTheme } = useTheme(graph.value, themeId);
 
   const nodeText = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
+    if (graph.value.focus.isFocused(node.id)) return;
     const label = get(node.id);
     if (label === undefined) return;
     return label.toString();

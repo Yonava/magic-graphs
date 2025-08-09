@@ -3,8 +3,8 @@ import colors from '@utils/colors';
 import type { Color } from '@utils/colors';
 
 import type { TreeControls } from '../useTree';
-import { useNodeColor } from './useNodeColor';
-import { useNodeLabel } from './useNodeLabel';
+import { useNodeColor } from '../../../graphs/themes/helpers/useNodeColor';
+import { useNodeLabel } from '../../../graphs/themes/helpers/useNodeLabel';
 
 export const useBalanceFactorLabels = (graph: Graph, tree: TreeControls) => {
   const { nodeIdToBalanceFactor: nodeToBf } = tree;
@@ -21,7 +21,7 @@ export const useBalanceFactorLabels = (graph: Graph, tree: TreeControls) => {
     return MAP_COLOR[nodeToBf.value.get(nodeId) ?? 0] ?? UNBALANCED_COLOR;
   };
 
-  const { label, unlabel } = useNodeLabel(graph, nodeToBf);
+  const { label, unlabel } = useNodeLabel(nodeToBf);
   const { color, uncolor } = useNodeColor(graph, colorGetter);
 
   const activate = () => {

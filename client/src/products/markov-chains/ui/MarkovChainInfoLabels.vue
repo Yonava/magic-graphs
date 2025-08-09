@@ -1,13 +1,15 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from '@graph/global';
+  import { useNodeLabel } from '@graph/themes/helpers/useNodeLabel';
   import { useSCCColorizer } from '@product/sandbox/ui/GraphInfoMenu/useSCCColorizer';
   import GHoverInfoTop from '@ui/graph/GHoverInfoTop.vue';
   import GWell from '@ui/graph/GWell.vue';
 
+  import { computed } from 'vue';
+
   import definitions from '../markov/definitions';
   import type { MarkovChain } from '../markov/useMarkovChain';
-  import { useIllegalStateColorizer } from './useIllegalStateColorizer';
-  import { useLabelSteadyState } from './useLabelSteadyState';
+  import { useInvalidStateColorizer } from './useInvalidStateColorizer';
   import { usePeriodicityLabels } from './usePeriodicityLabels';
 
   const props = defineProps<{
@@ -19,14 +21,27 @@
     props.markov,
   );
 
-  const { label: labelSteadyState, unlabel: unlabelSteadyState } =
-    useLabelSteadyState(graph.value, props.markov);
-
   const { colorize: colorizeIllegalState, decolorize: decolorizeIllegalState } =
-    useIllegalStateColorizer(graph.value, props.markov);
+    useInvalidStateColorizer(graph.value, props.markov);
 
   const { colorize: colorizeCommClass, decolorize: decolorizeCommClass } =
     useSCCColorizer(graph.value, 'markov-communicating-class');
+
+  const steadyState = computed(() => {
+    const s = props.markov.uniqueSteadyState.value;
+    if (s.type === 'error-invalid') return 'Chain Invalid';
+    if (s.type === 'error-no-convergence') return 'Does Not Converge';
+    if (s.type === 'error-not-unique') return 'Not Unique';
+    return s.data.map((f) => f.valueOf());
+  });
+
+  const { label: labelSteadyState, unlabel: unlabelSteadyState } = useNodeLabel(
+    (id) => {
+      const index = graph.value.nodeIdToIndex.value.get(id)!;
+      const vector = steadyState.value;
+      if (typeof vector !== 'string') return vector[index];
+    },
+  );
 </script>
 
 <template>
@@ -39,7 +54,7 @@
       @mouseleave="decolorizeIllegalState"
       :tooltip="definitions.valid"
     >
-      Valid? {{ markov.illegalNodeIds.value.size === 0 ? 'Yes' : 'No' }}
+      Valid? {{ markov.isChainValid.value ? 'Yes' : 'No' }}
     </GHoverInfoTop>
 
     <GHoverInfoTop
@@ -72,8 +87,7 @@
       @mouseleave="unlabelSteadyState"
       :tooltip="definitions.steadyState"
     >
-      Steady State:
-      {{ markov.uniqueSteadyState.value.map((f) => f.toString()) }}
+      Steady State: {{ steadyState }}
     </GHoverInfoTop>
   </GWell>
 </template>
