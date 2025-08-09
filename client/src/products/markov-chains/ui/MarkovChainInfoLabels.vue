@@ -51,7 +51,11 @@
     </GHoverInfoTop>
 
     <GHoverInfoTop :tooltip="definitions.absorbing">
-      Absorbing? {{ markov.isAbsorbing.value ? 'Yes' : 'No' }}
+      Absorbing? {{ markov.isChainAbsorbing.value ? 'Yes' : 'No' }}
+    </GHoverInfoTop>
+
+    <GHoverInfoTop :tooltip="definitions.irreducible">
+      Irreducible? {{ markov.isIrreducible.value ? 'Yes' : 'No' }}
     </GHoverInfoTop>
 
     <GHoverInfoTop
