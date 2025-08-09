@@ -42,6 +42,7 @@
       const vector = steadyState.value;
       if (typeof vector !== 'string') return vector[index];
     },
+    'unique-steady-state-text',
   );
 </script>
 

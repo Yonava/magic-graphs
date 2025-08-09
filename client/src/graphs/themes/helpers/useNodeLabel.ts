@@ -10,12 +10,10 @@ type LabelLike = string | number | boolean;
 type LabelMap = Map<GNode['id'], LabelLike>;
 type LabelGetter = (nodeId: GNode['id']) => LabelLike | undefined;
 
-const DEFAULT_USETHEME_ID = 'node-labeller';
-
 export const useNodeLabel = (
   graph: Graph,
   mapOrGetter: MaybeRef<LabelMap> | LabelGetter,
-  themeId = DEFAULT_USETHEME_ID,
+  themeId: string,
 ) => {
   const get = (nodeId: GNode['id']) => {
     if (typeof mapOrGetter === 'function') return mapOrGetter(nodeId);

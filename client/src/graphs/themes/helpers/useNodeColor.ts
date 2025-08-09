@@ -8,12 +8,10 @@ import type { MaybeRef } from 'vue';
 type ColorMap = Map<GNode['id'], Color>;
 type ColorGetter = (nodeId: GNode['id']) => Color | undefined;
 
-const DEFAULT_USETHEME_ID = 'node-colorer';
-
 export const useNodeColor = (
   graph: Graph,
   mapOrGetter: MaybeRef<ColorMap> | ColorGetter,
-  themeId = DEFAULT_USETHEME_ID,
+  themeId: string,
 ) => {
   const get = (nodeId: GNode['id']) => {
     if (typeof mapOrGetter === 'function') return mapOrGetter(nodeId);
