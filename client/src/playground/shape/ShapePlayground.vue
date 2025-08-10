@@ -6,22 +6,30 @@
   import { cross } from '@shapes/cross';
   import Button from '@ui/core/button/Button.vue';
 
-  const { defineTimeline, shapes } = useAnimatedShapes();
+  const { defineTimeline, shapes, getAnimatedProp } = useAnimatedShapes();
 
   const { play, stop, pause, resume } = defineTimeline({
     forShapes: ['circle'],
     durationMs: 6000,
     customInterpolations: {
       stroke: {
-        value: (p) => ({
-          lineWidth: 10 + (p < 0.5 ? p * 10 : 10 - p * 10),
-          color: 'red',
-          dash: {
-            pattern: [40, 22.832],
-            // circum = 2 pi r = 2 pi 50 = 100 pi
-            offset: p * (100 * Math.PI),
-          },
-        }),
+        value: (progress) => {
+          const r = getAnimatedProp('test', 'radius');
+          const n = 5;
+          const k = 40 / 22.832;
+          const circum = 2 * r * Math.PI;
+          const p = circum / n;
+          const L = (k / (k + 1)) * p;
+          const G = (1 / (k + 1)) * p;
+          return {
+            lineWidth: 10,
+            color: 'red',
+            dash: {
+              pattern: [L, G],
+              offset: progress * circum,
+            },
+          };
+        },
       },
     },
     keyframes: [{ progress: 0.5, properties: { radius: 100 } }],

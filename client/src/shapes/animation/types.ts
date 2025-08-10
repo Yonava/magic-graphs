@@ -33,5 +33,5 @@ export type ActiveAnimation = {
   /**
    * the schema at the point the animation started
    */
-  schema?: LooseSchema;
+  schemaWithDefaults?: LooseSchema;
 };

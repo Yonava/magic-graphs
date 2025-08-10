@@ -1,5 +1,7 @@
+import type { UnionToIntersection } from 'ts-essentials';
 import { getSchemaWithDefaults } from '@shape/defaults/shapes';
 import type {
+  EverySchemaProp,
   EverySchemaPropName,
   SchemaId,
   Shape,
@@ -61,7 +63,7 @@ export const useAnimatedShapes = () => {
     const animations = activeAnimations.get(schemaId);
     if (!animations || animations.length === 0) return;
 
-    let outputSchema = animations[0].schema;
+    let outputSchema = animations[0].schemaWithDefaults;
 
     if (!outputSchema) {
       console.warn('animation set without a schema. this should never happen!');
@@ -120,6 +122,56 @@ export const useAnimatedShapes = () => {
     return outputSchema;
   };
 
+  const getAnimatedProp = <T extends EverySchemaPropName>(schemaId: string, inputPropName: T) => {
+    const animations = activeAnimations.get(schemaId);
+    if (!animations || animations.length === 0) {
+      throw new Error(`schema with id ${schemaId} has no running animations`)
+    };
+
+    const schemaWithDefaults = animations[0].schemaWithDefaults
+
+    if (!schemaWithDefaults) {
+      throw new Error('animation set without a schema. this should never happen!');
+    }
+
+    if (!(inputPropName in schemaWithDefaults)) {
+      throw new Error(`input prop name ${inputPropName} not a property on schema (${Object.keys(schemaWithDefaults)})`)
+    }
+
+    let propVal = schemaWithDefaults[inputPropName] as UnionToIntersection<EverySchemaProp>[T]
+
+    for (const animation of animations) {
+      const timeline = timelineIdToTimeline.get(animation.timelineId);
+      if (!timeline) throw new Error('animation activated without a timeline!');
+
+      const animationWithTimeline = {
+        ...timeline,
+        ...animation,
+      };
+
+      const shapeName = schemaIdToShapeName.get(schemaId);
+      if (!shapeName) {
+        console.warn(
+          'animation set without shape name mapping. this should never happen!',
+        );
+        continue;
+      }
+
+      if (!animationWithTimeline.validShapes.has(shapeName)) {
+        console.warn('invalid shape name!');
+        continue;
+      }
+
+      const { properties } = animationWithTimeline;
+      const progress = getAnimationProgress(animationWithTimeline);
+
+      const fn = properties[inputPropName as string]
+      propVal = fn(schemaWithDefaults, progress)
+    }
+
+    return propVal;
+  }
+
   const autoAnimate = useAutoAnimate(defineTimeline, getAnimatedSchema);
 
   const animatedFactory =
@@ -149,7 +201,7 @@ export const useAnimatedShapes = () => {
               return factory(targetMapSchema as WithId<T>)[prop];
 
             if (!animations || animations.length === 0) return target[prop];
-            if (!animations[0]?.schema) animations[0].schema = schemaWithDefaults;
+            if (!animations[0]?.schemaWithDefaults) animations[0].schemaWithDefaults = schemaWithDefaults;
 
             if (prop === 'startTextAreaEdit')
               return console.warn(
@@ -184,6 +236,7 @@ export const useAnimatedShapes = () => {
     defineTimeline,
     autoAnimate: { captureFrame: autoAnimate.captureFrame },
     getAnimatedSchema,
+    getAnimatedProp,
     activeAnimations,
   };
 };
