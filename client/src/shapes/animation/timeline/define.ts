@@ -126,7 +126,7 @@ export type TimelinePlaybackDelay = {
 export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<
   {
     forShapes: T[];
-    keyframes: TimelineKeyframe<SchemaWithDefaults[NoInfer<T>]>[];
+    keyframes?: TimelineKeyframe<SchemaWithDefaults[NoInfer<T>]>[];
     easing?: Partial<Record<keyof SchemaWithDefaults[NoInfer<T>], EasingOption>>;
   } & TimelinePlaybackDuration &
   TimelinePlaybackDelay &

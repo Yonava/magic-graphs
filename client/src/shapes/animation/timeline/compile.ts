@@ -95,14 +95,16 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
     validShapes: new Set(timeline.forShapes),
   };
 
+  const rawTimelineKeyframes = timeline?.keyframes ?? [];
+
   const propsInTimeline = [
     ...new Set(
-      timeline.keyframes.map((kf) => Object.keys(kf.properties)).flat(),
+      rawTimelineKeyframes.map((kf) => Object.keys(kf.properties)).flat(),
     ),
   ] as EverySchemaPropName[];
 
   const propToAnimationKeyframes = propsInTimeline.reduce((acc, prop) => {
-    const propInTimeline = timeline.keyframes
+    const propInTimeline = rawTimelineKeyframes
       .map((kf): AnimationKeyframe<any> => {
         const propVal = kf.properties[prop];
         const isObj = isCustomInputObject(propVal);
