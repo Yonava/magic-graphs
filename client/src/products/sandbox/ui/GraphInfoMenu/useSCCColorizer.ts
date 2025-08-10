@@ -1,4 +1,4 @@
-import { useTheme } from '@graph/themes/useTheme';
+import { useNodeColor } from '@graph/themes/helpers/useNodeColor';
 import type { GNode, Graph } from '@graph/types';
 import colors from '@utils/colors';
 
@@ -13,28 +13,9 @@ const COLORS = [
   colors.ORANGE_500,
 ];
 
-export const useSCCColorizer = (graph: Graph, themeId = SCC_THEME_ID) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, themeId);
-
-  const colorNodeBorders = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
-    const map = graph.characteristics.nodeIdToConnectedComponent.value;
-    const scc = map.get(node.id);
-    if (scc === undefined) return;
-    return COLORS[scc % COLORS.length];
-  };
-
-  const colorize = () => {
-    setTheme('nodeBorderColor', colorNodeBorders);
-    setTheme('nodeAnchorColor', colorNodeBorders);
-  };
-
-  const decolorize = () => {
-    removeAllThemes();
-  };
-
-  return {
-    colorize,
-    decolorize,
-  };
-};
+export const useSCCColorizer = (graph: Graph, themeId = SCC_THEME_ID) => useNodeColor(graph, (nodeId: GNode['id']) => {
+  const map = graph.characteristics.nodeIdToConnectedComponent.value;
+  const scc = map.get(nodeId);
+  if (scc === undefined) return;
+  return COLORS[scc % COLORS.length];
+}, themeId)

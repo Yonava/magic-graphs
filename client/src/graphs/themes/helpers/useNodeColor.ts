@@ -1,18 +1,17 @@
 import { useTheme } from '@graph/themes/useTheme';
 import type { GNode, Graph } from '@graph/types';
+
 import type { Color } from '@utils/colors';
 
 import type { MaybeRef } from 'vue';
 
 type ColorMap = Map<GNode['id'], Color>;
-type ColorGetter = (nodeId: GNode['id']) => Color;
-
-const DEFAULT_USETHEME_ID = 'node-colorer';
+type ColorGetter = (nodeId: GNode['id']) => Color | undefined;
 
 export const useNodeColor = (
   graph: Graph,
   mapOrGetter: MaybeRef<ColorMap> | ColorGetter,
-  themeId = DEFAULT_USETHEME_ID,
+  themeId: string,
 ) => {
   const get = (nodeId: GNode['id']) => {
     if (typeof mapOrGetter === 'function') return mapOrGetter(nodeId);

@@ -6,7 +6,7 @@ import { USETHEME_ID } from '../constants';
 import type { MarkovChain } from '../markov/useMarkovChain';
 
 export const useMarkovColorizer = (graph: Graph, markov: MarkovChain) => {
-  const sccColorizer = useSCCColorizer(graph);
+  const sccColorizer = useSCCColorizer(graph, 'default-markov-scc-colors');
 
   const { setTheme, removeTheme } = useTheme(graph, USETHEME_ID);
 
@@ -18,13 +18,13 @@ export const useMarkovColorizer = (graph: Graph, markov: MarkovChain) => {
   };
 
   const colorize = () => {
-    sccColorizer.colorize();
+    sccColorizer.color();
     setTheme('nodeBorderColor', colorNodeBorder);
     setTheme('nodeAnchorColor', colorNodeBorder);
   };
 
   const decolorize = () => {
-    sccColorizer.decolorize();
+    sccColorizer.uncolor();
     removeTheme('nodeBorderColor');
     removeTheme('nodeAnchorColor');
   };

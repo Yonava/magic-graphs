@@ -1,6 +1,5 @@
 import { useTheme } from '@graph/themes/useTheme';
 import type { GNode, Graph } from '@graph/types';
-
 import type { MaybeRef } from 'vue';
 
 /**
@@ -9,14 +8,12 @@ import type { MaybeRef } from 'vue';
 type LabelLike = string | number | boolean;
 
 type LabelMap = Map<GNode['id'], LabelLike>;
-type LabelGetter = (nodeId: GNode['id']) => LabelLike;
-
-const DEFAULT_USETHEME_ID = 'node-labeller';
+type LabelGetter = (nodeId: GNode['id']) => LabelLike | undefined;
 
 export const useNodeLabel = (
   graph: Graph,
   mapOrGetter: MaybeRef<LabelMap> | LabelGetter,
-  themeId = DEFAULT_USETHEME_ID,
+  themeId: string,
 ) => {
   const get = (nodeId: GNode['id']) => {
     if (typeof mapOrGetter === 'function') return mapOrGetter(nodeId);

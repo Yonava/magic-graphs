@@ -1,10 +1,10 @@
 import type { Graph } from '@graph/types';
-import { reduceSet } from '@utils/sets';
+import { mergeSetArrayIntoSet } from '@utils/sets';
 
 import { computed } from 'vue';
 
 import { useMarkovClasses } from './useMarkovClasses';
-import { useMarkovNodeWeights } from './useMarkovNodeWeights';
+import { useNodeIdToOutboundWeight } from './useMarkovNodeWeights';
 import { useMarkovPeriodicity } from './useMarkovPeriodicity';
 import { useMarkovSteadyState } from './useMarkovSteadyState';
 
@@ -19,30 +19,55 @@ export const useMarkovChain = (graph: Graph) => {
     nodeIdToTransientClassIndex,
   } = useMarkovClasses(graph);
 
-  const recurrentStates = computed(() => reduceSet(recurrentClasses.value));
-  const transientStates = computed(() => reduceSet(transientClasses.value));
+  const recurrentStates = computed(() => mergeSetArrayIntoSet(recurrentClasses.value));
+  const transientStates = computed(() => mergeSetArrayIntoSet(transientClasses.value));
 
   const { isPeriodic, recurrentClassPeriods } = useMarkovPeriodicity(
     graph,
     recurrentClasses,
   );
 
-  // TODO check with a pro to see if this is correct.
-  const isAbsorbing = computed(() => {
-    if (recurrentClassPeriods.value.length === 0) return false;
-    return recurrentClasses.value.every((recurrentClass) => {
-      return recurrentClass.size === 1;
-    });
+  const absorbingStates = computed(() => {
+    return mergeSetArrayIntoSet(recurrentClasses.value.filter((rc) => rc.size === 1))
+  })
+
+  const isChainAbsorbing = computed(() => {
+    return absorbingStates.value.size > 0
   });
 
   const communicatingClasses = computed(() => {
     return graph.characteristics.stronglyConnectedComponents.value;
   });
 
-  const { nodeIdToOutgoingWeight, illegalNodeIds } =
-    useMarkovNodeWeights(graph);
+  const isIrreducible = computed(() => {
+    return recurrentClasses.value.length === 1 && transientClasses.value.length === 0
+  })
 
-  const steadyState = useMarkovSteadyState();
+  const isErgodic = computed(() => {
+    return !isPeriodic.value && isIrreducible.value
+  })
+
+  const nodeIdToOutgoingWeight = useNodeIdToOutboundWeight(graph);
+
+  const invalidStates = computed(() => {
+    const invalidStatesArr = graph.nodes.value
+      .map((node) => node.id)
+      .filter((nodeId) => {
+        const outgoingWeight = nodeIdToOutgoingWeight.value.get(nodeId)!
+        return outgoingWeight.valueOf() !== 1
+      })
+    return new Set(invalidStatesArr)
+  });
+
+  const isChainValid = computed(() => invalidStates.value.size === 0)
+
+  const steadyState = useMarkovSteadyState(graph);
+  const uniqueSteadyState = computed(() => {
+    if (!isChainValid.value) return { type: 'error-invalid' } as const;
+    if (recurrentClasses.value.length > 1) return { type: 'error-not-unique' } as const;
+    if (isPeriodic.value) return { type: 'error-no-convergence' } as const
+    return { type: 'success', data: steadyState.value } as const;
+  })
 
   return {
     communicatingClasses,
@@ -57,13 +82,17 @@ export const useMarkovChain = (graph: Graph) => {
     nodeIdToTransientClassIndex,
 
     isPeriodic,
-    isAbsorbing,
+    isChainAbsorbing,
+    absorbingStates,
+    isIrreducible,
 
-    // TODO implement a correct version of steady state
-    steadyState,
+    uniqueSteadyState,
 
     nodeIdToOutgoingWeight,
-    illegalNodeIds,
+
+    invalidStates,
+    isChainValid,
+    isErgodic,
   };
 };
 
