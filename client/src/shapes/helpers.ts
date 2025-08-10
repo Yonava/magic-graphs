@@ -8,6 +8,7 @@ import type {
   Coordinate,
   GradientStop,
   Stroke,
+  DashPattern,
 } from './types/utility';
 
 /**
@@ -357,13 +358,24 @@ export const toBorderRadiusArray = (
     : borderRadius;
 };
 
+const isDashArray = (dash: Stroke['dash']): dash is DashPattern => Array.isArray(dash)
+
 export const drawStrokeOntoShape = (ctx: CanvasRenderingContext2D, stroke: Stroke) => {
-  const { color, lineWidth: width, dash = [] } = stroke;
+  const { color, lineWidth: width, dash } = stroke;
   ctx.strokeStyle = color;
   ctx.lineWidth = width;
-  // setLineDash does not support passing readonly arrays in ts!
-  // safe assertion since setLineDash does not perform mutations
-  ctx.setLineDash(dash as number[]);
+
+  if (dash) {
+    // setLineDash does not support passing readonly arrays in ts!
+    // safe assertion since setLineDash does not perform mutations
+    const isArr = isDashArray(dash)
+    ctx.setLineDash((isArr ? dash : dash.pattern) as unknown as number[]);
+    ctx.lineDashOffset = isArr ? 0 : (dash.offset ?? 0)
+  }
+
   ctx.stroke();
+
+  // reset to defaults
   ctx.setLineDash([]);
+  ctx.lineDashOffset = 0;
 }

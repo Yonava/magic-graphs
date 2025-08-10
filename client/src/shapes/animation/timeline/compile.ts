@@ -213,13 +213,13 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
   if (customInterpolations) {
     const allCustomInterpolations = Object.entries(customInterpolations) as [
       EverySchemaPropName,
-      ImperativeTrack<unknown>,
+      ImperativeTrack<any, any>,
     ][];
     for (const [propName, interpolationOptions] of allCustomInterpolations) {
       const { easing: easingRaw, value } = interpolationOptions;
       const easing = easingRaw ?? getDefaultEasing(propName);
       const easingFn = easingOptionToFunction(easing);
-      tl.properties[propName] = (_, progress) => value(easingFn(progress));
+      tl.properties[propName] = (schemaWithDefaults, progress) => value(easingFn(progress), schemaWithDefaults);
     }
   }
 

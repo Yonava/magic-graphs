@@ -1,4 +1,4 @@
-import { shapeDefaults } from '@shape/defaults/shapes';
+import { getSchemaWithDefaults } from '@shape/defaults/shapes';
 import type {
   EverySchemaPropName,
   SchemaId,
@@ -127,44 +127,44 @@ export const useAnimatedShapes = () => {
       factory: ShapeFactory<T>,
       shapeName: ShapeName,
     ): ShapeFactory<WithId<T>> =>
-    (schema) =>
-      new Proxy(factory(schema), {
-        get: (target, rawProp) => {
-          const prop = rawProp as keyof Shape;
-          if (!shapeProps.has(prop)) return target[prop];
+      (schema) =>
+        new Proxy(factory(schema), {
+          get: (target, rawProp) => {
+            const prop = rawProp as keyof Shape;
+            if (!shapeProps.has(prop)) return target[prop];
 
-          const animations = activeAnimations.get(schema.id);
+            const animations = activeAnimations.get(schema.id);
 
-          const defaultResolver:
-            | ((schema: LooseSchema) => LooseSchema)
-            | undefined = (shapeDefaults as any)?.[shapeName];
-          if (!defaultResolver)
-            throw new Error(`cant find defaults for ${shapeName}`);
-          const schemaWithDefaults = defaultResolver(schema);
+            const defaultResolver:
+              | ((schema: LooseSchema) => LooseSchema)
+              | undefined = (getSchemaWithDefaults as any)?.[shapeName];
+            if (!defaultResolver)
+              throw new Error(`cant find defaults for ${shapeName}`);
+            const schemaWithDefaults = defaultResolver(schema);
 
-          autoAnimate.captureSchemaState(schemaWithDefaults, shapeName);
+            autoAnimate.captureSchemaState(schemaWithDefaults, shapeName);
 
-          const targetMapSchema = autoAnimate.snapshotMap.get(schema.id);
-          if (targetMapSchema)
-            return factory(targetMapSchema as WithId<T>)[prop];
+            const targetMapSchema = autoAnimate.snapshotMap.get(schema.id);
+            if (targetMapSchema)
+              return factory(targetMapSchema as WithId<T>)[prop];
 
-          if (!animations || animations.length === 0) return target[prop];
-          if (!animations[0]?.schema) animations[0].schema = schemaWithDefaults;
+            if (!animations || animations.length === 0) return target[prop];
+            if (!animations[0]?.schema) animations[0].schema = schemaWithDefaults;
 
-          if (prop === 'startTextAreaEdit')
-            return console.warn(
-              'shapes with active animations cannot spawn text inputs',
-            );
+            if (prop === 'startTextAreaEdit')
+              return console.warn(
+                'shapes with active animations cannot spawn text inputs',
+              );
 
-          const hasShapeName = schemaIdToShapeName.get(schema.id);
-          if (!hasShapeName) schemaIdToShapeName.set(schema.id, shapeName);
+            const hasShapeName = schemaIdToShapeName.get(schema.id);
+            if (!hasShapeName) schemaIdToShapeName.set(schema.id, shapeName);
 
-          const animatedSchema = getAnimatedSchema(schema.id);
-          if (!animatedSchema) return target[prop];
+            const animatedSchema = getAnimatedSchema(schema.id);
+            if (!animatedSchema) return target[prop];
 
-          return factory(animatedSchema as WithId<T>)[prop];
-        },
-      });
+            return factory(animatedSchema as WithId<T>)[prop];
+          },
+        });
 
   return {
     shapes: {

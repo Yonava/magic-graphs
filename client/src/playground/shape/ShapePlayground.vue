@@ -10,17 +10,21 @@
 
   const { play, stop, pause, resume } = defineTimeline({
     forShapes: ['circle'],
-    durationMs: 3000,
+    durationMs: 6000,
     customInterpolations: {
       stroke: {
         value: (p) => ({
           lineWidth: 10 + (p < 0.5 ? p * 10 : 10 - p * 10),
           color: 'red',
-          dash: [10, 10 + (p < 0.5 ? p * 10 : 10 - p * 10)],
+          dash: {
+            pattern: [40, 22.832],
+            // circum = 2 pi r = 2 pi 50 = 100 pi
+            offset: p * (100 * Math.PI),
+          },
         }),
       },
     },
-    keyframes: [],
+    keyframes: [{ progress: 0.5, properties: { radius: 100 } }],
   });
 
   const cir = shapes.circle({
@@ -28,15 +32,35 @@
     at: { x: 0, y: 0 },
     radius: 50,
     stroke: {
-      color: 'red',
       lineWidth: 10,
+      color: 'red',
+      dash: {
+        pattern: [40, 22.832],
+        offset: 0,
+      },
     },
-    textArea: { textBlock: { content: 'real' } },
+    textArea: { textBlock: { content: '1' } },
+  });
+
+  const cir2 = shapes.circle({
+    id: 'test2',
+    at: { x: 200, y: 0 },
+    radius: 50,
+    stroke: {
+      lineWidth: 10,
+      color: 'red',
+      dash: {
+        pattern: [40, 22.832],
+        offset: 90,
+      },
+    },
+    textArea: { textBlock: { content: '2' } },
   });
 
   const magic = useMagicCanvas();
   magic.draw.content.value = (ctx) => {
     cir.draw(ctx);
+    cir2.draw(ctx);
   };
 
   magic.draw.backgroundPattern.value = (ctx, at) => {

@@ -32,7 +32,13 @@ export type DashPattern = readonly [dashLength: number, gapLength: number];
 export type Stroke = {
   color: string;
   lineWidth: number;
-  dash?: DashPattern;
+  dash?: DashPattern | {
+    /**
+     * [dashLength: number, gapLength: number]
+     */
+    pattern: DashPattern,
+    offset?: number,
+  };
 };
 
 export type BorderRadiusArrayValue = [

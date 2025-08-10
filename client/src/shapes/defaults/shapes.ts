@@ -11,7 +11,7 @@ import { resolveStarDefaults } from '@shape/shapes/star/defaults';
 import { resolveTriangleDefaults } from '@shape/shapes/triangle/defaults';
 import { resolveUTurnDefaults } from '@shape/shapes/uturn/defaults';
 
-export const shapeDefaults = {
+export const getSchemaWithDefaults = {
   arrow: resolveArrowDefaults,
   circle: resolveCircleDefaults,
   cross: resolveCrossDefaults,
@@ -26,6 +26,8 @@ export const shapeDefaults = {
   uturn: resolveUTurnDefaults,
 } as const;
 
-export type SchemaDefaults = {
-  [K in keyof typeof shapeDefaults]: ReturnType<(typeof shapeDefaults)[K]>;
+export type SchemaWithDefaults = {
+  [K in keyof typeof getSchemaWithDefaults]: ReturnType<(typeof getSchemaWithDefaults)[K]>;
 };
+
+// type t = SchemaWithDefaults['arrow']
