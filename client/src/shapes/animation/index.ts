@@ -122,56 +122,6 @@ export const useAnimatedShapes = () => {
     return outputSchema;
   };
 
-  const getAnimatedProp = <T extends EverySchemaPropName>(schemaId: string, inputPropName: T) => {
-    const animations = activeAnimations.get(schemaId);
-    if (!animations || animations.length === 0) {
-      throw new Error(`schema with id ${schemaId} has no running animations`)
-    };
-
-    const schemaWithDefaults = animations[0].schemaWithDefaults
-
-    if (!schemaWithDefaults) {
-      throw new Error('animation set without a schema. this should never happen!');
-    }
-
-    if (!(inputPropName in schemaWithDefaults)) {
-      throw new Error(`input prop name ${inputPropName} not a property on schema (${Object.keys(schemaWithDefaults)})`)
-    }
-
-    let propVal = schemaWithDefaults[inputPropName] as UnionToIntersection<EverySchemaProp>[T]
-
-    for (const animation of animations) {
-      const timeline = timelineIdToTimeline.get(animation.timelineId);
-      if (!timeline) throw new Error('animation activated without a timeline!');
-
-      const animationWithTimeline = {
-        ...timeline,
-        ...animation,
-      };
-
-      const shapeName = schemaIdToShapeName.get(schemaId);
-      if (!shapeName) {
-        console.warn(
-          'animation set without shape name mapping. this should never happen!',
-        );
-        continue;
-      }
-
-      if (!animationWithTimeline.validShapes.has(shapeName)) {
-        console.warn('invalid shape name!');
-        continue;
-      }
-
-      const { properties } = animationWithTimeline;
-      const progress = getAnimationProgress(animationWithTimeline);
-
-      const fn = properties[inputPropName as string]
-      propVal = fn(schemaWithDefaults, progress)
-    }
-
-    return propVal;
-  }
-
   const autoAnimate = useAutoAnimate(defineTimeline, getAnimatedSchema);
 
   const animatedFactory =
@@ -236,7 +186,62 @@ export const useAnimatedShapes = () => {
     defineTimeline,
     autoAnimate: { captureFrame: autoAnimate.captureFrame },
     getAnimatedSchema,
-    getAnimatedProp,
+    /**
+     * Get the animated value of a schema property currently being animated.
+     *
+     * Intended for use in imperative timelines where resolving one property's animated value
+     * depends on the animated value of another property. In these special cases, `getAnimatedSchema`
+     * would cause a circular dependency.
+     *
+     * WARNING: Calling this on a property that the imperative track itself resolves
+     * will crash your app!
+     */
+    getAnimatedProp: <T extends EverySchemaPropName>(schemaId: string, inputPropName: T) => {
+      const animations = activeAnimations.get(schemaId);
+      if (!animations || animations.length === 0) {
+        throw new Error(`Schema with id ${schemaId} has no running animations`)
+      };
+
+      const { schemaWithDefaults } = animations[0]
+
+      if (!schemaWithDefaults) {
+        throw new Error('(Internal Error) Animation set without a schema. this should never happen!');
+      }
+
+      if (!(inputPropName in schemaWithDefaults)) {
+        throw new Error(`(User Error) Input prop name ${inputPropName} not a property on schema (${Object.keys(schemaWithDefaults)})`)
+      }
+
+      const shapeName = schemaIdToShapeName.get(schemaId);
+      if (!shapeName) {
+        throw new Error('(Internal Error) Animation set without shape name mapping. this should never happen!');
+      }
+
+      let propVal = schemaWithDefaults[inputPropName] as UnionToIntersection<EverySchemaProp>[T]
+
+      for (const animation of animations) {
+        const timeline = timelineIdToTimeline.get(animation.timelineId);
+        if (!timeline) throw new Error('(Internal Error) Animation activated without a timeline!');
+
+        const animationWithTimeline = {
+          ...timeline,
+          ...animation,
+        };
+
+        const { validShapes, timelineId } = animationWithTimeline
+        if (!validShapes.has(shapeName)) {
+          throw new Error(`(Internal Error) Attempted to apply inappropriate animation to schema! Animation timeline ${timelineId} only works for shapes ${Array.from(validShapes.keys())} but schema ${schemaId} is of shape ${shapeName}.`);
+        }
+
+        const { properties } = animationWithTimeline;
+        const progress = getAnimationProgress(animationWithTimeline);
+
+        const fn = properties[inputPropName as string]
+        propVal = fn(schemaWithDefaults, progress)
+      }
+
+      return propVal;
+    },
     activeAnimations,
   };
 };

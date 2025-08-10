@@ -15,17 +15,17 @@
       stroke: {
         value: (progress) => {
           const r = getAnimatedProp('test', 'radius');
-          const n = 5;
-          const k = 40 / 22.832;
+          const numOfDashes = 5;
+          const lengthGapRatio = 40 / 22.832;
           const circum = 2 * r * Math.PI;
-          const p = circum / n;
-          const L = (k / (k + 1)) * p;
-          const G = (1 / (k + 1)) * p;
+          const p = circum / numOfDashes;
+          const dashLength = (lengthGapRatio / (lengthGapRatio + 1)) * p;
+          const gapLength = (1 / (lengthGapRatio + 1)) * p;
           return {
             lineWidth: 10,
             color: 'red',
             dash: {
-              pattern: [L, G],
+              pattern: [dashLength, gapLength],
               offset: progress * circum,
             },
           };
@@ -39,14 +39,6 @@
     id: 'test',
     at: { x: 0, y: 0 },
     radius: 50,
-    stroke: {
-      lineWidth: 10,
-      color: 'red',
-      dash: {
-        pattern: [40, 22.832],
-        offset: 0,
-      },
-    },
     textArea: { textBlock: { content: '1' } },
   });
 
