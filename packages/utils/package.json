@@ -7,6 +7,9 @@
   },
   "keywords": [],
   "author": "",
+  "exports": {
+    "ctx": "./src/ctx/index.ts"
+  },
   "license": "ISC",
   "description": "utility functions for magic graphs",
   "devDependencies": {
