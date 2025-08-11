@@ -95,14 +95,16 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
     validShapes: new Set(timeline.forShapes),
   };
 
+  const rawTimelineKeyframes = timeline?.keyframes ?? [];
+
   const propsInTimeline = [
     ...new Set(
-      timeline.keyframes.map((kf) => Object.keys(kf.properties)).flat(),
+      rawTimelineKeyframes.map((kf) => Object.keys(kf.properties)).flat(),
     ),
   ] as EverySchemaPropName[];
 
   const propToAnimationKeyframes = propsInTimeline.reduce((acc, prop) => {
-    const propInTimeline = timeline.keyframes
+    const propInTimeline = rawTimelineKeyframes
       .map((kf): AnimationKeyframe<any> => {
         const propVal = kf.properties[prop];
         const isObj = isCustomInputObject(propVal);
@@ -200,10 +202,10 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
         };
       });
 
-      // @ts-expect-error could make TS happy, but would make this verbose unfortunately
       return interpolation.fn(
         keyframes,
         getDefaultEasing(propName),
+        // @ts-expect-error could make TS happy, but would make this verbose unfortunately
         rawPropVal,
       )(progress);
     };
@@ -213,15 +215,13 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
   if (customInterpolations) {
     const allCustomInterpolations = Object.entries(customInterpolations) as [
       EverySchemaPropName,
-      ImperativeTrack<unknown>,
+      ImperativeTrack<any, any>,
     ][];
     for (const [propName, interpolationOptions] of allCustomInterpolations) {
-      if (!interpolationOptions)
-        throw 'custom path received with no options. this should never happen!';
       const { easing: easingRaw, value } = interpolationOptions;
       const easing = easingRaw ?? getDefaultEasing(propName);
-      tl.properties[propName] = (_, progress) =>
-        value(easingOptionToFunction(easing)(progress));
+      const easingFn = easingOptionToFunction(easing);
+      tl.properties[propName] = (schemaWithDefaults, progress) => value(easingFn(progress), schemaWithDefaults);
     }
   }
 

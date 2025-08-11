@@ -1,14 +1,14 @@
-import type { TextArea } from '@shape/text/types';
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
 import type { EverySchemaProp, ShapeNameToSchema, WithId } from '@shape/types';
 import { generateId } from '@utils/id';
-import type { DeepPartial, DeepRequired } from 'ts-essentials';
+import type { DeepRequired } from 'ts-essentials';
 
 import type { DeepReadonly } from 'vue';
 
 import type { EasingOption } from '../easing';
 import { type CompiledTimeline, compileTimeline } from './compile';
+import type { SchemaWithDefaults } from '@shape/defaults/shapes';
 
 type ShapeTarget = {
   /**
@@ -64,62 +64,37 @@ type TimelineControls = {
   dispose: () => void;
 };
 
-type SharedSchemaProps<T extends keyof ShapeNameToSchema> =
-  keyof ShapeNameToSchema[T] &
-    {
-      [K in keyof ShapeNameToSchema[T]]: T extends any
-        ? K extends keyof ShapeNameToSchema[T]
-          ? unknown
-          : never
-        : never;
-    }[keyof ShapeNameToSchema[T]];
-
-type SchemaProps<T extends keyof ShapeNameToSchema> = Pick<
-  ShapeNameToSchema[T],
-  SharedSchemaProps<T>
->;
-
-type InterceptedSchemaProps = {
-  textArea: DeepPartial<TextArea>;
-};
-
 type CustomOption<TProp, TSchema> = (
   propValue: DeepRequired<TProp>,
   schema: TSchema,
 ) => TProp;
 
-type WithCustomOption<T> = {
-  [K in keyof T]:
-    | NonNullable<T[K]>
-    | CustomOption<NonNullable<T[K]>, DeepRequired<T>>;
+type WithCustomOption<TSchema> = {
+  [TProp in keyof TSchema]:
+  | TSchema[TProp]
+  | CustomOption<TSchema[TProp], TSchema>;
 };
 
-type WithObjectOption<T> = {
-  [K in keyof T]: T[K] | { value: T[K]; easing?: EasingOption };
+type WithObjectOption<TSchema> = {
+  [TProp in keyof TSchema]: TSchema[TProp] | { value: TSchema[TProp]; easing?: EasingOption };
 };
 
-type TimelineProps<T> = {
-  [K in keyof T]: K extends keyof InterceptedSchemaProps
-    ? InterceptedSchemaProps[K]
-    : T[K];
-};
-
-type TimelinePropsWithCustomOption<T> = WithObjectOption<
-  WithCustomOption<TimelineProps<T>>
+type TimelinePropsWithCustomOption<TSchema> = WithObjectOption<
+  WithCustomOption<TSchema>
 >;
 
 /**
  * A manually-defined animation track for a single property.
  * Used as an escape hatch when the property is too complex for standard keyframe interpolation.
  */
-export type ImperativeTrack<T> = {
+export type ImperativeTrack<TSchema, TProp extends keyof TSchema> = {
   /**
    * A function that computes the property's value at a given progress point.
    *
    * @param progress A number from 0 to 1 representing animation progress.
    * @returns The computed value for the property at the given progress.
    */
-  value: (progress: number) => T;
+  value: (progress: number, schema: TSchema) => TSchema[TProp];
   /**
    * Optional easing function to apply to the progress value before passing to `value`.
    * @default 'linear'
@@ -127,17 +102,17 @@ export type ImperativeTrack<T> = {
   easing?: EasingOption;
 };
 
-type CustomInterpolation<T> = {
-  [K in keyof T]: ImperativeTrack<T[K]>;
+type CustomInterpolation<TSchema> = {
+  [TProp in keyof TSchema]: ImperativeTrack<TSchema, TProp>;
 };
 
-export type TimelineCustomInterpolations<T> = {
-  customInterpolations?: Partial<CustomInterpolation<T>>;
+export type TimelineCustomInterpolations<TSchema> = {
+  customInterpolations?: Partial<CustomInterpolation<TSchema>>;
 };
 
-type TimelineKeyframe<T extends Partial<EverySchemaProp>> = {
+type TimelineKeyframe<TSchema> = {
   progress: number;
-  properties: Partial<TimelinePropsWithCustomOption<T>>;
+  properties: Partial<TimelinePropsWithCustomOption<TSchema>>;
 };
 
 export type TimelinePlaybackDuration = {
@@ -151,11 +126,11 @@ export type TimelinePlaybackDelay = {
 export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<
   {
     forShapes: T[];
-    keyframes: TimelineKeyframe<SchemaProps<NoInfer<T>>>[];
-    easing?: Partial<Record<keyof SchemaProps<NoInfer<T>>, EasingOption>>;
+    keyframes?: TimelineKeyframe<SchemaWithDefaults[NoInfer<T>]>[];
+    easing?: Partial<Record<keyof SchemaWithDefaults[NoInfer<T>], EasingOption>>;
   } & TimelinePlaybackDuration &
-    TimelinePlaybackDelay &
-    TimelineCustomInterpolations<SchemaProps<NoInfer<T>>>
+  TimelinePlaybackDelay &
+  TimelineCustomInterpolations<SchemaWithDefaults[NoInfer<T>]>
 >;
 
 export const useDefineTimeline = (controls: UseDefineTimelineOptions) => {
