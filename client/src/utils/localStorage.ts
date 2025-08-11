@@ -1,5 +1,4 @@
-import type { Camera } from '@canvas/camera';
-import type { MagicCanvasOptions } from '@canvas/index';
+import type { MagicCanvasOptions } from '@canvas/types';
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 /* eslint-disable */
 import type { Graph } from '@graph/types';
