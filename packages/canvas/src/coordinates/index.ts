@@ -1,4 +1,4 @@
-import { getDevicePixelRatio } from '@canvas/camera/utils';
+import { getDevicePixelRatio } from '../camera/utils';
 import type { Coordinate } from '@shape/types/utility';
 import { getCtx } from '@utils/ctx';
 
