@@ -6,7 +6,6 @@ import {
   getPrimeFactors,
   lowestPrimeFactor,
   roundToNearestN,
-  within,
 } from './math';
 
 describe('roundToNearestN', () => {

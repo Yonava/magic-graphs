@@ -27,7 +27,7 @@ export const roundToNearestN = (nearest: number) => (n: number) => {
  * getPrimeFactors(15) // [3, 5]
  */
 export const getPrimeFactors = (num: number) => {
-  const factors = [];
+  const factors: number[] = [];
   let divisor = 2;
 
   while (num >= 2) {
