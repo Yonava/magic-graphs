@@ -70,6 +70,11 @@ export const useAnimatedShapes = () => {
       return;
     }
 
+    const shapeName = schemaIdToShapeName.get(schemaId);
+    if (!shapeName) {
+      throw new Error('(Internal Error) Animation set without shape name mapping. this should never happen!');
+    }
+
     for (const animation of animations) {
       const timeline = timelineIdToTimeline.get(animation.timelineId);
       if (!timeline) throw new Error('animation activated without a timeline!');
@@ -79,17 +84,9 @@ export const useAnimatedShapes = () => {
         ...animation,
       };
 
-      const shapeName = schemaIdToShapeName.get(schemaId);
-      if (!shapeName) {
-        console.warn(
-          'animation set without shape name mapping. this should never happen!',
-        );
-        continue;
-      }
-
-      if (!animationWithTimeline.validShapes.has(shapeName)) {
-        console.warn('invalid shape name!');
-        continue;
+      const { validShapes, timelineId } = animationWithTimeline
+      if (!validShapes.has(shapeName)) {
+        throw new Error(`(Internal Error) Attempted to apply inappropriate animation to schema! Animation timeline ${timelineId} only works for shapes ${Array.from(validShapes.keys())} but schema ${schemaId} is of shape ${shapeName}.`);
       }
 
       // cleanup animation if expired
