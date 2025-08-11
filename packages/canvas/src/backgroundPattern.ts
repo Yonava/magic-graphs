@@ -1,4 +1,4 @@
-import { getMagicCoordinates } from '@canvas/coordinates';
+import { getMagicCoordinates } from './coordinates';
 import type { Coordinate } from '@shape/types/utility';
 
 import type { Camera } from './camera';
@@ -16,7 +16,7 @@ const computeAlpha = (z: number) => {
     Math.floor(
       ((z - PATTERN_FULLY_FADED_OUT) /
         (START_PATTERN_FADE_OUT - PATTERN_FULLY_FADED_OUT)) *
-        100,
+      100,
     ),
   );
   return strPercent.length === 1 ? `0${strPercent}` : strPercent;
