@@ -4,22 +4,11 @@
   "scripts": {
     "start": "cd server && npm i --omit=dev && node dist/index.js",
     "dev": "concurrently -c auto command 'npm:dev-*'",
-    "dev-client": "cd client && npm run dev",
-    "dev-server": "cd server && npm run dev",
-    "sync": "node typeSync.mjs"
+    "dev-client": "cd client && pnpm dev",
+    "dev-server": "cd server && pnpm dev"
   },
-  "keywords": [],
   "devDependencies": {
-    "@types/graphlib": "^2.1.12",
     "concurrently": "^8.2.2"
   },
-  "license": "ISC",
-  "description": "magic products entry point",
-  "dependencies": {
-    "@primevue/themes": "^4.2.4",
-    "bignumber.js": "^9.1.2",
-    "graphlib": "^2.1.8",
-    "primevue": "^4.2.4",
-    "vue-router": "^4.4.5"
-  }
+  "description": "magic products entry point"
 }
