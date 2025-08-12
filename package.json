@@ -2,13 +2,12 @@
   "name": "magic-graphs",
   "version": "1.0.0",
   "scripts": {
-    "start": "cd server && npm i --omit=dev && node dist/index.js",
-    "dev": "concurrently -c auto command 'npm:dev-*'",
-    "dev-client": "cd client && pnpm dev",
-    "dev-server": "cd server && pnpm dev"
+    "start": "cd packages/server && pnpm i --omit=dev && node dist/index.js",
+    "dev": "concurrently -c auto command 'pnpm:dev-*'",
+    "dev-client": "cd packages/client && pnpm dev",
+    "dev-server": "cd packages/server && pnpm dev"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
-  },
-  "description": "magic products entry point"
+  }
 }
