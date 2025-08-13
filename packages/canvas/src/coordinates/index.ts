@@ -1,6 +1,6 @@
+import { Coordinate } from '@magic/shapes/types/utility';
 import { getDevicePixelRatio } from '../camera/utils';
-import type { Coordinate } from '@shape/types/utility';
-import { getCtx } from '@magic/utils/'
+import { getCtx } from '@magic/utils/ctx'
 
 import { type Ref, onMounted, ref } from 'vue';
 

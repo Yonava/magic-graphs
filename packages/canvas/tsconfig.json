@@ -13,11 +13,20 @@
     "rootDir": "src",
     "baseUrl": ".",
     "noEmit": false,
-    "composite": true
+    "composite": true,
+    "types": ["node"],
+    "paths": {
+      "@magic/utils/*": ["../utils/src/*"],
+      "@magic/shapes/*": ["../shapes/src/*"],
+      "@magic/shapes": ["../shapes/src/index.ts"]
+    }
   },
   "references": [
     {
       "path": "../utils"
+    },
+    {
+      "path": "../shapes"
     }
   ],
   "include": ["src"]
