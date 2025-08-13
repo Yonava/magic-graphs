@@ -1,8 +1,8 @@
-import type { BaseGraph } from '@graph/base';
+import type { BaseGraph } from '../base';
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
-import type { Graph } from '@graph/types';
-import { localKeys } from '@utils/localStorage';
+import type { Graph } from '../types';
+import { localKeys } from '@magic/utils/localStorage';
 import { useDark } from '@vueuse/core';
 import { useLocalStorage } from '@vueuse/core';
 

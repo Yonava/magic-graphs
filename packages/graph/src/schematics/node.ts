@@ -1,6 +1,6 @@
 import colors from '@magic/utils/colors';
-import type { BaseGraph } from '@graph/base';
-import type { GNode, SchemaItem } from '@graph/types';
+import type { BaseGraph } from '../base';
+import type { GNode, SchemaItem } from '../types';
 
 export type SupportedNodeShapes = 'circle' | 'square';
 type PropsNeededFromGraph = 'shapes' | 'getTheme';

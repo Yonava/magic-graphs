@@ -1,4 +1,4 @@
-import type { Graph } from '@graph/types';
+import type { Graph } from '../types';
 
 import type { Ref } from 'vue';
 

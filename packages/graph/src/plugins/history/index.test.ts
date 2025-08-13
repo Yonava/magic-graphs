@@ -1,4 +1,4 @@
-import { useBaseGraph } from '@graph/base';
+import { useBaseGraph } from '../base';
 import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';

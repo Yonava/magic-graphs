@@ -1,4 +1,4 @@
-import type { GEdge, GNode, Graph, SchemaItem } from '@graph/types';
+import type { GEdge, GNode, Graph, SchemaItem } from '../types';
 import { Fraction } from 'mathjs';
 
 /**

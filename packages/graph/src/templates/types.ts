@@ -1,4 +1,4 @@
-import type { GEdge, GNode } from '@graph/types';
+import type { GEdge, GNode } from '../types';
 
 /**
  * a blueprint for building a graph. templates come both built-in and user provided

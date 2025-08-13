@@ -1,6 +1,6 @@
-import type { GEdge, GNode } from '@graph/types';
+import type { GEdge, GNode } from '../types';
 import type { Socket } from 'socket.io-client';
-import type { ProductInfo } from 'src/types';
+import type { ProductInfo } from '@magic/products/types';
 
 /**
  * data for a collaborator that is not connected to a single

@@ -1,4 +1,4 @@
-import type { BaseGraph } from '@graph/base';
+import type { BaseGraph } from '../base';
 
 import { computed } from 'vue';
 

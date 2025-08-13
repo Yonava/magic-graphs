@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@magic/canvas": "workspace:*"
+    "@magic/canvas": "workspace:*",
+    "@vueuse/core": "^13.6.0",
+    "graphlib": "^2.1.8",
+    "mathjs": "^14.0.1",
+    "socket.io-client": "^4.8.1",
+    "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
+    "@types/graphlib": "^2.1.12",
+    "@types/tinycolor2": "^1.4.6",
     "vitest": "^3.2.4",
     "vue": "^3.5.18"
   },

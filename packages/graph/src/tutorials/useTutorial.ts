@@ -1,6 +1,6 @@
-import { SEQUENCES } from '@graph/tutorials/sequences';
-import { useGraphTutorial } from '@graph/tutorials/useGraphTutorial';
-import type { Graph } from '@graph/types';
+import { SEQUENCES } from '../tutorials/sequences';
+import { useGraphTutorial } from '../tutorials/useGraphTutorial';
+import type { Graph } from '../types';
 
 /**
  * implements useGraphTutorial with the basics tutorial sequence

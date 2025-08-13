@@ -1,5 +1,5 @@
-import { graph } from '@graph/global';
-import colors from '@utils/colors';
+import { graph } from '../global';
+import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';
 

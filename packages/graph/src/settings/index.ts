@@ -1,7 +1,7 @@
-import type { GraphAnimations } from '@graph/base/animations';
-import type { GEdge, GNode, SchemaItem } from '@graph/types';
-import type { DefineTimeline } from '@shape/animation/timeline/define';
-import { fractionToDecimal } from '@utils/fracDecConverter';
+import type { GraphAnimations } from '../base/animations';
+import type { GEdge, GNode, SchemaItem } from '../types';
+import type { DefineTimeline } from '@magic/shapes/animation/timeline/define';
+import { fractionToDecimal } from '@magic/utils/fracDecConverter';
 import type { DeepPartial } from 'ts-essentials';
 
 /**

@@ -1,4 +1,4 @@
-import type { GNode } from '@graph/types';
+import type { GNode } from '../types';
 import { describe, expect, it } from 'vitest';
 
 import {

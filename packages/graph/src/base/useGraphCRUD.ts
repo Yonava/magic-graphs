@@ -1,14 +1,14 @@
-import type { MagicCanvasProps } from '@magic/canvas';
+import type { MagicCanvasProps } from '@magic/canvas/types';
 import type { Emitter } from '../events';
 import { getConnectedEdges } from '../helpers';
 import { nodeLetterLabelGetter } from '../labels';
 import type { GraphSettings } from '../settings';
 import type { GEdge, GNode } from '../types';
-import type { AnimatedShapeControls } from '@shape/animation';
-import type { Coordinate } from '@shape/types/utility';
-import { getCtx } from '@utils/ctx';
-import { generateId } from '@utils/id';
-import type { PartiallyPartial } from '@utils/types';
+import type { AnimatedShapeControls } from '@magic/shapes/animation';
+import type { Coordinate } from '@magic/shapes/types/utility';
+import { getCtx } from '@magic/utils/ctx';
+import { generateId } from '@magic/utils/id';
+import type { PartiallyPartial } from '@magic/utils/types';
 
 import type { Ref } from 'vue';
 

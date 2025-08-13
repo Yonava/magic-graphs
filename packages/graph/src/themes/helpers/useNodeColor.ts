@@ -1,7 +1,7 @@
-import { useTheme } from '@graph/themes/useTheme';
-import type { GNode, Graph } from '@graph/types';
+import { useTheme } from '../themes/useTheme';
+import type { GNode, Graph } from '../types';
 
-import type { Color } from '@utils/colors';
+import type { Color } from '@magic/utils/colors';
 
 import type { MaybeRef } from 'vue';
 

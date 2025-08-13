@@ -1,8 +1,8 @@
-import { getEncapsulatedNodeBox } from '@graph/plugins/marquee/helpers';
-import type { Graph } from '@graph/types';
-import { useGraph } from '@graph/useGraph';
-import { generateId } from '@utils/id';
-import { products } from '@utils/product';
+import { getEncapsulatedNodeBox } from '../plugins/marquee/helpers';
+import type { Graph } from '../types';
+import { useGraph } from '../useGraph';
+import { generateId } from '@magic/utils/id';
+import { products } from '@magic/utils/product';
 import { useLocalStorage } from '@vueuse/core';
 
 import { computed, onMounted, onUnmounted, ref } from 'vue';

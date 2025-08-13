@@ -1,4 +1,4 @@
-import { generateId } from '@utils/id';
+import { generateId } from '@magic/utils/id';
 
 import type { GEdge, GNode, Graph } from './types';
 
@@ -111,28 +111,28 @@ export const decodeCompressedTransitData = (
   const nodes = !encodedNodes
     ? []
     : encodedNodes.split(FIELD_DELIMITER).map((encodedNode): GNode => {
-        const [encodedLabel, encodedX, encodedY] =
-          encodedNode.split(PROP_DELIMITER);
-        return {
-          id: generateId(),
-          label: encodedLabel,
-          x: Number(encodedX) * SCALE_FACTOR,
-          y: Number(encodedY) * SCALE_FACTOR,
-        };
-      });
+      const [encodedLabel, encodedX, encodedY] =
+        encodedNode.split(PROP_DELIMITER);
+      return {
+        id: generateId(),
+        label: encodedLabel,
+        x: Number(encodedX) * SCALE_FACTOR,
+        y: Number(encodedY) * SCALE_FACTOR,
+      };
+    });
 
   const edges = !encodedEdges
     ? []
     : encodedEdges.split(FIELD_DELIMITER).map((encodedEdge): GEdge => {
-        const [encodedFrom, encodedTo, encodedLabel] =
-          encodedEdge.split(PROP_DELIMITER);
-        return {
-          id: generateId(),
-          label: encodedLabel ?? DEFAULT_EDGE_LABEL,
-          from: nodes[Number(encodedFrom)].id,
-          to: nodes[Number(encodedTo)].id,
-        };
-      });
+      const [encodedFrom, encodedTo, encodedLabel] =
+        encodedEdge.split(PROP_DELIMITER);
+      return {
+        id: generateId(),
+        label: encodedLabel ?? DEFAULT_EDGE_LABEL,
+        from: nodes[Number(encodedFrom)].id,
+        to: nodes[Number(encodedTo)].id,
+      };
+    });
 
   return {
     nodes,

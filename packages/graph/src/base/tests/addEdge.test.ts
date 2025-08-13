@@ -1,5 +1,5 @@
-import type { GEdge } from '@graph/types';
-import { generateId } from '@utils/id';
+import type { GEdge } from '../../types';
+import { generateId } from '@magic/utils/id';
 import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';

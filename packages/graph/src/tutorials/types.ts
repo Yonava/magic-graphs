@@ -1,5 +1,5 @@
-import type { GraphEvent, GraphEventMap } from '@graph/events';
-import type { Graph } from '@graph/types';
+import type { GraphEvent, GraphEventMap } from '../events';
+import type { Graph } from '../types';
 
 import type { ComputedRef, Ref } from 'vue';
 
@@ -22,15 +22,15 @@ export type TutorialStepForEvent<T extends GraphEvent> = {
    * of the event and only if the predicate returns true
    */
   dismiss:
-    | T
-    | {
-        event: T;
-        /**
-         * @param args the arguments passed to the event handler as defined in the event map
-         * @returns true if the step should be dismissed
-         */
-        predicate: (...args: Parameters<GraphEventMap[T]>) => boolean;
-      };
+  | T
+  | {
+    event: T;
+    /**
+     * @param args the arguments passed to the event handler as defined in the event map
+     * @returns true if the step should be dismissed
+     */
+    predicate: (...args: Parameters<GraphEventMap[T]>) => boolean;
+  };
 };
 
 /**
@@ -72,18 +72,18 @@ type SharedStepProps = {
    * passing a string will highlight the element with the id
    */
   highlightElement?:
-    | string
-    | {
-        /**
-         * id of the element to highlight
-         */
-        id?: string;
-        /**
-         * css class name to apply to the element
-         * @default 'element-highlight'
-         */
-        className?: string;
-      };
+  | string
+  | {
+    /**
+     * id of the element to highlight
+     */
+    id?: string;
+    /**
+     * css class name to apply to the element
+     * @default 'element-highlight'
+     */
+    className?: string;
+  };
 };
 
 /**
@@ -94,15 +94,15 @@ type SharedStepProps = {
 export type IntervalStep = {
   hint: string;
   dismiss:
-    | 'onInterval'
-    | {
-        event: 'onInterval';
-        /**
-         * @param iteration the number of times the interval has been called
-         * @returns true if the step should be dismissed
-         */
-        predicate: (iteration: number) => boolean;
-      };
+  | 'onInterval'
+  | {
+    event: 'onInterval';
+    /**
+     * @param iteration the number of times the interval has been called
+     * @returns true if the step should be dismissed
+     */
+    predicate: (iteration: number) => boolean;
+  };
   /**
    * time to wait before the next evaluation, in milliseconds
    * @default 1000 milliseconds

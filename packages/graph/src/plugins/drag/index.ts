@@ -1,8 +1,8 @@
-import type { BaseGraph } from '@graph/base';
-import type { GraphMouseEvent } from '@graph/base/types';
-import type { GNode } from '@graph/types';
-import type { Coordinate } from '@shape/types/utility';
-import { MOUSE_BUTTONS } from '@utils/mouse';
+import type { BaseGraph } from '../base';
+import type { GraphMouseEvent } from '../base/types';
+import type { GNode } from '../types';
+import type { Coordinate } from '@magic/shapes/types/utility';
+import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, ref } from 'vue';
 

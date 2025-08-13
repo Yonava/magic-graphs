@@ -1,15 +1,15 @@
-import { LETTERS, graphLabelGetter } from '@graph/labels';
+import { LETTERS, graphLabelGetter } from '../labels';
 import type {
   PartialGenerateClusterNodesOptions,
   PartialGenerateCohesiveEdgesOptions,
-} from '@graph/templates/autoGenerate/types';
+} from '../templates/autoGenerate/types';
 import {
   GENERATE_CLUSTER_GRAPH_DEFAULTS,
   GENERATE_COHESIVE_EDGES_DEFAULTS,
-} from '@graph/templates/autoGenerate/types';
-import type { GEdge, GNode } from '@graph/types';
-import { angleDifference } from '@shape/helpers';
-import { generateId } from '@utils/id';
+} from '../templates/autoGenerate/types';
+import type { GEdge, GNode } from '../types';
+import { angleDifference } from '@magic/shapes/helpers';
+import { generateId } from '@magic/utils/id';
 
 import { ref } from 'vue';
 

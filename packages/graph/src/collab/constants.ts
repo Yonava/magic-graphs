@@ -1,4 +1,4 @@
-import colors from '@utils/colors';
+import colors from '@magic/utils/colors';
 
 const IS_PROD = window.location.hostname !== 'localhost';
 

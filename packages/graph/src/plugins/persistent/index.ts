@@ -1,7 +1,7 @@
-import type { BaseGraph } from '@graph/base';
-import type { GraphEvent } from '@graph/events';
-import type { GEdge, GNode } from '@graph/types';
-import { local } from '@utils/localStorage';
+import type { BaseGraph } from '../base';
+import type { GraphEvent } from '../events';
+import type { GEdge, GNode } from '../types';
+import { local } from '@magic/utils/localStorage';
 
 export const usePersistent = (graph: BaseGraph) => {
   const canStore = (nodeOrEdge: { id: string }) => {

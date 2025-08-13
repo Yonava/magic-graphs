@@ -1,9 +1,9 @@
-import type { BaseGraph } from '@graph/base';
-import type { FocusOption, GraphMouseEvent } from '@graph/base/types';
-import { useTheme } from '@graph/themes/useTheme';
-import type { SchemaItem } from '@graph/types';
-import { getCtx } from '@utils/ctx';
-import { MOUSE_BUTTONS } from '@utils/mouse';
+import type { BaseGraph } from '../base';
+import type { FocusOption, GraphMouseEvent } from '../base/types';
+import { useTheme } from '../themes/useTheme';
+import type { SchemaItem } from '../types';
+import { getCtx } from '@magic/utils/ctx';
+import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, readonly, ref } from 'vue';
 

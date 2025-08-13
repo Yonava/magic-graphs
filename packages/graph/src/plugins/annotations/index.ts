@@ -1,16 +1,16 @@
-import type { BaseGraph } from '@graph/base';
-import type { GraphMouseEvent } from '@graph/base/types';
-import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
-import type { Aggregator } from '@graph/types';
-import { circle } from '@shape/shapes/circle';
-import type { ScribbleSchema } from '@shape/shapes/scribble/types';
-import type { WithId } from '@shape/types';
-import type { Coordinate } from '@shape/types/utility';
-import colors from '@utils/colors';
-import type { Color } from '@utils/colors';
-import { generateId } from '@utils/id';
-import { MOUSE_BUTTONS } from '@utils/mouse';
-import type { IntervalHandler } from '@utils/types';
+import type { BaseGraph } from '../base';
+import type { GraphMouseEvent } from '../base/types';
+import { useNonNullGraphColors } from '../themes/useGraphColors';
+import type { Aggregator } from '../types';
+import { circle } from '@magic/shapes/shapes/circle';
+import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
+import type { WithId } from '@magic/shapes/types';
+import type { Coordinate } from '@magic/shapes/types/utility';
+import colors from '@magic/utils/colors';
+import type { Color } from '@magic/utils/colors';
+import { generateId } from '@magic/utils/id';
+import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import type { IntervalHandler } from '@magic/utils/types';
 
 import { computed, ref, watch } from 'vue';
 

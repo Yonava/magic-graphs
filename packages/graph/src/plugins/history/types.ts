@@ -1,4 +1,4 @@
-import type { GEdge, GNode } from '@graph/types';
+import type { GEdge, GNode } from '../types';
 
 import type { FocusOption } from '../../base/types';
 

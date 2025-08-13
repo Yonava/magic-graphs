@@ -1,8 +1,8 @@
 import { PURPLE_700, RED_700 } from '@magic/utils/colors';
-import { useTheme } from '@graph/themes/useTheme';
-import { TUTORIAL_THEME_ID } from '@graph/tutorials/types';
-import { type TutorialStep } from '@graph/tutorials/types';
-import type { Graph } from '@graph/types';
+import { useTheme } from '../themes/useTheme';
+import { TUTORIAL_THEME_ID } from '../tutorials/types';
+import { type TutorialStep } from '../tutorials/types';
+import type { Graph } from '../types';
 
 /**
  * pre-defined tutorial steps for basic graph editing

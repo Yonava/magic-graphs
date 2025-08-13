@@ -2,8 +2,8 @@
  * contains type defs and option defaults for base graph apis
  * such as addNode, removeNode, etc.
  */
-import type { SchemaItem } from '@graph/types';
-import type { Coordinate } from '@shape/types/utility';
+import type { SchemaItem } from '../types';
+import type { Coordinate } from '@magic/shapes/types/utility';
 
 import type { DeepReadonly } from 'vue';
 

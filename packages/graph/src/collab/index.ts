@@ -1,8 +1,8 @@
-import type { Graph } from '@graph/types';
-import { getRandomElement } from '@utils/random';
+import type { Graph } from '../types';
+import { getRandomElement } from '@magic/utils/random';
 import { useLocalStorage } from '@vueuse/core';
 import { io } from 'socket.io-client';
-import type { ProductInfo } from 'src/types';
+import type { ProductInfo } from '@magic/products/types';
 
 import { computed, readonly, ref } from 'vue';
 

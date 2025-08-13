@@ -1,5 +1,5 @@
-import { selectNode } from '@graph/select';
-import type { GNode, Graph } from '@graph/types';
+import { selectNode } from '../select';
+import type { GNode, Graph } from '../types';
 import { useGTextTip } from '@ui/useGTextTip';
 
 import { computed, readonly, ref } from 'vue';
@@ -29,7 +29,7 @@ export const useNodeState = (options: Partial<NodeStateOptions> = {}) => {
   const node = ref<GNode>();
   const isSetting = ref(false);
 
-  let cancelNodeSetter = () => {};
+  let cancelNodeSetter = () => { };
 
   const { showText, hideText } = useGTextTip(setterTextTip);
 

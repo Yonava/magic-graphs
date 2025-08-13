@@ -1,9 +1,9 @@
-import type { BaseGraph } from '@graph/base';
-import { getConnectedNodes, getEdgesAlongPath } from '@graph/helpers';
-import type { GEdge, SchemaItem } from '@graph/types';
-import { getLargestAngularSpace } from '@shape/helpers';
-import type { TextArea } from '@shape/text/types';
-import { GOLDEN_RATIO } from '@utils/math';
+import type { BaseGraph } from '../base';
+import { getConnectedNodes, getEdgesAlongPath } from '../helpers';
+import type { GEdge, SchemaItem } from '../types';
+import { getLargestAngularSpace } from '@magic/shapes/helpers';
+import type { TextArea } from '@magic/shapes/text/types';
+import { GOLDEN_RATIO } from '@magic/utils/math';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE = 2;
 

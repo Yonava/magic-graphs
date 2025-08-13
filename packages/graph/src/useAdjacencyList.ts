@@ -3,8 +3,8 @@ import {
   getFracWeightBetweenNodes,
   getUndirectedOutboundEdges,
   getWeightBetweenNodes,
-} from '@graph/helpers';
-import type { GNode, Weight } from '@graph/types';
+} from '../helpers';
+import type { GNode, Weight } from '../types';
 import type { Fraction } from 'mathjs';
 import type { DeepPartial } from 'ts-essentials';
 

@@ -1,11 +1,11 @@
-import type { Graph } from '@graph/types';
+import type { Graph } from '../types';
 import graphlib from 'graphlib';
 
 import { computed } from 'vue';
 
 /**
  * a magic graphs integration with the `graphlib` library.
- * @graphlib api reference: https://github.com/dagrejs/graphlib/wiki/API-Reference
+ * ..lib api reference: https://github.com/dagrejs/graphlib/wiki/API-Reference
  */
 export const useGraphLib = (graph: Graph) =>
   computed(() => {

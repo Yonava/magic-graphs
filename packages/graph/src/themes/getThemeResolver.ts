@@ -1,8 +1,8 @@
-import type { GraphTheme, GraphThemeName } from '@graph/themes';
-import { THEMES } from '@graph/themes';
-import type { FullThemeMap } from '@graph/themes/types';
-import { getValue } from '@utils/maybeGetter';
-import type { UnwrapMaybeGetter } from '@utils/maybeGetter';
+import type { GraphTheme, GraphThemeName } from '../themes';
+import { THEMES } from '../themes';
+import type { FullThemeMap } from '../themes/types';
+import { getValue } from '@magic/utils/maybeGetter';
+import type { UnwrapMaybeGetter } from '@magic/utils/maybeGetter';
 
 import type { Ref } from 'vue';
 
@@ -32,26 +32,26 @@ type ResolvedThemeParams<T extends keyof GraphTheme> =
 
 export const getThemeResolver =
   (themeName: Ref<GraphThemeName>, themeMap: FullThemeMap) =>
-  <T extends keyof GraphTheme, K extends ResolvedThemeParams<T>>(
-    prop: T,
-    ...args: K
-  ) => {
-    const themeMapEntry = themeMap[prop].findLast(
-      (themeMapEntryItem: FullThemeMap[T][number]) => {
-        const themeGetterOrValue = themeMapEntryItem.value;
-        const themeValue = getValue<typeof themeGetterOrValue, K>(
-          themeGetterOrValue,
-          ...args,
-        ) as UnwrapMaybeGetter<GraphTheme[T]>;
-        return themeValue !== undefined;
-      },
-    );
-    const getter = themeMapEntry?.value ?? THEMES[themeName.value][prop];
-    if (!getter) throw new Error(`Theme property "${prop}" not found`);
-    return getValue<typeof getter, K>(getter, ...args) as UnwrapMaybeGetter<
-      GraphTheme[T]
-    >;
-  };
+    <T extends keyof GraphTheme, K extends ResolvedThemeParams<T>>(
+      prop: T,
+      ...args: K
+    ) => {
+      const themeMapEntry = themeMap[prop].findLast(
+        (themeMapEntryItem: FullThemeMap[T][number]) => {
+          const themeGetterOrValue = themeMapEntryItem.value;
+          const themeValue = getValue<typeof themeGetterOrValue, K>(
+            themeGetterOrValue,
+            ...args,
+          ) as UnwrapMaybeGetter<GraphTheme[T]>;
+          return themeValue !== undefined;
+        },
+      );
+      const getter = themeMapEntry?.value ?? THEMES[themeName.value][prop];
+      if (!getter) throw new Error(`Theme property "${prop}" not found`);
+      return getValue<typeof getter, K>(getter, ...args) as UnwrapMaybeGetter<
+        GraphTheme[T]
+      >;
+    };
 
 /**
  * the function that gets a value from a theme inquiry

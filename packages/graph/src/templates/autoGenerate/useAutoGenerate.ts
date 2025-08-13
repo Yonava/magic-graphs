@@ -1,4 +1,4 @@
-import type { GEdge, GNode, Graph } from '@graph/types';
+import type { GEdge, GNode, Graph } from '../types';
 import { useLocalStorage } from '@vueuse/core';
 
 import { ref } from 'vue';

@@ -1,9 +1,9 @@
-import type { BaseGraph } from '@graph/base';
-import type { HistoryOption } from '@graph/base/types';
-import type { GraphState } from '@graph/collab/types';
-import type { GEdge, GNode } from '@graph/types';
-import type { Coordinate } from '@shape/types/utility';
-import { debounce } from '@utils/debounce';
+import type { BaseGraph } from '../base';
+import type { HistoryOption } from '../base/types';
+import type { GraphState } from '../collab/types';
+import type { GEdge, GNode } from '../types';
+import type { Coordinate } from '@magic/shapes/types/utility';
+import { debounce } from '@magic/utils/debounce';
 
 import { computed, ref } from 'vue';
 

@@ -1,7 +1,7 @@
 import type {
   DefineTimeline,
   Timeline,
-} from '@shape/animation/timeline/define';
+} from '@magic/shapes/animation/timeline/define';
 import tinycolor from 'tinycolor2';
 
 const ANIMATION_DURATION_MS = 500;

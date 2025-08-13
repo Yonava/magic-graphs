@@ -1,7 +1,7 @@
-import { collabControls } from '@graph/collab';
-import { graph as globalGraph } from '@graph/global';
-import type { Graph } from '@graph/types';
-import { routeToProduct } from '@utils/product';
+import { collabControls } from '../collab';
+import { graph as globalGraph } from '../global';
+import type { Graph } from '../types';
+import { routeToProduct } from '@magic/utils/product';
 import { decompressFromEncodedURIComponent } from 'lz-string';
 import { useToast } from 'primevue/usetoast';
 import type { ProductInfo } from 'src/types';

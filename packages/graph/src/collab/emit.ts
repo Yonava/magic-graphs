@@ -1,5 +1,5 @@
-import type { GraphEventMap } from '@graph/events';
-import type { Graph } from '@graph/types';
+import type { GraphEventMap } from '../events';
+import type { Graph } from '../types';
 
 import { ref, watch } from 'vue';
 import type { Ref } from 'vue';

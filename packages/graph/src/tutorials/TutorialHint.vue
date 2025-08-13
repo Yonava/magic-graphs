@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import type { TutorialControls } from '@graph/tutorials/types';
+  import type { TutorialControls } from "../tutorials/types";
 
-  import { computed, ref, watch } from 'vue';
+  import { computed, ref, watch } from "vue";
 
-  import { DELAY_UNTIL_NEXT_STEP } from './types';
+  import { DELAY_UNTIL_NEXT_STEP } from "./types";
 
   const { tutorial } = defineProps<{
     tutorial: TutorialControls;
@@ -12,9 +12,9 @@
   const opacity = ref(0);
 
   const hint = computed(
-    () => tutorial.sequence.value[tutorial.step.value]?.hint ?? '',
+    () => tutorial.sequence.value[tutorial.step.value]?.hint ?? ""
   );
-  const displayedHint = ref('');
+  const displayedHint = ref("");
 
   let activeTimeout: NodeJS.Timeout;
 
@@ -30,7 +30,7 @@
         opacity.value = 1;
       }, transitionDuration + DELAY_UNTIL_NEXT_STEP);
     },
-    { immediate: true },
+    { immediate: true }
   );
 </script>
 

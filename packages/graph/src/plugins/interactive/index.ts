@@ -1,6 +1,6 @@
-import type { BaseGraph } from '@graph/base';
-import type { GraphMouseEvent } from '@graph/base/types';
-import type { GNode } from '@graph/types';
+import type { BaseGraph } from '../base';
+import type { GraphMouseEvent } from '../base/types';
+import type { GNode } from '../types';
 
 /**
  * interactive allows users to create, edit and delete nodes and edges

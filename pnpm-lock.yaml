@@ -213,7 +213,28 @@ importers:
       '@magic/canvas':
         specifier: workspace:*
         version: link:../canvas
+      '@vueuse/core':
+        specifier: ^13.6.0
+        version: 13.6.0(vue@3.5.18(typescript@5.9.2))
+      graphlib:
+        specifier: ^2.1.8
+        version: 2.1.8
+      mathjs:
+        specifier: ^14.0.1
+        version: 14.6.0
+      socket.io-client:
+        specifier: ^4.8.1
+        version: 4.8.1
+      tinycolor2:
+        specifier: ^1.6.0
+        version: 1.6.0
     devDependencies:
+      '@types/graphlib':
+        specifier: ^2.1.12
+        version: 2.1.12
+      '@types/tinycolor2':
+        specifier: ^1.4.6
+        version: 1.4.6
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.2.1)(jsdom@25.0.1)(msw@2.10.4(@types/node@24.2.1)(typescript@5.9.2))
@@ -1325,6 +1346,9 @@ packages:
   '@types/express@5.0.3':
     resolution: {integrity: sha512-wGA0NX93b19/dZC1J18tKWVIYWyyF2ZjT9vin/NRu0qzzvfVzWjs04iq2rQ3H65vCTQYlRqs3YHfY7zjdV+9Kw==}
 
+  '@types/graphlib@2.1.12':
+    resolution: {integrity: sha512-abRfQWMphT2qlXwppQa+CTCtUz/GqxBeozQcMjnOFD/WOKD6sRgxkfG8vq1yagV03447BBzCYhuJ0wiNb+/r+Q==}
+
   '@types/http-errors@2.0.5':
     resolution: {integrity: sha512-r8Tayk8HJnX0FztbZN7oVqGccWgw98T/0neJphO91KkmOzug1KkofZURD4UaD5uH8AqcFLfdPErnBod0u71/qg==}
 
@@ -2344,6 +2368,9 @@ packages:
 
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
+
+  graphlib@2.1.8:
+    resolution: {integrity: sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==}
 
   graphql@16.11.0:
     resolution: {integrity: sha512-mS1lbMsxgQj6hge1XZ6p7GPhbrtFwUFYi3wRzXAC/FmYnyXMTvvI3td3rjmQ2u8ewXueaSvRPWaEcgVVOT9Jnw==}
@@ -4675,6 +4702,8 @@ snapshots:
       '@types/express-serve-static-core': 5.0.7
       '@types/serve-static': 1.15.8
 
+  '@types/graphlib@2.1.12': {}
+
   '@types/http-errors@2.0.5': {}
 
   '@types/json-schema@7.0.15': {}
@@ -5908,6 +5937,10 @@ snapshots:
     optional: true
 
   graphemer@1.4.0: {}
+
+  graphlib@2.1.8:
+    dependencies:
+      lodash: 4.17.21
 
   graphql@16.11.0: {}
 

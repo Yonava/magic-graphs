@@ -1,12 +1,12 @@
-import type { BaseGraph } from '@graph/base';
-import type { GraphMouseEvent } from '@graph/base/types';
-import { prioritizeNode } from '@graph/helpers';
-import type { NodeAnchor } from '@graph/plugins/anchors/types';
-import type { GraphFocusPlugin } from '@graph/plugins/focus';
-import type { GNode, SchemaItem } from '@graph/types';
-import type { CircleSchema } from '@shape/shapes/circle/types';
-import type { WithId } from '@shape/types';
-import { MOUSE_BUTTONS } from '@utils/mouse';
+import type { BaseGraph } from '../base';
+import type { GraphMouseEvent } from '../base/types';
+import { prioritizeNode } from '../helpers';
+import type { NodeAnchor } from '../plugins/anchors/types';
+import type { GraphFocusPlugin } from '../plugins/focus';
+import type { GNode, SchemaItem } from '../types';
+import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
+import type { WithId } from '@magic/shapes/types';
+import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { readonly, ref } from 'vue';
 

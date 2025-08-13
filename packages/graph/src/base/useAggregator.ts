@@ -1,6 +1,6 @@
-import type { Emitter as GraphEventEmitter } from '@graph/events';
-import type { Aggregator, UpdateAggregator } from '@graph/types';
-import type { Coordinate } from '@shape/types/utility';
+import type { Emitter as GraphEventEmitter } from '../events';
+import type { Aggregator, UpdateAggregator } from '../types';
+import type { Coordinate } from '@magic/shapes/types/utility';
 
 import { ref } from 'vue';
 

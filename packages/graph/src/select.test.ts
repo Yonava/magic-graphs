@@ -1,5 +1,5 @@
-import { selectFromGraph } from '@graph/select';
-import { useGraph } from '@graph/useGraph';
+import { selectFromGraph } from '../select';
+import { useGraph } from '../useGraph';
 import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';
