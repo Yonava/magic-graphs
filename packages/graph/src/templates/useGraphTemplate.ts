@@ -2,7 +2,6 @@ import { getEncapsulatedNodeBox } from '../plugins/marquee/helpers';
 import type { Graph } from '../types';
 import { useGraph } from '../useGraph';
 import { generateId } from '@magic/utils/id';
-import { products } from '@magic/utils/product';
 import { useLocalStorage } from '@vueuse/core';
 
 import { computed, onMounted, onUnmounted, ref } from 'vue';
@@ -13,6 +12,7 @@ import {
   getAverageCoordinates,
 } from './helpers';
 import type { GraphTemplate } from './types';
+import { products } from '@magic/products/utils';
 
 export const useGraphTemplate = (graph: Graph) => {
   const userTemplates = useLocalStorage<GraphTemplate[]>('graph-templates', []);

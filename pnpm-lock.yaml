@@ -213,6 +213,18 @@ importers:
       '@magic/canvas':
         specifier: workspace:*
         version: link:../canvas
+      '@magic/products':
+        specifier: workspace:*
+        version: link:../products
+      '@magic/shapes':
+        specifier: workspace:*
+        version: link:../shapes
+      '@magic/ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@magic/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@vueuse/core':
         specifier: ^13.6.0
         version: 13.6.0(vue@3.5.18(typescript@5.9.2))
@@ -222,15 +234,24 @@ importers:
       graphlib:
         specifier: ^2.1.8
         version: 2.1.8
+      lz-string:
+        specifier: ^1.5.0
+        version: 1.5.0
       mathjs:
         specifier: ^14.0.1
         version: 14.6.0
+      primevue:
+        specifier: ^4.2.4
+        version: 4.3.7(vue@3.5.18(typescript@5.9.2))
       socket.io-client:
         specifier: ^4.8.1
         version: 4.8.1
       tinycolor2:
         specifier: ^1.6.0
         version: 1.6.0
+      vue-router:
+        specifier: ^4.0.13
+        version: 4.5.1(vue@3.5.18(typescript@5.9.2))
     devDependencies:
       '@types/graphlib':
         specifier: ^2.1.12

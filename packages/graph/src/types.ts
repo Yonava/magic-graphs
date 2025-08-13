@@ -1,4 +1,4 @@
-import { useGraph } from '../useGraph';
+import { useGraph } from './useGraph';
 import type { Shape } from '@magic/shapes/types';
 import type { MaybeGetter } from '@magic/utils/maybeGetter';
 import type { Fraction } from 'mathjs';

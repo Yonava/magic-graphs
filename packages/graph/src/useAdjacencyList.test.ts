@@ -1,4 +1,4 @@
-import { useGraph } from '../useGraph';
+import { useGraph } from './useGraph';
 import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';

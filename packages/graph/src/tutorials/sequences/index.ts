@@ -1,6 +1,6 @@
-import { BASICS_STEPS } from '../tutorials/sequences/basics';
-import type { TutorialSequence } from '../tutorials/types';
-import type { Graph } from '../types';
+import { BASICS_STEPS } from '../../tutorials/sequences/basics';
+import type { TutorialSequence } from '../../tutorials/types';
+import type { Graph } from '../../types';
 
 /**
  * pre-defined sequence for basic graph editing.

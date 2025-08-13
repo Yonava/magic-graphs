@@ -3,15 +3,13 @@ import {
   getFracWeightBetweenNodes,
   getUndirectedOutboundEdges,
   getWeightBetweenNodes,
-} from '../helpers';
-import type { GNode, Weight } from '../types';
+} from './helpers';
+import type { GNode, Weight } from './types';
 import type { Fraction } from 'mathjs';
-import type { DeepPartial } from 'ts-essentials';
 
 import { onUnmounted, ref } from 'vue';
 
 import type { BaseGraph } from './base';
-import type { GraphSettings } from './settings';
 
 /**
  * a mapping of nodes to their neighbors.
