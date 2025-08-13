@@ -1,4 +1,4 @@
-import type { Color } from '@utils/colors';
+import type { Color } from '@magic/utils/colors';
 import tinycolor from 'tinycolor2';
 
 import type { InterpolationFunction } from './types';

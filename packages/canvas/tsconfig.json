@@ -17,8 +17,7 @@
     "types": ["node"],
     "paths": {
       "@magic/utils/*": ["../utils/src/*"],
-      "@magic/shapes/*": ["../shapes/src/*"],
-      "@magic/shapes": ["../shapes/src/index.ts"]
+      "@magic/shapes/*": ["../shapes/src/*"]
     }
   },
   "references": [

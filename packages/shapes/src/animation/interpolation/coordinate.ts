@@ -1,5 +1,5 @@
-import type { Coordinate } from '@shape/types/utility';
 
+import { Coordinate } from 'src/types/utility';
 import { interpolateNumber } from './number';
 import type { InterpolationFunction, NumberKeyframe } from './types';
 

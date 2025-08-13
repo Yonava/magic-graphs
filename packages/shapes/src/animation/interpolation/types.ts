@@ -1,9 +1,10 @@
-import type { TextArea } from '@shape/text/types';
-import type { Coordinate } from '@shape/types/utility';
-import type { Color } from '@utils/colors';
+import { Coordinate } from '../../types/utility';
+import { TextArea } from '../../text/types';
+
 import type { DeepRequired } from 'ts-essentials';
 
 import type { EasingFunction } from '../easing';
+import { Color } from '@magic/utils/colors';
 
 /**
  * Represents a keyframe in an animation, defining the value at a specific point in the animation timeline.

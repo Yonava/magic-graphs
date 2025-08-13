@@ -1,5 +1,5 @@
-import type { TextAreaWithDefaults } from '@shape/text/defaults';
 
+import { TextAreaWithDefaults } from '../../text/defaults';
 import { interpolateColor } from './color';
 import { interpolateNumber } from './number';
 import type {

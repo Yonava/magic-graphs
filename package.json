@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.2.1",
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "ts-essentials": "^10.1.1"
   }
 }

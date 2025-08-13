@@ -13,8 +13,15 @@
     "rootDir": "src",
     "baseUrl": ".",
     "noEmit": false,
-    "composite": true
+    "composite": true,
+    "paths": {
+      "@magic/utils/*": ["../utils/src/*"]
+    }
   },
-  "references": [],
+  "references": [
+    {
+      "path": "../utils"
+    }
+  ],
   "include": ["src"]
 }
