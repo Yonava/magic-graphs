@@ -1,6 +1,6 @@
 import type { GNode, Graph } from '@magic/graph/types';
-import colors from '@utils/colors';
-import type { Color } from '@utils/colors';
+import colors from '@magic/utils/colors';
+import type { Color } from '@magic/utils/colors';
 
 import type { TreeControls } from '../useTree';
 import { useNodeColor } from '../../../graphs/themes/helpers/useNodeColor';

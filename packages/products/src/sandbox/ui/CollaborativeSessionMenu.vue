@@ -7,10 +7,10 @@
   import GWell from "@magic/ui/graph/GWell.vue";
   import GButton from "@magic/ui/graph/button/GButton.vue";
   import GInputText from "@magic/ui/graph/input/GInputText.vue";
-  import colors from "@utils/colors";
-  import { debounce } from "@utils/debounce";
-  import { generateId } from "@utils/id";
-  import { productIdToProduct, useProductRouting } from "@utils/product";
+  import colors from "@magic/utils/colors";
+  import { debounce } from "@magic/utils/debounce";
+  import { generateId } from "@magic/utils/id";
+  import { productIdToProduct, useProductRouting } from "@magic/utils/product";
 
   import { computed, ref } from "vue";
 

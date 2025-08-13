@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '@graph/global';
-  import CPopover from '@ui/core/Popover.vue';
-  import GWell from '@ui/graph/GWell.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import CPopover from "@ui/core/Popover.vue";
+  import GWell from "@ui/graph/GWell.vue";
+  import GButton from "@ui/graph/button/GButton.vue";
 
-  import { computed } from 'vue';
+  import { computed } from "vue";
 
-  import AutoGenerate from '../autoGenerate/AutoGenerate.vue';
-  import { useGraphTemplate } from '../useGraphTemplate';
-  import TemplateItem from './TemplateItem.vue';
+  import AutoGenerate from "../autoGenerate/AutoGenerate.vue";
+  import { useGraphTemplate } from "../useGraphTemplate";
+  import TemplateItem from "./TemplateItem.vue";
 
   const {
     templates,
@@ -64,13 +64,15 @@
         <GButton
           @click="add"
           :disabled="graph.nodes.value.length === 0"
-          >Save Current</GButton
         >
+          Save Current
+        </GButton>
         <GButton
           @click="clearUserTemplates"
           :disabled="userTemplates.length === 0"
-          >Clear All</GButton
         >
+          Clear All
+        </GButton>
       </div>
     </GWell>
   </CPopover>

@@ -1,6 +1,6 @@
 import type { GNode, Graph } from '@magic/graph/types';
 import type { Coordinate } from '@shape/types/utility';
-import { roundToNearestN } from '@utils/math';
+import { roundToNearestN } from '@magic/utils/math';
 
 import type { NodeDepth } from './useNodeDepth';
 

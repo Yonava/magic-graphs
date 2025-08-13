@@ -1,5 +1,5 @@
 import type { GNode, Graph } from '@magic/graph/types';
-import { debounce } from '@utils/debounce';
+import { debounce } from '@magic/utils/debounce';
 
 import { onUnmounted, ref, watch } from 'vue';
 

@@ -1,5 +1,5 @@
 import type { GNode, Graph } from '@magic/graph/types';
-import colors from '@utils/colors';
+import colors from '@magic/utils/colors';
 
 import type { TreeControls } from '../useTree';
 import { numberToColor } from './numberToColor';

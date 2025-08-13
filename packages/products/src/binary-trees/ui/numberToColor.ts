@@ -1,4 +1,4 @@
-import type { Color } from '@utils/colors';
+import type { Color } from '@magic/utils/colors';
 import gsap from 'gsap';
 import tinycolor from 'tinycolor2';
 

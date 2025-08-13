@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import GButton from '@ui/graph/button/GButton.vue';
-  import colors from '@utils/colors';
+  import GButton from "@ui/graph/button/GButton.vue";
+  import colors from "@magic/utils/colors";
 
-  import { ref, toRefs } from 'vue';
+  import { ref, toRefs } from "vue";
 
-  import type { GraphTemplate } from '../types';
+  import type { GraphTemplate } from "../types";
 
   const props = defineProps<{
     template: GraphTemplate;
@@ -48,8 +48,9 @@
           v-if="template.isUserAdded"
           @click="remove(template.id)"
           :color="colors.RED_500"
-          >Delete</GButton
         >
+          Delete
+        </GButton>
       </div>
     </div>
   </div>

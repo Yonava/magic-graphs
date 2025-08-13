@@ -5,7 +5,7 @@
   import CPopoverTooltip from "@magic/ui/core/PopoverTooltip.vue";
   import GNode from "@magic/ui/graph/GNode.vue";
   import GWell from "@magic/ui/graph/GWell.vue";
-  import { getCommaList } from "@utils/string";
+  import { getCommaList } from "@magic/utils/string";
 
   import { computed } from "vue";
 

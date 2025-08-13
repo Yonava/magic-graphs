@@ -8,7 +8,7 @@
   import GToolbar from "@magic/ui/graph/toolbar/GToolbarBase.vue";
   import GToolbarButton from "@magic/ui/graph/toolbar/GToolbarButton.vue";
   import GToolbarButtonDivider from "@magic/ui/graph/toolbar/GToolbarDivider.vue";
-  import type { Color } from "@utils/colors";
+  import type { Color } from "@magic/utils/colors";
 
   const {
     clear,

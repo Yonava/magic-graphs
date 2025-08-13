@@ -1,6 +1,6 @@
 import { useNodeColor } from '@magic/graph/themes/helpers/useNodeColor';
 import type { GNode, Graph } from '@magic/graph/types';
-import colors from '@utils/colors';
+import colors from '@magic/utils/colors';
 
 const SCC_THEME_ID = 'scc-colorizer';
 

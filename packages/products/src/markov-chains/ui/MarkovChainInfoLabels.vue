@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/graph/global";
   import { useNodeLabel } from "@magic/graph/themes/helpers/useNodeLabel";
-  import { useSCCColorizer } from "@product/sandbox/ui/GraphInfoMenu/useSCCColorizer";
+  import { useSCCColorizer } from "@magic/product/sandbox/ui/GraphInfoMenu/useSCCColorizer";
   import GHoverInfoTop from "@magic/ui/graph/GHoverInfoTop.vue";
   import GWell from "@magic/ui/graph/GWell.vue";
 

@@ -1,6 +1,6 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode, Graph } from '@magic/graph/types';
-import colors from '@utils/colors';
+import colors from '@magic/utils/colors';
 
 const CYCLE_THEME_ID = 'cycle-colorizer';
 

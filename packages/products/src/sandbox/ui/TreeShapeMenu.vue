@@ -6,7 +6,7 @@
   import GraphNode from "@magic/ui/graph/GNode.vue";
   import GWell from "@magic/ui/graph/GWell.vue";
   import GButton from "@magic/ui/graph/button/GButton.vue";
-  import colors from "@utils/colors";
+  import colors from "@magic/utils/colors";
 
   import { computed, toRef } from "vue";
 
