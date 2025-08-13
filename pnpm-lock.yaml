@@ -17,6 +17,9 @@ importers:
       ts-essentials:
         specifier: ^10.1.1
         version: 10.1.1(typescript@5.9.2)
+      vite:
+        specifier: ^5.3.1
+        version: 5.4.19(@types/node@24.2.1)
 
   packages/canvas:
     dependencies:
@@ -218,7 +221,20 @@ importers:
         specifier: ^3.5.18
         version: 3.5.18(typescript@5.9.2)
 
-  packages/products: {}
+  packages/products:
+    dependencies:
+      '@magic/graph':
+        specifier: workspace:*
+        version: link:../graph
+      '@magic/ui':
+        specifier: workspace:*
+        version: link:../ui
+      vue:
+        specifier: ^3.5.18
+        version: 3.5.18(typescript@5.9.2)
+      vue-router:
+        specifier: ^4.0.13
+        version: 4.5.1(vue@3.5.18(typescript@5.9.2))
 
   packages/server:
     dependencies:
@@ -7308,6 +7324,11 @@ snapshots:
     dependencies:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.18(typescript@5.4.5)
+
+  vue-router@4.5.1(vue@3.5.18(typescript@5.9.2)):
+    dependencies:
+      '@vue/devtools-api': 6.6.4
+      vue: 3.5.18(typescript@5.9.2)
 
   vue-tsc@2.2.12(typescript@5.4.5):
     dependencies:

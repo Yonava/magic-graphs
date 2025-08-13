@@ -12,7 +12,8 @@
     "isolatedModules": true,
     "rootDir": "src",
     "baseUrl": ".",
-    "noEmit": true
+    "noEmit": false,
+    "composite": true
   },
   "references": [
     {

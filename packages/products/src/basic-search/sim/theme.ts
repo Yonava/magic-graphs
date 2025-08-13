@@ -1,5 +1,5 @@
-import { useTheme } from '@graph/themes/useTheme';
-import type { GEdge, GNode, Graph } from '@graph/types';
+import { useTheme } from '@magic/graph/themes/useTheme';
+import type { GEdge, GNode, Graph } from '@magic/graph/types';
 import type { SimulationControls } from '@ui/product/sim/types';
 import colors from '@utils/colors';
 

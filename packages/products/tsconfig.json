@@ -13,8 +13,28 @@
     "rootDir": "src",
     "baseUrl": ".",
     "noEmit": false,
-    "composite": true
+    "composite": true,
+    "types": ["vite/client"],
+    "paths": {
+      "@magic/graph/*": ["../graph/src/*"],
+      "@magic/ui/*": ["../ui/src/*"],
+      "@magic/canvas/*": ["../canvas/src/*"],
+      "@magic/shapes/*": ["../shapes/src/*"]
+    }
   },
-  "references": [],
+  "references": [
+    {
+      "path": "../graph"
+    },
+    {
+      "path": "../ui"
+    },
+    {
+      "path": "../canvas"
+    },
+    {
+      "path": "../shapes"
+    }
+  ],
   "include": ["src"]
 }

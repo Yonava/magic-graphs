@@ -1,4 +1,4 @@
-import type { GEdge, Graph } from '@graph/types';
+import type { GEdge, Graph } from '@magic/graph/types';
 
 export const prim = (graph: Graph) => {
   const { nodes, edges } = graph;

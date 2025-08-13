@@ -1,4 +1,4 @@
-import type { GraphSettings } from '@graph/settings';
+import type { GraphSettings } from '@magic/graph/settings';
 
 /**
  * settings for dijkstras useGraph instance

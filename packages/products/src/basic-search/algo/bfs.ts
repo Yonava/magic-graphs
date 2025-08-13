@@ -1,5 +1,5 @@
-import type { GNode } from '@graph/types';
-import type { AdjacencyList } from '@graph/useAdjacencyList';
+import type { GNode } from '@magic/graph/types';
+import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
 
 import type { BasicSearchTrace } from './types';
 

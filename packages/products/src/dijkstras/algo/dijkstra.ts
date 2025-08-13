@@ -1,4 +1,4 @@
-import type { TransitionMatrix } from '@graph/useTransitionMatrix';
+import type { TransitionMatrix } from '@magic/graph/useTransitionMatrix';
 
 export type DijkstrasResult = number[];
 
@@ -15,7 +15,7 @@ export type DijkstrasMatrixTrace = {
 class PriorityQueue {
   private heap: { node: number; distance: number }[] = [];
 
-  constructor() {}
+  constructor() { }
 
   enqueue(node: number, distance: number) {
     this.heap.push({ node, distance });

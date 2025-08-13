@@ -1,4 +1,4 @@
-import type { GNode, Graph } from '@graph/types';
+import type { GNode, Graph } from '@magic/graph/types';
 import { debounce } from '@utils/debounce';
 
 import { onUnmounted, ref, watch } from 'vue';

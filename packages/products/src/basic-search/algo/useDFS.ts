@@ -1,5 +1,5 @@
-import type { Graph } from '@graph/types';
-import { useAdjacencyList } from '@graph/useAdjacencyList';
+import type { Graph } from '@magic/graph/types';
+import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
 
 import { computed, ref, watch } from 'vue';
 

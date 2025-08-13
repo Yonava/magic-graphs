@@ -1,19 +1,19 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '@graph/global';
-  import definitions from '@graph/plugins/characteristics/definitions';
-  import GHoverInfo from '@ui/graph/GHoverInfo.vue';
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import definitions from "@magic/graph/plugins/characteristics/definitions";
+  import GHoverInfo from "@ui/graph/GHoverInfo.vue";
 
-  import { computed } from 'vue';
+  import { computed } from "vue";
 
-  import { useBipartiteColorizer } from './useBipartiteColorizer';
-  import { useCycleColorizer } from './useCycleColorizer';
-  import { useSCCColorizer } from './useSCCColorizer';
+  import { useBipartiteColorizer } from "./useBipartiteColorizer";
+  import { useCycleColorizer } from "./useCycleColorizer";
+  import { useSCCColorizer } from "./useSCCColorizer";
 
   const isConnected = computed(
-    () => graph.value.characteristics.isConnected.value,
+    () => graph.value.characteristics.isConnected.value
   );
   const isWeaklyConnected = computed(
-    () => graph.value.characteristics.isWeaklyConnected.value,
+    () => graph.value.characteristics.isWeaklyConnected.value
   );
   const isDirected = computed(() => graph.value.settings.value.isGraphDirected);
 
@@ -24,13 +24,13 @@
   });
 
   const isBipartite = computed(
-    () => graph.value.characteristics.isBipartite.value,
+    () => graph.value.characteristics.isBipartite.value
   );
 
   const isAcyclic = computed(() => graph.value.characteristics.isAcyclic.value);
 
   const isComplete = computed(
-    () => graph.value.characteristics.isComplete.value,
+    () => graph.value.characteristics.isComplete.value
   );
 
   const { colorize: colorizeSCCs, decolorize: decolorizeSCCs } =
@@ -50,11 +50,11 @@
       class="flex flex-wrap gap-2"
     >
       <GHoverInfo :tooltip="definitions.stronglyConnected">
-        Strongly Connected? {{ isConnected ? 'Yes' : 'No' }}
+        Strongly Connected? {{ isConnected ? "Yes" : "No" }}
       </GHoverInfo>
 
       <GHoverInfo :tooltip="definitions.weaklyConnected">
-        Weakly Connected? {{ isWeaklyConnected ? 'Yes' : 'No' }}
+        Weakly Connected? {{ isWeaklyConnected ? "Yes" : "No" }}
       </GHoverInfo>
 
       <GHoverInfo
@@ -70,7 +70,7 @@
         @mouseleave="decolorizeBipartite"
         :tooltip="definitions.bipartite"
       >
-        Bipartite? {{ isBipartite ? 'Yes' : 'No' }}
+        Bipartite? {{ isBipartite ? "Yes" : "No" }}
       </GHoverInfo>
 
       <GHoverInfo
@@ -78,11 +78,11 @@
         @mouseleave="decolorizeCycles"
         :tooltip="definitions.acyclic"
       >
-        Acyclic? {{ isAcyclic ? 'Yes' : 'No' }}
+        Acyclic? {{ isAcyclic ? "Yes" : "No" }}
       </GHoverInfo>
 
       <GHoverInfo :tooltip="definitions.complete">
-        Complete? {{ isComplete ? 'Yes' : 'No' }}
+        Complete? {{ isComplete ? "Yes" : "No" }}
       </GHoverInfo>
     </div>
     <div
@@ -90,7 +90,7 @@
       class="flex flex-wrap gap-2"
     >
       <GHoverInfo :tooltip="definitions.connected">
-        Connected? {{ isConnected ? 'Yes' : 'No' }}
+        Connected? {{ isConnected ? "Yes" : "No" }}
       </GHoverInfo>
 
       <GHoverInfo
@@ -98,7 +98,7 @@
         @mouseleave="decolorizeBipartite"
         :tooltip="definitions.bipartite"
       >
-        Bipartite? {{ isBipartite ? 'Yes' : 'No' }}
+        Bipartite? {{ isBipartite ? "Yes" : "No" }}
       </GHoverInfo>
 
       <GHoverInfo
@@ -106,11 +106,11 @@
         @mouseleave="decolorizeCycles"
         :tooltip="definitions.acyclic"
       >
-        Acyclic? {{ isAcyclic ? 'Yes' : 'No' }}
+        Acyclic? {{ isAcyclic ? "Yes" : "No" }}
       </GHoverInfo>
 
       <GHoverInfo :tooltip="definitions.complete">
-        Complete? {{ isComplete ? 'Yes' : 'No' }}
+        Complete? {{ isComplete ? "Yes" : "No" }}
       </GHoverInfo>
     </div>
   </div>

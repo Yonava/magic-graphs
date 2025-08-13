@@ -1,4 +1,4 @@
-import type { GNode, Graph } from '@graph/types';
+import type { GNode, Graph } from '@magic/graph/types';
 import type { Coordinate } from '@shape/types/utility';
 
 import type { NodeDepth } from './useNodeDepth';

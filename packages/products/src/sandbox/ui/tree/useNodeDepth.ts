@@ -1,6 +1,6 @@
-import type { GNode, Graph } from '@graph/types';
-import { useAdjacencyList } from '@graph/useAdjacencyList';
-import type { AdjacencyList } from '@graph/useAdjacencyList';
+import type { GNode, Graph } from '@magic/graph/types';
+import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
+import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
 
 import { computed } from 'vue';
 import type { Ref } from 'vue';

@@ -1,6 +1,6 @@
-import { LETTERS, graphLabelGetter } from '@graph/labels';
-import type { GraphSettings } from '@graph/settings';
-import type { Graph } from '@graph/types';
+import { LETTERS, graphLabelGetter } from '@magic/graph/labels';
+import type { GraphSettings } from '@magic/graph/settings';
+import type { Graph } from '@magic/graph/types';
 
 import { SINK_LABEL, SOURCE_LABEL } from './constants';
 

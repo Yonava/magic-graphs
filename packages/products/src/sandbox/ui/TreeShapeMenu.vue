@@ -1,23 +1,23 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '@graph/global';
-  import type { GNode } from '@graph/types';
-  import CPopover from '@ui/core/Popover.vue';
-  import CButton from '@ui/core/button/Button.vue';
-  import GraphNode from '@ui/graph/GNode.vue';
-  import GWell from '@ui/graph/GWell.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import colors from '@utils/colors';
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import type { GNode } from "@magic/graph/types";
+  import CPopover from "@ui/core/Popover.vue";
+  import CButton from "@ui/core/button/Button.vue";
+  import GraphNode from "@ui/graph/GNode.vue";
+  import GWell from "@ui/graph/GWell.vue";
+  import GButton from "@ui/graph/button/GButton.vue";
+  import colors from "@utils/colors";
 
-  import { computed, toRef } from 'vue';
+  import { computed, toRef } from "vue";
 
-  import TreeShapeMenuSettings from './TreeShapeMenuSettings.vue';
-  import type { AutoTreeControls } from './tree/useTreeShaper';
+  import TreeShapeMenuSettings from "./TreeShapeMenuSettings.vue";
+  import type { AutoTreeControls } from "./tree/useTreeShaper";
 
   const props = defineProps<{
     controls: AutoTreeControls;
   }>();
 
-  const treeControls = toRef(props, 'controls');
+  const treeControls = toRef(props, "controls");
 
   const { isActive, activate, deactivate, updateShape, rootNodeId } =
     treeControls.value;

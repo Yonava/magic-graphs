@@ -1,6 +1,6 @@
 import { computed } from 'vue';
-import type { Graph } from '@graph/types';
-import type { TransitionMatrix } from '@graph/useTransitionMatrix';
+import type { Graph } from '@magic/graph/types';
+import type { TransitionMatrix } from '@magic/graph/useTransitionMatrix';
 import { divide, equal, fraction, Fraction, identity, Matrix, multiply, subtract, transpose } from 'mathjs';
 
 // TODO add tests!!! rref function is untrusted AI output :(

@@ -1,28 +1,28 @@
 <script setup lang="ts">
-  import { devMode, nonNullGraph as graph } from '@graph/global';
-  import { useGraphTutorial } from '@graph/tutorials/useGraphTutorial';
-  import ToolbarButtonGroup from '@ui/core/toolbar/ToolbarButtonGroup.vue';
-  import GToolbar from '@ui/graph/toolbar/GToolbarBase.vue';
-  import GToolbarButton from '@ui/graph/toolbar/GToolbarButton.vue';
-  import GToolbarDivider from '@ui/graph/toolbar/GToolbarDivider.vue';
+  import { devMode, nonNullGraph as graph } from "@magic/graph/global";
+  import { useGraphTutorial } from "@magic/graph/tutorials/useGraphTutorial";
+  import ToolbarButtonGroup from "@ui/core/toolbar/ToolbarButtonGroup.vue";
+  import GToolbar from "@ui/graph/toolbar/GToolbarBase.vue";
+  import GToolbarButton from "@ui/graph/toolbar/GToolbarButton.vue";
+  import GToolbarDivider from "@ui/graph/toolbar/GToolbarDivider.vue";
 
-  import { computed } from 'vue';
+  import { computed } from "vue";
 
-  import CollaborativeSessionMenu from './CollaborativeSessionMenu.vue';
-  import GraphInfoMenu from './GraphInfoMenu/GraphInfoMenu.vue';
-  import TreeShapeMenu from './TreeShapeMenu.vue';
-  import { useAutoTree } from './tree/useTreeShaper';
+  import CollaborativeSessionMenu from "./CollaborativeSessionMenu.vue";
+  import GraphInfoMenu from "./GraphInfoMenu/GraphInfoMenu.vue";
+  import TreeShapeMenu from "./TreeShapeMenu.vue";
+  import { useAutoTree } from "./tree/useTreeShaper";
 
-  // import TemplateMenu from '@graph/templates/ui/TemplateMenu.vue';
+  // import TemplateMenu from '@magic/graph/templates/ui/TemplateMenu.vue';
 
   const tutorial = useGraphTutorial(graph.value, [
     {
-      dismiss: 'onNodeAdded',
-      hint: 'Double click on the canvas to add a node.',
+      dismiss: "onNodeAdded",
+      hint: "Double click on the canvas to add a node.",
     },
     {
-      dismiss: 'onEdgeAdded',
-      hint: 'Hover node to show anchors, drag between them to add an edge.',
+      dismiss: "onEdgeAdded",
+      hint: "Hover node to show anchors, drag between them to add an edge.",
     },
   ]);
 

@@ -1,9 +1,9 @@
-import { useMagicCanvas } from '@canvas/index';
-import type { MagicCanvasProps } from '@canvas/types';
-import type { GraphSettings } from '@graph/settings';
-import type { Graph } from '@graph/types';
-import { useGraph } from '@graph/useGraph';
-import { cross } from '@shapes/cross';
+import { useMagicCanvas } from '@magic/canvas/index';
+import type { MagicCanvasProps } from '@magic/canvas/types';
+import type { GraphSettings } from '@magic/graph/settings';
+import type { Graph } from '@magic/graph/types';
+import { useGraph } from '@magic/graph/useGraph';
+import { cross } from '@magic/shapes/shapes/cross';
 
 import type { StyleValue } from 'vue';
 import { computed } from 'vue';

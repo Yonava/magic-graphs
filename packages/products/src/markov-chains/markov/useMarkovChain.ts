@@ -1,4 +1,4 @@
-import type { Graph } from '@graph/types';
+import type { Graph } from '@magic/graph/types';
 import { mergeSetArrayIntoSet } from '@utils/sets';
 
 import { computed } from 'vue';

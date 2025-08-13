@@ -1,5 +1,5 @@
-import { arrowEdgeAdded } from '@graph/base/animations';
-import type { GraphSettings } from '@graph/settings';
+import { arrowEdgeAdded } from '@magic/graph/base/animations';
+import type { GraphSettings } from '@magic/graph/settings';
 import { AUTO_ANIMATE_DURATION_MS } from '@shape/animation/autoAnimate';
 
 /**

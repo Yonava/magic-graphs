@@ -1,4 +1,4 @@
-import type { GEdge, Graph } from '@graph/types';
+import type { GEdge, Graph } from '@magic/graph/types';
 
 export type Parent = Map<string, string>;
 export type Rank = Map<string, number>;

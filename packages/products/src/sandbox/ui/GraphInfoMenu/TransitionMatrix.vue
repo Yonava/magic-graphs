@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '@graph/global';
-  import GWell from '@ui/graph/GWell.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import GWell from "@ui/graph/GWell.vue";
+  import GButton from "@ui/graph/button/GButton.vue";
 
-  import { ref } from 'vue';
+  import { ref } from "vue";
 
-  import TransitionMatrixDisplay from './TransitionMatrixDisplay.vue';
+  import TransitionMatrixDisplay from "./TransitionMatrixDisplay.vue";
 
   /**
    * if the transition matrix is too large, we incur a significant performance

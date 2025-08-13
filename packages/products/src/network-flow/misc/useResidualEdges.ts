@@ -1,4 +1,4 @@
-import type { Graph } from '@graph/types';
+import type { Graph } from '@magic/graph/types';
 
 /**
  * prefix on the edge ids to indicate that they are residual edges

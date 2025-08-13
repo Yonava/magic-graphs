@@ -1,5 +1,5 @@
-import type { GEdge, GNode, Graph } from '@graph/types';
-import { getAdjacencyList } from '@graph/useAdjacencyList';
+import type { GEdge, GNode, Graph } from '@magic/graph/types';
+import { getAdjacencyList } from '@magic/graph/useAdjacencyList';
 
 export type FlowTrace = Record<GEdge['id'], number>;
 

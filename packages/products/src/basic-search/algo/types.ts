@@ -1,4 +1,4 @@
-import type { GNode } from '@graph/types';
+import type { GNode } from '@magic/graph/types';
 
 /**
  * trace for bfs/dfs search

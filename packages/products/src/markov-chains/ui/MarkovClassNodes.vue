@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import type { GNode } from '@graph/types';
-  import GraphNode from '@ui/graph/GNode.vue';
-  import GWell from '@ui/graph/GWell.vue';
+  import type { GNode } from "@magic/graph/types";
+  import GraphNode from "@ui/graph/GNode.vue";
+  import GWell from "@ui/graph/GWell.vue";
 
   defineProps<{
     classes: GNode[][];

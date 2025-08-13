@@ -1,5 +1,5 @@
-import type { GNodeMoveInstruction } from '@graph/base/useGraphCRUD';
-import type { GEdge, Graph } from '@graph/types';
+import type { GNodeMoveInstruction } from '@magic/graph/base/useGraphCRUD';
+import type { GEdge, Graph } from '@magic/graph/types';
 import { getTreeIndexToPosition } from '@product/sandbox/ui/tree/getTreeBinaryPos';
 import type { Coordinate } from '@shape/types/utility';
 

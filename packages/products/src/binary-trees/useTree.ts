@@ -1,4 +1,4 @@
-import type { GNode, Graph } from '@graph/types';
+import type { GNode, Graph } from '@magic/graph/types';
 
 import { computed, ref } from 'vue';
 

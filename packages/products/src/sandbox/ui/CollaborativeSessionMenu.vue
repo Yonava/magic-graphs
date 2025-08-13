@@ -1,22 +1,22 @@
 <script setup lang="ts">
-  import { collabControls, myCollaboratorProfile } from '@graph/collab';
-  import { nonNullGraph as graph } from '@graph/global';
-  import CIcon from '@ui/core/Icon.vue';
-  import CPopover from '@ui/core/Popover.vue';
-  import CButton from '@ui/core/button/Button.vue';
-  import GWell from '@ui/graph/GWell.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import GInputText from '@ui/graph/input/GInputText.vue';
-  import colors from '@utils/colors';
-  import { debounce } from '@utils/debounce';
-  import { generateId } from '@utils/id';
-  import { productIdToProduct, useProductRouting } from '@utils/product';
+  import { collabControls, myCollaboratorProfile } from "@magic/graph/collab";
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import CIcon from "@ui/core/Icon.vue";
+  import CPopover from "@ui/core/Popover.vue";
+  import CButton from "@ui/core/button/Button.vue";
+  import GWell from "@ui/graph/GWell.vue";
+  import GButton from "@ui/graph/button/GButton.vue";
+  import GInputText from "@ui/graph/input/GInputText.vue";
+  import colors from "@utils/colors";
+  import { debounce } from "@utils/debounce";
+  import { generateId } from "@utils/id";
+  import { productIdToProduct, useProductRouting } from "@utils/product";
 
-  import { computed, ref } from 'vue';
+  import { computed, ref } from "vue";
 
-  import { useRouter } from 'vue-router';
+  import { useRouter } from "vue-router";
 
-  import GraphSandboxProductInfo from '../info';
+  import GraphSandboxProductInfo from "../info";
 
   const router = useRouter();
   const { navigate } = useProductRouting();
@@ -48,7 +48,7 @@
       linkCopied.value = true;
       resetLinkCopied();
     } catch (e) {
-      console.error('Failed to copy link to clipboard', e);
+      console.error("Failed to copy link to clipboard", e);
     }
   };
 

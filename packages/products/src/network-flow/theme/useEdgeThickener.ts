@@ -1,5 +1,5 @@
-import { useTheme } from '@graph/themes/useTheme';
-import type { GEdge, Graph } from '@graph/types';
+import { useTheme } from '@magic/graph/themes/useTheme';
+import type { GEdge, Graph } from '@magic/graph/types';
 
 import { onUnmounted } from 'vue';
 

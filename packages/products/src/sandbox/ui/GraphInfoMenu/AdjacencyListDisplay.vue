@@ -1,24 +1,24 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '@graph/global';
-  import { useAdjacencyList } from '@graph/useAdjacencyList';
-  import CIcon from '@ui/core/Icon.vue';
-  import CPopoverTooltip from '@ui/core/PopoverTooltip.vue';
-  import GNode from '@ui/graph/GNode.vue';
-  import GWell from '@ui/graph/GWell.vue';
-  import { getCommaList } from '@utils/string';
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import { useAdjacencyList } from "@magic/graph/useAdjacencyList";
+  import CIcon from "@ui/core/Icon.vue";
+  import CPopoverTooltip from "@ui/core/PopoverTooltip.vue";
+  import GNode from "@ui/graph/GNode.vue";
+  import GWell from "@ui/graph/GWell.vue";
+  import { getCommaList } from "@utils/string";
 
-  import { computed } from 'vue';
+  import { computed } from "vue";
 
   const { weightedAdjacencyList } = useAdjacencyList(graph.value);
 
   const getNode = (nodeId: string) => {
     const node = graph.value.getNode(nodeId);
-    if (node === undefined) throw new Error('node not found');
+    if (node === undefined) throw new Error("node not found");
     return node;
   };
 
   const isWeighted = computed(
-    () => graph.value.settings.value.displayEdgeLabels,
+    () => graph.value.settings.value.displayEdgeLabels
   );
 </script>
 
@@ -36,7 +36,7 @@
             <GWell class="px-3 py-2 rounded-md">
               <b>{{ getNode(key).label }}</b>
               links to
-              <b>{{ getCommaList(value.map((n) => n.label)) || 'nothing' }}</b>
+              <b>{{ getCommaList(value.map((n) => n.label)) || "nothing" }}</b>
             </GWell>
           </template>
         </CPopoverTooltip>

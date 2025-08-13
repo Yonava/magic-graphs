@@ -1,4 +1,4 @@
-import type { Graph } from '@graph/types';
+import type { Graph } from '@magic/graph/types';
 import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
 
 import state from './state';
@@ -21,59 +21,59 @@ type CreateRunnerOptions = {
  */
 export const createSimulationRunner =
   ({ graph, tree }: CreateRunnerOptions) =>
-  (trace: TreeTraceStep[]) => {
-    if (simRunner.value)
-      throw 'attempted to start a simulation during running simulation';
+    (trace: TreeTraceStep[]) => {
+      if (simRunner.value)
+        throw 'attempted to start a simulation during running simulation';
 
-    const { targetNodeId, activate, deactivate } = useTargetNodeColor(graph);
-    activate();
+      const { targetNodeId, activate, deactivate } = useTargetNodeColor(graph);
+      activate();
 
-    const runStep = (step: number) => {
-      const traceAtStep = trace[step];
-      if (traceAtStep === undefined) return;
+      const runStep = (step: number) => {
+        const traceAtStep = trace[step];
+        if (traceAtStep === undefined) return;
 
-      targetNodeId.value = undefined;
+        targetNodeId.value = undefined;
 
-      if (traceAtStep.action === 'compare') {
-        const { comparedNode: treeNodeKey } = traceAtStep;
-        targetNodeId.value = treeNodeKey.toString();
-      }
+        if (traceAtStep.action === 'compare') {
+          const { comparedNode: treeNodeKey } = traceAtStep;
+          targetNodeId.value = treeNodeKey.toString();
+        }
 
-      if (traceAtStep.action === 'insert' || traceAtStep.action === 'remove') {
-        const { targetNode: target } = traceAtStep;
-        targetNodeId.value = target.toString();
-      }
+        if (traceAtStep.action === 'insert' || traceAtStep.action === 'remove') {
+          const { targetNode: target } = traceAtStep;
+          targetNodeId.value = target.toString();
+        }
 
-      treeArrayToGraph(graph, traceAtStep.treeState, tree.root!, ROOT_POS);
+        treeArrayToGraph(graph, traceAtStep.treeState, tree.root!, ROOT_POS);
+      };
+
+      const simControls = useSimulationControls(trace, {
+        explanation: getTreeTraceExplanation,
+        pauseOnStructureChange: false,
+        defaultPlaybackSpeedMs: 1500,
+        showPlaybackSpeedControls: false,
+      });
+
+      simControls.onStepChange(runStep);
+
+      const stop = () => {
+        if (!simRunner.value) throw 'simRunner state erased w/o stop method!';
+        deactivate();
+        const {
+          stop: stopPlayback,
+          setStep,
+          lastStep,
+        } = simRunner.value.simControls;
+        setStep(lastStep.value);
+        stopPlayback();
+        simRunner.value = undefined;
+      };
+
+      simRunner.value = {
+        start: simControls.start,
+        stop,
+        simControls,
+      };
+
+      simRunner.value.start();
     };
-
-    const simControls = useSimulationControls(trace, {
-      explanation: getTreeTraceExplanation,
-      pauseOnStructureChange: false,
-      defaultPlaybackSpeedMs: 1500,
-      showPlaybackSpeedControls: false,
-    });
-
-    simControls.onStepChange(runStep);
-
-    const stop = () => {
-      if (!simRunner.value) throw 'simRunner state erased w/o stop method!';
-      deactivate();
-      const {
-        stop: stopPlayback,
-        setStep,
-        lastStep,
-      } = simRunner.value.simControls;
-      setStep(lastStep.value);
-      stopPlayback();
-      simRunner.value = undefined;
-    };
-
-    simRunner.value = {
-      start: simControls.start,
-      stop,
-      simControls,
-    };
-
-    simRunner.value.start();
-  };

@@ -10,18 +10,14 @@ type LocalStorageRecord = Record<string, string | LocalStorageGetter>;
  */
 export const localKeys = {
   /** camera `panX` state in magic canvas - {@link Camera.state} */
-  cameraPanX: (key: MagicCanvasOptions['storageKey']) =>
+  cameraPanX: (key: string) =>
     `camera-pan-x-${key}` as const,
   /** camera `panY` state in magic canvas - {@link Camera.state} */
-  cameraPanY: (key: MagicCanvasOptions['storageKey']) =>
+  cameraPanY: (key: string) =>
     `camera-pan-y-${key}` as const,
   /** camera `zoom` state in magic canvas - {@link Camera.state} */
-  cameraZoom: (key: MagicCanvasOptions['storageKey']) =>
+  cameraZoom: (key: string) =>
     `camera-zoom-${key}` as const,
-  /** graph product simulation speed */
-  simulationPlaybackSpeed: 'simulation-playback-speed',
-  /** graph theme set by user - {@link Graph.preferredTheme} */
-  preferredTheme: 'preferred-theme',
 } as const satisfies LocalStorageRecord;
 
 /**

@@ -1,4 +1,4 @@
-import type { Graph } from '@graph/types';
+import type { Graph } from '@magic/graph/types';
 import type { ProductInfo } from 'src/types';
 
 import { canRunBasicSearch } from './sim/guard';
