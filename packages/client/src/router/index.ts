@@ -7,7 +7,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 // import all info.ts files dynamically
 const infoModules = import.meta.glob<{
   default: ProductInfo;
-}>('/src/**/info.ts', { eager: true });
+}>([
+  './src/**/info.ts',           // client package
+  '../products/src/**/info.ts', // products package
+], { eager: true });
 
 const router = createRouter({
   history: createWebHistory(),
