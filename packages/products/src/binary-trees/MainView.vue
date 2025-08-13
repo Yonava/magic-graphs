@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useGraphWithCanvas } from "@product/shared/useGraphWithCanvas";
+  import { useGraphWithCanvas } from "../shared/useGraphWithCanvas";
   import GraphProduct from "@magic/ui/product/GraphProduct.vue";
   import StopSimButton from "@magic/ui/product/StopSimButton.vue";
   import SimulationPlaybackControls from "@magic/ui/product/sim/SimulationPlaybackControls.vue";

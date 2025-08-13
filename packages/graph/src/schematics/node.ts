@@ -1,4 +1,4 @@
-import colors from '@colors';
+import colors from '@magic/utils/colors';
 import type { BaseGraph } from '@graph/base';
 import type { GNode, SchemaItem } from '@graph/types';
 

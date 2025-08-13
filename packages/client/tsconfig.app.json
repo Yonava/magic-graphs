@@ -12,7 +12,7 @@
     "paths": {
       "@ui/*": ["./src/ui/*"],
       "@utils/*": ["./src/utils/*"],
-      "@colors": ["./src/utils/colors.ts"],
+      "@magic/utils/colors": ["./src/utils/colors.ts"],
 
       "@graph/*": ["./src/graphs/*"],
 

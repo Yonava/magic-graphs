@@ -19,7 +19,8 @@
       "@magic/graph/*": ["../graph/src/*"],
       "@magic/ui/*": ["../ui/src/*"],
       "@magic/canvas/*": ["../canvas/src/*"],
-      "@magic/shapes/*": ["../shapes/src/*"]
+      "@magic/shapes/*": ["../shapes/src/*"],
+      "@magic/utils/*": ["../utils/src/*"]
     }
   },
   "references": [
@@ -34,6 +35,9 @@
     },
     {
       "path": "../shapes"
+    },
+    {
+      "path": "../utils"
     }
   ],
   "include": ["src"]

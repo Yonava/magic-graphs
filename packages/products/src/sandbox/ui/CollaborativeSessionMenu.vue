@@ -10,7 +10,7 @@
   import colors from "@magic/utils/colors";
   import { debounce } from "@magic/utils/debounce";
   import { generateId } from "@magic/utils/id";
-  import { productIdToProduct, useProductRouting } from "@magic/utils/product";
+  import { productIdToProduct, useProductRouting } from "../../utils";
 
   import { computed, ref } from "vue";
 

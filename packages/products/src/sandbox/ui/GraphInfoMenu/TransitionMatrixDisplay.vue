@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import colors from "@colors";
+  import colors from "@magic/utils/colors";
   import { nonNullGraph as graph } from "@magic/graph/global";
   import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
   import { useTransitionMatrix } from "@magic/graph/useTransitionMatrix";

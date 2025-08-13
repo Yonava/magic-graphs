@@ -1,4 +1,4 @@
-import colors from '@colors';
+import colors from '@magic/utils/colors';
 
 import type { GraphThemeRaw } from '../types';
 import { NON_COLOR_THEMES } from './universal';

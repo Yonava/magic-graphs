@@ -1,8 +1,8 @@
 import type { GNode, Graph } from '@magic/graph/types';
-import type { Coordinate } from '@shape/types/utility';
 import { roundToNearestN } from '@magic/utils/math';
 
 import type { NodeDepth } from './useNodeDepth';
+import { Coordinate } from '@magic/shapes/types/utility';
 
 export const getTreeStandardPos = (
   graph: Pick<Graph, 'getNode'>,

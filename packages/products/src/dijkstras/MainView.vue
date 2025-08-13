@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useGraphWithCanvas } from "@product/shared/useGraphWithCanvas";
+  import { useGraphWithCanvas } from "../shared/useGraphWithCanvas";
   import GraphProduct from "@magic/ui/product/GraphProduct.vue";
 
   import { DIJKSTRAS_GRAPH_SETTINGS } from "./settings";

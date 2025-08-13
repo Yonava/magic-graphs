@@ -18,7 +18,7 @@ export default defineConfig({
       '@ui': fileURLToPath(new URL('./src/ui', import.meta.url)),
       '@utils': fileURLToPath(new URL('./src/utils', import.meta.url)),
 
-      '@colors': fileURLToPath(
+      '@magic/utils/colors': fileURLToPath(
         new URL('./src/utils/colors.ts', import.meta.url),
       ),
       '@shapes': fileURLToPath(new URL('./src/shapes/shapes', import.meta.url)),

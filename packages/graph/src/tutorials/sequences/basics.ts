@@ -1,4 +1,4 @@
-import { PURPLE_700, RED_700 } from '@colors';
+import { PURPLE_700, RED_700 } from '@magic/utils/colors';
 import { useTheme } from '@graph/themes/useTheme';
 import { TUTORIAL_THEME_ID } from '@graph/tutorials/types';
 import { type TutorialStep } from '@graph/tutorials/types';

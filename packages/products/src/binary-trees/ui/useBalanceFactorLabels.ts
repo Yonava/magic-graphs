@@ -3,8 +3,8 @@ import colors from '@magic/utils/colors';
 import type { Color } from '@magic/utils/colors';
 
 import type { TreeControls } from '../useTree';
-import { useNodeColor } from '../../../graphs/themes/helpers/useNodeColor';
-import { useNodeLabel } from '../../../graphs/themes/helpers/useNodeLabel';
+import { useNodeLabel } from '@magic/graph/themes/helpers/useNodeLabel';
+import { useNodeColor } from '@magic/graph/themes/helpers/useNodeColor';
 
 export const useBalanceFactorLabels = (graph: Graph, tree: TreeControls) => {
   const { nodeIdToBalanceFactor: nodeToBf } = tree;

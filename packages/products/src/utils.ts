@@ -1,7 +1,7 @@
 import { nonNullGraph as globalGraph } from '@magic/graph/global';
 import { getTransitData, setTransitData } from '@magic/graph/transit';
 import type { Graph } from '@magic/graph/types';
-import type { ProductInfo, SimulationDeclarationGetter } from '../types';
+import type { ProductInfo, SimulationDeclarationGetter } from './types';
 
 import { useRoute, useRouter } from 'vue-router';
 

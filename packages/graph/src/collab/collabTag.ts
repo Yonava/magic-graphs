@@ -1,4 +1,4 @@
-import colors from '@colors';
+import colors from '@magic/utils/colors';
 import type { Collaborator, CollaboratorMap } from '@graph/collab/types';
 import { circle } from '@shape/shapes/circle';
 import type { CircleSchema } from '@shape/shapes/circle/types';

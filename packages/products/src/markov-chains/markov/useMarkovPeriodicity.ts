@@ -1,6 +1,6 @@
 import type { GNode, Graph } from '@magic/graph/types';
 import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
-import { gcd, lowestPrimeFactor } from '@utils/math';
+import { gcd, lowestPrimeFactor } from '@magic/utils/math';
 
 import { computed } from 'vue';
 import type { Ref } from 'vue';

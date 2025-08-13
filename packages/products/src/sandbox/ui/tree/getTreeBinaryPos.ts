@@ -1,7 +1,7 @@
 import type { GNode, Graph } from '@magic/graph/types';
-import type { Coordinate } from '@shape/types/utility';
 
 import type { NodeDepth } from './useNodeDepth';
+import { Coordinate } from '@magic/shapes/types/utility';
 
 /**
  * an array which maps a tree index (root = 0, left child = 1, right child = 2, etc)

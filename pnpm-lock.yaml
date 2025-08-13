@@ -223,18 +223,40 @@ importers:
 
   packages/products:
     dependencies:
+      '@magic/canvas':
+        specifier: workspace:*
+        version: link:../canvas
       '@magic/graph':
         specifier: workspace:*
         version: link:../graph
+      '@magic/shapes':
+        specifier: workspace:*
+        version: link:../shapes
       '@magic/ui':
         specifier: workspace:*
         version: link:../ui
+      '@magic/utils':
+        specifier: workspace:*
+        version: link:../utils
+      gsap:
+        specifier: ^3.12.5
+        version: 3.13.0
+      mathjs:
+        specifier: ^14.0.1
+        version: 14.6.0
+      tinycolor2:
+        specifier: ^1.6.0
+        version: 1.6.0
       vue:
         specifier: ^3.5.18
         version: 3.5.18(typescript@5.9.2)
       vue-router:
         specifier: ^4.0.13
         version: 4.5.1(vue@3.5.18(typescript@5.9.2))
+    devDependencies:
+      '@types/tinycolor2':
+        specifier: ^1.4.6
+        version: 1.4.6
 
   packages/server:
     dependencies:

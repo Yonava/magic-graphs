@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import colors from "@colors";
+  import colors from "@magic/utils/colors";
   import { nonNullGraph as graph } from "@magic/graph/global";
   import type { GNode } from "@magic/graph/types";
 

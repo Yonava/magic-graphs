@@ -1,10 +1,10 @@
 import type { GNodeMoveInstruction } from '@magic/graph/base/useGraphCRUD';
 import type { GEdge, Graph } from '@magic/graph/types';
-import { getTreeIndexToPosition } from '@product/sandbox/ui/tree/getTreeBinaryPos';
-import type { Coordinate } from '@shape/types/utility';
+import { getTreeIndexToPosition } from '../../sandbox/ui/tree/getTreeBinaryPos';
 
 import type { TreeNodeKeyArray } from './avl';
 import type { TreeNode } from './treeNode';
+import { Coordinate } from '@magic/shapes/types/utility';
 
 const newEdge = (from: number, to: number) => ({
   from: from.toString(),

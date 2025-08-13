@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/graph/global";
   import { useNodeLabel } from "@magic/graph/themes/helpers/useNodeLabel";
-  import { useSCCColorizer } from "@magic/products/sandbox/ui/GraphInfoMenu/useSCCColorizer";
   import GHoverInfoTop from "@magic/ui/graph/GHoverInfoTop.vue";
   import GWell from "@magic/ui/graph/GWell.vue";
 
@@ -11,6 +10,7 @@
   import type { MarkovChain } from "../markov/useMarkovChain";
   import { useInvalidStateColorizer } from "./useInvalidStateColorizer";
   import { usePeriodicityLabels } from "./usePeriodicityLabels";
+  import { useSCCColorizer } from "../../sandbox/ui/GraphInfoMenu/useSCCColorizer";
 
   const props = defineProps<{
     markov: MarkovChain;

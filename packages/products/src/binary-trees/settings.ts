@@ -1,6 +1,6 @@
 import { arrowEdgeAdded } from '@magic/graph/base/animations';
 import type { GraphSettings } from '@magic/graph/settings';
-import { AUTO_ANIMATE_DURATION_MS } from '@shape/animation/autoAnimate';
+import { AUTO_ANIMATE_DURATION_MS } from '@magic/shapes/animation/autoAnimate';
 
 /**
  * settings for basic search useGraph instance
