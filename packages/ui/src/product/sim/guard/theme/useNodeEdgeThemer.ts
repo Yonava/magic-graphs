@@ -1,6 +1,6 @@
-import { useTheme } from '@graph/themes/useTheme';
-import type { GEdge, GNode, Graph } from '@graph/types';
-import colors from '@utils/colors';
+import { useTheme } from '@magic/graph/themes/useTheme';
+import type { GEdge, GNode, Graph } from '@magic/graph/types';
+import colors from '@magic/utils/colors';
 
 import { ref } from 'vue';
 

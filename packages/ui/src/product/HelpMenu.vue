@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
-  import CIcon from '@ui/core/Icon.vue';
-  import GDialog from '@ui/graph/GDialog.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import { onClickOutside } from '@vueuse/core';
-  import { keys } from 'ctrl-keys';
+  import { PRODUCT_SHORTCUTS } from "@magic/product/shared/shortcuts";
+  import CIcon from "@ui/core/Icon.vue";
+  import GDialog from "@ui/graph/GDialog.vue";
+  import GButton from "@ui/graph/button/GButton.vue";
+  import { onClickOutside } from "@vueuse/core";
+  import { keys } from "ctrl-keys";
 
-  import { onUnmounted, ref } from 'vue';
+  import { onUnmounted, ref } from "vue";
 
-  import HelpContent from './help/HelpContent.vue';
+  import HelpContent from "./help/HelpContent.vue";
 
   const showDialog = ref(false);
   const dialogContent = ref();
@@ -23,13 +23,13 @@
 
   const ctrlKeysHandler = keys();
 
-  ctrlKeysHandler.add(PRODUCT_SHORTCUTS['Help'].binding, toggleDialog);
-  ctrlKeysHandler.add('escape', () => (showDialog.value = false));
+  ctrlKeysHandler.add(PRODUCT_SHORTCUTS["Help"].binding, toggleDialog);
+  ctrlKeysHandler.add("escape", () => (showDialog.value = false));
 
-  window.addEventListener('keydown', ctrlKeysHandler.handle);
+  window.addEventListener("keydown", ctrlKeysHandler.handle);
 
   onUnmounted(() => {
-    window.removeEventListener('keydown', ctrlKeysHandler.handle);
+    window.removeEventListener("keydown", ctrlKeysHandler.handle);
   });
 </script>
 

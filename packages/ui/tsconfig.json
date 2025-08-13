@@ -13,8 +13,25 @@
     "rootDir": "src",
     "baseUrl": ".",
     "noEmit": false,
-    "composite": true
+    "composite": true,
+    "paths": {
+      "@magic/products/*": ["../products/src/*"],
+      "@magic/canvas/*": ["../canvas/src/*"],
+      "@magic/graph/*": ["../graph/src/*"],
+      "@magic/utils/*": ["../utils/src/*"]
+    }
   },
-  "references": [],
+  "references": [
+    {
+      "path": "../canvas"
+    },
+    { "path": "../products" },
+    {
+      "path": "../graph"
+    },
+    {
+      "path": "../utils"
+    }
+  ],
   "include": ["src"]
 }

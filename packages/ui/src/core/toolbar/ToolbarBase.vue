@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import type { TutorialControls } from '@graph/tutorials/types';
-  import colors from '@utils/colors';
+  import type { TutorialControls } from "@magic/graph/tutorials/types";
+  import colors from "@magic/utils/colors";
 
-  import ToolbarHint from './ToolbarHint.vue';
+  import ToolbarHint from "./ToolbarHint.vue";
 
   withDefaults(
     defineProps<{
@@ -12,7 +12,7 @@
     {
       color: colors.GRAY_800,
       hint: undefined,
-    },
+    }
   );
 </script>
 

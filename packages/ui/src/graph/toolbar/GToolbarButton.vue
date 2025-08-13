@@ -1,16 +1,16 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '@graph/global';
-  import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
-  import CToolbarButton from '@ui/core/toolbar/ToolbarButton.vue';
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
+  import CToolbarButton from "@ui/core/toolbar/ToolbarButton.vue";
 
-  import { computed } from 'vue';
+  import { computed } from "vue";
 
   const colors = useNonNullGraphColors();
   const color = computed(() => colors.value.primary);
 
   // special case!
   const activeColor = computed(() => {
-    if (graph.value.themeName.value === 'dark') {
+    if (graph.value.themeName.value === "dark") {
       return colors.value.tertiary;
     }
     return colors.value.secondary;

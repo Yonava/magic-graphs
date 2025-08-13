@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '@graph/global';
-  import type { GraphThemeName } from '@graph/themes';
-  import type { Color } from '@utils/colors';
-  import colors from '@utils/colors';
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import type { GraphThemeName } from "@magic/graph/themes";
+  import type { Color } from "@magic/utils/colors";
+  import colors from "@magic/utils/colors";
 
-  import { type StyleValue, computed } from 'vue';
+  import { type StyleValue, computed } from "vue";
 
   const THEME_TO_TEXT_COLOR: Record<GraphThemeName, Color> = {
     light: colors.GRAY_900,
@@ -13,7 +13,7 @@
   };
 
   const textColor = computed(
-    () => THEME_TO_TEXT_COLOR[graph.value.themeName.value],
+    () => THEME_TO_TEXT_COLOR[graph.value.themeName.value]
   );
 
   const styles = computed((): StyleValue => ({ color: textColor.value }));

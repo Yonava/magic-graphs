@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
-  import Dialog from 'primevue/dialog';
-  import type { DialogProps } from 'primevue/dialog';
+  import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
+  import Dialog from "primevue/dialog";
+  import type { DialogProps } from "primevue/dialog";
 
-  import { computed } from 'vue';
-  import { useAttrs } from 'vue';
+  import { computed } from "vue";
+  import { useAttrs } from "vue";
 
   const colors = useNonNullGraphColors();
 
@@ -24,7 +24,7 @@
       secondary: false,
       tertiary: false,
       contrast: false,
-    },
+    }
   );
 
   const attrs = useAttrs();

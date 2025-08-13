@@ -1,18 +1,18 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '@graph/global';
-  import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
-  import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
-  import GText from '@ui/graph/GText.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import GSpreadSelect from '@ui/graph/select/GSpreadSelect.vue';
-  import keys from 'ctrl-keys';
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
+  import { PRODUCT_SHORTCUTS } from "@magic/product/shared/shortcuts";
+  import GText from "@ui/graph/GText.vue";
+  import GButton from "@ui/graph/button/GButton.vue";
+  import GSpreadSelect from "@ui/graph/select/GSpreadSelect.vue";
+  import keys from "ctrl-keys";
 
-  import { onUnmounted, ref, toRefs } from 'vue';
-  import type { UnwrapRef } from 'vue';
+  import { onUnmounted, ref, toRefs } from "vue";
+  import type { UnwrapRef } from "vue";
 
-  import PlaybackButton from './PlaybackButton.vue';
-  import ProgressBar from './ProgressBar.vue';
-  import type { SimulationControls } from './types';
+  import PlaybackButton from "./PlaybackButton.vue";
+  import ProgressBar from "./ProgressBar.vue";
+  import type { SimulationControls } from "./types";
 
   const colors = useNonNullGraphColors();
 
@@ -80,32 +80,32 @@
   };
 
   if (pauseOnStructureChange) {
-    graph.value.subscribe('onStructureChange', pause);
+    graph.value.subscribe("onStructureChange", pause);
   }
 
   onUnmounted(() => {
-    graph.value.unsubscribe('onStructureChange', pause);
+    graph.value.unsubscribe("onStructureChange", pause);
   });
 
   const PLAYBACK_SPEEDS = [
     {
-      label: '0.25x',
+      label: "0.25x",
       value: defaultPlaybackSpeedMs / 0.25,
     },
     {
-      label: '0.5x',
+      label: "0.5x",
       value: defaultPlaybackSpeedMs / 0.5,
     },
     {
-      label: '1x',
+      label: "1x",
       value: defaultPlaybackSpeedMs,
     },
     {
-      label: '2x',
+      label: "2x",
       value: defaultPlaybackSpeedMs / 2,
     },
     {
-      label: '4x',
+      label: "4x",
       value: defaultPlaybackSpeedMs / 4,
     },
   ] as const;
@@ -118,7 +118,7 @@
 
   const ctrlKeys = keys();
 
-  ctrlKeys.add(PRODUCT_SHORTCUTS['Pause/Play Simulation'].binding, () => {
+  ctrlKeys.add(PRODUCT_SHORTCUTS["Pause/Play Simulation"].binding, () => {
     if (isOver.value) {
       restart();
     } else {
@@ -127,17 +127,17 @@
   });
 
   ctrlKeys.add(
-    PRODUCT_SHORTCUTS['Simulation Step Backward'].binding,
-    goPrevStep,
+    PRODUCT_SHORTCUTS["Simulation Step Backward"].binding,
+    goPrevStep
   );
 
   ctrlKeys.add(
-    PRODUCT_SHORTCUTS['Simulation Step Forward'].binding,
-    goNextStep,
+    PRODUCT_SHORTCUTS["Simulation Step Forward"].binding,
+    goNextStep
   );
 
-  window.addEventListener('keyup', ctrlKeys.handle);
-  onUnmounted(() => window.removeEventListener('keyup', ctrlKeys.handle));
+  window.addEventListener("keyup", ctrlKeys.handle);
+  onUnmounted(() => window.removeEventListener("keyup", ctrlKeys.handle));
 </script>
 
 <template>
@@ -162,7 +162,7 @@
         v-if="!speedMenuOpen"
         class="rounded-full"
       >
-        <span class="px-2"> Step {{ step + 1 }} </span>
+        <span class="px-2">Step {{ step + 1 }}</span>
       </GButton>
     </div>
 

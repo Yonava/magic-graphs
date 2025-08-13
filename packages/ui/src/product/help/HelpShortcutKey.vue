@@ -1,24 +1,24 @@
 <script setup lang="ts">
-  import type { Shortcut } from '@graph/plugins/shortcut/types';
-  import CIcon from '@ui/core/Icon.vue';
+  import type { Shortcut } from "@magic/graph/plugins/shortcut/types";
+  import CIcon from "@ui/core/Icon.vue";
 
-  import { computed } from 'vue';
+  import { computed } from "vue";
 
   const props = defineProps<{
-    keyboardKey: Shortcut['binding'];
+    keyboardKey: Shortcut["binding"];
   }>();
 
   const KEYBOARD_KEY_TO_USER_STRING: Partial<
-    Record<Shortcut['binding'], string>
+    Record<Shortcut["binding"], string>
   > = {
-    meta: '⌘',
+    meta: "⌘",
   };
 
   const KEYS_WITH_USER_STRING = Object.keys(KEYBOARD_KEY_TO_USER_STRING);
 
-  const KEYBOARD_KEY_TO_ICON: Partial<Record<Shortcut['binding'], string>> = {
-    arrowright: 'arrow-right',
-    arrowleft: 'arrow-left',
+  const KEYBOARD_KEY_TO_ICON: Partial<Record<Shortcut["binding"], string>> = {
+    arrowright: "arrow-right",
+    arrowleft: "arrow-left",
   };
 
   const KEYS_WITH_ICONS = Object.keys(KEYBOARD_KEY_TO_ICON);

@@ -1,21 +1,21 @@
 <script setup lang="ts">
-  import GWell from '@ui/graph/GWell.vue';
-  import { PRODUCT_CATEGORY_RANK, products } from '@utils/product';
-  import type { ProductCategory, ProductInfoWithMenu } from '@utils/product';
+  import GWell from "../../graph/GWell.vue";
+  import { PRODUCT_CATEGORY_RANK, products } from "@magic/products/utils";
+  import type {
+    ProductCategory,
+    ProductInfoWithMenu,
+  } from "@magic/products/utils";
 
-  import ProductItem from './ProductItem.vue';
+  import ProductItem from "./ProductItem.vue";
 
   const productsWithMenu = products.filter(
-    (info) => info?.menu,
+    (info) => info?.menu
   ) as ProductInfoWithMenu[];
 
-  const categoryRecord = PRODUCT_CATEGORY_RANK.reduce(
-    (acc, category) => {
-      acc[category] = [];
-      return acc;
-    },
-    {} as Record<ProductCategory, ProductInfoWithMenu[]>,
-  );
+  const categoryRecord = PRODUCT_CATEGORY_RANK.reduce((acc, category) => {
+    acc[category] = [];
+    return acc;
+  }, {} as Record<ProductCategory, ProductInfoWithMenu[]>);
 
   productsWithMenu.forEach((product) => {
     categoryRecord[product.menu.category].push(product);

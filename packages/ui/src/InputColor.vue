@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { isHexAlpha, isHexStandard } from '@utils/colors';
+  import { isHexAlpha, isHexStandard } from "@magic/utils/colors";
 
-  import { computed } from 'vue';
+  import { computed } from "vue";
 
   const model = defineModel<string>();
 
@@ -14,15 +14,15 @@
    * isolates the alpha channel from the color (if it exists)
    */
   const colorAlpha = computed(() => {
-    if (!colorValue.value) return '';
+    if (!colorValue.value) return "";
     else if (isHexAlpha(colorValue.value)) return colorValue.value.slice(7);
-    return '';
+    return "";
   });
 
   /**
    * if we cannot get a color the html color input wants, we appease it with this
    */
-  const STAND_IN_COLOR = '#000000';
+  const STAND_IN_COLOR = "#000000";
 
   /**
    * returns a color that complies with the html color input

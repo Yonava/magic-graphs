@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import colors from '@utils/colors';
-  import tinycolor from 'tinycolor2';
+  import colors from "@magic/utils/colors";
+  import tinycolor from "tinycolor2";
 
-  import { computed, ref } from 'vue';
+  import { computed, ref } from "vue";
 
   const props = withDefaults(
     defineProps<{
@@ -14,7 +14,7 @@
     }>(),
     {
       color: colors.GRAY_800,
-    },
+    }
   );
 
   const hoverColor = computed(() => {
@@ -25,7 +25,7 @@
   });
 
   const bgColor = computed(() =>
-    hovered.value ? hoverColor.value : props.color,
+    hovered.value ? hoverColor.value : props.color
   );
 
   const hovered = ref(false);

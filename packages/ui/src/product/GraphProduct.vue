@@ -1,35 +1,35 @@
 <script setup lang="ts">
-  import MagicCanvas from '@canvas/MagicCanvas.vue';
-  import { devMode } from '@graph/global';
-  import { useGraphProduct } from '@graph/useGraphProduct';
-  import AnnotationToolbar from '@product/sandbox/ui/AnnotationToolbar.vue';
-  import type { GraphWithCanvas } from '@product/shared/useGraphWithCanvas';
-  import ProductDropdown from '@ui/product/dropdown/ProductDropdown.vue';
-  import SelectSimulation from '@ui/product/sim/SelectSim.vue';
-  import SimulationPlaybackControls from '@ui/product/sim/SimulationPlaybackControls.vue';
-  import { getSimulationDeclarationsForProduct } from '@utils/product';
-  import type { SimulationDeclaration } from 'src/types';
+  import MagicCanvas from "@magic/canvas/MagicCanvas.vue";
+  import { devMode } from "@magic/graph/global";
+  import { useGraphProduct } from "@magic/graph/useGraphProduct";
+  import AnnotationToolbar from "@magic/product/sandbox/ui/AnnotationToolbar.vue";
+  import type { GraphWithCanvas } from "@magic/product/shared/useGraphWithCanvas";
+  import ProductDropdown from "../product/dropdown/ProductDropdown.vue";
+  import SelectSimulation from "../product/sim/SelectSim.vue";
+  import SimulationPlaybackControls from "../product/sim/SimulationPlaybackControls.vue";
+  import { getSimulationDeclarationsForProduct } from "@magic/products/utils";
+  import type { SimulationDeclaration } from "@magic/products/types";
 
-  import { computed, onMounted, onUnmounted, ref } from 'vue';
-  import type { UnwrapRef } from 'vue';
+  import { computed, onMounted, onUnmounted, ref } from "vue";
+  import type { UnwrapRef } from "vue";
 
-  import FullscreenButton from './FullscreenButton.vue';
-  import HelpMenu from './HelpMenu.vue';
-  import ShareButton from './ShareButton.vue';
-  import StopSimButton from './StopSimButton.vue';
-  import ThemeToolbar from './ThemeToolbar.vue';
-  import ZoomToolbar from './ZoomToolbar.vue';
-  import BenchmarkingMetrics from './dev/BenchmarkingMetrics.vue';
-  import GraphAtMousePositionData from './dev/GraphAtMousePositionData.vue';
-  import { useEscSimulationShortcut } from './useEscSimulationShortcut';
+  import FullscreenButton from "./FullscreenButton.vue";
+  import HelpMenu from "./HelpMenu.vue";
+  import ShareButton from "./ShareButton.vue";
+  import StopSimButton from "./StopSimButton.vue";
+  import ThemeToolbar from "./ThemeToolbar.vue";
+  import ZoomToolbar from "./ZoomToolbar.vue";
+  import BenchmarkingMetrics from "./dev/BenchmarkingMetrics.vue";
+  import GraphAtMousePositionData from "./dev/GraphAtMousePositionData.vue";
+  import { useEscSimulationShortcut } from "./useEscSimulationShortcut";
 
   const props = defineProps<GraphWithCanvas>();
 
   const wasAnnotationActive = ref(false);
 
   const emit = defineEmits<{
-    (e: 'simulation-started', value: UnwrapRef<SimulationDeclaration>): void;
-    (e: 'simulation-stopped'): void;
+    (e: "simulation-started", value: UnwrapRef<SimulationDeclaration>): void;
+    (e: "simulation-stopped"): void;
   }>();
 
   const simulations = getSimulationDeclarationsForProduct(props.graph);
@@ -42,7 +42,7 @@
 
   const startSimulation = async () => {
     runningSimulation.value = true;
-    emit('simulation-started', activeSimulation.value);
+    emit("simulation-started", activeSimulation.value);
     await simRunner.value.start();
   };
 
@@ -50,7 +50,7 @@
     if (!runningSimulation.value) return;
     await simRunner.value.stop();
     runningSimulation.value = false;
-    emit('simulation-stopped');
+    emit("simulation-stopped");
 
     if (wasAnnotationActive.value) props.graph.annotation.activate();
     wasAnnotationActive.value = false;
@@ -71,20 +71,20 @@
   const disableUIPointerEvents = ref(false);
 
   const pointerEvents = computed(() =>
-    disableUIPointerEvents.value ? 'pointer-events-none' : '',
+    disableUIPointerEvents.value ? "pointer-events-none" : ""
   );
 
   const stopPointerEvents = () => (disableUIPointerEvents.value = true);
   const startPointerEvents = () => (disableUIPointerEvents.value = false);
 
   onMounted(() => {
-    props.graph.subscribe('onMouseDown', stopPointerEvents);
-    props.graph.subscribe('onMouseUp', startPointerEvents);
+    props.graph.subscribe("onMouseDown", stopPointerEvents);
+    props.graph.subscribe("onMouseUp", startPointerEvents);
   });
 
   onUnmounted(() => {
-    props.graph.unsubscribe('onMouseDown', stopPointerEvents);
-    props.graph.unsubscribe('onMouseUp', startPointerEvents);
+    props.graph.unsubscribe("onMouseDown", stopPointerEvents);
+    props.graph.unsubscribe("onMouseUp", startPointerEvents);
   });
 </script>
 

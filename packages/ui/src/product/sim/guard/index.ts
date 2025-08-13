@@ -1,5 +1,5 @@
-import type { Graph } from '@graph/types';
-import { useCycleColorizer } from '@product/sandbox/ui/GraphInfoMenu/useCycleColorizer';
+import type { Graph } from '@magic/graph/types';
+import { useCycleColorizer } from '@magic/product/sandbox/ui/GraphInfoMenu/useCycleColorizer';
 import type { DeepReadonly } from 'ts-essentials';
 
 import { CANT_RUN_REASONS } from './constants';

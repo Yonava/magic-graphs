@@ -1,19 +1,19 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '@graph/global';
-  import type { Shortcut } from '@graph/plugins/shortcut/types';
-  import { PRODUCT_SHORTCUTS } from '@product/shared/shortcuts';
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import type { Shortcut } from "@magic/graph/plugins/shortcut/types";
+  import { PRODUCT_SHORTCUTS } from "@magic/product/shared/shortcuts";
 
-  import HelpSection from './HelpSection.vue';
-  import HelpShortcutKey from './HelpShortcutKey.vue';
+  import HelpSection from "./HelpSection.vue";
+  import HelpShortcutKey from "./HelpShortcutKey.vue";
 
   /**
    * @example 'Control+Shift+Z' -> ['Control', 'Shift', 'Z']
    */
-  const getKeysFromKeyBindStr = (keyBindStr: Shortcut['binding']) =>
+  const getKeysFromKeyBindStr = (keyBindStr: Shortcut["binding"]) =>
     keyBindStr
-      .split('+')
+      .split("+")
       .map((key) => key.trim())
-      .filter((key) => key !== '') as Shortcut['binding'][];
+      .filter((key) => key !== "") as Shortcut["binding"][];
 
   const { activeShortcuts } = graph.value.shortcut;
 

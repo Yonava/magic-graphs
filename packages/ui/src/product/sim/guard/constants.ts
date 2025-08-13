@@ -1,4 +1,4 @@
-import definitions from '@graph/plugins/characteristics/definitions';
+import definitions from '@magic/graph/plugins/characteristics/definitions';
 
 import type { ReasonText, ReasonTextGetter } from './types';
 

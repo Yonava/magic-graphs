@@ -1,15 +1,18 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '@graph/global';
-  import { encodeCompressedTransitData, getTransitData } from '@graph/transit';
-  import { SHARE_GRAPH_QUERY_PARAM_KEY } from '@graph/useGraphProduct';
-  import CIcon from '@ui/core/Icon.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import { compressToEncodedURIComponent } from 'lz-string';
-  import { useToast } from 'primevue/usetoast';
+  import { nonNullGraph as graph } from "@magic/graph/global";
+  import {
+    encodeCompressedTransitData,
+    getTransitData,
+  } from "@magic/graph/transit";
+  import { SHARE_GRAPH_QUERY_PARAM_KEY } from "@magic/graph/useGraphProduct";
+  import CIcon from "@ui/core/Icon.vue";
+  import GButton from "@ui/graph/button/GButton.vue";
+  import { compressToEncodedURIComponent } from "lz-string";
+  import { useToast } from "primevue/usetoast";
 
-  import { computed, ref } from 'vue';
+  import { computed, ref } from "vue";
 
-  import { useRoute } from 'vue-router';
+  import { useRoute } from "vue-router";
 
   const route = useRoute();
   const linkCopied = ref(false);
@@ -37,17 +40,17 @@
       linkCopied.value = true;
 
       toast.add({
-        summary: 'Graph Share Link Copied to Clipboard!',
+        summary: "Graph Share Link Copied to Clipboard!",
         life: 3000,
-        severity: 'success',
+        severity: "success",
       });
     } catch (e) {
       clipboardCopyError.value = true;
 
       toast.add({
-        summary: 'Failed to copy share link to clipboard!',
+        summary: "Failed to copy share link to clipboard!",
         life: 3000,
-        severity: 'error',
+        severity: "error",
       });
       console.error(e);
     } finally {
@@ -56,9 +59,9 @@
   };
 
   const icon = computed(() => {
-    if (linkCopied.value) return 'check';
-    if (clipboardCopyError.value) return 'alert';
-    return 'share';
+    if (linkCopied.value) return "check";
+    if (clipboardCopyError.value) return "alert";
+    return "share";
   });
 </script>
 

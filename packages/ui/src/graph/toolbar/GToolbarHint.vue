@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
-  import type { TutorialControls } from '@graph/tutorials/types';
-  import CToolbarHint from '@ui/core/toolbar/ToolbarHint.vue';
+  import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
+  import type { TutorialControls } from "@magic/graph/tutorials/types";
+  import CToolbarHint from "@ui/core/toolbar/ToolbarHint.vue";
 
   const colors = useNonNullGraphColors();
 

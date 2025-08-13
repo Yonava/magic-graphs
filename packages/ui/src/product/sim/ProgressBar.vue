@@ -1,16 +1,16 @@
 <script setup lang="ts">
-  import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
+  import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
 
-  import { computed } from 'vue';
+  import { computed } from "vue";
 
-  import { PROGRESS_DEFAULTS } from './progressTypes';
-  import type { ProgressBarOptions } from './progressTypes';
+  import { PROGRESS_DEFAULTS } from "./progressTypes";
+  import type { ProgressBarOptions } from "./progressTypes";
 
   const colors = useNonNullGraphColors();
 
   const props = withDefaults(
     defineProps<ProgressBarOptions>(),
-    PROGRESS_DEFAULTS,
+    PROGRESS_DEFAULTS
   );
 
   const range = computed(() => {
@@ -32,7 +32,7 @@
   const getStepFromMouseEvent = (event: MouseEvent) => {
     const progressBar = event.currentTarget;
     if (!(progressBar instanceof HTMLElement))
-      throw new Error('Invalid target');
+      throw new Error("Invalid target");
 
     const clickPosition = event.offsetX;
     const progressBarWidth = progressBar.offsetWidth;

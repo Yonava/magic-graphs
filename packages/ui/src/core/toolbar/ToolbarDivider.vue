@@ -1,13 +1,13 @@
 <script setup lang="ts">
-  import colors from '@utils/colors';
+  import colors from "@magic/utils/colors";
 
   withDefaults(
     defineProps<{
       color?: string;
     }>(),
     {
-      color: colors.GRAY_100 + '20',
-    },
+      color: colors.GRAY_100 + "20",
+    }
   );
 </script>
 

@@ -1,6 +1,6 @@
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
-import type { GraphEventMap } from '@graph/events';
+import type { GraphEventMap } from '@magic/graph/events';
 
 import type { ComputedRef, Ref } from 'vue';
 

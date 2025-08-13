@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { useNonNullGraphColors } from '@graph/themes/useGraphColors';
-  import CWell from '@ui/core/Well.vue';
+  import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
+  import CWell from "@ui/core/Well.vue";
 
-  import { computed } from 'vue';
+  import { computed } from "vue";
 
   const colors = useNonNullGraphColors();
 
@@ -19,7 +19,7 @@
       secondary: false,
       tertiary: false,
       contrast: false,
-    },
+    }
   );
 
   const color = computed(() => {

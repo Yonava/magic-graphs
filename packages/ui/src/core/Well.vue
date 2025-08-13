@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import colors from '@utils/colors';
+  import colors from "@magic/utils/colors";
 
   withDefaults(
     defineProps<{
@@ -9,7 +9,7 @@
     {
       color: colors.GRAY_800,
       textColor: colors.WHITE,
-    },
+    }
   );
 </script>
 
