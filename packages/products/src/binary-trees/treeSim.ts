@@ -1,5 +1,5 @@
 import type { Graph } from '@magic/graph/types';
-import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
+import { useSimulationControls } from '@magic/ui/product/sim/useSimulationControls';
 
 import state from './state';
 import { useTargetNodeColor } from './theme/useTargetNodeColor';

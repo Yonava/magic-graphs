@@ -1,6 +1,6 @@
 import type { Graph } from '@magic/graph/types';
-import type { SimulationRunner, TraceFunction } from '@ui/product/sim/types';
-import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
+import type { SimulationRunner, TraceFunction } from '@magic/ui/product/sim/types';
+import { useSimulationControls } from '@magic/ui/product/sim/useSimulationControls';
 import { Fraction } from 'mathjs';
 
 import { computed } from 'vue';

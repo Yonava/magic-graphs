@@ -1,6 +1,6 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode, Graph } from '@magic/graph/types';
-import type { SimulationControls } from '@ui/product/sim/types';
+import type { SimulationControls } from '@magic/ui/product/sim/types';
 
 import type { MarkovChainTrace } from './runner';
 

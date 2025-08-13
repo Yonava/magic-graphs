@@ -2,8 +2,8 @@ import type { Graph } from '@magic/graph/types';
 import type {
   SimulationControls,
   SimulationRunner,
-} from '@ui/product/sim/types';
-import { useSimulationControls } from '@ui/product/sim/useSimulationControls';
+} from '@magic/ui/product/sim/types';
+import { useSimulationControls } from '@magic/ui/product/sim/useSimulationControls';
 
 import { computed } from 'vue';
 

@@ -2,8 +2,8 @@
   import { nonNullGraph as graph } from "@magic/graph/global";
   import { useNodeLabel } from "@magic/graph/themes/helpers/useNodeLabel";
   import { useSCCColorizer } from "@product/sandbox/ui/GraphInfoMenu/useSCCColorizer";
-  import GHoverInfoTop from "@ui/graph/GHoverInfoTop.vue";
-  import GWell from "@ui/graph/GWell.vue";
+  import GHoverInfoTop from "@magic/ui/graph/GHoverInfoTop.vue";
+  import GWell from "@magic/ui/graph/GWell.vue";
 
   import { computed } from "vue";
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import type { GNode, Weight } from "@magic/graph/types";
-  import CIcon from "@ui/core/Icon.vue";
-  import CPopoverTooltip from "@ui/core/PopoverTooltip.vue";
-  import GraphNode from "@ui/graph/GNode.vue";
-  import GWell from "@ui/graph/GWell.vue";
-  import GButton from "@ui/graph/button/GButton.vue";
+  import CIcon from "@magic/ui/core/Icon.vue";
+  import CPopoverTooltip from "@magic/ui/core/PopoverTooltip.vue";
+  import GraphNode from "@magic/ui/graph/GNode.vue";
+  import GWell from "@magic/ui/graph/GWell.vue";
+  import GButton from "@magic/ui/graph/button/GButton.vue";
 
   import { computed } from "vue";
 

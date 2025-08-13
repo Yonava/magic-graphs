@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/graph/global";
   import type { GNode } from "@magic/graph/types";
-  import CPopover from "@ui/core/Popover.vue";
-  import CButton from "@ui/core/button/Button.vue";
-  import GraphNode from "@ui/graph/GNode.vue";
-  import GWell from "@ui/graph/GWell.vue";
-  import GButton from "@ui/graph/button/GButton.vue";
+  import CPopover from "@magic/ui/core/Popover.vue";
+  import CButton from "@magic/ui/core/button/Button.vue";
+  import GraphNode from "@magic/ui/graph/GNode.vue";
+  import GWell from "@magic/ui/graph/GWell.vue";
+  import GButton from "@magic/ui/graph/button/GButton.vue";
   import colors from "@utils/colors";
 
   import { computed, toRef } from "vue";

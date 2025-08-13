@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/graph/global";
   import { useAdjacencyList } from "@magic/graph/useAdjacencyList";
-  import CIcon from "@ui/core/Icon.vue";
-  import CPopoverTooltip from "@ui/core/PopoverTooltip.vue";
-  import GNode from "@ui/graph/GNode.vue";
-  import GWell from "@ui/graph/GWell.vue";
+  import CIcon from "@magic/ui/core/Icon.vue";
+  import CPopoverTooltip from "@magic/ui/core/PopoverTooltip.vue";
+  import GNode from "@magic/ui/graph/GNode.vue";
+  import GWell from "@magic/ui/graph/GWell.vue";
   import { getCommaList } from "@utils/string";
 
   import { computed } from "vue";

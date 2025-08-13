@@ -4,10 +4,10 @@
     BRUSH_WEIGHTS,
     COLORS,
   } from "@magic/graph/plugins/annotations/constants";
-  import ToolbarButtonGroup from "@ui/core/toolbar/ToolbarButtonGroup.vue";
-  import GToolbar from "@ui/graph/toolbar/GToolbarBase.vue";
-  import GToolbarButton from "@ui/graph/toolbar/GToolbarButton.vue";
-  import GToolbarButtonDivider from "@ui/graph/toolbar/GToolbarDivider.vue";
+  import ToolbarButtonGroup from "@magic/ui/core/toolbar/ToolbarButtonGroup.vue";
+  import GToolbar from "@magic/ui/graph/toolbar/GToolbarBase.vue";
+  import GToolbarButton from "@magic/ui/graph/toolbar/GToolbarButton.vue";
+  import GToolbarButtonDivider from "@magic/ui/graph/toolbar/GToolbarDivider.vue";
   import type { Color } from "@utils/colors";
 
   const {

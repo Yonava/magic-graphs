@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import GWell from '@ui/graph/GWell.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import gsap from 'gsap';
+  import GWell from "@magic/ui/graph/GWell.vue";
+  import GButton from "@magic/ui/graph/button/GButton.vue";
+  import gsap from "gsap";
 
-  import { ref } from 'vue';
+  import { ref } from "vue";
 
-  import type { TreeControls } from '../useTree';
+  import type { TreeControls } from "../useTree";
 
   const props = defineProps<{
     tree: TreeControls;
@@ -22,7 +22,7 @@
     const nums: number[] = [];
     for (let i = min - 10; i < max + 10; i++) nums.push(i);
     const validNums = nums.filter((num) =>
-      treeArr.every((tNum) => num !== tNum),
+      treeArr.every((tNum) => num !== tNum)
     );
     return gsap.utils.shuffle(validNums).slice(0, 5);
   };

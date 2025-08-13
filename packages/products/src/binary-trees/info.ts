@@ -1,4 +1,4 @@
-import type { ProductInfo } from 'src/types';
+import type { ProductInfo } from '../types';
 
 import state from './state';
 

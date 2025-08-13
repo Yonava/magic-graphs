@@ -1,5 +1,5 @@
 import type { Graph } from '@magic/graph/types';
-import type { ProductInfo } from 'src/types';
+import type { ProductInfo } from '../types';
 
 import { canRunFordFulkerson } from './sim/guard';
 import { useSimulationRunner } from './sim/runner';

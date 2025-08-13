@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/graph/global";
-  import GButton from "@ui/graph/button/GButton.vue";
+  import GButton from "@magic/ui/graph/button/GButton.vue";
   import colors from "@utils/colors";
 
   import state from "../state";

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/graph/global";
-  import CPopover from "@ui/core/Popover.vue";
-  import GWell from "@ui/graph/GWell.vue";
+  import CPopover from "@magic/ui/core/Popover.vue";
+  import GWell from "@magic/ui/graph/GWell.vue";
 
   import { computed } from "vue";
 

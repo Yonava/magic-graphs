@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/graph/global";
   import type { GNode } from "@magic/graph/types";
-  import GWell from "@ui/graph/GWell.vue";
+  import GWell from "@magic/ui/graph/GWell.vue";
 
   import { computed } from "vue";
 
