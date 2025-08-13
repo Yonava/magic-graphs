@@ -1,4 +1,4 @@
-import type { RemoveAnyArray } from '@utils/types';
+import type { RemoveAnyArray } from '../types';
 
 /**
  * taking some data that may be a plain value or a function that returns that value

@@ -1,6 +1,6 @@
-/**
- * recursively compare two objects and return the delta
- */
+// recursively compare two objects and return the delta
+
+// -----------------
 
 const isObj = (obj: any) =>
   Object.prototype.toString.call(obj) === '[object Object]';

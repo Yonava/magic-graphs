@@ -1,6 +1,3 @@
-/**
- * will come in handy for markov chains!
- */
 
 export const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
 
