@@ -1,1 +1,0 @@
-import{d as t,I as s,c as l,o as r,al as p}from"./index-EG8pfFaR.js";const _=t({__name:"Icon",props:{icon:{}},setup(e){const n=e,o=["select-none"],a=s(()=>`mdi mdi-${n.icon}`),c=s(()=>[...o,a.value]);return(m,u)=>(r(),l("span",{class:p([c.value,"text-2xl"])},null,2))}});export{_};

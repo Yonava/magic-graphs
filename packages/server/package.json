@@ -1,6 +1,7 @@
 {
-  "name": "magic-products-server",
+  "name": "@magic/server",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "dist/index.js",
   "scripts": {

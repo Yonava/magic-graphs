@@ -1,5 +1,5 @@
-import { localKeys } from '@utils/localStorage';
-import { MOUSE_BUTTONS } from '@utils/mouse';
+import { localKeys } from '@magic/utils/localStorage';
+import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { useLocalStorage } from '@vueuse/core';
 
 import { type Ref, onMounted } from 'vue';

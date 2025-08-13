@@ -1,5 +1,5 @@
-import type { Subscriber } from '@graph/events';
-import type { SchemaItem } from '@graph/types';
+import type { Subscriber } from '../events';
+import type { SchemaItem } from '../types';
 
 import { computed, ref, watch } from 'vue';
 import type { Ref } from 'vue';

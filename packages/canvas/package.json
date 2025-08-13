@@ -2,6 +2,9 @@
   "name": "@magic/canvas",
   "version": "1.0.0",
   "private": true,
+  "exports": {
+    "./*": "./src/*"
+  },
   "dependencies": {
     "@vueuse/core": "^13.6.0",
     "tailwind-merge": "^3.3.1",

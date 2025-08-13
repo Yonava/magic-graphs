@@ -1,9 +1,9 @@
-import type { MagicCanvasProps } from '@canvas/types';
-import type { Emitter } from '@graph/events';
-import { getConnectedEdges } from '@graph/helpers';
-import { nodeLetterLabelGetter } from '@graph/labels';
-import type { GraphSettings } from '@graph/settings';
-import type { GEdge, GNode } from '@graph/types';
+import type { MagicCanvasProps } from '@magic/canvas';
+import type { Emitter } from '../events';
+import { getConnectedEdges } from '../helpers';
+import { nodeLetterLabelGetter } from '../labels';
+import type { GraphSettings } from '../settings';
+import type { GEdge, GNode } from '../types';
 import type { AnimatedShapeControls } from '@shape/animation';
 import type { Coordinate } from '@shape/types/utility';
 import { getCtx } from '@utils/ctx';

@@ -1,5 +1,5 @@
-import type { GraphSettings } from '@graph/settings';
 
+import { GraphSettings } from '../settings';
 import type { Ref } from 'vue';
 
 type BoolSettingsKeys = {
