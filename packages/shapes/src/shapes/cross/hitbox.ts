@@ -2,9 +2,9 @@ import {
   areBoundingBoxesOverlapping,
   normalizeBoundingBox,
   toBorderRadiusArray,
-} from '@shape/helpers';
-import { rectHitbox } from '@shape/shapes/rect/hitbox';
-import type { BoundingBox, Coordinate } from '@shape/types/utility';
+} from '../../helpers';
+import { rectHitbox } from '../../shapes/rect/hitbox';
+import type { BoundingBox, Coordinate } from '../../types/utility';
 
 import type { CrossSchemaWithDefaults } from './defaults';
 

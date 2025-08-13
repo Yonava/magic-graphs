@@ -1,4 +1,4 @@
-import { drawStrokeOntoShape } from '@shape/helpers';
+import { drawStrokeOntoShape } from '../../helpers';
 import type { TriangleSchemaWithDefaults } from './defaults';
 
 export const drawTriangleWithCtx =

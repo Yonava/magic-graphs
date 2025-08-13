@@ -1,4 +1,4 @@
-import { drawStrokeOntoShape, normalizeBoundingBox, toBorderRadiusArray } from '@shape/helpers';
+import { drawStrokeOntoShape, normalizeBoundingBox, toBorderRadiusArray } from '../../helpers';
 
 import type { RectSchemaWithDefaults } from './defaults';
 

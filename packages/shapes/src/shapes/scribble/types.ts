@@ -1,5 +1,5 @@
-import type { FillColor, TextArea } from '@shape/types/schema';
-import type { Coordinate } from '@shape/types/utility';
+import type { FillColor, TextArea } from '../../types/schema';
+import type { Coordinate } from '../../types/utility';
 
 export type ScribbleSchema = {
   type: 'draw' | 'erase';

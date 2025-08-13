@@ -1,5 +1,5 @@
-import { resolveDefaults } from '@shape/defaults/resolveDefaults';
-import { FILL_COLOR_DEFAULTS } from '@shape/defaults/schema';
+import { resolveDefaults } from '../../defaults/resolveDefaults';
+import { FILL_COLOR_DEFAULTS } from '../../defaults/schema';
 
 import type { ScribbleSchema } from './types';
 

@@ -1,4 +1,4 @@
-import type { TextArea as TextAreaDefinition } from '@shape/text/types';
+import type { TextArea as TextAreaDefinition } from '../text/types';
 
 import type {
   BorderRadiusArrayValue,

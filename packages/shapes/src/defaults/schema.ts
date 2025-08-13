@@ -3,7 +3,7 @@ import type {
   FillColor,
   LineWidth,
   Rotation,
-} from '@shape/types/schema';
+} from '../types/schema';
 
 export const LINE_WIDTH_DEFAULTS = {
   lineWidth: 10,

@@ -2,8 +2,8 @@ import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
-} from '@shape/docs';
-import { line } from '@shapes/line';
+} from '../../docs';
+import { line } from '../line';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import { LINE_SCHEMA_DEFAULTS } from './defaults';

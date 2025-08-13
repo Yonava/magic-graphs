@@ -1,10 +1,10 @@
-import { resolveDefaults } from '@shape/defaults/resolveDefaults';
+import { resolveDefaults } from '../../defaults/resolveDefaults';
 import {
   BORDER_RADIUS_DEFAULTS,
   FILL_COLOR_DEFAULTS,
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS,
-} from '@shape/defaults/schema';
+} from '../../defaults/schema';
 
 import type { CrossSchema } from './types';
 

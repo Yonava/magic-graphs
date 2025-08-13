@@ -1,8 +1,8 @@
-import { getCenterPoint } from '@shape/helpers';
-import { shapeFactoryWrapper } from '@shape/shapeWrapper';
-import { getShapeTextProps } from '@shape/text/text';
-import type { ShapeFactory } from '@shape/types';
-import type { Coordinate } from '@shape/types/utility';
+import { getCenterPoint } from '../../helpers';
+import { shapeFactoryWrapper } from '../../shapeWrapper';
+import { getShapeTextProps } from '../../text/text';
+import type { ShapeFactory } from '../../types';
+import type { Coordinate } from '../../types/utility';
 
 import { resolveScribbleDefaults } from './defaults';
 import { drawScribbleWithCtx } from './draw';

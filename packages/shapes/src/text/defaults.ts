@@ -1,4 +1,4 @@
-import type { TextArea as TextAreaSchema } from '@shape/types/schema';
+import type { TextArea as TextAreaSchema } from '../types/schema';
 import type { DeepRequired } from 'ts-essentials';
 
 import type { TextArea, TextBlock } from './types';

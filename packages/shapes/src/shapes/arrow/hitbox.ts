@@ -1,9 +1,9 @@
 import {
   calculateArrowHeadCorners,
   normalizeBoundingBox,
-} from '@shape/helpers';
-import { getLineBoundingBox } from '@shape/shapes/line/hitbox';
-import type { BoundingBox, Coordinate } from '@shape/types/utility';
+} from '../../helpers';
+import { getLineBoundingBox } from '../../shapes/line/hitbox';
+import type { BoundingBox, Coordinate } from '../../types/utility';
 
 import { line } from '../line';
 import { triangle } from '../triangle';

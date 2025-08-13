@@ -1,5 +1,5 @@
-import { resolveDefaults } from '@shape/defaults/resolveDefaults';
-import { ROTATION_DEFAULTS } from '@shape/defaults/schema';
+import { resolveDefaults } from '../../defaults/resolveDefaults';
+import { ROTATION_DEFAULTS } from '../../defaults/schema';
 
 import type { ImageSchema } from './types';
 

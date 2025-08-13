@@ -5,7 +5,7 @@ import type {
   Rotation,
   Stroke,
   TextArea,
-} from '@shape/types/schema';
+} from '../../types/schema';
 
 export type RectSchema = {
   width: number;

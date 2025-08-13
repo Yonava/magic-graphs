@@ -1,5 +1,5 @@
-import { resolveDefaults } from '@shape/defaults/resolveDefaults';
-import { LINE_SCHEMA_DEFAULTS } from '@shapes/line/defaults';
+import { resolveDefaults } from '../../defaults/resolveDefaults';
+import { LINE_SCHEMA_DEFAULTS } from '../line/defaults';
 
 import type { ArrowSchema } from './types';
 

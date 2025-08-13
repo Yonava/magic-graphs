@@ -1,5 +1,5 @@
-import { toBorderRadiusArray } from '@shape/helpers';
-import { drawRectWithCtx } from '@shape/shapes/rect/draw';
+import { toBorderRadiusArray } from '../../helpers';
+import { drawRectWithCtx } from '../../shapes/rect/draw';
 
 import type { CrossSchemaWithDefaults } from './defaults';
 

@@ -1,4 +1,4 @@
-import { getAngle } from '@shape/helpers';
+import { getAngle } from '../../helpers';
 
 import type { LineSchemaWithDefaults } from './defaults';
 

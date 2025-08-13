@@ -1,4 +1,4 @@
-import type { BorderRadius } from '@shape/types/schema';
+import type { BorderRadius } from './types/schema';
 
 export const validateBorderRadius = (options: BorderRadius) => {
   const { borderRadius } = options;

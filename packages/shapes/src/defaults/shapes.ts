@@ -1,15 +1,15 @@
-import { resolveArrowDefaults } from '@shape/shapes/arrow/defaults';
-import { resolveCircleDefaults } from '@shape/shapes/circle/defaults';
-import { resolveCrossDefaults } from '@shape/shapes/cross/defaults';
-import { resolveEllipseDefaults } from '@shape/shapes/ellipse/defaults';
-import { resolveImageDefaults } from '@shape/shapes/image/defaults';
-import { resolveLineDefaults } from '@shape/shapes/line/defaults';
-import { resolveRectDefaults } from '@shape/shapes/rect/defaults';
-import { resolveScribbleDefaults } from '@shape/shapes/scribble/defaults';
-import { resolveSquareDefaults } from '@shape/shapes/square/defaults';
-import { resolveStarDefaults } from '@shape/shapes/star/defaults';
-import { resolveTriangleDefaults } from '@shape/shapes/triangle/defaults';
-import { resolveUTurnDefaults } from '@shape/shapes/uturn/defaults';
+import { resolveArrowDefaults } from '../shapes/arrow/defaults';
+import { resolveCircleDefaults } from '../shapes/circle/defaults';
+import { resolveCrossDefaults } from '../shapes/cross/defaults';
+import { resolveEllipseDefaults } from '../shapes/ellipse/defaults';
+import { resolveImageDefaults } from '../shapes/image/defaults';
+import { resolveLineDefaults } from '../shapes/line/defaults';
+import { resolveRectDefaults } from '../shapes/rect/defaults';
+import { resolveScribbleDefaults } from '../shapes/scribble/defaults';
+import { resolveSquareDefaults } from '../shapes/square/defaults';
+import { resolveStarDefaults } from '../shapes/star/defaults';
+import { resolveTriangleDefaults } from '../shapes/triangle/defaults';
+import { resolveUTurnDefaults } from '../shapes/uturn/defaults';
 
 export const getSchemaWithDefaults = {
   arrow: resolveArrowDefaults,
@@ -29,5 +29,3 @@ export const getSchemaWithDefaults = {
 export type SchemaWithDefaults = {
   [K in keyof typeof getSchemaWithDefaults]: ReturnType<(typeof getSchemaWithDefaults)[K]>;
 };
-
-// type t = SchemaWithDefaults['arrow']

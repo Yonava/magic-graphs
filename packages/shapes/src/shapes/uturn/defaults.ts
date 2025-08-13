@@ -1,9 +1,9 @@
-import { resolveDefaults } from '@shape/defaults/resolveDefaults';
+import { resolveDefaults } from '../../defaults/resolveDefaults';
 import {
   FILL_COLOR_DEFAULTS,
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS,
-} from '@shape/defaults/schema';
+} from '../../defaults/schema';
 
 import type { UTurnSchema } from './types';
 

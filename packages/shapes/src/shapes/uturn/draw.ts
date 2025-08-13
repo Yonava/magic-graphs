@@ -1,6 +1,6 @@
-import { rotatePoint } from '@shape/helpers';
-import { getColorAtPercentage } from '@shape/helpers';
-import type { GradientStop } from '@shape/types/utility';
+import { rotatePoint } from '../../helpers';
+import { getColorAtPercentage } from '../../helpers';
+import type { GradientStop } from '../../types/utility';
 
 import { arrow } from '../arrow';
 import { line } from '../line';

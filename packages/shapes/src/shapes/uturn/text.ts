@@ -1,4 +1,4 @@
-import { rotatePoint } from '@shape/helpers';
+import { rotatePoint } from '../../helpers';
 
 import type { UTurnSchemaWithDefaults } from './defaults';
 

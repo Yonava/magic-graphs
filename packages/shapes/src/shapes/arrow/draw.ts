@@ -1,4 +1,4 @@
-import { calculateArrowHeadCorners, getArrowHeadSize } from '@shape/helpers';
+import { calculateArrowHeadCorners, getArrowHeadSize } from '../../helpers';
 
 import { line } from '../line';
 import { triangle } from '../triangle';

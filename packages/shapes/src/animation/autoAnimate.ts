@@ -1,5 +1,5 @@
-import type { EverySchemaPropName, SchemaId, ShapeName } from '@shape/types';
-import { delta } from '@utils/deepDelta';
+import type { EverySchemaPropName, SchemaId, ShapeName } from '../types';
+import { delta } from '@magic/utils/deepDelta';
 
 import type { GetAnimatedSchema } from '.';
 import type { DefineTimeline } from './timeline/define';

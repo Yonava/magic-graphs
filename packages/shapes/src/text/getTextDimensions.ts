@@ -1,4 +1,4 @@
-import { getCtx } from '@utils/ctx';
+import { getCtx } from '@magic/utils/ctx';
 
 import type { TextBlock } from './types';
 

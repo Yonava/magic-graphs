@@ -1,4 +1,4 @@
-import type { ArrowSchema } from '@shapes/arrow/types';
+import type { ArrowSchema } from './shapes/arrow/types';
 import tinycolor from 'tinycolor2';
 
 import type { BorderRadius } from './types/schema';

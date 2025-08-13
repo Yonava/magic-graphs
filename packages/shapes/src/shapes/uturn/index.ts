@@ -1,7 +1,7 @@
-import { shapeFactoryWrapper } from '@shape/shapeWrapper';
-import { getShapeTextProps } from '@shape/text/text';
-import type { ShapeFactory } from '@shape/types';
-import type { Coordinate } from '@shape/types/utility';
+import { shapeFactoryWrapper } from '../../shapeWrapper';
+import { getShapeTextProps } from '../../text/text';
+import type { ShapeFactory } from '../../types';
+import type { Coordinate } from '../../types/utility';
 
 import { resolveUTurnDefaults } from './defaults';
 import { drawUTurnWithCtx } from './draw';

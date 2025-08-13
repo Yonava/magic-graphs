@@ -1,4 +1,4 @@
-import { drawRectWithCtx } from '@shape/shapes/rect/draw';
+import { drawRectWithCtx } from '../../shapes/rect/draw';
 
 import { loadImage } from './cache';
 import type { ImageSchemaWithDefaults } from './defaults';

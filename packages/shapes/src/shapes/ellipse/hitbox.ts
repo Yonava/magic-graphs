@@ -1,8 +1,8 @@
 import {
   areBoundingBoxesOverlapping,
   normalizeBoundingBox,
-} from '@shape/helpers';
-import type { BoundingBox, Coordinate } from '@shape/types/utility';
+} from '../../helpers';
+import type { BoundingBox, Coordinate } from '../../types/utility';
 
 import type { EllipseSchemaWithDefaults } from './defaults';
 

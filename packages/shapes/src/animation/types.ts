@@ -1,4 +1,4 @@
-import type { EverySchemaPropName, WithId } from '@shape/types';
+import type { EverySchemaPropName, WithId } from '../types';
 
 import type { TimelineId } from './timeline/define';
 

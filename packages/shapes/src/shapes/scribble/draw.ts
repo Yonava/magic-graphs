@@ -1,4 +1,4 @@
-import { circle } from '@shape/shapes/circle';
+import { circle } from '../../shapes/circle';
 
 import { ERASER_BRUSH_WEIGHT } from '.';
 import type { ScribbleSchemaWithDefaults } from './defaults';

@@ -3,9 +3,9 @@ import {
   normalizeBoundingBox,
   rotatePoint,
   toBorderRadiusArray,
-} from '@shape/helpers';
-import { circle } from '@shape/shapes/circle';
-import type { BoundingBox, Coordinate } from '@shape/types/utility';
+} from '../../helpers';
+import { circle } from '../../shapes/circle';
+import type { BoundingBox, Coordinate } from '../../types/utility';
 
 import type { RectSchemaWithDefaults } from './defaults';
 

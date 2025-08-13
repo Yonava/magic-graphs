@@ -1,8 +1,8 @@
-import { normalizeBoundingBox } from '@shape/helpers';
-import type { BoundingBox, Coordinate } from '@shape/types/utility';
-import { circle } from '@shapes/circle';
-import { line } from '@shapes/line';
-import { rect } from '@shapes/rect';
+import { normalizeBoundingBox } from '../../helpers';
+import type { BoundingBox, Coordinate } from '../../types/utility';
+import { circle } from '../circle';
+import { line } from '../line';
+import { rect } from '../rect';
 
 import type { ScribbleSchemaWithDefaults } from './defaults';
 

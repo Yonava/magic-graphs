@@ -1,5 +1,5 @@
 import type { UnionToIntersection } from 'ts-essentials';
-import { getSchemaWithDefaults } from '@shape/defaults/shapes';
+import { getSchemaWithDefaults } from '../defaults/shapes';
 import type {
   EverySchemaProp,
   EverySchemaPropName,
@@ -8,8 +8,8 @@ import type {
   ShapeFactory,
   ShapeName,
   WithId,
-} from '@shape/types';
-import { shapeProps } from '@shape/types';
+} from '../types';
+import { shapeProps } from '../types';
 
 import { shapes } from '..';
 import { useAutoAnimate } from './autoAnimate';

@@ -2,21 +2,21 @@ import {
   type EasingFunction,
   type EasingOption,
   easingOptionToFunction,
-} from '@shape/animation/easing';
+} from '../../animation/easing';
 import {
   interpolateColor,
   isColorString,
-} from '@shape/animation/interpolation/color';
-import { interpolateCoordinate } from '@shape/animation/interpolation/coordinate';
-import { interpolateNumber } from '@shape/animation/interpolation/number';
-import { interpolateTextArea } from '@shape/animation/interpolation/textArea';
-import type { AnimationKeyframe } from '@shape/animation/interpolation/types';
-import { resolveTextArea } from '@shape/text/defaults';
-import type { TextArea } from '@shape/text/types';
-import type { EverySchemaPropName, ShapeName } from '@shape/types';
-import type { Coordinate } from '@shape/types/utility';
-import type { Color } from '@utils/colors';
-import { isPlainObject } from '@utils/deepMerge';
+} from '../../animation/interpolation/color';
+import { interpolateCoordinate } from '../../animation/interpolation/coordinate';
+import { interpolateNumber } from '../../animation/interpolation/number';
+import { interpolateTextArea } from '../../animation/interpolation/textArea';
+import type { AnimationKeyframe } from '../../animation/interpolation/types';
+import { resolveTextArea } from '../../text/defaults';
+import type { TextArea } from '../../text/types';
+import type { EverySchemaPropName, ShapeName } from '../../types';
+import type { Coordinate } from '../../types/utility';
+import type { Color } from '@magic/utils/colors';
+import { isPlainObject } from '@magic/utils/deepMerge';
 
 import type {
   ImperativeTrack,

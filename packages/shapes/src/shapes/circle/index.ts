@@ -1,4 +1,4 @@
-import type { ShapeFactory } from '@shape/types';
+import type { ShapeFactory } from '../../types';
 
 import { ellipse } from '../ellipse';
 import { CIRCLE_SCHEMA_DEFAULTS } from './defaults';

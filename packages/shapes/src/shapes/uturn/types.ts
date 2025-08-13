@@ -5,7 +5,7 @@ import type {
   LineWidth,
   Rotation,
   TextArea,
-} from '@shape/types/schema';
+} from '../../types/schema';
 
 export type UTurnSchema = {
   spacing: number;

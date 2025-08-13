@@ -1,4 +1,4 @@
-import type { ShapeFactory } from '@shape/types';
+import type { ShapeFactory } from '../../types';
 
 import { rect } from '../rect';
 import { SQUARE_SCHEMA_DEFAULTS } from './defaults';

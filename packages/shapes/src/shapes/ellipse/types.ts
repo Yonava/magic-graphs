@@ -3,7 +3,7 @@ import type {
   FillColor,
   Stroke,
   TextArea,
-} from '@shape/types/schema';
+} from '../../types/schema';
 
 export type EllipseSchema = {
   radiusX: number;

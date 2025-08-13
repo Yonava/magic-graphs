@@ -1,4 +1,4 @@
-import type { RectSchema } from '@shapes/rect/types';
+import type { RectSchema } from '../shapes/rect/types';
 
 export type Coordinate = {
   x: number;

@@ -1,6 +1,6 @@
-import { getClientCoordinates } from '@canvas/coordinates';
-import { isPointInBoundingBox } from '@shape/helpers';
-import type { BoundingBox } from '@shape/types/utility';
+import { getClientCoordinates } from '@magic/canvas/coordinates';
+import { isPointInBoundingBox } from '../helpers';
+import type { BoundingBox } from '../types/utility';
 import type { DeepRequired } from 'ts-essentials';
 
 import { getTextDimensions } from './getTextDimensions';

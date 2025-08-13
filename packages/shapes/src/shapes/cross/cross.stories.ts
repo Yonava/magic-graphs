@@ -2,7 +2,7 @@ import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
-} from '@shape/docs';
+} from '../../docs';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import { cross } from '.';

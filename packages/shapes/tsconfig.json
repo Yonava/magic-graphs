@@ -15,12 +15,16 @@
     "noEmit": false,
     "composite": true,
     "paths": {
-      "@magic/utils/*": ["../utils/src/*"]
+      "@magic/utils/*": ["../utils/src/*"],
+      "@magic/canvas/*": ["../canvas/src/*"]
     }
   },
   "references": [
     {
       "path": "../utils"
+    },
+    {
+      "path": "../canvas"
     }
   ],
   "include": ["src"]

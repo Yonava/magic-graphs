@@ -1,14 +1,12 @@
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
-import type { EverySchemaProp, ShapeNameToSchema, WithId } from '@shape/types';
-import { generateId } from '@utils/id';
-import type { DeepRequired } from 'ts-essentials';
-
-import type { DeepReadonly } from 'vue';
+import type { EverySchemaProp, ShapeNameToSchema, WithId } from '../../types';
+import { generateId } from '@magic/utils/id';
+import type { DeepReadonly, DeepRequired } from 'ts-essentials';
 
 import type { EasingOption } from '../easing';
 import { type CompiledTimeline, compileTimeline } from './compile';
-import type { SchemaWithDefaults } from '@shape/defaults/shapes';
+import type { SchemaWithDefaults } from '../../defaults/shapes';
 
 type ShapeTarget = {
   /**

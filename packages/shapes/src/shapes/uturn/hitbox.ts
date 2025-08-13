@@ -2,9 +2,9 @@ import {
   areBoundingBoxesOverlapping,
   normalizeBoundingBox,
   rotatePoint,
-} from '@shape/helpers';
-import { circle } from '@shape/shapes/circle';
-import type { BoundingBox, Coordinate } from '@shape/types/utility';
+} from '../../helpers';
+import { circle } from '../../shapes/circle';
+import type { BoundingBox, Coordinate } from '../../types/utility';
 
 import { arrow } from '../arrow';
 import { line } from '../line';

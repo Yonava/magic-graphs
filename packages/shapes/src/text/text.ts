@@ -1,6 +1,6 @@
-import { rect } from '@shape/shapes/rect';
-import type { ShapeTextProps } from '@shape/types';
-import type { Coordinate } from '@shape/types/utility';
+import { rect } from '../shapes/rect';
+import type { ShapeTextProps } from '../types';
+import type { Coordinate } from '../types/utility';
 import type { DeepRequired } from 'ts-essentials';
 
 import { createTextarea } from './createTextarea';
@@ -86,16 +86,16 @@ export const drawTextWithTextArea =
     textArea: DeepRequired<TextAreaWithAnchorPoint>,
     textAreaDimensions: ReturnType<typeof getTextAreaDimension>,
   ) =>
-  (ctx: CanvasRenderingContext2D) => {
-    const { at, textBlock } = textArea;
-    const { content, fontSize, fontWeight, color, fontFamily } = textBlock;
+    (ctx: CanvasRenderingContext2D) => {
+      const { at, textBlock } = textArea;
+      const { content, fontSize, fontWeight, color, fontFamily } = textBlock;
 
-    ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-    ctx.fillStyle = color;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+      ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+      ctx.fillStyle = color;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
 
-    const { width, descent, height } = textAreaDimensions;
+      const { width, descent, height } = textAreaDimensions;
 
-    ctx.fillText(content, at.x + width / 2, at.y + height / 2 + descent / 4);
-  };
+      ctx.fillText(content, at.x + width / 2, at.y + height / 2 + descent / 4);
+    };

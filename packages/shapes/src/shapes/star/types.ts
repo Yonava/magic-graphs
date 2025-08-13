@@ -3,7 +3,7 @@ import type {
   FillColor,
   Rotation,
   TextArea,
-} from '@shape/types/schema';
+} from '../../types/schema';
 
 export type StarSchema = {
   innerRadius: number;
