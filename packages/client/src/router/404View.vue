@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import CIcon from '@ui/core/Icon.vue';
+  import CIcon from '@magic/ui/core/Icon.vue';
 </script>
 
 <template>

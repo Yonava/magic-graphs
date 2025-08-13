@@ -47,6 +47,15 @@ importers:
       '@codemirror/theme-one-dark':
         specifier: ^6.1.2
         version: 6.1.3
+      '@magic/graph':
+        specifier: workspace:*
+        version: link:../graph
+      '@magic/products':
+        specifier: workspace:*
+        version: link:../products
+      '@magic/ui':
+        specifier: workspace:*
+        version: link:../ui
       '@mdi/font':
         specifier: ^7.4.47
         version: 7.4.47

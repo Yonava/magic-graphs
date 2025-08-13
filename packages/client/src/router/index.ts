@@ -1,6 +1,6 @@
-import { collabControls } from '@graph/collab';
-import SandboxInfo from '@product/sandbox/info';
-import type { ProductInfo } from 'src/types';
+import { collabControls } from '@magic/graph/collab';
+import SandboxInfo from '@magic/products/sandbox/info';
+import type { ProductInfo } from '@magic/products/types'
 
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -18,7 +18,7 @@ const router = createRouter({
     },
     {
       path: '/canvas',
-      component: () => import('../canvas/docs/StoryCanvas.vue'),
+      component: () => import('@magic/canvas/MagicCanvas.vue'),
     },
     ...Object.values(infoModules).flatMap((mod) => mod.default.route ?? []),
     {

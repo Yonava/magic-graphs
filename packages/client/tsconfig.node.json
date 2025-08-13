@@ -7,6 +7,14 @@
     "nightwatch.conf.*",
     "playwright.config.*"
   ],
+  "references": [
+    { "path": "../ui" },
+    { "path": "../graph" },
+    { "path": "../products" },
+    { "path": "../canvas" },
+    { "path": "../utils" },
+    { "path": "../shapes" }
+  ],
   "compilerOptions": {
     "composite": true,
     "noEmit": true,
@@ -14,6 +22,14 @@
 
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@magic/ui/*": ["../ui/src/*"],
+      "@magic/graph/*": ["../graph/src/*"],
+      "@magic/products/*": ["../products/src/*"],
+      "@magic/canvas/*": ["../canvas/src/*"],
+      "@magic/utils/*": ["../utils/src/*"],
+      "@magic/shapes/*": ["../shapes/src/*"]
+    }
   }
 }
