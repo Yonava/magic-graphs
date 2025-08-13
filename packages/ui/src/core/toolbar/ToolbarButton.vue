@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import CIcon from "@ui/core/Icon.vue";
-  import { useTinycolor } from "@ui/useTinycolor";
+  import CIcon from "../../core/Icon.vue";
+  import { useTinycolor } from "../../useTinycolor";
   import colors from "@magic/utils/colors";
 
   import { computed, ref, toRef } from "vue";

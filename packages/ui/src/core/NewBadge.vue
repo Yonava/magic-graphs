@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import OverlayBadge from 'primevue/overlaybadge';
+  import OverlayBadge from "primevue/overlaybadge";
 </script>
 
 <template>

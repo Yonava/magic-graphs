@@ -378,6 +378,9 @@ importers:
       primevue:
         specifier: ^4.2.4
         version: 4.3.7(vue@3.5.18(typescript@5.9.2))
+      tailwind-merge:
+        specifier: ^3.3.1
+        version: 3.3.1
       tinycolor2:
         specifier: ^1.6.0
         version: 1.6.0

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import CPopoverTooltip from "@magic/ui/core/PopoverTooltip.vue";
-  import GWell from "@magic/ui/graph/GWell.vue";
-  import GButton from "@magic/ui/graph/button/GButton.vue";
+  import CIcon from "../core/Icon.vue";
+  import CPopoverTooltip from "../core/PopoverTooltip.vue";
+  import GWell from "../graph/GWell.vue";
+  import GButton from "../graph/button/GButton.vue";
 
   withDefaults(
     defineProps<{

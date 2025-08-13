@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
-  import CWell from "@magic/ui/core/Well.vue";
+  import CWell from "../core/Well.vue";
 
   import { computed } from "vue";
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useTinycolor } from "@ui/useTinycolor";
+  import { useTinycolor } from "../../useTinycolor";
   import colors from "@magic/utils/colors";
 
   import { computed, ref, toRef } from "vue";
