@@ -1,6 +1,6 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode, Graph } from '@magic/graph/types';
-import { useSCCColorizer } from '@magic/product/sandbox/ui/GraphInfoMenu/useSCCColorizer';
+import { useSCCColorizer } from '@magic/products/sandbox/ui/GraphInfoMenu/useSCCColorizer';
 
 import { USETHEME_ID } from '../constants';
 import type { MarkovChain } from '../markov/useMarkovChain';

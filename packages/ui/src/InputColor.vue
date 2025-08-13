@@ -1,7 +1,21 @@
 <script setup lang="ts">
-  import { isHexAlpha, isHexStandard } from "@magic/utils/colors";
+  import { Color } from "@magic/utils/colors";
 
   import { computed } from "vue";
+
+  /**
+   * check if a color is a standard hex color - #xxxxxx
+   */
+  const isHexStandard = (color: Color) => {
+    return /^#[0-9A-F]{6}$/i.test(color);
+  };
+
+  /**
+   * check if a color is a hex color with an alpha channel - #xxxxxxxx
+   */
+  const isHexAlpha = (color: Color) => {
+    return /^#[0-9A-F]{8}$/i.test(color);
+  };
 
   const model = defineModel<string>();
 

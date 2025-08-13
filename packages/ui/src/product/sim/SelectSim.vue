@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import CIcon from '@ui/core/Icon.vue';
-  import CPopover from '@ui/core/Popover.vue';
-  import GWell from '@ui/graph/GWell.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
-  import type { SimulationDeclaration } from 'src/types';
+  import CIcon from "../../core/Icon.vue";
+  import CPopover from "../../core/Popover.vue";
+  import GWell from "../../graph/GWell.vue";
+  import GButton from "../../graph/button/GButton.vue";
+  import type { SimulationDeclaration } from "@magic/products/types";
 
-  import { computed } from 'vue';
+  import { computed } from "vue";
 
-  import SelectSimGuard from './SelectSimGuard.vue';
-  import SimCard from './SimCard.vue';
+  import SelectSimGuard from "./SelectSimGuard.vue";
+  import SimCard from "./SimCard.vue";
 
   const props = defineProps<{
     simulations: SimulationDeclaration[];
@@ -16,7 +16,7 @@
   }>();
 
   const emits = defineEmits<{
-    (e: 'simulation-selected', simulation: SimulationDeclaration): void;
+    (e: "simulation-selected", simulation: SimulationDeclaration): void;
   }>();
 
   const displayedSimulations = computed(() => {
@@ -28,7 +28,7 @@
 
   const playButtonClicked = (openPopover: () => void) => {
     if (props.simulations.length === 1) {
-      emits('simulation-selected', props.simulations[0]);
+      emits("simulation-selected", props.simulations[0]);
       return;
     }
     openPopover();

@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { MAX_ZOOM, MIN_ZOOM } from "@magic/canvas/camera/panZoom";
   import type { MagicCanvasProps } from "@magic/canvas/types";
-  import ToolbarButtonGroup from "@ui/core/toolbar/ToolbarButtonGroup.vue";
-  import GWell from "@ui/graph/GWell.vue";
-  import GToolbarBase from "@ui/graph/toolbar/GToolbarBase.vue";
-  import GToolbarButton from "@ui/graph/toolbar/GToolbarButton.vue";
+  import ToolbarButtonGroup from "../core/toolbar/ToolbarButtonGroup.vue";
+  import GWell from "../graph/GWell.vue";
+  import GToolbarBase from "../graph/toolbar/GToolbarBase.vue";
+  import GToolbarButton from "../graph/toolbar/GToolbarButton.vue";
 
   import { computed } from "vue";
 

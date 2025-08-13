@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { PRODUCT_SHORTCUTS } from "@magic/product/shared/shortcuts";
-  import CIcon from "@ui/core/Icon.vue";
-  import GDialog from "@ui/graph/GDialog.vue";
-  import GButton from "@ui/graph/button/GButton.vue";
+  import { PRODUCT_SHORTCUTS } from "@magic/products/shared/shortcuts";
+  import CIcon from "../core/Icon.vue";
+  import GDialog from "../graph/GDialog.vue";
+  import GButton from "../graph/button/GButton.vue";
   import { onClickOutside } from "@vueuse/core";
   import { keys } from "ctrl-keys";
 

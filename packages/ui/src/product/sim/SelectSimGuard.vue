@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import CPopoverTooltip from "@ui/core/PopoverTooltip.vue";
-  import CButton from "@ui/core/button/Button.vue";
-  import GWell from "@ui/graph/GWell.vue";
+  import CPopoverTooltip from "../../core/PopoverTooltip.vue";
+  import CButton from "../../core/button/Button.vue";
+  import GWell from "../../graph/GWell.vue";
   import colors from "@magic/utils/colors";
-  import type { SimulationDeclaration } from "src/types";
+  import type { SimulationDeclaration } from "@magic/products/types";
 
   import { computed } from "vue";
 

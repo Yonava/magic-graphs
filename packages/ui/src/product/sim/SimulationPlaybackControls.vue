@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/graph/global";
   import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
-  import { PRODUCT_SHORTCUTS } from "@magic/product/shared/shortcuts";
-  import GText from "@ui/graph/GText.vue";
-  import GButton from "@ui/graph/button/GButton.vue";
-  import GSpreadSelect from "@ui/graph/select/GSpreadSelect.vue";
+  import { PRODUCT_SHORTCUTS } from "@magic/products/shared/shortcuts";
+  import GText from "../../graph/GText.vue";
+  import GButton from "../../graph/button/GButton.vue";
+  import GSpreadSelect from "../../graph/select/GSpreadSelect.vue";
   import keys from "ctrl-keys";
 
   import { onUnmounted, ref, toRefs } from "vue";
