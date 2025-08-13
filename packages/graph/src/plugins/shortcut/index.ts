@@ -1,4 +1,4 @@
-import type { BaseGraph } from '../base';
+import type { BaseGraph } from '../../base';
 import keys from 'ctrl-keys';
 
 import type { GraphAnnotationPlugin } from '../annotations';

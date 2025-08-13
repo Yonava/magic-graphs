@@ -3,12 +3,12 @@
   lang="ts"
   generic="TValue, TItem extends SpreadSelectItem<TValue>"
 >
-  import GButton from '@ui/graph/button/GButton.vue';
-  import { onClickOutside } from '@vueuse/core';
+  import GButton from "@magic/ui/graph/button/GButton.vue";
+  import { onClickOutside } from "@vueuse/core";
 
-  import { computed, ref } from 'vue';
+  import { computed, ref } from "vue";
 
-  import type { SpreadSelectItem } from './SpreadSelectItem';
+  import type { SpreadSelectItem } from "./SpreadSelectItem";
 
   const target = ref<HTMLDivElement>();
 
@@ -30,19 +30,19 @@
     }>(),
     {
       initialItemIndex: 0,
-    },
+    }
   );
 
   const selectedItem = defineModel<TValue>();
   selectedItem.value = props.items[props.initialItemIndex].value;
   if (selectedItem.value === undefined)
-    throw new Error('invalid initialItemIndex');
+    throw new Error("invalid initialItemIndex");
 
   const selectedLabel = computed(() => {
     return props.items.find((item) => item.value === selectedItem.value)?.label;
   });
 
-  const isOpen = defineModel('open', { default: false });
+  const isOpen = defineModel("open", { default: false });
 
   const toggleMenu = () => (isOpen.value = !isOpen.value);
 

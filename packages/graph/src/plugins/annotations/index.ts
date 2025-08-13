@@ -1,7 +1,7 @@
-import type { BaseGraph } from '../base';
-import type { GraphMouseEvent } from '../base/types';
-import { useNonNullGraphColors } from '../themes/useGraphColors';
-import type { Aggregator } from '../types';
+import type { BaseGraph } from '../../base';
+import type { GraphMouseEvent } from '../../base/types';
+import { useNonNullGraphColors } from '../../themes/useGraphColors';
+import type { Aggregator } from '../../types';
 import { circle } from '@magic/shapes/shapes/circle';
 import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
 import type { WithId } from '@magic/shapes/types';

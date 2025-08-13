@@ -1,7 +1,7 @@
-import type { BaseGraph } from '../base';
-import type { HistoryOption } from '../base/types';
-import type { GraphState } from '../collab/types';
-import type { GEdge, GNode } from '../types';
+import type { BaseGraph } from '../../base';
+import type { HistoryOption } from '../../base/types';
+import type { GraphState } from '../../collab/types';
+import type { GEdge, GNode } from '../../types';
 import type { Coordinate } from '@magic/shapes/types/utility';
 import { debounce } from '@magic/utils/debounce';
 

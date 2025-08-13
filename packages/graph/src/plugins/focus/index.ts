@@ -1,7 +1,7 @@
-import type { BaseGraph } from '../base';
-import type { FocusOption, GraphMouseEvent } from '../base/types';
-import { useTheme } from '../themes/useTheme';
-import type { SchemaItem } from '../types';
+import type { BaseGraph } from '../../base';
+import type { FocusOption, GraphMouseEvent } from '../../base/types';
+import { useTheme } from '../../themes/useTheme';
+import type { SchemaItem } from '../../types';
 import { getCtx } from '@magic/utils/ctx';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 

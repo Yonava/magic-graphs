@@ -1,4 +1,4 @@
-import type { GNode } from '../types';
+import type { GNode } from '../../../types';
 
 export const circularLayout = (nodes: GNode[], radius: number) => {
   const angleStep = (2 * Math.PI) / nodes.length;

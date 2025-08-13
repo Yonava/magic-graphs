@@ -1,3 +1,0 @@
-/**
- * persistent graph types
- */

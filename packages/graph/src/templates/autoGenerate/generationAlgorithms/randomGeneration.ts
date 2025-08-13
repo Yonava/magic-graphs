@@ -1,13 +1,13 @@
-import { LETTERS, graphLabelGetter } from '../labels';
+import { LETTERS, graphLabelGetter } from '../../../labels';
 import type {
   PartialGenerateClusterNodesOptions,
   PartialGenerateCohesiveEdgesOptions,
-} from '../templates/autoGenerate/types';
+} from '../../../templates/autoGenerate/types';
 import {
   GENERATE_CLUSTER_GRAPH_DEFAULTS,
   GENERATE_COHESIVE_EDGES_DEFAULTS,
-} from '../templates/autoGenerate/types';
-import type { GEdge, GNode } from '../types';
+} from '../../../templates/autoGenerate/types';
+import type { GEdge, GNode } from '../../../types';
 import { angleDifference } from '@magic/shapes/helpers';
 import { generateId } from '@magic/utils/id';
 

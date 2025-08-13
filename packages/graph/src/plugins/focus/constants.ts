@@ -1,4 +1,4 @@
-import type { SchemaItem } from '../types';
+import type { SchemaItem } from '../../types';
 
 export const FOCUSABLE_GRAPH_TYPES: SchemaItem['graphType'][] = [
   'node',

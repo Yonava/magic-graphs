@@ -1,6 +1,6 @@
-import type { BaseGraph } from '../base';
-import type { GraphMouseEvent } from '../base/types';
-import type { GNode } from '../types';
+import type { BaseGraph } from '../../base';
+import type { GraphMouseEvent } from '../../base/types';
+import type { GNode } from '../../types';
 import type { Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 

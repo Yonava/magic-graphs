@@ -1,9 +1,9 @@
-import type { BaseGraph } from '../base';
-import type { GraphMouseEvent } from '../base/types';
-import { prioritizeNode } from '../helpers';
-import type { NodeAnchor } from '../plugins/anchors/types';
-import type { GraphFocusPlugin } from '../plugins/focus';
-import type { GNode, SchemaItem } from '../types';
+import type { BaseGraph } from '../../base';
+import type { GraphMouseEvent } from '../../base/types';
+import { prioritizeNode } from '../../helpers';
+import type { NodeAnchor } from '../../plugins/anchors/types';
+import type { GraphFocusPlugin } from '../../plugins/focus';
+import type { GNode, SchemaItem } from '../../types';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
 import type { WithId } from '@magic/shapes/types';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';

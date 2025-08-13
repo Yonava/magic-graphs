@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
-  import CButton from "@ui/core/button/Button.vue";
+  import CButton from "@magic/ui/core/button/Button.vue";
 
   import { computed } from "vue";
 

@@ -1,6 +1,6 @@
-import type { BaseGraph } from '../base';
-import type { GNode } from '../types';
-import type { AdjacencyList, AdjacencyLists } from '../useAdjacencyList';
+import type { BaseGraph } from '../../base';
+import type { GNode } from '../../types';
+import type { AdjacencyList, AdjacencyLists } from '../../useAdjacencyList';
 
 import { computed } from 'vue';
 

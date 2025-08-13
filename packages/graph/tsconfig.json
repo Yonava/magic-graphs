@@ -15,7 +15,7 @@
     "noEmit": false,
     "composite": true,
     "paths": {
-      // "@magic/ui/*": ["../ui/src/*"],
+      "@magic/ui/*": ["../ui/src/*"],
       "@magic/canvas/*": ["../canvas/src/*"],
       "@magic/shapes/*": ["../shapes/src/*"],
       "@magic/utils/*": ["../utils/src/*"],
@@ -23,6 +23,9 @@
     }
   },
   "references": [
+    {
+      "path": "../ui"
+    },
     {
       "path": "../products"
     },

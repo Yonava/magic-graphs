@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
   import type { TutorialControls } from "@magic/graph/tutorials/types";
-  import CToolbar from "@ui/core/toolbar/ToolbarBase.vue";
+  import CToolbar from "@magic/ui/core/toolbar/ToolbarBase.vue";
 
   import GToolbarHint from "./GToolbarHint.vue";
 

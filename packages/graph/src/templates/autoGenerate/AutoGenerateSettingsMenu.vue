@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import InputRange from '@ui/InputRange.vue';
-  import CIcon from '@ui/core/Icon.vue';
-  import CPopover from '@ui/core/Popover.vue';
-  import GWell from '@ui/graph/GWell.vue';
-  import GButton from '@ui/graph/button/GButton.vue';
+  import InputRange from "@magic/ui/InputRange.vue";
+  import CIcon from "@magic/ui/core/Icon.vue";
+  import CPopover from "@magic/ui/core/Popover.vue";
+  import GWell from "@magic/ui/graph/GWell.vue";
+  import GButton from "@magic/ui/graph/button/GButton.vue";
 
-  import { toRef } from 'vue';
+  import { toRef } from "vue";
 
-  import type { AutoGenerateGraphOptions } from './types';
-  import { AUTO_GENERATE_GRAPH_DEFAULTS } from './types';
+  import type { AutoGenerateGraphOptions } from "./types";
+  import { AUTO_GENERATE_GRAPH_DEFAULTS } from "./types";
 
   const props = defineProps<{
     options: AutoGenerateGraphOptions;
@@ -44,8 +44,9 @@
           options.maxNodesPerCluster =
             AUTO_GENERATE_GRAPH_DEFAULTS.maxNodesPerCluster
         "
-        >Reset</GButton
       >
+        Reset
+      </GButton>
       <h2 class="font-bold text-sm">
         Max edges per node ({{ options.maxEdgesPerNode! + 1 }})
       </h2>
@@ -63,8 +64,9 @@
         @click="
           options.maxEdgesPerNode = AUTO_GENERATE_GRAPH_DEFAULTS.maxEdgesPerNode
         "
-        >Reset</GButton
       >
+        Reset
+      </GButton>
       <h2 class="font-bold text-sm">
         Connection probability ({{ options.connectionProbability }})
       </h2>
@@ -84,8 +86,9 @@
           options.connectionProbability =
             AUTO_GENERATE_GRAPH_DEFAULTS.connectionProbability
         "
-        >Reset</GButton
       >
+        Reset
+      </GButton>
       <h2 class="font-bold text-sm">
         Edge connection distance ({{ options.maxNeighbors }})
       </h2>
@@ -102,8 +105,9 @@
         @click="
           options.maxNeighbors = AUTO_GENERATE_GRAPH_DEFAULTS.maxNeighbors
         "
-        >Reset</GButton
       >
+        Reset
+      </GButton>
       <h2 class="font-bold text-sm">
         Allow Self Referencing Nodes?
         <input

@@ -1,4 +1,4 @@
-import type { AdjacencyList } from '../useAdjacencyList';
+import type { AdjacencyList } from '../../useAdjacencyList';
 
 import { type Ref, computed } from 'vue';
 

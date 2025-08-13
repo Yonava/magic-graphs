@@ -1,4 +1,4 @@
-import type { GEdge, GNode } from '../types';
+import type { GEdge, GNode } from '../../../types';
 
 type ForceDirectedLayoutOptions = {
   width: number;

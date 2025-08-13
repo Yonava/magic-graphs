@@ -216,6 +216,9 @@ importers:
       '@vueuse/core':
         specifier: ^13.6.0
         version: 13.6.0(vue@3.5.18(typescript@5.9.2))
+      ctrl-keys:
+        specifier: ^1.0.6
+        version: 1.0.6
       graphlib:
         specifier: ^2.1.8
         version: 2.1.8

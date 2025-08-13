@@ -1,6 +1,6 @@
-import { LETTERS, graphLabelGetter } from '../labels';
-import type { AutoGenerateGraphOptions } from '../templates/autoGenerate/types';
-import type { GEdge, GNode } from '../types';
+import { LETTERS, graphLabelGetter } from '../../../labels';
+import type { AutoGenerateGraphOptions } from '../../../templates/autoGenerate/types';
+import type { GEdge, GNode } from '../../../types';
 import { generateId } from '@magic/utils/id';
 
 import { ref } from 'vue';

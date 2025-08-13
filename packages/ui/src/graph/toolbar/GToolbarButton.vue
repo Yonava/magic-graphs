@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/graph/global";
   import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
-  import CToolbarButton from "@ui/core/toolbar/ToolbarButton.vue";
+  import CToolbarButton from "@magic/ui/core/toolbar/ToolbarButton.vue";
 
   import { computed } from "vue";
 
