@@ -1,7 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import './ui/primevue/tailwind.css';
+@import '@magic/ui/primevue/tailwind.css';
 
 /* Primary and Surface Palettes */
 :root {
