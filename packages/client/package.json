@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest",
+    "build-only": "vite build",
     "build": "run-p build:js build:storybook \"build:types {@}\" --",
     "build:js": "vite build",
     "build:storybook": "storybook build",
