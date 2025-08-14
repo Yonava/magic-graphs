@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "noEmit": false,
+    "composite": true,
+    "types": ["node", "vite/client"],
+    "paths": {
+      "@magic/products/*": ["./packages/products/src/*"],
+      "@magic/canvas/*": ["./packages/canvas/src/*"],
+      "@magic/graph/*": ["./packages/graph/src/*"],
+      "@magic/utils/*": ["./packages/utils/src/*"],
+      "@magic/client/*": ["./packages/client/src/*"],
+      "@magic/storybook/*": ["./packages/storybook/src/*"],
+      "magic/server/*": ["./packages/server/src/*"],
+      "magic/ui/*": ["./packages/ui/src/*"],
+      "magic/shapes/*": ["./packages/shapes/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

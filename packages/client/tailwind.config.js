@@ -4,7 +4,16 @@
 const primeui = require('tailwindcss-primeui');
 
 export default {
-  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+    '../canvas/src/**/*.{vue,ts,js}',
+    '../graph/src/**/*.{vue,ts,js}',
+    '../products/src/**/*.{vue,ts,js}',
+    '../shapes/src/**/*.{vue,ts,js}',
+    '../utils/src/**/*.{vue,ts,js}',
+    '../ui/src/**/*.{vue,ts,js}',
+  ],
   safelist: [
     'bg-magic',
     'text-magic',

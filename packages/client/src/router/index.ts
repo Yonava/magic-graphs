@@ -9,8 +9,6 @@ const infoModules = import.meta.glob<{
   default: ProductInfo;
 }>('../../../**/info.ts', { eager: true });
 
-console.log(infoModules)
-
 const router = createRouter({
   history: createWebHistory(),
   routes: [

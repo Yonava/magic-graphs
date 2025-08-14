@@ -8,7 +8,7 @@ import { useRoute, useRouter } from 'vue-router';
 // imports all info.ts files dynamically
 const infoModules = import.meta.glob<{
   default: ProductInfo;
-}>('/src/**/info.ts', { eager: true });
+}>('../../**/info.ts', { eager: true });
 
 export const products = Object.values(infoModules).flatMap(
   (mod) => mod.default,

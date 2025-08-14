@@ -17,7 +17,7 @@ jobs:
          cache: 'pnpm'
      - name: Install dependencies
        run: pnpm install --frozen-lockfile
-       working-directory: ./client
+       working-directory: ./packages/client
      - name: Run check
        run: pnpm run check
-       working-directory: ./client
+       working-directory: ./packages/client

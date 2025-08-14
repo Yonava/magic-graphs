@@ -1,24 +1,7 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
-    "rootDir": "src",
-    "baseUrl": ".",
-    "noEmit": false,
-    "composite": true,
-    "types": ["node"],
-    "paths": {
-      "@magic/utils/*": ["../utils/src/*"],
-      "@magic/shapes/*": ["../shapes/src/*"]
-    }
+    "rootDir": "src"
   },
   "references": [
     {
