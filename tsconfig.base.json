@@ -21,9 +21,9 @@
       "@magic/utils/*": ["./packages/utils/src/*"],
       "@magic/client/*": ["./packages/client/src/*"],
       "@magic/storybook/*": ["./packages/storybook/src/*"],
-      "magic/server/*": ["./packages/server/src/*"],
-      "magic/ui/*": ["./packages/ui/src/*"],
-      "magic/shapes/*": ["./packages/shapes/src/*"]
+      "@magic/server/*": ["./packages/server/src/*"],
+      "@magic/ui/*": ["./packages/ui/src/*"],
+      "@magic/shapes/*": ["./packages/shapes/src/*"]
     }
   },
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
