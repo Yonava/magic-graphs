@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist"
+  },
+  "references": [
+    {
+      "path": "../ui"
+    },
+    {
+      "path": "../products"
+    },
+    {
+      "path": "../canvas"
+    },
+    {
+      "path": "../shapes"
+    },
+    {
+      "path": "../utils"
+    }
+  ],
+  "include": ["src"]
+}

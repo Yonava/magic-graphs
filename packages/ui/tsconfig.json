@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src"
+  },
+  "references": [
+    {
+      "path": "../canvas"
+    },
+    {
+      "path": "../products"
+    },
+    {
+      "path": "../graph"
+    },
+    {
+      "path": "../utils"
+    }
+  ],
+  "include": [
+    "src",
+    "../canvas/src/**/*",
+    "../products/src/**/*",
+    "../graph/src/**/*",
+    "../utils/src/**/*"
+  ]
+}

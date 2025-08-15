@@ -1,0 +1,24 @@
+import type { Graph } from '@magic/graph/types';
+import { SimulationGuard } from '@magic/ui/product/sim/guard';
+
+import definitions from '../markov/definitions';
+import { useMarkovChain } from '../markov/useMarkovChain';
+import { useInvalidStateColorizer } from '../ui/useInvalidStateColorizer';
+
+export const canRunMarkovChain = (graph: Graph) => {
+  const markov = useMarkovChain(graph);
+  const { colorize, decolorize } = useInvalidStateColorizer(graph, markov);
+
+  return new SimulationGuard(graph)
+    .weighted()
+    .nonNegativeEdgeWeights()
+    .minNodes(1)
+    .valid(() => markov.isChainValid.value, {
+      title: 'Requires valid Markov Chain',
+      description: definitions.valid,
+      themer: {
+        theme: colorize,
+        untheme: decolorize,
+      },
+    });
+};

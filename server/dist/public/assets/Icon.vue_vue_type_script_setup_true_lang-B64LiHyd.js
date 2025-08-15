@@ -1,1 +1,0 @@
-import{d as c,H as n,o as r,c as i,t as l,K as u}from"./index-D9-peFBB.js";const d=c({__name:"Icon",props:{icon:{}},setup(o){const e=o,t=n(()=>e.icon.endsWith("_outline")),s=n(()=>t.value?"material-icons-outlined":"material-icons"),a=n(()=>e.icon.replace(/_outline$/,""));return(p,m)=>(r(),i("span",{class:u(s.value)},l(a.value),3))}});export{d as _};

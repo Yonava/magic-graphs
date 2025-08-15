@@ -7,10 +7,12 @@
     "dismissable",
     "gsap",
     "lusolve",
+    "overlaybadge",
     "Pluggables",
     "preorder",
     "Spacebar",
     "toastservice",
+    "trivago",
     "unlabel",
     "unref",
     "usetoast"

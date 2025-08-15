@@ -1,1 +1,0 @@
-import{d as l,am as n,ah as s,aq as u,c as m,o as d}from"./index-cGonYwJY.js";const i=l({__name:"InputRange",props:{modelValue:{},modelModifiers:{}},emits:["update:modelValue"],setup(a){const e=n(a,"modelValue");return(r,o)=>s((d(),m("input",{"onUpdate:modelValue":o[0]||(o[0]=t=>e.value=t),type:"range"},null,512)),[[u,e.value,void 0,{number:!0}]])}});export{i as _};
