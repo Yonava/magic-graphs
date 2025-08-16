@@ -7,8 +7,7 @@
   import MarkovChainInfo from "./ui/MarkovChainInfo.vue";
   import MarkovChainInfoLabels from "./ui/MarkovChainInfoLabels.vue";
   import { useMarkovColorizer } from "./ui/useMarkovColorizer";
-  import tinycolor from "tinycolor2";
-  import { watch, watchEffect } from "vue";
+  import { watch } from "vue";
   import GButton from "@magic/ui/graph/button/GButton.vue";
   import gsap from "gsap";
   import colors from "@magic/utils/colors";

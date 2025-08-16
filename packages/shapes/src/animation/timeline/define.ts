@@ -128,6 +128,9 @@ export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<
     forShapes: T[];
     keyframes?: TimelineKeyframe<SchemaWithDefaults[NoInfer<T>]>[];
     easing?: Partial<Record<keyof SchemaWithDefaults[NoInfer<T>], EasingOption>>;
+    /**
+     * allow shapes to animate in sync even when invoking {@link TimelineControls.play} at different times
+     */
     synchronize?: boolean;
   } & TimelinePlaybackDuration &
   TimelinePlaybackDelay &

@@ -6,6 +6,7 @@ import type { DefineTimeline } from './timeline/define';
 import type { LooseSchema, LooseSchemaValue } from './types';
 
 export const AUTO_ANIMATE_DURATION_MS = 500;
+// properties supported by the auto animate feature
 const AUTO_ANIMATED_PROPERTIES = new Set([
   'at',
   'start',
