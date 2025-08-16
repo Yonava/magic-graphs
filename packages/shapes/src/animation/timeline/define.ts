@@ -24,13 +24,15 @@ type IdField = {
 type TimelinePlayOptions = ShapeTarget & {
   /**
    * number of times this animation should run
+   *
+   * 👉 NOTE 👈 if {@link Timeline.synchronize} is set to true, `runCount` will always be `Infinity`
    * @default Infinity
    */
   runCount?: number;
 };
 
 export type UseDefineTimelineOptions = {
-  play: (options: TimelinePlayOptions & IdField) => void;
+  play: (options: TimelinePlayOptions & IdField & Pick<Timeline<any>, 'synchronize'>) => void;
   pause: (options: ShapeTarget & IdField) => void;
   resume: (options: ShapeTarget & IdField) => void;
   stop: (options: ShapeTarget & IdField) => void;
@@ -126,6 +128,7 @@ export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<
     forShapes: T[];
     keyframes?: TimelineKeyframe<SchemaWithDefaults[NoInfer<T>]>[];
     easing?: Partial<Record<keyof SchemaWithDefaults[NoInfer<T>], EasingOption>>;
+    synchronize?: boolean;
   } & TimelinePlaybackDuration &
   TimelinePlaybackDelay &
   TimelineCustomInterpolations<SchemaWithDefaults[NoInfer<T>]>
@@ -143,7 +146,7 @@ export const useDefineTimeline = (controls: UseDefineTimelineOptions) => {
     timelineIdToTimeline.set(timelineId, compiledTimeline);
 
     return {
-      play: (opts) => controls.play({ ...opts, timelineId }),
+      play: (opts) => controls.play({ ...opts, timelineId, synchronize: timeline.synchronize }),
       pause: (opts) => controls.pause({ ...opts, timelineId }),
       resume: (opts) => controls.resume({ ...opts, timelineId }),
       stop: (opts) => controls.stop({ ...opts, timelineId }),
