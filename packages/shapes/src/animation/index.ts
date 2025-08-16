@@ -29,10 +29,10 @@ export const useAnimatedShapes = () => {
   const schemaIdToShapeName: Map<SchemaId, ShapeName> = new Map();
 
   const { defineTimeline, timelineIdToTimeline } = useDefineTimeline({
-    play: ({ shapeId, timelineId, runCount = Infinity }) => {
+    play: ({ shapeId, timelineId, synchronize, runCount = Infinity }) => {
       const newAnimation: ActiveAnimation = {
-        runCount,
-        startedAt: Date.now(),
+        runCount: synchronize ? Infinity : runCount,
+        startedAt: synchronize ? 0 : Date.now(),
         timelineId,
       };
 
