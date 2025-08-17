@@ -5,11 +5,16 @@
   "exports": {
     "./*": "./src/*"
   },
+  "peerDependencies": {
+    "vue": "^3.5.18"
+  },
   "dependencies": {
     "@vueuse/core": "^13.6.0",
     "tailwind-merge": "^3.3.1",
-    "vue": "^3.5.18",
     "@magic/utils": "workspace:*",
     "@magic/shapes": "workspace:*"
+  },
+  "devDependencies": {
+    "vue": "^3.5.18"
   }
 }

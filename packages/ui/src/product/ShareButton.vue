@@ -8,7 +8,7 @@
   import CIcon from "../core/Icon.vue";
   import GButton from "../graph/button/GButton.vue";
   import { compressToEncodedURIComponent } from "lz-string";
-  // import { useToast } from "primevue/usetoast";
+  import { useToast } from "primevue/usetoast";
 
   import { computed, ref } from "vue";
 
@@ -18,7 +18,7 @@
   const linkCopied = ref(false);
   const clipboardCopyError = ref(false);
 
-  // const toast = useToast();
+  const toast = useToast();
 
   const resetButtonState = () => {
     linkCopied.value = false;
@@ -39,19 +39,19 @@
       await navigator.clipboard.writeText(url);
       linkCopied.value = true;
 
-      // toast.add({
-      //   summary: "Graph Share Link Copied to Clipboard!",
-      //   life: 3000,
-      //   severity: "success",
-      // });
+      toast.add({
+        summary: "Graph Share Link Copied to Clipboard!",
+        life: 3000,
+        severity: "success",
+      });
     } catch (e) {
       clipboardCopyError.value = true;
 
-      // toast.add({
-      //   summary: "Failed to copy share link to clipboard!",
-      //   life: 3000,
-      //   severity: "error",
-      // });
+      toast.add({
+        summary: "Failed to copy share link to clipboard!",
+        life: 3000,
+        severity: "error",
+      });
       console.error(e);
     } finally {
       setTimeout(resetButtonState, 3000);

@@ -5,6 +5,10 @@
   "exports": {
     "./*": "./src/*"
   },
+  "peerDependencies": {
+    "primevue": "^4.2.4",
+    "vue": "^3.5.18"
+  },
   "dependencies": {
     "@magic/canvas": "workspace:*",
     "@magic/graph": "workspace:*",
@@ -14,10 +18,11 @@
     "gsap": "^3.12.5",
     "mathjs": "^14.0.1",
     "tinycolor2": "^1.6.0",
-    "vue": "^3.5.18",
     "vue-router": "^4.0.13"
   },
   "devDependencies": {
-    "@types/tinycolor2": "^1.4.6"
+    "@types/tinycolor2": "^1.4.6",
+    "primevue": "^4.2.4",
+    "vue": "^3.5.18"
   }
 }

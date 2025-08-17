@@ -2,6 +2,10 @@
   "name": "@magic/graph",
   "version": "1.0.0",
   "private": true,
+  "peerDependencies": {
+    "vue": "^3.5.18",
+    "primevue": "^4.2.4"
+  },
   "dependencies": {
     "@magic/canvas": "workspace:*",
     "@magic/products": "workspace:*",
@@ -13,7 +17,6 @@
     "graphlib": "^2.1.8",
     "lz-string": "^1.5.0",
     "mathjs": "^14.0.1",
-    "primevue": "^4.2.4",
     "socket.io-client": "^4.8.1",
     "tinycolor2": "^1.6.0",
     "vue-router": "^4.0.13"
@@ -22,7 +25,8 @@
     "@types/graphlib": "^2.1.12",
     "@types/tinycolor2": "^1.4.6",
     "vitest": "^3.2.4",
-    "vue": "^3.5.18"
+    "vue": "^3.5.18",
+    "primevue": "^4.2.4"
   },
   "exports": {
     "./*": "./src/*"

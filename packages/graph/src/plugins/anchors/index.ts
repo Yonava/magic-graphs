@@ -213,6 +213,12 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     setParentNode(newParentNode.id);
   };
 
+  const clearAnchorStateIfParentRemoved = (node: GNode) => {
+    if (parentNode.value.id === node.id) {
+      clearAnchorState()
+    }
+  }
+
   const setCurrentlyDraggingAnchor = (ev: GraphMouseEvent) => {
     if (!parentNode.value) return;
     /**
@@ -288,6 +294,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   const activate = () => {
     graph.subscribe('onNodeAdded', checkForParentNodeUpdate);
     graph.subscribe('onNodeRemoved', checkForParentNodeUpdate);
+    graph.subscribe('onNodeRemoved', clearAnchorStateIfParentRemoved)
     graph.subscribe('onNodeMoved', clearAnchorState);
     graph.subscribe('onNodeDrop', updateNodeAnchors);
     graph.subscribe('onMouseMove', checkForParentNodeUpdate);
@@ -300,6 +307,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   const deactivate = () => {
     graph.unsubscribe('onNodeAdded', checkForParentNodeUpdate);
     graph.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
+    graph.unsubscribe('onNodeRemoved', clearAnchorStateIfParentRemoved)
     graph.unsubscribe('onNodeMoved', clearAnchorState);
     graph.unsubscribe('onNodeDrop', updateNodeAnchors);
     graph.unsubscribe('onMouseMove', checkForParentNodeUpdate);
@@ -330,6 +338,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
      * set the parent node and spawn anchors around it
      */
     setParentNode,
+    clearAnchorState,
   };
 };
 
