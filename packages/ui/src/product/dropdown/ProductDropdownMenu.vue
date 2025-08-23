@@ -5,8 +5,10 @@
     ProductCategory,
     ProductInfoWithMenu,
   } from "@magic/products/utils";
+  import { devMode } from "@magic/graph/global";
 
   import ProductItem from "./ProductItem.vue";
+  import { computed } from "vue";
 
   const productsWithMenu = products.filter(
     (info) => info?.menu
@@ -20,12 +22,18 @@
   productsWithMenu.forEach((product) => {
     categoryRecord[product.menu.category].push(product);
   });
+
+  const productCategories = computed(() => {
+    return devMode.value
+      ? PRODUCT_CATEGORY_RANK
+      : PRODUCT_CATEGORY_RANK.filter((cat) => cat !== "developer tools");
+  });
 </script>
 
 <template>
   <GWell class="flex flex-col p-2 w-[400px] h-[500px] overflow-auto rounded-lg">
     <div
-      v-for="category in PRODUCT_CATEGORY_RANK"
+      v-for="category in productCategories"
       :key="category"
     >
       <GWell
