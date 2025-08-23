@@ -11,8 +11,7 @@
   "dependencies": {
     "@vueuse/core": "^13.6.0",
     "tailwind-merge": "^3.3.1",
-    "@magic/utils": "workspace:*",
-    "@magic/shapes": "workspace:*"
+    "@magic/utils": "workspace:*"
   },
   "devDependencies": {
     "vue": "^3.5.18"

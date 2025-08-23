@@ -23,7 +23,8 @@
       "@magic/storybook/*": ["./packages/storybook/src/*"],
       "@magic/server/*": ["./packages/server/src/*"],
       "@magic/ui/*": ["./packages/ui/src/*"],
-      "@magic/shapes/*": ["./packages/shapes/src/*"]
+      "@magic/shapes/*": ["./packages/shapes/src/*"],
+      "@magic/canvas-demo/*": ["./packages/canvas-demo/src/*"]
     }
   },
   "exclude": ["node_modules", "dist", "**/*.test.ts"]

@@ -1,4 +1,4 @@
-import type { ProductInfo } from '@magic/products/types';
+import type { ProductInfo } from '@magic/products/types'
 
 const route: ProductInfo = {
   route: {
@@ -6,7 +6,7 @@ const route: ProductInfo = {
     component: () => import('./ShapePlayground.vue'),
   },
   name: 'Shape Playground',
-  description: 'A playground for shape algorithms',
+  description: 'A playground for magic shapes',
   productId: 'shape-playground',
   menu: {
     name: 'Shape Playground',

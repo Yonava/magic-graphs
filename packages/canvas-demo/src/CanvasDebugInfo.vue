@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { MagicCanvasProps } from "../types";
+  import type { MagicCanvasProps } from "@magic/canvas/types";
 
   defineProps<{ canvas: MagicCanvasProps }>();
 </script>

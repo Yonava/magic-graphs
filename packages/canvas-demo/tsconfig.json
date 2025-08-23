@@ -4,9 +4,9 @@
     "rootDir": "src"
   },
   "references": [
-    {
-      "path": "../utils"
-    }
+    { "path": "../utils" },
+    { "path": "../shapes" },
+    { "path": "../products" }
   ],
   "include": ["src"]
 }

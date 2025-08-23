@@ -23,6 +23,7 @@
     "@magic/ui": "workspace:*",
     "@magic/products": "workspace:*",
     "@magic/graph": "workspace:*",
+    "@magic/canvas-demo": "workspace:*",
     "@codemirror/lang-javascript": "^6.2.2",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@mdi/font": "^7.4.47",

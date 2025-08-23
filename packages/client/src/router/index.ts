@@ -16,10 +16,6 @@ const router = createRouter({
       path: '/',
       redirect: SandboxInfo.route.path,
     },
-    {
-      path: '/canvas',
-      component: () => import('@magic/canvas/MagicCanvas.vue'),
-    },
     ...Object.values(infoModules).flatMap((mod) => mod.default.route ?? []),
     {
       path: '/:pathMatch(.*)*',

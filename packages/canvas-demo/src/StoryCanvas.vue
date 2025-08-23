@@ -1,8 +1,7 @@
 <script setup lang="ts">
   import CameraDebugInfo from "./CanvasDebugInfo.vue";
-
-  import { useMagicCanvas } from "..";
-  import MagicCanvas from "../MagicCanvas.vue";
+  import { useMagicCanvas } from "@magic/canvas/index";
+  import MagicCanvas from "@magic/canvas/MagicCanvas.vue";
   import { Shape } from "@magic/shapes/types";
   import { circle } from "@magic/shapes/shapes/circle";
 
