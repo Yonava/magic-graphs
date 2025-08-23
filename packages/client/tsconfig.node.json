@@ -7,14 +7,6 @@
     "nightwatch.conf.*",
     "playwright.config.*"
   ],
-  "references": [
-    { "path": "../ui" },
-    { "path": "../graph" },
-    { "path": "../products" },
-    { "path": "../canvas" },
-    { "path": "../utils" },
-    { "path": "../shapes" }
-  ],
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
 

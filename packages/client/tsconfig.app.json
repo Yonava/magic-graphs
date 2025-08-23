@@ -11,14 +11,7 @@
     { "path": "../shapes" }
   ],
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "paths": {
-      "@magic/ui/*": ["../ui/src/*"],
-      "@magic/graph/*": ["../graph/src/*"],
-      "@magic/products/*": ["../products/src/*"],
-      "@magic/canvas/*": ["../canvas/src/*"],
-      "@magic/utils/*": ["../utils/src/*"],
-      "@magic/shapes/*": ["../shapes/src/*"]
-    }
+    "baseUrl": ".",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
   }
 }
