@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../global";
+  import { nonNullGraph as graph } from "@magic/graph/global";
   import CPopover from "@magic/ui/core/Popover.vue";
   import GWell from "@magic/ui/graph/GWell.vue";
   import GButton from "@magic/ui/graph/button/GButton.vue";
 
   import { computed } from "vue";
 
-  import AutoGenerate from "../autoGenerate/AutoGenerate.vue";
+  import AutoGenerate from "../AutoGenerate.vue";
   import { useGraphTemplate } from "../useGraphTemplate";
   import TemplateItem from "./TemplateItem.vue";
 

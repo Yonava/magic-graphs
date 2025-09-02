@@ -5,10 +5,15 @@
   },
   "references": [
     { "path": "../ui" },
-    { "path": "../products" },
     { "path": "../canvas" },
     { "path": "../shapes" },
     { "path": "../utils" }
   ],
-  "include": ["src"]
+  "include": [
+    "src",
+    "../products/src/shared/useGraphProduct.ts",
+    "../products/src/shared/graph-templates/useGraphTemplate.ts",
+    "../products/src/shared/graph-templates/AutoGenerate.vue",
+    "../products/src/shared/graph-templates/AutoGenerateSettingsMenu.vue"
+  ]
 }

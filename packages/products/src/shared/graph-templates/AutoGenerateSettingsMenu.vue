@@ -7,8 +7,8 @@
 
   import { toRef } from "vue";
 
-  import type { AutoGenerateGraphOptions } from "./types";
-  import { AUTO_GENERATE_GRAPH_DEFAULTS } from "./types";
+  import type { AutoGenerateGraphOptions } from "./templateTypes";
+  import { AUTO_GENERATE_GRAPH_DEFAULTS } from "./templateTypes";
 
   const props = defineProps<{
     options: AutoGenerateGraphOptions;

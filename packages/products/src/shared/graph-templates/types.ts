@@ -1,4 +1,4 @@
-import type { GEdge, GNode } from '../types';
+import type { GEdge, GNode } from '@magic/graph/types';
 
 /**
  * a blueprint for building a graph. templates come both built-in and user provided

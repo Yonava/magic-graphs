@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@magic/canvas": "workspace:*",
-    "@magic/products": "workspace:*",
     "@magic/shapes": "workspace:*",
     "@magic/ui": "workspace:*",
     "@magic/utils": "workspace:*",

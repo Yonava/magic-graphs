@@ -1,6 +1,6 @@
-import { collabControls } from './collab';
-import { graph as globalGraph } from './global';
-import type { Graph } from './types';
+import { collabControls } from '@magic/graph/collab';
+import { graph as globalGraph } from '@magic/graph/global';
+import type { Graph } from '@magic/graph/types';
 import { decompressFromEncodedURIComponent } from 'lz-string';
 import { useToast } from 'primevue/usetoast';
 
@@ -8,8 +8,8 @@ import { onBeforeUnmount, onMounted } from 'vue';
 
 import { type LocationQueryValue, useRoute, useRouter } from 'vue-router';
 
-import { USER_PLATFORM } from './plugins/shortcut';
-import { decodeCompressedTransitData, setTransitData } from './transit';
+import { USER_PLATFORM } from '@magic/graph/plugins/shortcut';
+import { decodeCompressedTransitData, setTransitData } from '@magic/graph/transit';
 import { routeToProduct } from '@magic/products/utils';
 import { ProductInfo } from '@magic/products/types';
 
@@ -28,7 +28,11 @@ export const getProductFromCurrentRoute = (routePath: string) => {
   return productInfo;
 };
 
-const loadSharedGraphFromQuery = (
+/**
+ * takes a graph which has been encoded into a url query param, loads it in, then
+ * displays a toast. Only used for the share graph feature.
+ */
+const loadGraphFromURL = (
   graph: Graph,
   compressedAndUriEncodedTransitData: LocationQueryValue | LocationQueryValue[],
 ) => {
@@ -102,7 +106,7 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   globalGraph.value = graph;
 
   const sharedGraph = route.query[SHARE_GRAPH_QUERY_PARAM_KEY];
-  if (sharedGraph) loadSharedGraphFromQuery(graph, sharedGraph);
+  if (sharedGraph) loadGraphFromURL(graph, sharedGraph);
 
   onMounted(() => {
     if (!roomId) return;

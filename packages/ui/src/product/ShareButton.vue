@@ -4,7 +4,7 @@
     encodeCompressedTransitData,
     getTransitData,
   } from "@magic/graph/transit";
-  import { SHARE_GRAPH_QUERY_PARAM_KEY } from "@magic/graph/useGraphProduct";
+  import { SHARE_GRAPH_QUERY_PARAM_KEY } from "@magic/products/shared/useGraphProduct";
   import CIcon from "../core/Icon.vue";
   import GButton from "../graph/button/GButton.vue";
   import { compressToEncodedURIComponent } from "lz-string";

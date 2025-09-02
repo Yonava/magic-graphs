@@ -1,4 +1,4 @@
-import type { GNode } from '../types';
+import type { GNode } from '@magic/graph/types';
 import { describe, expect, it } from 'vitest';
 
 import {

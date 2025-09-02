@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import MagicCanvas from "@magic/canvas/MagicCanvas.vue";
   import { devMode } from "@magic/graph/global";
-  import { useGraphProduct } from "@magic/graph/useGraphProduct";
+  import { useGraphProduct } from "@magic/products/shared/useGraphProduct";
   import AnnotationToolbar from "@magic/products/sandbox/ui/AnnotationToolbar.vue";
   import type { GraphWithCanvas } from "@magic/products/shared/useGraphWithCanvas";
   import ProductDropdown from "../product/dropdown/ProductDropdown.vue";
