@@ -5,7 +5,7 @@ import type {
   OnStepChangeCallback,
   SimulationControls,
   SimulationTrace,
-} from '../../product/sim/types';
+} from './types';
 import { localKeys } from '@magic/utils/localStorage';
 import { useLocalStorage } from '@vueuse/core';
 
