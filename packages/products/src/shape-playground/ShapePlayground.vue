@@ -1,20 +1,20 @@
 <script setup lang="ts">
-  import MagicCanvas from '@magic/canvas/MagicCanvas.vue';
-  import { useMagicCanvas } from '@magic/canvas/index';
-  import { useAnimatedShapes } from '@magic/shapes/animation';
-  import { cross } from '@magic/shapes/shapes/cross';
-  import Button from '@magic/ui/core/button/Button.vue';
-  import colors from '@magic/utils/colors';
+  import MagicCanvas from "@magic/canvas/MagicCanvas.vue";
+  import { useMagicCanvas } from "@magic/canvas/index";
+  import { useAnimatedShapes } from "@magic/shapes/animation";
+  import { cross } from "@magic/shapes/shapes/cross";
+  import Button from "@magic/ui/core/button/Button.vue";
+  import colors from "@magic/utils/colors";
 
   const { defineTimeline, shapes, getAnimatedProp } = useAnimatedShapes();
 
   const { play, stop, pause, resume } = defineTimeline({
-    forShapes: ['circle'],
+    forShapes: ["circle"],
     durationMs: 6000,
     customInterpolations: {
       stroke: {
         value: (progress) => {
-          const r = getAnimatedProp('test', 'radius');
+          const r = getAnimatedProp("test", "radius");
           const numOfDashes = 5;
           const lengthGapRatio = 40 / 22.832;
           const circum = 2 * r * Math.PI;
@@ -23,7 +23,7 @@
           const gapLength = (1 / (lengthGapRatio + 1)) * p;
           return {
             lineWidth: 10,
-            color: 'red',
+            color: "red",
             dash: {
               pattern: [dashLength, gapLength],
               offset: progress * circum,
@@ -36,25 +36,25 @@
   });
 
   const cir = shapes.circle({
-    id: 'test',
+    id: "test",
     at: { x: 0, y: 0 },
     radius: 50,
-    textArea: { textBlock: { content: '1' } },
+    textArea: { textBlock: { content: "1" } },
   });
 
   const cir2 = shapes.circle({
-    id: 'test2',
+    id: "test2",
     at: { x: 200, y: 0 },
     radius: 50,
     stroke: {
       lineWidth: 10,
-      color: 'red',
+      color: "red",
       dash: {
         pattern: [40, 22.832],
         offset: 90,
       },
     },
-    textArea: { textBlock: { content: '2' } },
+    textArea: { textBlock: { content: "2" } },
   });
 
   const magic = useMagicCanvas();
@@ -76,10 +76,10 @@
 <template>
   <div class="h-full w-full">
     <div class="absolute m-3 flex gap-3 z-50">
-      <Button @click="play({ shapeId: 'test' })"> Start Animation </Button>
-      <Button @click="stop({ shapeId: 'test' })"> Stop Animation </Button>
-      <Button @click="pause({ shapeId: 'test' })"> Pause Animation </Button>
-      <Button @click="resume({ shapeId: 'test' })"> Resume Animation </Button>
+      <Button @click="play({ shapeId: 'test' })">Start Animation</Button>
+      <Button @click="stop({ shapeId: 'test' })">Stop Animation</Button>
+      <Button @click="pause({ shapeId: 'test' })">Pause Animation</Button>
+      <Button @click="resume({ shapeId: 'test' })">Resume Animation</Button>
     </div>
 
     <MagicCanvas

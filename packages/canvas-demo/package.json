@@ -9,6 +9,7 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
+    "@magic/canvas": "workspace:*",
     "@magic/utils": "workspace:*",
     "@magic/shapes": "workspace:*",
     "@magic/products": "workspace:*"
