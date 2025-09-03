@@ -6,8 +6,7 @@
   "references": [
     { "path": "../canvas" },
     { "path": "../shapes" },
-    { "path": "../utils" },
-    { "path": "../products" }
+    { "path": "../utils" }
   ],
   "include": ["src"]
 }
