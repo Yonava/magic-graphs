@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import GButton from "@magic/ui/graph/button/GButton.vue";
+  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
   import colors from "@magic/utils/colors";
 
   import { ref, toRefs } from "vue";

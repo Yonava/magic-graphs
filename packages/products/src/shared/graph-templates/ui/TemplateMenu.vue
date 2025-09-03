@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
   import CPopover from "@magic/ui/core/Popover.vue";
-  import GWell from "@magic/ui/graph/GWell.vue";
-  import GButton from "@magic/ui/graph/button/GButton.vue";
+  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
+  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
 
   import { computed } from "vue";
 

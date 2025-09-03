@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import GWell from "../../graph/GWell.vue";
+  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
   import { PRODUCT_CATEGORY_RANK, products } from "@magic/products/utils";
   import type {
     ProductCategory,

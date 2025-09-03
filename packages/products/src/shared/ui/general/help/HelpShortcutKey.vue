@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { Shortcut } from "@magic/graph/plugins/shortcut/types";
-  import CIcon from "../../core/Icon.vue";
+  import CIcon from "@magic/ui/core/Icon.vue";
 
   import { computed } from "vue";
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
   import definitions from "@magic/graph/plugins/characteristics/definitions";
-  import GHoverInfo from "@magic/ui/graph/GHoverInfo.vue";
+  import GHoverInfo from "@magic/products/shared/ui/graph-core/GHoverInfo.vue";
 
   import { computed } from "vue";
 

@@ -4,9 +4,9 @@
   import CIcon from "@magic/ui/core/Icon.vue";
   import CPopover from "@magic/ui/core/Popover.vue";
   import CButton from "@magic/ui/core/button/Button.vue";
-  import GWell from "@magic/ui/graph/GWell.vue";
-  import GButton from "@magic/ui/graph/button/GButton.vue";
-  import GInputText from "@magic/ui/graph/input/GInputText.vue";
+  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
+  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
+  import GInputText from "@magic/products/shared/ui/graph-core/input/GInputText.vue";
   import colors from "@magic/utils/colors";
   import { debounce } from "@magic/utils/debounce";
   import { generateId } from "@magic/utils/id";

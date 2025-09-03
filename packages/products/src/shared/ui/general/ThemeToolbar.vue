@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
   import type { PreferredGraphTheme } from "@magic/graph/themes/usePreferredTheme";
-  import ToolbarButtonGroup from "../core/toolbar/ToolbarButtonGroup.vue";
-  import GToolbar from "../graph/toolbar/GToolbarBase.vue";
-  import GToolbarButton from "../graph/toolbar/GToolbarButton.vue";
+  import ToolbarButtonGroup from "@magic/ui/core/toolbar/ToolbarButtonGroup.vue";
+  import GToolbar from "@magic/products/shared/ui/graph-core/toolbar/GToolbarBase.vue";
+  import GToolbarButton from "@magic/products/shared/ui/graph-core/toolbar/GToolbarButton.vue";
 
   const themeNameToIcon: Record<PreferredGraphTheme, string> = {
     auto: "cog-outline",

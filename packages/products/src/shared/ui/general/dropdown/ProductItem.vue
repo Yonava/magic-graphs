@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import CIcon from "../../core/Icon.vue";
-  import GWell from "../../graph/GWell.vue";
-  import GButton from "../../graph/button/GButton.vue";
-  import GVerticalCardButton from "../../graph/button/GVerticalCardButton.vue";
+  import CIcon from "@magic/ui/core/Icon.vue";
+  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
+  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
+  import GVerticalCardButton from "@magic/products/shared/ui/graph-core/button/GVerticalCardButton.vue";
   import {
     getCurrentProduct,
     isExternal,

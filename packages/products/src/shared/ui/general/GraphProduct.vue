@@ -4,9 +4,9 @@
   import { useGraphProduct } from "@magic/products/shared/useGraphProduct";
   import AnnotationToolbar from "@magic/products/sandbox/ui/AnnotationToolbar.vue";
   import type { GraphWithCanvas } from "@magic/products/shared/useGraphWithCanvas";
-  import ProductDropdown from "../product/dropdown/ProductDropdown.vue";
-  import SelectSimulation from "../product/sim/SelectSim.vue";
-  import SimulationPlaybackControls from "../product/sim/SimulationPlaybackControls.vue";
+  import ProductDropdown from "../general/dropdown/ProductDropdown.vue";
+  import SelectSimulation from "../general/sim/SelectSim.vue";
+  import SimulationPlaybackControls from "../general/sim/SimulationPlaybackControls.vue";
   import { getSimulationDeclarationsForProduct } from "@magic/products/utils";
   import type { SimulationDeclaration } from "@magic/products/types";
 

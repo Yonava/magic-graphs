@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import GVerticalCardButton from "../../graph/button/GVerticalCardButton.vue";
+  import GVerticalCardButton from "@magic/products/shared/ui/graph-core/button/GVerticalCardButton.vue";
   import { getRandomInRange } from "@magic/utils/random";
   import type { SimulationDeclaration } from "@magic/products/types";
 

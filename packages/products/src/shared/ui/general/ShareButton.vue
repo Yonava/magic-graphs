@@ -5,8 +5,8 @@
     getTransitData,
   } from "@magic/graph/transit";
   import { SHARE_GRAPH_QUERY_PARAM_KEY } from "@magic/products/shared/useGraphProduct";
-  import CIcon from "../core/Icon.vue";
-  import GButton from "../graph/button/GButton.vue";
+  import CIcon from "@magic/ui/core/Icon.vue";
+  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
   import { compressToEncodedURIComponent } from "lz-string";
   import { useToast } from "primevue/usetoast";
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useGraphWithCanvas } from "../shared/useGraphWithCanvas";
-  import GraphProduct from "@magic/ui/product/GraphProduct.vue";
+  import GraphProduct from "@magic/products/shared/ui/general/GraphProduct.vue";
 
   import { useMarkovChain } from "./markov/useMarkovChain";
   import { MARKOV_CHAIN_GRAPH_SETTINGS } from "./settings";
@@ -8,7 +8,7 @@
   import MarkovChainInfoLabels from "./ui/MarkovChainInfoLabels.vue";
   import { useMarkovColorizer } from "./ui/useMarkovColorizer";
   import { watch } from "vue";
-  import GButton from "@magic/ui/graph/button/GButton.vue";
+  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
   import gsap from "gsap";
   import colors from "@magic/utils/colors";
 

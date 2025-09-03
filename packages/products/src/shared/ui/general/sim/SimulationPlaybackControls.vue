@@ -2,9 +2,9 @@
   import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
   import { useNonNullGraphColors } from "@magic/products/shared/useGlobalGraphColors";
   import { PRODUCT_SHORTCUTS } from "@magic/products/shared/shortcuts";
-  import GText from "../../graph/GText.vue";
-  import GButton from "../../graph/button/GButton.vue";
-  import GSpreadSelect from "../../graph/select/GSpreadSelect.vue";
+  import GText from "@magic/products/shared/ui/graph-core/GText.vue";
+  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
+  import GSpreadSelect from "@magic/products/shared/ui/graph-core/select/GSpreadSelect.vue";
   import keys from "ctrl-keys";
 
   import { onUnmounted, ref, toRefs } from "vue";

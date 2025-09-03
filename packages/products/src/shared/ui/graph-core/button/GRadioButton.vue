@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useNonNullGraphColors } from "@magic/products/shared/useGlobalGraphColors";
-  import CRadioButton from "../../core/button/RadioButton.vue";
+  import CRadioButton from "@magic/ui/core/button/RadioButton.vue";
 
   const colors = useNonNullGraphColors();
 </script>

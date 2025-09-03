@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useNonNullGraphColors } from "@magic/products/shared/useGlobalGraphColors";
-  import CVerticalCardButton from "../../core/button/VerticalCardButton.vue";
+  import CVerticalCardButton from "@magic/ui/core/button/VerticalCardButton.vue";
 
   const colors = useNonNullGraphColors();
 </script>

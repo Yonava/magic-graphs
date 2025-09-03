@@ -3,7 +3,7 @@
   lang="ts"
   generic="TValue, TItem extends SpreadSelectItem<TValue>"
 >
-  import GButton from "../../graph/button/GButton.vue";
+  import GButton from "../button/GButton.vue";
   import { onClickOutside } from "@vueuse/core";
 
   import { computed, ref } from "vue";
