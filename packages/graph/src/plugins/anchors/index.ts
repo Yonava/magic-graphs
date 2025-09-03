@@ -214,7 +214,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   const clearAnchorStateIfParentRemoved = (node: GNode) => {
-    if (parentNode.value.id === node.id) {
+    if (parentNode.value?.id === node.id) {
       clearAnchorState()
     }
   }
