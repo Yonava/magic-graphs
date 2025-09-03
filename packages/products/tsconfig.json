@@ -4,21 +4,11 @@
     "rootDir": "src"
   },
   "references": [
-    {
-      "path": "../graph"
-    },
-    {
-      "path": "../ui"
-    },
-    {
-      "path": "../canvas"
-    },
-    {
-      "path": "../shapes"
-    },
-    {
-      "path": "../utils"
-    }
+    { "path": "../canvas" },
+    { "path": "../graph" },
+    { "path": "../shapes" },
+    { "path": "../ui" },
+    { "path": "../utils" }
   ],
   "include": ["src"]
 }
