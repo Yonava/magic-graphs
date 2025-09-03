@@ -1,5 +1,5 @@
 import { selectFromGraph } from './select';
-import { useGraph } from './useGraph';
+import { useGraph } from '@magic/graph/useGraph.ts';
 import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';

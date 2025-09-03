@@ -10,5 +10,5 @@
     { "path": "../utils" },
     { "path": "../products" }
   ],
-  "include": ["src", "../products/src/shared/useGlobalGraphColors.ts"]
+  "include": ["src"]
 }

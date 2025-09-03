@@ -193,7 +193,6 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   graph.subscribeToAggregator.push(addMarqueeBoxToAggregator);
 
   const activate = () => {
-    console.log('activated')
     graph.subscribe('onFocusChange', updateEncapsulatedNodeBox);
 
     graph.subscribe('onMouseDown', handleMarqueeEngagement);
@@ -210,7 +209,6 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   const deactivate = () => {
-    console.log('deactivated')
     graph.unsubscribe('onFocusChange', updateEncapsulatedNodeBox);
 
     graph.unsubscribe('onMouseDown', handleMarqueeEngagement);
@@ -229,7 +227,6 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   graph.subscribe('onSettingsChange', (diff) => {
-    console.log(diff.marquee)
     if (diff.marquee === true) activate();
     else if (diff.marquee === false) deactivate();
   });

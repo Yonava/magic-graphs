@@ -1,5 +1,5 @@
 import { selectNode } from './select';
-import type { GNode, Graph } from './types';
+import type { GNode, Graph } from '@magic/graph/src/types';
 import { useGTextTip } from '@magic/ui/useGTextTip';
 
 import { computed, readonly, ref } from 'vue';
