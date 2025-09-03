@@ -1,4 +1,4 @@
-import { useNodeState } from '@magic/graph/useNodeState';
+import { useNodeState } from '@magic/products/shared/graph/useNodeState';
 
 const startNode = useNodeState({
   setterTextTip: 'select start node',

@@ -6,9 +6,6 @@
   "references": [
     {
       "path": "../utils"
-    },
-    {
-      "path": "../shapes"
     }
   ],
   "include": ["src"]

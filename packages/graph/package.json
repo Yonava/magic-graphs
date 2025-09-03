@@ -8,9 +8,7 @@
   },
   "dependencies": {
     "@magic/canvas": "workspace:*",
-    "@magic/products": "workspace:*",
     "@magic/shapes": "workspace:*",
-    "@magic/ui": "workspace:*",
     "@magic/utils": "workspace:*",
     "@vueuse/core": "^13.6.0",
     "ctrl-keys": "^1.0.6",
@@ -22,6 +20,7 @@
     "vue-router": "^4.0.13"
   },
   "devDependencies": {
+    "@magic/products": "workspace:*",
     "@types/graphlib": "^2.1.12",
     "@types/tinycolor2": "^1.4.6",
     "vitest": "^3.2.4",

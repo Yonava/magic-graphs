@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useGraphWithCanvas } from "../shared/useGraphWithCanvas";
-  import GraphProduct from "@magic/ui/product/GraphProduct.vue";
+  import GraphProduct from "@magic/products/shared/ui/general/GraphProduct.vue";
 
   import { BASIC_SEARCH_GRAPH_SETTINGS } from "./settings";
 

@@ -18,6 +18,7 @@
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
+    "@magic/graph": "workspace:*",
     "@types/express": "^5.0.0",
     "@types/node": "^20.6.3",
     "nodemon": "^3.1.7",

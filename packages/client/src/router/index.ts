@@ -1,13 +1,7 @@
-import { collabControls } from '@magic/graph/collab';
-import SandboxInfo from '@magic/products/sandbox/info';
-import type { ProductInfo } from '@magic/products/types'
+import SandboxInfo from '@magic/products/sandbox/info.js';
+import { productRoutes } from '@magic/products/utils.js';
 
 import { createRouter, createWebHistory } from 'vue-router';
-
-// import all info.ts files dynamically
-const infoModules = import.meta.glob<{
-  default: ProductInfo;
-}>('../../../**/info.ts', { eager: true });
 
 const router = createRouter({
   history: createWebHistory(),
@@ -16,11 +10,7 @@ const router = createRouter({
       path: '/',
       redirect: SandboxInfo.route.path,
     },
-    {
-      path: '/canvas',
-      component: () => import('@magic/canvas/MagicCanvas.vue'),
-    },
-    ...Object.values(infoModules).flatMap((mod) => mod.default.route ?? []),
+    ...productRoutes,
     {
       path: '/:pathMatch(.*)*',
       name: '404',
@@ -32,7 +22,6 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   // prevents route from changing if only the query params are different
   if (to.path === from.path) return;
-  collabControls.disconnectFromRoom();
 });
 
 export default router;

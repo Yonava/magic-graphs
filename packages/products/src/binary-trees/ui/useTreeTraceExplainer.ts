@@ -1,4 +1,4 @@
-import type { GetSimulationExplanation } from '@magic/ui/product/sim/useSimulationControls';
+import type { GetSimulationExplanation } from '@magic/products/shared/ui/general/sim/useSimulationControls';
 
 import type { TreeTraceStep } from '../tree/avl';
 

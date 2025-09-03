@@ -1,13 +1,13 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/graph/global";
+  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
   import {
     BRUSH_WEIGHTS,
     COLORS,
   } from "@magic/graph/plugins/annotations/constants";
   import ToolbarButtonGroup from "@magic/ui/core/toolbar/ToolbarButtonGroup.vue";
-  import GToolbar from "@magic/ui/graph/toolbar/GToolbarBase.vue";
-  import GToolbarButton from "@magic/ui/graph/toolbar/GToolbarButton.vue";
-  import GToolbarButtonDivider from "@magic/ui/graph/toolbar/GToolbarDivider.vue";
+  import GToolbar from "@magic/products/shared/ui/graph-core/toolbar/GToolbarBase.vue";
+  import GToolbarButton from "@magic/products/shared/ui/graph-core/toolbar/GToolbarButton.vue";
+  import GToolbarButtonDivider from "@magic/products/shared/ui/graph-core/toolbar/GToolbarDivider.vue";
   import type { Color } from "@magic/utils/colors";
 
   const {

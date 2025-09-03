@@ -1,6 +1,6 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GEdge, GNode, Graph } from '@magic/graph/types';
-import type { SimulationControls } from '@magic/ui/product/sim/types';
+import type { SimulationControls } from '@magic/products/shared/ui/general/sim/types';
 import colors from '@magic/utils/colors';
 
 import type { BasicSearchTrace } from '../algo/types';

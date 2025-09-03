@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import GWell from "@magic/ui/graph/GWell.vue";
+  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
 
   import AdjacencyListDisplay from "./AdjacencyListDisplay.vue";
 </script>

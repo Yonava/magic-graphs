@@ -2,8 +2,8 @@
   import InputRange from "@magic/ui/InputRange.vue";
   import CIcon from "@magic/ui/core/Icon.vue";
   import CPopover from "@magic/ui/core/Popover.vue";
-  import GWell from "@magic/ui/graph/GWell.vue";
-  import GButton from "@magic/ui/graph/button/GButton.vue";
+  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
+  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
 
   import { computed } from "vue";
 
