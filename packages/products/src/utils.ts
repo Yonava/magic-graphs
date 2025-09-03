@@ -1,4 +1,4 @@
-import { nonNullGraph as globalGraph } from '@magic/graph/global';
+import { nonNullGraph as globalGraph } from '@magic/products/shared/globalGraph';
 import { getTransitData, setTransitData } from '@magic/graph/transit';
 import type { Graph } from '@magic/graph/types';
 import type { ProductInfo, SimulationDeclarationGetter } from './types';

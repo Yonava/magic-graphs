@@ -1,5 +1,5 @@
 import { collabControls } from '@magic/graph/collab';
-import { graph as globalGraph } from '@magic/graph/global';
+import { graph as globalGraph } from '@magic/products/shared/globalGraph';
 import type { Graph } from '@magic/graph/types';
 import { decompressFromEncodedURIComponent } from 'lz-string';
 import { useToast } from 'primevue/usetoast';

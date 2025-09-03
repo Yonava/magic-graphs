@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/graph/global";
+  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
   import { resolveThemeForNode } from "@magic/graph/themes";
   import type { GNode } from "@magic/graph/types";
 

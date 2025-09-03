@@ -1,6 +1,6 @@
 import { computed, shallowRef } from 'vue';
 
-import type { Graph } from './types';
+import type { Graph } from '@magic/graph/types';
 
 /**
  * if true, developer mode is active

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
+  import { useNonNullGraphColors } from "@magic/products/shared/useGlobalGraphColors";
   import CToolbarDivider from "../../core/toolbar/ToolbarDivider.vue";
 
   const colors = useNonNullGraphColors();

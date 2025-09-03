@@ -5,7 +5,7 @@
     ProductCategory,
     ProductInfoWithMenu,
   } from "@magic/products/utils";
-  import { devMode } from "@magic/graph/global";
+  import { devMode } from "@magic/products/shared/globalGraph";
 
   import ProductItem from "./ProductItem.vue";
   import { computed } from "vue";

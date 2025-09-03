@@ -1,5 +1,8 @@
 <script setup lang="ts">
-  import { devMode, nonNullGraph as graph } from "@magic/graph/global";
+  import {
+    devMode,
+    nonNullGraph as graph,
+  } from "@magic/products/shared/globalGraph";
   import { useGraphTutorial } from "@magic/graph/tutorials/useGraphTutorial";
   import ToolbarButtonGroup from "@magic/ui/core/toolbar/ToolbarButtonGroup.vue";
   import GToolbar from "@magic/ui/graph/toolbar/GToolbarBase.vue";

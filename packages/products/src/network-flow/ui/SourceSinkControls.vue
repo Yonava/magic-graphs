@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/graph/global";
+  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
   import GButton from "@magic/ui/graph/button/GButton.vue";
   import colors from "@magic/utils/colors";
 

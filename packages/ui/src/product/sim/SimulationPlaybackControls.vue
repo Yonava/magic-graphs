@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/graph/global";
-  import { useNonNullGraphColors } from "@magic/graph/themes/useGraphColors";
+  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
+  import { useNonNullGraphColors } from "@magic/products/shared/useGlobalGraphColors";
   import { PRODUCT_SHORTCUTS } from "@magic/products/shared/shortcuts";
   import GText from "../../graph/GText.vue";
   import GButton from "../../graph/button/GButton.vue";

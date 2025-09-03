@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/graph/global";
+  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
   import { useAdjacencyList } from "@magic/graph/useAdjacencyList";
   import CIcon from "@magic/ui/core/Icon.vue";
   import CPopoverTooltip from "@magic/ui/core/PopoverTooltip.vue";

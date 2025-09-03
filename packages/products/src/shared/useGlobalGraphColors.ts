@@ -1,9 +1,9 @@
-import { graph } from '../global';
+import { graph } from './globalGraph';
 import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';
 
-import type { GraphThemeName } from '.';
+import type { GraphThemeName } from '@magic/graph/themes';
 
 type GraphColors = {
   primary: string;

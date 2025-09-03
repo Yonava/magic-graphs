@@ -1,5 +1,5 @@
 import { getMagicCoordinates } from '@magic/canvas/coordinates';
-import { nonNullGraph as graph } from '@magic/graph/global';
+import { nonNullGraph as graph } from '@magic/products/shared/globalGraph';
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import { getCtx } from '@magic/utils/ctx';
 import { average } from '@magic/utils/math';

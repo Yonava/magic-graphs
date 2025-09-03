@@ -1,6 +1,5 @@
 import type { BaseGraph } from '../../base';
 import type { GraphMouseEvent } from '../../base/types';
-import { useNonNullGraphColors } from '../../themes/useGraphColors';
 import type { Aggregator } from '../../types';
 import { circle } from '@magic/shapes/shapes/circle';
 import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
@@ -20,8 +19,6 @@ import type { Annotation } from './types';
 
 const ERASER_BRUSH_RADIUS = 10;
 
-const graphColor = useNonNullGraphColors();
-
 export const useAnnotations = (graph: BaseGraph) => {
   const selectedColor = ref<Color>(COLORS[0]);
   const selectedBrushWeight = ref(BRUSH_WEIGHTS[1]);
@@ -38,6 +35,7 @@ export const useAnnotations = (graph: BaseGraph) => {
 
   const isActive = ref(false);
 
+  const { hold, release } = graph.pluginHoldController('annotations')
   const history = useAnnotationHistory(scribbles);
 
   const clear = () => {
@@ -194,7 +192,7 @@ export const useAnnotations = (graph: BaseGraph) => {
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
-          color: graphColor.value.contrast,
+          color: graph.getTheme('graphBgPatternColor'),
           lineWidth: 2,
         },
       });
@@ -262,10 +260,10 @@ export const useAnnotations = (graph: BaseGraph) => {
 
     isActive.value = true;
 
-    graph.settings.value.interactive = false;
-    graph.settings.value.marquee = false;
-    graph.settings.value.focusable = false;
-    graph.settings.value.draggable = false;
+    hold('interactive')
+    hold('marquee')
+    hold('focusable')
+    hold('draggable')
 
     graph.graphCursorDisabled.value = true;
 
@@ -283,10 +281,10 @@ export const useAnnotations = (graph: BaseGraph) => {
     isActive.value = false;
     isErasing.value = false;
 
-    graph.settings.value.interactive = true;
-    graph.settings.value.marquee = true;
-    graph.settings.value.focusable = true;
-    graph.settings.value.draggable = true;
+    release('interactive')
+    release('marquee')
+    release('focusable')
+    release('draggable')
 
     graph.graphCursorDisabled.value = false;
 

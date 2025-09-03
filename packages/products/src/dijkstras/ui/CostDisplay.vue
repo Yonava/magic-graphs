@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import colors from "@magic/utils/colors";
-  import { nonNullGraph as graph } from "@magic/graph/global";
+  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
   import type { GNode } from "@magic/graph/types";
 
   import { INF_STR, SIM_COLORS } from "../sim/theme";

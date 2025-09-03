@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { collabControls, myCollaboratorProfile } from "@magic/graph/collab";
-  import { nonNullGraph as graph } from "@magic/graph/global";
+  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
   import CIcon from "@magic/ui/core/Icon.vue";
   import CPopover from "@magic/ui/core/Popover.vue";
   import CButton from "@magic/ui/core/button/Button.vue";
