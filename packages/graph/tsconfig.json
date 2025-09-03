@@ -4,7 +4,6 @@
     "rootDir": "src"
   },
   "references": [
-    { "path": "../ui" },
     { "path": "../canvas" },
     { "path": "../shapes" },
     { "path": "../utils" },
