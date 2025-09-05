@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/canvas" },
+    { "path": "packages/client" },
+    { "path": "packages/graph" },
+    { "path": "packages/products" },
+    { "path": "packages/server" },
+    { "path": "packages/shapes" },
+    { "path": "packages/storybook" },
+    { "path": "packages/ui" },
+    { "path": "packages/utils" }
+  ]
+}

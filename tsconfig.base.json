@@ -3,16 +3,20 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "node",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
-    "baseUrl": ".",
-    "noEmit": false,
+    "skipLibCheck": true,
+
+    /* Build settings */
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "noEmit": false,
+
     "types": ["node", "vite/client"],
     "paths": {
       "@magic/products/*": ["./packages/products/src/*"],
