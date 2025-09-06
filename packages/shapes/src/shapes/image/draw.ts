@@ -1,5 +1,4 @@
-import { drawRectWithCtx } from '../../shapes/rect/draw';
-
+import { rect } from '../rect';
 import { loadImage } from './cache';
 import type { ImageSchemaWithDefaults } from './defaults';
 
@@ -30,9 +29,9 @@ const drawMissingMediaCheckerboard = (
 };
 
 export const drawImageWithCtx = (schema: ImageSchemaWithDefaults) => {
-  const { src, onLoad, onLoadError, ...rect } = schema;
+  const { src, onLoad, onLoadError, ...rectProps } = schema;
 
-  const { width, height, at, rotation } = rect;
+  const { width, height, at, rotation } = rectProps;
 
   return async (ctx: CanvasRenderingContext2D) => {
     const { image, error } = await loadImage(src, {
@@ -40,7 +39,7 @@ export const drawImageWithCtx = (schema: ImageSchemaWithDefaults) => {
       onLoadError,
     });
 
-    drawRectWithCtx(rect)(ctx);
+    rect(rectProps).drawShape(ctx);
 
     ctx.save();
 
