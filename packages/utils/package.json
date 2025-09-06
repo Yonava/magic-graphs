@@ -5,6 +5,9 @@
   "exports": {
     "./*": "./src/*"
   },
+  "scripts": {
+    "build:types": "tsc -b ."
+  },
   "devDependencies": {
     "ts-essentials": "^10.1.1",
     "vitest": "^3.2.4",
