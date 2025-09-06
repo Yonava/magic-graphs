@@ -5,6 +5,9 @@
   "exports": {
     "./*": "./src/*"
   },
+  "scripts": {
+    "build:types": "tsc -b ."
+  },
   "peerDependencies": {
     "primevue": "^4.2.4",
     "vue": "^3.5.18"
@@ -16,6 +19,7 @@
     "@magic/ui": "workspace:*",
     "@magic/utils": "workspace:*",
     "@vueuse/core": "^13.9.0",
+    "ctrl-keys": "^1.0.6",
     "gsap": "^3.12.5",
     "lz-string": "^1.5.0",
     "mathjs": "^14.0.1",

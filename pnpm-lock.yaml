@@ -294,6 +294,9 @@ importers:
       '@vueuse/core':
         specifier: ^13.9.0
         version: 13.9.0(vue@3.5.19(typescript@5.9.2))
+      ctrl-keys:
+        specifier: ^1.0.6
+        version: 1.0.6
       gsap:
         specifier: ^3.12.5
         version: 3.13.0
