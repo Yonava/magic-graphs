@@ -1,23 +1,23 @@
 <script setup lang="ts">
-  import { type ClassNameValue, twMerge } from 'tailwind-merge';
+  import { type ClassNameValue, twMerge } from "tailwind-merge";
 
-  import { onBeforeUnmount, onMounted, ref } from 'vue';
+  import { onBeforeUnmount, onMounted, ref } from "vue";
 
-  import type { MagicCanvasProps } from './types';
+  import type { MagicCanvasProps } from "./types";
 
-  const props = defineProps<MagicCanvasProps['ref']>();
+  const props = defineProps<MagicCanvasProps["ref"]>();
 
   const canvas = ref<HTMLCanvasElement>();
 
   onMounted(() => {
     if (!canvas.value)
-      throw new Error('Canvas not found in DOM. Check ref link.');
+      throw new Error("Canvas not found in DOM. Check ref link.");
     props.canvasRef(canvas.value);
   });
 
   onBeforeUnmount(() => {
     if (!canvas.value)
-      throw new Error('Canvas not found in DOM. Check ref link.');
+      throw new Error("Canvas not found in DOM. Check ref link.");
     props.cleanup(canvas.value);
   });
 </script>
@@ -29,5 +29,7 @@
       class: twMerge($attrs.class as ClassNameValue, ['w-full', 'h-full']),
     }"
     ref="canvas"
-  ></canvas>
+  >
+    Sorry, your browser does not support canvas.
+  </canvas>
 </template>
