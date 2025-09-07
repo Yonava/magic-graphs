@@ -11,5 +11,9 @@
     { "path": "../ui" },
     { "path": "../utils" }
   ],
-  "include": ["src"]
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.json" // If using resolveJsonModule
+  ]
 }
