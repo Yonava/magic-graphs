@@ -17,6 +17,7 @@
     "noEmit": false,
 
     "types": ["node", "vite/client"],
+    "typeRoots": ["./types", "./node_modules/@types"],
     "paths": {
       "@magic/products/*": ["./packages/products/src/*"],
       "@magic/canvas/*": ["./packages/canvas/src/*"],
@@ -29,5 +30,6 @@
       "@magic/shapes/*": ["./packages/shapes/src/*"]
     }
   },
+  "include": ["types"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }
