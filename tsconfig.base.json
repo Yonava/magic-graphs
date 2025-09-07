@@ -16,7 +16,7 @@
     "declarationMap": true,
     "noEmit": false,
 
-    "types": ["node", "vite/client"],
+    "types": ["node"],
     "typeRoots": ["./types", "./node_modules/@types"],
     "paths": {
       "@magic/products/*": ["./packages/products/src/*"],

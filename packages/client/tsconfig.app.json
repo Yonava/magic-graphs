@@ -6,6 +6,7 @@
   "compilerOptions": {
     "noEmit": false,
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "types": ["vite/client"]
   }
 }

@@ -25,7 +25,7 @@ importers:
         specifier: ^10.1.1
         version: 10.1.1(typescript@5.9.2)
       vite:
-        specifier: ^5.3.1
+        specifier: ^5.4.19
         version: 5.4.19(@types/node@24.3.0)
 
   packages/canvas:
