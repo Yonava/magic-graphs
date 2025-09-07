@@ -1,4 +1,4 @@
-import type { GraphTemplate } from '@magic/graph/templates/types';
+import { GraphTemplate } from "../shared/graph-templates/types";
 
 const templates: GraphTemplate[] = [
   {

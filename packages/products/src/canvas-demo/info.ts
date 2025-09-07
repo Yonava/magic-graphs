@@ -3,6 +3,7 @@ import type { ProductInfo } from '@magic/products/types'
 const route: ProductInfo = {
   route: {
     path: '/canvas-demo',
+    // @ts-ignore
     component: () => import('./StoryCanvas.vue'),
   },
   name: 'Canvas Demo',

@@ -14,6 +14,8 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
-    "./src/**/*.json" // If using resolveJsonModule
+    "./src/**/*.json",
+    "./src/**/*.vue",
+    "../../types/vue-shims.d.ts"
   ]
 }

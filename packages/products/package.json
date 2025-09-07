@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/tinycolor2": "^1.4.6",
     "primevue": "^4.2.4",
+    "vite": "^7.1.4",
     "vitest": "^3.2.4",
     "vue": "^3.5.18"
   }
