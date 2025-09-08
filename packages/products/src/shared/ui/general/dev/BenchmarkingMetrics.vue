@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useFPS } from "@magic/utils/fps";
+  import { useFPS } from "@magic/utils/fps";
 
-const { fps, slowFrameCount, slowFrameRatio } = useFPS();
+  const { fps, slowFrameCount, slowFrameRatio } = useFPS();
 </script>
 
 <template>
