@@ -39,7 +39,7 @@
   <CPopover>
     <template #activator="{ toggle, isOpen }">
       <GButton
-        @click="(ev) => playButtonClicked(() => toggle(ev))"
+        @click="(ev: MouseEvent) => playButtonClicked(() => toggle(ev))"
         :tertiary="isOpen"
         :disabled="disabled"
         class="h-14 w-14 rounded-full"

@@ -2,6 +2,9 @@
   "name": "@magic/graph",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "build:types": "tsc -b ."
+  },
   "peerDependencies": {
     "vue": "^3.5.18",
     "primevue": "^4.2.4"
@@ -20,7 +23,6 @@
     "vue-router": "^4.0.13"
   },
   "devDependencies": {
-    "@magic/products": "workspace:*",
     "@types/graphlib": "^2.1.12",
     "@types/tinycolor2": "^1.4.6",
     "vitest": "^3.2.4",

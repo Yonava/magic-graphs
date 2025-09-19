@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import { useBaseGraph } from '..';
 
 describe('base graph - addNode', () => {
-  const graph = useBaseGraph(ref());
+  const graph = useBaseGraph(ref() as any);
 
   test('adds nodes with label defaults', () => {
     graph.nodes.value = [];

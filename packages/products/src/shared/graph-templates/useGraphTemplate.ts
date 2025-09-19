@@ -18,7 +18,7 @@ export const useGraphTemplate = (graph: Graph) => {
   const userTemplates = useLocalStorage<GraphTemplate[]>('graph-templates', []);
 
   const tempCanvas = ref(document.createElement('canvas'));
-  const tempGraph = useGraph(tempCanvas);
+  const tempGraph = useGraph(tempCanvas as any);
 
   const productTemplates = ref<GraphTemplate[]>(
     products.flatMap((p) => p.templates ?? []),
@@ -58,7 +58,7 @@ export const useGraphTemplate = (graph: Graph) => {
 
     const { nodes, edges, magicCanvas: canvas } = graph;
 
-    if (!canvas.value) throw new Error('no snapshot canvas found');
+    if (!canvas) throw new Error('no snapshot canvas found');
 
     const graphState = {
       nodes: JSON.parse(JSON.stringify(nodes.value)),
@@ -131,8 +131,5 @@ export const useGraphTemplate = (graph: Graph) => {
     templates,
     userTemplates,
     productTemplates,
-
-    tempGraph,
-    tempCanvas,
   };
 };

@@ -2,7 +2,6 @@ import type { Graph } from '../types';
 import { getRandomElement } from '@magic/utils/random';
 import { useLocalStorage } from '@vueuse/core';
 import { io } from 'socket.io-client';
-import type { ProductInfo } from '@magic/products/types';
 
 import { computed, readonly, ref } from 'vue';
 
@@ -38,7 +37,7 @@ type ConnectOptions = {
   /**
    * product id that the graph belongs to
    */
-  productId: ProductInfo['productId'];
+  productId: string;
 };
 
 const useCollab = () => {
@@ -156,7 +155,7 @@ const useCollab = () => {
     productId,
     graph,
   }: {
-    productId: ProductInfo['productId'];
+    productId: string;
     graph: Graph;
   }) => {
     if (!socket.value) {

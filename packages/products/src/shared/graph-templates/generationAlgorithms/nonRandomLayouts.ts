@@ -1,4 +1,4 @@
-import type { GNode } from '../../../types';
+import { GNode } from "@magic/graph/types";
 
 export const circularLayout = (nodes: GNode[], radius: number) => {
   const angleStep = (2 * Math.PI) / nodes.length;

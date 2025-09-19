@@ -7,6 +7,7 @@ import type { DeepReadonly, DeepRequired } from 'ts-essentials';
 import type { EasingOption } from '../easing';
 import { type CompiledTimeline, compileTimeline } from './compile';
 import type { SchemaWithDefaults } from '../../defaults/shapes';
+import { TextArea } from '@magic/shapes/text/types';
 
 type ShapeTarget = {
   /**
@@ -64,15 +65,20 @@ type TimelineControls = {
   dispose: () => void;
 };
 
+type TextAreaCustomOption<TSchema> = (
+  propValue: TextArea,
+  schema: TSchema,
+) => TextArea;
+
 type CustomOption<TProp, TSchema> = (
   propValue: DeepRequired<TProp>,
   schema: TSchema,
 ) => TProp;
 
 type WithCustomOption<TSchema> = {
-  [TProp in keyof TSchema]:
-  | TSchema[TProp]
-  | CustomOption<TSchema[TProp], TSchema>;
+  [TProp in keyof TSchema]: TProp extends 'textArea'
+  ? TSchema[TProp] | TextAreaCustomOption<TSchema>
+  : TSchema[TProp] | CustomOption<TSchema[TProp], TSchema>;
 };
 
 type WithObjectOption<TSchema> = {

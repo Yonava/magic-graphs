@@ -133,7 +133,7 @@ export const DEFAULT_STORIES = {
 
 export const createDocComponent = <T extends Record<string, unknown>>(
   factory: ShapeFactory<T>,
-) =>
+): ReturnType<typeof defineComponent> =>
   defineComponent<T & DocMarkingOptions>({
     inheritAttrs: false,
     setup: (_, { attrs }) => {

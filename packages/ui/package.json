@@ -5,6 +5,9 @@
   "exports": {
     "./*": "./src/*"
   },
+  "scripts": {
+    "build:types": "tsc -b ."
+  },
   "peerDependencies": {
     "vue": "^3.5.18",
     "primevue": "^4.2.4"

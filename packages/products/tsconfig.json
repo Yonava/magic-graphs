@@ -1,14 +1,25 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src"
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "paths": {
+      "@magic/products/*": ["./src/*"],
+      "@magic/canvas/*": ["../canvas/src/*"],
+      "@magic/graph/*": ["../graph/src/*"],
+      "@magic/shapes/*": ["../shapes/src/*"],
+      "@magic/ui/*": ["../ui/src/*"],
+      "@magic/utils/*": ["../utils/src/*"]
+    },
+    "skipLibCheck": true
   },
   "references": [
     { "path": "../canvas" },
-    { "path": "../graph" },
     { "path": "../shapes" },
     { "path": "../ui" },
-    { "path": "../utils" }
+    { "path": "../utils" },
+    { "path": "../graph" }
   ],
-  "include": ["src"]
+  "include": ["./src/**/*", "../../types"],
+  "exclude": ["./dist", "**/node_modules", "**/*.test.ts"]
 }

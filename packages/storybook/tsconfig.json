@@ -2,9 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist/types",
-    "rootDir": "./src",
-    "paths": { "@magic/utils/*": ["./src/*"] }
+    "rootDir": "./.storybook",
+    "paths": { "@magic/storybook/*": ["./.storybook/*"] }
   },
-  "include": ["./src/**/*"],
+  "include": ["./.storybook/**/*"],
   "exclude": ["./dist", "**/node_modules"]
 }

@@ -1,15 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src"
-  },
-  "references": [
-    {
-      "path": "../utils"
-    },
-    {
-      "path": "../canvas"
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "paths": {
+      "@magic/shapes/*": ["./src/*"],
+      "@magic/utils/*": ["../utils/src/*"],
+      "@magic/canvas/*": ["../canvas/src/*"]
     }
-  ],
-  "include": ["src"]
+  },
+  "references": [{ "path": "../utils" }, { "path": "../canvas" }],
+  "include": ["./src/**/*"],
+  "exclude": ["./dist", "**/node_modules", "**/*.stories.ts"]
 }
