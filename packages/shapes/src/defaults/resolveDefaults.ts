@@ -18,7 +18,7 @@ type WithDefaults<
 export const resolveDefaults =
   <TSchema extends TextArea, TDefaults extends Record<string, unknown>>(
     defaults: TDefaults,
-  ) =>
+  ): ((schema: TSchema) => WithDefaults<TSchema, TDefaults>) =>
     (schema: TSchema) => {
       const { textArea, ...rest } = schema;
 

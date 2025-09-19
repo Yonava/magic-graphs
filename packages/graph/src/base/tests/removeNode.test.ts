@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import { useBaseGraph } from '..';
 
 describe('base graph - removeNode', () => {
-  const graph = useBaseGraph(ref());
+  const graph = useBaseGraph(ref() as any);
 
   test('remove node', () => {
     graph.nodes.value = [];

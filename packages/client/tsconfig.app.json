@@ -1,12 +1,12 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-  "exclude": ["src/**/__tests__/*"],
-  "references": [{ "path": "../ui" }, { "path": "../products" }],
   "compilerOptions": {
-    "noEmit": false,
-    "outDir": "dist",
     "rootDir": ".",
-    "types": ["vite/client"]
-  }
+    "types": ["vite/client"],
+    "outDir": "./dist/types",
+    "paths": { "@magic/client/*": ["./src/*"] }
+  },
+  "references": [{ "path": "../ui" }, { "path": "../products" }],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "../../types"],
+  "exclude": ["./dist", "**/node_modules"]
 }

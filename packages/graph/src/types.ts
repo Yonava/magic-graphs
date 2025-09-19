@@ -3,7 +3,7 @@ import type { Shape } from '@magic/shapes/types';
 import type { MaybeGetter } from '@magic/utils/maybeGetter';
 import type { Fraction } from 'mathjs';
 export type { RemovableRef } from '@vueuse/core';
-
+export type { DeepRequired, Prettify, UnionToIntersection } from 'ts-essentials';
 /**
  * the useGraph composition function
  */

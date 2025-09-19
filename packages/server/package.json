@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon --exec tsx src/index.ts",
-    "build": "tsc"
+    "build:types": "tsc -b ."
   },
   "keywords": [],
   "author": "",
