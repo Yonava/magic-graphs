@@ -1,9 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src"
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "paths": {
+      "@magic/server/*": ["./src/*"],
+      "@magic/graph/*": ["../graph/src/*"]
+    }
   },
   "references": [{ "path": "../graph" }],
-  "include": ["src"]
+  "include": ["./src/**/*"],
+  "exclude": ["./dist", "**/node_modules"]
 }

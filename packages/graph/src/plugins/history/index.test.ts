@@ -6,7 +6,7 @@ import { ref } from 'vue';
 import { useHistory } from './index';
 
 describe('useHistoryGraph', () => {
-  const graph = useBaseGraph(ref());
+  const graph = useBaseGraph(ref() as any);
   const historyPlugin = useHistory(graph);
   const historyGraph = {
     ...graph,

@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import { useBaseGraph } from '..';
 
 describe('base graph - removeEdge', () => {
-  const graph = useBaseGraph(ref());
+  const graph = useBaseGraph(ref() as any);
 
   const node2 = graph.addNode({ x: 1, y: 1 });
   const node1 = graph.addNode({ x: 0, y: 0 });

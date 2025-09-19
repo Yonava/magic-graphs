@@ -377,10 +377,10 @@ export const useHistory = (graph: BaseGraph) => {
         {
           nodes: record.affectedItems
             .filter((item) => item.graphType === 'node')
-            .map((item) => item.data),
+            .map((item) => item.data) as GNode[],
           edges: record.affectedItems
             .filter((item) => item.graphType === 'edge')
-            .map((item) => item.data),
+            .map((item) => item.data) as GEdge[],
         },
         { history: false },
       );

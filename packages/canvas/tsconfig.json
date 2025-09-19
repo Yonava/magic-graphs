@@ -1,9 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src"
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "paths": {
+      "@magic/canvas/*": ["./src/*"],
+      "@magic/utils/*": ["../utils/src/*"]
+    }
   },
   "references": [{ "path": "../utils" }],
-  "include": ["src"]
+  "include": ["./src/**/*"],
+  "exclude": ["./dist", "**/node_modules"]
 }

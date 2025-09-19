@@ -8,7 +8,7 @@ import { useBaseGraph } from '..';
 import { ADD_EDGE_DEFAULTS } from '../types';
 
 describe('base graph - addEdge', () => {
-  const graph = useBaseGraph(ref());
+  const graph = useBaseGraph(ref() as any);
 
   graph.nodes.value = Array(5)
     .fill(0)

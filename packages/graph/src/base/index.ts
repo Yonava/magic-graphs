@@ -136,8 +136,10 @@ export const useBaseGraph = (
   const { shapes, autoAnimate, defineTimeline, activeAnimations } =
     useAnimatedShapes();
   const animations: GraphAnimations = deepMerge(
-    getDefaultGraphAnimations(defineTimeline),
-    settings.value.animations(defineTimeline),
+    // TODO: @Yonava fix bad type
+    getDefaultGraphAnimations(defineTimeline as any),
+    // TODO: @Yonava fix bad type
+    settings.value.animations(defineTimeline as any),
   );
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {

@@ -1,8 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src"
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "paths": { "@magic/utils/*": ["./src/*"] }
   },
-  "include": ["src"]
+  "include": ["./src/**/*"],
+  "exclude": ["./dist", "**/node_modules"]
 }

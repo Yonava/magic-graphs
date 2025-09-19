@@ -14,7 +14,7 @@ const nodeB = { id: '2', label: 'b', x: 0, y: 0 };
 const nodeC = { id: '3', label: 'c', x: 0, y: 0 };
 
 const getGraph = () => {
-  const graph = useGraph(ref());
+  const graph = useGraph(ref() as any);
 
   graph.addNode(nodeA);
   graph.addNode(nodeB);

@@ -1,6 +1,5 @@
 import type { GEdge, GNode } from '../types';
 import type { Socket } from 'socket.io-client';
-import type { ProductInfo } from '@magic/products/types';
 
 /**
  * data for a collaborator that is not connected to a single
@@ -32,7 +31,7 @@ export type Collaborator = {
   /**
    * the id of the product that the collaborator is currently active on
    */
-  productId: ProductInfo['productId'];
+  productId: string;
 } & CollaboratorProfile;
 
 export type CollaboratorMove = {

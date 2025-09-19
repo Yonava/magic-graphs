@@ -33,7 +33,7 @@
     () => graph.value.characteristics.isComplete.value
   );
 
-  const { colorize: colorizeSCCs, decolorize: decolorizeSCCs } =
+  const { color: colorizeSCCs, uncolor: decolorizeSCCs } =
     useSCCColorizer(graph.value);
 
   const { colorize: colorizeBipartite, decolorize: decolorizeBipartite } =

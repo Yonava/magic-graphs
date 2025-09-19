@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/types",
+    "rootDir": "./.storybook",
+    "paths": { "@magic/storybook/*": ["./.storybook/*"] }
+  },
+  "include": ["./.storybook/**/*"],
+  "exclude": ["./dist", "**/node_modules"]
+}
