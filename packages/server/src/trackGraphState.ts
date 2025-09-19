@@ -1,5 +1,5 @@
-import type { GraphState } from "@magic/graph/collab/types"
-import type { GEdge, GNode } from "@magic/graph/types"
+import type { GraphState } from "@magic/graph/collab/types.js"
+import type { GEdge, GNode } from "@magic/graph/types.js"
 
 /**
  * maps the room id to the live version of the graph for that room

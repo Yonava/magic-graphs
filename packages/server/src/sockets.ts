@@ -1,7 +1,7 @@
 import { Server } from 'socket.io'
 import { createServer } from 'http'
-import { trackGraphState } from './trackGraphState'
-import { Collaborator, SocketEvents } from '@magic/graph/collab/types'
+import { trackGraphState } from './trackGraphState.js'
+import { Collaborator, SocketEvents } from '@magic/graph/collab/types.js'
 
 export const sockets = (httpServer: ReturnType<typeof createServer>) => {
   const io = new Server<SocketEvents, SocketEvents, {}, {}>(httpServer, {
