@@ -19,7 +19,7 @@
 </script>
 
 <template>
-  <div class="text-white text-end">
+  <div class="text-black text-end">
     <div>Cursor At: (X = {{ coords.x }}, Y = {{ coords.y }})</div>
     <div>Items Hovered: {{ hoveredItems }}</div>
   </div>
