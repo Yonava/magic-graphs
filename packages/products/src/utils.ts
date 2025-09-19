@@ -5,6 +5,7 @@ import type { ProductInfo, SimulationDeclarationGetter } from './types';
 
 import { useRoute, useRouter } from 'vue-router';
 
+/** all info.ts imported dynamically */
 // @ts-expect-error all info.ts imported dynamically
 const infoModules = import.meta.glob<{
   default: ProductInfo;

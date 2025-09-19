@@ -75,12 +75,6 @@ type CustomOption<TProp, TSchema> = (
   schema: TSchema,
 ) => TProp;
 
-// type WithCustomOption<TSchema> = {
-//   [TProp in keyof TSchema]:
-//   | TSchema[TProp]
-//   | CustomOption<TSchema[TProp], TSchema>;
-// };
-
 type WithCustomOption<TSchema> = {
   [TProp in keyof TSchema]: TProp extends 'textArea'
   ? TSchema[TProp] | TextAreaCustomOption<TSchema>

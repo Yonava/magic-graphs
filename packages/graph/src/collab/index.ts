@@ -192,4 +192,4 @@ const useCollab = () => {
   };
 };
 
-export const collabControls: ReturnType<typeof useCollab> = useCollab();
+export const collabControls = useCollab();

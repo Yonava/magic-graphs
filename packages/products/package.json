@@ -6,7 +6,7 @@
     "./*": "./src/*"
   },
   "scripts": {
-    "build:types": "tsc -b ."
+    "build:types": "vue-tsc -b ."
   },
   "peerDependencies": {
     "primevue": "^4.2.4",

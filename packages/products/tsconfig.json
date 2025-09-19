@@ -17,7 +17,8 @@
     { "path": "../canvas" },
     { "path": "../shapes" },
     { "path": "../ui" },
-    { "path": "../utils" }
+    { "path": "../utils" },
+    { "path": "../graph" }
   ],
   "include": ["./src/**/*", "../../types"],
   "exclude": ["./dist", "**/node_modules", "**/*.test.ts"]
