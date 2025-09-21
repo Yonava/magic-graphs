@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import { sockets } from './sockets.js';
+import { sockets } from './sockets';
 import { createServer } from 'http';
-import { LOCALHOST_PORT } from './constants.js';
+import { LOCALHOST_PORT } from './constants';
 
 dotenv.config();
 

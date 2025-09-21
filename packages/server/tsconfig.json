@@ -1,17 +1,22 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./dist/types",
     "rootDir": "./src",
+    "outDir": "dist",
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "noImplicitAny": true,
+    "declaration": false,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "paths": {
-      "@magic/server/*": ["./src/*"],
       "@magic/graph/*": ["../graph/src/*"]
-    },
-    "moduleResolution": "nodenext",
-    "module": "nodenext",
-    "emitDeclarationOnly": false
+    }
   },
   "references": [{ "path": "../graph" }],
-  "include": ["./src/**/*"],
-  "exclude": ["./dist", "**/node_modules"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
