@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "",
-  "main": "dist/types/index.js",
-  "type": "module",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node .",
+    "start": "tsc && node .",
     "dev": "nodemon --exec tsx src/index.ts",
     "build:types": "tsc -b ."
   },
