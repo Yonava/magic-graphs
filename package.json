@@ -7,7 +7,8 @@
     "dev-client": "cd packages/client && pnpm dev",
     "dev-server": "cd packages/server && pnpm dev",
     "reinstall": "pnpm store prune && rm -rf node_modules pnpm-lock.yaml && pnpm install",
-    "build:types": "vue-tsc -b tsconfig.json"
+    "build:types": "vue-tsc -b tsconfig.json",
+    "simulate:prod": "rm -rf node_modules packages/*/dist && pnpm install && pnpm build:types && pnpm --filter client build-only && pnpm --filter server start"
   },
   "devDependencies": {
     "@types/node": "^24.2.1",
