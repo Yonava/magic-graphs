@@ -2,7 +2,7 @@
   "name": "magic-graphs",
   "version": "1.0.0",
   "scripts": {
-    "start": "cd packages/server && pnpm i --omit=dev && node dist/index.js",
+    "start": "cd packages/server && pnpm install && pnpm start",
     "dev": "concurrently -c auto command 'pnpm:dev-*'",
     "dev-client": "cd packages/client && pnpm dev",
     "dev-server": "cd packages/server && pnpm dev",
