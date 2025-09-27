@@ -2,7 +2,7 @@
   "name": "magic-graphs",
   "version": "1.0.0",
   "scripts": {
-    "start": "pnpm install && cd packages/server && pnpm start",
+    "start": "cd packages/client && pnpm build-only && pnpm build:types && cd ../server && pnpm start",
     "dev": "concurrently -c auto command 'pnpm:dev-*'",
     "dev-client": "cd packages/client && pnpm dev",
     "dev-server": "cd packages/server && pnpm dev",
