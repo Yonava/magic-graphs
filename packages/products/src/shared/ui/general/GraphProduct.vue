@@ -15,7 +15,7 @@
 
   import FullscreenButton from "./FullscreenButton.vue";
   import HelpMenu from "./HelpMenu.vue";
-  import ShareButton from "./ShareButton.vue";
+  // import ShareButton from "./ShareButton.vue";
   import StopSimButton from "./StopSimButton.vue";
   import ThemeToolbar from "./ThemeToolbar.vue";
   import ZoomToolbar from "./ZoomToolbar.vue";
@@ -184,7 +184,7 @@
 
     <div :class="['absolute', 'flex', 'gap-2', 'bottom-6', 'left-6']">
       <HelpMenu />
-      <ShareButton />
+      <!-- <ShareButton /> -->
       <ZoomToolbar :camera="canvas.camera" />
     </div>
 
