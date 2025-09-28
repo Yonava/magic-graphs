@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
-  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
+  import GWell from "../../shared/ui/graph-core/GWell.vue";
+  import GButton from "../../shared/ui/graph-core/button/GButton.vue";
   import gsap from "gsap";
 
   import { ref } from "vue";

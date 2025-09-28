@@ -1,11 +1,8 @@
 <script setup lang="ts">
-  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
-  import { PRODUCT_CATEGORY_RANK, products } from "@magic/products/utils";
-  import type {
-    ProductCategory,
-    ProductInfoWithMenu,
-  } from "@magic/products/utils";
-  import { devMode } from "@magic/products/shared/globalGraph";
+  import GWell from "../../../../shared/ui/graph-core/GWell.vue";
+  import { PRODUCT_CATEGORY_RANK, products } from "../../../../utils";
+  import type { ProductCategory, ProductInfoWithMenu } from "../../../../utils";
+  import { devMode } from "../../../../shared/globalGraph";
 
   import ProductItem from "./ProductItem.vue";
   import { computed } from "vue";

@@ -15,8 +15,6 @@
     /* Build settings */
     "composite": true,
     "declaration": true,
-    "declarationMap": true,
-
-    "typeRoots": ["./types", "./node_modules/@types"]
+    "declarationMap": true
   }
 }

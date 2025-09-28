@@ -7,7 +7,7 @@ import type { DeepReadonly, DeepRequired } from 'ts-essentials';
 import type { EasingOption } from '../easing';
 import { type CompiledTimeline, compileTimeline } from './compile';
 import type { SchemaWithDefaults } from '../../defaults/shapes';
-import { TextArea } from '@magic/shapes/text/types';
+import { TextArea } from '../../text/types';
 
 type ShapeTarget = {
   /**

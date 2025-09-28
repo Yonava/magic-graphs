@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useNonNullGraphColors } from "@magic/products/shared/useGlobalGraphColors";
+  import { useNonNullGraphColors } from "../../../../shared/useGlobalGraphColors";
   import CButton from "@magic/ui/core/button/Button.vue";
 
   import { computed } from "vue";

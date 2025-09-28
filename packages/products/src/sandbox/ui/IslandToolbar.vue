@@ -1,13 +1,10 @@
 <script setup lang="ts">
-  import {
-    devMode,
-    nonNullGraph as graph,
-  } from "@magic/products/shared/globalGraph";
+  import { devMode, nonNullGraph as graph } from "../../shared/globalGraph";
   import { useGraphTutorial } from "@magic/graph/tutorials/useGraphTutorial";
   import ToolbarButtonGroup from "@magic/ui/core/toolbar/ToolbarButtonGroup.vue";
-  import GToolbar from "@magic/products/shared/ui/graph-core/toolbar/GToolbarBase.vue";
-  import GToolbarButton from "@magic/products/shared/ui/graph-core/toolbar/GToolbarButton.vue";
-  import GToolbarDivider from "@magic/products/shared/ui/graph-core/toolbar/GToolbarDivider.vue";
+  import GToolbar from "../../shared/ui/graph-core/toolbar/GToolbarBase.vue";
+  import GToolbarButton from "../../shared/ui/graph-core/toolbar/GToolbarButton.vue";
+  import GToolbarDivider from "../../shared/ui/graph-core/toolbar/GToolbarDivider.vue";
 
   import { computed } from "vue";
 

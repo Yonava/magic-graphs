@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { useGraphWithCanvas } from "../shared/useGraphWithCanvas";
-  import GraphProduct from "@magic/products/shared/ui/general/GraphProduct.vue";
-  import StopSimButton from "@magic/products/shared/ui/general/StopSimButton.vue";
-  import SimulationPlaybackControls from "@magic/products/shared/ui/general/sim/SimulationPlaybackControls.vue";
-  import { useEscSimulationShortcut } from "@magic/products/shared/ui/general/useEscSimulationShortcut";
+  import GraphProduct from "../shared/ui/general/GraphProduct.vue";
+  import StopSimButton from "../shared/ui/general/StopSimButton.vue";
+  import SimulationPlaybackControls from "../shared/ui/general/sim/SimulationPlaybackControls.vue";
+  import { useEscSimulationShortcut } from "../shared/ui/general/useEscSimulationShortcut";
 
   import { BINARY_TREE_GRAPH_SETTINGS } from "./settings";
   import state from "./state";

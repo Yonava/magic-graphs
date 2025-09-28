@@ -1,5 +1,5 @@
 import { collabControls } from '@magic/graph/collab';
-import { graph as globalGraph } from '@magic/products/shared/globalGraph';
+import { graph as globalGraph } from '../shared/globalGraph';
 import type { Graph } from '@magic/graph/types';
 import { decompressFromEncodedURIComponent } from 'lz-string';
 import { useToast } from 'primevue/usetoast';
@@ -10,8 +10,8 @@ import { type LocationQueryValue, useRoute, useRouter } from 'vue-router';
 
 import { USER_PLATFORM } from '@magic/graph/plugins/shortcut';
 import { decodeCompressedTransitData, setTransitData } from '@magic/graph/transit';
-import { routeToProduct } from '@magic/products/utils';
-import { ProductInfo } from '@magic/products/types';
+import { routeToProduct } from '../utils';
+import { ProductInfo } from '../types';
 
 /**
  * query param key we assign an encoded graph to when sharing

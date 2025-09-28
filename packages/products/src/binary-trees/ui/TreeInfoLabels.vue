@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
-  import GHoverInfoTop from "@magic/products/shared/ui/graph-core/GHoverInfoTop.vue";
-  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
+  import { nonNullGraph as graph } from "../../shared/globalGraph";
+  import GHoverInfoTop from "../../shared/ui/graph-core/GHoverInfoTop.vue";
+  import GWell from "../../shared/ui/graph-core/GWell.vue";
 
   import type { TreeControls } from "../useTree";
   import { useBalanceFactorLabels } from "./useBalanceFactorLabels";

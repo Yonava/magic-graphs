@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
+  import { nonNullGraph as graph } from "../../../../shared/globalGraph";
 
   import { computed } from "vue";
 

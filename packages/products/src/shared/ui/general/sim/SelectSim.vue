@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import CIcon from "@magic/ui/core/Icon.vue";
   import CPopover from "@magic/ui/core/Popover.vue";
-  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
-  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
-  import type { SimulationDeclaration } from "@magic/products/types";
+  import GWell from "../../../../shared/ui/graph-core/GWell.vue";
+  import GButton from "../../../../shared/ui/graph-core/button/GButton.vue";
+  import type { SimulationDeclaration } from "../../../../types";
 
   import { computed } from "vue";
 

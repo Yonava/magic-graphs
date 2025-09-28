@@ -4,7 +4,6 @@
     "outDir": "./dist/types",
     "rootDir": "./src",
     "paths": {
-      "@magic/products/*": ["./src/*"],
       "@magic/canvas/*": ["../canvas/src/*"],
       "@magic/graph/*": ["../graph/src/*"],
       "@magic/shapes/*": ["../shapes/src/*"],

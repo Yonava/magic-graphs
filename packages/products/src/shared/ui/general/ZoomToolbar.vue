@@ -2,9 +2,9 @@
   import { MAX_ZOOM, MIN_ZOOM } from "@magic/canvas/camera/panZoom";
   import type { MagicCanvasProps } from "@magic/canvas/types";
   import ToolbarButtonGroup from "@magic/ui/core/toolbar/ToolbarButtonGroup.vue";
-  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
-  import GToolbarBase from "@magic/products/shared/ui/graph-core/toolbar/GToolbarBase.vue";
-  import GToolbarButton from "@magic/products/shared/ui/graph-core/toolbar/GToolbarButton.vue";
+  import GWell from "../../../shared/ui/graph-core/GWell.vue";
+  import GToolbarBase from "../../../shared/ui/graph-core/toolbar/GToolbarBase.vue";
+  import GToolbarButton from "../../../shared/ui/graph-core/toolbar/GToolbarButton.vue";
 
   import { computed } from "vue";
 

@@ -4,7 +4,10 @@
     "rootDir": ".",
     "types": ["vite/client"],
     "outDir": "./dist/types",
-    "paths": { "@magic/client/*": ["./src/*"] }
+    "paths": {
+      "@magic/canvas/*": ["../ui/src/*"],
+      "@magic/shapes/*": ["../products/src/*"]
+    }
   },
   "references": [{ "path": "../ui" }, { "path": "../products" }],
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "../../types"],

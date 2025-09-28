@@ -1,4 +1,4 @@
-import type { SimulationRunner } from '@magic/products/shared/ui/general/sim/types';
+import type { SimulationRunner } from '../shared/ui/general/sim/types';
 
 import { shallowRef } from 'vue';
 

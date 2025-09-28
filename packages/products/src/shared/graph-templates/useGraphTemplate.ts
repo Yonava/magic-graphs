@@ -12,7 +12,7 @@ import {
   getAverageCoordinates,
 } from './helpers';
 import type { GraphTemplate } from './types';
-import { products } from '@magic/products/utils';
+import { products } from '../../utils';
 
 export const useGraphTemplate = (graph: Graph) => {
   const userTemplates = useLocalStorage<GraphTemplate[]>('graph-templates', []);

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
+  import { nonNullGraph as graph } from "../../../shared/globalGraph";
   import definitions from "@magic/graph/plugins/characteristics/definitions";
-  import GHoverInfo from "@magic/products/shared/ui/graph-core/GHoverInfo.vue";
+  import GHoverInfo from "../../../shared/ui/graph-core/GHoverInfo.vue";
 
   import { computed } from "vue";
 
@@ -33,8 +33,9 @@
     () => graph.value.characteristics.isComplete.value
   );
 
-  const { color: colorizeSCCs, uncolor: decolorizeSCCs } =
-    useSCCColorizer(graph.value);
+  const { color: colorizeSCCs, uncolor: decolorizeSCCs } = useSCCColorizer(
+    graph.value
+  );
 
   const { colorize: colorizeBipartite, decolorize: decolorizeBipartite } =
     useBipartiteColorizer(graph.value);
