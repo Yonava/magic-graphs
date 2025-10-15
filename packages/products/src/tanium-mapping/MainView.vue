@@ -29,15 +29,15 @@ const blobs = computed(() => {
     at: { x, y },
     radius: bigger.value ? 75 : 0,
     fillColor: bigger.value ? colors.RED_600 : 'transparent',
-    textArea: {
-      textBlock: {
-        content: 'VPC ' + i,
-        color: bigger.value ? 'white' : 'transparent',
-        fontWeight: 'bold',
-        fontSize: 24
-      },
-      color: 'transparent'
-    }
+    // textArea: {
+    //   textBlock: {
+    //     content: 'VPC ' + i,
+    //     color: bigger.value ? 'white' : 'transparent',
+    //     fontWeight: 'bold',
+    //     fontSize: 24
+    //   },
+    //   color: 'transparent'
+    // }
   }))
 })
 
