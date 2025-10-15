@@ -6,7 +6,7 @@ import { getCtx } from "@magic/utils/ctx";
 import { computed, ref, watch } from "vue";
 import Button from "@magic/ui/core/button/Button.vue";
 import { cross } from "@magic/shapes/shapes/cross";
-import colors from "@magic/utils/colors";
+import colors, { RED_600 } from "@magic/utils/colors";
 
 const ZOOM_FACTOR = 0.75
 
@@ -29,15 +29,15 @@ const blobs = computed(() => {
     at: { x, y },
     radius: bigger.value ? 75 : 0,
     fillColor: bigger.value ? colors.RED_600 : 'transparent',
-    // textArea: {
-    //   textBlock: {
-    //     content: 'Large VPC',
-    //     color: bigger.value ? 'white' : 'transparent',
-    //     fontWeight: 'bold',
-    //     fontSize: 20
-    //   },
-    //   color: 'transparent'
-    // }
+    textArea: {
+      textBlock: {
+        content: 'VPC ' + i,
+        color: bigger.value ? 'white' : 'transparent',
+        fontWeight: 'bold',
+        fontSize: 24
+      },
+      color: 'transparent'
+    }
   }))
 })
 
@@ -48,13 +48,13 @@ const satellites = computed(() => {
       textBlock: {
         content: 'Node ' + i,
         color: bigger.value ? 'transparent' : 'white',
-        fontSize: bigger.value ? 0 : 8,
+        fontSize: bigger.value ? 2 : 8,
       },
       color: 'transparent'
     },
     at: bigger.value ? { x: 0, y: 0 } : { x: x / 4, y: y / 4 },
     radius: bigger.value ? 75 : 20,
-    fillColor: bigger.value ? colors.RED_600 : (y > -500 && x > -500 ? (y > 0 && x > 0 ? colors.RED_800 : colors.ORANGE_700) : colors.PURPLE_700)
+    fillColor: bigger.value ? RED_600 : (y > -500 && x > -500 ? (y > 0 && x > 0 ? colors.RED_800 : colors.ORANGE_700) : colors.PURPLE_700)
   }))
 })
 
