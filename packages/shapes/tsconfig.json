@@ -10,5 +10,5 @@
   },
   "references": [{ "path": "../utils" }, { "path": "../canvas" }],
   "include": ["./src/**/*", "./.storybook/**/*"],
-  "exclude": ["./dist", "**/node_modules", "**/*.stories.ts"]
+  "exclude": ["./dist", "**/node_modules"]
 }

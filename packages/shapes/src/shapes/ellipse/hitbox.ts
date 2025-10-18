@@ -35,7 +35,7 @@ export const getEllipseBoundingBox =
         x: at.x - (radiusX + borderWidth / 2),
         y: at.y - (radiusY + borderWidth / 2),
       },
-      width: 5 * radiusX + borderWidth,
+      width: 2 * radiusX + borderWidth,
       height: 2 * radiusY + borderWidth,
     });
   };
