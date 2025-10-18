@@ -10,7 +10,7 @@ import {
 } from './labels';
 
 describe('graph labels', () => {
-  const graph = useBaseGraph(ref());
+  const graph = useBaseGraph(ref() as any);
 
   test('graphLabelGetter', () => {
     graph.reset();

@@ -2,6 +2,7 @@ import type {
   DefineTimeline,
   Timeline,
 } from '@magic/shapes/animation/timeline/define';
+import { TextArea } from '@magic/shapes/text/types';
 import tinycolor from 'tinycolor2';
 
 const ANIMATION_DURATION_MS = 500;
@@ -19,9 +20,11 @@ export const arrowEdgeAdded: Timeline<'arrow'> = {
       properties: {
         lineWidth: 0,
         end: (_, { start }) => start,
-        textArea: (ta) => ({
+        textArea: (ta: TextArea) => ({
           color: tinycolor(ta.color).setAlpha(0).toRgbString(),
+          activeColor: ta.activeColor,
           textBlock: {
+            ...ta.textBlock,
             color: 'transparent',
           },
         }),
@@ -30,9 +33,11 @@ export const arrowEdgeAdded: Timeline<'arrow'> = {
     {
       progress: 0.33,
       properties: {
-        textArea: (ta) => ({
+        textArea: (ta: TextArea) => ({
           color: tinycolor(ta.color).setAlpha(0).toRgbString(),
+          activeColor: ta.activeColor,
           textBlock: {
+            ...ta.textBlock,
             color: 'transparent',
           },
         }),
@@ -60,9 +65,11 @@ export const lineOrUTurnEdgeAdded: Timeline<'line' | 'uturn'> = {
       progress: 0,
       properties: {
         lineWidth: 0,
-        textArea: (ta) => ({
+        textArea: (ta: TextArea) => ({
           color: tinycolor(ta.color).setAlpha(0).toRgbString(),
+          activeColor: ta.activeColor,
           textBlock: {
+            ...ta.textBlock,
             color: 'transparent',
           },
         }),
@@ -80,9 +87,11 @@ export const circleNodeAdded: Timeline<'circle'> = {
       progress: 0,
       properties: {
         radius: 0,
-        textArea: (ta) => ({
+        textArea: (ta: TextArea) => ({
           color: tinycolor(ta.color).setAlpha(0).toRgbString(),
+          activeColor: ta.activeColor,
           textBlock: {
+            ...ta.textBlock,
             color: 'transparent',
           },
         }),

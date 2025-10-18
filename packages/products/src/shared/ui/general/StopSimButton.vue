@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import CIcon from "@magic/ui/core/Icon.vue";
-  import CButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
+  import CButton from "../../../shared/ui/graph-core/button/GButton.vue";
   import colors from "@magic/utils/colors";
 </script>
 

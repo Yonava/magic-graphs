@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
-  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
-  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
+  import { nonNullGraph as graph } from "../../shared/globalGraph";
+  import GWell from "../../shared/ui/graph-core/GWell.vue";
+  import GButton from "../../shared/ui/graph-core/button/GButton.vue";
 
   import type { TreeControls } from "../useTree";
 

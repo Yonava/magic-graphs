@@ -1,14 +1,14 @@
 <script setup lang="ts">
   import CIcon from "@magic/ui/core/Icon.vue";
-  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
-  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
-  import GVerticalCardButton from "@magic/products/shared/ui/graph-core/button/GVerticalCardButton.vue";
+  import GWell from "../../../../shared/ui/graph-core/GWell.vue";
+  import GButton from "../../../../shared/ui/graph-core/button/GButton.vue";
+  import GVerticalCardButton from "../../../../shared/ui/graph-core/button/GVerticalCardButton.vue";
   import {
     getCurrentProduct,
     isExternal,
     useProductRouting,
-  } from "@magic/products/utils";
-  import type { ProductInfoWithMenu } from "@magic/products/utils";
+  } from "../../../../utils";
+  import type { ProductInfoWithMenu } from "../../../../utils";
   import { getRandomInRange } from "@magic/utils/random";
 
   import { computed, ref } from "vue";

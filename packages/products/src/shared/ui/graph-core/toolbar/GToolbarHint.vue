@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useNonNullGraphColors } from "@magic/products/shared/useGlobalGraphColors";
+  import { useNonNullGraphColors } from "../../../../shared/useGlobalGraphColors";
   import type { TutorialControls } from "@magic/graph/tutorials/types";
   import CToolbarHint from "@magic/ui/core/toolbar/ToolbarHint.vue";
 

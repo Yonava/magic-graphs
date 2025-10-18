@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
+  import { nonNullGraph as graph } from "../../shared/globalGraph";
   import { useNodeLabel } from "@magic/graph/themes/helpers/useNodeLabel";
-  import GHoverInfoTop from "@magic/products/shared/ui/graph-core/GHoverInfoTop.vue";
-  import GWell from "@magic/products/shared/ui/graph-core/GWell.vue";
+  import GHoverInfoTop from "../../shared/ui/graph-core/GHoverInfoTop.vue";
+  import GWell from "../../shared/ui/graph-core/GWell.vue";
 
   import { computed } from "vue";
 

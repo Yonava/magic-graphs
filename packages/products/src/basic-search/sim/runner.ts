@@ -1,6 +1,6 @@
 import type { Graph } from '@magic/graph/types';
-import type { SimulationRunner } from '@magic/products/shared/ui/general/sim/types';
-import { useSimulationControls } from '@magic/products/shared/ui/general/sim/useSimulationControls';
+import type { SimulationRunner } from '../../shared/ui/general/sim/types';
+import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
 
 import type { ComputedRef } from 'vue';
 

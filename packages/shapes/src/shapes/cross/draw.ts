@@ -1,5 +1,5 @@
 import { toBorderRadiusArray } from '../../helpers';
-import { drawRectWithCtx } from '../../shapes/rect/draw';
+import { rect } from '../../shapes/rect';
 
 import type { CrossSchemaWithDefaults } from './defaults';
 
@@ -24,31 +24,31 @@ export const drawCrossWithCtx = (schema: CrossSchemaWithDefaults) => {
     ctx.rotate(rotation);
 
     // vertical top
-    drawRectWithCtx({
+    rect({
       at: { x: -halfLineWidth, y: -size / 2 },
       width: lineWidth,
       height: size / 2 - halfLineWidth,
       fillColor,
       borderRadius: [topLeft, topLeft, 0, 0],
-    })(ctx);
+    }).drawShape(ctx);
 
     // horizontal
-    drawRectWithCtx({
+    rect({
       at: { x: -size / 2, y: -halfLineWidth },
       width: size,
       height: lineWidth,
       fillColor,
       borderRadius: [bottomRight, topRight, topRight, bottomRight],
-    })(ctx);
+    }).drawShape(ctx);
 
     // vertical bottom
-    drawRectWithCtx({
+    rect({
       at: { x: -halfLineWidth, y: halfLineWidth },
       width: lineWidth,
       height: size / 2 - halfLineWidth,
       fillColor,
       borderRadius: [0, 0, bottomLeft, bottomLeft],
-    })(ctx);
+    }).drawShape(ctx);
 
     ctx.restore();
   };

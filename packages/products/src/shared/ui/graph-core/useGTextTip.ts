@@ -1,4 +1,4 @@
-import { useGraphColors } from '@magic/products/shared/useGlobalGraphColors';
+import { useGraphColors } from '../../../shared/useGlobalGraphColors';
 
 import { watch } from 'vue';
 import type { MaybeRef } from 'vue';

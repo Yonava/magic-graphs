@@ -5,9 +5,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "tsc && node .",
     "dev": "nodemon --exec tsx src/index.ts",
-    "build": "tsc"
+    "build:types": "tsc -b ."
   },
   "keywords": [],
   "author": "",

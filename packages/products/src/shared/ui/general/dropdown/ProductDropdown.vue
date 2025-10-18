@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { useNonNullGraphColors } from "@magic/products/shared/useGlobalGraphColors";
+  import { useNonNullGraphColors } from "../../../../shared/useGlobalGraphColors";
   import CPopover from "@magic/ui/core/Popover.vue";
-  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
+  import GButton from "../../../../shared/ui/graph-core/button/GButton.vue";
 
   import ProductDropdownMenu from "./ProductDropdownMenu.vue";
 

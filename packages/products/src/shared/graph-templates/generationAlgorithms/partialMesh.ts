@@ -1,6 +1,6 @@
-import type { AutoGenerateGraphOptions } from '../../../templates/autoGenerate/types';
-import type { GEdge, GNode } from '../../../types';
+import type { GEdge, GNode } from '@magic/graph/types';
 import { generateId } from '@magic/utils/id';
+import { AutoGenerateGraphOptions } from '../templateTypes';
 
 type GeneratePartialMeshOptions = {
   edgeLabel: AutoGenerateGraphOptions['edgeLabel'];

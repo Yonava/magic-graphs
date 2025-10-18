@@ -1,21 +1,21 @@
 <script setup lang="ts">
   import MagicCanvas from "@magic/canvas/MagicCanvas.vue";
-  import { devMode } from "@magic/products/shared/globalGraph";
-  import { useGraphProduct } from "@magic/products/shared/useGraphProduct";
-  import AnnotationToolbar from "@magic/products/sandbox/ui/AnnotationToolbar.vue";
-  import type { GraphWithCanvas } from "@magic/products/shared/useGraphWithCanvas";
+  import { devMode } from "../../../shared/globalGraph";
+  import { useGraphProduct } from "../../../shared/useGraphProduct";
+  import AnnotationToolbar from "../../../sandbox/ui/AnnotationToolbar.vue";
+  import type { GraphWithCanvas } from "../../../shared/useGraphWithCanvas";
   import ProductDropdown from "../general/dropdown/ProductDropdown.vue";
   import SelectSimulation from "../general/sim/SelectSim.vue";
   import SimulationPlaybackControls from "../general/sim/SimulationPlaybackControls.vue";
-  import { getSimulationDeclarationsForProduct } from "@magic/products/utils";
-  import type { SimulationDeclaration } from "@magic/products/types";
+  import { getSimulationDeclarationsForProduct } from "../../../utils";
+  import type { SimulationDeclaration } from "../../../types";
 
   import { computed, onMounted, onUnmounted, ref } from "vue";
   import type { UnwrapRef } from "vue";
 
   import FullscreenButton from "./FullscreenButton.vue";
   import HelpMenu from "./HelpMenu.vue";
-  import ShareButton from "./ShareButton.vue";
+  // import ShareButton from "./ShareButton.vue";
   import StopSimButton from "./StopSimButton.vue";
   import ThemeToolbar from "./ThemeToolbar.vue";
   import ZoomToolbar from "./ZoomToolbar.vue";
@@ -184,7 +184,7 @@
 
     <div :class="['absolute', 'flex', 'gap-2', 'bottom-6', 'left-6']">
       <HelpMenu />
-      <ShareButton />
+      <!-- <ShareButton /> -->
       <ZoomToolbar :camera="canvas.camera" />
     </div>
 

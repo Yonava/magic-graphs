@@ -1,4 +1,4 @@
-import { nonNullGraph as globalGraph } from '@magic/products/shared/globalGraph';
+import { nonNullGraph as globalGraph } from './shared/globalGraph';
 import { getTransitData, setTransitData } from '@magic/graph/transit';
 import type { Graph } from '@magic/graph/types';
 import type { ProductInfo, SimulationDeclarationGetter } from './types';
@@ -6,11 +6,13 @@ import type { ProductInfo, SimulationDeclarationGetter } from './types';
 import { useRoute, useRouter } from 'vue-router';
 
 /** all info.ts imported dynamically */
+// @ts-expect-error all info.ts imported dynamically
 const infoModules = import.meta.glob<{
   default: ProductInfo;
-}>('@magic/products/**/info.ts', { eager: true });
+}>('../**/info.ts', { eager: true });
 
-export const products = Object.values(infoModules).flatMap(
+export const products: ProductInfo[] = Object.values(infoModules).flatMap(
+  // @ts-expect-error vite types missing
   (mod) => mod.default,
 );
 export const productRoutes = products.map((product) => product.route);

@@ -1,4 +1,4 @@
-import type { ProductInfo } from '@magic/products/types'
+import type { ProductInfo } from '../types'
 
 const route: ProductInfo = {
   route: {

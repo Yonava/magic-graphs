@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import colors from "@magic/utils/colors";
-  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
-  import { useNonNullGraphColors } from "@magic/products/shared/useGlobalGraphColors";
+  import { nonNullGraph as graph } from "../../../shared/globalGraph";
+  import { useNonNullGraphColors } from "../../../shared/useGlobalGraphColors";
   import { useTransitionMatrix } from "@magic/graph/useTransitionMatrix";
 
   import { computed } from "vue";

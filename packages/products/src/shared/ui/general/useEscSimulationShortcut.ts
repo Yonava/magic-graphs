@@ -1,4 +1,4 @@
-import { PRODUCT_SHORTCUTS } from '@magic/products/shared/shortcuts';
+import { PRODUCT_SHORTCUTS } from '../../../shared/shortcuts';
 import keys from 'ctrl-keys';
 
 import { onUnmounted } from 'vue';

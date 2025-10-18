@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import GVerticalCardButton from "@magic/products/shared/ui/graph-core/button/GVerticalCardButton.vue";
+  import GVerticalCardButton from "../../../../shared/ui/graph-core/button/GVerticalCardButton.vue";
   import { getRandomInRange } from "@magic/utils/random";
-  import type { SimulationDeclaration } from "@magic/products/types";
+  import type { SimulationDeclaration } from "../../../../types";
 
   import { ref } from "vue";
 

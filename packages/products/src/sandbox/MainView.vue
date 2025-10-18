@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useGraphWithCanvas } from "../shared/useGraphWithCanvas";
-  import GraphProduct from "@magic/products/shared/ui/general/GraphProduct.vue";
+  import GraphProduct from "../shared/ui/general/GraphProduct.vue";
 
   import { SANDBOX_GRAPH_SETTINGS } from "./settings";
   import IslandToolbar from "./ui/IslandToolbar.vue";

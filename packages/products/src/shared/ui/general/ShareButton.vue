@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "@magic/products/shared/globalGraph";
+  import { nonNullGraph as graph } from "../../../shared/globalGraph";
   import {
     encodeCompressedTransitData,
     getTransitData,
   } from "@magic/graph/transit";
-  import { SHARE_GRAPH_QUERY_PARAM_KEY } from "@magic/products/shared/useGraphProduct";
+  import { SHARE_GRAPH_QUERY_PARAM_KEY } from "../../../shared/useGraphProduct";
   import CIcon from "@magic/ui/core/Icon.vue";
-  import GButton from "@magic/products/shared/ui/graph-core/button/GButton.vue";
+  import GButton from "../../../shared/ui/graph-core/button/GButton.vue";
   import { compressToEncodedURIComponent } from "lz-string";
   import { useToast } from "primevue/usetoast";
 
