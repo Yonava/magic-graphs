@@ -6,7 +6,8 @@
     "./*": "./src/*"
   },
   "scripts": {
-    "build:types": "tsc -b ."
+    "build:types": "tsc -b .",
+    "test": "vitest"
   },
   "devDependencies": {
     "vitest": "^3.2.4",
