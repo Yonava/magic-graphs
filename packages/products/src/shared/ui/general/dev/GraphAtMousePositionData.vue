@@ -1,26 +1,28 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../../../shared/globalGraph";
+import { nonNullGraph as graph } from "../../../../shared/globalGraph";
 
-  import { computed } from "vue";
 
-  const coords = computed(() => {
-    const {
-      coords: { x, y },
-    } = graph.value.graphAtMousePosition.value;
-    return { x: Math.round(x), y: Math.round(y) };
-  });
+import { computed } from "vue";
+import GText from "../../graph-core/GText.vue";
 
-  const hoveredItems = computed(() => {
-    const { items } = graph.value.graphAtMousePosition.value;
-    return items.map(
-      (item) => `${item.graphType} - ${item.shape.name} (${item.id})`
-    );
-  });
+const coords = computed(() => {
+  const {
+    coords: { x, y },
+  } = graph.value.graphAtMousePosition.value;
+  return { x: Math.round(x), y: Math.round(y) };
+});
+
+const hoveredItems = computed(() => {
+  const { items } = graph.value.graphAtMousePosition.value;
+  return items.map(
+    (item) => `${item.graphType} - ${item.shape.name} (${item.id})`
+  );
+});
 </script>
 
 <template>
-  <div class="text-white text-end">
+  <GText class="text-end">
     <div>Cursor At: (X = {{ coords.x }}, Y = {{ coords.y }})</div>
     <div>Items Hovered: {{ hoveredItems }}</div>
-  </div>
+  </GText>
 </template>
