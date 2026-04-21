@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "@magic/utils": "workspace:*",
-    "@vueuse/core": "^13.6.0",
+    "@vueuse/core": "catalog:",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
-    "vue": "^3.5.18"
+    "vue": "catalog:"
   }
 }

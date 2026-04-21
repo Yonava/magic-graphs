@@ -4,19 +4,52 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@types/tinycolor2':
+      specifier: ^1.4.6
+      version: 1.4.6
+    '@vueuse/core':
+      specifier: ^13.9.0
+      version: 13.9.0
+    ctrl-keys:
+      specifier: ^1.0.6
+      version: 1.0.6
+    lz-string:
+      specifier: ^1.5.0
+      version: 1.5.0
+    mathjs:
+      specifier: ^14.0.1
+      version: 14.7.0
+    primevue:
+      specifier: ^4.2.4
+      version: 4.3.9
+    tinycolor2:
+      specifier: ^1.6.0
+      version: 1.6.0
+    vue:
+      specifier: ^3.5.18
+      version: 3.5.21
+    vue-router:
+      specifier: ^4.0.13
+      version: 4.5.1
+
 importers:
 
   .:
     dependencies:
       primevue:
-        specifier: ^4.2.4
+        specifier: 'catalog:'
         version: 4.3.9(vue@3.5.21(typescript@5.4.5))
       ts-essentials:
         specifier: ^10.1.1
         version: 10.1.1(typescript@5.4.5)
       vue:
-        specifier: ^3.5.18
+        specifier: 'catalog:'
         version: 3.5.21(typescript@5.4.5)
+      vue-router:
+        specifier: 'catalog:'
+        version: 4.5.1(vue@3.5.21(typescript@5.4.5))
     devDependencies:
       '@types/node':
         specifier: ^24.2.1
@@ -43,14 +76,14 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@vueuse/core':
-        specifier: ^13.6.0
+        specifier: 'catalog:'
         version: 13.9.0(vue@3.5.21(typescript@5.9.2))
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
     devDependencies:
       vue:
-        specifier: ^3.5.18
+        specifier: 'catalog:'
         version: 3.5.21(typescript@5.9.2)
 
   packages/client:
@@ -74,8 +107,8 @@ importers:
         specifier: ^4.17.17
         version: 4.17.20
       '@vueuse/core':
-        specifier: ^11.1.0
-        version: 11.3.0(vue@3.5.21(typescript@5.4.5))
+        specifier: 'catalog:'
+        version: 13.9.0(vue@3.5.21(typescript@5.4.5))
       codemirror:
         specifier: ^6.0.1
         version: 6.0.2
@@ -83,7 +116,7 @@ importers:
         specifier: ^0.1.0-alpha.2
         version: 0.1.0-alpha.2(@codemirror/state@6.5.2)(@codemirror/view@6.38.2)
       ctrl-keys:
-        specifier: ^1.0.6
+        specifier: 'catalog:'
         version: 1.0.6
       gsap:
         specifier: ^3.12.5
@@ -92,13 +125,13 @@ importers:
         specifier: ^3.1.4
         version: 3.1.4
       lz-string:
-        specifier: ^1.5.0
+        specifier: 'catalog:'
         version: 1.5.0
       mathjs:
-        specifier: ^14.0.1
+        specifier: 'catalog:'
         version: 14.7.0
       primevue:
-        specifier: ^4.2.4
+        specifier: 'catalog:'
         version: 4.3.9(vue@3.5.21(typescript@5.4.5))
       socket.io-client:
         specifier: ^4.8.1
@@ -110,16 +143,16 @@ importers:
         specifier: ^0.3.4
         version: 0.3.4(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.19.17)(typescript@5.4.5)))
       tinycolor2:
-        specifier: ^1.6.0
+        specifier: 'catalog:'
         version: 1.6.0
       vue:
-        specifier: ^3.5.18
+        specifier: 'catalog:'
         version: 3.5.21(typescript@5.4.5)
       vue-codemirror:
         specifier: ^6.1.1
         version: 6.1.1(codemirror@6.0.2)(vue@3.5.21(typescript@5.4.5))
       vue-router:
-        specifier: ^4.0.13
+        specifier: 'catalog:'
         version: 4.5.1(vue@3.5.21(typescript@5.4.5))
     devDependencies:
       '@chromatic-com/storybook':
@@ -147,7 +180,7 @@ importers:
         specifier: ^20.14.5
         version: 20.19.17
       '@types/tinycolor2':
-        specifier: ^1.4.6
+        specifier: 'catalog:'
         version: 1.4.6
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.17.0
@@ -237,44 +270,44 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@vueuse/core':
-        specifier: ^13.6.0
+        specifier: 'catalog:'
         version: 13.9.0(vue@3.5.21(typescript@5.9.2))
       ctrl-keys:
-        specifier: ^1.0.6
+        specifier: 'catalog:'
         version: 1.0.6
       graphlib:
         specifier: ^2.1.8
         version: 2.1.8
       lz-string:
-        specifier: ^1.5.0
+        specifier: 'catalog:'
         version: 1.5.0
       mathjs:
-        specifier: ^14.0.1
+        specifier: 'catalog:'
         version: 14.7.0
       socket.io-client:
         specifier: ^4.8.1
         version: 4.8.1
       tinycolor2:
-        specifier: ^1.6.0
+        specifier: 'catalog:'
         version: 1.6.0
       vue-router:
-        specifier: ^4.0.13
+        specifier: 'catalog:'
         version: 4.5.1(vue@3.5.21(typescript@5.9.2))
     devDependencies:
       '@types/graphlib':
         specifier: ^2.1.12
         version: 2.1.12
       '@types/tinycolor2':
-        specifier: ^1.4.6
+        specifier: 'catalog:'
         version: 1.4.6
       primevue:
-        specifier: ^4.2.4
+        specifier: 'catalog:'
         version: 4.3.9(vue@3.5.21(typescript@5.9.2))
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))
       vue:
-        specifier: ^3.5.18
+        specifier: 'catalog:'
         version: 3.5.21(typescript@5.9.2)
 
   packages/products:
@@ -295,32 +328,32 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@vueuse/core':
-        specifier: ^13.9.0
+        specifier: 'catalog:'
         version: 13.9.0(vue@3.5.21(typescript@5.9.2))
       ctrl-keys:
-        specifier: ^1.0.6
+        specifier: 'catalog:'
         version: 1.0.6
       gsap:
         specifier: ^3.12.5
         version: 3.13.0
       lz-string:
-        specifier: ^1.5.0
+        specifier: 'catalog:'
         version: 1.5.0
       mathjs:
-        specifier: ^14.0.1
+        specifier: 'catalog:'
         version: 14.7.0
       tinycolor2:
-        specifier: ^1.6.0
+        specifier: 'catalog:'
         version: 1.6.0
       vue-router:
-        specifier: ^4.0.13
+        specifier: 'catalog:'
         version: 4.5.1(vue@3.5.21(typescript@5.9.2))
     devDependencies:
       '@types/tinycolor2':
-        specifier: ^1.4.6
+        specifier: 'catalog:'
         version: 1.4.6
       primevue:
-        specifier: ^4.2.4
+        specifier: 'catalog:'
         version: 4.3.9(vue@3.5.21(typescript@5.9.2))
       vite:
         specifier: ^7.1.4
@@ -329,7 +362,7 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))
       vue:
-        specifier: ^3.5.18
+        specifier: 'catalog:'
         version: 3.5.21(typescript@5.9.2)
 
   packages/server:
@@ -372,14 +405,14 @@ importers:
         specifier: workspace:*
         version: link:../utils
       tinycolor2:
-        specifier: ^1.6.0
+        specifier: 'catalog:'
         version: 1.6.0
     devDependencies:
       '@storybook/vue3-vite':
         specifier: ^9.0.1
         version: 9.1.7(storybook@9.1.7(@testing-library/dom@10.4.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1)))(vite@7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2))
       '@types/tinycolor2':
-        specifier: ^1.4.6
+        specifier: 'catalog:'
         version: 1.4.6
       '@vitejs/plugin-vue':
         specifier: ^5.0.5
@@ -391,7 +424,7 @@ importers:
         specifier: ^7.1.10
         version: 7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1)
       vue:
-        specifier: ^3.5.18
+        specifier: 'catalog:'
         version: 3.5.21(typescript@5.9.2)
 
   packages/storybook: {}
@@ -405,32 +438,32 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@vueuse/core':
-        specifier: ^13.6.0
+        specifier: 'catalog:'
         version: 13.9.0(vue@3.5.21(typescript@5.9.2))
       ctrl-keys:
-        specifier: ^1.0.6
+        specifier: 'catalog:'
         version: 1.0.6
       lz-string:
-        specifier: ^1.5.0
+        specifier: 'catalog:'
         version: 1.5.0
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
       tinycolor2:
-        specifier: ^1.6.0
+        specifier: 'catalog:'
         version: 1.6.0
       vue-router:
-        specifier: ^4.0.13
+        specifier: 'catalog:'
         version: 4.5.1(vue@3.5.21(typescript@5.9.2))
     devDependencies:
       '@types/tinycolor2':
-        specifier: ^1.4.6
+        specifier: 'catalog:'
         version: 1.4.6
       primevue:
-        specifier: ^4.2.4
+        specifier: 'catalog:'
         version: 4.3.9(vue@3.5.21(typescript@5.9.2))
       vue:
-        specifier: ^3.5.18
+        specifier: 'catalog:'
         version: 3.5.21(typescript@5.9.2)
 
   packages/utils:
@@ -439,7 +472,7 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))
       vue:
-        specifier: ^3.5.18
+        specifier: 'catalog:'
         version: 3.5.21(typescript@5.9.2)
 
 packages:
@@ -1464,9 +1497,6 @@ packages:
   '@types/tinycolor2@1.4.6':
     resolution: {integrity: sha512-iEN8J0BoMnsWBqjVbWH/c0G0Hh7O21lpR2/+PrvAVgWdzL7eexIFm4JN/Wn10PTcmNdtS6U67r499mlWMXOxNw==}
 
-  '@types/web-bluetooth@0.0.20':
-    resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
-
   '@types/web-bluetooth@0.0.21':
     resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
 
@@ -1684,22 +1714,13 @@ packages:
   '@vue/tsconfig@0.5.1':
     resolution: {integrity: sha512-VcZK7MvpjuTPx2w6blwnwZAu5/LgBUtejFOi3pPGQFXQN5Ela03FUtd2Qtg4yWGGissVL0dr6Ro1LfOFh+PCuQ==}
 
-  '@vueuse/core@11.3.0':
-    resolution: {integrity: sha512-7OC4Rl1f9G8IT6rUfi9JrKiXy4bfmHhZ5x2Ceojy0jnd3mHNEvV4JaRygH362ror6/NZ+Nl+n13LPzGiPN8cKA==}
-
   '@vueuse/core@13.9.0':
     resolution: {integrity: sha512-ts3regBQyURfCE2BcytLqzm8+MmLlo5Ln/KLoxDVcsZ2gzIwVNnQpQOL/UKV8alUqjSZOlpFZcRNsLRqj+OzyA==}
     peerDependencies:
       vue: ^3.5.0
 
-  '@vueuse/metadata@11.3.0':
-    resolution: {integrity: sha512-pwDnDspTqtTo2HwfLw4Rp6yywuuBdYnPYDq+mO38ZYKGebCUQC/nVj/PXSiK9HX5otxLz8Fn7ECPbjiRz2CC3g==}
-
   '@vueuse/metadata@13.9.0':
     resolution: {integrity: sha512-1AFRvuiGphfF7yWixZa0KwjYH8ulyjDCC0aFgrGRz8+P4kvDFSdXLVfTk5xAN9wEuD1J6z4/myMoYbnHoX07zg==}
-
-  '@vueuse/shared@11.3.0':
-    resolution: {integrity: sha512-P8gSSWQeucH5821ek2mn/ciCk+MS/zoRKqdQIM3bHq6p7GXDAJLmnRRKmF5F65sAVJIfzQlwR3aDzwCn10s8hA==}
 
   '@vueuse/shared@13.9.0':
     resolution: {integrity: sha512-e89uuTLMh0U5cZ9iDpEI2senqPGfbPRTHM/0AaQkcxnpqjkZqDYP8rpfm7edOz8s+pOCOROEy1PIveSW8+fL5g==}
@@ -3808,19 +3829,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
-  vue-component-type-helpers@3.1.1:
-    resolution: {integrity: sha512-B0kHv7qX6E7+kdc5nsaqjdGZ1KwNKSUQDWGy7XkTYT7wFsOpkEyaJ1Vq79TjwrrtuLRgizrTV7PPuC4rRQo+vw==}
-
-  vue-demi@0.14.10:
-    resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
-    engines: {node: '>=12'}
-    hasBin: true
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^3.0.0-0 || ^2.6.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
+  vue-component-type-helpers@3.2.7:
+    resolution: {integrity: sha512-+gPp5YGmhfsj1IN+xUo7y0fb4clfnOiiUA39y07yW1VzCRjzVgwLbtmdWlghh7mXrPsEaYc7rrIir/HT6C8vYQ==}
 
   vue-docgen-api@4.79.2:
     resolution: {integrity: sha512-n9ENAcs+40awPZMsas7STqjkZiVlIjxIKgiJr5rSohDP0/JCrD9VtlzNojafsA1MChm/hz2h3PDtUedx3lbgfA==}
@@ -4763,7 +4773,7 @@ snapshots:
       storybook: 9.1.7(@testing-library/dom@10.4.1)(msw@2.11.2(@types/node@20.19.17)(typescript@5.4.5))(prettier@3.6.2)(vite@5.4.20(@types/node@20.19.17))
       type-fest: 2.19.0
       vue: 3.5.21(typescript@5.4.5)
-      vue-component-type-helpers: 3.1.1
+      vue-component-type-helpers: 3.2.7
 
   '@storybook/vue3@9.1.7(storybook@9.1.7(@testing-library/dom@10.4.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1)))(vue@3.5.21(typescript@5.9.2))':
     dependencies:
@@ -4771,7 +4781,7 @@ snapshots:
       storybook: 9.1.7(@testing-library/dom@10.4.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1))
       type-fest: 2.19.0
       vue: 3.5.21(typescript@5.9.2)
-      vue-component-type-helpers: 3.1.1
+      vue-component-type-helpers: 3.2.7
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -4901,8 +4911,6 @@ snapshots:
   '@types/statuses@2.0.6': {}
 
   '@types/tinycolor2@1.4.6': {}
-
-  '@types/web-bluetooth@0.0.20': {}
 
   '@types/web-bluetooth@0.0.21': {}
 
@@ -5265,15 +5273,12 @@ snapshots:
 
   '@vue/tsconfig@0.5.1': {}
 
-  '@vueuse/core@11.3.0(vue@3.5.21(typescript@5.4.5))':
+  '@vueuse/core@13.9.0(vue@3.5.21(typescript@5.4.5))':
     dependencies:
-      '@types/web-bluetooth': 0.0.20
-      '@vueuse/metadata': 11.3.0
-      '@vueuse/shared': 11.3.0(vue@3.5.21(typescript@5.4.5))
-      vue-demi: 0.14.10(vue@3.5.21(typescript@5.4.5))
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - vue
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 13.9.0
+      '@vueuse/shared': 13.9.0(vue@3.5.21(typescript@5.4.5))
+      vue: 3.5.21(typescript@5.4.5)
 
   '@vueuse/core@13.9.0(vue@3.5.21(typescript@5.9.2))':
     dependencies:
@@ -5282,16 +5287,11 @@ snapshots:
       '@vueuse/shared': 13.9.0(vue@3.5.21(typescript@5.9.2))
       vue: 3.5.21(typescript@5.9.2)
 
-  '@vueuse/metadata@11.3.0': {}
-
   '@vueuse/metadata@13.9.0': {}
 
-  '@vueuse/shared@11.3.0(vue@3.5.21(typescript@5.4.5))':
+  '@vueuse/shared@13.9.0(vue@3.5.21(typescript@5.4.5))':
     dependencies:
-      vue-demi: 0.14.10(vue@3.5.21(typescript@5.4.5))
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - vue
+      vue: 3.5.21(typescript@5.4.5)
 
   '@vueuse/shared@13.9.0(vue@3.5.21(typescript@5.9.2))':
     dependencies:
@@ -7637,11 +7637,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.1.1: {}
-
-  vue-demi@0.14.10(vue@3.5.21(typescript@5.4.5)):
-    dependencies:
-      vue: 3.5.21(typescript@5.4.5)
+  vue-component-type-helpers@3.2.7: {}
 
   vue-docgen-api@4.79.2(vue@3.5.21(typescript@5.4.5)):
     dependencies:

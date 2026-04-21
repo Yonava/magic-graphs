@@ -17,14 +17,14 @@
   "dependencies": {
     "@magic/canvas": "workspace:*",
     "@magic/utils": "workspace:*",
-    "tinycolor2": "^1.6.0"
+    "tinycolor2": "catalog:"
   },
   "devDependencies": {
     "storybook": "^9.0.1",
     "@storybook/vue3-vite": "^9.0.1",
-    "@types/tinycolor2": "^1.4.6",
+    "@types/tinycolor2": "catalog:",
     "@vitejs/plugin-vue": "^5.0.5",
     "vite": "^7.1.10",
-    "vue": "^3.5.18"
+    "vue": "catalog:"
   }
 }

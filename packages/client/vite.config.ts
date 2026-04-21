@@ -2,10 +2,12 @@ import path from "node:path";
 import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vitest/config";
 
+import { detectDuplicatePackages } from "./vite-plugin-detect-duplicates";
+
 const r = (...p: string[]) => path.resolve(__dirname, ...p);
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), detectDuplicatePackages()],
 
   test: {
     silent: true,
@@ -45,6 +47,7 @@ export default defineConfig({
       "@magic/canvas": r("../canvas/src"),
       "@magic/products": r("../products/src"),
       vue: r('../../node_modules/vue'),
+      'vue-router': r('../../node_modules/vue-router'),
       primevue: r('../../node_modules/primevue'),
     },
   },

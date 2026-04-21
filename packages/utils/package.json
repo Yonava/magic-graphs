@@ -11,6 +11,6 @@
   },
   "devDependencies": {
     "vitest": "^3.2.4",
-    "vue": "^3.5.18"
+    "vue": "catalog:"
   }
 }
