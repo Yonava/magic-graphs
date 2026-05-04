@@ -5,6 +5,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "build": "tsc",
     "start": "tsc && node .",
     "dev": "nodemon --exec tsx src/index.ts",
     "build:types": "tsc -b ."

@@ -12,7 +12,7 @@ const server = createServer(app);
 
 app.use(express.json());
 
-const publicPath = path.join(process.cwd(), "dist/public");
+const publicPath = path.join(__dirname, "public");
 app.use(express.static(publicPath));
 
 app.get(/.*/, (req, res) => {
