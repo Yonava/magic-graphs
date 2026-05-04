@@ -1,8 +1,9 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import { sockets } from './sockets';
-import { createServer } from 'http';
-import { LOCALHOST_PORT } from './constants';
+import dotenv from "dotenv";
+import express from "express";
+import { sockets } from "./sockets";
+import { createServer } from "http";
+import { LOCALHOST_PORT } from "./constants";
+import path from "path";
 
 dotenv.config();
 
@@ -11,10 +12,12 @@ const server = createServer(app);
 
 app.use(express.json());
 
-// if (process.env.NODE_ENV === 'production') {
-app.use(express.static(__dirname + '/public/'));
-app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
-// }
+const publicPath = path.join(process.cwd(), "dist/public");
+app.use(express.static(publicPath));
+
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(publicPath, "index.html"));
+});
 
 const PORT = process.env.PORT || LOCALHOST_PORT;
 
