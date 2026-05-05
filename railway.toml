@@ -6,6 +6,6 @@ nodeVersion = "22"
 
 [deploy]
 buildCommand = "pnpm install && pnpm run build"
-startCommand = "exec pnpm start"
+startCommand = "node packages/server/dist/index.js"
 
 healthcheckPath = "/"
