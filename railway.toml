@@ -5,7 +5,7 @@ builder = "RAILPACK"
 nodeVersion = "22"
 
 [deploy]
-buildCommand = "pnpm install && pnpm --filter client build && pnpm --filter server build"
-startCommand = "pnpm --filter server start"
+buildCommand = "pnpm install && pnpm build"
+startCommand = "pnpm start"
 
 healthcheckPath = "/"
