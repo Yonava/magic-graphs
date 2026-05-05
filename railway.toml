@@ -8,4 +8,4 @@ nodeVersion = "22"
 buildCommand = "pnpm install && pnpm run build"
 startCommand = "node packages/server/dist/index.js"
 
-healthcheckPath = "/"
+healthcheckPath = "/health"

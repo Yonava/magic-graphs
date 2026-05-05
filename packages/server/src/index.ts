@@ -21,9 +21,11 @@ app.get(/.*/, (req, res) => {
   res.sendFile(indexPath);
 });
 
+app.get("/health", (req, res) => res.status(200).send("OK"));
+
 const PORT = process.env.PORT || LOCALHOST_PORT;
 
-server.listen(Number(PORT), () => {
+server.listen(Number(PORT), "0.0.0.0", () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
