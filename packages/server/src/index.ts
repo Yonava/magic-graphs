@@ -12,7 +12,7 @@ const server = createServer(app);
 
 app.use(express.json());
 
-const publicPath = path.resolve(__dirname, "dist", "public");
+const publicPath = path.resolve(__dirname, "public");
 
 app.use(express.static(publicPath));
 
@@ -20,8 +20,6 @@ app.get(/.*/, (req, res) => {
   const indexPath = path.join(publicPath, "index.html");
   res.sendFile(indexPath);
 });
-
-app.get("/health", (req, res) => res.status(200).send("OK"));
 
 const PORT = process.env.PORT || LOCALHOST_PORT;
 
