@@ -12,11 +12,13 @@ const server = createServer(app);
 
 app.use(express.json());
 
-const publicPath = path.join(__dirname, "public");
+const publicPath = path.resolve(__dirname, "dist", "public");
+
 app.use(express.static(publicPath));
 
 app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(publicPath, "index.html"));
+  const indexPath = path.join(publicPath, "index.html");
+  res.sendFile(indexPath);
 });
 
 const PORT = process.env.PORT || LOCALHOST_PORT;

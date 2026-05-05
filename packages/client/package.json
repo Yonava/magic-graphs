@@ -4,10 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "vue-tsc -b . && vite build",
+
     "dev": "vite",
     "test": "vitest",
     "build-only": "vite build",
-    "build": "run-p build:js build:storybook \"build:types {@}\" --",
     "build:js": "vite build",
     "build:storybook": "storybook build",
     "build:types": "vue-tsc -b .",

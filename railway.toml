@@ -1,5 +1,0 @@
-[build]
-buildCommand = "pnpm install && pnpm --filter client build-only && pnpm --filter server build"
-
-[deploy]
-startCommand = "node packages/server/dist/index.js"
