@@ -5,8 +5,8 @@
     "start": "pnpm --filter client build && pnpm --filter server build && pnpm --filter server start",
     "test": "vitest",
     "dev": "concurrently -c auto command 'pnpm:dev-*'",
-    "dev-client": "cd packages/client && pnpm dev",
-    "dev-server": "cd packages/server && pnpm dev",
+    "dev-client": "pnpm --filter client dev",
+    "dev-server": "pnpm --filter server dev",
     "reinstall": "pnpm store prune && rm -rf node_modules pnpm-lock.yaml && pnpm install",
     "build:types": "vue-tsc -b tsconfig.json",
     "simulate:prod": "rm -rf node_modules packages/*/dist && pnpm install && pnpm build:types && pnpm --filter client build-only && pnpm --filter server start"
@@ -24,5 +24,8 @@
     "ts-essentials": "^10.1.1",
     "vue": "catalog:",
     "vue-router": "catalog:"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
