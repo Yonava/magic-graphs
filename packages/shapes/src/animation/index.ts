@@ -125,12 +125,11 @@ export const useAnimatedShapes = () => {
 
   const autoAnimate = useAutoAnimate(defineTimeline, getAnimatedSchema);
 
-  const animatedFactory =
-    <T extends Omit<LooseSchema, 'id'>>(
-      factory: ShapeFactory<T>,
-      shapeName: ShapeName,
-    ): ShapeFactory<WithId<T>> =>
-    (schema) =>
+  function animatedFactory<T extends Omit<LooseSchema, 'id'>>(
+    factory: ShapeFactory<T>,
+    shapeName: ShapeName,
+  ): ShapeFactory<WithId<T>> {
+    return (schema) =>
       new Proxy(factory(schema), {
         get: (target, rawProp) => {
           const prop = rawProp as keyof Shape;
@@ -169,6 +168,7 @@ export const useAnimatedShapes = () => {
           return factory(animatedSchema as WithId<T>)[prop];
         },
       });
+  }
 
   return {
     shapes: {
@@ -254,8 +254,8 @@ export const useAnimatedShapes = () => {
         const { properties } = animationWithTimeline;
         const progress = getAnimationProgress(animationWithTimeline);
 
-        const fn = properties[inputPropName as string];
-        propVal = fn(schemaWithDefaults, progress);
+        const animationFunction = properties[inputPropName as string];
+        propVal = animationFunction(schemaWithDefaults, progress);
       }
 
       return propVal;
