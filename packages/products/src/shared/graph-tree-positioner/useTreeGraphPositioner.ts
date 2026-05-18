@@ -1,13 +1,14 @@
 import type { GNode, Graph } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
-import { debounce } from '@magic/utils/debounce';
 
-import { onUnmounted, ref, watch } from 'vue';
+import { ref } from 'vue';
 
 import { binaryTreePositioner } from './positioners/binaryTreePositioner';
 import { standardTreePositioner } from './positioners/standardTreePositioner';
 import { TreeGraphPositionerOptions } from './positioners/types';
 import { getNodeDepths } from './useNodeDepth';
+
+type TreeShape = 'standard' | 'binary';
 
 export type UseTreeGraphPositionerOptions = {
   /**
@@ -30,7 +31,7 @@ export type UseTreeGraphPositionerOptions = {
    * the shape of the tree to form.
    * @default 'standard'
    */
-  shape: 'standard' | 'binary';
+  shape: TreeShape;
   /**
    * the new coordinates of the root node when the graph is being re-shaped.
    * @default (rootNode) => ({ x: rootNode.x, y: rootNode.y })
@@ -96,77 +97,3 @@ export const useTreeGraphPositioner = (
     options: optionsRef,
   };
 };
-
-export type AutoTreeOptions = UseTreeGraphPositionerOptions & {
-  /**
-   * debounce time in milliseconds to wait before reshaping the graph
-   * @default 500 // half a second
-   */
-  debounceMs: number;
-};
-
-const AUTO_TREE_OPTIONS_DEFAULTS = {
-  debounceMs: 500,
-} as const;
-
-/**
- * automatically reshapes the graph into a tree formation
- * whenever the graph structure changes
- */
-export const useAutoTree = (
-  graph: Graph,
-  options: Partial<AutoTreeOptions> = {},
-) => {
-  const { debounceMs, ...treeOptions } = {
-    ...AUTO_TREE_OPTIONS_DEFAULTS,
-    ...options,
-  };
-
-  const rootNodeId = ref<GNode['id']>();
-  const isActive = ref(false);
-
-  const treeControls = useTreeGraphPositioner(graph, treeOptions);
-
-  const updateShape = () => {
-    if (!rootNodeId.value) return;
-    const rootNode = graph.getNode(rootNodeId.value);
-    if (!rootNode) return;
-    treeControls.shapeGraph(rootNode);
-  };
-
-  const debouncedUpdateShape = debounce(updateShape, debounceMs);
-
-  const activate = () => {
-    updateShape();
-    graph.subscribe('onStructureChange', debouncedUpdateShape);
-    graph.subscribe('onNodeDrop', debouncedUpdateShape);
-    graph.subscribe('onGroupDrop', debouncedUpdateShape);
-    isActive.value = true;
-  };
-
-  const deactivate = () => {
-    graph.unsubscribe('onStructureChange', debouncedUpdateShape);
-    graph.unsubscribe('onNodeDrop', debouncedUpdateShape);
-    graph.unsubscribe('onGroupDrop', debouncedUpdateShape);
-    isActive.value = false;
-  };
-
-  // eagerly shape the graph when the root node changes
-  watch(rootNodeId, () => {
-    if (isActive.value) updateShape();
-  });
-
-  onUnmounted(deactivate);
-
-  return {
-    rootNodeId,
-    activate,
-    deactivate,
-    isActive,
-    updateShape,
-    debouncedUpdateShape,
-    ...treeControls,
-  };
-};
-
-export type AutoTreeControls = ReturnType<typeof useAutoTree>;

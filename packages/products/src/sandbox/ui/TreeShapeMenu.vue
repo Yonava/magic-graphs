@@ -11,10 +11,10 @@ import GraphNode from '../../shared/ui/graph-core/GNode.vue';
 import GWell from '../../shared/ui/graph-core/GWell.vue';
 import GButton from '../../shared/ui/graph-core/button/GButton.vue';
 import TreeShapeMenuSettings from './TreeShapeMenuSettings.vue';
-import type { AutoTreeControls } from '../../shared/graph-tree-positioner/useTreeGraphPositioner';
+import { TreeGraphPositionerSyncControls } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync';
 
 const props = defineProps<{
-  controls: AutoTreeControls;
+  controls: TreeGraphPositionerSyncControls;
 }>();
 
 const treeControls = toRef(props, 'controls');

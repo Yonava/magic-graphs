@@ -7,14 +7,11 @@ import { computed } from 'vue';
 
 import GWell from '../../shared/ui/graph-core/GWell.vue';
 import GButton from '../../shared/ui/graph-core/button/GButton.vue';
-import { TREE_FORMATION_OPTIONS_DEFAULTS } from '../../shared/graph-tree-positioner/useTreeGraphPositioner';
-import type {
-  AutoTreeControls,
-  TreeFormationOptions,
-} from '../../shared/graph-tree-positioner/useTreeGraphPositioner';
+import { TREE_FORMATION_OPTIONS_DEFAULTS, UseTreeGraphPositionerOptions } from '../../shared/graph-tree-positioner/useTreeGraphPositioner';
+import { TreeGraphPositionerSyncControls } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync';
 
 const props = defineProps<{
-  controls: AutoTreeControls;
+  controls: TreeGraphPositionerSyncControls;
 }>();
 
 const { options, debouncedUpdateShape, updateShape } = props.controls;
@@ -37,7 +34,7 @@ const setOffsetYToDefault = () => {
   debouncedUpdateShape();
 };
 
-const setShape = (shape: TreeFormationOptions['shape']) => {
+const setShape = (shape: UseTreeGraphPositionerOptions['shape']) => {
   options.value.shape = shape;
   updateShape();
 };

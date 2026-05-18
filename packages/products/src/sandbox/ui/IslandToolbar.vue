@@ -11,7 +11,7 @@ import GToolbarDivider from '../../shared/ui/graph-core/toolbar/GToolbarDivider.
 import CollaborativeSessionMenu from './CollaborativeSessionMenu.vue';
 import GraphInfoMenu from './GraphInfoMenu/GraphInfoMenu.vue';
 import TreeShapeMenu from './TreeShapeMenu.vue';
-import { useAutoTree } from '../../shared/graph-tree-positioner/useTreeGraphPositioner';
+import { useTreeGraphPositionerSync } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync';
 
 // import TemplateMenu from '@magic/graph/templates/ui/TemplateMenu.vue';
 
@@ -61,7 +61,7 @@ const canRedo = computed(() => {
   return canRedo.value;
 });
 
-const treeControls = useAutoTree(graph.value);
+const treePositionerControls = useTreeGraphPositionerSync(graph.value);
 </script>
 
 <template>
@@ -106,8 +106,8 @@ const treeControls = useAutoTree(graph.value);
         <GToolbarButton @click="toggle" :active="isOpen" icon="account-multiple" />
       </CollaborativeSessionMenu>
 
-      <TreeShapeMenu v-slot="{ toggle, isOpen }" :controls="treeControls">
-        <GToolbarButton @click="toggle" :active="isOpen || treeControls.isActive.value" :icon="isOpen || treeControls.isActive.value ? 'forest' : 'forest-outline'
+      <TreeShapeMenu v-slot="{ toggle, isOpen }" :controls="treePositionerControls">
+        <GToolbarButton @click="toggle" :active="isOpen || treePositionerControls.isActive.value" :icon="isOpen || treePositionerControls.isActive.value ? 'forest' : 'forest-outline'
           " />
       </TreeShapeMenu>
 
