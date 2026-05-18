@@ -12,13 +12,13 @@
 ## Minimum Spanning Trees Form Differently With Prims and Kruskals, Thats Why You Can Visualize Both
 <img width="1390" alt="Screenshot 2024-11-12 at 1 59 52 AM" src="https://github.com/user-attachments/assets/4552f4bb-fc6b-49ff-972b-e3ca7fdbd4ed">
 
-## Wanna See It In Action? Watch Our 1 Minute Demo 
+## Wanna See It In Action? Watch Our 1 Minute Demo
 https://github.com/user-attachments/assets/ee5e5109-28dc-43da-8ab3-306801c38af8
 
 ## Development
 
 ### Install
-```sh 
+```sh
 npm i && (cd client && npm i) && (cd ../server && npm i)
 ```
 
