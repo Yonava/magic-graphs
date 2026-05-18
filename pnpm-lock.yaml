@@ -236,7 +236,7 @@ importers:
         version: link:../utils
       '@vueuse/core':
         specifier: 'catalog:'
-        version: 13.9.0(vue@3.5.21(typescript@5.9.2))
+        version: 13.9.0(vue@3.5.21(typescript@5.4.5))
       ctrl-keys:
         specifier: 'catalog:'
         version: 1.0.6
@@ -252,22 +252,25 @@ importers:
       tinycolor2:
         specifier: 'catalog:'
         version: 1.6.0
+      typescript:
+        specifier: ~5.4.0
+        version: 5.4.5
       vue-router:
         specifier: 'catalog:'
-        version: 4.5.1(vue@3.5.21(typescript@5.9.2))
+        version: 4.5.1(vue@3.5.21(typescript@5.4.5))
     devDependencies:
       '@types/tinycolor2':
         specifier: 'catalog:'
         version: 1.4.6
       primevue:
         specifier: 'catalog:'
-        version: 4.3.9(vue@3.5.21(typescript@5.9.2))
+        version: 4.3.9(vue@3.5.21(typescript@5.4.5))
       vitest:
         specifier: ^3.2.4
-        version: 3.2.4(@types/node@24.5.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(yaml@2.8.1)
+        version: 3.2.4(@types/node@24.5.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.4.5))(yaml@2.8.1)
       vue:
         specifier: 'catalog:'
-        version: 3.5.21(typescript@5.9.2)
+        version: 3.5.21(typescript@5.4.5)
 
   packages/server:
     dependencies:
@@ -4733,6 +4736,13 @@ snapshots:
 
   '@vue/tsconfig@0.5.1': {}
 
+  '@vueuse/core@13.9.0(vue@3.5.21(typescript@5.4.5))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 13.9.0
+      '@vueuse/shared': 13.9.0(vue@3.5.21(typescript@5.4.5))
+      vue: 3.5.21(typescript@5.4.5)
+
   '@vueuse/core@13.9.0(vue@3.5.21(typescript@5.9.2))':
     dependencies:
       '@types/web-bluetooth': 0.0.21
@@ -4741,6 +4751,10 @@ snapshots:
       vue: 3.5.21(typescript@5.9.2)
 
   '@vueuse/metadata@13.9.0': {}
+
+  '@vueuse/shared@13.9.0(vue@3.5.21(typescript@5.4.5))':
+    dependencies:
+      vue: 3.5.21(typescript@5.4.5)
 
   '@vueuse/shared@13.9.0(vue@3.5.21(typescript@5.9.2))':
     dependencies:
@@ -7000,11 +7014,6 @@ snapshots:
     dependencies:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.21(typescript@5.4.5)
-
-  vue-router@4.5.1(vue@3.5.21(typescript@5.9.2)):
-    dependencies:
-      '@vue/devtools-api': 6.6.4
-      vue: 3.5.21(typescript@5.9.2)
 
   vue-tsc@3.0.7(typescript@5.4.5):
     dependencies:

@@ -1,19 +1,19 @@
-import type { EverySchemaPropName, SchemaId, ShapeName } from '../types';
-import { delta } from '@magic/utils/deepDelta';
+import type { EverySchemaPropName, SchemaId, ShapeName } from "../types";
+import { delta } from "@magic/utils/deepDelta";
 
-import type { GetAnimatedSchema } from '.';
-import type { DefineTimeline } from './timeline/define';
-import type { LooseSchema, LooseSchemaValue } from './types';
+import type { GetAnimatedSchema } from ".";
+import type { DefineTimeline } from "./timeline/define";
+import type { LooseSchema, LooseSchemaValue } from "./types";
 
 export const AUTO_ANIMATE_DURATION_MS = 500;
 // properties supported by the auto animate feature
 const AUTO_ANIMATED_PROPERTIES = new Set([
-  'at',
-  'start',
-  'end',
-  'lineWidth',
-  'radius',
-  'fillColor',
+  "at",
+  "start",
+  "end",
+  "lineWidth",
+  "radius",
+  "fillColor",
 ]);
 
 type LooseSchemaWithName = LooseSchema & { shapeName: ShapeName };
@@ -45,7 +45,7 @@ export const useAutoAnimate = (
     const { play, stop } = defineTimeline({
       forShapes: [shapeName],
       durationMs: AUTO_ANIMATE_DURATION_MS,
-      easing: { [propName]: 'in-out' },
+      easing: { [propName]: "in-out" },
       keyframes: [
         {
           progress: 0,
@@ -105,11 +105,11 @@ export const useAutoAnimate = (
 
       return () => {
         const after = takeSnapshot();
-
-        if (before.length !== after.length)
+        if (before.length !== after.length) {
           throw new Error(
-            'tracked shape mismatch when capturing animation frame',
+            "tracked shape mismatch when capturing animation frame",
           );
+        }
 
         for (let i = 0; i < after.length; i++) {
           const beforeSchema = before[i];
@@ -118,10 +118,10 @@ export const useAutoAnimate = (
           const diff = delta(beforeSchema, afterSchema);
           if (!diff) continue;
 
-          if (diff['id'])
-            throw new Error('id mismatch in before and after schema!');
-          if (diff['shapeName'])
-            throw new Error('shape name mismatch in before and after schema!');
+          if (diff["id"])
+            throw new Error("id mismatch in before and after schema!");
+          if (diff["shapeName"])
+            throw new Error("shape name mismatch in before and after schema!");
 
           const schemaPropNames = Object.keys(diff) as EverySchemaPropName[];
           for (const propName of schemaPropNames) {
