@@ -1,3 +1,8 @@
+import type { Fraction } from 'mathjs';
+
+import { onUnmounted, ref } from 'vue';
+
+import type { BaseGraph } from './base';
 import {
   getDirectedOutboundEdges,
   getFracWeightBetweenNodes,
@@ -5,11 +10,6 @@ import {
   getWeightBetweenNodes,
 } from './helpers';
 import type { GNode, Weight } from './types';
-import type { Fraction } from 'mathjs';
-
-import { onUnmounted, ref } from 'vue';
-
-import type { BaseGraph } from './base';
 
 /**
  * a mapping of nodes to their neighbors.

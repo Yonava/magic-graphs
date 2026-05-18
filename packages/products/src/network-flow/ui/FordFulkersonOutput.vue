@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../shared/globalGraph";
+  import { computed } from 'vue';
 
-  import { computed } from "vue";
-
-  import { useFordFulkerson } from "../algo/useFordFulkerson";
+  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import { useFordFulkerson } from '../algo/useFordFulkerson';
 
   const { output } = useFordFulkerson(graph.value);
   const maxFlow = computed(() => output.maxFlow.value);
@@ -11,6 +10,6 @@
 
 <template>
   <div class="flex gap-3 text-white">
-    <span class="font-bold text-xl">Max Flow {{ maxFlow ?? "Unknown" }}</span>
+    <span class="font-bold text-xl">Max Flow {{ maxFlow ?? 'Unknown' }}</span>
   </div>
 </template>

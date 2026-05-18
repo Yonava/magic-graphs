@@ -1,7 +1,6 @@
 import { rotatePoint } from '../../helpers';
 import { getColorAtPercentage } from '../../helpers';
 import type { GradientStop } from '../../types/utility';
-
 import { arrow } from '../arrow';
 import { line } from '../line';
 import type { UTurnSchemaWithDefaults } from './defaults';

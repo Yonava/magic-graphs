@@ -1,9 +1,10 @@
-import { GNode, Graph } from "@magic/graph/types";
-import { NodeDepth } from "../useNodeDepth";
-import { TreeFormationOptions } from "../useTreeShaper";
-import { Coordinate } from "@magic/shapes/types/utility";
+import { GNode, Graph } from '@magic/graph/types';
+import { Coordinate } from '@magic/shapes/types/utility';
 
-export type NodePosition = { nodeId: GNode["id"]; coords: Coordinate };
+import { NodeDepth } from '../useNodeDepth';
+import { TreeFormationOptions } from '../useTreeShaper';
+
+export type NodePosition = { nodeId: GNode['id']; coords: Coordinate };
 
 export type TreeGraphPositionerOptions = {
   graph: Graph;

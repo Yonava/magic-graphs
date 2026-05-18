@@ -5,7 +5,6 @@ import {
 } from '../../helpers';
 import { rectHitbox } from '../../shapes/rect/hitbox';
 import type { BoundingBox, Coordinate } from '../../types/utility';
-
 import type { CrossSchemaWithDefaults } from './defaults';
 
 /**

@@ -2,7 +2,6 @@ import { shapeFactoryWrapper } from '../../shapeWrapper';
 import { getShapeTextProps } from '../../text/text';
 import type { ShapeFactory } from '../../types';
 import type { Coordinate } from '../../types/utility';
-
 import { getTextAreaAnchorPoint } from '../line/text';
 import { resolveArrowDefaults } from './defaults';
 import { drawArrowWithCtx } from './draw';

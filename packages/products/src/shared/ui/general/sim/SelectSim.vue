@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import CPopover from "@magic/ui/core/Popover.vue";
-  import GWell from "../../../../shared/ui/graph-core/GWell.vue";
-  import GButton from "../../../../shared/ui/graph-core/button/GButton.vue";
-  import type { SimulationDeclaration } from "../../../../types";
+  import CIcon from '@magic/ui/core/Icon.vue';
+  import CPopover from '@magic/ui/core/Popover.vue';
 
-  import { computed } from "vue";
+  import { computed } from 'vue';
 
-  import SelectSimGuard from "./SelectSimGuard.vue";
-  import SimCard from "./SimCard.vue";
+  import GWell from '../../../../shared/ui/graph-core/GWell.vue';
+  import GButton from '../../../../shared/ui/graph-core/button/GButton.vue';
+  import type { SimulationDeclaration } from '../../../../types';
+  import SelectSimGuard from './SelectSimGuard.vue';
+  import SimCard from './SimCard.vue';
 
   const props = defineProps<{
     simulations: SimulationDeclaration[];
@@ -16,7 +16,7 @@
   }>();
 
   const emits = defineEmits<{
-    (e: "simulation-selected", simulation: SimulationDeclaration): void;
+    (e: 'simulation-selected', simulation: SimulationDeclaration): void;
   }>();
 
   const displayedSimulations = computed(() => {
@@ -28,7 +28,7 @@
 
   const playButtonClicked = (openPopover: () => void) => {
     if (props.simulations.length === 1) {
-      emits("simulation-selected", props.simulations[0]);
+      emits('simulation-selected', props.simulations[0]);
       return;
     }
     openPopover();

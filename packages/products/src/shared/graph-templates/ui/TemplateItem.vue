@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import GButton from "../../../shared/ui/graph-core/button/GButton.vue";
-  import colors from "@magic/utils/colors";
+  import colors from '@magic/utils/colors';
 
-  import { ref, toRefs } from "vue";
+  import { ref, toRefs } from 'vue';
 
-  import type { GraphTemplate } from "../types";
+  import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
+  import type { GraphTemplate } from '../types';
 
   const props = defineProps<{
     template: GraphTemplate;

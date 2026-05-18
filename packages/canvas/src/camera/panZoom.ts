@@ -1,8 +1,9 @@
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { useLocalStorage } from '@vueuse/core';
-import { localKeys } from '../localStorage';
 
 import { type Ref, onMounted } from 'vue';
+
+import { localKeys } from '../localStorage';
 
 export const MIN_ZOOM = 0.2;
 export const MAX_ZOOM = 10;

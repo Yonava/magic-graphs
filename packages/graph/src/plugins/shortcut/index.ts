@@ -1,6 +1,6 @@
-import type { BaseGraph } from '../../base';
 import keys from 'ctrl-keys';
 
+import type { BaseGraph } from '../../base';
 import type { GraphAnnotationPlugin } from '../annotations';
 import type { GraphFocusPlugin } from '../focus';
 import type { GraphHistoryPlugin } from '../history';
@@ -56,7 +56,7 @@ export const useShortcuts = (
    * get the function to run based on the keyboard shortcut setting
    */
   const getFn = (defaultFn: () => void, setting: boolean | (() => void)) => {
-    if (setting === false) return () => { };
+    if (setting === false) return () => {};
     if (typeof setting === 'function') return setting;
     return defaultFn;
   };

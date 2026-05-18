@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import colors from "@magic/utils/colors";
-  import { nonNullGraph as graph } from "../../../shared/globalGraph";
-  import { useNonNullGraphColors } from "../../../shared/useGlobalGraphColors";
-  import { useTransitionMatrix } from "@magic/graph/useTransitionMatrix";
+  import { useTransitionMatrix } from '@magic/graph/useTransitionMatrix';
+  import colors from '@magic/utils/colors';
 
-  import { computed } from "vue";
+  import { computed } from 'vue';
 
-  import TransitionMatrixLabel from "./TransitionMatrixLabel.vue";
+  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import { useNonNullGraphColors } from '../../../shared/useGlobalGraphColors';
+  import TransitionMatrixLabel from './TransitionMatrixLabel.vue';
 
   const { transitionMatrix } = useTransitionMatrix(graph.value);
 

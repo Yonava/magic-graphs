@@ -1,10 +1,9 @@
 import { getCenterPoint } from '../../helpers';
+import { validateBorderRadius } from '../../optionsValidator';
 import { shapeFactoryWrapper } from '../../shapeWrapper';
 import { getShapeTextProps } from '../../text/text';
 import type { ShapeFactory } from '../../types';
 import type { Coordinate } from '../../types/utility';
-
-import { validateBorderRadius } from '../../optionsValidator';
 import { resolveRectDefaults } from './defaults';
 import { drawRectWithCtx } from './draw';
 import { getRectBoundingBox, rectEfficientHitbox, rectHitbox } from './hitbox';

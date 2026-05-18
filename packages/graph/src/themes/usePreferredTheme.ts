@@ -1,7 +1,3 @@
-import type { BaseGraph } from '../base';
-// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
-// eslint-disable-next-line
-import type { Graph } from '../types';
 import { localKeys } from '@magic/utils/localStorage';
 import { useDark } from '@vueuse/core';
 import { useLocalStorage } from '@vueuse/core';
@@ -9,6 +5,10 @@ import { useLocalStorage } from '@vueuse/core';
 import { watch } from 'vue';
 
 import { type GraphThemeName, THEME_NAMES } from '.';
+import type { BaseGraph } from '../base';
+// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
+// eslint-disable-next-line
+import type { Graph } from '../types';
 
 export type PreferredGraphTheme = GraphThemeName | 'auto';
 

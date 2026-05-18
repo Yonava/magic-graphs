@@ -1,5 +1,4 @@
 import type { EverySchemaPropName, WithId } from '../types';
-
 import type { TimelineId } from './timeline/define';
 
 /**

@@ -1,7 +1,7 @@
 import type { Graph } from '@magic/graph/types';
-import { useCycleColorizer } from '../../../../../sandbox/ui/GraphInfoMenu/useCycleColorizer';
 import type { DeepReadonly } from 'ts-essentials';
 
+import { useCycleColorizer } from '../../../../../sandbox/ui/GraphInfoMenu/useCycleColorizer';
 import { CANT_RUN_REASONS } from './constants';
 import { useNodeEdgeTheme } from './theme/useNodeEdgeThemer';
 import type { Reason } from './types';

@@ -1,4 +1,5 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
+
 import { useBaseGraph } from './base';
 import { useHelpers } from './helpers/useHelpers';
 import { useNodeAnchors } from './plugins/anchors';
@@ -13,7 +14,6 @@ import { usePersistent } from './plugins/persistent';
 import { useShortcuts } from './plugins/shortcut';
 import type { GraphSettings } from './settings';
 import { usePreferredTheme } from './themes/usePreferredTheme';
-
 import { useAdjacencyList } from './useAdjacencyList';
 import { useTransitionMatrix } from './useTransitionMatrix';
 

@@ -1,17 +1,17 @@
 <script setup lang="ts">
-  import InputRange from "@magic/ui/InputRange.vue";
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import CPopover from "@magic/ui/core/Popover.vue";
-  import GWell from "../../shared/ui/graph-core/GWell.vue";
-  import GButton from "../../shared/ui/graph-core/button/GButton.vue";
+  import InputRange from '@magic/ui/InputRange.vue';
+  import CIcon from '@magic/ui/core/Icon.vue';
+  import CPopover from '@magic/ui/core/Popover.vue';
 
-  import { computed } from "vue";
+  import { computed } from 'vue';
 
-  import { TREE_FORMATION_OPTIONS_DEFAULTS } from "./tree/useTreeShaper";
+  import GWell from '../../shared/ui/graph-core/GWell.vue';
+  import GButton from '../../shared/ui/graph-core/button/GButton.vue';
+  import { TREE_FORMATION_OPTIONS_DEFAULTS } from './tree/useTreeShaper';
   import type {
     AutoTreeControls,
     TreeFormationOptions,
-  } from "./tree/useTreeShaper";
+  } from './tree/useTreeShaper';
 
   const props = defineProps<{
     controls: AutoTreeControls;
@@ -37,7 +37,7 @@
     debouncedUpdateShape();
   };
 
-  const setShape = (shape: TreeFormationOptions["shape"]) => {
+  const setShape = (shape: TreeFormationOptions['shape']) => {
     options.value.shape = shape;
     updateShape();
   };

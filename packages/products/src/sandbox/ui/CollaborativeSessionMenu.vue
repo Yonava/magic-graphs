@@ -1,22 +1,22 @@
 <script setup lang="ts">
-  import { collabControls, myCollaboratorProfile } from "@magic/graph/collab";
-  import { nonNullGraph as graph } from "../../shared/globalGraph";
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import CPopover from "@magic/ui/core/Popover.vue";
-  import CButton from "@magic/ui/core/button/Button.vue";
-  import GWell from "../../shared/ui/graph-core/GWell.vue";
-  import GButton from "../../shared/ui/graph-core/button/GButton.vue";
-  import GInputText from "../../shared/ui/graph-core/input/GInputText.vue";
-  import colors from "@magic/utils/colors";
-  import { debounce } from "@magic/utils/debounce";
-  import { generateId } from "@magic/utils/id";
-  import { productIdToProduct, useProductRouting } from "../../utils";
+  import { collabControls, myCollaboratorProfile } from '@magic/graph/collab';
+  import CIcon from '@magic/ui/core/Icon.vue';
+  import CPopover from '@magic/ui/core/Popover.vue';
+  import CButton from '@magic/ui/core/button/Button.vue';
+  import colors from '@magic/utils/colors';
+  import { debounce } from '@magic/utils/debounce';
+  import { generateId } from '@magic/utils/id';
 
-  import { computed, ref } from "vue";
+  import { computed, ref } from 'vue';
 
-  import { useRouter } from "vue-router";
+  import { useRouter } from 'vue-router';
 
-  import GraphSandboxProductInfo from "../info";
+  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import GWell from '../../shared/ui/graph-core/GWell.vue';
+  import GButton from '../../shared/ui/graph-core/button/GButton.vue';
+  import GInputText from '../../shared/ui/graph-core/input/GInputText.vue';
+  import { productIdToProduct, useProductRouting } from '../../utils';
+  import GraphSandboxProductInfo from '../info';
 
   const router = useRouter();
   const { navigate } = useProductRouting();
@@ -48,7 +48,7 @@
       linkCopied.value = true;
       resetLinkCopied();
     } catch (e) {
-      console.error("Failed to copy link to clipboard", e);
+      console.error('Failed to copy link to clipboard', e);
     }
   };
 

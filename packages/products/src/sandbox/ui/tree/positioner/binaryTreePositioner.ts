@@ -1,8 +1,8 @@
-import type { GNode, Graph } from "@magic/graph/types";
+import type { GNode, Graph } from '@magic/graph/types';
+import { Coordinate } from '@magic/shapes/types/utility';
+import { getValue } from '@magic/utils/maybeGetter';
 
-import { Coordinate } from "@magic/shapes/types/utility";
-import { NodePosition, TreeGraphPositioner } from "./types";
-import { getValue } from "@magic/utils/maybeGetter";
+import { NodePosition, TreeGraphPositioner } from './types';
 
 /**
  * an array which maps a tree index (root = 0, left child = 1, right child = 2, etc)
@@ -50,7 +50,7 @@ export const getTreeIndexToPosition = ({
   }));
 };
 
-type MaybeNodeId = GNode["id"] | undefined;
+type MaybeNodeId = GNode['id'] | undefined;
 
 /**
  * an array which contains at index i the node id that should be at tree index i

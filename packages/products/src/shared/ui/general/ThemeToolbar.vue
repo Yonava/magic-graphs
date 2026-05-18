@@ -1,15 +1,16 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../../shared/globalGraph";
-  import type { PreferredGraphTheme } from "@magic/graph/themes/usePreferredTheme";
-  import ToolbarButtonGroup from "@magic/ui/core/toolbar/ToolbarButtonGroup.vue";
-  import GToolbar from "../../../shared/ui/graph-core/toolbar/GToolbarBase.vue";
-  import GToolbarButton from "../../../shared/ui/graph-core/toolbar/GToolbarButton.vue";
+  import type { PreferredGraphTheme } from '@magic/graph/themes/usePreferredTheme';
+  import ToolbarButtonGroup from '@magic/ui/core/toolbar/ToolbarButtonGroup.vue';
+
+  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import GToolbar from '../../../shared/ui/graph-core/toolbar/GToolbarBase.vue';
+  import GToolbarButton from '../../../shared/ui/graph-core/toolbar/GToolbarButton.vue';
 
   const themeNameToIcon: Record<PreferredGraphTheme, string> = {
-    auto: "cog-outline",
-    light: "weather-sunny",
-    dark: "weather-night",
-    pink: "flower-tulip-outline",
+    auto: 'cog-outline',
+    light: 'weather-sunny',
+    dark: 'weather-night',
+    pink: 'flower-tulip-outline',
   };
 </script>
 

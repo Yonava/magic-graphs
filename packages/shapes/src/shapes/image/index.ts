@@ -4,7 +4,6 @@ import { getShapeTextProps } from '../../text/text';
 import type { ShapeFactory } from '../../types';
 import type { Coordinate } from '../../types/utility';
 import { rect } from '../rect';
-
 import { resolveImageDefaults } from './defaults';
 import { drawImageWithCtx } from './draw';
 import type { ImageSchema } from './types';

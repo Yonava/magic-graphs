@@ -1,4 +1,3 @@
-import { useGraph } from './useGraph';
 import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';
@@ -8,6 +7,7 @@ import {
   getFullNodeAdjacencyList,
   getLabelAdjacencyList,
 } from './useAdjacencyList';
+import { useGraph } from './useGraph';
 
 const nodeA = { id: '1', label: 'a', x: 0, y: 0 };
 const nodeB = { id: '2', label: 'b', x: 0, y: 0 };

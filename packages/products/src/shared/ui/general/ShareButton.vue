@@ -1,18 +1,19 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../../shared/globalGraph";
   import {
     encodeCompressedTransitData,
     getTransitData,
-  } from "@magic/graph/transit";
-  import { SHARE_GRAPH_QUERY_PARAM_KEY } from "../../../shared/useGraphProduct";
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import GButton from "../../../shared/ui/graph-core/button/GButton.vue";
-  import { compressToEncodedURIComponent } from "lz-string";
-  import { useToast } from "primevue/usetoast";
+  } from '@magic/graph/transit';
+  import CIcon from '@magic/ui/core/Icon.vue';
+  import { compressToEncodedURIComponent } from 'lz-string';
+  import { useToast } from 'primevue/usetoast';
 
-  import { computed, ref } from "vue";
+  import { computed, ref } from 'vue';
 
-  import { useRoute } from "vue-router";
+  import { useRoute } from 'vue-router';
+
+  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
+  import { SHARE_GRAPH_QUERY_PARAM_KEY } from '../../../shared/useGraphProduct';
 
   const route = useRoute();
   const linkCopied = ref(false);
@@ -40,17 +41,17 @@
       linkCopied.value = true;
 
       toast.add({
-        summary: "Graph Share Link Copied to Clipboard!",
+        summary: 'Graph Share Link Copied to Clipboard!',
         life: 3000,
-        severity: "success",
+        severity: 'success',
       });
     } catch (e) {
       clipboardCopyError.value = true;
 
       toast.add({
-        summary: "Failed to copy share link to clipboard!",
+        summary: 'Failed to copy share link to clipboard!',
         life: 3000,
-        severity: "error",
+        severity: 'error',
       });
       console.error(e);
     } finally {
@@ -59,9 +60,9 @@
   };
 
   const icon = computed(() => {
-    if (linkCopied.value) return "check";
-    if (clipboardCopyError.value) return "alert";
-    return "share";
+    if (linkCopied.value) return 'check';
+    if (clipboardCopyError.value) return 'alert';
+    return 'share';
   });
 </script>
 

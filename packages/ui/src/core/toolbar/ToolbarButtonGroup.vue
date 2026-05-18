@@ -1,11 +1,12 @@
 <script setup lang="ts">
-  import { useClassAttrs } from "../../useClassAttrs";
-  import { twMerge } from "tailwind-merge";
+  import { twMerge } from 'tailwind-merge';
 
-  import { computed } from "vue";
+  import { computed } from 'vue';
+
+  import { useClassAttrs } from '../../useClassAttrs';
 
   const parentClasses = useClassAttrs();
-  const defaultClasses = ["flex", "items-center", "relative", "gap-1"];
+  const defaultClasses = ['flex', 'items-center', 'relative', 'gap-1'];
   const classes = computed(() => twMerge(defaultClasses, parentClasses.value));
 </script>
 

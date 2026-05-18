@@ -1,11 +1,11 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+
+import { scribble } from '.';
 import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
 } from '../../docs';
-import type { Meta, StoryObj } from '@storybook/vue3-vite';
-
-import { scribble } from '.';
 import { SCRIBBLE_SCHEMA_DEFAULTS } from './defaults';
 import type { ScribbleSchema } from './types';
 

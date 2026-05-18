@@ -1,9 +1,10 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../../shared/globalGraph";
-  import { resolveThemeForNode } from "@magic/graph/themes";
-  import type { GNode } from "@magic/graph/types";
+  import { resolveThemeForNode } from '@magic/graph/themes';
+  import type { GNode } from '@magic/graph/types';
 
-  import { computed, onUnmounted, ref } from "vue";
+  import { computed, onUnmounted, ref } from 'vue';
+
+  import { nonNullGraph as graph } from '../../../shared/globalGraph';
 
   type NodeProps = {
     size?: number;
@@ -17,7 +18,7 @@
   const theme = ref(resolveThemeForNode(graph.value.getTheme, props.node));
 
   const borderSize = computed(() =>
-    Math.round(Math.max(1, Math.log(props.size)))
+    Math.round(Math.max(1, Math.log(props.size))),
   );
 
   const setFocus = () => {

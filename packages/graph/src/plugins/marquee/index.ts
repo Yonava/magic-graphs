@@ -1,6 +1,3 @@
-import type { BaseGraph } from '../../base';
-import type { GraphMouseEvent } from '../../base/types';
-import type { Aggregator } from '../../types';
 import { normalizeBoundingBox } from '@magic/shapes/helpers';
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -8,6 +5,9 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { ref } from 'vue';
 import { computed } from 'vue';
 
+import type { BaseGraph } from '../../base';
+import type { GraphMouseEvent } from '../../base/types';
+import type { Aggregator } from '../../types';
 import type { GraphFocusPlugin } from '../focus';
 import { getEncapsulatedNodeBox } from './helpers';
 

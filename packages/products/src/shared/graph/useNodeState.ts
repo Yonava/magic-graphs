@@ -1,8 +1,9 @@
-import { selectNode } from './select';
 import type { GNode, Graph } from '@magic/graph/src/types';
-import { useGTextTip } from '../../shared/ui/graph-core/useGTextTip';
 
 import { computed, readonly, ref } from 'vue';
+
+import { useGTextTip } from '../../shared/ui/graph-core/useGTextTip';
+import { selectNode } from './select';
 
 type NodeStateOptions = {
   /**
@@ -29,7 +30,7 @@ export const useNodeState = (options: Partial<NodeStateOptions> = {}) => {
   const node = ref<GNode>();
   const isSetting = ref(false);
 
-  let cancelNodeSetter = () => { };
+  let cancelNodeSetter = () => {};
 
   const { showText, hideText } = useGTextTip(setterTextTip);
 

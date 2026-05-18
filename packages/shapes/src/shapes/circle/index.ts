@@ -1,5 +1,4 @@
 import type { ShapeFactory } from '../../types';
-
 import { ellipse } from '../ellipse';
 import { CIRCLE_SCHEMA_DEFAULTS } from './defaults';
 import type { CircleSchema } from './types';

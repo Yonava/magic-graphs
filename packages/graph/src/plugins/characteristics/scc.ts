@@ -1,9 +1,8 @@
+import { computed } from 'vue';
+
 import type { BaseGraph } from '../../base';
 import type { GEdge, GNode } from '../../types';
 import type { AdjacencyLists } from '../../useAdjacencyList';
-
-import { computed } from 'vue';
-
 import TarjanGraph from './tarjans';
 
 type GetComponents = (nodes: GNode[], edges: GEdge[]) => GNode[][];

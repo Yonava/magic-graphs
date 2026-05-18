@@ -1,3 +1,6 @@
+import { computed, ref, toRef, watch } from 'vue';
+import type { MaybeRef } from 'vue';
+
 import {
   DEFAULT_HIGHLIGHT_CLASS_NAME,
   DEFAULT_INTERVAL,
@@ -9,10 +12,6 @@ import type {
   TutorialStep,
 } from '../tutorials/types';
 import type { Graph } from '../types';
-
-import { computed, ref, toRef, watch } from 'vue';
-import type { MaybeRef } from 'vue';
-
 import type { TutorialControls } from './types';
 
 /**
@@ -43,9 +42,9 @@ export const useGraphTutorial = (
     const { event: dismissEvent, predicate: dismissPredicate } =
       typeof step.dismiss === 'string'
         ? {
-          event: step.dismiss,
-          predicate: () => true,
-        }
+            event: step.dismiss,
+            predicate: () => true,
+          }
         : step.dismiss;
 
     if (dismissEvent === 'onInterval') {
@@ -85,10 +84,10 @@ export const useGraphTutorial = (
       step.dismiss !== 'onTimeout'
         ? step
         : {
-          hint: step.hint,
-          dismiss: 'onInterval',
-          interval: step.after,
-        },
+            hint: step.hint,
+            dismiss: 'onInterval',
+            interval: step.after,
+          },
     );
   };
 
@@ -143,7 +142,7 @@ export const useGraphTutorial = (
  */
 const applyHighlight = (tutorialStep: TutorialStep) => {
   const { highlightElement: highlight } = tutorialStep;
-  if (!highlight) return () => { };
+  if (!highlight) return () => {};
   const { id, className } = {
     id: typeof highlight === 'string' ? highlight : highlight.id,
     className:
@@ -152,7 +151,7 @@ const applyHighlight = (tutorialStep: TutorialStep) => {
         : highlight.className,
   };
 
-  if (!id) return () => { };
+  if (!id) return () => {};
   const element = document.getElementById(id);
   if (!element) throw new Error(`element with id ${id} not found`);
 

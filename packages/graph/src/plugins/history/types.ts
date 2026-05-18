@@ -1,6 +1,5 @@
-import type { GEdge, GNode } from '../../types';
-
 import type { FocusOption } from '../../base/types';
+import type { GEdge, GNode } from '../../types';
 
 /**
  * affected items that are nodes and have been moved

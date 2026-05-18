@@ -1,5 +1,4 @@
 import { resolveDefaults } from '../../defaults/resolveDefaults';
-
 import { ELLIPSE_SCHEMA_DEFAULTS } from '../ellipse/defaults';
 import type { CircleSchema } from './types';
 

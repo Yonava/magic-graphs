@@ -3,9 +3,7 @@
   "typescript": true,
   "workspaces": {
     "packages/client": {
-      "ignore": [
-        "env.d.ts"
-      ]
+      "ignore": ["env.d.ts"]
     }
   }
 }

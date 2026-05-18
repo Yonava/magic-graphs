@@ -1,8 +1,8 @@
 import { getClientCoordinates } from '@magic/canvas/coordinates';
-import { isPointInBoundingBox } from '../helpers';
-import type { BoundingBox } from '../types/utility';
 import type { DeepRequired } from 'ts-essentials';
 
+import { isPointInBoundingBox } from '../helpers';
+import type { BoundingBox } from '../types/utility';
 import { getTextDimensions } from './getTextDimensions';
 import { HORIZONTAL_TEXT_PADDING } from './text';
 import type { OnTextAreaBlur, TextAreaWithAnchorPoint } from './types';

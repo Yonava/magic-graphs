@@ -1,14 +1,15 @@
+import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
+import type { WithId } from '@magic/shapes/types';
+import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+
+import { readonly, ref } from 'vue';
+
 import type { BaseGraph } from '../../base';
 import type { GraphMouseEvent } from '../../base/types';
 import { prioritizeNode } from '../../helpers';
 import type { NodeAnchor } from '../../plugins/anchors/types';
 import type { GraphFocusPlugin } from '../../plugins/focus';
 import type { GNode, SchemaItem } from '../../types';
-import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
-import type { WithId } from '@magic/shapes/types';
-import { MOUSE_BUTTONS } from '@magic/utils/mouse';
-
-import { readonly, ref } from 'vue';
 
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
@@ -215,9 +216,9 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
 
   const clearAnchorStateIfParentRemoved = (node: GNode) => {
     if (parentNode.value?.id === node.id) {
-      clearAnchorState()
+      clearAnchorState();
     }
-  }
+  };
 
   const setCurrentlyDraggingAnchor = (ev: GraphMouseEvent) => {
     if (!parentNode.value) return;
@@ -294,7 +295,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   const activate = () => {
     graph.subscribe('onNodeAdded', checkForParentNodeUpdate);
     graph.subscribe('onNodeRemoved', checkForParentNodeUpdate);
-    graph.subscribe('onNodeRemoved', clearAnchorStateIfParentRemoved)
+    graph.subscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
     graph.subscribe('onNodeMoved', clearAnchorState);
     graph.subscribe('onNodeDrop', updateNodeAnchors);
     graph.subscribe('onMouseMove', checkForParentNodeUpdate);
@@ -307,7 +308,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   const deactivate = () => {
     graph.unsubscribe('onNodeAdded', checkForParentNodeUpdate);
     graph.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
-    graph.unsubscribe('onNodeRemoved', clearAnchorStateIfParentRemoved)
+    graph.unsubscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
     graph.unsubscribe('onNodeMoved', clearAnchorState);
     graph.unsubscribe('onNodeDrop', updateNodeAnchors);
     graph.unsubscribe('onMouseMove', checkForParentNodeUpdate);

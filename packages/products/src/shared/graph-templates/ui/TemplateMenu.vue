@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../../shared/globalGraph";
-  import CPopover from "@magic/ui/core/Popover.vue";
-  import GWell from "../../../shared/ui/graph-core/GWell.vue";
-  import GButton from "../../../shared/ui/graph-core/button/GButton.vue";
+  import CPopover from '@magic/ui/core/Popover.vue';
 
-  import { computed } from "vue";
+  import { computed } from 'vue';
 
-  import AutoGenerate from "../AutoGenerate.vue";
-  import { useGraphTemplate } from "../useGraphTemplate";
-  import TemplateItem from "./TemplateItem.vue";
+  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import GWell from '../../../shared/ui/graph-core/GWell.vue';
+  import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
+  import AutoGenerate from '../AutoGenerate.vue';
+  import { useGraphTemplate } from '../useGraphTemplate';
+  import TemplateItem from './TemplateItem.vue';
 
   const {
     templates,

@@ -2,7 +2,6 @@ import { shapeFactoryWrapper } from '../../shapeWrapper';
 import { getShapeTextProps } from '../../text/text';
 import type { ShapeFactory } from '../../types';
 import type { Coordinate } from '../../types/utility';
-
 import { resolveStarDefaults } from './defaults';
 import { drawStarWithCtx } from './draw';
 import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';

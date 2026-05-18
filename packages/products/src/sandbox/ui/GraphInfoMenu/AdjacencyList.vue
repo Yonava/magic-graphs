@@ -1,7 +1,6 @@
 <script setup lang="ts">
-  import GWell from "../../../shared/ui/graph-core/GWell.vue";
-
-  import AdjacencyListDisplay from "./AdjacencyListDisplay.vue";
+  import GWell from '../../../shared/ui/graph-core/GWell.vue';
+  import AdjacencyListDisplay from './AdjacencyListDisplay.vue';
 </script>
 
 <template>

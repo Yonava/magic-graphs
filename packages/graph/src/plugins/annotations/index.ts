@@ -1,6 +1,3 @@
-import type { BaseGraph } from '../../base';
-import type { GraphMouseEvent } from '../../base/types';
-import type { Aggregator } from '../../types';
 import { circle } from '@magic/shapes/shapes/circle';
 import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
 import type { WithId } from '@magic/shapes/types';
@@ -13,6 +10,9 @@ import type { IntervalHandler } from '@magic/utils/types';
 
 import { computed, ref, watch } from 'vue';
 
+import type { BaseGraph } from '../../base';
+import type { GraphMouseEvent } from '../../base/types';
+import type { Aggregator } from '../../types';
 import { BRUSH_WEIGHTS, COLORS } from './constants';
 import { useAnnotationHistory } from './history';
 import type { Annotation } from './types';
@@ -35,7 +35,7 @@ export const useAnnotations = (graph: BaseGraph) => {
 
   const isActive = ref(false);
 
-  const { hold, release } = graph.pluginHoldController('annotations')
+  const { hold, release } = graph.pluginHoldController('annotations');
   const history = useAnnotationHistory(scribbles);
 
   const clear = () => {
@@ -260,10 +260,10 @@ export const useAnnotations = (graph: BaseGraph) => {
 
     isActive.value = true;
 
-    hold('interactive')
-    hold('marquee')
-    hold('focusable')
-    hold('draggable')
+    hold('interactive');
+    hold('marquee');
+    hold('focusable');
+    hold('draggable');
 
     graph.graphCursorDisabled.value = true;
 
@@ -281,10 +281,10 @@ export const useAnnotations = (graph: BaseGraph) => {
     isActive.value = false;
     isErasing.value = false;
 
-    release('interactive')
-    release('marquee')
-    release('focusable')
-    release('draggable')
+    release('interactive');
+    release('marquee');
+    release('focusable');
+    release('draggable');
 
     graph.graphCursorDisabled.value = false;
 

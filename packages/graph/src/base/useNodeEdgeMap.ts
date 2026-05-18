@@ -1,7 +1,7 @@
-import type { GEdge, GNode } from '../types';
-
 import { computed } from 'vue';
 import type { Ref } from 'vue';
+
+import type { GEdge, GNode } from '../types';
 
 export const useNodeEdgeMap = (nodes: Ref<GNode[]>, edges: Ref<GEdge[]>) => {
   const nodeIdToNodeMap = computed(() => {

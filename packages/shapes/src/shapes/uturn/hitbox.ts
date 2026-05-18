@@ -5,7 +5,6 @@ import {
 } from '../../helpers';
 import { circle } from '../../shapes/circle';
 import type { BoundingBox, Coordinate } from '../../types/utility';
-
 import { arrow } from '../arrow';
 import { line } from '../line';
 import type { UTurnSchemaWithDefaults } from './defaults';

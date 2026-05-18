@@ -1,9 +1,9 @@
 import type { Graph } from '@magic/graph/types';
-import type { SimulationRunner } from '../../shared/ui/general/sim/types';
-import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
 
 import type { ComputedRef } from 'vue';
 
+import type { SimulationRunner } from '../../shared/ui/general/sim/types';
+import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
 import type { BasicSearchTrace } from '../algo/types';
 import { useBFS } from '../algo/useBFS';
 import { useDFS } from '../algo/useDFS';

@@ -1,5 +1,4 @@
 import { resolveDefaults } from '../../defaults/resolveDefaults';
-
 import { RECT_SCHEMA_DEFAULTS } from '../rect/defaults';
 import type { SquareSchema } from './types';
 

@@ -5,6 +5,7 @@
     "build": "pnpm --filter client build && pnpm --filter server build",
     "start": "pnpm --filter server start",
     "test": "vitest",
+    "format": "prettier -w .",
     "dev": "concurrently -c auto command 'pnpm:dev-*'",
     "dev-client": "pnpm --filter client dev",
     "dev-server": "pnpm --filter server dev",

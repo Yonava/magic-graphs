@@ -1,4 +1,4 @@
-
+import { getCtx } from '@magic/utils/ctx';
 import { useElementSize } from '@vueuse/core';
 
 import { onMounted, ref, watch } from 'vue';
@@ -8,7 +8,6 @@ import { useCamera } from './camera';
 import { getDevicePixelRatio } from './camera/utils';
 import { useMagicCoordinates } from './coordinates';
 import type { DrawContent, UseMagicCanvas } from './types';
-import { getCtx } from '@magic/utils/ctx';
 
 const REPAINT_FPS = 60;
 
@@ -25,8 +24,8 @@ export const useMagicCanvas: UseMagicCanvas = (options = {}) => {
   const canvas = ref<HTMLCanvasElement>();
   const canvasBoxSize = useElementSize(canvas);
 
-  const drawContent = ref<DrawContent>(() => { });
-  const drawBackgroundPattern = ref<DrawPattern>(() => { });
+  const drawContent = ref<DrawContent>(() => {});
+  const drawBackgroundPattern = ref<DrawPattern>(() => {});
 
   let repaintInterval: NodeJS.Timeout;
 

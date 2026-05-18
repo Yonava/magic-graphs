@@ -1,5 +1,4 @@
 import { calculateArrowHeadCorners, getArrowHeadSize } from '../../helpers';
-
 import { line } from '../line';
 import { triangle } from '../triangle';
 import type { ArrowSchemaWithDefaults } from './defaults';

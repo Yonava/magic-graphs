@@ -3,7 +3,6 @@ import { drawEllipseWithCtx } from '../../shapes/ellipse/draw';
 import { getShapeTextProps } from '../../text/text';
 import type { ShapeFactory } from '../../types';
 import type { Coordinate } from '../../types/utility';
-
 import { resolveEllipseDefaults } from './defaults';
 import {
   ellipseEfficientHitbox,

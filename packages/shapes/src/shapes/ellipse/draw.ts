@@ -10,7 +10,7 @@ export const drawEllipseWithCtx =
     ctx.fillStyle = color;
     ctx.fill();
 
-    if (stroke) drawStrokeOntoShape(ctx, stroke)
+    if (stroke) drawStrokeOntoShape(ctx, stroke);
 
     ctx.closePath();
   };

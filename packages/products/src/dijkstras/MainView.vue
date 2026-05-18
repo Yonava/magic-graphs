@@ -1,10 +1,9 @@
 <script setup lang="ts">
-  import { useGraphWithCanvas } from "../shared/useGraphWithCanvas";
-  import GraphProduct from "../shared/ui/general/GraphProduct.vue";
-
-  import { DIJKSTRAS_GRAPH_SETTINGS } from "./settings";
-  import { isRunning } from "./sim/runner";
-  import CostDisplay from "./ui/CostDisplay.vue";
+  import GraphProduct from '../shared/ui/general/GraphProduct.vue';
+  import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
+  import { DIJKSTRAS_GRAPH_SETTINGS } from './settings';
+  import { isRunning } from './sim/runner';
+  import CostDisplay from './ui/CostDisplay.vue';
 
   const graphWithCanvas = useGraphWithCanvas(DIJKSTRAS_GRAPH_SETTINGS);
 </script>

@@ -1,4 +1,3 @@
-
 export const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
 
 export const isNullOrUnd = (input: any) =>

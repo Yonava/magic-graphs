@@ -1,9 +1,10 @@
 import { LETTERS, graphLabelGetter } from '@magic/graph/labels';
-import type { AutoGenerateGraphOptions } from '../templateTypes';
 import type { GEdge, GNode } from '@magic/graph/types';
 import { generateId } from '@magic/utils/id';
 
 import { ref } from 'vue';
+
+import type { AutoGenerateGraphOptions } from '../templateTypes';
 
 /**
  * Generates a set of nodes

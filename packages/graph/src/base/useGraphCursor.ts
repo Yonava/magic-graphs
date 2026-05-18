@@ -1,9 +1,8 @@
-import type { Subscriber } from '../events';
-import type { SchemaItem } from '../types';
-
 import { computed, ref, watch } from 'vue';
 import type { Ref } from 'vue';
 
+import type { Subscriber } from '../events';
+import type { SchemaItem } from '../types';
 import type { GraphAtMousePosition } from './types';
 
 /**

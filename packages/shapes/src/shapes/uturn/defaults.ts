@@ -4,7 +4,6 @@ import {
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '../../defaults/schema';
-
 import type { UTurnSchema } from './types';
 
 export const UTURN_SCHEMA_DEFAULTS = {

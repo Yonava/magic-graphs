@@ -1,8 +1,8 @@
-import { useBaseGraph } from '../../base';
 import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';
 
+import { useBaseGraph } from '../../base';
 import { useHistory } from './index';
 
 describe('useHistoryGraph', () => {

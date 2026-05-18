@@ -1,5 +1,6 @@
-import type { GEdge, GNode, Graph, SchemaItem } from '../types';
 import { Fraction } from 'mathjs';
+
+import type { GEdge, GNode, Graph, SchemaItem } from '../types';
 
 /**
  * modifies the priority of the items passed in

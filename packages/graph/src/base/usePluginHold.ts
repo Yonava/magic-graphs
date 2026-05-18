@@ -1,6 +1,6 @@
+import type { Ref } from 'vue';
 
 import { GraphSettings } from '../settings';
-import type { Ref } from 'vue';
 
 type BoolSettingsKeys = {
   [K in keyof GraphSettings]: GraphSettings[K] extends boolean ? K : never;

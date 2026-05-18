@@ -1,11 +1,11 @@
-import type { BaseGraph } from '../../base';
-import type { GraphMouseEvent } from '../../base/types';
-import type { GNode } from '../../types';
 import type { Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, ref } from 'vue';
 
+import type { BaseGraph } from '../../base';
+import type { GraphMouseEvent } from '../../base/types';
+import type { GNode } from '../../types';
 import type { NodeAnchorPlugin } from '../anchors';
 
 /**

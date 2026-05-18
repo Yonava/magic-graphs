@@ -4,7 +4,6 @@ import {
   normalizeBoundingBox,
 } from '../../helpers';
 import type { BoundingBox, Coordinate } from '../../types/utility';
-
 import type { LineSchemaWithDefaults } from './defaults';
 
 /**

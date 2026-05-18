@@ -1,5 +1,3 @@
-
-
 type LocalStorageGetter = (...args: any[]) => string;
 type LocalStorageRecord = Record<string, string | LocalStorageGetter>;
 

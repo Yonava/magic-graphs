@@ -1,18 +1,22 @@
 <script setup lang="ts">
-  import GVerticalCardButton from "../../../../shared/ui/graph-core/button/GVerticalCardButton.vue";
-  import { getRandomInRange } from "@magic/utils/random";
-  import type { SimulationDeclaration } from "../../../../types";
+  import { getRandomInRange } from '@magic/utils/random';
 
-  import { ref } from "vue";
+  import { ref } from 'vue';
+
+  import GVerticalCardButton from '../../../../shared/ui/graph-core/button/GVerticalCardButton.vue';
+  import type { SimulationDeclaration } from '../../../../types';
 
   const props = defineProps<{
     simulation: SimulationDeclaration;
   }>();
 
-  const img = ref("");
-  setTimeout(() => {
-    img.value = props.simulation.thumbnail;
-  }, getRandomInRange(0, 100));
+  const img = ref('');
+  setTimeout(
+    () => {
+      img.value = props.simulation.thumbnail;
+    },
+    getRandomInRange(0, 100),
+  );
 </script>
 
 <template>

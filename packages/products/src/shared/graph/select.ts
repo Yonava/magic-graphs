@@ -1,7 +1,6 @@
-import tinycolor from 'tinycolor2';
-
 import type { GraphMouseEvent } from '@magic/graph/base/types';
 import type { Graph, SchemaItem } from '@magic/graph/types';
+import tinycolor from 'tinycolor2';
 
 const animateNodePulse = (g: Graph) =>
   g.defineTimeline({

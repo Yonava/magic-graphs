@@ -1,17 +1,18 @@
 <script setup lang="ts">
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import GWell from "../../../../shared/ui/graph-core/GWell.vue";
-  import GButton from "../../../../shared/ui/graph-core/button/GButton.vue";
-  import GVerticalCardButton from "../../../../shared/ui/graph-core/button/GVerticalCardButton.vue";
+  import CIcon from '@magic/ui/core/Icon.vue';
+  import { getRandomInRange } from '@magic/utils/random';
+
+  import { computed, ref } from 'vue';
+
+  import GWell from '../../../../shared/ui/graph-core/GWell.vue';
+  import GButton from '../../../../shared/ui/graph-core/button/GButton.vue';
+  import GVerticalCardButton from '../../../../shared/ui/graph-core/button/GVerticalCardButton.vue';
   import {
     getCurrentProduct,
     isExternal,
     useProductRouting,
-  } from "../../../../utils";
-  import type { ProductInfoWithMenu } from "../../../../utils";
-  import { getRandomInRange } from "@magic/utils/random";
-
-  import { computed, ref } from "vue";
+  } from '../../../../utils';
+  import type { ProductInfoWithMenu } from '../../../../utils';
 
   const { navigate, navigateWithGraph } = useProductRouting();
   const currentProduct = getCurrentProduct();
@@ -22,10 +23,13 @@
 
   const hovered = ref(false);
 
-  const img = ref("");
-  setTimeout(() => {
-    img.value = props.product.menu.thumbnail;
-  }, getRandomInRange(0, 100));
+  const img = ref('');
+  setTimeout(
+    () => {
+      img.value = props.product.menu.thumbnail;
+    },
+    getRandomInRange(0, 100),
+  );
 
   const allowGoWithGraph = computed(() => {
     const goWithGraph = props.product.menu.allowGoWithGraph ?? true;

@@ -1,13 +1,13 @@
-import type { GNode, Graph } from "@magic/graph/types";
-import { debounce } from "@magic/utils/debounce";
+import type { GNode, Graph } from '@magic/graph/types';
+import { Coordinate } from '@magic/shapes/types/utility';
+import { debounce } from '@magic/utils/debounce';
 
-import { onUnmounted, ref, watch } from "vue";
+import { onUnmounted, ref, watch } from 'vue';
 
-import { binaryTreePositioner } from "./positioner/binaryTreePositioner";
-import { standardTreePositioner } from "./positioner/standardTreePositioner";
-import { getNodeDepths } from "./useNodeDepth";
-import { Coordinate } from "@magic/shapes/types/utility";
-import { TreeGraphPositionerOptions } from "./positioner/types";
+import { binaryTreePositioner } from './positioner/binaryTreePositioner';
+import { standardTreePositioner } from './positioner/standardTreePositioner';
+import { TreeGraphPositionerOptions } from './positioner/types';
+import { getNodeDepths } from './useNodeDepth';
 
 export type TreeFormationOptions = {
   /**
@@ -30,7 +30,7 @@ export type TreeFormationOptions = {
    * the shape of the tree to form.
    * @default 'standard'
    */
-  shape: "standard" | "binary";
+  shape: 'standard' | 'binary';
   /**
    * the new coordinates of the root node when the graph is being re-shaped.
    * @default (rootNode) => ({ x: rootNode.x, y: rootNode.y })
@@ -42,7 +42,7 @@ export const TREE_FORMATION_OPTIONS_DEFAULTS = {
   durationMs: 250,
   xOffset: 250,
   yOffset: 200,
-  shape: "standard",
+  shape: 'standard',
   rootNodeCoordinates: (rootNode) => ({ x: rootNode.x, y: rootNode.y }),
 } as const satisfies TreeFormationOptions;
 
@@ -74,7 +74,7 @@ export const useMoveNodesIntoTreeFormation = (
     };
     console.log(positionerOptions.treeFormationOptions.rootNodeCoordinates);
     const positioner =
-      optionsRef.value.shape === "standard"
+      optionsRef.value.shape === 'standard'
         ? standardTreePositioner
         : binaryTreePositioner;
     return positioner(positionerOptions);
@@ -123,7 +123,7 @@ export const useAutoTree = (
     ...options,
   };
 
-  const rootNodeId = ref<GNode["id"]>();
+  const rootNodeId = ref<GNode['id']>();
   const isActive = ref(false);
 
   const treeControls = useMoveNodesIntoTreeFormation(graph, treeOptions);
@@ -139,16 +139,16 @@ export const useAutoTree = (
 
   const activate = () => {
     updateShape();
-    graph.subscribe("onStructureChange", debouncedUpdateShape);
-    graph.subscribe("onNodeDrop", debouncedUpdateShape);
-    graph.subscribe("onGroupDrop", debouncedUpdateShape);
+    graph.subscribe('onStructureChange', debouncedUpdateShape);
+    graph.subscribe('onNodeDrop', debouncedUpdateShape);
+    graph.subscribe('onGroupDrop', debouncedUpdateShape);
     isActive.value = true;
   };
 
   const deactivate = () => {
-    graph.unsubscribe("onStructureChange", debouncedUpdateShape);
-    graph.unsubscribe("onNodeDrop", debouncedUpdateShape);
-    graph.unsubscribe("onGroupDrop", debouncedUpdateShape);
+    graph.unsubscribe('onStructureChange', debouncedUpdateShape);
+    graph.unsubscribe('onNodeDrop', debouncedUpdateShape);
+    graph.unsubscribe('onGroupDrop', debouncedUpdateShape);
     isActive.value = false;
   };
 
