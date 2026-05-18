@@ -5,7 +5,7 @@ import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
 import { computed } from 'vue';
 import type { Ref } from 'vue';
 
-// node id -> depth in a BFS tree
+/** node id -> depth in a BFS tree */
 export type NodeIdToDepth = Map<GNode['id'], number>;
 
 /**

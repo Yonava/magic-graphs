@@ -2,7 +2,7 @@ import type { GNodeMoveInstruction } from '@magic/graph/base/useGraphCRUD';
 import type { GEdge, Graph } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 
-import { getTreeIndexToPosition } from '../../sandbox/ui/tree/positioner/binaryTreePositioner';
+import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner';
 import type { TreeNodeKeyArray } from './avl';
 import type { TreeNode } from './treeNode';
 

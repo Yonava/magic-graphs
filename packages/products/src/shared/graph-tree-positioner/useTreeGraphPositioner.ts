@@ -4,12 +4,12 @@ import { debounce } from '@magic/utils/debounce';
 
 import { onUnmounted, ref, watch } from 'vue';
 
-import { binaryTreePositioner } from './positioner/binaryTreePositioner';
-import { standardTreePositioner } from './positioner/standardTreePositioner';
-import { TreeGraphPositionerOptions } from './positioner/types';
+import { binaryTreePositioner } from './positioners/binaryTreePositioner';
+import { standardTreePositioner } from './positioners/standardTreePositioner';
+import { TreeGraphPositionerOptions } from './positioners/types';
 import { getNodeDepths } from './useNodeDepth';
 
-export type TreeFormationOptions = {
+export type UseTreeGraphPositionerOptions = {
   /**
    * the duration of the animation in milliseconds.
    * must be greater than 100
@@ -44,13 +44,13 @@ export const TREE_FORMATION_OPTIONS_DEFAULTS = {
   yOffset: 200,
   shape: 'standard',
   rootNodeCoordinates: (rootNode) => ({ x: rootNode.x, y: rootNode.y }),
-} as const satisfies TreeFormationOptions;
+} as const satisfies UseTreeGraphPositionerOptions;
 
-export const useMoveNodesIntoTreeFormation = (
+export const useTreeGraphPositioner = (
   graph: Graph,
-  options: Partial<TreeFormationOptions> = {},
+  options: Partial<UseTreeGraphPositionerOptions> = {},
 ) => {
-  const treeOptions: TreeFormationOptions = {
+  const treeOptions: UseTreeGraphPositionerOptions = {
     ...TREE_FORMATION_OPTIONS_DEFAULTS,
     ...options,
   };
@@ -72,7 +72,6 @@ export const useMoveNodesIntoTreeFormation = (
       rootNode,
       treeFormationOptions: optionsRef.value,
     };
-    console.log(positionerOptions.treeFormationOptions.rootNodeCoordinates);
     const positioner =
       optionsRef.value.shape === 'standard'
         ? standardTreePositioner
@@ -98,7 +97,7 @@ export const useMoveNodesIntoTreeFormation = (
   };
 };
 
-export type AutoTreeOptions = TreeFormationOptions & {
+export type AutoTreeOptions = UseTreeGraphPositionerOptions & {
   /**
    * debounce time in milliseconds to wait before reshaping the graph
    * @default 500 // half a second
@@ -106,7 +105,7 @@ export type AutoTreeOptions = TreeFormationOptions & {
   debounceMs: number;
 };
 
-export const AUTO_TREE_OPTIONS_DEFAULTS = {
+const AUTO_TREE_OPTIONS_DEFAULTS = {
   debounceMs: 500,
 } as const;
 
@@ -126,7 +125,7 @@ export const useAutoTree = (
   const rootNodeId = ref<GNode['id']>();
   const isActive = ref(false);
 
-  const treeControls = useMoveNodesIntoTreeFormation(graph, treeOptions);
+  const treeControls = useTreeGraphPositioner(graph, treeOptions);
 
   const updateShape = () => {
     if (!rootNodeId.value) return;
