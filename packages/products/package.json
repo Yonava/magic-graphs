@@ -24,6 +24,7 @@
     "lz-string": "catalog:",
     "mathjs": "catalog:",
     "tinycolor2": "catalog:",
+    "typescript": "~5.4.0",
     "vue-router": "catalog:"
   },
   "devDependencies": {
