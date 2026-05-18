@@ -6,7 +6,7 @@
     "outDir": "./dist/types",
     "paths": {
       "@magic/canvas/*": ["../ui/src/*"],
-      "@magic/shapes/*": ["../products/src/*"]
+      "@magic/products/*": ["../products/src/*"]
     }
   },
   "references": [{ "path": "../ui" }, { "path": "../products" }],

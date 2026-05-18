@@ -15,12 +15,8 @@
   "dependencies": {
     "@magic/graph": "workspace:*",
     "@magic/utils": "workspace:*",
-    "@vueuse/core": "catalog:",
-    "ctrl-keys": "catalog:",
-    "lz-string": "catalog:",
     "tailwind-merge": "^3.3.1",
-    "tinycolor2": "catalog:",
-    "vue-router": "catalog:"
+    "tinycolor2": "catalog:"
   },
   "devDependencies": {
     "@types/tinycolor2": "catalog:",

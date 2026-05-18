@@ -1,5 +1,5 @@
-import SandboxInfo from '@magic/products/sandbox/info.js';
-import { productRoutes } from '@magic/products/utils.js';
+import SandboxInfo from '@magic/products/sandbox/info';
+import { productRoutes } from '@magic/products/utils';
 
 import { createRouter, createWebHistory } from 'vue-router';
 
