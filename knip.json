@@ -1,4 +1,11 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
-  "typescript": true
+  "typescript": true,
+  "workspaces": {
+    "packages/client": {
+      "ignore": [
+        "env.d.ts"
+      ]
+    }
+  }
 }
