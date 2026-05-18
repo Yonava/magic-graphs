@@ -27,8 +27,6 @@ const config: StorybookConfig = {
           "@magic/shapes": r("../../shapes/src"),
           "@magic/canvas": r("../../canvas/src"),
           "@magic/products": r("../../products/src"),
-          vue: r("../../../node_modules/vue"),
-          primevue: r("../../../node_modules/primevue"),
         },
       },
     });
