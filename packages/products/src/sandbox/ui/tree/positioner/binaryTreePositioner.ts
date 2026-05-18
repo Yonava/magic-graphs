@@ -1,7 +1,8 @@
-import type { GNode, Graph } from '@magic/graph/types';
+import type { GNode, Graph } from "@magic/graph/types";
 
-import type { NodeDepth } from './useNodeDepth';
-import { Coordinate } from '@magic/shapes/types/utility';
+import { Coordinate } from "@magic/shapes/types/utility";
+import { NodePosition, TreeGraphPositioner } from "./types";
+import { getValue } from "@magic/utils/maybeGetter";
 
 /**
  * an array which maps a tree index (root = 0, left child = 1, right child = 2, etc)
@@ -11,21 +12,21 @@ import { Coordinate } from '@magic/shapes/types/utility';
  * console.log(getTreeIndexToPosition[0]) // { x: 0, y: 0 }
  */
 export const getTreeIndexToPosition = ({
-  rootCoordinate,
+  rootNodeCoordinate,
   xOffset,
   yOffset,
   treeDepth,
 }: {
-  rootCoordinate: Coordinate;
+  rootNodeCoordinate: Coordinate;
   xOffset: number;
   yOffset: number;
   treeDepth: number;
 }) => {
-  const treeIndexToPositionArr: Coordinate[] = [rootCoordinate];
+  const treeIndexToPositionArr: Coordinate[] = [rootNodeCoordinate];
   const totalWidth = Math.pow(2, treeDepth) * xOffset;
 
   for (let i = 1; i <= treeDepth; i++) {
-    const y = rootCoordinate.y + i * yOffset;
+    const y = rootNodeCoordinate.y + i * yOffset;
     const spotsOnThisLevel = Math.pow(2, i);
 
     const xOffset = totalWidth / spotsOnThisLevel;
@@ -37,7 +38,7 @@ export const getTreeIndexToPosition = ({
 
     for (let j = 0; j < spotsOnThisLevel; j++) {
       treeIndexToPositionArr.push({
-        x: rootCoordinate.x + xOffsetPerNode[j],
+        x: rootNodeCoordinate.x + xOffsetPerNode[j],
         y,
       });
     }
@@ -49,7 +50,7 @@ export const getTreeIndexToPosition = ({
   }));
 };
 
-type MaybeNodeId = GNode['id'] | undefined;
+type MaybeNodeId = GNode["id"] | undefined;
 
 /**
  * an array which contains at index i the node id that should be at tree index i
@@ -62,19 +63,19 @@ type MaybeNodeId = GNode['id'] | undefined;
  * //             /
  * //            4
  */
-export const getTreeIndexToNodeId = ({
+const getTreeIndexToNodeId = ({
   graph,
-  root,
+  rootNode,
   treeDepth,
 }: {
   graph: Graph;
-  root: GNode;
+  rootNode: GNode;
   treeDepth: number;
 }) => {
   const treeIndexToNodeId: MaybeNodeId[] = [];
 
   const { getChildrenOfNode } = graph.helpers;
-  let nodesAtDepth: MaybeNodeId[] = [root.id];
+  let nodesAtDepth: MaybeNodeId[] = [rootNode.id];
 
   for (let i = 0; i <= treeDepth; i++) {
     const nodesAtNextDepth: MaybeNodeId[] = [];
@@ -95,19 +96,21 @@ export const getTreeIndexToNodeId = ({
   return treeIndexToNodeId;
 };
 
-export const getTreeBinaryPos = (
-  graph: Graph,
-  root: GNode,
-  nodeDepths: NodeDepth,
-  treeOffset: { xOffset: number; yOffset: number },
-) => {
-  const newNodePositions: { nodeId: GNode['id']; coords: Coordinate }[] = [];
+export const binaryTreePositioner: TreeGraphPositioner = ({
+  graph,
+  nodeDepths,
+  rootNode,
+  treeFormationOptions,
+}) => {
+  const newNodePositions: NodePosition[] = [];
 
-  const { xOffset, yOffset } = treeOffset;
+  const { xOffset, yOffset, rootNodeCoordinates } = treeFormationOptions;
+  const newRootNodePosition = getValue(rootNodeCoordinates, rootNode);
+
   const { depth: treeDepth } = nodeDepths;
 
   const treeIndexToPosition = getTreeIndexToPosition({
-    rootCoordinate: root,
+    rootNodeCoordinate: newRootNodePosition,
     xOffset,
     yOffset,
     treeDepth,
@@ -115,7 +118,7 @@ export const getTreeBinaryPos = (
 
   const treeIndexToNodeId = getTreeIndexToNodeId({
     graph,
-    root,
+    rootNode,
     treeDepth,
   });
 

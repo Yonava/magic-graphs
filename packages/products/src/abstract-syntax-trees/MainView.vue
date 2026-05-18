@@ -5,6 +5,8 @@ import * as ts from 'typescript';
 
 import { AST_GRAPH_SETTINGS } from "./settings";
 import GButton from "../shared/ui/graph-core/button/GButton.vue"
+import { useAutoTree, useMoveNodesIntoTreeFormation } from "../sandbox/ui/tree/useTreeShaper";
+import { getRandomInRange } from "@magic/utils/random";
 
 const graphWithCanvas = useGraphWithCanvas(AST_GRAPH_SETTINGS);
 
@@ -31,17 +33,31 @@ const getAllNodesAndEdges = (node: ts.Node) => {
   return { nodes: nodeIds, edges }
 }
 
+const { activate, rootNodeId } = useAutoTree(graphWithCanvas.graph, {
+  debounceMs: 1500,
+  rootNodeCoordinates: { x: 0, y: 0 }
+})
+
+const randomCoord = () => ({ x: getRandomInRange(-500, 500), y: getRandomInRange(-500, 500) })
+
+const code = 'const hello = "world"'
+const fileName = 'example.ts'
+const rootNode = ts.createSourceFile(fileName, code, ts.ScriptTarget.Latest, true)
+const { nodes, edges } = getAllNodesAndEdges(rootNode)
+const graphNodes = nodes.map((nodeId) => ({
+  id: nodeId, label: nodeId, ...randomCoord()
+}))
+rootNodeId.value = graphNodes[0].id;
+const graphEdges = edges.map((e) => ({ ...e, id: `${e.from}-${e.to}`, label: '' }))
+
 const loadAst = () => {
-  const code = 'const hello = "world"'
-  const rootNode = ts.createSourceFile('example.ts', code, ts.ScriptTarget.Latest, true)
-  const { nodes, edges } = getAllNodesAndEdges(rootNode)
-  graphWithCanvas.graph.load({
-    nodes:
-      nodes.map((nodeId) => ({
-        id: nodeId, label: nodeId, x: 50, y: 50
-      })),
-    edges: edges.map((e) => ({ ...e, id: `${e.from}-${e.to}`, label: '' }))
-  })
+  graphWithCanvas.graph.reset();
+  for (const node of graphNodes) {
+    graphWithCanvas.graph.addNode({ ...node, ...randomCoord() }, { animate: true, focus: false })
+  }
+  for (const edge of graphEdges) {
+    graphWithCanvas.graph.addEdge(edge, { animate: true, focus: false })
+  }
 }
 </script>
 
@@ -50,6 +66,9 @@ const loadAst = () => {
     <template #top-center>
       <GButton @click="loadAst">
         Load AST
+      </GButton>
+      <GButton @click="activate">
+        Shape
       </GButton>
     </template>
   </GraphProduct>

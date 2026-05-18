@@ -1,16 +1,16 @@
-import type { GNodeMoveInstruction } from '@magic/graph/base/useGraphCRUD';
-import type { GEdge, Graph } from '@magic/graph/types';
-import { getTreeIndexToPosition } from '../../sandbox/ui/tree/getTreeBinaryPos';
+import type { GNodeMoveInstruction } from "@magic/graph/base/useGraphCRUD";
+import type { GEdge, Graph } from "@magic/graph/types";
+import { getTreeIndexToPosition } from "../../sandbox/ui/tree/positioner/binaryTreePositioner";
 
-import type { TreeNodeKeyArray } from './avl';
-import type { TreeNode } from './treeNode';
-import { Coordinate } from '@magic/shapes/types/utility';
+import type { TreeNodeKeyArray } from "./avl";
+import type { TreeNode } from "./treeNode";
+import { Coordinate } from "@magic/shapes/types/utility";
 
 const newEdge = (from: number, to: number) => ({
   from: from.toString(),
   to: to.toString(),
   id: `${from}-${to}`,
-  label: '1',
+  label: "1",
 });
 
 const edgesInTree = (treeArray: TreeNodeKeyArray) => {
@@ -60,7 +60,7 @@ export const treeArrayToGraph = (
   };
 
   const positions = getTreeIndexToPosition({
-    rootCoordinate: rootPosition,
+    rootNodeCoordinate: rootPosition,
     xOffset: depthToXOffset[treeRoot.height] ?? 80,
     yOffset: 200,
     treeDepth: treeRoot.height,
@@ -97,7 +97,7 @@ export const treeArrayToGraph = (
       const node = graph.getNode(treeNodeKey.toString());
       if (!node)
         return console.error(
-          'node in tree not found in graph. this should never happen!',
+          "node in tree not found in graph. this should never happen!",
         );
       return { nodeId: node.id, coords: positions[i] };
     })

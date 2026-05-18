@@ -1,11 +1,13 @@
-import type { GNode, Graph } from '@magic/graph/types';
-import { debounce } from '@magic/utils/debounce';
+import type { GNode, Graph } from "@magic/graph/types";
+import { debounce } from "@magic/utils/debounce";
 
-import { onUnmounted, ref, watch } from 'vue';
+import { onUnmounted, ref, watch } from "vue";
 
-import { getTreeBinaryPos } from './getTreeBinaryPos';
-import { getTreeStandardPos } from './getTreeStandardPos';
-import { getNodeDepths } from './useNodeDepth';
+import { binaryTreePositioner } from "./positioner/binaryTreePositioner";
+import { standardTreePositioner } from "./positioner/standardTreePositioner";
+import { getNodeDepths } from "./useNodeDepth";
+import { Coordinate } from "@magic/shapes/types/utility";
+import { TreeGraphPositionerOptions } from "./positioner/types";
 
 export type TreeFormationOptions = {
   /**
@@ -25,24 +27,30 @@ export type TreeFormationOptions = {
    */
   yOffset: number;
   /**
-   * the shape of the tree to form
+   * the shape of the tree to form.
    * @default 'standard'
    */
-  shape: 'standard' | 'binary';
+  shape: "standard" | "binary";
+  /**
+   * the new coordinates of the root node when the graph is being re-shaped.
+   * @default (rootNode) => ({ x: rootNode.x, y: rootNode.y })
+   */
+  rootNodeCoordinates: Coordinate | ((rootNode: GNode) => Coordinate);
 };
 
 export const TREE_FORMATION_OPTIONS_DEFAULTS = {
   durationMs: 250,
   xOffset: 250,
   yOffset: 200,
-  shape: 'standard',
-} as const;
+  shape: "standard",
+  rootNodeCoordinates: (rootNode) => ({ x: rootNode.x, y: rootNode.y }),
+} as const satisfies TreeFormationOptions;
 
 export const useMoveNodesIntoTreeFormation = (
   graph: Graph,
   options: Partial<TreeFormationOptions> = {},
 ) => {
-  const treeOptions = {
+  const treeOptions: TreeFormationOptions = {
     ...TREE_FORMATION_OPTIONS_DEFAULTS,
     ...options,
   };
@@ -55,20 +63,27 @@ export const useMoveNodesIntoTreeFormation = (
    */
   const reshapingActive = ref(false);
 
-  const getNewNodePositions = (rootNode: GNode) => {
+  const graphPositioner = (rootNode: GNode) => {
     const { adjacencyList } = graph.adjacencyList;
     const nodeDepths = getNodeDepths(rootNode, adjacencyList.value);
-    const getPositions =
-      optionsRef.value.shape === 'standard'
-        ? getTreeStandardPos
-        : getTreeBinaryPos;
-    return getPositions(graph, rootNode, nodeDepths, optionsRef.value);
+    const positionerOptions: TreeGraphPositionerOptions = {
+      graph,
+      nodeDepths,
+      rootNode,
+      treeFormationOptions: optionsRef.value,
+    };
+    console.log(positionerOptions.treeFormationOptions.rootNodeCoordinates);
+    const positioner =
+      optionsRef.value.shape === "standard"
+        ? standardTreePositioner
+        : binaryTreePositioner;
+    return positioner(positionerOptions);
   };
 
   const shapeGraph = async (rootNode: GNode) => {
     if (reshapingActive.value) return;
 
-    const newPositions = getNewNodePositions(rootNode);
+    const newPositions = graphPositioner(rootNode);
     if (!newPositions) return;
 
     reshapingActive.value = true;
@@ -108,7 +123,7 @@ export const useAutoTree = (
     ...options,
   };
 
-  const rootNodeId = ref<GNode['id']>();
+  const rootNodeId = ref<GNode["id"]>();
   const isActive = ref(false);
 
   const treeControls = useMoveNodesIntoTreeFormation(graph, treeOptions);
@@ -123,16 +138,17 @@ export const useAutoTree = (
   const debouncedUpdateShape = debounce(updateShape, debounceMs);
 
   const activate = () => {
-    graph.subscribe('onStructureChange', debouncedUpdateShape);
-    graph.subscribe('onNodeDrop', debouncedUpdateShape);
-    graph.subscribe('onGroupDrop', debouncedUpdateShape);
+    updateShape();
+    graph.subscribe("onStructureChange", debouncedUpdateShape);
+    graph.subscribe("onNodeDrop", debouncedUpdateShape);
+    graph.subscribe("onGroupDrop", debouncedUpdateShape);
     isActive.value = true;
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onStructureChange', debouncedUpdateShape);
-    graph.unsubscribe('onNodeDrop', debouncedUpdateShape);
-    graph.unsubscribe('onGroupDrop', debouncedUpdateShape);
+    graph.unsubscribe("onStructureChange", debouncedUpdateShape);
+    graph.unsubscribe("onNodeDrop", debouncedUpdateShape);
+    graph.unsubscribe("onGroupDrop", debouncedUpdateShape);
     isActive.value = false;
   };
 
