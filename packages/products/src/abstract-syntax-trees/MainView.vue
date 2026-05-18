@@ -4,16 +4,9 @@ import GraphProduct from "../shared/ui/general/GraphProduct.vue";
 import * as ts from 'typescript';
 
 import { AST_GRAPH_SETTINGS } from "./settings";
+import GButton from "../shared/ui/graph-core/button/GButton.vue"
 
 const graphWithCanvas = useGraphWithCanvas(AST_GRAPH_SETTINGS);
-
-const code = 'const hello = "world"'
-
-console.log(code)
-
-const rootNode = ts.createSourceFile('example.ts', code, ts.ScriptTarget.Latest, true)
-
-console.log(rootNode)
 
 /**
  * coverts ts node object into a unique serializable form
@@ -38,9 +31,26 @@ const getAllNodesAndEdges = (node: ts.Node) => {
   return { nodes: nodeIds, edges }
 }
 
-console.log('all nodes', getAllNodesAndEdges(rootNode))
+const loadAst = () => {
+  const code = 'const hello = "world"'
+  const rootNode = ts.createSourceFile('example.ts', code, ts.ScriptTarget.Latest, true)
+  const { nodes, edges } = getAllNodesAndEdges(rootNode)
+  graphWithCanvas.graph.load({
+    nodes:
+      nodes.map((nodeId) => ({
+        id: nodeId, label: nodeId, x: 50, y: 50
+      })),
+    edges: edges.map((e) => ({ ...e, id: `${e.from}-${e.to}`, label: '' }))
+  })
+}
 </script>
 
 <template>
-  <GraphProduct v-bind="graphWithCanvas" />
+  <GraphProduct v-bind="graphWithCanvas">
+    <template #top-center>
+      <GButton @click="loadAst">
+        Load AST
+      </GButton>
+    </template>
+  </GraphProduct>
 </template>
