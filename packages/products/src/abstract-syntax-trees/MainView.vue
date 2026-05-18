@@ -9,6 +9,7 @@ import GraphProduct from '../shared/ui/general/GraphProduct.vue';
 import GButton from '../shared/ui/graph-core/button/GButton.vue';
 import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
 import { AST_GRAPH_SETTINGS } from './settings';
+import { GNode } from '@magic/graph/types';
 
 const graphWithCanvas = useGraphWithCanvas(AST_GRAPH_SETTINGS);
 
@@ -46,7 +47,7 @@ const randomCoord = () => ({
   y: getRandomInRange(-500, 500),
 });
 
-const code = 'const hello = "world"';
+const code = '"hello"';
 const fileName = 'example.ts';
 const rootNode = ts.createSourceFile(
   fileName,
@@ -54,12 +55,17 @@ const rootNode = ts.createSourceFile(
   ts.ScriptTarget.Latest,
   true,
 );
+
 const { nodes, edges } = getAllNodesAndEdges(rootNode);
-const graphNodes = nodes.map((nodeId) => ({
+
+const graphNodes = nodes.map((nodeId): GNode => ({
   id: nodeId,
   label: nodeId,
   ...randomCoord(),
 }));
+
+const rootGraphNode = graphNodes[0]
+
 const graphEdges = edges.map((e) => ({
   ...e,
   id: `${e.from}-${e.to}`,
@@ -84,7 +90,7 @@ const loadAst = () => {
   <GraphProduct v-bind="graphWithCanvas">
     <template #top-center>
       <GButton @click="loadAst"> Load AST </GButton>
-      <GButton @click="shapeGraph(graphNodes[0])"> Shape </GButton>
+      <GButton @click="shapeGraph(rootGraphNode)"> Shape </GButton>
     </template>
   </GraphProduct>
 </template>

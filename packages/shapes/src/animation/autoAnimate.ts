@@ -1,4 +1,5 @@
 import { delta } from '@magic/utils/deepDelta';
+import { DeepPartial } from 'ts-essentials';
 
 import type { GetAnimatedSchema } from '.';
 import type { EverySchemaPropName, SchemaId, ShapeName } from '../types';
@@ -6,8 +7,12 @@ import type { DefineTimeline } from './timeline/define';
 import type { LooseSchema, LooseSchemaValue } from './types';
 
 export const AUTO_ANIMATE_DURATION_MS = 500;
-// properties supported by the auto animate feature
-const AUTO_ANIMATED_PROPERTIES = new Set([
+/**
+ * properties supported by the auto animate feature.
+ *
+ * ⚠️ **only properties listed here will be animated with `useAutoAnimate`**
+ */
+const AUTO_ANIMATED_PROPERTIES = new Set<EverySchemaPropName>([
   'at',
   'start',
   'end',
@@ -28,7 +33,10 @@ export const useAutoAnimate = (
   let capturedSchemas: LooseSchemaWithName[] = [];
   let activelyCapturingSchemas = false;
 
-  const snapshotMap: Map<SchemaId, LooseSchema> = new Map();
+  const snapshotMap: Map<
+    SchemaId,
+    Partial<{ before: LooseSchemaWithName; after: LooseSchemaWithName }>
+  > = new Map();
   const animationStopper: Map<StopperKey, () => void> = new Map();
 
   const applyAnimation = (
@@ -88,55 +96,67 @@ export const useAutoAnimate = (
      * finalize(); // triggers animation between captured states
      */
     captureFrame: (flushDraw: () => void) => {
-      const takeSnapshot = () => {
+      const takeSnapshot = (state: 'before' | 'after') => {
         capturedSchemas = [];
         activelyCapturingSchemas = true;
         flushDraw();
         activelyCapturingSchemas = false;
-        return capturedSchemas;
+        for (const schema of capturedSchemas) {
+          const shapeSchemaEntry = snapshotMap.get(schema.id) ?? {};
+          const liveSchema = getAnimatedSchema(schema.id);
+          snapshotMap.set(schema.id, {
+            ...shapeSchemaEntry,
+            [state]: clone(liveSchema ?? schema),
+          });
+        }
       };
 
-      const before = takeSnapshot();
-
-      for (const schema of before) {
-        const liveSchema = getAnimatedSchema(schema.id);
-        snapshotMap.set(schema.id, clone(liveSchema ?? schema));
-      }
+      takeSnapshot('before');
 
       return () => {
-        const after = takeSnapshot();
-        if (before.length !== after.length) {
-          throw new Error(
-            'tracked shape mismatch when capturing animation frame',
-          );
-        }
+        takeSnapshot('after');
 
-        for (let i = 0; i < after.length; i++) {
-          const beforeSchema = before[i];
-          const afterSchema = after[i];
+        const schemasCapturedInSnapshots = Array.from(snapshotMap).map(
+          ([schemaId, snapshotStates]) => ({
+            schemaId,
+            beforeSchema: snapshotStates.before,
+            afterSchema: snapshotStates.after,
+          }),
+        );
 
-          const diff = delta(beforeSchema, afterSchema);
-          if (!diff) continue;
+        for (const snapshot of schemasCapturedInSnapshots) {
+          const { beforeSchema, afterSchema } = snapshot;
 
-          if (diff['id'])
-            throw new Error('id mismatch in before and after schema!');
-          if (diff['shapeName'])
-            throw new Error('shape name mismatch in before and after schema!');
+          // if a shape schema was added/removed during the snapshot
+          // we are missing a start/end position for it, therefore it cannot be animated
+          if (!beforeSchema || !afterSchema) continue;
 
-          const schemaPropNames = Object.keys(diff) as EverySchemaPropName[];
+          // if a shapes schema has not changed between snapshots, we dont need to animate it
+          const schemaDifference: DeepPartial<LooseSchemaWithName> | null =
+            delta(beforeSchema, afterSchema);
+          if (!schemaDifference) continue;
+
+          // animation between shapes is not supported
+          const { shapeName } = schemaDifference;
+          if (shapeName) {
+            console.warn(
+              `shape with ID ${snapshot.schemaId} transformed from a ${beforeSchema.shapeName} to an ${afterSchema.shapeName}. Animating between shapes is unsupported and breaks the engine, therefore auto-animate has ignored it`,
+            );
+            continue;
+          }
+
+          const schemaPropNames = Object.keys(
+            schemaDifference,
+          ) as EverySchemaPropName[];
+
           for (const propName of schemaPropNames) {
-            const propSupported = AUTO_ANIMATED_PROPERTIES.has(propName);
-            if (!propSupported) continue;
-
-            const liveShape = snapshotMap.get(afterSchema.id);
-            if (!liveShape || liveShape?.[propName] === undefined) {
-              throw new Error(
-                `live shape in target map missing required prop ${propName}!`,
-              );
-            }
+            // ignore all unsupported shape properties on the schema
+            const schemaPropertySupported =
+              AUTO_ANIMATED_PROPERTIES.has(propName);
+            if (!schemaPropertySupported) continue;
 
             applyAnimation(
-              liveShape[propName],
+              beforeSchema[propName],
               afterSchema[propName],
               propName,
               afterSchema.id,

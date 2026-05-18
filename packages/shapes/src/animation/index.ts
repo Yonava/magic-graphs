@@ -88,9 +88,10 @@ export const useAnimatedShapes = () => {
 
       const { validShapes, timelineId } = animationWithTimeline;
       if (!validShapes.has(shapeName)) {
-        throw new Error(
+        console.warn(
           `(Internal Error) Attempted to apply inappropriate animation to schema! Animation timeline ${timelineId} only works for shapes ${Array.from(validShapes.keys())} but schema ${schemaId} is of shape ${shapeName}.`,
         );
+        continue;
       }
 
       // cleanup animation if expired
@@ -146,13 +147,20 @@ export const useAnimatedShapes = () => {
 
           autoAnimate.captureSchemaState(schemaWithDefaults, shapeName);
 
-          const targetMapSchema = autoAnimate.snapshotMap.get(schema.id);
-          if (targetMapSchema)
-            return factory(targetMapSchema as WithId<T>)[prop];
+          const snapshotMapEntry = autoAnimate.snapshotMap.get(schema.id);
+
+          if (snapshotMapEntry) {
+            const { before: beforeSnapshot } = snapshotMapEntry;
+            if (beforeSnapshot) {
+              const { shapeName: _, ...targetMapSchema } = beforeSnapshot;
+              return factory(targetMapSchema as WithId<T>)[prop];
+            }
+          }
 
           if (!animations || animations.length === 0) return target[prop];
-          if (!animations[0]?.schemaWithDefaults)
+          if (!animations[0]?.schemaWithDefaults) {
             animations[0].schemaWithDefaults = schemaWithDefaults;
+          }
 
           if (prop === 'startTextAreaEdit')
             return console.warn(
@@ -246,9 +254,10 @@ export const useAnimatedShapes = () => {
 
         const { validShapes, timelineId } = animationWithTimeline;
         if (!validShapes.has(shapeName)) {
-          throw new Error(
+          console.warn(
             `(Internal Error) Attempted to apply inappropriate animation to schema! Animation timeline ${timelineId} only works for shapes ${Array.from(validShapes.keys())} but schema ${schemaId} is of shape ${shapeName}.`,
           );
+          continue;
         }
 
         const { properties } = animationWithTimeline;
