@@ -435,24 +435,12 @@ importers:
       '@magic/utils':
         specifier: workspace:*
         version: link:../utils
-      '@vueuse/core':
-        specifier: 'catalog:'
-        version: 13.9.0(vue@3.5.21(typescript@5.9.2))
-      ctrl-keys:
-        specifier: 'catalog:'
-        version: 1.0.6
-      lz-string:
-        specifier: 'catalog:'
-        version: 1.5.0
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
       tinycolor2:
         specifier: 'catalog:'
         version: 1.6.0
-      vue-router:
-        specifier: 'catalog:'
-        version: 4.5.1(vue@3.5.21(typescript@5.9.2))
     devDependencies:
       '@types/tinycolor2':
         specifier: 'catalog:'
