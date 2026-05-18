@@ -37,10 +37,6 @@ catalogs:
 importers:
 
   .:
-    dependencies:
-      ts-essentials:
-        specifier: ^10.1.1
-        version: 10.1.1(typescript@5.4.5)
     devDependencies:
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2.2
@@ -210,6 +206,9 @@ importers:
       '@types/tinycolor2':
         specifier: 'catalog:'
         version: 1.4.6
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.0(typescript@5.9.2)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(yaml@2.8.1)
@@ -265,6 +264,9 @@ importers:
       primevue:
         specifier: 'catalog:'
         version: 4.3.9(vue@3.5.21(typescript@5.4.5))
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.0(typescript@5.4.5)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.4.5))(yaml@2.8.1)
@@ -324,6 +326,9 @@ importers:
       storybook:
         specifier: ^9.0.1
         version: 9.1.7(@testing-library/dom@10.4.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1))
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.0(typescript@5.9.2)
       vite:
         specifier: ^7.1.10
         version: 7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1)
@@ -358,6 +363,9 @@ importers:
 
   packages/utils:
     devDependencies:
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.0(typescript@5.9.2)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(yaml@2.8.1)
@@ -3204,8 +3212,8 @@ packages:
     resolution: {integrity: sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ==}
     engines: {node: '>=6.10'}
 
-  ts-essentials@10.1.1:
-    resolution: {integrity: sha512-4aTB7KLHKmUvkjNj8V+EdnmuVTiECzn3K+zIbRthumvHu+j44x3w63xpfs0JL3NGIzGXqoQ7AV591xHO+XrOTw==}
+  ts-essentials@10.2.0:
+    resolution: {integrity: sha512-z9FlLywg0XEV46Ws1FwYN4NZDMr9qAe38lTTtgVBqzhhyEgwrnCUkFe4MEqnvar1kY1kFEnlkp56bxn2g0V+UA==}
     peerDependencies:
       typescript: '>=4.5.0'
     peerDependenciesMeta:
@@ -6676,9 +6684,13 @@ snapshots:
 
   ts-dedent@2.2.0: {}
 
-  ts-essentials@10.1.1(typescript@5.4.5):
+  ts-essentials@10.2.0(typescript@5.4.5):
     optionalDependencies:
       typescript: 5.4.5
+
+  ts-essentials@10.2.0(typescript@5.9.2):
+    optionalDependencies:
+      typescript: 5.9.2
 
   ts-interface-checker@0.1.13: {}
 
