@@ -18,7 +18,9 @@
     "concurrently": "^8.2.2",
     "typescript": "~5.4.0",
     "vitest": "^3.2.4",
-    "vue-tsc": "^3.0.7"
+    "vue-tsc": "^3.0.7",
+    "prettier": "^3.4.2",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2"
   },
   "dependencies": {
     "ts-essentials": "^10.1.1"

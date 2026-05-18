@@ -42,6 +42,9 @@ importers:
         specifier: ^10.1.1
         version: 10.1.1(typescript@5.4.5)
     devDependencies:
+      '@trivago/prettier-plugin-sort-imports':
+        specifier: ^5.2.2
+        version: 5.2.2(@vue/compiler-sfc@3.5.21)(prettier@3.6.2)
       '@types/node':
         specifier: ^24.2.1
         version: 24.5.2
@@ -51,6 +54,9 @@ importers:
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
+      prettier:
+        specifier: ^3.4.2
+        version: 3.6.2
       typescript:
         specifier: ~5.4.0
         version: 5.4.5
@@ -101,9 +107,6 @@ importers:
       '@eslint/js':
         specifier: ^9.31.0
         version: 9.36.0
-      '@trivago/prettier-plugin-sort-imports':
-        specifier: ^5.2.2
-        version: 5.2.2(@vue/compiler-sfc@3.5.21)(prettier@3.6.2)
       '@tsconfig/node20':
         specifier: ^20.1.4
         version: 20.1.6
@@ -152,9 +155,6 @@ importers:
       postcss-import:
         specifier: ^16.1.0
         version: 16.1.1(postcss@8.5.6)
-      prettier:
-        specifier: ^3.4.2
-        version: 3.6.2
       storybook:
         specifier: ^9.0.1
         version: 9.1.7(@testing-library/dom@10.4.1)(msw@2.11.2(@types/node@20.19.17)(typescript@5.4.5))(prettier@3.6.2)(vite@5.4.20(@types/node@20.19.17))
@@ -3472,8 +3472,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
-  vue-component-type-helpers@3.2.9:
-    resolution: {integrity: sha512-S3BiWYaLSzHxTpln665ELSrMR9UYmrIDUmhik7nVZxmJjTKL2/a+ew1hvGxksKelivm0ujjWfG1fYOiU/2e8rA==}
+  vue-component-type-helpers@3.3.0:
+    resolution: {integrity: sha512-vwR8DDsBysI9NWXa0okPFpCcW+BUC3sPTuLBNo1faMzw4QWMFd+3/lFYFu29ZN0q+8UReXWJHEYesC9dcXYCLg==}
 
   vue-docgen-api@4.79.2:
     resolution: {integrity: sha512-n9ENAcs+40awPZMsas7STqjkZiVlIjxIKgiJr5rSohDP0/JCrD9VtlzNojafsA1MChm/hz2h3PDtUedx3lbgfA==}
@@ -4257,7 +4257,7 @@ snapshots:
       storybook: 9.1.7(@testing-library/dom@10.4.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1))
       type-fest: 2.19.0
       vue: 3.5.21(typescript@5.9.2)
-      vue-component-type-helpers: 3.2.9
+      vue-component-type-helpers: 3.3.0
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -6975,7 +6975,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.2.9: {}
+  vue-component-type-helpers@3.3.0: {}
 
   vue-docgen-api@4.79.2(vue@3.5.21(typescript@5.9.2)):
     dependencies:
