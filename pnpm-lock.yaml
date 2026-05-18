@@ -194,9 +194,6 @@ importers:
       graphlib:
         specifier: ^2.1.8
         version: 2.1.8
-      lz-string:
-        specifier: 'catalog:'
-        version: 1.5.0
       mathjs:
         specifier: 'catalog:'
         version: 14.7.0
@@ -206,9 +203,6 @@ importers:
       tinycolor2:
         specifier: 'catalog:'
         version: 1.6.0
-      vue-router:
-        specifier: 'catalog:'
-        version: 4.5.1(vue@3.5.21(typescript@5.9.2))
     devDependencies:
       '@types/graphlib':
         specifier: ^2.1.12
@@ -216,9 +210,6 @@ importers:
       '@types/tinycolor2':
         specifier: 'catalog:'
         version: 1.4.6
-      primevue:
-        specifier: 'catalog:'
-        version: 4.3.9(vue@3.5.21(typescript@5.9.2))
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(yaml@2.8.1)
