@@ -5,5 +5,6 @@ import type { GraphSettings } from '@magic/graph/settings';
  */
 export const AST_GRAPH_SETTINGS: Partial<GraphSettings> = {
   displayEdgeLabels: false,
-  persistentStorageKey: 'abstract-syntax-trees',
+  persistent: false,
+  interactive: false,
 };

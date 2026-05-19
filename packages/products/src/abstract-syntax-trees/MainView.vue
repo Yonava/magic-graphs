@@ -9,9 +9,9 @@ import GraphProduct from '../shared/ui/general/GraphProduct.vue';
 import GButton from '../shared/ui/graph-core/button/GButton.vue';
 import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
 import { AST_GRAPH_SETTINGS } from './settings';
-import { GNode } from '@magic/graph/types';
+import { GEdge, GNode } from '@magic/graph/types';
 import CodeEditor from './code-editor/CodeEditor.vue';
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const graphWithCanvas = useGraphWithCanvas(AST_GRAPH_SETTINGS);
 
@@ -51,49 +51,61 @@ const randomCoord = () => ({
 
 const code = ref('// comment')
 
-const fileName = 'example.ts';
-const rootNode = ts.createSourceFile(
-  fileName,
-  code.value,
-  ts.ScriptTarget.Latest,
-  true,
-);
+const rootAstNode = computed(() => {
+  const fileName = 'example.ts';
+  return ts.createSourceFile(
+    fileName,
+    code.value,
+    ts.ScriptTarget.Latest,
+    true,
+  );
+})
 
-const { nodes, edges } = getAllNodesAndEdges(rootNode);
+const astNodesAndEdges = computed(() => getAllNodesAndEdges(rootAstNode.value));
 
-const graphNodes = nodes.map((nodeId): GNode => ({
-  id: nodeId,
-  label: nodeId,
-  ...randomCoord(),
-}));
+const graphNodesAndEdges = computed(() => {
+  const { nodes, edges } = astNodesAndEdges.value;
+  const graphNodes = nodes.map((nodeId): GNode => ({
+    id: nodeId,
+    label: nodeId,
+    ...randomCoord(),
+  }));
 
-const rootGraphNode = graphNodes[0]
+  const graphEdges = edges.map((e): GEdge => ({
+    ...e,
+    id: `${e.from}-${e.to}`,
+    label: ''
+  }));
 
-const graphEdges = edges.map((e) => ({
-  ...e,
-  id: `${e.from}-${e.to}`,
-  label: '',
-}));
+  return {
+    rootNode: graphNodes[0],
+    nodes: graphNodes,
+    edges: graphEdges
+  }
+})
 
 const loadAst = () => {
   graphWithCanvas.graph.reset();
-  for (const node of graphNodes) {
+  const { nodes, edges } = graphNodesAndEdges.value
+  for (const node of nodes) {
     graphWithCanvas.graph.addNode(
       { ...node, ...randomCoord() },
       { animate: true, focus: false },
     );
   }
-  for (const edge of graphEdges) {
+  for (const edge of edges) {
     graphWithCanvas.graph.addEdge(edge, { animate: true, focus: false });
   }
 };
+
+onMounted(loadAst)
 </script>
 
 <template>
   <GraphProduct v-bind="graphWithCanvas">
     <template #top-center>
       <GButton @click="loadAst"> Load AST </GButton>
-      <GButton @click="shapeGraph(rootGraphNode)"> Shape </GButton>
+      <GButton @click="shapeGraph(graphNodesAndEdges.rootNode)"> Shape </GButton>
     </template>
     <template #center-left>
       <CodeEditor v-model="code" />

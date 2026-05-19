@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 // Use the core ESM main entry point to ensure language namespaces are registered
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.main.js'
 import './MonacoEnvironment'
@@ -27,13 +27,12 @@ const configureTypeScriptDefaults = () => {
 onMounted(() => {
   if (!editorContainer.value) return;
 
-  // Run global language configuration before creating instances
   configureTypeScriptDefaults()
 
   editor = monaco.editor.create(editorContainer.value, {
     value: model.value,
     language: 'typescript',
-    theme: 'light',
+    theme: 'vs-dark',
     automaticLayout: true,
     minimap: { enabled: false },
   });
@@ -57,7 +56,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .editor-viewport {
-  width: 100vw;
-  height: 100vh;
+  width: 360px;
+  height: 600px;
 }
 </style>
