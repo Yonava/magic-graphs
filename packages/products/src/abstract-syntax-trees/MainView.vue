@@ -10,6 +10,8 @@ import GButton from '../shared/ui/graph-core/button/GButton.vue';
 import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
 import { AST_GRAPH_SETTINGS } from './settings';
 import { GNode } from '@magic/graph/types';
+import CodeEditor from './code-editor/CodeEditor.vue';
+import { ref } from 'vue';
 
 const graphWithCanvas = useGraphWithCanvas(AST_GRAPH_SETTINGS);
 
@@ -47,11 +49,12 @@ const randomCoord = () => ({
   y: getRandomInRange(-500, 500),
 });
 
-const code = '"hello"';
+const code = ref('// comment')
+
 const fileName = 'example.ts';
 const rootNode = ts.createSourceFile(
   fileName,
-  code,
+  code.value,
   ts.ScriptTarget.Latest,
   true,
 );
@@ -91,6 +94,9 @@ const loadAst = () => {
     <template #top-center>
       <GButton @click="loadAst"> Load AST </GButton>
       <GButton @click="shapeGraph(rootGraphNode)"> Shape </GButton>
+    </template>
+    <template #center-left>
+      <CodeEditor v-model="code" />
     </template>
   </GraphProduct>
 </template>

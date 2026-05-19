@@ -23,6 +23,7 @@
     "gsap": "^3.12.5",
     "lz-string": "catalog:",
     "mathjs": "catalog:",
+    "monaco-editor": "^0.55.1",
     "tinycolor2": "catalog:",
     "typescript": "~5.4.0",
     "vue-router": "catalog:"
