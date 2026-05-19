@@ -61,13 +61,14 @@ export const useShortcuts = (
     return defaultFn;
   };
 
-  const triggerRedo = { fn: () => console.warn('not implemented') };
-  const triggerUndo = { fn: () => console.warn('not implemented') };
-  const triggerEscape = { fn: () => console.warn('not implemented') };
-  const triggerSelectAll = { fn: () => console.warn('not implemented') };
-  const triggerDelete = { fn: () => console.warn('not implemented') };
-  const triggerZoomIn = { fn: () => console.warn('not implemented') };
-  const triggerZoomOut = { fn: () => console.warn('not implemented') };
+  const notImplemented = () => console.warn('not implemented');
+  const triggerRedo = { fn: notImplemented };
+  const triggerUndo = { fn: notImplemented };
+  const triggerEscape = { fn: notImplemented };
+  const triggerSelectAll = { fn: notImplemented };
+  const triggerDelete = { fn: notImplemented };
+  const triggerZoomIn = { fn: notImplemented };
+  const triggerZoomOut = { fn: notImplemented };
 
   const updateBindings = () => {
     triggerRedo.fn = getFn(
