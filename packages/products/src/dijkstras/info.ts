@@ -1,5 +1,4 @@
 import type { ProductInfo } from '../types';
-
 import { canRunDijkstras } from './sim/guard';
 import { useSimulationRunner } from './sim/runner';
 import state from './state';

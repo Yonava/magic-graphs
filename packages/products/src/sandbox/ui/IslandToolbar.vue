@@ -1,28 +1,28 @@
 <script setup lang="ts">
-  import { devMode, nonNullGraph as graph } from "../../shared/globalGraph";
-  import { useGraphTutorial } from "@magic/graph/tutorials/useGraphTutorial";
-  import ToolbarButtonGroup from "@magic/ui/core/toolbar/ToolbarButtonGroup.vue";
-  import GToolbar from "../../shared/ui/graph-core/toolbar/GToolbarBase.vue";
-  import GToolbarButton from "../../shared/ui/graph-core/toolbar/GToolbarButton.vue";
-  import GToolbarDivider from "../../shared/ui/graph-core/toolbar/GToolbarDivider.vue";
+  import { useGraphTutorial } from '@magic/graph/tutorials/useGraphTutorial';
+  import ToolbarButtonGroup from '@magic/ui/core/toolbar/ToolbarButtonGroup.vue';
 
-  import { computed } from "vue";
+  import { computed } from 'vue';
 
-  import CollaborativeSessionMenu from "./CollaborativeSessionMenu.vue";
-  import GraphInfoMenu from "./GraphInfoMenu/GraphInfoMenu.vue";
-  import TreeShapeMenu from "./TreeShapeMenu.vue";
-  import { useAutoTree } from "./tree/useTreeShaper";
+  import { devMode, nonNullGraph as graph } from '../../shared/globalGraph';
+  import { useTreeGraphPositionerSync } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync';
+  import GToolbar from '../../shared/ui/graph-core/toolbar/GToolbarBase.vue';
+  import GToolbarButton from '../../shared/ui/graph-core/toolbar/GToolbarButton.vue';
+  import GToolbarDivider from '../../shared/ui/graph-core/toolbar/GToolbarDivider.vue';
+  import CollaborativeSessionMenu from './CollaborativeSessionMenu.vue';
+  import GraphInfoMenu from './GraphInfoMenu/GraphInfoMenu.vue';
+  import TreeShapeMenu from './TreeShapeMenu.vue';
 
   // import TemplateMenu from '@magic/graph/templates/ui/TemplateMenu.vue';
 
   const tutorial = useGraphTutorial(graph.value, [
     {
-      dismiss: "onNodeAdded",
-      hint: "Double click on the canvas to add a node.",
+      dismiss: 'onNodeAdded',
+      hint: 'Double click on the canvas to add a node.',
     },
     {
-      dismiss: "onEdgeAdded",
-      hint: "Hover node to show anchors, drag between them to add an edge.",
+      dismiss: 'onEdgeAdded',
+      hint: 'Hover node to show anchors, drag between them to add an edge.',
     },
   ]);
 
@@ -61,7 +61,7 @@
     return canRedo.value;
   });
 
-  const treeControls = useAutoTree(graph.value);
+  const treePositionerControls = useTreeGraphPositionerSync(graph.value);
 </script>
 
 <template>
@@ -139,13 +139,15 @@
 
       <TreeShapeMenu
         v-slot="{ toggle, isOpen }"
-        :controls="treeControls"
+        :controls="treePositionerControls"
       >
         <GToolbarButton
           @click="toggle"
-          :active="isOpen || treeControls.isActive.value"
+          :active="isOpen || treePositionerControls.isActive.value"
           :icon="
-            isOpen || treeControls.isActive.value ? 'forest' : 'forest-outline'
+            isOpen || treePositionerControls.isActive.value
+              ? 'forest'
+              : 'forest-outline'
           "
         />
       </TreeShapeMenu>

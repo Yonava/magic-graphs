@@ -1,12 +1,13 @@
-import type { NodeAnchor } from '../plugins/anchors/types';
-import type { SupportedNodeShapes } from '../schematics/node';
-import type { EdgeGetterOrValue, GNode, NodeGetterOrValue } from '../types';
 import type { FontWeight } from '@magic/shapes/text/types';
 import type {
   MaybeGetter,
   MaybeGetterParams,
   UnwrapMaybeGetter,
 } from '@magic/utils/maybeGetter';
+
+import type { NodeAnchor } from '../plugins/anchors/types';
+import type { SupportedNodeShapes } from '../schematics/node';
+import type { EdgeGetterOrValue, GNode, NodeGetterOrValue } from '../types';
 
 export type BaseGraphNodeTheme = {
   nodeSize: number;
@@ -79,8 +80,8 @@ export type GraphTheme = BaseGraphTheme &
 export type GraphThemeRaw = {
   // nodeText and edgeText are special cases which must remain as getters
   [K in keyof GraphTheme]: K extends 'nodeText' | 'edgeText'
-  ? GraphTheme[K]
-  : UnwrapMaybeGetter<GraphTheme[K]>;
+    ? GraphTheme[K]
+    : UnwrapMaybeGetter<GraphTheme[K]>;
 };
 
 /**

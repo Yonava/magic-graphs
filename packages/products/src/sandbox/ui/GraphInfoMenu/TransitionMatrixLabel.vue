@@ -1,12 +1,13 @@
 <script setup lang="ts">
-  import type { GNode, Weight } from "@magic/graph/types";
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import CPopoverTooltip from "@magic/ui/core/PopoverTooltip.vue";
-  import GraphNode from "../../../shared/ui/graph-core/GNode.vue";
-  import GWell from "../../../shared/ui/graph-core/GWell.vue";
-  import GButton from "../../../shared/ui/graph-core/button/GButton.vue";
+  import type { GNode, Weight } from '@magic/graph/types';
+  import CIcon from '@magic/ui/core/Icon.vue';
+  import CPopoverTooltip from '@magic/ui/core/PopoverTooltip.vue';
 
-  import { computed } from "vue";
+  import { computed } from 'vue';
+
+  import GraphNode from '../../../shared/ui/graph-core/GNode.vue';
+  import GWell from '../../../shared/ui/graph-core/GWell.vue';
+  import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
 
   const props = defineProps<{
     toNode: GNode;
@@ -15,7 +16,7 @@
   }>();
 
   const weightLabel = computed(() => {
-    const isNum = typeof props.weight === "number";
+    const isNum = typeof props.weight === 'number';
     return isNum ? props.weight : props.weight.toFraction();
   });
 </script>

@@ -1,6 +1,5 @@
 import { toBorderRadiusArray } from '../../helpers';
 import { rect } from '../../shapes/rect';
-
 import type { CrossSchemaWithDefaults } from './defaults';
 
 export const drawCrossWithCtx = (schema: CrossSchemaWithDefaults) => {

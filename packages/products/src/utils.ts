@@ -1,9 +1,10 @@
-import { nonNullGraph as globalGraph } from './shared/globalGraph';
 import { getTransitData, setTransitData } from '@magic/graph/transit';
 import type { Graph } from '@magic/graph/types';
-import type { ProductInfo, SimulationDeclarationGetter } from './types';
 
 import { useRoute, useRouter } from 'vue-router';
+
+import { nonNullGraph as globalGraph } from './shared/globalGraph';
+import type { ProductInfo, SimulationDeclarationGetter } from './types';
 
 /** all info.ts imported dynamically */
 // @ts-expect-error all info.ts imported dynamically

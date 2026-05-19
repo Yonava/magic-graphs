@@ -1,13 +1,12 @@
-
 import type { Ref } from 'vue';
 
 import type { DrawPattern } from './backgroundPattern';
 import type { Camera } from './camera';
 
 export type Coordinate = {
-  x: number,
-  y: number,
-}
+  x: number;
+  y: number;
+};
 
 export type DrawContent = (ctx: CanvasRenderingContext2D) => void;
 

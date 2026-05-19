@@ -4,7 +4,6 @@ import {
   rotatePoint,
 } from '../../helpers';
 import type { BoundingBox, Coordinate } from '../../types/utility';
-
 import type { StarSchemaWithDefaults } from './defaults';
 import type { StarSchema } from './types';
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../shared/globalGraph";
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import GButton from "../../shared/ui/graph-core/button/GButton.vue";
+  import CIcon from '@magic/ui/core/Icon.vue';
 
-  import AutoGenerateSettingsMenu from "./AutoGenerateSettingsMenu.vue";
-  import { useAutoGenerate } from "./useAutoGenerate";
+  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import GButton from '../../shared/ui/graph-core/button/GButton.vue';
+  import AutoGenerateSettingsMenu from './AutoGenerateSettingsMenu.vue';
+  import { useAutoGenerate } from './useAutoGenerate';
 
   const { generate, options } = useAutoGenerate(graph.value);
 </script>

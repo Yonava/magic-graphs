@@ -1,5 +1,8 @@
-import { drawStrokeOntoShape, normalizeBoundingBox, toBorderRadiusArray } from '../../helpers';
-
+import {
+  drawStrokeOntoShape,
+  normalizeBoundingBox,
+  toBorderRadiusArray,
+} from '../../helpers';
 import type { RectSchemaWithDefaults } from './defaults';
 
 export const drawRectWithCtx =
@@ -113,7 +116,7 @@ export const drawRectWithCtx =
       ctx.fill();
     }
 
-    if (stroke) drawStrokeOntoShape(ctx, stroke)
+    if (stroke) drawStrokeOntoShape(ctx, stroke);
 
     ctx.restore();
   };

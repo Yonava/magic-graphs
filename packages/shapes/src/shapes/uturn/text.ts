@@ -1,5 +1,4 @@
 import { rotatePoint } from '../../helpers';
-
 import type { UTurnSchemaWithDefaults } from './defaults';
 
 export const getTextAreaAnchorPoint = (uturn: UTurnSchemaWithDefaults) => {

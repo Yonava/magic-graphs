@@ -1,9 +1,8 @@
-import type { GraphEventMap } from '../events';
-import type { Graph } from '../types';
-
 import { ref, watch } from 'vue';
 import type { Ref } from 'vue';
 
+import type { GraphEventMap } from '../events';
+import type { Graph } from '../types';
 import type { GraphSocket } from './types';
 
 export const graphEmitters = (socket: GraphSocket): Partial<GraphEventMap> => ({

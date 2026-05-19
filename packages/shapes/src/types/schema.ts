@@ -1,5 +1,4 @@
 import type { TextArea as TextAreaDefinition } from '../text/types';
-
 import type {
   BorderRadiusArrayValue,
   Coordinate,

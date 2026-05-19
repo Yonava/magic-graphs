@@ -1,12 +1,12 @@
-import type { BaseGraph } from '../../base';
-import type { FocusOption, GraphMouseEvent } from '../../base/types';
-import { useTheme } from '../../themes/useTheme';
-import type { SchemaItem } from '../../types';
 import { getCtx } from '@magic/utils/ctx';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, readonly, ref } from 'vue';
 
+import type { BaseGraph } from '../../base';
+import type { FocusOption, GraphMouseEvent } from '../../base/types';
+import { useTheme } from '../../themes/useTheme';
+import type { SchemaItem } from '../../types';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants';
 
 export const useFocus = (graph: BaseGraph) => {
@@ -145,6 +145,7 @@ export const useFocus = (graph: BaseGraph) => {
     graph.subscribe('onEdgeAdded', setFocusToAddedItem);
     graph.subscribe('onMouseDown', handleFocusChange);
     graph.subscribe('onStructureChange', clearOutDeletedItemsFromFocus);
+    graph.subscribe('onGraphReset', resetFocus);
   };
 
   const deactivate = () => {
@@ -152,6 +153,7 @@ export const useFocus = (graph: BaseGraph) => {
     graph.unsubscribe('onEdgeAdded', setFocusToAddedItem);
     graph.unsubscribe('onMouseDown', handleFocusChange);
     graph.unsubscribe('onStructureChange', clearOutDeletedItemsFromFocus);
+    graph.unsubscribe('onGraphReset', resetFocus);
     resetFocus();
   };
 

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import GButton from "../../../../shared/ui/graph-core/button/GButton.vue";
+  import CIcon from '@magic/ui/core/Icon.vue';
 
-  import HelpSection from "./HelpSection.vue";
+  import GButton from '../../../../shared/ui/graph-core/button/GButton.vue';
+  import HelpSection from './HelpSection.vue';
 
-  const redirect = (route: string) => window.open(route, "_blank");
+  const redirect = (route: string) => window.open(route, '_blank');
 
-  const GH_REPO_LINK = "https://github.com/Yonava/magic-graphs";
+  const GH_REPO_LINK = 'https://github.com/Yonava/magic-graphs';
   const GH_ISSUE_LINK = `${GH_REPO_LINK}/issues/new?template=Blank%20issue`;
 </script>
 

@@ -5,7 +5,7 @@ import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
 import { computed } from 'vue';
 import type { Ref } from 'vue';
 
-// node id -> depth in a BFS tree
+/** node id -> depth in a BFS tree */
 export type NodeIdToDepth = Map<GNode['id'], number>;
 
 /**
@@ -24,8 +24,11 @@ export type NodeIdToDepth = Map<GNode['id'], number>;
  */
 export const getNodeDepths = (startNode: GNode, adjList: AdjacencyList) => {
   const nodeIdToDepth: NodeIdToDepth = new Map();
-  if (!adjList[startNode.id])
-    throw new Error(`node with id ${startNode.id} not found in adj list`);
+  if (!adjList[startNode.id]) {
+    throw new Error(
+      `node with id ${startNode.id} not found in provided adjacency list`,
+    );
+  }
 
   let queue = [startNode.id];
   const visited = new Set(queue);

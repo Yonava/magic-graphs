@@ -1,11 +1,10 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../shared/globalGraph";
-  import GHoverInfoTop from "../../shared/ui/graph-core/GHoverInfoTop.vue";
-  import GWell from "../../shared/ui/graph-core/GWell.vue";
-
-  import type { TreeControls } from "../useTree";
-  import { useBalanceFactorLabels } from "./useBalanceFactorLabels";
-  import { useHeightLabels } from "./useHeightLabels";
+  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import GHoverInfoTop from '../../shared/ui/graph-core/GHoverInfoTop.vue';
+  import GWell from '../../shared/ui/graph-core/GWell.vue';
+  import type { TreeControls } from '../useTree';
+  import { useBalanceFactorLabels } from './useBalanceFactorLabels';
+  import { useHeightLabels } from './useHeightLabels';
 
   const props = defineProps<{
     tree: TreeControls;
@@ -16,14 +15,14 @@
 
   const { activate: labelHeight, deactivate: unlabelHeight } = useHeightLabels(
     graph.value,
-    props.tree
+    props.tree,
   );
 
   const definitions = {
     balanceFactor:
-      "The balance factor of a node is the height of its right subtree minus the height of its left subtree.",
+      'The balance factor of a node is the height of its right subtree minus the height of its left subtree.',
     height:
-      "The height of a node is the number of edges on the longest path from the node to a leaf.",
+      'The height of a node is the number of edges on the longest path from the node to a leaf.',
   };
 </script>
 

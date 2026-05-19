@@ -1,5 +1,4 @@
 import type { ProductInfo } from '../types';
-
 import state from './state';
 
 const info: ProductInfo = {

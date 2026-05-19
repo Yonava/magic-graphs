@@ -1,7 +1,8 @@
-import { getDevicePixelRatio } from '../camera/utils';
-import { getCtx } from '@magic/utils/ctx'
+import { getCtx } from '@magic/utils/ctx';
 
 import { type Ref, onMounted, ref } from 'vue';
+
+import { getDevicePixelRatio } from '../camera/utils';
 import { Coordinate } from '../types';
 
 export const getCanvasTransform = (ctx: CanvasRenderingContext2D) => {

@@ -1,15 +1,16 @@
 import { LETTERS, graphLabelGetter } from '@magic/graph/labels';
-import {
-  type PartialGenerateClusterNodesOptions,
-  type PartialGenerateCohesiveEdgesOptions,
-  GENERATE_CLUSTER_GRAPH_DEFAULTS,
-  GENERATE_COHESIVE_EDGES_DEFAULTS,
-} from '../templateTypes';
 import type { GEdge, GNode } from '@magic/graph/types';
 import { angleDifference } from '@magic/shapes/helpers';
 import { generateId } from '@magic/utils/id';
 
 import { ref } from 'vue';
+
+import {
+  GENERATE_CLUSTER_GRAPH_DEFAULTS,
+  GENERATE_COHESIVE_EDGES_DEFAULTS,
+  type PartialGenerateClusterNodesOptions,
+  type PartialGenerateCohesiveEdgesOptions,
+} from '../templateTypes';
 
 /**
  * Generates an array of nodes distributed across multiple clusters.

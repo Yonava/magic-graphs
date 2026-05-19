@@ -2,7 +2,6 @@ import { shapeFactoryWrapper } from '../../shapeWrapper';
 import { getShapeTextProps } from '../../text/text';
 import type { ShapeFactory } from '../../types';
 import type { Coordinate } from '../../types/utility';
-
 import { resolveCrossDefaults } from './defaults';
 import { drawCrossWithCtx } from './draw';
 import {

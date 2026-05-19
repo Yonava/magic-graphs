@@ -13,9 +13,14 @@ const COLORS = [
   colors.ORANGE_500,
 ];
 
-export const useSCCColorizer = (graph: Graph, themeId = SCC_THEME_ID) => useNodeColor(graph, (nodeId: GNode['id']) => {
-  const map = graph.characteristics.nodeIdToConnectedComponent.value;
-  const scc = map.get(nodeId);
-  if (scc === undefined) return;
-  return COLORS[scc % COLORS.length];
-}, themeId)
+export const useSCCColorizer = (graph: Graph, themeId = SCC_THEME_ID) =>
+  useNodeColor(
+    graph,
+    (nodeId: GNode['id']) => {
+      const map = graph.characteristics.nodeIdToConnectedComponent.value;
+      const scc = map.get(nodeId);
+      if (scc === undefined) return;
+      return COLORS[scc % COLORS.length];
+    },
+    themeId,
+  );

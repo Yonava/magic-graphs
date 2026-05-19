@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import { useGraphWithCanvas } from "../shared/useGraphWithCanvas";
-  import GraphProduct from "../shared/ui/general/GraphProduct.vue";
-
-  import { SANDBOX_GRAPH_SETTINGS } from "./settings";
-  import IslandToolbar from "./ui/IslandToolbar.vue";
+  import GraphProduct from '../shared/ui/general/GraphProduct.vue';
+  import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
+  import { SANDBOX_GRAPH_SETTINGS } from './settings';
+  import IslandToolbar from './ui/IslandToolbar.vue';
 
   const graphWithCanvas = useGraphWithCanvas(SANDBOX_GRAPH_SETTINGS);
 </script>

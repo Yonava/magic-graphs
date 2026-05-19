@@ -1,23 +1,22 @@
 <script setup lang="ts">
-import { nonNullGraph as graph } from "../../../../shared/globalGraph";
+  import { computed } from 'vue';
 
+  import { nonNullGraph as graph } from '../../../../shared/globalGraph';
+  import GText from '../../graph-core/GText.vue';
 
-import { computed } from "vue";
-import GText from "../../graph-core/GText.vue";
+  const coords = computed(() => {
+    const {
+      coords: { x, y },
+    } = graph.value.graphAtMousePosition.value;
+    return { x: Math.round(x), y: Math.round(y) };
+  });
 
-const coords = computed(() => {
-  const {
-    coords: { x, y },
-  } = graph.value.graphAtMousePosition.value;
-  return { x: Math.round(x), y: Math.round(y) };
-});
-
-const hoveredItems = computed(() => {
-  const { items } = graph.value.graphAtMousePosition.value;
-  return items.map(
-    (item) => `${item.graphType} - ${item.shape.name} (${item.id})`
-  );
-});
+  const hoveredItems = computed(() => {
+    const { items } = graph.value.graphAtMousePosition.value;
+    return items.map(
+      (item) => `${item.graphType} - ${item.shape.name} (${item.id})`,
+    );
+  });
 </script>
 
 <template>

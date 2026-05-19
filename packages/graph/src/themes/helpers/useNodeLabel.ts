@@ -1,6 +1,7 @@
+import type { MaybeRef } from 'vue';
+
 import { useTheme } from '../../themes/useTheme';
 import type { GNode, Graph } from '../../types';
-import type { MaybeRef } from 'vue';
 
 /**
  * all types that we accept as a valid serializable label

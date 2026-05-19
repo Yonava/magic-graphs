@@ -1,3 +1,6 @@
+import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
+import type { DeepPartial, DeepReadonly } from 'ts-essentials';
+
 import type {
   AddEdgeOptions,
   AddNodeOptions,
@@ -20,8 +23,6 @@ import type { GraphThemeName } from '../themes';
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
 import type { GEdge, GNode, Graph } from '../types';
-import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
-import type { DeepPartial, DeepReadonly } from 'ts-essentials';
 
 export type BaseGraphEventMap = {
   /**

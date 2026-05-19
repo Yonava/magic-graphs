@@ -1,10 +1,13 @@
 import type { Graph } from '@magic/graph/types';
-import type { SimulationRunner, TraceFunction } from '../../shared/ui/general/sim/types';
-import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
 import { Fraction } from 'mathjs';
 
 import { computed } from 'vue';
 
+import type {
+  SimulationRunner,
+  TraceFunction,
+} from '../../shared/ui/general/sim/types';
+import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
 import { useStateAfterNSteps } from '../markov/useStateAfterNSteps';
 import state from '../state';
 import { useSimulationTheme } from './theme';

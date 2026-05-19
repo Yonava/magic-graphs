@@ -48,13 +48,15 @@ export const useNodeEdgeTheme = (graph: Graph) => {
      * @returns `themer` with nodes to target, defaults to all nodes
      */
     nodes: (nodeIds = graph.nodes.value.map((n) => n.id)) => (
-      (ids.value = new Set(nodeIds)), themer
+      (ids.value = new Set(nodeIds)),
+      themer
     ),
     /**
      * @returns `themer` with edges to target, defaults to all edges
      */
     edges: (edgeIds = graph.edges.value.map((e) => e.id)) => (
-      (ids.value = new Set(edgeIds)), themer
+      (ids.value = new Set(edgeIds)),
+      themer
     ),
 
     themer,

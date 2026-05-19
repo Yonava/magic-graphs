@@ -1,9 +1,9 @@
-import { useTheme } from '../../themes/useTheme';
-import type { GNode, Graph } from '../../types';
-
 import type { Color } from '@magic/utils/colors';
 
 import type { MaybeRef } from 'vue';
+
+import { useTheme } from '../../themes/useTheme';
+import type { GNode, Graph } from '../../types';
 
 type ColorMap = Map<GNode['id'], Color>;
 type ColorGetter = (nodeId: GNode['id']) => Color | undefined;

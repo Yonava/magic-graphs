@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import CPopoverTooltip from "@magic/ui/core/PopoverTooltip.vue";
-  import GWell from "./GWell.vue";
-  import GButton from "./button/GButton.vue";
+  import CIcon from '@magic/ui/core/Icon.vue';
+  import CPopoverTooltip from '@magic/ui/core/PopoverTooltip.vue';
+
+  import GWell from './GWell.vue';
+  import GButton from './button/GButton.vue';
 
   withDefaults(
     defineProps<{
@@ -18,7 +19,7 @@
     }>(),
     {
       offset: 4,
-    }
+    },
   );
 </script>
 

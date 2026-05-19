@@ -3,7 +3,6 @@ import type { BoundingBox, Coordinate } from '../../types/utility';
 import { circle } from '../circle';
 import { line } from '../line';
 import { rect } from '../rect';
-
 import type { ScribbleSchemaWithDefaults } from './defaults';
 
 /**

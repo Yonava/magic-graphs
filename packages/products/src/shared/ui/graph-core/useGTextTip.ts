@@ -1,9 +1,9 @@
-import { useGraphColors } from '../../../shared/useGlobalGraphColors';
+import { useTextTip } from '@magic/ui/useTextTip';
 
 import { watch } from 'vue';
 import type { MaybeRef } from 'vue';
 
-import { useTextTip } from '@magic/ui/useTextTip';
+import { useGraphColors } from '../../../shared/useGlobalGraphColors';
 
 /**
  * a text tip themed after the global graph

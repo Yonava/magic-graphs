@@ -1,14 +1,14 @@
-import type { ArrowSchema } from './shapes/arrow/types';
 import tinycolor from 'tinycolor2';
 
+import type { ArrowSchema } from './shapes/arrow/types';
 import type { BorderRadius } from './types/schema';
 import type {
   BorderRadiusArrayValue,
   BoundingBox,
   Coordinate,
+  DashPattern,
   GradientStop,
   Stroke,
-  DashPattern,
 } from './types/utility';
 
 /**
@@ -358,9 +358,13 @@ export const toBorderRadiusArray = (
     : borderRadius;
 };
 
-const isDashArray = (dash: Stroke['dash']): dash is DashPattern => Array.isArray(dash)
+const isDashArray = (dash: Stroke['dash']): dash is DashPattern =>
+  Array.isArray(dash);
 
-export const drawStrokeOntoShape = (ctx: CanvasRenderingContext2D, stroke: Stroke) => {
+export const drawStrokeOntoShape = (
+  ctx: CanvasRenderingContext2D,
+  stroke: Stroke,
+) => {
   const { color, lineWidth: width, dash } = stroke;
   ctx.strokeStyle = color;
   ctx.lineWidth = width;
@@ -368,9 +372,9 @@ export const drawStrokeOntoShape = (ctx: CanvasRenderingContext2D, stroke: Strok
   if (dash) {
     // setLineDash does not support passing readonly arrays in ts!
     // safe assertion since setLineDash does not perform mutations
-    const isArr = isDashArray(dash)
+    const isArr = isDashArray(dash);
     ctx.setLineDash((isArr ? dash : dash.pattern) as unknown as number[]);
-    ctx.lineDashOffset = isArr ? 0 : (dash.offset ?? 0)
+    ctx.lineDashOffset = isArr ? 0 : (dash.offset ?? 0);
   }
 
   ctx.stroke();
@@ -378,4 +382,4 @@ export const drawStrokeOntoShape = (ctx: CanvasRenderingContext2D, stroke: Strok
   // reset to defaults
   ctx.setLineDash([]);
   ctx.lineDashOffset = 0;
-}
+};

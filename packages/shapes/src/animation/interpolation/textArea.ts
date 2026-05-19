@@ -1,4 +1,3 @@
-
 import { TextAreaWithDefaults } from '../../text/defaults';
 import { interpolateColor } from './color';
 import { interpolateNumber } from './number';

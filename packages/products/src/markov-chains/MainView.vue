@@ -1,16 +1,17 @@
 <script setup lang="ts">
-  import { useGraphWithCanvas } from "../shared/useGraphWithCanvas";
-  import GraphProduct from "../shared/ui/general/GraphProduct.vue";
+  import colors from '@magic/utils/colors';
+  import gsap from 'gsap';
 
-  import { useMarkovChain } from "./markov/useMarkovChain";
-  import { MARKOV_CHAIN_GRAPH_SETTINGS } from "./settings";
-  import MarkovChainInfo from "./ui/MarkovChainInfo.vue";
-  import MarkovChainInfoLabels from "./ui/MarkovChainInfoLabels.vue";
-  import { useMarkovColorizer } from "./ui/useMarkovColorizer";
-  import { watch } from "vue";
-  import GButton from "../shared/ui/graph-core/button/GButton.vue";
-  import gsap from "gsap";
-  import colors from "@magic/utils/colors";
+  import { watch } from 'vue';
+
+  import GraphProduct from '../shared/ui/general/GraphProduct.vue';
+  import GButton from '../shared/ui/graph-core/button/GButton.vue';
+  import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
+  import { useMarkovChain } from './markov/useMarkovChain';
+  import { MARKOV_CHAIN_GRAPH_SETTINGS } from './settings';
+  import MarkovChainInfo from './ui/MarkovChainInfo.vue';
+  import MarkovChainInfoLabels from './ui/MarkovChainInfoLabels.vue';
+  import { useMarkovColorizer } from './ui/useMarkovColorizer';
 
   const graphWithCanvas = useGraphWithCanvas(MARKOV_CHAIN_GRAPH_SETTINGS);
   const { graph } = graphWithCanvas;

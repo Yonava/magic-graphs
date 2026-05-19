@@ -1,21 +1,21 @@
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
+import type { UnionToIntersection } from 'ts-essentials';
+
 import type { ShapeFactoryWrapper } from '../shapeWrapper';
+import type { ArrowSchema } from '../shapes/arrow/types';
+import type { CircleSchema } from '../shapes/circle/types';
 import type { CrossSchema } from '../shapes/cross/types';
 import type { EllipseSchema } from '../shapes/ellipse/types';
 import type { ImageSchema } from '../shapes/image/types';
-import type { ScribbleSchema } from '../shapes/scribble/types';
-import type { StarSchema } from '../shapes/star/types';
-import type { TriangleSchema } from '../shapes/triangle/types';
-import type { StartTextAreaEdit } from '../text/types';
-import type { ArrowSchema } from '../shapes/arrow/types';
-import type { CircleSchema } from '../shapes/circle/types';
 import type { LineSchema } from '../shapes/line/types';
 import type { RectSchema } from '../shapes/rect/types';
+import type { ScribbleSchema } from '../shapes/scribble/types';
 import type { SquareSchema } from '../shapes/square/types';
+import type { StarSchema } from '../shapes/star/types';
+import type { TriangleSchema } from '../shapes/triangle/types';
 import type { UTurnSchema } from '../shapes/uturn/types';
-import type { UnionToIntersection } from 'ts-essentials';
-
+import type { StartTextAreaEdit } from '../text/types';
 import type { BoundingBox, Coordinate } from './utility';
 
 export type ShapeName =

@@ -1,5 +1,4 @@
 import { getAngle } from '../../helpers';
-
 import type { LineSchemaWithDefaults } from './defaults';
 
 export const getTextAreaAnchorPoint = (line: LineSchemaWithDefaults) => {

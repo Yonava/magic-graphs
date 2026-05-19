@@ -10,5 +10,5 @@ export default {
   steadyState:
     'The probability distribution over states that does not change over time when the chain evolves.',
   irreducible: 'All states belong to a single communicating class',
-  ergotic: 'Irreducible and Aperiodic'
+  ergotic: 'Irreducible and Aperiodic',
 } as const;

@@ -27,5 +27,7 @@ export const getSchemaWithDefaults = {
 } as const;
 
 export type SchemaWithDefaults = {
-  [K in keyof typeof getSchemaWithDefaults]: ReturnType<(typeof getSchemaWithDefaults)[K]>;
+  [K in keyof typeof getSchemaWithDefaults]: ReturnType<
+    (typeof getSchemaWithDefaults)[K]
+  >;
 };

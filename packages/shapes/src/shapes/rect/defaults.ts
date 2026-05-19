@@ -4,7 +4,6 @@ import {
   FILL_COLOR_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '../../defaults/schema';
-
 import type { RectSchema } from './types';
 
 export const RECT_SCHEMA_DEFAULTS = {

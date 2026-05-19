@@ -1,9 +1,9 @@
 import type { Graph } from '@magic/graph/types';
-import type { SimulationRunner } from '../../shared/ui/general/sim/types';
-import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
 
 import { ref } from 'vue';
 
+import type { SimulationRunner } from '../../shared/ui/general/sim/types';
+import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
 import { useDijkstra } from '../algo/useDijkstra';
 import type { DijkstrasTraceStep } from '../algo/useDijkstra';
 import state from '../state';

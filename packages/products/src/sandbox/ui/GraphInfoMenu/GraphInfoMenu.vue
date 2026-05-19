@@ -1,13 +1,13 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../../shared/globalGraph";
-  import CPopover from "@magic/ui/core/Popover.vue";
-  import GWell from "../../../shared/ui/graph-core/GWell.vue";
+  import CPopover from '@magic/ui/core/Popover.vue';
 
-  import { computed } from "vue";
+  import { computed } from 'vue';
 
-  import AdjacencyList from "./AdjacencyList.vue";
-  import ConnectedInfo from "./ConnectedInfo.vue";
-  import TransitionMatrix from "./TransitionMatrix.vue";
+  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import GWell from '../../../shared/ui/graph-core/GWell.vue';
+  import AdjacencyList from './AdjacencyList.vue';
+  import ConnectedInfo from './ConnectedInfo.vue';
+  import TransitionMatrix from './TransitionMatrix.vue';
 
   const graphHasNodes = computed(() => graph.value.nodes.value.length > 0);
 </script>

@@ -1,6 +1,5 @@
-import { getMagicCoordinates } from './coordinates';
-
 import type { Camera } from './camera';
+import { getMagicCoordinates } from './coordinates';
 import type { Coordinate, DrawFns } from './types';
 
 const STAGGER = 100;
@@ -15,7 +14,7 @@ const computeAlpha = (z: number) => {
     Math.floor(
       ((z - PATTERN_FULLY_FADED_OUT) /
         (START_PATTERN_FADE_OUT - PATTERN_FULLY_FADED_OUT)) *
-      100,
+        100,
     ),
   );
   return strPercent.length === 1 ? `0${strPercent}` : strPercent;

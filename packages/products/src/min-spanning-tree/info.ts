@@ -1,6 +1,6 @@
 import type { Graph } from '@magic/graph/types';
-import type { ProductInfo } from '../types';
 
+import type { ProductInfo } from '../types';
 import { canRunMST } from './sim/guard';
 import {
   useKruskalSimulationRunner,

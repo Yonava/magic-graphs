@@ -5,6 +5,7 @@
     "build": "pnpm --filter client build && pnpm --filter server build",
     "start": "pnpm --filter server start",
     "test": "vitest",
+    "format": "prettier -w .",
     "dev": "concurrently -c auto command 'pnpm:dev-*'",
     "dev-client": "pnpm --filter client dev",
     "dev-server": "pnpm --filter server dev",
@@ -18,10 +19,9 @@
     "concurrently": "^8.2.2",
     "typescript": "~5.4.0",
     "vitest": "^3.2.4",
-    "vue-tsc": "^3.0.7"
-  },
-  "dependencies": {
-    "ts-essentials": "^10.1.1"
+    "vue-tsc": "^3.0.7",
+    "prettier": "^3.4.2",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2"
   },
   "engines": {
     "node": ">=22.0.0"

@@ -1,20 +1,23 @@
 <script setup lang="ts">
-  import GWell from "../../../../shared/ui/graph-core/GWell.vue";
-  import { PRODUCT_CATEGORY_RANK, products } from "../../../../utils";
-  import type { ProductCategory, ProductInfoWithMenu } from "../../../../utils";
-  import { devMode } from "../../../../shared/globalGraph";
+  import { computed } from 'vue';
 
-  import ProductItem from "./ProductItem.vue";
-  import { computed } from "vue";
+  import { devMode } from '../../../../shared/globalGraph';
+  import GWell from '../../../../shared/ui/graph-core/GWell.vue';
+  import { PRODUCT_CATEGORY_RANK, products } from '../../../../utils';
+  import type { ProductCategory, ProductInfoWithMenu } from '../../../../utils';
+  import ProductItem from './ProductItem.vue';
 
   const productsWithMenu = products.filter(
-    (info) => info?.menu
+    (info) => info?.menu,
   ) as ProductInfoWithMenu[];
 
-  const categoryRecord = PRODUCT_CATEGORY_RANK.reduce((acc, category) => {
-    acc[category] = [];
-    return acc;
-  }, {} as Record<ProductCategory, ProductInfoWithMenu[]>);
+  const categoryRecord = PRODUCT_CATEGORY_RANK.reduce(
+    (acc, category) => {
+      acc[category] = [];
+      return acc;
+    },
+    {} as Record<ProductCategory, ProductInfoWithMenu[]>,
+  );
 
   productsWithMenu.forEach((product) => {
     categoryRecord[product.menu.category].push(product);
@@ -23,7 +26,7 @@
   const productCategories = computed(() => {
     return devMode.value
       ? PRODUCT_CATEGORY_RANK
-      : PRODUCT_CATEGORY_RANK.filter((cat) => cat !== "developer tools");
+      : PRODUCT_CATEGORY_RANK.filter((cat) => cat !== 'developer tools');
   });
 </script>
 

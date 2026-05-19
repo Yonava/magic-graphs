@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { PRODUCT_SHORTCUTS } from "../../../shared/shortcuts";
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import GButton from "../../../shared/ui/graph-core/button/GButton.vue";
-  import { onKeyStroke, useFullscreen } from "@vueuse/core";
+  import CIcon from '@magic/ui/core/Icon.vue';
+  import { onKeyStroke, useFullscreen } from '@vueuse/core';
+
+  import { PRODUCT_SHORTCUTS } from '../../../shared/shortcuts';
+  import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
 
   const { toggle, isFullscreen } = useFullscreen();
   onKeyStroke(PRODUCT_SHORTCUTS.Fullscreen.binding, toggle);

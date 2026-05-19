@@ -1,10 +1,10 @@
-import type { GEdge } from '../../types';
 import { generateId } from '@magic/utils/id';
 import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';
 
 import { useBaseGraph } from '..';
+import type { GEdge } from '../../types';
 import { ADD_EDGE_DEFAULTS } from '../types';
 
 describe('base graph - addEdge', () => {

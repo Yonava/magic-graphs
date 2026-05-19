@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { useNonNullGraphColors } from "../../../../shared/useGlobalGraphColors";
-  import CButton from "@magic/ui/core/button/Button.vue";
+  import CButton from '@magic/ui/core/button/Button.vue';
 
-  import { computed } from "vue";
+  import { computed } from 'vue';
+
+  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors';
 
   const colors = useNonNullGraphColors();
 
@@ -16,7 +17,7 @@
       secondary: false,
       tertiary: false,
       contrast: false,
-    }
+    },
   );
 
   const color = computed(() => {

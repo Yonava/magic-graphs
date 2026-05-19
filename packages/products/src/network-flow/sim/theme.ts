@@ -1,10 +1,10 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GEdge, Graph } from '@magic/graph/types';
-import type { SimulationControls } from '../../shared/ui/general/sim/types';
 import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';
 
+import type { SimulationControls } from '../../shared/ui/general/sim/types';
 import type { FlowTrace } from '../algo/fordFulkerson';
 import { FLOW_USETHEME_ID } from '../constants';
 import { isResidual } from '../misc/useResidualEdges';

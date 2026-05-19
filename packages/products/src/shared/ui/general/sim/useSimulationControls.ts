@@ -1,16 +1,17 @@
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
 import type { GraphEventMap } from '@magic/graph/events';
-import type {
-  OnStepChangeCallback,
-  SimulationControls,
-  SimulationTrace,
-} from './types';
 import { localKeys } from '@magic/utils/localStorage';
 import { useLocalStorage } from '@vueuse/core';
 
 import { computed, ref, toRef, watch } from 'vue';
 import type { ComputedRef, MaybeRef } from 'vue';
+
+import type {
+  OnStepChangeCallback,
+  SimulationControls,
+  SimulationTrace,
+} from './types';
 
 /**
  * @returns the text to be displayed alongside the simulation at given step.
@@ -94,9 +95,9 @@ export const useSimulationControls = <T>(
     options.defaultPlaybackSpeedMs !== undefined
       ? ref(options.defaultPlaybackSpeedMs)
       : useLocalStorage(
-        localKeys.simulationPlaybackSpeed,
-        DEFAULT_PLAYBACK_SPEED_MS,
-      );
+          localKeys.simulationPlaybackSpeed,
+          DEFAULT_PLAYBACK_SPEED_MS,
+        );
 
   /**
    * whether the simulation is actively being played back (even if paused)

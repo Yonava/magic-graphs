@@ -1,5 +1,4 @@
 import type { EverySchemaPropName, WithId } from '../types';
-
 import type { TimelineId } from './timeline/define';
 
 /**
@@ -8,7 +7,7 @@ import type { TimelineId } from './timeline/define';
 export type LooseSchemaValue = any;
 
 /**
- * a looser version of a shape schema when fully type safe schemas becomes a nuisance
+ * a looser version of a shape schema (when fully type safe schemas become a nuisance)
  */
 export type LooseSchema = WithId<
   Partial<Record<EverySchemaPropName, LooseSchemaValue>>

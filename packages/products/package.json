@@ -23,12 +23,15 @@
     "gsap": "^3.12.5",
     "lz-string": "catalog:",
     "mathjs": "catalog:",
+    "monaco-editor": "^0.55.1",
     "tinycolor2": "catalog:",
+    "typescript": "~5.4.0",
     "vue-router": "catalog:"
   },
   "devDependencies": {
     "@types/tinycolor2": "catalog:",
     "primevue": "catalog:",
+    "ts-essentials": "^10.2.0",
     "vitest": "^3.2.4",
     "vue": "catalog:"
   }

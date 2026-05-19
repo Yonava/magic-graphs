@@ -18,7 +18,7 @@ test('works on nested objects', () => {
 });
 
 test('works by preserving nested references', () => {
-  const objWithRef = { a: { b: () => { } }, c: { d: 1 } } as any;
+  const objWithRef = { a: { b: () => {} }, c: { d: 1 } } as any;
   const cloned = clone(objWithRef);
   objWithRef.c = {};
   expect(cloned.a.b).toBe(objWithRef.a.b);

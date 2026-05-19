@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { useFPS } from "@magic/utils/fps";
-import GText from "../../graph-core/GText.vue";
+  import { useFPS } from '@magic/utils/fps';
 
-const { fps, slowFrameCount, slowFrameRatio } = useFPS();
+  import GText from '../../graph-core/GText.vue';
+
+  const { fps, slowFrameCount, slowFrameRatio } = useFPS();
 </script>
 
 <template>

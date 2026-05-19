@@ -19,8 +19,12 @@ export const useMarkovChain = (graph: Graph) => {
     nodeIdToTransientClassIndex,
   } = useMarkovClasses(graph);
 
-  const recurrentStates = computed(() => mergeSetArrayIntoSet(recurrentClasses.value));
-  const transientStates = computed(() => mergeSetArrayIntoSet(transientClasses.value));
+  const recurrentStates = computed(() =>
+    mergeSetArrayIntoSet(recurrentClasses.value),
+  );
+  const transientStates = computed(() =>
+    mergeSetArrayIntoSet(transientClasses.value),
+  );
 
   const { isPeriodic, recurrentClassPeriods } = useMarkovPeriodicity(
     graph,
@@ -28,11 +32,13 @@ export const useMarkovChain = (graph: Graph) => {
   );
 
   const absorbingStates = computed(() => {
-    return mergeSetArrayIntoSet(recurrentClasses.value.filter((rc) => rc.size === 1))
-  })
+    return mergeSetArrayIntoSet(
+      recurrentClasses.value.filter((rc) => rc.size === 1),
+    );
+  });
 
   const isChainAbsorbing = computed(() => {
-    return absorbingStates.value.size > 0
+    return absorbingStates.value.size > 0;
   });
 
   const communicatingClasses = computed(() => {
@@ -40,12 +46,14 @@ export const useMarkovChain = (graph: Graph) => {
   });
 
   const isIrreducible = computed(() => {
-    return recurrentClasses.value.length === 1 && transientClasses.value.length === 0
-  })
+    return (
+      recurrentClasses.value.length === 1 && transientClasses.value.length === 0
+    );
+  });
 
   const isErgodic = computed(() => {
-    return !isPeriodic.value && isIrreducible.value
-  })
+    return !isPeriodic.value && isIrreducible.value;
+  });
 
   const nodeIdToOutgoingWeight = useNodeIdToOutboundWeight(graph);
 
@@ -53,21 +61,22 @@ export const useMarkovChain = (graph: Graph) => {
     const invalidStatesArr = graph.nodes.value
       .map((node) => node.id)
       .filter((nodeId) => {
-        const outgoingWeight = nodeIdToOutgoingWeight.value.get(nodeId)!
-        return outgoingWeight.valueOf() !== 1
-      })
-    return new Set(invalidStatesArr)
+        const outgoingWeight = nodeIdToOutgoingWeight.value.get(nodeId)!;
+        return outgoingWeight.valueOf() !== 1;
+      });
+    return new Set(invalidStatesArr);
   });
 
-  const isChainValid = computed(() => invalidStates.value.size === 0)
+  const isChainValid = computed(() => invalidStates.value.size === 0);
 
   const steadyState = useMarkovSteadyState(graph);
   const uniqueSteadyState = computed(() => {
     if (!isChainValid.value) return { type: 'error-invalid' } as const;
-    if (recurrentClasses.value.length > 1) return { type: 'error-not-unique' } as const;
-    if (isPeriodic.value) return { type: 'error-no-convergence' } as const
+    if (recurrentClasses.value.length > 1)
+      return { type: 'error-not-unique' } as const;
+    if (isPeriodic.value) return { type: 'error-no-convergence' } as const;
     return { type: 'success', data: steadyState.value } as const;
-  })
+  });
 
   return {
     communicatingClasses,

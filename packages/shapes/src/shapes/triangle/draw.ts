@@ -32,5 +32,5 @@ export const drawTriangleWithCtx =
     ctx.fill();
     ctx.closePath();
 
-    if (stroke) drawStrokeOntoShape(ctx, stroke)
+    if (stroke) drawStrokeOntoShape(ctx, stroke);
   };

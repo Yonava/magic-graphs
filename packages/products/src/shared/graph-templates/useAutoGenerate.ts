@@ -4,13 +4,13 @@ import { useLocalStorage } from '@vueuse/core';
 import { ref } from 'vue';
 
 import {
-  centerNodesOnOriginCoordinates,
-  getAverageCoordinates,
-} from './helpers';
-import {
   generateClusterNodes,
   generateCohesiveEdges,
 } from './generationAlgorithms/randomGeneration';
+import {
+  centerNodesOnOriginCoordinates,
+  getAverageCoordinates,
+} from './helpers';
 import type { AutoGenerateGraphOptions } from './templateTypes';
 import { AUTO_GENERATE_GRAPH_DEFAULTS } from './templateTypes';
 

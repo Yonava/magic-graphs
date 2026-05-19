@@ -1,9 +1,4 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
-import type { Emitter } from '../events';
-import { getConnectedEdges } from '../helpers';
-import { nodeLetterLabelGetter } from '../labels';
-import type { GraphSettings } from '../settings';
-import type { GEdge, GNode } from '../types';
 import type { AnimatedShapeControls } from '@magic/shapes/animation';
 import type { Coordinate } from '@magic/shapes/types/utility';
 import { getCtx } from '@magic/utils/ctx';
@@ -12,6 +7,11 @@ import type { PartiallyPartial } from '@magic/utils/types';
 
 import type { Ref } from 'vue';
 
+import type { Emitter } from '../events';
+import { getConnectedEdges } from '../helpers';
+import { nodeLetterLabelGetter } from '../labels';
+import type { GraphSettings } from '../settings';
+import type { GEdge, GNode } from '../types';
 import type { GraphAnimations } from './animations';
 import {
   ADD_EDGE_DEFAULTS,

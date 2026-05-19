@@ -1,8 +1,8 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode, Graph } from '@magic/graph/types';
-import type { SimulationControls } from '../../shared/ui/general/sim/types';
 import colors from '@magic/utils/colors';
 
+import type { SimulationControls } from '../../shared/ui/general/sim/types';
 import type { DijkstrasTraceStep } from '../algo/useDijkstra';
 
 export const SIM_COLORS = {

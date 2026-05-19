@@ -37,11 +37,10 @@ catalogs:
 importers:
 
   .:
-    dependencies:
-      ts-essentials:
-        specifier: ^10.1.1
-        version: 10.1.1(typescript@5.4.5)
     devDependencies:
+      '@trivago/prettier-plugin-sort-imports':
+        specifier: ^5.2.2
+        version: 5.2.2(@vue/compiler-sfc@3.5.21)(prettier@3.6.2)
       '@types/node':
         specifier: ^24.2.1
         version: 24.5.2
@@ -51,6 +50,9 @@ importers:
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
+      prettier:
+        specifier: ^3.4.2
+        version: 3.6.2
       typescript:
         specifier: ~5.4.0
         version: 5.4.5
@@ -101,9 +103,6 @@ importers:
       '@eslint/js':
         specifier: ^9.31.0
         version: 9.36.0
-      '@trivago/prettier-plugin-sort-imports':
-        specifier: ^5.2.2
-        version: 5.2.2(@vue/compiler-sfc@3.5.21)(prettier@3.6.2)
       '@tsconfig/node20':
         specifier: ^20.1.4
         version: 20.1.6
@@ -152,9 +151,6 @@ importers:
       postcss-import:
         specifier: ^16.1.0
         version: 16.1.1(postcss@8.5.6)
-      prettier:
-        specifier: ^3.4.2
-        version: 3.6.2
       storybook:
         specifier: ^9.0.1
         version: 9.1.7(@testing-library/dom@10.4.1)(msw@2.11.2(@types/node@20.19.17)(typescript@5.4.5))(prettier@3.6.2)(vite@5.4.20(@types/node@20.19.17))
@@ -210,6 +206,9 @@ importers:
       '@types/tinycolor2':
         specifier: 'catalog:'
         version: 1.4.6
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.0(typescript@5.9.2)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(yaml@2.8.1)
@@ -236,7 +235,7 @@ importers:
         version: link:../utils
       '@vueuse/core':
         specifier: 'catalog:'
-        version: 13.9.0(vue@3.5.21(typescript@5.9.2))
+        version: 13.9.0(vue@3.5.21(typescript@5.4.5))
       ctrl-keys:
         specifier: 'catalog:'
         version: 1.0.6
@@ -249,25 +248,34 @@ importers:
       mathjs:
         specifier: 'catalog:'
         version: 14.7.0
+      monaco-editor:
+        specifier: ^0.55.1
+        version: 0.55.1
       tinycolor2:
         specifier: 'catalog:'
         version: 1.6.0
+      typescript:
+        specifier: ~5.4.0
+        version: 5.4.5
       vue-router:
         specifier: 'catalog:'
-        version: 4.5.1(vue@3.5.21(typescript@5.9.2))
+        version: 4.5.1(vue@3.5.21(typescript@5.4.5))
     devDependencies:
       '@types/tinycolor2':
         specifier: 'catalog:'
         version: 1.4.6
       primevue:
         specifier: 'catalog:'
-        version: 4.3.9(vue@3.5.21(typescript@5.9.2))
+        version: 4.3.9(vue@3.5.21(typescript@5.4.5))
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.0(typescript@5.4.5)
       vitest:
         specifier: ^3.2.4
-        version: 3.2.4(@types/node@24.5.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(yaml@2.8.1)
+        version: 3.2.4(@types/node@24.5.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.4.5))(yaml@2.8.1)
       vue:
         specifier: 'catalog:'
-        version: 3.5.21(typescript@5.9.2)
+        version: 3.5.21(typescript@5.4.5)
 
   packages/server:
     dependencies:
@@ -321,6 +329,9 @@ importers:
       storybook:
         specifier: ^9.0.1
         version: 9.1.7(@testing-library/dom@10.4.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1))
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.0(typescript@5.9.2)
       vite:
         specifier: ^7.1.10
         version: 7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1)
@@ -355,6 +366,9 @@ importers:
 
   packages/utils:
     devDependencies:
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.0(typescript@5.9.2)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.5.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(yaml@2.8.1)
@@ -1291,6 +1305,9 @@ packages:
   '@types/tinycolor2@1.4.6':
     resolution: {integrity: sha512-iEN8J0BoMnsWBqjVbWH/c0G0Hh7O21lpR2/+PrvAVgWdzL7eexIFm4JN/Wn10PTcmNdtS6U67r499mlWMXOxNw==}
 
+  '@types/trusted-types@2.0.7':
+    resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
+
   '@types/web-bluetooth@0.0.21':
     resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
 
@@ -1890,6 +1907,9 @@ packages:
   dom-accessibility-api@0.6.3:
     resolution: {integrity: sha512-7ZgogeTnjuHbo+ct10G9Ffp0mif17idi0IyWNVA/wcwcm7NPOD/WEHVP3n7n3MhXqxoIYm8d6MuZohYWIZ4T3w==}
 
+  dompurify@3.2.7:
+    resolution: {integrity: sha512-WhL/YuveyGXJaerVlMYGWhvQswa7myDG17P7Vu65EWC05o8vfeNbvNf4d/BOvH99+ZW+LlQsc1GDKMa1vNK6dw==}
+
   dotenv@16.6.1:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
     engines: {node: '>=12'}
@@ -2464,6 +2484,11 @@ packages:
   make-error@1.3.6:
     resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
 
+  marked@14.0.0:
+    resolution: {integrity: sha512-uIj4+faQ+MgHgwUW1l2PsPglZLOLOT1uErt06dAPtx2kjteLAkbsd/0FiYg/MGS+i7ZKLb7w2WClxHkzOOuryQ==}
+    engines: {node: '>= 18'}
+    hasBin: true
+
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
     engines: {node: '>= 0.4'}
@@ -2523,6 +2548,9 @@ packages:
   minipass@7.1.2:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
+
+  monaco-editor@0.55.1:
+    resolution: {integrity: sha512-jz4x+TJNFHwHtwuV9vA9rMujcZRb0CEilTEwG2rRSpe/A7Jdkuj8xPKttCgOh+v/lkHy7HsZ64oj+q3xoAFl9A==}
 
   mrmime@2.0.1:
     resolution: {integrity: sha512-Y3wQdFg2Va6etvQ5I82yUhGdsKrcYox6p7FfL1LbK2J4V01F9TGlepTIhnK24t7koZibmg82KGglhA1XK5IsLQ==}
@@ -3201,8 +3229,8 @@ packages:
     resolution: {integrity: sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ==}
     engines: {node: '>=6.10'}
 
-  ts-essentials@10.1.1:
-    resolution: {integrity: sha512-4aTB7KLHKmUvkjNj8V+EdnmuVTiECzn3K+zIbRthumvHu+j44x3w63xpfs0JL3NGIzGXqoQ7AV591xHO+XrOTw==}
+  ts-essentials@10.2.0:
+    resolution: {integrity: sha512-z9FlLywg0XEV46Ws1FwYN4NZDMr9qAe38lTTtgVBqzhhyEgwrnCUkFe4MEqnvar1kY1kFEnlkp56bxn2g0V+UA==}
     peerDependencies:
       typescript: '>=4.5.0'
     peerDependenciesMeta:
@@ -3469,8 +3497,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
-  vue-component-type-helpers@3.2.9:
-    resolution: {integrity: sha512-S3BiWYaLSzHxTpln665ELSrMR9UYmrIDUmhik7nVZxmJjTKL2/a+ew1hvGxksKelivm0ujjWfG1fYOiU/2e8rA==}
+  vue-component-type-helpers@3.3.0:
+    resolution: {integrity: sha512-vwR8DDsBysI9NWXa0okPFpCcW+BUC3sPTuLBNo1faMzw4QWMFd+3/lFYFu29ZN0q+8UReXWJHEYesC9dcXYCLg==}
 
   vue-docgen-api@4.79.2:
     resolution: {integrity: sha512-n9ENAcs+40awPZMsas7STqjkZiVlIjxIKgiJr5rSohDP0/JCrD9VtlzNojafsA1MChm/hz2h3PDtUedx3lbgfA==}
@@ -4254,7 +4282,7 @@ snapshots:
       storybook: 9.1.7(@testing-library/dom@10.4.1)(msw@2.11.2(@types/node@24.5.2)(typescript@5.9.2))(prettier@3.6.2)(vite@7.1.10(@types/node@24.5.2)(jiti@1.21.7)(yaml@2.8.1))
       type-fest: 2.19.0
       vue: 3.5.21(typescript@5.9.2)
-      vue-component-type-helpers: 3.2.9
+      vue-component-type-helpers: 3.3.0
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -4380,6 +4408,9 @@ snapshots:
   '@types/statuses@2.0.6': {}
 
   '@types/tinycolor2@1.4.6': {}
+
+  '@types/trusted-types@2.0.7':
+    optional: true
 
   '@types/web-bluetooth@0.0.21': {}
 
@@ -4733,6 +4764,13 @@ snapshots:
 
   '@vue/tsconfig@0.5.1': {}
 
+  '@vueuse/core@13.9.0(vue@3.5.21(typescript@5.4.5))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 13.9.0
+      '@vueuse/shared': 13.9.0(vue@3.5.21(typescript@5.4.5))
+      vue: 3.5.21(typescript@5.4.5)
+
   '@vueuse/core@13.9.0(vue@3.5.21(typescript@5.9.2))':
     dependencies:
       '@types/web-bluetooth': 0.0.21
@@ -4741,6 +4779,10 @@ snapshots:
       vue: 3.5.21(typescript@5.9.2)
 
   '@vueuse/metadata@13.9.0': {}
+
+  '@vueuse/shared@13.9.0(vue@3.5.21(typescript@5.4.5))':
+    dependencies:
+      vue: 3.5.21(typescript@5.4.5)
 
   '@vueuse/shared@13.9.0(vue@3.5.21(typescript@5.9.2))':
     dependencies:
@@ -5075,6 +5117,10 @@ snapshots:
   dom-accessibility-api@0.5.16: {}
 
   dom-accessibility-api@0.6.3: {}
+
+  dompurify@3.2.7:
+    optionalDependencies:
+      '@types/trusted-types': 2.0.7
 
   dotenv@16.6.1: {}
 
@@ -5763,6 +5809,8 @@ snapshots:
   make-error@1.3.6:
     optional: true
 
+  marked@14.0.0: {}
+
   math-intrinsics@1.1.0: {}
 
   mathjs@14.7.0:
@@ -5811,6 +5859,11 @@ snapshots:
       brace-expansion: 2.0.2
 
   minipass@7.1.2: {}
+
+  monaco-editor@0.55.1:
+    dependencies:
+      dompurify: 3.2.7
+      marked: 14.0.0
 
   mrmime@2.0.1: {}
 
@@ -6662,9 +6715,13 @@ snapshots:
 
   ts-dedent@2.2.0: {}
 
-  ts-essentials@10.1.1(typescript@5.4.5):
+  ts-essentials@10.2.0(typescript@5.4.5):
     optionalDependencies:
       typescript: 5.4.5
+
+  ts-essentials@10.2.0(typescript@5.9.2):
+    optionalDependencies:
+      typescript: 5.9.2
 
   ts-interface-checker@0.1.13: {}
 
@@ -6961,7 +7018,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.2.9: {}
+  vue-component-type-helpers@3.3.0: {}
 
   vue-docgen-api@4.79.2(vue@3.5.21(typescript@5.9.2)):
     dependencies:
@@ -7000,11 +7057,6 @@ snapshots:
     dependencies:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.21(typescript@5.4.5)
-
-  vue-router@4.5.1(vue@3.5.21(typescript@5.9.2)):
-    dependencies:
-      '@vue/devtools-api': 6.6.4
-      vue: 3.5.21(typescript@5.9.2)
 
   vue-tsc@3.0.7(typescript@5.4.5):
     dependencies:

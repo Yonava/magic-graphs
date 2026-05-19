@@ -1,18 +1,21 @@
-import type { GNode, Graph } from '@magic/graph/types';
 import { roundToNearestN } from '@magic/utils/math';
+import { getValue } from '@magic/utils/maybeGetter';
 
-import type { NodeDepth } from './useNodeDepth';
-import { Coordinate } from '@magic/shapes/types/utility';
+import { NodePosition, TreeGraphPositioner } from './types';
 
-export const getTreeStandardPos = (
-  graph: Pick<Graph, 'getNode'>,
-  rootPosition: Coordinate,
-  nodeDepths: NodeDepth,
-  treeOffset: { xOffset: number; yOffset: number },
-) => {
-  const newNodePositions: { nodeId: GNode['id']; coords: Coordinate }[] = [];
+export const standardTreePositioner: TreeGraphPositioner = ({
+  nodeDepths,
+  rootNode,
+  treeFormationOptions,
+  graph,
+}) => {
+  const { xOffset, yOffset, rootNodeCoordinates } = treeFormationOptions;
+  const newRootNodePosition = getValue(rootNodeCoordinates, rootNode);
 
-  const { xOffset, yOffset } = treeOffset;
+  const newNodePositions: NodePosition[] = [
+    { nodeId: rootNode.id, coords: newRootNodePosition },
+  ];
+
   const { depthToNodeIds } = nodeDepths;
   const roundToNearest10 = roundToNearestN(10);
 
@@ -39,8 +42,8 @@ export const getTreeStandardPos = (
       const node = graph.getNode(nodeIds[j]);
       if (!node) throw new Error(`node with id ${nodeIds[j]} not found`);
 
-      const x = rootPosition.x + xOffsetPerNode[j];
-      const y = rootPosition.y + yOffset * i;
+      const x = newRootNodePosition.x + xOffsetPerNode[j];
+      const y = newRootNodePosition.y + yOffset * i;
 
       newNodePositions.push({
         nodeId: node.id,

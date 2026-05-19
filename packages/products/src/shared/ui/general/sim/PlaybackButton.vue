@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import GButton from "../../../../shared/ui/graph-core/button/GButton.vue";
+  import CIcon from '@magic/ui/core/Icon.vue';
+
+  import GButton from '../../../../shared/ui/graph-core/button/GButton.vue';
 
   defineProps<{
     icon: string;

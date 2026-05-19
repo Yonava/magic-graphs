@@ -1,12 +1,11 @@
 <script setup lang="ts">
-  import { useGraphWithCanvas } from "../shared/useGraphWithCanvas";
-  import GraphProduct from "../shared/ui/general/GraphProduct.vue";
-
-  import { FLOW_GRAPH_SETTINGS, flowNodeLabelGetter } from "./settings";
-  import { useEdgeThickener } from "./theme/useEdgeThickener";
-  import { useSourceSinkTheme } from "./theme/useSourceSinkTheme";
-  import FordFulkersonOutput from "./ui/FordFulkersonOutput.vue";
-  import SourceSinkControls from "./ui/SourceSinkControls.vue";
+  import GraphProduct from '../shared/ui/general/GraphProduct.vue';
+  import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
+  import { FLOW_GRAPH_SETTINGS, flowNodeLabelGetter } from './settings';
+  import { useEdgeThickener } from './theme/useEdgeThickener';
+  import { useSourceSinkTheme } from './theme/useSourceSinkTheme';
+  import FordFulkersonOutput from './ui/FordFulkersonOutput.vue';
+  import SourceSinkControls from './ui/SourceSinkControls.vue';
 
   const graphWithCanvas = useGraphWithCanvas(FLOW_GRAPH_SETTINGS);
   const { graph } = graphWithCanvas;

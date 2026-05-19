@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import InputRange from "@magic/ui/InputRange.vue";
-  import CIcon from "@magic/ui/core/Icon.vue";
-  import CPopover from "@magic/ui/core/Popover.vue";
-  import GWell from "../../shared/ui/graph-core/GWell.vue";
-  import GButton from "../../shared/ui/graph-core/button/GButton.vue";
+  import InputRange from '@magic/ui/InputRange.vue';
+  import CIcon from '@magic/ui/core/Icon.vue';
+  import CPopover from '@magic/ui/core/Popover.vue';
 
-  import { toRef } from "vue";
+  import { toRef } from 'vue';
 
-  import type { AutoGenerateGraphOptions } from "./templateTypes";
-  import { AUTO_GENERATE_GRAPH_DEFAULTS } from "./templateTypes";
+  import GWell from '../../shared/ui/graph-core/GWell.vue';
+  import GButton from '../../shared/ui/graph-core/button/GButton.vue';
+  import type { AutoGenerateGraphOptions } from './templateTypes';
+  import { AUTO_GENERATE_GRAPH_DEFAULTS } from './templateTypes';
 
   const props = defineProps<{
     options: AutoGenerateGraphOptions;

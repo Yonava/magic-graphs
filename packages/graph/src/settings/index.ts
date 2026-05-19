@@ -1,8 +1,9 @@
-import type { GraphAnimations } from '../base/animations';
-import type { GEdge, GNode, SchemaItem } from '../types';
 import type { DefineTimeline } from '@magic/shapes/animation/timeline/define';
 import { fractionToDecimal } from '@magic/utils/fracDecConverter';
 import type { DeepPartial } from 'ts-essentials';
+
+import type { GraphAnimations } from '../base/animations';
+import type { GEdge, GNode, SchemaItem } from '../types';
 
 /**
  * BASE GRAPH SETTINGS

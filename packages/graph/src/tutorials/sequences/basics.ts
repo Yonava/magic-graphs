@@ -1,4 +1,5 @@
 import { PURPLE_700, RED_700 } from '@magic/utils/colors';
+
 import { useTheme } from '../../themes/useTheme';
 import { TUTORIAL_THEME_ID } from '../../tutorials/types';
 import { type TutorialStep } from '../../tutorials/types';

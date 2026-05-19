@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../shared/globalGraph";
-  import GButton from "../../shared/ui/graph-core/button/GButton.vue";
-  import colors from "@magic/utils/colors";
+  import colors from '@magic/utils/colors';
 
-  import state from "../state";
+  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import GButton from '../../shared/ui/graph-core/button/GButton.vue';
+  import state from '../state';
 
   const { sourceNode, sinkNode } = state;
 </script>

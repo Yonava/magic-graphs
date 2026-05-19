@@ -1,8 +1,9 @@
-import { selectFromGraph } from './select';
 import { useGraph } from '@magic/graph/useGraph.ts';
 import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';
+
+import { selectFromGraph } from './select';
 
 describe('select from graph', () => {
   // TODO get canvas to actually work in the test suite

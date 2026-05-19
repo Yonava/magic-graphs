@@ -1,6 +1,3 @@
-import type { BaseGraph } from '../base';
-import type { GEdge, GNode } from '../types';
-
 import {
   getAncestorsOfNode,
   getChildrenOfNode,
@@ -17,6 +14,8 @@ import {
   isEdgeFlowingIntoNode,
   isEdgeFlowingOutOfNode,
 } from '.';
+import type { BaseGraph } from '../base';
+import type { GEdge, GNode } from '../types';
 
 export const useHelpers = (graph: BaseGraph) => ({
   getParentsOfNode: (nodeId: GNode['id']) => getParentsOfNode(nodeId, graph),

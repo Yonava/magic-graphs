@@ -1,7 +1,6 @@
-import type { Graph } from '../types';
-
 import type { Ref } from 'vue';
 
+import type { Graph } from '../types';
 import type {
   CollabSocketEvents,
   CollaboratorMap,

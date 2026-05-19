@@ -1,15 +1,4 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
-import { generateSubscriber, getInitialEventBus } from '../events';
-import { prioritizeNode } from '../helpers';
-import { getEdgeSchematic } from '../schematics/edge';
-import { getNodeSchematic } from '../schematics/node';
-import { DEFAULT_GRAPH_SETTINGS } from '../settings';
-import type { GraphSettings } from '../settings';
-import { THEMES } from '../themes';
-import type { GraphThemeName } from '../themes';
-import { getThemeResolver } from '../themes/getThemeResolver';
-import { getInitialThemeMap } from '../themes/types';
-import type { Aggregator, GEdge, GNode } from '../types';
 import { useAnimatedShapes } from '@magic/shapes/animation';
 import { clone } from '@magic/utils/clone';
 import { delta } from '@magic/utils/deepDelta';
@@ -24,6 +13,17 @@ import { onClickOutside, useElementHover } from '@vueuse/core';
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
+import { generateSubscriber, getInitialEventBus } from '../events';
+import { prioritizeNode } from '../helpers';
+import { getEdgeSchematic } from '../schematics/edge';
+import { getNodeSchematic } from '../schematics/node';
+import { DEFAULT_GRAPH_SETTINGS } from '../settings';
+import type { GraphSettings } from '../settings';
+import { THEMES } from '../themes';
+import type { GraphThemeName } from '../themes';
+import { getThemeResolver } from '../themes/getThemeResolver';
+import { getInitialThemeMap } from '../themes/types';
+import type { Aggregator, GEdge, GNode } from '../types';
 import { type GraphAnimations, getDefaultGraphAnimations } from './animations';
 import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types';
 import type { GraphAtMousePosition, HistoryOption } from './types';
@@ -81,10 +81,10 @@ export const useBaseGraph = (
   });
 
   const updateGraphAtMousePosition = () =>
-  (graphAtMousePosition.value = {
-    coords: cursorCoordinates.value,
-    items: getSchemaItemsByCoordinates(cursorCoordinates.value),
-  });
+    (graphAtMousePosition.value = {
+      coords: cursorCoordinates.value,
+      items: getSchemaItemsByCoordinates(cursorCoordinates.value),
+    });
 
   const graphMouseEv = (event: MouseEvent) => ({
     ...graphAtMousePosition.value,

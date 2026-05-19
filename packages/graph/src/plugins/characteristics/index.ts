@@ -1,6 +1,5 @@
 import type { BaseGraph } from '../../base';
 import type { AdjacencyLists } from '../../useAdjacencyList';
-
 import { useBidirectionalEdges } from './bidirectional';
 import { useBipartite } from './bipartite';
 import { useComplete } from './complete';

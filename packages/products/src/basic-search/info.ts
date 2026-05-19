@@ -1,6 +1,6 @@
 import type { Graph } from '@magic/graph/types';
-import type { ProductInfo } from '../types';
 
+import type { ProductInfo } from '../types';
 import { canRunBasicSearch } from './sim/guard';
 import { useBFSSimulationRunner, useDFSSimulationRunner } from './sim/runner';
 import state from './state';

@@ -1,10 +1,10 @@
-import type { Graph } from '../types';
 import { getRandomElement } from '@magic/utils/random';
 import { useLocalStorage } from '@vueuse/core';
 import { io } from 'socket.io-client';
 
 import { computed, readonly, ref } from 'vue';
 
+import type { Graph } from '../types';
 import { usePaintCollabTags } from './collabTag';
 import { COLLAB_COLORS, SOCKET_URL } from './constants';
 import { useSocketEmitters } from './emit';

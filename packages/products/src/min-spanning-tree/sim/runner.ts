@@ -1,12 +1,12 @@
 import type { GEdge, Graph } from '@magic/graph/types';
+
+import { computed } from 'vue';
+
 import type {
   SimulationControls,
   SimulationRunner,
 } from '../../shared/ui/general/sim/types';
 import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
-
-import { computed } from 'vue';
-
 import { useKruskal } from '../algo/useKruskal';
 import { usePrim } from '../algo/usePrim';
 import { useSimulationTheme } from './theme';

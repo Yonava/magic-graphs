@@ -1,3 +1,6 @@
+import type { Color } from '@magic/utils/colors';
+import { isPlainObject } from '@magic/utils/deepMerge';
+
 import {
   type EasingFunction,
   type EasingOption,
@@ -15,9 +18,6 @@ import { resolveTextArea } from '../../text/defaults';
 import type { TextArea } from '../../text/types';
 import type { EverySchemaPropName, ShapeName } from '../../types';
 import type { Coordinate } from '../../types/utility';
-import type { Color } from '@magic/utils/colors';
-import { isPlainObject } from '@magic/utils/deepMerge';
-
 import type {
   ImperativeTrack,
   Timeline,
@@ -221,7 +221,8 @@ export const compileTimeline = (timeline: Timeline<any>): CompiledTimeline => {
       const { easing: easingRaw, value } = interpolationOptions;
       const easing = easingRaw ?? getDefaultEasing(propName);
       const easingFn = easingOptionToFunction(easing);
-      tl.properties[propName] = (schemaWithDefaults, progress) => value(easingFn(progress), schemaWithDefaults);
+      tl.properties[propName] = (schemaWithDefaults, progress) =>
+        value(easingFn(progress), schemaWithDefaults);
     }
   }
 

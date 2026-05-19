@@ -1,12 +1,12 @@
 import type { Graph } from '@magic/graph/types';
+
+import { computed } from 'vue';
+
 import type {
   SimulationControls,
   SimulationRunner,
 } from '../../shared/ui/general/sim/types';
 import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
-
-import { computed } from 'vue';
-
 import type { FlowTrace } from '../algo/fordFulkerson';
 import { useFordFulkerson } from '../algo/useFordFulkerson';
 import { FLOW_USETHEME_ID } from '../constants';

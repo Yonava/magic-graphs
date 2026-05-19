@@ -1,9 +1,9 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GEdge, Graph } from '@magic/graph/types';
-import type { SimulationControls } from '../../shared/ui/general/sim/types';
 
 import { computed } from 'vue';
 
+import type { SimulationControls } from '../../shared/ui/general/sim/types';
 import type { MSTTrace } from './runner';
 
 /**

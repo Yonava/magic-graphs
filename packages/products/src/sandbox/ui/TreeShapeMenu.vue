@@ -1,23 +1,23 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from "../../shared/globalGraph";
-  import type { GNode } from "@magic/graph/types";
-  import CPopover from "@magic/ui/core/Popover.vue";
-  import CButton from "@magic/ui/core/button/Button.vue";
-  import GraphNode from "../../shared/ui/graph-core/GNode.vue";
-  import GWell from "../../shared/ui/graph-core/GWell.vue";
-  import GButton from "../../shared/ui/graph-core/button/GButton.vue";
-  import colors from "@magic/utils/colors";
+  import type { GNode } from '@magic/graph/types';
+  import CPopover from '@magic/ui/core/Popover.vue';
+  import CButton from '@magic/ui/core/button/Button.vue';
+  import colors from '@magic/utils/colors';
 
-  import { computed, toRef } from "vue";
+  import { computed, toRef } from 'vue';
 
-  import TreeShapeMenuSettings from "./TreeShapeMenuSettings.vue";
-  import type { AutoTreeControls } from "./tree/useTreeShaper";
+  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import { TreeGraphPositionerSyncControls } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync';
+  import GraphNode from '../../shared/ui/graph-core/GNode.vue';
+  import GWell from '../../shared/ui/graph-core/GWell.vue';
+  import GButton from '../../shared/ui/graph-core/button/GButton.vue';
+  import TreeShapeMenuSettings from './TreeShapeMenuSettings.vue';
 
   const props = defineProps<{
-    controls: AutoTreeControls;
+    controls: TreeGraphPositionerSyncControls;
   }>();
 
-  const treeControls = toRef(props, "controls");
+  const treeControls = toRef(props, 'controls');
 
   const { isActive, activate, deactivate, updateShape, rootNodeId } =
     treeControls.value;
