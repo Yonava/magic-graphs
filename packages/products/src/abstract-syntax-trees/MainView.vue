@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { getRandomInRange } from '@magic/utils/random';
 import * as ts from 'typescript';
 
 import {
@@ -11,7 +10,8 @@ import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
 import { AST_GRAPH_SETTINGS } from './settings';
 import { GEdge, GNode } from '@magic/graph/types';
 import CodeEditor from './code-editor/CodeEditor.vue';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { debounce } from '@magic/utils/debounce';
 
 const graphWithCanvas = useGraphWithCanvas(AST_GRAPH_SETTINGS);
 
@@ -44,11 +44,6 @@ const { shapeGraph } = useTreeGraphPositioner(graphWithCanvas.graph, {
   rootNodeCoordinates: { x: 0, y: 0 },
 });
 
-const randomCoord = () => ({
-  x: getRandomInRange(-500, 500),
-  y: getRandomInRange(-500, 500),
-});
-
 const code = ref('// comment')
 
 const rootAstNode = computed(() => {
@@ -68,7 +63,8 @@ const graphNodesAndEdges = computed(() => {
   const graphNodes = nodes.map((nodeId): GNode => ({
     id: nodeId,
     label: nodeId,
-    ...randomCoord(),
+    x: 0,
+    y: 0,
   }));
 
   const graphEdges = edges.map((e): GEdge => ({
@@ -85,26 +81,19 @@ const graphNodesAndEdges = computed(() => {
 })
 
 const loadAst = () => {
-  graphWithCanvas.graph.reset();
-  const { nodes, edges } = graphNodesAndEdges.value
-  for (const node of nodes) {
-    graphWithCanvas.graph.addNode(
-      { ...node, ...randomCoord() },
-      { animate: true, focus: false },
-    );
-  }
-  for (const edge of edges) {
-    graphWithCanvas.graph.addEdge(edge, { animate: true, focus: false });
-  }
+  graphWithCanvas.graph.load(graphNodesAndEdges.value)
+  shapeGraph(graphNodesAndEdges.value.rootNode)
 };
 
 onMounted(loadAst)
+const debouncedLoadAst = debounce(loadAst, 2000)
+
+watch(code, debouncedLoadAst)
 </script>
 
 <template>
   <GraphProduct v-bind="graphWithCanvas">
     <template #top-center>
-      <GButton @click="loadAst"> Load AST </GButton>
       <GButton @click="shapeGraph(graphNodesAndEdges.rootNode)"> Shape </GButton>
     </template>
     <template #center-left>

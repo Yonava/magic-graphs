@@ -59,4 +59,10 @@ onBeforeUnmount(() => {
   width: 360px;
   height: 600px;
 }
+
+.text-attention-highlight {
+  background-color: rgba(234, 179, 8, 0.25);
+  border-bottom: 2px dashed #eab308;
+  transition: background-color 0.3s ease;
+}
 </style>

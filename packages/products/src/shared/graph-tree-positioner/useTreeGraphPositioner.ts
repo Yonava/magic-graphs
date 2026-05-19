@@ -12,12 +12,6 @@ type TreeShape = 'standard' | 'binary';
 
 export type UseTreeGraphPositionerOptions = {
   /**
-   * the duration of the animation in milliseconds.
-   * must be greater than 100
-   * @default 250
-   */
-  durationMs: number;
-  /**
    * the horizontal offset between nodes at the same depth.
    * @default 250
    */
@@ -40,7 +34,6 @@ export type UseTreeGraphPositionerOptions = {
 };
 
 export const TREE_FORMATION_OPTIONS_DEFAULTS = {
-  durationMs: 250,
   xOffset: 250,
   yOffset: 200,
   shape: 'standard',
