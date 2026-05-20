@@ -28,6 +28,7 @@ import {
 import type {
   AddEdgeOptions,
   AddNodeOptions,
+  BulkMoveNodeOptions,
   EditEdgeLabelOptions,
   MoveNodeOptions,
   RemoveEdgeOptions,
@@ -293,7 +294,7 @@ export const useGraphCRUD = ({
 
   const bulkMoveNode = (
     nodeMovements: GNodeMoveInstruction[],
-    options: Partial<MoveNodeOptions> = {},
+    options: Partial<BulkMoveNodeOptions> = {},
   ) => {
     const fullOptions = {
       ...BULK_MOVE_NODE_OPTIONS_DEFAULTS,

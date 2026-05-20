@@ -61,7 +61,9 @@
     return canRedo.value;
   });
 
-  const treePositionerControls = useTreeGraphPositionerSync(graph.value);
+  const treePositionerControls = useTreeGraphPositionerSync(graph.value, {
+    animate: true,
+  });
 </script>
 
 <template>
