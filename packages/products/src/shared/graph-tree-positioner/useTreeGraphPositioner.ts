@@ -96,3 +96,7 @@ export const useTreeGraphPositioner = (
     options: optionsRef,
   };
 };
+
+export type TreeGraphPositionerControls = ReturnType<
+  typeof useTreeGraphPositioner
+>;
