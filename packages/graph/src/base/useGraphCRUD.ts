@@ -12,6 +12,7 @@ import { getConnectedEdges } from '../helpers';
 import { nodeLetterLabelGetter } from '../labels';
 import type { GraphSettings } from '../settings';
 import type { GEdge, GNode } from '../types';
+import { AnimationKeyframe } from './../../../shapes/src/animation/interpolation/types';
 import type { GraphAnimations } from './animations';
 import {
   ADD_EDGE_DEFAULTS,
@@ -299,15 +300,15 @@ export const useGraphCRUD = ({
       ...options,
     };
 
-    const finalizeFrame = autoAnimate.captureFrame(() =>
-      draw(getCtx(magicCanvas.canvas)),
-    );
+    const animate = fullOptions.animate
+      ? autoAnimate.captureFrame(() => draw(getCtx(magicCanvas.canvas)))
+      : null;
 
     for (const { nodeId, coords } of nodeMovements) {
       moveNode(nodeId, coords, fullOptions);
     }
 
-    finalizeFrame();
+    animate?.();
   };
 
   const editEdgeLabel = (

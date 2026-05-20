@@ -31,12 +31,18 @@ export type UseTreeGraphPositionerOptions = {
    * @default (rootNode) => ({ x: rootNode.x, y: rootNode.y })
    */
   rootNodeCoordinates: Coordinate | ((rootNode: GNode) => Coordinate);
+  /**
+   * if `true`, nodes and edges animate into place
+   * @default false
+   */
+  animate: boolean;
 };
 
 export const TREE_FORMATION_OPTIONS_DEFAULTS = {
   xOffset: 250,
   yOffset: 200,
   shape: 'standard',
+  animate: false,
   rootNodeCoordinates: (rootNode) => ({ x: rootNode.x, y: rootNode.y }),
 } as const satisfies UseTreeGraphPositionerOptions;
 
@@ -80,7 +86,7 @@ export const useTreeGraphPositioner = (
     if (!newPositions) return;
 
     reshapingActive.value = true;
-    await graph.bulkMoveNode(newPositions);
+    await graph.bulkMoveNode(newPositions, { animate: treeOptions.animate });
     reshapingActive.value = false;
   };
 

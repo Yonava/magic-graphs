@@ -96,6 +96,9 @@ export const useAutoAnimate = (
      * finalize(); // triggers animation between captured states
      */
     captureFrame: (flushDraw: () => void) => {
+      // clear any stale snapshots left over from previous abandoned frames
+      snapshotMap.clear();
+
       const takeSnapshot = (state: 'before' | 'after') => {
         capturedSchemas = [];
         activelyCapturingSchemas = true;

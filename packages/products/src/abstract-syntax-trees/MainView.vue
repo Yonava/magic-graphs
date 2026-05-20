@@ -99,9 +99,9 @@
 <template>
   <GraphProduct v-bind="graphWithCanvas">
     <template #top-center>
-      <GButton @click="shapeGraph(graphNodesAndEdges.rootNode)">
+      <!-- <GButton @click="shapeGraph(graphNodesAndEdges.rootNode)">
         Shape
-      </GButton>
+      </GButton> -->
     </template>
     <template #center-left>
       <CodeEditor v-model="code" />

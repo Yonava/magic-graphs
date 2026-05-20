@@ -105,8 +105,11 @@ export const MOVE_NODE_OPTIONS_DEFAULTS: MoveNodeOptions = {
   broadcast: true,
 };
 
-export const BULK_MOVE_NODE_OPTIONS_DEFAULTS: MoveNodeOptions = {
+export type BulkMoveNodeOptions = BroadcastOption & AnimateOption;
+
+export const BULK_MOVE_NODE_OPTIONS_DEFAULTS: BulkMoveNodeOptions = {
   broadcast: true,
+  animate: false,
 };
 
 export type EditEdgeLabelOptions = BroadcastOption & HistoryOption;

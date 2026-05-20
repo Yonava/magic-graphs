@@ -22,19 +22,19 @@ export const getEdgeSchematic = (
 ): Omit<SchemaItem, 'priority'> | undefined => {
   const { displayEdgeLabels, isGraphDirected } = graph.settings.value;
 
-  const [from, to] = getConnectedNodes(edge.id, graph);
-  const edgesAlongPath = getEdgesAlongPath(from.id, to.id, graph);
+  const [fromNode, toNode] = getConnectedNodes(edge.id, graph);
+  const edgesAlongPath = getEdgesAlongPath(fromNode.id, toNode.id, graph);
 
   const multipleEdgesInPath = edgesAlongPath.length > 1;
-  const isSelfDirected = to === from;
+  const isSelfDirected = toNode.id === fromNode.id;
 
-  const fromNodeBorderWidth = graph.getTheme('nodeBorderWidth', from);
-  const toNodeBorderWidth = graph.getTheme('nodeBorderWidth', to);
+  const fromNodeBorderWidth = graph.getTheme('nodeBorderWidth', fromNode);
+  const toNodeBorderWidth = graph.getTheme('nodeBorderWidth', toNode);
 
-  const fromNodeSize = graph.getTheme('nodeSize', from);
-  const toNodeSize = graph.getTheme('nodeSize', to);
+  const fromNodeSize = graph.getTheme('nodeSize', fromNode);
+  const toNodeSize = graph.getTheme('nodeSize', toNode);
 
-  const angle = Math.atan2(to.y - from.y, to.x - from.x);
+  const angle = Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x);
 
   const arrowHeadSpacingAwayFromNode =
     toNodeBorderWidth / 2 + WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE;
@@ -43,10 +43,10 @@ export const getEdgeSchematic = (
     y: (toNodeSize + arrowHeadSpacingAwayFromNode) * Math.sin(angle),
   };
 
-  const edgeStart = { x: from.x, y: from.y };
+  const edgeStart = { x: fromNode.x, y: fromNode.y };
   const edgeEnd = {
-    x: to.x - (isGraphDirected ? arrowDrawOffset.x : 0),
-    y: to.y - (isGraphDirected ? arrowDrawOffset.y : 0),
+    x: toNode.x - (isGraphDirected ? arrowDrawOffset.x : 0),
+    y: toNode.y - (isGraphDirected ? arrowDrawOffset.y : 0),
   };
 
   const edgeWidth = graph.getTheme('edgeWidth', edge);
@@ -74,10 +74,13 @@ export const getEdgeSchematic = (
      *  from causing angle issues when no other edges are present
      */
     graph.edges.value
-      .filter((e) => (e.from === from.id || e.to === to.id) && e.from !== e.to)
+      .filter(
+        (e) =>
+          (e.from === fromNode.id || e.to === toNode.id) && e.from !== e.to,
+      )
       .map((e) => {
         const [fromNode, toNode] = getConnectedNodes(e.id, graph);
-        return from.id === fromNode.id ? toNode : fromNode;
+        return fromNode.id === fromNode.id ? toNode : fromNode;
       })
       .filter(
         (point, index, self) =>
@@ -117,7 +120,7 @@ export const getEdgeSchematic = (
     const shape = graph.shapes.uturn({
       id: edge.id,
       spacing: edgeWidth * 1.2,
-      at: { x: from.x, y: from.y },
+      at: { x: fromNode.x, y: fromNode.y },
       upDistance,
       downDistance,
       rotation: largestAngularSpace,
@@ -136,7 +139,7 @@ export const getEdgeSchematic = (
   const sumOfToAndFromNodeSize =
     fromNodeSize + fromNodeBorderWidth / 2 + toNodeSize + toNodeBorderWidth / 2;
   const distanceSquaredBetweenNodes =
-    (from.x - to.x) ** 2 + (from.y - to.y) ** 2;
+    (fromNode.x - toNode.x) ** 2 + (fromNode.y - toNode.y) ** 2;
   const areNodesTouching =
     sumOfToAndFromNodeSize ** 2 > distanceSquaredBetweenNodes;
 
