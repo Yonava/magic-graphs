@@ -103,7 +103,7 @@ export const treeArrayToGraph = (
     })
     .filter(Boolean) as GNodeMoveInstruction[];
 
-  graph.bulkMoveNode(movementObj);
+  graph.bulkMoveNode(movementObj, { animate: true });
 
   for (const edge of newTreeEdges) {
     graph.addEdge(edge, { animate: true });
