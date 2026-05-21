@@ -168,6 +168,7 @@ export const useGraphCRUD = ({
         focus: false,
         broadcast: false,
         history: false,
+        animate: fullOptions.animate,
       });
       if (!newNode) continue;
       createdNodes.push(newNode);
