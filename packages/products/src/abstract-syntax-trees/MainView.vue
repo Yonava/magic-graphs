@@ -111,7 +111,7 @@
   };
 
   onMounted(loadAst);
-  const debouncedLoadAst = debounce(loadAst, 1000);
+  const debouncedLoadAst = debounce(loadAst, 500);
 
   watch(code, debouncedLoadAst);
 </script>
