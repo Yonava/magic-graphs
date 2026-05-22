@@ -12,6 +12,7 @@ import { getConnectedEdges } from '../helpers';
 import { nodeLetterLabelGetter } from '../labels';
 import type { GraphSettings } from '../settings';
 import type { GEdge, GNode } from '../types';
+import { AnimationKeyframe } from './../../../shapes/src/animation/interpolation/types';
 import type { GraphAnimations } from './animations';
 import {
   ADD_EDGE_DEFAULTS,
@@ -27,6 +28,7 @@ import {
 import type {
   AddEdgeOptions,
   AddNodeOptions,
+  BulkMoveNodeOptions,
   EditEdgeLabelOptions,
   MoveNodeOptions,
   RemoveEdgeOptions,
@@ -166,6 +168,7 @@ export const useGraphCRUD = ({
         focus: false,
         broadcast: false,
         history: false,
+        animate: fullOptions.animate,
       });
       if (!newNode) continue;
       createdNodes.push(newNode);
@@ -292,22 +295,22 @@ export const useGraphCRUD = ({
 
   const bulkMoveNode = (
     nodeMovements: GNodeMoveInstruction[],
-    options: Partial<MoveNodeOptions> = {},
+    options: Partial<BulkMoveNodeOptions> = {},
   ) => {
     const fullOptions = {
       ...BULK_MOVE_NODE_OPTIONS_DEFAULTS,
       ...options,
     };
 
-    const finalizeFrame = autoAnimate.captureFrame(() =>
-      draw(getCtx(magicCanvas.canvas)),
-    );
+    const animate = fullOptions.animate
+      ? autoAnimate.captureFrame(() => draw(getCtx(magicCanvas.canvas)))
+      : null;
 
     for (const { nodeId, coords } of nodeMovements) {
       moveNode(nodeId, coords, fullOptions);
     }
 
-    finalizeFrame();
+    animate?.();
   };
 
   const editEdgeLabel = (

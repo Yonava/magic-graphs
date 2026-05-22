@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { GEdge, GNode } from '@magic/graph/types';
+  import { getCtx } from '@magic/utils/ctx';
   import { debounce } from '@magic/utils/debounce';
   import * as ts from 'typescript';
 
@@ -12,27 +13,38 @@
   import CodeEditor from './code-editor/CodeEditor.vue';
   import { AST_GRAPH_SETTINGS } from './settings';
 
+  type ASTNode = ts.Node;
+  type ASTEdge = { fromNode: ts.Node; toNode: ts.Node };
+
   const graphWithCanvas = useGraphWithCanvas(AST_GRAPH_SETTINGS);
 
   /**
    * coverts ts node object into a unique serializable form
    * @example getNodeUniqueId(node) // "example.ts:VariableStatement:0-21"
    */
-  const getNodeUniqueId = (node: ts.Node) => {
+  const getASTNodeId = (node: ts.Node) => {
     const kindName = ts.SyntaxKind[node.kind];
     return `${kindName}:${node.pos}-${node.end}`;
   };
 
+  const getASTEdgeId = ({
+    fromNode,
+    toNode,
+  }: {
+    fromNode: ts.Node;
+    toNode: ts.Node;
+  }) => {
+    const fromNodeId = getASTNodeId(fromNode);
+    const toNodeId = getASTNodeId(toNode);
+    return `[${fromNodeId}]->[${toNodeId}]`;
+  };
+
   const getAllNodesAndEdges = (node: ts.Node) => {
-    const nodeIds: string[] = [];
-    const edges: { from: string; to: string }[] = [];
-    const processNode = (node: ts.Node) => {
-      const parentNodeId = node.parent
-        ? getNodeUniqueId(node.parent)
-        : undefined;
-      const nodeId = getNodeUniqueId(node);
-      if (parentNodeId) edges.push({ from: parentNodeId, to: nodeId });
-      nodeIds.push(nodeId);
+    const nodeIds: ASTNode[] = [];
+    const edges: ASTEdge[] = [];
+    const processNode = (node: ASTNode) => {
+      if (node.parent) edges.push({ fromNode: node.parent, toNode: node });
+      nodeIds.push(node);
       node.forEachChild(processNode);
     };
     processNode(node);
@@ -62,18 +74,19 @@
   const graphNodesAndEdges = computed(() => {
     const { nodes, edges } = astNodesAndEdges.value;
     const graphNodes = nodes.map(
-      (nodeId): GNode => ({
-        id: nodeId,
-        label: nodeId,
+      (astNode): GNode => ({
+        id: getASTNodeId(astNode),
+        label: getASTNodeId(astNode),
         x: 0,
         y: 0,
       }),
     );
 
     const graphEdges = edges.map(
-      (e): GEdge => ({
-        ...e,
-        id: `${e.from}-${e.to}`,
+      (astEdge): GEdge => ({
+        to: getASTNodeId(astEdge.toNode),
+        from: getASTNodeId(astEdge.fromNode),
+        id: getASTEdgeId(astEdge),
         label: '',
       }),
     );
@@ -85,13 +98,20 @@
     };
   });
 
-  const loadAst = () => {
-    graphWithCanvas.graph.load(graphNodesAndEdges.value);
+  const loadAst = async () => {
+    const { graph, canvas } = graphWithCanvas;
+    const draw = () => {
+      const ctx = getCtx(canvas.canvas.value);
+      graph.draw(ctx);
+    };
+    const animate = graph.autoAnimate.captureFrame(draw);
+    graph.load(graphNodesAndEdges.value);
     shapeGraph(graphNodesAndEdges.value.rootNode);
+    animate();
   };
 
   onMounted(loadAst);
-  const debouncedLoadAst = debounce(loadAst, 2000);
+  const debouncedLoadAst = debounce(loadAst, 500);
 
   watch(code, debouncedLoadAst);
 </script>
@@ -99,9 +119,9 @@
 <template>
   <GraphProduct v-bind="graphWithCanvas">
     <template #top-center>
-      <GButton @click="shapeGraph(graphNodesAndEdges.rootNode)">
+      <!-- <GButton @click="shapeGraph(graphNodesAndEdges.rootNode)">
         Shape
-      </GButton>
+      </GButton> -->
     </template>
     <template #center-left>
       <CodeEditor v-model="code" />
