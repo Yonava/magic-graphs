@@ -1,9 +1,7 @@
 import type { GraphThemeKey } from '../themes';
-import type { ThemeMapEntry, ValidGraphThemePath } from '../themes/types';
+import type { ValidGraphThemePath } from '../themes/types';
 import type { Graph } from '../types';
 import { ResolveThemeMap } from './getThemeResolver';
-
-type ThemeableGraph = Pick<Graph, 'themeMap'>;
 
 /**
  * set and remove themes for a graph instance
@@ -12,8 +10,8 @@ type ThemeableGraph = Pick<Graph, 'themeMap'>;
  * @param themeId - identifier for this useTheme instance
  * @returns functions to set and remove themes
  */
-export const useTheme = <G extends ThemeableGraph>(
-  graph: G,
+export const useTheme = <TGraph extends Pick<Graph, 'themeMap'>>(
+  graph: TGraph,
   themeId: string,
 ) => {
   /**

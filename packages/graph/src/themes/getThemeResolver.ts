@@ -70,10 +70,16 @@ export function getThemeResolver(
       throw new Error(`Theme property "${themeMapPath}" not found`);
     }
 
-    return getValue<typeof getterOrValue, ThemeArgs>(
+    const value = getValue<typeof getterOrValue, ThemeArgs>(
       getterOrValue,
       ...themeArgs,
-    ) as UnwrapMaybeGetter<PathValue<GraphTheme, ThemeMapPath>>;
+    ) as Exclude<UnwrapMaybeGetter<PathValue<GraphTheme, ThemeMapPath>>, void>;
+
+    if (!value) {
+      throw new Error('Value unresolved');
+    }
+
+    return value;
   };
 
   return getTheme;
