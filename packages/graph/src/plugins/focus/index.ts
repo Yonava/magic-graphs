@@ -10,6 +10,20 @@ import { useTheme } from '../../themes/useTheme';
 import type { GEdge, GNode, SchemaItem } from '../../types';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants';
 
+type NodeBaseThemePath = Extract<ValidGraphThemePath, `node.base.${string}`>;
+type EdgeBaseThemePath = Extract<ValidGraphThemePath, `edge.base.${string}`>;
+
+type NodeBaseToNodeFocusTheme = {
+  [Path in NodeBaseThemePath]: Path extends `node.base.${infer Style}`
+    ? `node.focus.${Style}`
+    : never;
+};
+type EdgeBaseToNodeFocusTheme = {
+  [Path in EdgeBaseThemePath]: Path extends `edge.base.${infer Style}`
+    ? `edge.focus.${Style}`
+    : never;
+};
+
 export const useFocus = (graph: BaseGraph) => {
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
   const focusedItemIds = ref(new Set<string>());
@@ -110,20 +124,6 @@ export const useFocus = (graph: BaseGraph) => {
   };
 
   const isFocused = (id: string) => focusedItemIds.value.has(id);
-
-  type NodeBaseThemePath = Extract<ValidGraphThemePath, `node.base.${string}`>;
-  type EdgeBaseThemePath = Extract<ValidGraphThemePath, `edge.base.${string}`>;
-
-  type NodeBaseToNodeFocusTheme = {
-    [Path in NodeBaseThemePath]: Path extends `node.base.${infer Style}`
-      ? `node.focus.${Style}`
-      : never;
-  };
-  type EdgeBaseToNodeFocusTheme = {
-    [Path in EdgeBaseThemePath]: Path extends `edge.base.${infer Style}`
-      ? `edge.focus.${Style}`
-      : never;
-  };
 
   const nodeBaseStylePathMapping: NodeBaseToNodeFocusTheme = {
     'node.base.color': 'node.focus.color',
