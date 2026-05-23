@@ -282,7 +282,7 @@ export const getEdgeWeight = (
 
   if (parseFraction) {
     try {
-      const edgeText = graph.getTheme('edgeText', edge);
+      const edgeText = graph.getTheme('edge.base.text', edge);
       const fracWeight = new Fraction(edgeText);
       return fracWeight.valueOf();
     } catch {

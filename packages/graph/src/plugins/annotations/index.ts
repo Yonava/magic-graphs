@@ -192,7 +192,7 @@ export const useAnnotations = (graph: BaseGraph) => {
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
-          color: graph.getTheme('graphBgPatternColor'),
+          color: graph.getTheme('graph.color'),
           lineWidth: 2,
         },
       });

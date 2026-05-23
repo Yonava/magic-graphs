@@ -1,6 +1,7 @@
 import type { GraphThemeKey } from '../themes';
-import type { ThemeMapEntry } from '../themes/types';
+import type { ThemeMapEntry, ValidGraphThemePath } from '../themes/types';
 import type { Graph } from '../types';
+import { ResolveThemeMap } from './getThemeResolver';
 
 type ThemeableGraph = Pick<Graph, 'themeMap'>;
 
@@ -21,11 +22,11 @@ export const useTheme = <G extends ThemeableGraph>(
    * @param prop - the theme property you want to set
    * @param value - the value you want to set for the theme property
    */
-  const setTheme = <T extends GraphThemeKey>(
-    prop: T,
-    value: ThemeMapEntry<T>['value'],
+  const setTheme = <Path extends ValidGraphThemePath>(
+    path: Path,
+    value: ResolveThemeMap<Path>[number]['value'],
   ) => {
-    removeTheme(prop);
+    removeTheme(path);
     const themeMapEntries = graph.themeMap[prop];
     themeMapEntries.push({
       value,

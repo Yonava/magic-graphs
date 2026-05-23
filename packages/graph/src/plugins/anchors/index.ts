@@ -58,9 +58,9 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   const getAnchorSchemas = (node: GNode) => {
     const { getTheme } = graph;
 
-    const color = getTheme('nodeAnchorColor', node);
-    const focusColor = getTheme('nodeAnchorColorWhenParentFocused', node);
-    const radius = getTheme('nodeAnchorRadius', node);
+    const color = getTheme('nodeAnchor.color', node);
+    const focusColor = getTheme('nodeAnchor.colorWhenParentFocused', node);
+    const radius = getTheme('nodeAnchor.radius', node);
 
     const anchorSchemas: SchemaItem[] = [];
     for (const anchor of nodeAnchors.value) {
@@ -114,9 +114,9 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     if (!node) return (nodeAnchors.value = []);
     const { getTheme } = graph;
 
-    const anchorRadius = getTheme('nodeAnchorRadius', node);
-    const nodeSize = getTheme('nodeSize', node);
-    const nodeBorderWidth = getTheme('nodeBorderWidth', node);
+    const anchorRadius = getTheme('nodeAnchor.radius', node);
+    const nodeSize = getTheme('node.base.size', node);
+    const nodeBorderWidth = getTheme('node.base.borderWidth', node);
 
     const offset = nodeSize - anchorRadius / 3 + nodeBorderWidth / 2;
     nodeAnchors.value = [
@@ -166,12 +166,12 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     const { getTheme } = graph;
 
     const color = getTheme(
-      'linkPreviewColor',
+      'nodeAnchor.linkPreviewColor',
       parentNode.value,
       currentDraggingAnchor.value,
     );
     const width = getTheme(
-      'linkPreviewWidth',
+      'nodeAnchor.linkPreviewWidth',
       parentNode.value,
       currentDraggingAnchor.value,
     );

@@ -81,9 +81,6 @@ export type Aggregator = SchemaItem[];
  */
 export type UpdateAggregator = (aggregator: Aggregator) => Aggregator;
 
-export type NodeGetterOrValue<T> = MaybeGetter<T, [GNode]>;
-export type EdgeGetterOrValue<T> = MaybeGetter<T, [GEdge]>;
-
 type BaseGraphTypes = 'node' | 'edge';
 type MarqueeGraphTypes = 'marquee-box' | 'encapsulated-node-box';
 type NodeAnchorGraphTypes = 'node-anchor' | 'link-preview';

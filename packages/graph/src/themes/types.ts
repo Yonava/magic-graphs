@@ -8,12 +8,7 @@ import { Ref } from 'vue';
 
 import type { NodeAnchor } from '../plugins/anchors/types';
 import { GraphSettings } from '../settings';
-import type {
-  EdgeGetterOrValue,
-  GEdge,
-  GNode,
-  NodeGetterOrValue,
-} from '../types';
+import type { GEdge, GNode } from '../types';
 import { ThemeGetter } from './getThemeResolver';
 
 export type TextStyles = {
@@ -42,7 +37,7 @@ export type GraphInterface = {
 export type BaseGraphNodeTheme = WrapWithNodeGetter<BaseGraphNodeStyles> & {
   shape: (
     node: GNode,
-    graphShapes: GraphInterface,
+    graph: GraphInterface,
     styles: BaseGraphNodeStyles,
   ) => Shape | void;
 };
@@ -55,7 +50,7 @@ export type BaseGraphEdgeStyles = TextStyles & {
 export type BaseGraphEdgeTheme = WrapWithEdgeGetter<BaseGraphEdgeStyles> & {
   shape: (
     edge: GEdge,
-    graphShapes: GraphInterface,
+    graph: GraphInterface,
     styles: BaseGraphEdgeStyles,
   ) => Shape | void;
 };
@@ -113,10 +108,13 @@ type PathsMappingToBuiltIn<Object, T> = T extends T
     : never
   : never;
 
-export type ValidGraphThemePaths = PathsMappingToBuiltIn<
+export type ValidGraphThemePath = PathsMappingToBuiltIn<
   GraphTheme,
   GraphThemePaths
 >;
+
+type NodeGetterOrValue<T> = T | ((node: GNode) => T | void);
+type EdgeGetterOrValue<T> = T | ((edge: GEdge) => T | void);
 
 type WrapWithNodeGetter<T extends Record<string, any>> = {
   [K in keyof T]: NodeGetterOrValue<T[K]>;

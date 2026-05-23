@@ -9,17 +9,17 @@ import { THEMES } from '../themes';
 import type {
   FullThemeMap,
   ThemeMapEntry,
-  ValidGraphThemePaths,
+  ValidGraphThemePath,
 } from '../themes/types';
 
-type ResolveThemeMap<Path extends ValidGraphThemePaths> = PathValue<
+export type ResolveThemeMap<Path extends ValidGraphThemePath> = PathValue<
   FullThemeMap,
   Path
 >;
 
 type AnyFunction = (...args: never[]) => unknown;
 
-type UnwrapThemeEntry<ThemeMapEntries> =
+export type UnwrapThemeEntry<ThemeMapEntries> =
   ThemeMapEntries extends ThemeMapEntry<Builtin>[]
     ? Extract<ThemeMapEntries[number]['value'], AnyFunction> extends never
       ? []
@@ -29,23 +29,27 @@ type UnwrapThemeEntry<ThemeMapEntries> =
 const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
   obj: Obj,
   path: Path,
-): PathValue<Obj, Path> =>
+): PathValue<Obj, Path> | undefined =>
   path
     .split('.')
-    .reduce((acc: Record<string, any>, curr: string) => acc[curr], obj);
+    .reduce((acc: Record<string, any>, curr: string) => acc?.[curr], obj);
 
 export function getThemeResolver(
   themeName: Ref<GraphThemeName>,
   themeMap: FullThemeMap,
 ) {
   const getTheme = <
-    ThemeMapPath extends ValidGraphThemePaths,
+    ThemeMapPath extends ValidGraphThemePath,
     ThemeArgs extends UnwrapThemeEntry<ResolveThemeMap<ThemeMapPath>>,
   >(
     themeMapPath: ThemeMapPath,
     ...themeArgs: ThemeArgs
   ) => {
     const themeMapEntries = getDataFromNestedPath(themeMap, themeMapPath);
+
+    if (!themeMapEntries) {
+      throw new Error(`No theme map for ${themeMapPath}`);
+    }
 
     const themeMapEntry = themeMapEntries.findLast((themeMapEntryItem) => {
       const themeGetterOrValue = themeMapEntryItem.value;
