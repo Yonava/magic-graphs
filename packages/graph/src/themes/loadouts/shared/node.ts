@@ -1,8 +1,10 @@
 import colors from '@magic/utils/colors';
 
-import { GraphTheme } from '..';
+import { GraphTheme } from '../..';
+import { GNode } from '../../../types';
+import { textDefaults } from './text';
 
-export const nodeCircle: GraphTheme['node']['base']['shape'] = (
+const nodeCircle: GraphTheme['node']['base']['shape'] = (
   node,
   shapes,
   styles,
@@ -29,3 +31,16 @@ export const nodeCircle: GraphTheme['node']['base']['shape'] = (
       color: colors.TRANSPARENT,
     },
   });
+
+export const nodeShared = {
+  ...textDefaults,
+  text: ({ label }: GNode) => label,
+  borderWidth: 8,
+  size: 35,
+  shape: nodeCircle,
+} as const;
+
+export const nodeAnchorShared = {
+  radius: Math.ceil(Math.sqrt(nodeShared.size) * 2),
+  linkPreviewWidth: 10,
+} as const;

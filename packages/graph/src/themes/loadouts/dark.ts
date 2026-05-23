@@ -1,47 +1,42 @@
 import colors from '@magic/utils/colors';
 
-import { GEdge, GNode } from '../../types';
 import type { GraphTheme } from '../types';
-import { nodeCircle } from './nodeShape';
-import { textDefaults } from './text';
+import { edgeShared } from './shared/edge';
+import { nodeAnchorShared, nodeShared } from './shared/node';
 
 const REDDISH_GRAY = 'rgb(100, 60, 70)';
 
-const nodeShared = {
-  ...textDefaults,
-  text: ({ label }: GNode) => label,
-  borderWidth: 8,
-  size: 35,
-  shape: nodeCircle,
+const nodeSharedDark = {
+  textColor: colors.WHITE,
+  ...nodeShared,
 } as const;
 
-const edgeShared = {
-  ...textDefaults,
-  text: ({ label }: GEdge) => label,
-  width: 10,
-};
+const edgeSharedDark = {
+  textColor: colors.WHITE,
+  ...edgeShared,
+} as const;
 
-export const DARK_THEME = {
+export const DARK_THEME: GraphTheme = {
   node: {
     base: {
       color: colors.STONE_600,
       borderColor: colors.BLACK,
-      ...nodeShared,
+      ...nodeSharedDark,
     },
     focus: {
       color: REDDISH_GRAY,
       borderColor: colors.RED_700,
-      ...nodeShared,
+      ...nodeSharedDark,
     },
   },
   edge: {
     base: {
       color: colors.STONE_900,
-      ...edgeShared,
+      ...edgeSharedDark,
     },
     focus: {
       color: colors.RED_700,
-      ...edgeShared,
+      ...edgeSharedDark,
     },
   },
   graph: {
@@ -55,11 +50,9 @@ export const DARK_THEME = {
     encapsulatedNodeBoxColor: colors.RED_700 + '20',
   },
   nodeAnchor: {
-    // Math.ceil(Math.sqrt(nodeSize) * 2)
-    radius: Math.ceil(Math.sqrt(35) * 2),
     colorWhenParentFocused: colors.RED_900,
     color: colors.GRAY_900,
-    linkPreviewWidth: 10,
     linkPreviewColor: colors.BLACK,
+    ...nodeAnchorShared,
   },
-} as const satisfies GraphTheme;
+};
