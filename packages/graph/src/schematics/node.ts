@@ -23,7 +23,7 @@ export const getNodeSchematic = (
     textFontWeight: getTheme('node.base.textFontWeight', node),
   };
 
-  const shape = getTheme('node.base.shape', graph.shapes, styles);
+  const shape = getTheme('node.base.shape', node, graph.shapes, styles);
 
   if (!shape) {
     throw new Error(`could not resolve shape on node with ID ${node.id}`);
