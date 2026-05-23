@@ -1,9 +1,9 @@
 import colors from '@magic/utils/colors';
 
 import type { BaseGraph } from '../base';
+import { BaseGraphNodeStyles } from '../themes/types';
 import type { GNode, SchemaItem } from '../types';
 
-export type SupportedNodeShapes = 'circle' | 'square';
 type PropsNeededFromGraph = 'shapes' | 'getTheme';
 
 export const getNodeSchematic = (
@@ -12,63 +12,25 @@ export const getNodeSchematic = (
 ): Omit<SchemaItem, 'priority'> | undefined => {
   const { getTheme } = graph;
 
-  const color = getTheme('nodeColor', node);
-  const borderColor = getTheme('nodeBorderColor', node);
-  const size = getTheme('nodeSize', node);
-  const borderWidth = getTheme('nodeBorderWidth', node);
-  const text = getTheme('nodeText', node);
-  const textSize = getTheme('nodeTextSize', node);
-  const textColor = getTheme('nodeTextColor', node);
-  const shape = getTheme('nodeShape', node);
+  const styles: BaseGraphNodeStyles = {
+    color: getTheme('node.base.color', node),
+    borderColor: getTheme('node.base.borderColor', node),
+    size: getTheme('node.base.size', node),
+    borderWidth: getTheme('node.base.borderWidth', node),
+    text: getTheme('node.base.text', node),
+    textSize: getTheme('node.base.textSize', node),
+    textColor: getTheme('node.base.textColor', node),
+    textFontWeight: getTheme('node.base.textFontWeight', node),
+  };
 
-  const circleShape = graph.shapes.circle({
-    id: node.id,
-    at: {
-      x: node.x,
-      y: node.y,
-    },
-    radius: size,
-    fillColor: color,
-    stroke: {
-      color: borderColor,
-      lineWidth: borderWidth,
-    },
-    textArea: {
-      textBlock: {
-        content: text,
-        fontSize: textSize,
-        fontWeight: 'bold',
-        color: textColor,
-      },
-      color: colors.TRANSPARENT,
-    },
-  });
+  const shape = getTheme('node.base.shape', graph.shapes, styles);
 
-  const squareShape = graph.shapes.square({
-    id: node.id,
-    at: {
-      x: node.x - size,
-      y: node.y - size,
-    },
-    size: size * 2,
-    fillColor: color,
-    stroke: {
-      color: borderColor,
-      lineWidth: borderWidth,
-    },
-    textArea: {
-      textBlock: {
-        content: text,
-        fontSize: textSize,
-        fontWeight: 'bold',
-        color: textColor,
-      },
-      color: colors.TRANSPARENT,
-    },
-  });
+  if (!shape) {
+    throw new Error(`could not resolve shape on node with ID ${node.id}`);
+  }
 
   return {
-    shape: shape === 'circle' ? circleShape : squareShape,
+    shape: shape,
     id: node.id,
     graphType: 'node',
   };

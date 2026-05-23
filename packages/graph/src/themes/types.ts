@@ -1,96 +1,108 @@
+import { AnimatedShapeControls } from '@magic/shapes/animation';
 import type { FontWeight } from '@magic/shapes/text/types';
-import type {
-  MaybeGetter,
-  MaybeGetterParams,
-  UnwrapMaybeGetter,
-} from '@magic/utils/maybeGetter';
+import { Shape } from '@magic/shapes/types';
+import type { MaybeGetter, UnwrapMaybeGetter } from '@magic/utils/maybeGetter';
+import { Builtin, PathValue, Paths } from 'ts-essentials';
 
 import type { NodeAnchor } from '../plugins/anchors/types';
-import type { SupportedNodeShapes } from '../schematics/node';
 import type { EdgeGetterOrValue, GNode, NodeGetterOrValue } from '../types';
 
-export type BaseGraphNodeTheme = {
-  nodeSize: number;
-  nodeBorderWidth: number;
-  nodeColor: string;
-  nodeBorderColor: string;
-  nodeText: string;
-  nodeTextSize: number;
-  nodeTextColor: string;
-  nodeShape: SupportedNodeShapes;
+export type TextStyles = {
+  text: string;
+  textSize: number;
+  textColor: string;
+  textFontWeight: FontWeight;
 };
 
-export type BaseGraphEdgeTheme = {
-  edgeColor: string;
-  edgeWidth: number;
-  edgeText: string;
-  edgeTextSize: number;
-  edgeTextColor: string;
-  edgeTextFontWeight: FontWeight;
+export type BaseGraphNodeStyles = TextStyles & {
+  size: number;
+  borderWidth: number;
+  borderColor: string;
+  color: string;
 };
 
-export type BaseGraphTheme = WrapWithNodeGetter<BaseGraphNodeTheme> &
-  WrapWithEdgeGetter<BaseGraphEdgeTheme> & {
-    graphBgColor: string;
-    graphBgPatternColor: string;
-  };
+export type BaseGraphNodeTheme = WrapWithNodeGetter<BaseGraphNodeStyles> & {
+  shape: (
+    node: GNode,
+    graphShapes: AnimatedShapeControls['shapes'],
+    nodeStyles: BaseGraphNodeStyles,
+  ) => Shape | void;
+};
 
-export type HistoryGraphTheme = {};
+export type BaseGraphEdgeStyles = TextStyles & {
+  color: string;
+  width: number;
+};
+
+type BaseGraphThemeGraphStyles = {
+  color: string;
+  patternColor: string;
+};
+
+export type BaseGraphTheme = {
+  node: BaseGraphNodeTheme;
+  edge: WrapWithEdgeGetter<BaseGraphEdgeStyles>;
+  graph: BaseGraphThemeGraphStyles;
+};
 
 export type FocusGraphTheme = {
-  nodeFocusColor: NodeGetterOrValue<string>;
-  nodeFocusBorderColor: NodeGetterOrValue<string>;
-  nodeFocusTextColor: NodeGetterOrValue<string>;
-  edgeFocusColor: EdgeGetterOrValue<string>;
-  edgeFocusTextColor: EdgeGetterOrValue<string>;
+  node: WrapWithNodeGetter<BaseGraphNodeTheme>;
+  edge: WrapWithEdgeGetter<BaseGraphEdgeStyles>;
 };
 
-export type DraggableGraphTheme = {};
-
 export type NodeAnchorGraphTheme = {
-  nodeAnchorRadius: NodeGetterOrValue<number>;
-  nodeAnchorColor: NodeGetterOrValue<string>;
-  nodeAnchorColorWhenParentFocused: NodeGetterOrValue<string>;
+  radius: NodeGetterOrValue<number>;
+  color: NodeGetterOrValue<string>;
+  colorWhenParentFocused: NodeGetterOrValue<string>;
   linkPreviewColor: MaybeGetter<string, [GNode, NodeAnchor]>;
   linkPreviewWidth: MaybeGetter<number, [GNode, NodeAnchor]>;
 };
 
 export type MarqueeGraphTheme = {
-  marqueeSelectionBoxColor: string;
-  marqueeSelectionBoxBorderColor: string;
-  marqueeEncapsulatedNodeBoxColor: string;
-  marqueeEncapsulatedNodeBoxBorderColor: string;
+  color: string;
+  borderColor: string;
+  encapsulatedNodeBoxColor: string;
+  encapsulatedNodeBoxBorderColor: string;
 };
 
-export type AnnotationGraphTheme = {};
+export type GraphTheme = {
+  node: {
+    base: BaseGraphTheme['node'];
+    focus: FocusGraphTheme['node'];
+  };
+  edge: {
+    base: BaseGraphTheme['edge'];
+    focus: FocusGraphTheme['edge'];
+  };
+  graph: BaseGraphTheme['graph'];
+  nodeAnchor: NodeAnchorGraphTheme;
+  marquee: MarqueeGraphTheme;
+};
 
-export type PersistentGraphTheme = {};
+type GraphThemePaths = Paths<GraphTheme>;
 
-export type GraphTheme = BaseGraphTheme &
-  HistoryGraphTheme &
-  FocusGraphTheme &
-  DraggableGraphTheme &
-  NodeAnchorGraphTheme &
-  MarqueeGraphTheme &
-  PersistentGraphTheme;
+type PathsMappingToBuiltIn<Object, T> = T extends T
+  ? PathValue<Object, T> extends Builtin
+    ? T
+    : never
+  : never;
+
+export type ValidGraphThemePaths = PathsMappingToBuiltIn<
+  GraphTheme,
+  GraphThemePaths
+>;
 
 /**
  * the raw theme object without any getters
  */
 export type GraphThemeRaw = {
-  // nodeText and edgeText are special cases which must remain as getters
-  [K in keyof GraphTheme]: K extends 'nodeText' | 'edgeText'
-    ? GraphTheme[K]
-    : UnwrapMaybeGetter<GraphTheme[K]>;
+  // node.base.text and edge.base.text are special cases which must remain as getters
+  [Path in ValidGraphThemePaths]: Path extends
+    | 'node.base.text'
+    | 'edge.base.text'
+    ? PathValue<GraphTheme, Path>
+    : UnwrapMaybeGetter<PathValue<GraphTheme, Path>>;
 };
-
-/**
- * decomposes MaybeGetter<T, K> such that it turns T into T | void
- */
-export type MaybeGetterOrVoid<T> = MaybeGetter<
-  UnwrapMaybeGetter<T> | void,
-  MaybeGetterParams<T>
->;
 
 type WrapWithNodeGetter<T extends Record<string, any>> = {
   [K in keyof T]: NodeGetterOrValue<T[K]>;
@@ -100,58 +112,75 @@ type WrapWithEdgeGetter<T extends Record<string, any>> = {
   [K in keyof T]: EdgeGetterOrValue<T[K]>;
 };
 
-export type ThemeMapEntry<T extends keyof GraphTheme> = {
-  value: MaybeGetterOrVoid<GraphTheme[T]>;
+export type ThemeMapEntry<StyleValue> = {
+  value: StyleValue;
   useThemeId: string;
 };
 
-export type FullThemeMap = {
-  [K in keyof GraphTheme]: ThemeMapEntry<K>[];
+type ThemeMapEntries<Object extends Record<string, Builtin>> = {
+  [Key in keyof Object]: ThemeMapEntry<Object[Key]>[];
 };
 
-export type PartialThemeMap = Partial<FullThemeMap>;
+type DeepThemeMapEntry<T> = [T] extends [Builtin]
+  ? ThemeMapEntry<T>[]
+  : T extends Array<infer U>
+    ? // handles nested arrays gracefully
+      Array<DeepThemeMapEntry<U>>
+    : T extends Function
+      ? // leaves methods alone if your theme has helpers
+        T
+      : T extends object
+        ? { [K in keyof T]: DeepThemeMapEntry<T[K]> }
+        : T;
+
+export type FullThemeMap = DeepThemeMapEntry<GraphTheme>;
+
+const textFields = (): ThemeMapEntries<TextStyles> => ({
+  text: [],
+  textColor: [],
+  textFontWeight: [],
+  textSize: [],
+});
+
+const nodeFields = (): ThemeMapEntries<BaseGraphNodeTheme> => ({
+  ...textFields(),
+  borderColor: [],
+  borderWidth: [],
+  color: [],
+  shape: [],
+  size: [],
+});
+
+const edgeFields = (): ThemeMapEntries<BaseGraphEdgeStyles> => ({
+  ...textFields(),
+  color: [],
+  width: [],
+});
 
 export const getInitialThemeMap = (): FullThemeMap => ({
-  /**
-   * base themes
-   */
-  nodeSize: [],
-  nodeBorderWidth: [],
-  nodeColor: [],
-  nodeBorderColor: [],
-  nodeFocusColor: [],
-  nodeFocusBorderColor: [],
-  nodeText: [],
-  nodeFocusTextColor: [],
-  nodeTextSize: [],
-  nodeTextColor: [],
-  nodeShape: [],
-  edgeColor: [],
-  edgeWidth: [],
-  edgeText: [],
-  edgeTextSize: [],
-  edgeTextColor: [],
-  edgeFocusTextColor: [],
-  edgeTextFontWeight: [],
-  edgeFocusColor: [],
-
-  graphBgColor: [],
-  graphBgPatternColor: [],
-
-  /**
-   * node anchor themes
-   */
-  nodeAnchorRadius: [],
-  nodeAnchorColor: [],
-  nodeAnchorColorWhenParentFocused: [],
-  linkPreviewColor: [],
-  linkPreviewWidth: [],
-
-  /**
-   * marquee themes
-   */
-  marqueeSelectionBoxColor: [],
-  marqueeSelectionBoxBorderColor: [],
-  marqueeEncapsulatedNodeBoxColor: [],
-  marqueeEncapsulatedNodeBoxBorderColor: [],
+  node: {
+    base: nodeFields(),
+    focus: nodeFields(),
+  },
+  edge: {
+    base: edgeFields(),
+    focus: edgeFields(),
+  },
+  graph: {
+    color: [],
+    patternColor: [],
+  },
+  nodeAnchor: {
+    radius: [],
+    color: [],
+    colorWhenParentFocused: [],
+    linkPreviewColor: [],
+    linkPreviewWidth: [],
+  },
+  marquee: {
+    color: [],
+    borderColor: [],
+    encapsulatedNodeBoxColor: [],
+    encapsulatedNodeBoxBorderColor: [],
+  },
 });
