@@ -14,7 +14,7 @@ const edgeSharedPink = {
   ...edgeShared,
 } as const;
 
-export const DARK_THEME: GraphTheme = {
+export const PINK_THEME: GraphTheme = {
   node: {
     base: {
       color: colors.PINK_100,

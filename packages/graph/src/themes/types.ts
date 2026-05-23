@@ -1,11 +1,20 @@
 import { AnimatedShapeControls } from '@magic/shapes/animation';
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types';
-import type { MaybeGetter, UnwrapMaybeGetter } from '@magic/utils/maybeGetter';
+import type { MaybeGetter } from '@magic/utils/maybeGetter';
 import { Builtin, PathValue, Paths } from 'ts-essentials';
 
+import { Ref } from 'vue';
+
 import type { NodeAnchor } from '../plugins/anchors/types';
-import type { EdgeGetterOrValue, GNode, NodeGetterOrValue } from '../types';
+import { GraphSettings } from '../settings';
+import type {
+  EdgeGetterOrValue,
+  GEdge,
+  GNode,
+  NodeGetterOrValue,
+} from '../types';
+import { ThemeGetter } from './getThemeResolver';
 
 export type TextStyles = {
   text: string;
@@ -21,17 +30,34 @@ export type BaseGraphNodeStyles = TextStyles & {
   color: string;
 };
 
+export type GraphInterface = {
+  shapes: AnimatedShapeControls['shapes'];
+  settings: Ref<GraphSettings>;
+  getTheme: ThemeGetter;
+  edges: Ref<GEdge[]>;
+  getNode: (id: GNode['id']) => GNode | undefined;
+  getEdge: (id: GEdge['id']) => GEdge | undefined;
+};
+
 export type BaseGraphNodeTheme = WrapWithNodeGetter<BaseGraphNodeStyles> & {
   shape: (
     node: GNode,
-    graphShapes: AnimatedShapeControls['shapes'],
-    nodeStyles: BaseGraphNodeStyles,
+    graphShapes: GraphInterface,
+    styles: BaseGraphNodeStyles,
   ) => Shape | void;
 };
 
 export type BaseGraphEdgeStyles = TextStyles & {
   color: string;
   width: number;
+};
+
+export type BaseGraphEdgeTheme = WrapWithEdgeGetter<BaseGraphEdgeStyles> & {
+  shape: (
+    edge: GEdge,
+    graphShapes: GraphInterface,
+    styles: BaseGraphEdgeStyles,
+  ) => Shape | void;
 };
 
 type BaseGraphThemeGraphStyles = {
@@ -41,13 +67,13 @@ type BaseGraphThemeGraphStyles = {
 
 export type BaseGraphTheme = {
   node: BaseGraphNodeTheme;
-  edge: WrapWithEdgeGetter<BaseGraphEdgeStyles>;
+  edge: BaseGraphEdgeTheme;
   graph: BaseGraphThemeGraphStyles;
 };
 
 export type FocusGraphTheme = {
-  node: WrapWithNodeGetter<BaseGraphNodeTheme>;
-  edge: WrapWithEdgeGetter<BaseGraphEdgeStyles>;
+  node: BaseGraphNodeTheme;
+  edge: BaseGraphEdgeTheme;
 };
 
 export type NodeAnchorGraphTheme = {
@@ -92,18 +118,6 @@ export type ValidGraphThemePaths = PathsMappingToBuiltIn<
   GraphThemePaths
 >;
 
-/**
- * the raw theme object without any getters
- */
-export type GraphThemeRaw = {
-  // node.base.text and edge.base.text are special cases which must remain as getters
-  [Path in ValidGraphThemePaths]: Path extends
-    | 'node.base.text'
-    | 'edge.base.text'
-    ? PathValue<GraphTheme, Path>
-    : UnwrapMaybeGetter<PathValue<GraphTheme, Path>>;
-};
-
 type WrapWithNodeGetter<T extends Record<string, any>> = {
   [K in keyof T]: NodeGetterOrValue<T[K]>;
 };
@@ -144,15 +158,16 @@ const textFields = (): ThemeMapEntries<TextStyles> => ({
 
 const nodeFields = (): ThemeMapEntries<BaseGraphNodeTheme> => ({
   ...textFields(),
+  shape: [],
   borderColor: [],
   borderWidth: [],
   color: [],
-  shape: [],
   size: [],
 });
 
-const edgeFields = (): ThemeMapEntries<BaseGraphEdgeStyles> => ({
+const edgeFields = (): ThemeMapEntries<BaseGraphEdgeTheme> => ({
   ...textFields(),
+  shape: [],
   color: [],
   width: [],
 });
