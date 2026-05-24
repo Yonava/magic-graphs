@@ -37,7 +37,7 @@ export const useTheme = <TGraph extends Pick<Graph, 'themeMap'>>(
    *
    * @param prop - the theme property you want to remove
    */
-  const removeTheme = (prop: GraphThemeKey) => {
+  const removeTheme = (prop: ValidGraphThemePath) => {
     const themeMapEntries = graph.themeMap[prop];
     const index = themeMapEntries.findIndex(
       (entry) => entry.useThemeId === themeId,

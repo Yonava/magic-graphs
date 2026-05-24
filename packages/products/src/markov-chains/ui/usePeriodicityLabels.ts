@@ -16,11 +16,11 @@ export const usePeriodicityLabels = (graph: Graph, markov: MarkovChain) => {
   };
 
   const label = () => {
-    setTheme('nodeText', nodeText);
+    setTheme('node.base.text', nodeText);
   };
 
   const unlabel = () => {
-    removeTheme('nodeText');
+    removeTheme('node.base.text');
   };
 
   return {

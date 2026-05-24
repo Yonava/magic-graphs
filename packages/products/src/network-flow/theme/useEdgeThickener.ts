@@ -31,8 +31,8 @@ export const useEdgeThickener = (graph: Graph, themeId = FLOW_USETHEME_ID) => {
     return (MAX_THICKNESS - MIN_THICKNESS) * percentage + MIN_THICKNESS;
   };
 
-  const activate = () => setTheme('edgeWidth', thickener);
-  const deactivate = () => removeTheme('edgeWidth');
+  const activate = () => setTheme('edge.base.width', thickener);
+  const deactivate = () => removeTheme('edge.base.width');
 
   onUnmounted(deactivate);
 

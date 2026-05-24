@@ -14,7 +14,7 @@ const edgeSharedLight = {
   ...edgeShared,
 } as const;
 
-export const LIGHT_THEME: GraphTheme = {
+export const LIGHT_THEME = {
   node: {
     base: {
       color: colors.GRAY_50,
@@ -53,4 +53,4 @@ export const LIGHT_THEME: GraphTheme = {
     linkPreviewColor: colors.BLACK,
     ...nodeAnchorShared,
   },
-};
+} as const satisfies GraphTheme;

@@ -14,7 +14,7 @@ const edgeSharedPink = {
   ...edgeShared,
 } as const;
 
-export const PINK_THEME: GraphTheme = {
+export const PINK_THEME = {
   node: {
     base: {
       color: colors.PINK_100,
@@ -55,4 +55,4 @@ export const PINK_THEME: GraphTheme = {
     linkPreviewColor: colors.PINK_900,
     ...nodeAnchorShared,
   },
-};
+} as const satisfies GraphTheme;
