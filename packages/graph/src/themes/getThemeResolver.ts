@@ -26,7 +26,7 @@ export type UnwrapThemeEntry<ThemeMapEntries> =
       : Parameters<Extract<ThemeMapEntries[number]['value'], AnyFunction>>
     : [];
 
-const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
+export const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
   obj: Obj,
   path: Path,
 ): PathValue<Obj, Path> | undefined =>
