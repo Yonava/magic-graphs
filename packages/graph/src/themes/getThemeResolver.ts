@@ -6,10 +6,10 @@ import type { Ref } from 'vue';
 
 import type { GraphTheme, GraphThemeName } from '../themes';
 import { THEMES } from '../themes';
-import type {
-  FullThemeMap,
-  ThemeMapEntry,
-  ValidGraphThemePath,
+import {
+  type FullThemeMap,
+  type ThemeMapEntry,
+  type ValidGraphThemePath,
 } from '../themes/types';
 
 export type ResolveThemeMap<Path extends ValidGraphThemePath> = PathValue<
@@ -52,9 +52,9 @@ export function getThemeResolver(
     }
 
     const themeMapEntry = themeMapEntries.findLast((themeMapEntryItem) => {
-      const themeGetterOrValue = themeMapEntryItem.value;
-      const themeValue = getValue<typeof themeGetterOrValue, ThemeArgs>(
-        themeGetterOrValue,
+      const getterOrValue = themeMapEntryItem.value;
+      const themeValue = getValue<typeof getterOrValue, ThemeArgs>(
+        getterOrValue,
         ...themeArgs,
       );
 
@@ -77,6 +77,10 @@ export function getThemeResolver(
 
     if (!value) {
       throw new Error('Value unresolved');
+    }
+
+    if (themeMapPath === 'node.base.shape') {
+      // console.log('value', value);
     }
 
     return value;

@@ -28,7 +28,6 @@ export const useTheme = <TGraph extends Pick<Graph, 'themeMap'>>(
     themePath: Path,
     value: ResolveThemeMap<Path>[number]['value'],
   ) => {
-    removeTheme(themePath);
     const themeMapEntries = getDataFromNestedPath(graph.themeMap, themePath);
     if (!themeMapEntries) {
       console.warn(

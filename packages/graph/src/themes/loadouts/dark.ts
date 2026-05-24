@@ -50,8 +50,8 @@ export const DARK_THEME = {
     encapsulatedNodeBoxColor: colors.RED_700 + '20',
   },
   nodeAnchor: {
-    colorWhenParentFocused: colors.RED_900,
     color: colors.GRAY_900,
+    colorWhenParentFocused: colors.RED_900,
     linkPreviewColor: colors.BLACK,
     ...nodeAnchorShared,
   },

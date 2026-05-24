@@ -35,11 +35,7 @@ export type GraphInterface = {
 };
 
 export type BaseGraphNodeTheme = WrapWithNodeGetter<BaseGraphNodeStyles> & {
-  shape: (
-    node: GNode,
-    graph: GraphInterface,
-    styles: BaseGraphNodeStyles,
-  ) => Shape | void;
+  shape: (node: GNode, graph: GraphInterface) => Shape | void;
 };
 
 export type BaseGraphEdgeStyles = TextStyles & {
@@ -48,11 +44,7 @@ export type BaseGraphEdgeStyles = TextStyles & {
 };
 
 export type BaseGraphEdgeTheme = WrapWithEdgeGetter<BaseGraphEdgeStyles> & {
-  shape: (
-    edge: GEdge,
-    graph: GraphInterface,
-    styles: BaseGraphEdgeStyles,
-  ) => Shape | void;
+  shape: (edge: GEdge, graph: GraphInterface) => Shape | void;
 };
 
 type BaseGraphThemeGraphStyles = {

@@ -2,18 +2,15 @@ import { getLargestAngularSpace } from '@magic/shapes/helpers';
 import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
 
-import { GraphTheme } from '../..';
+import { GraphTheme, resolveThemeForEdge } from '../..';
 import { getConnectedNodes, getEdgesAlongPath } from '../../../helpers';
 import { GEdge } from '../../../types';
 import { textDefaults } from './text';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
-const edgeShape: GraphTheme['edge']['base']['shape'] = (
-  edge,
-  graph,
-  styles,
-) => {
+const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
+  const styles = resolveThemeForEdge(graph.getTheme, edge);
   const { displayEdgeLabels, isGraphDirected } = graph.settings.value;
 
   const [fromNode, toNode] = getConnectedNodes(edge.id, graph);

@@ -6,9 +6,7 @@ export const getNodeSchematic = (
   node: GNode,
   graph: GraphInterface,
 ): Omit<SchemaItem, 'priority'> | undefined => {
-  const styles: BaseGraphNodeStyles = resolveThemeForNode(graph.getTheme, node);
-  const shape = graph.getTheme('node.base.shape', node, graph, styles);
-
+  const shape = graph.getTheme('node.base.shape', node, graph);
   if (!shape) return;
 
   return {

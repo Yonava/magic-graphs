@@ -1,15 +1,13 @@
 import colors from '@magic/utils/colors';
 
-import { GraphTheme } from '../..';
+import { GraphTheme, resolveThemeForNode } from '../..';
 import { GNode } from '../../../types';
 import { textDefaults } from './text';
 
-const nodeCircle: GraphTheme['node']['base']['shape'] = (
-  node,
-  shapes,
-  styles,
-) =>
-  shapes.circle({
+const nodeCircle: GraphTheme['node']['base']['shape'] = (node, graph) => {
+  const styles = resolveThemeForNode(graph.getTheme, node);
+
+  return graph.shapes.circle({
     id: node.id,
     at: {
       x: node.x,
@@ -31,6 +29,7 @@ const nodeCircle: GraphTheme['node']['base']['shape'] = (
       color: colors.TRANSPARENT,
     },
   });
+};
 
 export const nodeShared = {
   ...textDefaults,
