@@ -206,7 +206,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     );
 
     const focusWidth = getTheme(
-      'nodeAnchor.base.linkPreviewWidth',
+      'nodeAnchor.focus.linkPreviewWidth',
       parentNode.value,
       currentDraggingAnchor.value,
     );

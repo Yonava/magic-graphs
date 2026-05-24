@@ -122,7 +122,7 @@ export const useGraphTutorial = (
   return {
     sequence,
     step: computed(() => stepIndex.value),
-    setStep: (step: number) => (stepIndex.value = step),
+    setStep: (step) => (stepIndex.value = step),
     paused: tutorialPaused,
     nextStep: () => stepIndex.value++,
     prevStep: () => stepIndex.value--,
