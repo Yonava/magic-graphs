@@ -5,12 +5,12 @@ import { readonly, ref } from 'vue';
 export const useGraphCanvasColor = (graph: Graph) => {
   const { subscribe, getTheme } = graph;
 
-  const patternColor = ref(getTheme('graphBgPatternColor'));
-  const bgColor = ref(getTheme('graphBgColor'));
+  const patternColor = ref(getTheme('graph.patternColor'));
+  const bgColor = ref(getTheme('graph.color'));
 
   const changeCanvasColor = async () => {
-    patternColor.value = getTheme('graphBgPatternColor');
-    bgColor.value = getTheme('graphBgColor');
+    patternColor.value = getTheme('graph.patternColor');
+    bgColor.value = getTheme('graph.color');
   };
 
   subscribe('onThemeChange', changeCanvasColor);

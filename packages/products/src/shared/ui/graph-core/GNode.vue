@@ -46,15 +46,15 @@
       'cursor-pointer',
     ]"
     :style="{
-      color: theme.nodeTextColor,
-      border: `${borderSize}px solid ${theme.nodeBorderColor}`,
-      backgroundColor: theme.nodeColor,
+      color: theme.textColor,
+      border: `${borderSize}px solid ${theme.borderColor}`,
+      backgroundColor: theme.color,
       height: `${size}px`,
       width: `${size}px`,
     }"
   >
     <slot>
-      {{ theme.nodeText }}
+      {{ theme.text }}
     </slot>
   </div>
 </template>
