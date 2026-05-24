@@ -48,9 +48,15 @@ export const LIGHT_THEME = {
     encapsulatedNodeBoxColor: colors.BLUE_700 + '05',
   },
   nodeAnchor: {
-    color: colors.BLACK,
-    colorWhenParentFocused: colors.BLUE_900,
-    linkPreviewColor: colors.BLACK,
-    ...nodeAnchorShared,
+    base: {
+      color: colors.BLACK,
+      linkPreviewColor: colors.BLACK,
+      ...nodeAnchorShared,
+    },
+    focus: {
+      color: colors.BLUE_900,
+      linkPreviewColor: colors.BLACK,
+      ...nodeAnchorShared,
+    },
   },
 } as const satisfies GraphTheme;

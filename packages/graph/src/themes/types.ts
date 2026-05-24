@@ -1,6 +1,7 @@
 import { AnimatedShapeControls } from '@magic/shapes/animation';
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types';
+import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter';
 import { Builtin, PathValue, Paths } from 'ts-essentials';
 
@@ -63,12 +64,22 @@ export type FocusGraphTheme = {
   edge: BaseGraphEdgeTheme;
 };
 
-export type NodeAnchorGraphTheme = {
-  radius: NodeGetterOrValue<number>;
-  color: NodeGetterOrValue<string>;
-  colorWhenParentFocused: NodeGetterOrValue<string>;
+type NodeAnchorGraphStyles = {
+  radius: number;
+  color: Color;
+};
+
+type NodeAnchorLinkPreviewStyles = {
   linkPreviewColor: MaybeGetter<string, [GNode, NodeAnchor]>;
   linkPreviewWidth: MaybeGetter<number, [GNode, NodeAnchor]>;
+};
+
+type NodeAnchorGraphThemeRecord = WrapWithNodeGetter<NodeAnchorGraphStyles> &
+  NodeAnchorLinkPreviewStyles;
+
+export type NodeAnchorGraphTheme = {
+  base: NodeAnchorGraphThemeRecord;
+  focus: NodeAnchorGraphThemeRecord;
 };
 
 export type MarqueeGraphTheme = {
@@ -162,6 +173,13 @@ const edgeFields = (): ThemeMapEntries<BaseGraphEdgeTheme> => ({
   width: [],
 });
 
+const nodeAnchorFields = (): ThemeMapEntries<NodeAnchorGraphThemeRecord> => ({
+  color: [],
+  radius: [],
+  linkPreviewColor: [],
+  linkPreviewWidth: [],
+});
+
 export const getInitialThemeMap = (): FullThemeMap => ({
   node: {
     base: nodeFields(),
@@ -176,11 +194,8 @@ export const getInitialThemeMap = (): FullThemeMap => ({
     patternColor: [],
   },
   nodeAnchor: {
-    radius: [],
-    color: [],
-    colorWhenParentFocused: [],
-    linkPreviewColor: [],
-    linkPreviewWidth: [],
+    base: nodeAnchorFields(),
+    focus: nodeAnchorFields(),
   },
   marquee: {
     color: [],

@@ -4,9 +4,7 @@ import { LIGHT_THEME } from '../themes/loadouts/light';
 import { PINK_THEME } from '../themes/loadouts/pink';
 import type {
   BaseGraphEdgeStyles,
-  BaseGraphEdgeTheme,
   BaseGraphNodeStyles,
-  BaseGraphNodeTheme,
   GraphTheme as GraphThemeImport,
 } from '../themes/types';
 import type { GEdge, GNode } from '../types';

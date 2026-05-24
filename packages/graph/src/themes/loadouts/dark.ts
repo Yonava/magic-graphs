@@ -50,9 +50,15 @@ export const DARK_THEME = {
     encapsulatedNodeBoxColor: colors.RED_700 + '20',
   },
   nodeAnchor: {
-    color: colors.GRAY_900,
-    colorWhenParentFocused: colors.RED_900,
-    linkPreviewColor: colors.BLACK,
-    ...nodeAnchorShared,
+    base: {
+      color: colors.GRAY_900,
+      linkPreviewColor: colors.BLACK,
+      ...nodeAnchorShared,
+    },
+    focus: {
+      color: colors.RED_900,
+      linkPreviewColor: colors.BLACK,
+      ...nodeAnchorShared,
+    },
   },
 } as const satisfies GraphTheme;

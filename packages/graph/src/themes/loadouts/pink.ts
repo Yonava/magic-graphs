@@ -50,9 +50,15 @@ export const PINK_THEME = {
     encapsulatedNodeBoxColor: colors.PINK_700 + '05',
   },
   nodeAnchor: {
-    color: colors.PINK_500,
-    colorWhenParentFocused: colors.PURPLE_700,
-    linkPreviewColor: colors.PINK_900,
-    ...nodeAnchorShared,
+    base: {
+      color: colors.PINK_500,
+      linkPreviewColor: colors.PINK_900,
+      ...nodeAnchorShared,
+    },
+    focus: {
+      color: colors.PURPLE_700,
+      linkPreviewColor: colors.PINK_900,
+      ...nodeAnchorShared,
+    },
   },
 } as const satisfies GraphTheme;
