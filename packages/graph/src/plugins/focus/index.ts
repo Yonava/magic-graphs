@@ -5,7 +5,6 @@ import { computed, readonly, ref } from 'vue';
 
 import type { BaseGraph } from '../../base';
 import type { FocusOption, GraphMouseEvent } from '../../base/types';
-import { resolveThemeForNode } from '../../themes';
 import { ValidGraphThemePath } from '../../themes/types';
 import { useTheme } from '../../themes/useTheme';
 import type { GEdge, GNode, SchemaItem } from '../../types';
@@ -156,10 +155,7 @@ export const useFocus = (graph: BaseGraph) => {
       if (!isFocused(node.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.getTheme(nodeFocusPath, node, {
-        shapes: graph.shapes,
-        getTheme: graph.getTheme,
-      }) as any;
+      return graph.getTheme(nodeFocusPath, node, graph) as any;
     });
   }
 
@@ -168,7 +164,7 @@ export const useFocus = (graph: BaseGraph) => {
       if (!isFocused(edge.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.getTheme(edgeFocusPath, edge) as any;
+      return graph.getTheme(edgeFocusPath, edge, graph) as any;
     });
   }
 

@@ -28,6 +28,13 @@ export const useTheme = <TGraph extends Pick<Graph, 'themeMap'>>(
     themePath: Path,
     value: ResolveThemeMap<Path>[number]['value'],
   ) => {
+    if (activeThemePaths.has(themePath)) {
+      console.warn(
+        `Attempted to set theme property ${themePath} multiple times with the same useTheme instance`,
+      );
+      return;
+    }
+
     const themeMapEntries = getDataFromNestedPath(graph.themeMap, themePath);
     if (!themeMapEntries) {
       console.warn(
@@ -35,6 +42,7 @@ export const useTheme = <TGraph extends Pick<Graph, 'themeMap'>>(
       );
       return;
     }
+
     themeMapEntries.push({
       // @ts-expect-error Safe: The consumer arguments are strictly typed to match 'themePath',
       // but TS cannot internally correlate the dynamic lookup array with the resolved generic union.
