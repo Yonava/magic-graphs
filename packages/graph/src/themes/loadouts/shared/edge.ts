@@ -84,7 +84,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     activeColor: graphColor,
     textBlock: {
       content: styles.text,
-      color: styles.color,
+      color: styles.textColor,
       fontSize: styles.textSize,
       fontWeight: styles.textFontWeight,
     },

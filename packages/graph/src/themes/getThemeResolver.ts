@@ -79,10 +79,6 @@ export function getThemeResolver(
       throw new Error('Value unresolved');
     }
 
-    if (themeMapPath === 'node.base.shape') {
-      // console.log('value', value);
-    }
-
     return value;
   };
 
