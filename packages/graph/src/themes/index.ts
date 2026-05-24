@@ -3,11 +3,10 @@ import { DARK_THEME } from '../themes/loadouts/dark';
 import { LIGHT_THEME } from '../themes/loadouts/light';
 import { PINK_THEME } from '../themes/loadouts/pink';
 import type {
-  BaseGraphEdgeTheme,
-  BaseGraphNodeTheme,
+  BaseGraphNodeStyles,
   GraphTheme as GraphThemeImport,
 } from '../themes/types';
-import type { GEdge, GNode } from '../types';
+import type { GNode } from '../types';
 
 export type GraphTheme = GraphThemeImport;
 export type GraphThemeKey = keyof GraphTheme;
@@ -32,32 +31,13 @@ export const THEME_NAMES = Object.keys(THEMES) as GraphThemeName[];
 export const resolveThemeForNode = (
   getTheme: ThemeGetter,
   node: GNode,
-): BaseGraphNodeTheme => ({
-  nodeSize: getTheme('nodeSize', node),
-  nodeBorderWidth: getTheme('nodeBorderWidth', node),
-  nodeColor: getTheme('nodeColor', node),
-  nodeBorderColor: getTheme('nodeBorderColor', node),
-  nodeTextSize: getTheme('nodeTextSize', node),
-  nodeTextColor: getTheme('nodeTextColor', node),
-  nodeText: getTheme('nodeText', node),
-  nodeShape: getTheme('nodeShape', node),
-});
-
-/**
- * gets the theme attributes for a GEdge at the point in time the function is called
- *
- * @param getTheme - the theme getter function
- * @param edge - the edge to get the theme for
- * @returns the theme attributes for the edge
- */
-export const resolveThemeForEdge = (
-  getTheme: ThemeGetter,
-  edge: GEdge,
-): BaseGraphEdgeTheme => ({
-  edgeWidth: getTheme('edgeWidth', edge),
-  edgeColor: getTheme('edgeColor', edge),
-  edgeText: getTheme('edgeText', edge),
-  edgeTextSize: getTheme('edgeTextSize', edge),
-  edgeTextColor: getTheme('edgeTextColor', edge),
-  edgeTextFontWeight: getTheme('edgeTextFontWeight', edge),
+): BaseGraphNodeStyles => ({
+  size: getTheme('node.base.size', node),
+  borderWidth: getTheme('node.base.borderWidth', node),
+  color: getTheme('node.base.color', node),
+  borderColor: getTheme('node.base.borderColor', node),
+  textSize: getTheme('node.base.textSize', node),
+  textColor: getTheme('node.base.textColor', node),
+  text: getTheme('node.base.text', node),
+  textFontWeight: getTheme('node.base.textFontWeight', node),
 });
