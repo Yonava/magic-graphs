@@ -138,8 +138,7 @@ export const getWeightedAdjacencyList = (graph: AdjacencyListGraphArg) => {
     (acc, [keyNodeId, toNodeIds]) => {
       acc[keyNodeId] = toNodeIds.map((toNodeId) => ({
         ...graph.getNode(toNodeId)!,
-        // wrong! should be direction aware!
-        weight: getEdgesAlongPath(keyNodeId, toNodeId, graph),
+        weight: graph.helpers.nodes.getEdgeBetween(keyNodeId, toNodeId)!.weight,
       }));
       return acc;
     },
