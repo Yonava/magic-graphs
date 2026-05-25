@@ -36,13 +36,13 @@ export const useSourceSinkTheme = (
 
   const stylize = () => {
     setTheme('node.base.borderColor', colorSourceSink);
-    setTheme('nodeAnchor.color', colorSourceSink);
+    setTheme('nodeAnchor.base.color', colorSourceSink);
     setTheme('node.base.text', labelSourceSink);
   };
 
   const destylize = () => {
     removeTheme('node.base.borderColor');
-    removeTheme('nodeAnchor.color');
+    removeTheme('nodeAnchor.base.color');
     removeTheme('node.base.text');
   };
 

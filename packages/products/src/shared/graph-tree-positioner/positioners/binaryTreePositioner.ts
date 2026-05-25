@@ -74,7 +74,6 @@ const getTreeIndexToNodeId = ({
 }) => {
   const treeIndexToNodeId: MaybeNodeId[] = [];
 
-  const { getChildrenOfNode } = graph.helpers;
   let nodesAtDepth: MaybeNodeId[] = [rootNode.id];
 
   for (let i = 0; i <= treeDepth; i++) {
@@ -86,7 +85,7 @@ const getTreeIndexToNodeId = ({
         nodesAtNextDepth.push(undefined);
         continue;
       }
-      const children = getChildrenOfNode(maybeNodeId);
+      const children = graph.helpers.nodes.getChildren(maybeNodeId);
       nodesAtNextDepth.push(children[0]?.id);
       nodesAtNextDepth.push(children[1]?.id);
     }

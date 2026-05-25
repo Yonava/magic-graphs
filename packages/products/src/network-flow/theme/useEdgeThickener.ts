@@ -19,10 +19,9 @@ const ZERO_THICKNESS = 1;
  */
 export const useEdgeThickener = (graph: Graph, themeId = FLOW_USETHEME_ID) => {
   const { setTheme, removeTheme } = useTheme(graph, themeId);
-  const { getEdgeWeight } = graph.helpers;
 
   const thickener = (edge: GEdge) => {
-    const edgeWeight = getEdgeWeight(edge.id).valueOf();
+    const edgeWeight = graph.helpers.edges.getWeight(edge.id).valueOf();
     if (edgeWeight === 0) return ZERO_THICKNESS;
     const adjustedWeight = edgeWeight * 2;
     const rawPercentage =

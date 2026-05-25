@@ -11,7 +11,7 @@ const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
 // forked from graph helpers because graph helpers require BaseGraph instance and
 // schematics are being created from inside the base graph
-// TODO remove fork when PR from GH issue "[graph] proposal for centralized dynamic theme resolution API" lands
+// TODO remove fork when PR for https://github.com/Yonava/magic-graphs/issues/574 lands
 const getEdgesBetweenConnectedNodes =
   (graph: GraphInterface) => (nodeId1: GNode['id'], nodeId2: GNode['id']) => {
     const isConnecting = (edge: GEdge) => {

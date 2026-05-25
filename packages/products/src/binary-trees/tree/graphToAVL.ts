@@ -12,7 +12,7 @@ export const syncGraphWithTree = (graph: Graph, tree: AVLTree) => {
   tree.reset();
   if (graph.nodes.value.length === 0) return;
 
-  const { getInboundEdges, getChildrenOfNode } = graph.helpers;
+  const { getInboundEdges, getChildren } = graph.helpers.nodes;
   const treeRoot = graph.nodes.value.find(
     (node) => getInboundEdges(node.id).length === 0,
   );
@@ -29,6 +29,6 @@ export const syncGraphWithTree = (graph: Graph, tree: AVLTree) => {
     const node = q.shift();
     if (!node) continue;
     tree.insert(Number(node.label), false);
-    q.push(...getChildrenOfNode(node.id));
+    q.push(...getChildren(node.id));
   }
 };

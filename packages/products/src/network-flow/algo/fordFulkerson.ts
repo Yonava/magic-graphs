@@ -18,7 +18,7 @@ export const fordFulkerson = (
   },
 ) => {
   const edgeIdToWeight = graph.edges.value.reduce<FlowTrace>((record, edge) => {
-    record[edge.id] = graph.helpers.getEdgeWeight(edge.id);
+    record[edge.id] = graph.helpers.edges.getWeight(edge.id);
     return record;
   }, {});
 
