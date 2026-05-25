@@ -20,13 +20,13 @@ export const useMarkovColorizer = (graph: Graph, markov: MarkovChain) => {
   const colorize = () => {
     sccColorizer.color();
     setTheme('node.base.borderColor', colorNodeBorder);
-    setTheme('nodeAnchor.color', colorNodeBorder);
+    setTheme('nodeAnchor.base.color', colorNodeBorder);
   };
 
   const decolorize = () => {
     sccColorizer.uncolor();
     removeTheme('node.base.borderColor');
-    removeTheme('nodeAnchor.color');
+    removeTheme('nodeAnchor.base.color');
   };
 
   return {

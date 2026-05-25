@@ -11,9 +11,9 @@ export const MARKOV_CHAIN_GRAPH_SETTINGS: Partial<GraphSettings> = {
     // is a divide by zero operation
     try {
       // TODO make the amount to simply configurable by the user
-      const fracStr = new Fraction(input).simplify(0.001).toFraction();
-      if (fracStr === '0') return; // 0 edges make no sense in a markov chain
-      return fracStr;
+      const fraction = new Fraction(input).simplify(0.001);
+      if (fraction.valueOf() === 0) return; // 0 edges make no sense in a markov chain
+      return fraction;
     } catch {}
   },
 };

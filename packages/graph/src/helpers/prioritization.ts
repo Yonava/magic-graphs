@@ -1,8 +1,4 @@
-import { BaseGraph } from '../base';
 import { SchemaItem } from '../types';
-import { edgeHelpers } from './edge';
-import { nodeHelpers } from './node';
-import { EdgeHelpers, GraphHelpers, NodeHelpers } from './types';
 
 /**
  * modifies the priority of the items passed in
@@ -42,14 +38,3 @@ export const prioritizeNode = (id: SchemaItem['id'], items: SchemaItem[]) => {
   const nodeSchemas = items.filter((item) => item.graphType === 'node');
   prioritize(id, nodeSchemas);
 };
-
-export const useGraphHelpers = (graph: BaseGraph): GraphHelpers => ({
-  nodes: Object.keys(nodeHelpers).reduce(
-    (acc, curr) => ({ ...acc, curr: (nodeHelpers as any)[curr](graph) }),
-    {} as NodeHelpers,
-  ),
-  edges: Object.keys(edgeHelpers).reduce(
-    (acc, curr) => ({ ...acc, curr: (edgeHelpers as any)[curr](graph) }),
-    {} as EdgeHelpers,
-  ),
-});

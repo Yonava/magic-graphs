@@ -46,7 +46,13 @@ export type BaseGraphSettings = {
 export const DEFAULT_BASE_SETTINGS: BaseGraphSettings = {
   isGraphWeighted: true,
   edgeLabelsEditable: true,
-  edgeInputToWeight: (input: string) => new Fraction(input),
+  edgeInputToWeight: (input: string) => {
+    // fraction throws an error if the input cannot be parsed or
+    // is a divide by zero operation
+    try {
+      return new Fraction(input);
+    } catch {}
+  },
   newNodeLabelGetter: null,
   isGraphDirected: true,
   animations: () => ({}),
