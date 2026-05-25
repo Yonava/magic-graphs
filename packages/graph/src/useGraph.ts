@@ -1,7 +1,7 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 
 import { useBaseGraph } from './base';
-import { useGraphHelpers } from './helpers/useHelpers';
+import { useGraphHelpers } from './helpers';
 import { useNodeAnchors } from './plugins/anchors';
 import { useAnnotations } from './plugins/annotations';
 import { useCharacteristics } from './plugins/characteristics';

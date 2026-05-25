@@ -1,6 +1,7 @@
 import type { Fraction } from 'mathjs';
 
 import { BaseGraph } from '../base';
+import type { GraphSettings } from '../settings';
 import type { GEdge, GNode } from '../types';
 
 export type EdgeHelpers = {
@@ -77,6 +78,15 @@ export type NodeHelpers = {
     node1Id: GNode['id'],
     node2Id: GNode['id'],
   ) => GEdge[];
+  /**
+   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware getter that returns the edge linking a source node to a target node
+   *
+   * ℹ️ if the graph is undirected, this will return the edge regardless of whether it originates from `fromNodeId` or `toNodeId`
+   */
+  getEdgeBetween: (
+    fromNodeId: GNode['id'],
+    toNodeId: GNode['id'],
+  ) => GEdge | undefined;
 };
 
 export type CurryWithBaseGraph<Helpers> = {

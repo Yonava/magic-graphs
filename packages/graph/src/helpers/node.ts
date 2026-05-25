@@ -20,7 +20,7 @@ const getOutboundEdges: CurriedNodeHelpers['getOutboundEdges'] =
     return graph.edges.value.filter(edgeFilter);
   };
 
-const getInboundEdges: CurriedNodeHelpers['getOutboundEdges'] =
+const getInboundEdges: CurriedNodeHelpers['getInboundEdges'] =
   (graph) => (nodeId) => {
     const { isGraphDirected } = graph.settings.value;
 
@@ -57,6 +57,9 @@ const getConnectedEdges: CurriedNodeHelpers['getConnectedEdges'] =
       (edge) => edge.to === nodeId || edge.from === nodeId,
     );
 
+// TODO needs to become isGraphDirected aware still
+// which means hardening them to infinite recursive loop edge cases
+// see https://github.com/Yonava/magic-graphs/issues/575
 const getAncestors: CurriedNodeHelpers['getAncestors'] =
   (graph) =>
   (nodeId): GNode[] => {
@@ -67,6 +70,9 @@ const getAncestors: CurriedNodeHelpers['getAncestors'] =
     return ancestors;
   };
 
+// TODO needs to become isGraphDirected aware still
+// which means hardening them to infinite recursive loop edge cases
+// see https://github.com/Yonava/magic-graphs/issues/575
 const getDescendants: CurriedNodeHelpers['getDescendants'] =
   (graph) =>
   (nodeId): GNode[] => {
@@ -77,11 +83,30 @@ const getDescendants: CurriedNodeHelpers['getDescendants'] =
     return descendants;
   };
 
+const getEdgeBetween: CurriedNodeHelpers['getEdgeBetween'] =
+  (graph) => (fromNodeId, toNodeId) => {
+    const { isGraphDirected } = graph.settings.value;
+
+    return graph.edges.value.find((edge) => {
+      if (isGraphDirected) {
+        // Strict mapping: must go directly from source to target
+        return edge.from === fromNodeId && edge.to === toNodeId;
+      } else {
+        // Undirected mapping: connection in either direction counts
+        return (
+          (edge.from === fromNodeId && edge.to === toNodeId) ||
+          (edge.from === toNodeId && edge.to === fromNodeId)
+        );
+      }
+    });
+  };
+
 export const nodeHelpers: CurriedNodeHelpers = {
   getAncestors,
   getChildren,
   getConnectedEdges,
   getDescendants,
+  getEdgeBetween,
   getEdgesBetweenConnectedNodes: (graph) => (nodeId1, nodeId2) => {
     const isConnecting = (edge: GEdge) => {
       const fromNode1ToNode2 = edge.from === nodeId1 && edge.to === nodeId2;

@@ -8,7 +8,6 @@ import type { PartiallyPartial } from '@magic/utils/types';
 import type { Ref } from 'vue';
 
 import type { Emitter } from '../events';
-import { getConnectedEdges } from '../helpers';
 import { nodeLetterLabelGetter } from '../labels';
 import type { GraphSettings } from '../settings';
 import type { GEdge, GNode } from '../types';
@@ -356,11 +355,9 @@ export const useGraphCRUD = ({
       ...options,
     };
 
-    const edgesToRemove = getConnectedEdges(removedNode.id, {
-      edges,
-      getEdge,
-      settings,
-    });
+    const edgesToRemove = edges.value.filter(
+      (edge) => edge.from === removedNode.id || edge.to === removedNode.id,
+    );
 
     const removedEdges: GEdge[] = [];
     for (const edge of edgesToRemove) {

@@ -14,7 +14,7 @@ import { onClickOutside, useElementHover } from '@vueuse/core';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { generateSubscriber, getInitialEventBus } from '../events';
-import { prioritizeNode } from '../helpers';
+import { prioritizeNode } from '../helpers/prioritization';
 import { getEdgeSchematic } from '../schematics/edge';
 import { getNodeSchematic } from '../schematics/node';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings';

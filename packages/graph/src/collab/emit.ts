@@ -49,7 +49,7 @@ export const graphEmitters = (socket: GraphSocket): Partial<GraphEventMap> => ({
   },
   onEdgeLabelEdited: (edge, _, { broadcast }) => {
     if (!broadcast) return;
-    socket.emit('edgeLabelEdited', edge.id, edge.label);
+    socket.emit('edgeLabelEdited', edge.id, edge.weight.toString());
   },
   onMouseMove: ({ coords }) => {
     if (!socket.id) throw new Error('socket id not found');

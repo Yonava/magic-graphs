@@ -3,7 +3,6 @@ import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
 
 import { GraphTheme, resolveThemeForEdge } from '../..';
-import { getConnectedNodes } from '../../../helpers';
 import { GEdge, GNode } from '../../../types';
 import { GraphInterface } from '../../types';
 import { textDefaults } from './text';
@@ -24,11 +23,21 @@ const getEdgesBetweenConnectedNodes =
     return graph.edges.value.filter(isConnecting);
   };
 
+// TODO remove this fork as well!
+const getConnectedNodes = (graph: GraphInterface) => (edgeId: GEdge['id']) => {
+  const edge = graph.getEdge(edgeId);
+  if (!edge) throw new Error(`Edge with ID ${edgeId} not found`);
+  const fromNode = graph.getNode(edge.from);
+  const toNode = graph.getNode(edge.to);
+  if (!fromNode || !toNode) throw new Error('nodes not found');
+  return { fromNode, toNode };
+};
+
 const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
   const styles = resolveThemeForEdge(graph.getTheme, edge);
   const { isGraphDirected, isGraphWeighted } = graph.settings.value;
 
-  const [fromNode, toNode] = getConnectedNodes(edge.id, graph);
+  const { fromNode, toNode } = getConnectedNodes(graph)(edge.id);
   const edgesAlongPath = getEdgesBetweenConnectedNodes(graph)(
     fromNode.id,
     toNode.id,
@@ -86,7 +95,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
           (e.from === fromNode.id || e.to === toNode.id) && e.from !== e.to,
       )
       .map((e) => {
-        const [fromNode, toNode] = getConnectedNodes(e.id, graph);
+        const { fromNode, toNode } = getConnectedNodes(graph)(e.id);
         return fromNode.id === fromNode.id ? toNode : fromNode;
       })
       .filter(

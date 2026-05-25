@@ -21,11 +21,6 @@ export type UseGraph = typeof useGraph;
 export type Graph = ReturnType<UseGraph>;
 
 /**
- * a weight for an edge connecting two nodes
- */
-export type Weight = number | Fraction;
-
-/**
  * a node in a graph instance
  */
 export type GNode = {

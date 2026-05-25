@@ -1,15 +1,8 @@
-import type { Fraction } from 'mathjs';
-
 import { onUnmounted, ref } from 'vue';
 
 import type { BaseGraph } from './base';
-import {
-  getDirectedOutboundEdges,
-  getEdgesAlongPath,
-  getUndirectedOutboundEdges,
-} from './helpers';
-import { GraphHelpers } from './helpers/useHelpers';
-import type { GNode, Weight } from './types';
+import { GraphHelpers } from './helpers/types';
+import type { GEdge, GNode } from './types';
 
 /**
  * a mapping of nodes to their neighbors.
@@ -19,9 +12,9 @@ export type AdjacencyList = Record<string, string[]>;
 
 export const getDirectedGraphAdjacencyList = (graph: AdjacencyListGraphArg) => {
   return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
-    acc[node.id] = getDirectedOutboundEdges(node.id, graph.edges.value).map(
-      (edge) => edge.to,
-    );
+    acc[node.id] = graph.edges.value
+      .filter((edge) => edge.from === node.id)
+      .map((edge) => edge.to);
     return acc;
   }, {});
 };
@@ -30,11 +23,11 @@ export const getUndirectedGraphAdjacencyList = (
   graph: AdjacencyListGraphArg,
 ) => {
   return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
-    acc[node.id] = getUndirectedOutboundEdges(node.id, graph.edges.value).map(
-      (edge) => {
+    acc[node.id] = graph.edges.value
+      .filter((edge) => edge.from === node.id || edge.to === node.id)
+      .map((edge) => {
         return edge.from === node.id ? edge.to : edge.from;
-      },
-    );
+      });
     return acc;
   }, {});
 };
@@ -113,13 +106,13 @@ export const getFullNodeAdjacencyList = (graph: AdjacencyListGraphArg) => {
  * a mapping of nodes to their neighbors where neighbors are the full node objects
  * along with the weight of the edge connecting them to the key node
  */
-export type WeightedAdjacencyList<T extends Weight = number> = Record<
+export type WeightedAdjacencyList = Record<
   GNode['id'],
   (GNode & {
     /**
      * the weight of the edge that connects the key node to the neighbor node
      */
-    weight: T;
+    weight: GEdge['weight'];
   })[]
 >;
 
@@ -154,26 +147,6 @@ export const getWeightedAdjacencyList = (graph: AdjacencyListGraphArg) => {
   );
 };
 
-/**
- * the same as `getWeightedAdjacencyList` but with the weight type as a {@link Fraction}
- * instead of a number
- */
-export const getFracWeightedAdjacencyList = (graph: AdjacencyListGraphArg) => {
-  const adjList = getAdjacencyList(graph);
-  const adjListEntries = Object.entries(adjList);
-
-  return adjListEntries.reduce<WeightedAdjacencyList<Fraction>>(
-    (acc, [keyNodeId, toNodeIds]) => {
-      acc[keyNodeId] = toNodeIds.map((toNodeId) => ({
-        ...graph.getNode(toNodeId)!,
-        weight: getFracWeightBetweenNodes(keyNodeId, toNodeId, graph),
-      }));
-      return acc;
-    },
-    {},
-  );
-};
-
 type AdjacencyListGraphArg = BaseGraph & { helpers: GraphHelpers };
 
 /**
@@ -198,7 +171,6 @@ export const useAdjacencyList = (graph: AdjacencyListGraphArg) => {
   const labelAdjacencyList = ref<AdjacencyList>({});
   const fullNodeAdjacencyList = ref<FullNodeAdjacencyList>({});
   const weightedAdjacencyList = ref<WeightedAdjacencyList>({});
-  const weightedFracAdjacencyList = ref<WeightedAdjacencyList<Fraction>>({});
 
   const directedAdjacencyList = ref<AdjacencyList>({});
   const undirectedAdjacencyList = ref<AdjacencyList>({});
@@ -208,7 +180,6 @@ export const useAdjacencyList = (graph: AdjacencyListGraphArg) => {
     labelAdjacencyList.value = getLabelAdjacencyList(graph);
     fullNodeAdjacencyList.value = getFullNodeAdjacencyList(graph);
     weightedAdjacencyList.value = getWeightedAdjacencyList(graph);
-    weightedFracAdjacencyList.value = getFracWeightedAdjacencyList(graph);
 
     directedAdjacencyList.value = getDirectedGraphAdjacencyList(graph);
     undirectedAdjacencyList.value = getUndirectedGraphAdjacencyList(graph);
@@ -239,10 +210,6 @@ export const useAdjacencyList = (graph: AdjacencyListGraphArg) => {
      * the adjacency list using node ids as keys and full node objects along with weights as values
      */
     weightedAdjacencyList,
-    /**
-     * the adjacency list using node ids as keys and full node objects along with fraction weights as values
-     */
-    weightedFracAdjacencyList,
 
     /**
      * the directed adjacency list using node ids as keys
