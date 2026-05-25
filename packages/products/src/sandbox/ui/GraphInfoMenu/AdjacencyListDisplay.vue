@@ -64,7 +64,7 @@
                   v-if="isWeighted"
                   class="leading-[15px] text-[8px]"
                 >
-                  Cost {{ node.weight }}
+                  Cost {{ node.weight.toFraction() }}
                 </span>
               </GNode>
 
@@ -75,7 +75,7 @@
                   <b>{{ getNode(key).label }}</b>
                   <span v-if="isWeighted">
                     with a cost of
-                    <b>{{ node.weight }}</b>
+                    <b>{{ node.weight.toFraction() }}</b>
                   </span>
                 </GWell>
               </template>

@@ -25,9 +25,9 @@ export const useInvalidStateColorizer = (graph: Graph, markov: MarkovChain) => {
   };
 
   const colorize = () => {
-    setTheme('nodeBorderColor', nodeBorderColor);
-    setTheme('nodeAnchorColor', nodeBorderColor);
-    setTheme('nodeText', nodeText);
+    setTheme('node.base.borderColor', nodeBorderColor);
+    setTheme('nodeAnchor.base.color', nodeBorderColor);
+    setTheme('node.base.text', nodeText);
   };
 
   const decolorize = () => {

@@ -26,8 +26,8 @@ export const useCycleColorizer = (graph: Graph) => {
   };
 
   const colorize = () => {
-    setTheme('nodeBorderColor', colorNodeBorders);
-    setTheme('nodeAnchorColor', colorNodeBorders);
+    setTheme('node.base.borderColor', colorNodeBorders);
+    setTheme('nodeAnchor.base.color', colorNodeBorders);
   };
 
   const decolorize = () => {

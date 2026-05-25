@@ -61,7 +61,7 @@
           <TransitionMatrixLabel
             :to-node="nodes[rowIndex]"
             :from-node="nodes[colIndex]"
-            :weight="col"
+            :weight="col?.toFraction?.() ?? '?'"
           />
         </div>
       </div>
