@@ -6,7 +6,7 @@ import { readonly, ref } from 'vue';
 
 import type { BaseGraph } from '../../base';
 import type { GraphMouseEvent } from '../../base/types';
-import { prioritizeNode } from '../../helpers';
+import { prioritizeNode } from '../../helpers/prioritization';
 import type { NodeAnchor } from '../../plugins/anchors/types';
 import type { GraphFocusPlugin } from '../../plugins/focus';
 import type { GNode, SchemaItem } from '../../types';

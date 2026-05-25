@@ -1,3 +1,5 @@
+import { Fraction } from 'mathjs';
+
 import type { Ref } from 'vue';
 
 import type { Graph } from '../types';
@@ -45,8 +47,11 @@ const graphListeners = ({ graph }: SocketListenOptions): GraphSocketEvents => ({
   edgeRemoved: (edgeId) => {
     graph.removeEdge(edgeId, { broadcast: false, history: false });
   },
-  edgeLabelEdited: (edgeId, newLabel) => {
-    graph.editEdgeLabel(edgeId, newLabel, { broadcast: false, history: false });
+  edgeLabelEdited: (edgeId, newWeight) => {
+    graph.editEdgeLabel(edgeId, new Fraction(newWeight), {
+      broadcast: false,
+      history: false,
+    });
   },
 });
 
