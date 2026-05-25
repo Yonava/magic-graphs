@@ -7,7 +7,7 @@ export const DIJKSTRAS_GRAPH_SETTINGS: Partial<GraphSettings> = {
   persistentStorageKey: 'dijkstras',
   userAddedEdgeRuleNoSelfLoops: true,
   userAddedEdgeRuleOneEdgePerPath: true,
-  edgeInputToLabel: (input) => {
+  edgeInputToWeight: (input) => {
     const number = parseInt(input);
     if (isNaN(number)) return;
     const isNegative = number < 0;

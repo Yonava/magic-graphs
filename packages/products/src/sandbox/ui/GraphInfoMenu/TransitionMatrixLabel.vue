@@ -1,9 +1,7 @@
 <script setup lang="ts">
-  import type { GNode, Weight } from '@magic/graph/types';
+  import type { GNode } from '@magic/graph/types';
   import CIcon from '@magic/ui/core/Icon.vue';
   import CPopoverTooltip from '@magic/ui/core/PopoverTooltip.vue';
-
-  import { computed } from 'vue';
 
   import GraphNode from '../../../shared/ui/graph-core/GNode.vue';
   import GWell from '../../../shared/ui/graph-core/GWell.vue';
@@ -12,13 +10,8 @@
   const props = defineProps<{
     toNode: GNode;
     fromNode: GNode;
-    weight: Weight;
+    weight: string;
   }>();
-
-  const weightLabel = computed(() => {
-    const isNum = typeof props.weight === 'number';
-    return isNum ? props.weight : props.weight.toFraction();
-  });
 </script>
 
 <template>
@@ -30,7 +23,7 @@
         secondary
         class="h-10 w-10 cursor-default grid place-items-center rounded-md"
       >
-        {{ weightLabel }}
+        {{ weight }}
       </GButton>
       <template #content>
         <GWell class="flex items-center py-2 px-3 rounded-md">

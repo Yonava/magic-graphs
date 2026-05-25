@@ -13,12 +13,12 @@ export type GNodeMoveRecord = {
   };
 };
 
-export type GEdgeLabelEditRecord = {
+export type GEdgeWeightEditRecord = {
   graphType: 'edge';
   data: {
     id: GEdge['id'];
-    from: GEdge['label'];
-    to: GEdge['label'];
+    from: GEdge['weight'];
+    to: GEdge['weight'];
   };
 };
 
@@ -77,7 +77,7 @@ export type EditRecord = {
   /**
    * the items that were affected by the action.
    */
-  affectedItems: GEdgeLabelEditRecord[];
+  affectedItems: GEdgeWeightEditRecord[];
 };
 
 /**

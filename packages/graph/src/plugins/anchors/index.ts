@@ -6,7 +6,7 @@ import { readonly, ref } from 'vue';
 
 import type { BaseGraph } from '../../base';
 import type { GraphMouseEvent } from '../../base/types';
-import { prioritizeNode } from '../../helpers';
+import { prioritizeNode } from '../../helpers/prioritization';
 import type { NodeAnchor } from '../../plugins/anchors/types';
 import type { GraphFocusPlugin } from '../../plugins/focus';
 import type { GNode, SchemaItem } from '../../types';
@@ -58,23 +58,26 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   const getAnchorSchemas = (node: GNode) => {
     const { getTheme } = graph;
 
-    const color = getTheme('nodeAnchorColor', node);
-    const focusColor = getTheme('nodeAnchorColorWhenParentFocused', node);
-    const radius = getTheme('nodeAnchorRadius', node);
+    const color = getTheme('nodeAnchor.base.color', node);
+    const focusColor = getTheme('nodeAnchor.focus.color', node);
+    const radius = getTheme('nodeAnchor.base.radius', node);
+    const focusRadius = getTheme('nodeAnchor.focus.radius', node);
 
     const anchorSchemas: SchemaItem[] = [];
     for (const anchor of nodeAnchors.value) {
       const { x, y, id } = anchor;
 
-      const isHoveredOrDragged =
-        id === hoveredNodeAnchorId.value ||
-        id === currentDraggingAnchor.value?.id;
+      const isAnchorHovered = id === hoveredNodeAnchorId.value;
+      const isAnchorDragged = id === currentDraggingAnchor.value?.id;
+
+      const isNodeFocused = graph.focus.isFocused(node.id);
+      const isFocused = isNodeFocused || isAnchorHovered || isAnchorDragged;
 
       const nodeAnchorSchema: WithId<CircleSchema> = {
         id,
         at: { x, y },
-        radius,
-        fillColor: isHoveredOrDragged ? focusColor : color,
+        radius: isFocused ? focusRadius : radius,
+        fillColor: isFocused ? focusColor : color,
       };
 
       if (
@@ -114,9 +117,24 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     if (!node) return (nodeAnchors.value = []);
     const { getTheme } = graph;
 
-    const anchorRadius = getTheme('nodeAnchorRadius', node);
-    const nodeSize = getTheme('nodeSize', node);
-    const nodeBorderWidth = getTheme('nodeBorderWidth', node);
+    const isNodeFocused = graph.focus.isFocused(node.id);
+
+    const anchorBaseRadius = getTheme('nodeAnchor.base.radius', node);
+    const anchorFocusRadius = getTheme('nodeAnchor.focus.radius', node);
+
+    const anchorRadius = isNodeFocused ? anchorFocusRadius : anchorBaseRadius;
+
+    const nodeBaseSize = getTheme('node.base.size', node);
+    const nodeFocusSize = getTheme('node.focus.size', node);
+
+    const nodeSize = isNodeFocused ? nodeBaseSize : nodeFocusSize;
+
+    const nodeBaseBorderWidth = getTheme('node.base.borderWidth', node);
+    const nodeFocusBorderWidth = getTheme('node.focus.borderWidth', node);
+
+    const nodeBorderWidth = isNodeFocused
+      ? nodeFocusBorderWidth
+      : nodeBaseBorderWidth;
 
     const offset = nodeSize - anchorRadius / 3 + nodeBorderWidth / 2;
     nodeAnchors.value = [
@@ -165,16 +183,35 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     const end = { x, y };
     const { getTheme } = graph;
 
-    const color = getTheme(
-      'linkPreviewColor',
+    const isFocused = graph.focus.isFocused(parentNode.value.id);
+
+    const baseColor = getTheme(
+      'nodeAnchor.base.linkPreviewColor',
       parentNode.value,
       currentDraggingAnchor.value,
     );
-    const width = getTheme(
-      'linkPreviewWidth',
+
+    const focusColor = getTheme(
+      'nodeAnchor.focus.linkPreviewColor',
       parentNode.value,
       currentDraggingAnchor.value,
     );
+
+    const color = isFocused ? focusColor : baseColor;
+
+    const baseWidth = getTheme(
+      'nodeAnchor.base.linkPreviewWidth',
+      parentNode.value,
+      currentDraggingAnchor.value,
+    );
+
+    const focusWidth = getTheme(
+      'nodeAnchor.focus.linkPreviewWidth',
+      parentNode.value,
+      currentDraggingAnchor.value,
+    );
+
+    const width = isFocused ? focusWidth : baseWidth;
 
     const shape = graph.shapes.line({
       id: 'link-preview',

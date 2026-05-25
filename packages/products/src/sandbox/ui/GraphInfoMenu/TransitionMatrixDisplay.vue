@@ -8,7 +8,7 @@
   import { useNonNullGraphColors } from '../../../shared/useGlobalGraphColors';
   import TransitionMatrixLabel from './TransitionMatrixLabel.vue';
 
-  const { transitionMatrix } = useTransitionMatrix(graph.value);
+  const transitionMatrix = useTransitionMatrix(graph.value);
 
   const graphColors = useNonNullGraphColors();
 
@@ -61,7 +61,7 @@
           <TransitionMatrixLabel
             :to-node="nodes[rowIndex]"
             :from-node="nodes[colIndex]"
-            :weight="col"
+            :weight="col?.toFraction?.() ?? '?'"
           />
         </div>
       </div>

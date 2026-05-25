@@ -32,7 +32,7 @@ export const useDijkstra = (graph: Graph) => {
   const output = ref<DijkstrasOutput>();
 
   const { startNode: startNodeState } = state;
-  const { transitionMatrix } = graph.transitionMatrix;
+  const transitionMatrix = graph.transitionMatrix;
 
   const update = () => {
     const startNode = startNodeState.get(graph);

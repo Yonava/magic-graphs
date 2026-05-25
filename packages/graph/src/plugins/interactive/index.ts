@@ -57,7 +57,7 @@ export const useInteractive = (graph: BaseGraph) => {
     graph.addEdge({
       from: fromNode.id,
       to: toNode.id,
-      label: graph.settings.value.userAddedEdgeLabel,
+      weight: graph.settings.value.userAddedDefaultEdgeWeight(),
     });
   };
 

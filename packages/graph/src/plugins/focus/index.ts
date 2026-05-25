@@ -5,9 +5,24 @@ import { computed, readonly, ref } from 'vue';
 
 import type { BaseGraph } from '../../base';
 import type { FocusOption, GraphMouseEvent } from '../../base/types';
+import { ValidGraphThemePath } from '../../themes/types';
 import { useTheme } from '../../themes/useTheme';
-import type { SchemaItem } from '../../types';
+import type { GEdge, GNode, SchemaItem } from '../../types';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants';
+
+type NodeBaseThemePath = Extract<ValidGraphThemePath, `node.base.${string}`>;
+type EdgeBaseThemePath = Extract<ValidGraphThemePath, `edge.base.${string}`>;
+
+type NodeBaseToNodeFocusTheme = {
+  [Path in NodeBaseThemePath]: Path extends `node.base.${infer Style}`
+    ? `node.focus.${Style}`
+    : never;
+};
+type EdgeBaseToNodeFocusTheme = {
+  [Path in EdgeBaseThemePath]: Path extends `edge.base.${infer Style}`
+    ? `edge.focus.${Style}`
+    : never;
+};
 
 export const useFocus = (graph: BaseGraph) => {
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
@@ -49,10 +64,15 @@ export const useFocus = (graph: BaseGraph) => {
       const edge = graph.getEdge(schemaItem.id);
       if (!edge) throw new Error('textarea only implemented for edges');
 
-      const newLabel = graph.settings.value.edgeInputToLabel(textAreaContent);
-      if (newLabel === undefined || edge.label === newLabel) return;
+      const newWeight = graph.settings.value.edgeInputToWeight(textAreaContent);
+      if (
+        newWeight === undefined ||
+        edge.weight.valueOf() === newWeight.valueOf()
+      ) {
+        return;
+      }
 
-      graph.editEdgeLabel(edge.id, newLabel);
+      graph.editEdgeLabel(edge.id, newWeight);
     });
   };
 
@@ -110,35 +130,48 @@ export const useFocus = (graph: BaseGraph) => {
 
   const isFocused = (id: string) => focusedItemIds.value.has(id);
 
-  setTheme('nodeColor', (node) => {
-    if (!isFocused(node.id)) return;
-    return graph.getTheme('nodeFocusColor', node);
-  });
+  const nodeBaseStylePathMapping: NodeBaseToNodeFocusTheme = {
+    'node.base.color': 'node.focus.color',
+    'node.base.borderColor': 'node.focus.borderColor',
+    'node.base.borderWidth': 'node.focus.borderWidth',
+    'node.base.size': 'node.focus.size',
+    'node.base.shape': 'node.focus.shape',
+    'node.base.textColor': 'node.focus.textColor',
+    'node.base.textSize': 'node.focus.textSize',
+    'node.base.textFontWeight': 'node.focus.textFontWeight',
+    'node.base.text': 'node.focus.text',
+  };
 
-  setTheme('nodeBorderColor', (node) => {
-    if (!isFocused(node.id)) return;
-    return graph.getTheme('nodeFocusBorderColor', node);
-  });
+  const edgeBaseStylePathMapping: EdgeBaseToNodeFocusTheme = {
+    'edge.base.color': 'edge.focus.color',
+    'edge.base.width': 'edge.focus.width',
+    'edge.base.shape': 'edge.focus.shape',
+    'edge.base.textColor': 'edge.focus.textColor',
+    'edge.base.textSize': 'edge.focus.textSize',
+    'edge.base.textFontWeight': 'edge.focus.textFontWeight',
+    'edge.base.text': 'edge.focus.text',
+  };
 
-  setTheme('nodeTextColor', (node) => {
-    if (!isFocused(node.id)) return;
-    return graph.getTheme('nodeFocusTextColor', node);
-  });
+  const nodeEntries = Object.entries(nodeBaseStylePathMapping);
+  const edgeEntries = Object.entries(edgeBaseStylePathMapping);
 
-  setTheme('edgeColor', (edge) => {
-    if (!isFocused(edge.id)) return;
-    return graph.getTheme('edgeFocusColor', edge);
-  });
+  for (const [nodeBasePath, nodeFocusPath] of nodeEntries) {
+    setTheme(nodeBasePath as NodeBaseThemePath, (node: GNode) => {
+      if (!isFocused(node.id)) return;
+      // typescript generics to differentiate each callbacks individual
+      // return type is juice not worth the squeeze
+      return graph.getTheme(nodeFocusPath, node, graph) as any;
+    });
+  }
 
-  setTheme('edgeTextColor', (edge) => {
-    if (!isFocused(edge.id)) return;
-    return graph.getTheme('edgeFocusTextColor', edge);
-  });
-
-  setTheme('nodeAnchorColor', (node) => {
-    if (!isFocused(node.id)) return;
-    return graph.getTheme('nodeAnchorColorWhenParentFocused', node);
-  });
+  for (const [edgeBasePath, edgeFocusPath] of edgeEntries) {
+    setTheme(edgeBasePath as EdgeBaseThemePath, (edge: GEdge) => {
+      if (!isFocused(edge.id)) return;
+      // typescript generics to differentiate each callbacks individual
+      // return type is juice not worth the squeeze
+      return graph.getTheme(edgeFocusPath, edge, graph) as any;
+    });
+  }
 
   const activate = () => {
     graph.subscribe('onNodeAdded', setFocusToAddedItem);

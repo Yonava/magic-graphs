@@ -14,7 +14,7 @@ import { onClickOutside, useElementHover } from '@vueuse/core';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { generateSubscriber, getInitialEventBus } from '../events';
-import { prioritizeNode } from '../helpers';
+import { prioritizeNode } from '../helpers/prioritization';
 import { getEdgeSchematic } from '../schematics/edge';
 import { getNodeSchematic } from '../schematics/node';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings';
@@ -22,7 +22,7 @@ import type { GraphSettings } from '../settings';
 import { THEMES } from '../themes';
 import type { GraphThemeName } from '../themes';
 import { getThemeResolver } from '../themes/getThemeResolver';
-import { getInitialThemeMap } from '../themes/types';
+import { GraphInterface, getInitialThemeMap } from '../themes/types';
 import type { Aggregator, GEdge, GNode } from '../types';
 import { type GraphAnimations, getDefaultGraphAnimations } from './animations';
 import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types';
@@ -143,7 +143,7 @@ export const useBaseGraph = (
   );
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
-    const options = {
+    const options: GraphInterface = {
       edges,
       getNode,
       getEdge,

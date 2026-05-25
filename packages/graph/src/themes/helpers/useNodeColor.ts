@@ -27,13 +27,13 @@ export const useNodeColor = (
   };
 
   const color = () => {
-    setTheme('nodeBorderColor', nodeColor);
-    setTheme('nodeAnchorColor', nodeColor);
+    setTheme('node.base.borderColor', nodeColor);
+    setTheme('nodeAnchor.base.color', nodeColor);
   };
 
   const uncolor = () => {
-    removeTheme('nodeBorderColor');
-    removeTheme('nodeAnchorColor');
+    removeTheme('node.base.borderColor');
+    removeTheme('nodeAnchor.base.color');
   };
 
   return {

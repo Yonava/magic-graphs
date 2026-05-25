@@ -24,14 +24,14 @@ export const useSimulationTheme = (
   };
 
   const nodeTextSize = (node: GNode) => {
-    const defaultSize = graph.baseTheme.value.nodeTextSize;
+    const defaultSize = graph.baseTheme.value.node.base.textSize;
     if (graph.focus.isFocused(node.id)) return;
     return defaultSize - 5;
   };
 
   const theme = () => {
-    setTheme('nodeText', nodeText);
-    setTheme('nodeTextSize', nodeTextSize);
+    setTheme('node.base.text', nodeText);
+    setTheme('node.base.textSize', nodeTextSize);
   };
 
   const untheme = () => {

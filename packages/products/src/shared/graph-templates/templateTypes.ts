@@ -20,7 +20,7 @@ type GenerateCohesiveEdgesOptions = {
   connectionProbability: number;
   maxNeighbors: number;
   minAngleBetweenEdges: number;
-  edgeLabel: string | ((fromNode: string, toNode: string) => string);
+  edgeWeight: string | ((fromNode: string, toNode: string) => string);
   allowUTurnEdges: boolean;
   allowBidirectionalEdges: boolean;
 };

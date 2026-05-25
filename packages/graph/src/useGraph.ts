@@ -1,7 +1,7 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 
 import { useBaseGraph } from './base';
-import { useHelpers } from './helpers/useHelpers';
+import { useGraphHelpers } from './helpers';
 import { useNodeAnchors } from './plugins/anchors';
 import { useAnnotations } from './plugins/annotations';
 import { useCharacteristics } from './plugins/characteristics';
@@ -47,13 +47,13 @@ export const useGraph = (
     annotation,
   });
 
-  const adjacencyList = useAdjacencyList(base);
+  const helpers = useGraphHelpers(base);
+  const adjacencyList = useAdjacencyList({ ...base, helpers });
   const transitionMatrix = useTransitionMatrix({ ...base, adjacencyList });
 
   const characteristics = useCharacteristics({ ...base, ...adjacencyList });
 
   useInteractive(base);
-  const helpers = useHelpers(base);
 
   return {
     ...base,

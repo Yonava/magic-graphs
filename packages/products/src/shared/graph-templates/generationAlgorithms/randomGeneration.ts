@@ -2,6 +2,7 @@ import { LETTERS, graphLabelGetter } from '@magic/graph/labels';
 import type { GEdge, GNode } from '@magic/graph/types';
 import { angleDifference } from '@magic/shapes/helpers';
 import { generateId } from '@magic/utils/id';
+import { Fraction } from 'mathjs';
 
 import { ref } from 'vue';
 
@@ -93,7 +94,7 @@ export const generateCohesiveEdges = (
     connectionProbability,
     maxNeighbors,
     minAngleBetweenEdges,
-    edgeLabel,
+    edgeWeight: edgeWeight,
     allowUTurnEdges,
     allowBidirectionalEdges,
   } = {
@@ -108,13 +109,14 @@ export const generateCohesiveEdges = (
     if (!usedConnections.has(from)) usedConnections.set(from, new Set());
     usedConnections.get(from)!.add(to);
 
-    const label =
-      typeof edgeLabel === 'function' ? edgeLabel(from, to) : edgeLabel;
+    const weight =
+      typeof edgeWeight === 'function' ? edgeWeight(from, to) : edgeWeight;
+
     edges.push({
       id: generateId(),
       from,
       to,
-      label,
+      weight: new Fraction(weight ?? 1),
     });
   };
 

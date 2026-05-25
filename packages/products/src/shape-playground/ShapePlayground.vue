@@ -35,11 +35,39 @@
     keyframes: [{ progress: 0.5, properties: { radius: 100 } }],
   });
 
+  const animation = defineTimeline({
+    forShapes: ['arrow', 'square'],
+    durationMs: 200,
+    keyframes: [
+      {
+        progress: 0,
+        properties: {
+          dash: [10, 10],
+        },
+      },
+      {
+        progress: 1,
+        properties: {
+          dash: {
+            value: [1, 1],
+          },
+        },
+      },
+    ],
+  });
+
   const cir = shapes.circle({
     id: 'test',
     at: { x: 0, y: 0 },
     radius: 50,
     textArea: { textBlock: { content: '1' } },
+  });
+
+  const arrowSomething = shapes.arrow({
+    id: 'something',
+    end: { x: 500, y: 500 },
+    start: { x: 100, y: 200 },
+    dash: [20, 20],
   });
 
   const cir2 = shapes.circle({
@@ -61,6 +89,7 @@
   magic.draw.content.value = (ctx) => {
     cir.draw(ctx);
     cir2.draw(ctx);
+    arrowSomething.draw(ctx);
   };
 
   magic.draw.backgroundPattern.value = (ctx, at) => {
@@ -76,7 +105,9 @@
 <template>
   <div class="h-full w-full">
     <div class="absolute m-3 flex gap-3 z-50">
-      <Button @click="play({ shapeId: 'test' })">Start Animation</Button>
+      <Button @click="animation.play({ shapeId: 'something' })"
+        >Start Animation</Button
+      >
       <Button @click="stop({ shapeId: 'test' })">Stop Animation</Button>
       <Button @click="pause({ shapeId: 'test' })">Pause Animation</Button>
       <Button @click="resume({ shapeId: 'test' })">Resume Animation</Button>

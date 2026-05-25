@@ -147,7 +147,7 @@ export const useHistory = (graph: BaseGraph) => {
           data: {
             id: edge.id,
             from: oldLabel,
-            to: edge.label,
+            to: edge.weight,
           },
         },
       ],

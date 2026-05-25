@@ -70,16 +70,16 @@
   <GToolbar :hint="tutorial">
     <ToolbarButtonGroup class="gap-0">
       <GToolbarButton
-        @click="graph.settings.value.displayEdgeLabels = true"
-        :active="graph.settings.value.displayEdgeLabels"
+        @click="graph.settings.value.isGraphWeighted = true"
+        :active="graph.settings.value.isGraphWeighted"
         icon="label-outline"
       />
 
       <GToolbarDivider />
 
       <GToolbarButton
-        @click="graph.settings.value.displayEdgeLabels = false"
-        :active="!graph.settings.value.displayEdgeLabels"
+        @click="graph.settings.value.isGraphWeighted = false"
+        :active="!graph.settings.value.isGraphWeighted"
         icon="label-off-outline"
       />
     </ToolbarButtonGroup>

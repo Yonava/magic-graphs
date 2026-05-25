@@ -20,14 +20,14 @@ export type MarkovChainSimulationRunner = SimulationRunner<Fraction[]>;
 export const useSimulationRunner = (
   graph: Graph,
 ): MarkovChainSimulationRunner => {
-  const { fracTransitionMatrix } = graph.transitionMatrix;
+  const { transitionMatrix } = graph;
   const { nodeIdToIndex } = graph;
 
   const initialStateVector = computed(() => {
     if (initialState.isUndefined.value) return [];
 
     const stateVector: Fraction[] = [];
-    for (let i = 0; i < fracTransitionMatrix.value.length; i++) {
+    for (let i = 0; i < transitionMatrix.value.length; i++) {
       stateVector.push(new Fraction(0));
     }
 
@@ -38,7 +38,7 @@ export const useSimulationRunner = (
     return stateVector;
   });
 
-  const trace = useStateAfterNSteps(fracTransitionMatrix, initialStateVector);
+  const trace = useStateAfterNSteps(transitionMatrix, initialStateVector);
 
   const simControls = useSimulationControls(trace);
   const theme = useSimulationTheme(graph, simControls);

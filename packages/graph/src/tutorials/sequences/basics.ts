@@ -58,7 +58,7 @@ const getRemoveNodeOrEdgeStep = (graph: Graph): TutorialStep => {
     },
     onInit: () => {
       stepPassed = false;
-      setTheme('nodeAnchorColor', (node) =>
+      setTheme('nodeAnchor.base.color', (node) =>
         node.label === '1' ? PURPLE_700 : RED_700,
       );
       graph.subscribe('onEdgeRemoved', completeStep);

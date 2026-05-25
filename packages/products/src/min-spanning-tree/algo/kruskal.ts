@@ -5,7 +5,6 @@ export type Rank = Map<string, number>;
 
 export const kruskal = (graph: Graph) => {
   const { nodes, edges } = graph;
-  const { getEdgeWeight } = graph.helpers;
 
   const find = (parent: Parent, nodeId: string): string => {
     if (parent.get(nodeId) !== nodeId) {
@@ -34,8 +33,10 @@ export const kruskal = (graph: Graph) => {
   };
 
   const run = () => {
-    const sortedEdges = Object.values(edges.value).sort((edgeA, edgeB) => {
-      return getEdgeWeight(edgeA.id) - getEdgeWeight(edgeB.id);
+    const sortedEdges = edges.value.toSorted((edgeA, edgeB) => {
+      const weightA = graph.helpers.edges.getWeight(edgeA.id);
+      const weightB = graph.helpers.edges.getWeight(edgeB.id);
+      return weightA.valueOf() - weightB.valueOf();
     });
 
     const parent = new Map<string, string>();

@@ -1,8 +1,13 @@
 import { local } from '@magic/utils/localStorage';
+import { Fraction } from 'mathjs';
 
 import type { BaseGraph } from '../../base';
 import type { GraphEvent } from '../../events';
 import type { GEdge, GNode } from '../../types';
+
+type Serializable<T> = {
+  [K in keyof T]: string;
+};
 
 export const usePersistent = (graph: BaseGraph) => {
   const canStore = (nodeOrEdge: { id: string }) => {
@@ -23,13 +28,27 @@ export const usePersistent = (graph: BaseGraph) => {
     },
   };
 
+  const serializeEdge = (edge: GEdge): Serializable<GEdge> => ({
+    ...edge,
+    weight: edge.weight.toString(),
+  });
+
+  const unserializeEdge = (serializedEdge: Serializable<GEdge>) => ({
+    ...serializedEdge,
+    weight: new Fraction(serializedEdge.weight),
+  });
+
   const edgeStorage = {
     get: () => {
       const serializedEdges = local.get(`edges-${getKey()}`) ?? '[]';
-      return JSON.parse(serializedEdges);
+      return (JSON.parse(serializedEdges) as Serializable<GEdge>[]).map(
+        unserializeEdge,
+      );
     },
     set: (edges: GEdge[]) => {
-      const serializedEdges = JSON.stringify(edges.filter(canStore));
+      const serializedEdges = JSON.stringify(
+        edges.filter(canStore).map(serializeEdge),
+      );
       local.set(`edges-${getKey()}`, serializedEdges);
     },
   };

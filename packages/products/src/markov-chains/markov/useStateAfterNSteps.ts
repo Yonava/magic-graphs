@@ -17,7 +17,7 @@ const memo = new Map<number, ReturnType<typeof getStateAfterNSteps>>();
  * @returns a vector representing the state after n steps
  */
 export const getStateAfterNSteps = (
-  transitionMatrix: TransitionMatrix<Fraction>,
+  transitionMatrix: TransitionMatrix,
   initialState: Fraction[],
   n: number,
 ): Fraction[] => {
@@ -37,7 +37,7 @@ export const getStateAfterNSteps = (
  * returns a memoized version of {@link getStateAfterNSteps}
  */
 export const useStateAfterNSteps = (
-  transitionMatrix: Ref<TransitionMatrix<Fraction>>,
+  transitionMatrix: Ref<TransitionMatrix>,
   initialState: Ref<Fraction[]>,
 ): ComputedRef<MarkovChainTrace> => {
   watch([transitionMatrix, initialState], () => {

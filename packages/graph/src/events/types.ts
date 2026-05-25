@@ -20,8 +20,6 @@ import type {
 } from '../plugins/history/types';
 import type { GraphSettings } from '../settings';
 import type { GraphThemeName } from '../themes';
-// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
-// eslint-disable-next-line
 import type { GEdge, GNode, Graph } from '../types';
 
 export type BaseGraphEventMap = {
@@ -103,7 +101,7 @@ export type BaseGraphEventMap = {
    */
   onEdgeLabelEdited: (
     edge: GEdge,
-    oldLabel: GEdge['label'],
+    oldWeight: GEdge['weight'],
     options: DeepReadonly<EditEdgeLabelOptions>,
   ) => void;
   /**

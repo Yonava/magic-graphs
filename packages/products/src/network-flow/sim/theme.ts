@@ -9,7 +9,7 @@ import type { FlowTrace } from '../algo/fordFulkerson';
 import { FLOW_USETHEME_ID } from '../constants';
 import { isResidual } from '../misc/useResidualEdges';
 
-type WeightMap = Map<GEdge['id'], number>;
+type WeightMap = Map<GEdge['id'], GEdge['weight']>;
 
 export const useSimulationTheme = (
   graph: Graph,
@@ -58,25 +58,25 @@ export const useSimulationTheme = (
 
   const colorActiveEdges = (edge: GEdge) => {
     const isActive = activeEdgeIdsAtStep.value.includes(edge.id);
-    const focusColor = graph.baseTheme.value.edgeFocusColor;
+    const focusColor = graph.baseTheme.value.edge.focus.color;
     if (isActive) return focusColor;
     else if (isResidual(edge.id)) return colors.ORANGE_400;
   };
 
   const labelEdges = (edge: GEdge) => {
     const weight = weightMapAtStep.value.get(edge.id);
-    if (weight === undefined) return edge.label;
+    if (weight === undefined) return edge.weight.toString();
     return weight.toString();
   };
 
   const activate = () => {
-    setTheme('edgeColor', colorActiveEdges);
-    setTheme('edgeText', labelEdges);
+    setTheme('edge.base.color', colorActiveEdges);
+    setTheme('edge.base.text', labelEdges);
   };
 
   const deactivate = () => {
-    removeTheme('edgeColor');
-    removeTheme('edgeText');
+    removeTheme('edge.base.color');
+    removeTheme('edge.base.text');
   };
 
   return {

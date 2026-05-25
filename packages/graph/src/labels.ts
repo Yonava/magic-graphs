@@ -74,11 +74,3 @@ export const nodeLetterLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
 export const nodeNumberLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
   return graphLabelGetter(graph.nodes, NUMBERS);
 };
-
-export const edgeLetterLabelGetter = (graph: Pick<Graph, 'edges'>) => {
-  return graphLabelGetter(graph.edges, LETTERS);
-};
-
-export const edgeNumberLabelGetter = (graph: Pick<Graph, 'edges'>) => {
-  return graphLabelGetter(graph.edges, NUMBERS);
-};

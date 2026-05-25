@@ -1,6 +1,7 @@
 import { LETTERS, graphLabelGetter } from '@magic/graph/labels';
 import type { GEdge, GNode } from '@magic/graph/types';
 import { generateId } from '@magic/utils/id';
+import { Fraction } from 'mathjs';
 
 import { ref } from 'vue';
 
@@ -31,30 +32,29 @@ export const generateNodes = (nodeCount: number) => {
  * Generates a set of edges between nodes
  * @param nodes The nodes to generate edges between
  * @param edgeCount The number of edges to generate
- * @param edgeLabel The label of the edges
+ * @param edgeWeight The label of the edges
  * @returns An array of edges
  */
 export const generateEdges = (
   nodes: GNode[],
   edgeCount: number,
-  edgeLabel: AutoGenerateGraphOptions['edgeLabel'],
+  edgeWeight: AutoGenerateGraphOptions['edgeWeight'],
 ) => {
   const edges: GEdge[] = [];
   for (let i = 0; i < edgeCount; i++) {
     const fromNode = nodes[Math.floor(Math.random() * nodes.length)];
     const toNode = nodes[Math.floor(Math.random() * nodes.length)];
-    const label =
-      typeof edgeLabel === 'function'
-        ? edgeLabel(fromNode.id, toNode.id)
-        : edgeLabel!;
-    if (fromNode.id !== toNode.id) {
-      edges.push({
-        id: generateId(),
-        from: fromNode.id,
-        to: toNode.id,
-        label,
-      });
-    }
+    const weight =
+      typeof edgeWeight === 'function'
+        ? edgeWeight(fromNode.id, toNode.id)
+        : edgeWeight;
+    if (fromNode.id === toNode.id) return;
+    edges.push({
+      id: generateId(),
+      from: fromNode.id,
+      to: toNode.id,
+      weight: new Fraction(weight ?? 1),
+    });
   }
   return edges;
 };

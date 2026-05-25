@@ -12,21 +12,21 @@ export const useMarkovColorizer = (graph: Graph, markov: MarkovChain) => {
 
   const colorNodeBorder = (node: GNode) => {
     if (graph.focus.isFocused(node.id))
-      return graph.baseTheme.value.nodeFocusBorderColor;
+      return graph.baseTheme.value.node.focus.borderColor;
     if (markov.transientStates.value.has(node.id))
-      return graph.baseTheme.value.nodeBorderColor;
+      return graph.baseTheme.value.node.base.borderColor;
   };
 
   const colorize = () => {
     sccColorizer.color();
-    setTheme('nodeBorderColor', colorNodeBorder);
-    setTheme('nodeAnchorColor', colorNodeBorder);
+    setTheme('node.base.borderColor', colorNodeBorder);
+    setTheme('nodeAnchor.base.color', colorNodeBorder);
   };
 
   const decolorize = () => {
     sccColorizer.uncolor();
-    removeTheme('nodeBorderColor');
-    removeTheme('nodeAnchorColor');
+    removeTheme('node.base.borderColor');
+    removeTheme('nodeAnchor.base.color');
   };
 
   return {

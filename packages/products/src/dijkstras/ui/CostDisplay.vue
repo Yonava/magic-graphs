@@ -8,7 +8,7 @@
   const { getTheme, focus } = graph.value;
   const { isFocused } = focus;
 
-  const getNodeCosts = (node: GNode) => getTheme('nodeText', node);
+  const getNodeCosts = (node: GNode) => getTheme('node.base.text', node);
 
   const costToColor = (strCost: string) => {
     if (strCost === INF_STR) return colors.RED_800;
@@ -23,17 +23,17 @@
   };
 
   const isExplored = (node: GNode) =>
-    getTheme('nodeBorderColor', node) === SIM_COLORS.EXPLORED;
+    getTheme('node.base.borderColor', node) === SIM_COLORS.EXPLORED;
   const isQueued = (node: GNode) =>
-    getTheme('nodeBorderColor', node) === SIM_COLORS.QUEUED;
+    getTheme('node.base.borderColor', node) === SIM_COLORS.QUEUED;
   const isSource = (node: GNode) =>
-    getTheme('nodeBorderColor', node) === SIM_COLORS.SOURCE;
+    getTheme('node.base.borderColor', node) === SIM_COLORS.SOURCE;
 
   const exploreStateColor = (node: GNode) => {
     if (isExplored(node)) return SIM_COLORS.EXPLORED;
     if (isQueued(node)) return SIM_COLORS.QUEUED;
     if (isSource(node)) return SIM_COLORS.SOURCE;
-    if (isFocused(node.id)) return getTheme('nodeBorderColor', node);
+    if (isFocused(node.id)) return getTheme('node.base.borderColor', node);
     return colors.GRAY_600;
   };
 

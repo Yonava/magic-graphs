@@ -129,9 +129,9 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const shape = graph.shapes.rect({
       id,
       ...normalizeBoundingBox(box),
-      fillColor: graph.getTheme('marqueeSelectionBoxColor'),
+      fillColor: graph.getTheme('marquee.color'),
       stroke: {
-        color: graph.getTheme('marqueeSelectionBoxBorderColor'),
+        color: graph.getTheme('marquee.borderColor'),
         lineWidth: 2,
       },
     });
@@ -160,9 +160,9 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const shape = graph.shapes.rect({
       id,
       ...box,
-      fillColor: graph.getTheme('marqueeEncapsulatedNodeBoxColor'),
+      fillColor: graph.getTheme('marquee.encapsulatedNodeBoxColor'),
       stroke: {
-        color: graph.getTheme('marqueeEncapsulatedNodeBoxBorderColor'),
+        color: graph.getTheme('marquee.encapsulatedNodeBoxBorderColor'),
         lineWidth: 2,
       },
     });

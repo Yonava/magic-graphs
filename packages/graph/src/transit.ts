@@ -1,4 +1,5 @@
 import { generateId } from '@magic/utils/id';
+import { Fraction } from 'mathjs';
 
 import type { GEdge, GNode, Graph } from './types';
 
@@ -48,7 +49,7 @@ export const setTransitData = (g: Graph, transitData: GraphTransitData) => {
 };
 
 const SCALE_FACTOR = 10;
-const DEFAULT_EDGE_LABEL = '1';
+const DEFAULT_EDGE_WEIGHT = new Fraction(1);
 
 const DATA_DELIMITER = '\x1F';
 const FIELD_DELIMITER = '\x1E';
@@ -80,9 +81,9 @@ export const encodeCompressedTransitData = (data: GraphTransitData) => {
       const to = nodes.findIndex((n) => n.id === edge.to);
       // if most common default, no need to send it
       const label =
-        edge.label === DEFAULT_EDGE_LABEL
+        edge.weight.toString() === DEFAULT_EDGE_WEIGHT.toString()
           ? ''
-          : `${PROP_DELIMITER}${edge.label}`;
+          : `${PROP_DELIMITER}${edge.weight.toString()}`;
       return (
         compressedStr +
         `${FIELD_DELIMITER}${from}${PROP_DELIMITER}${to}` +
@@ -128,7 +129,7 @@ export const decodeCompressedTransitData = (
           encodedEdge.split(PROP_DELIMITER);
         return {
           id: generateId(),
-          label: encodedLabel ?? DEFAULT_EDGE_LABEL,
+          weight: new Fraction(encodedLabel),
           from: nodes[Number(encodedFrom)].id,
           to: nodes[Number(encodedTo)].id,
         };

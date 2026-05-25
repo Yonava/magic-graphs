@@ -1,6 +1,6 @@
 import type { Shape } from '@magic/shapes/types';
 import type { MaybeGetter } from '@magic/utils/maybeGetter';
-import type { Fraction } from 'mathjs';
+import { Fraction } from 'mathjs';
 
 import { useGraph } from './useGraph';
 
@@ -19,11 +19,6 @@ export type UseGraph = typeof useGraph;
  * a graph instance (the return value of useGraph)
  */
 export type Graph = ReturnType<UseGraph>;
-
-/**
- * a weight for an edge connecting two nodes
- */
-export type Weight = number | Fraction;
 
 /**
  * a node in a graph instance
@@ -64,9 +59,10 @@ export type GEdge = {
    */
   from: string;
   /**
-   * the text that appears on the edge, typically denotes edge weight
+   * the weight of the edge
+   * @default new Fraction(1)
    */
-  label: string;
+  weight: Fraction;
 };
 
 /**
@@ -80,10 +76,6 @@ export type Aggregator = SchemaItem[];
  * which will be invoked with a reducer each render cycle
  */
 export type UpdateAggregator = (aggregator: Aggregator) => Aggregator;
-
-export type NodeGetterOrValue<T> = MaybeGetter<T, [GNode]>;
-export type EdgeGetterOrValue<T> = MaybeGetter<T, [GEdge]>;
-
 type BaseGraphTypes = 'node' | 'edge';
 type MarqueeGraphTypes = 'marquee-box' | 'encapsulated-node-box';
 type NodeAnchorGraphTypes = 'node-anchor' | 'link-preview';

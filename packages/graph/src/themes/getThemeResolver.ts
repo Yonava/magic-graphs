@@ -1,58 +1,89 @@
 import { getValue } from '@magic/utils/maybeGetter';
 import type { UnwrapMaybeGetter } from '@magic/utils/maybeGetter';
+import { Builtin, PathValue, Paths } from 'ts-essentials';
 
 import type { Ref } from 'vue';
 
 import type { GraphTheme, GraphThemeName } from '../themes';
 import { THEMES } from '../themes';
-import type { FullThemeMap } from '../themes/types';
+import {
+  type FullThemeMap,
+  type ThemeMapEntry,
+  type ValidGraphThemePath,
+} from '../themes/types';
 
-/**
- * slightly modified extract utility useful for replacing the never type with R.
- */
-type ModifiedExtract<T, U, R = never> = T extends U ? T : R;
-
-/**
- * implements ModifiedExtract with a noop function as the replacement type.
- */
-type FuncExtract<T, U> = ModifiedExtract<T, U, () => void>;
-
-/**
- * extracts the parameters out of a graph theme properties getter function
- */
-type ThemeParams<T extends keyof GraphTheme> = Parameters<
-  FuncExtract<GraphTheme[T], Function>
+export type ResolveThemeMap<Path extends ValidGraphThemePath> = PathValue<
+  FullThemeMap,
+  Path
 >;
 
-/**
- * if the theme properties getter has no parameters
- * return an empty array, otherwise return the parameters
- */
-type ResolvedThemeParams<T extends keyof GraphTheme> =
-  ThemeParams<T> extends [] ? [] : Exclude<ThemeParams<T>, []>;
+type AnyFunction = (...args: never[]) => unknown;
 
-export const getThemeResolver =
-  (themeName: Ref<GraphThemeName>, themeMap: FullThemeMap) =>
-  <T extends keyof GraphTheme, K extends ResolvedThemeParams<T>>(
-    prop: T,
-    ...args: K
+export type UnwrapThemeEntry<ThemeMapEntries> =
+  ThemeMapEntries extends ThemeMapEntry<Builtin>[]
+    ? Extract<ThemeMapEntries[number]['value'], AnyFunction> extends never
+      ? []
+      : Parameters<Extract<ThemeMapEntries[number]['value'], AnyFunction>>
+    : [];
+
+export const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
+  obj: Obj,
+  path: Path,
+): PathValue<Obj, Path> | undefined =>
+  path
+    .split('.')
+    .reduce((acc: Record<string, any>, curr: string) => acc?.[curr], obj);
+
+export function getThemeResolver(
+  themeName: Ref<GraphThemeName>,
+  themeMap: FullThemeMap,
+) {
+  const getTheme = <
+    ThemeMapPath extends ValidGraphThemePath,
+    ThemeArgs extends UnwrapThemeEntry<ResolveThemeMap<ThemeMapPath>>,
+  >(
+    themeMapPath: ThemeMapPath,
+    ...themeArgs: ThemeArgs
   ) => {
-    const themeMapEntry = themeMap[prop].findLast(
-      (themeMapEntryItem: FullThemeMap[T][number]) => {
-        const themeGetterOrValue = themeMapEntryItem.value;
-        const themeValue = getValue<typeof themeGetterOrValue, K>(
-          themeGetterOrValue,
-          ...args,
-        ) as UnwrapMaybeGetter<GraphTheme[T]>;
-        return themeValue !== undefined;
-      },
-    );
-    const getter = themeMapEntry?.value ?? THEMES[themeName.value][prop];
-    if (!getter) throw new Error(`Theme property "${prop}" not found`);
-    return getValue<typeof getter, K>(getter, ...args) as UnwrapMaybeGetter<
-      GraphTheme[T]
-    >;
+    const themeMapEntries = getDataFromNestedPath(themeMap, themeMapPath);
+
+    if (!themeMapEntries) {
+      throw new Error(`No theme map for ${themeMapPath}`);
+    }
+
+    const themeMapEntry = themeMapEntries.findLast((themeMapEntryItem) => {
+      const getterOrValue = themeMapEntryItem.value;
+      const themeValue = getValue<typeof getterOrValue, ThemeArgs>(
+        getterOrValue,
+        ...themeArgs,
+      );
+
+      return themeValue !== undefined;
+    });
+
+    const fallbackThemeMap = THEMES[themeName.value];
+    const defaultValue = getDataFromNestedPath(fallbackThemeMap, themeMapPath);
+
+    const getterOrValue = themeMapEntry?.value ?? defaultValue;
+
+    if (!getterOrValue) {
+      throw new Error(`Theme property "${themeMapPath}" not found`);
+    }
+
+    const value = getValue<typeof getterOrValue, ThemeArgs>(
+      getterOrValue,
+      ...themeArgs,
+    ) as Exclude<UnwrapMaybeGetter<PathValue<GraphTheme, ThemeMapPath>>, void>;
+
+    if (!value) {
+      throw new Error('Value unresolved');
+    }
+
+    return value;
   };
+
+  return getTheme;
+}
 
 /**
  * the function that gets a value from a theme inquiry

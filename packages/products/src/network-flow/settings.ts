@@ -20,10 +20,10 @@ export const flowNodeLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
  */
 export const FLOW_GRAPH_SETTINGS: Partial<GraphSettings> = {
   persistentStorageKey: 'network-flow',
-  userAddedEdgeLabel: '5',
+  userAddedDefaultEdgeWeight: '5',
   userAddedEdgeRuleNoSelfLoops: true,
   userAddedEdgeRuleOneEdgePerPath: true,
-  edgeInputToLabel: (input) => {
+  edgeInputToWeight: (input) => {
     const num = Number(input);
     const isValid = !isNaN(num) && num >= 0 && num < 100;
     return isValid ? input : undefined;

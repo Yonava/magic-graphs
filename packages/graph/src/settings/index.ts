@@ -1,5 +1,5 @@
 import type { DefineTimeline } from '@magic/shapes/animation/timeline/define';
-import { fractionToDecimal } from '@magic/utils/fracDecConverter';
+import { Fraction } from 'mathjs';
 import type { DeepPartial } from 'ts-essentials';
 
 import type { GraphAnimations } from '../base/animations';
@@ -10,34 +10,31 @@ import type { GEdge, GNode, SchemaItem } from '../types';
  */
 export type BaseGraphSettings = {
   /**
-   * whether to display {@link GEdge.label | edge labels}
+   * whether graph is weighted, if true, all individual {@link GEdge.weight | edge weights} are ignored and are treated as if they were `new Fraction(1)`
    * @default true
    */
-  displayEdgeLabels: boolean;
+  isGraphWeighted: boolean;
+  /**
+   * whether graph is directed, if true, all {@link GEdge | edges} are directed, else all {@link GEdge | edges} are undirected
+   * @default true
+   */
+  isGraphDirected: boolean;
   /**
    * whether {@link GEdge.label | edge labels} should be editable
    * @default true
    */
   edgeLabelsEditable: boolean;
   /**
-   * a setter for {@link GEdge.label | edge labels} - takes the user inputted string and returns a string that will
-   * be set as the edge label or returns undefined if the edge label should not be set
-   * @default (input) => {
-   * // tries converting the user input to a number
-   * }
+   * a setter for {@link GEdge.weight | edge weight} - takes the user inputted string and returns a fraction that will
+   * be set as the edge weight or returns undefined if the edge label should not be set
    */
-  edgeInputToLabel: (input: string) => string | undefined;
+  edgeInputToWeight: (input: string) => Fraction | undefined;
   /**
    * a function that returns the {@link GNode.label | label} for a node when a new node is created.
    * if null, new nodes will be generated alphabetically: A, B, C, ... Z, AA, AB, ...
    * @default null
    */
   newNodeLabelGetter: null | (() => string);
-  /**
-   * whether the graph is directed, if true, all edges are directed, else all edges are undirected
-   * @default true
-   */
-  isGraphDirected: boolean;
   /**
    * graph animation overrides, used to override the default animations for the graph
    *
@@ -47,16 +44,14 @@ export type BaseGraphSettings = {
 };
 
 export const DEFAULT_BASE_SETTINGS: BaseGraphSettings = {
-  displayEdgeLabels: true,
+  isGraphWeighted: true,
   edgeLabelsEditable: true,
-  edgeInputToLabel: (input: string) => {
-    const trimmed = input.trim();
-    if (!trimmed) return;
-    const decimalNum = fractionToDecimal(trimmed)?.toFixed(2);
-    if (decimalNum === 'Infinity') return '∞';
-    else if (decimalNum === '-Infinity') return '-∞';
-    else if (decimalNum === undefined && isNaN(Number(trimmed))) return;
-    return decimalNum ?? trimmed;
+  edgeInputToWeight: (input: string) => {
+    // fraction throws an error if the input cannot be parsed or
+    // is a divide by zero operation
+    try {
+      return new Fraction(input);
+    } catch {}
   },
   newNodeLabelGetter: null,
   isGraphDirected: true,
@@ -147,10 +142,10 @@ export type InteractiveGraphSettings = {
    */
   interactive: boolean;
   /**
-   * the default {@link GEdge.label | label} assigned to edges when created using the UI
-   * @default '1'
+   * the default {@link GEdge.weight | weight} assigned to edges when created using the UI
+   * @default new Fraction(1)
    */
-  userAddedEdgeLabel: string;
+  userAddedDefaultEdgeWeight: () => Fraction;
   /**
    * whether to allow self loops.
    * relevant on directed graphs where a node can have an edge to itself
@@ -167,7 +162,7 @@ export type InteractiveGraphSettings = {
 
 export const DEFAULT_INTERACTIVE_SETTINGS: InteractiveGraphSettings = {
   interactive: true,
-  userAddedEdgeLabel: '1',
+  userAddedDefaultEdgeWeight: () => new Fraction(1),
   userAddedEdgeRuleNoSelfLoops: false,
   userAddedEdgeRuleOneEdgePerPath: false,
 };

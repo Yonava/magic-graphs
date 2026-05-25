@@ -35,7 +35,7 @@ export class SimulationGuard {
    */
   weighted() {
     const isWeighted = () => {
-      if (this.graph.settings.value.displayEdgeLabels) return;
+      if (this.graph.settings.value.isGraphWeighted) return;
       return {
         themer: this.color.edges(),
         ...CANT_RUN_REASONS.NOT_WEIGHTED,
@@ -51,7 +51,7 @@ export class SimulationGuard {
    */
   unweighted() {
     const isUnweighted = () => {
-      if (!this.graph.settings.value.displayEdgeLabels) return;
+      if (!this.graph.settings.value.isGraphWeighted) return;
       return {
         themer: this.color.edges(),
         ...CANT_RUN_REASONS.NOT_UNWEIGHTED,
@@ -179,7 +179,7 @@ export class SimulationGuard {
   nonNegativeEdgeWeights() {
     const nonNegativeWeights = () => {
       const negativeEdgeIds = this.graph.edges.value
-        .filter((e) => this.graph.helpers.getEdgeWeight(e.id) < 0)
+        .filter((e) => e.weight.valueOf() < 0)
         .map((e) => e.id);
 
       if (negativeEdgeIds.length === 0) return;
@@ -199,8 +199,8 @@ export class SimulationGuard {
   positiveEdgeWeights() {
     const positiveWeights = () => {
       const negativeOrZeroEdgeIds = this.graph.edges.value
-        .filter((e) => this.graph.helpers.getEdgeWeight(e.id) <= 0)
-        .map((e) => e.id);
+        .filter((edge) => edge.weight.valueOf() <= 0)
+        .map((edge) => edge.id);
 
       if (negativeOrZeroEdgeIds.length === 0) return;
       return {
@@ -281,7 +281,7 @@ export class SimulationGuard {
 
   /**
    * checks if the simulation can run on the graph.
-   * @returns a {@link Reason} if it cant or `undefined` if it can
+   * @returns a {@link Reason | reason} if it cannot run or `undefined` if it can
    */
   check() {
     return this.build()();

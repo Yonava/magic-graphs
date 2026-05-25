@@ -21,8 +21,8 @@ export const getEncapsulatedNodeBox = (
     maxY = -Infinity;
 
   for (const node of nodes) {
-    const nodeRadius = graph.getTheme('nodeSize', node);
-    const nodeBorderWidth = graph.getTheme('nodeBorderWidth', node);
+    const nodeRadius = graph.getTheme('node.base.size', node);
+    const nodeBorderWidth = graph.getTheme('node.base.borderWidth', node);
     const nodeArea = nodeRadius + nodeBorderWidth / 2;
     const { x, y } = node;
 

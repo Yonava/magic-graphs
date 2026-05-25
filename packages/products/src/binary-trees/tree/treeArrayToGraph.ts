@@ -1,16 +1,17 @@
 import type { GNodeMoveInstruction } from '@magic/graph/base/useGraphCRUD';
 import type { GEdge, Graph } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
+import { Fraction } from 'mathjs';
 
 import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner';
 import type { TreeNodeKeyArray } from './avl';
 import type { TreeNode } from './treeNode';
 
-const newEdge = (from: number, to: number) => ({
+const newEdge = (from: number, to: number): GEdge => ({
   from: from.toString(),
   to: to.toString(),
   id: `${from}-${to}`,
-  label: '1',
+  weight: new Fraction(1),
 });
 
 const edgesInTree = (treeArray: TreeNodeKeyArray) => {

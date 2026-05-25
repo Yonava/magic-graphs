@@ -15,7 +15,7 @@ import {
 import { computed } from 'vue';
 
 // TODO add tests!!! rref function is untrusted AI output :(
-const rref = (matrix: TransitionMatrix<Fraction>) => {
+const rref = (matrix: TransitionMatrix) => {
   const A = matrix.map((row) => row.map((cell) => fraction(cell))); // deep copy
   let lead = 0;
   const rowCount = A.length;
@@ -56,7 +56,7 @@ const rref = (matrix: TransitionMatrix<Fraction>) => {
   return A;
 };
 
-const getSteadyStateVector = (transitionMatrix: TransitionMatrix<Fraction>) => {
+const getSteadyStateVector = (transitionMatrix: TransitionMatrix) => {
   if (transitionMatrix.length === 0) return [];
 
   const identityMatrix = identity(transitionMatrix.length) as Matrix<Fraction>;
@@ -65,7 +65,7 @@ const getSteadyStateVector = (transitionMatrix: TransitionMatrix<Fraction>) => {
   const subtractedMatrix = subtract(
     transposedTransMatrix,
     identityMatrix,
-  ).valueOf() as TransitionMatrix<Fraction>;
+  ).valueOf() as TransitionMatrix;
   subtractedMatrix[subtractedMatrix.length - 1] = Array(
     subtractedMatrix.length,
   ).fill(fraction(1));
@@ -74,20 +74,19 @@ const getSteadyStateVector = (transitionMatrix: TransitionMatrix<Fraction>) => {
     .fill(fraction(0))
     .concat([fraction(1)]);
 
-  const augmented: TransitionMatrix<Fraction> = subtractedMatrix.map(
-    (row, i) => [...row, b[i]],
-  );
+  const augmented: TransitionMatrix = subtractedMatrix.map((row, i) => [
+    ...row,
+    b[i],
+  ]);
 
   return rref(augmented).map((row) => row.at(-1)!);
 };
 
 export const useMarkovSteadyState = (graph: Graph) =>
   computed(() => {
-    const matrix = graph.transitionMatrix.fracTransitionMatrix.value;
+    const matrix = graph.transitionMatrix.value;
     if (matrix.length === 0) return [];
-    return getSteadyStateVector(
-      graph.transitionMatrix.fracTransitionMatrix.value,
-    );
+    return getSteadyStateVector(graph.transitionMatrix.value);
   });
 
 export type MarkovSteadyState = ReturnType<typeof useMarkovSteadyState>;
