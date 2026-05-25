@@ -1,7 +1,8 @@
 import type { GEdge, GNode, Graph } from '@magic/graph/types';
 import { getAdjacencyList } from '@magic/graph/useAdjacencyList';
+import { Fraction } from 'mathjs';
 
-export type FlowTrace = Record<GEdge['id'], number>;
+export type FlowTrace = Record<GEdge['id'], GEdge['weight']>;
 
 /**
  * implementation of the Ford-Fulkerson algorithm
@@ -16,13 +17,10 @@ export const fordFulkerson = (
     sinkId: GNode['id'];
   },
 ) => {
-  const edgeIdToWeight = graph.edges.value.reduce<Record<string, number>>(
-    (acc, curr) => {
-      acc[curr.id] = Number(curr.label);
-      return acc;
-    },
-    {},
-  );
+  const edgeIdToWeight = graph.edges.value.reduce<FlowTrace>((record, edge) => {
+    record[edge.id] = graph.helpers.getEdgeWeight(edge.id);
+    return record;
+  }, {});
 
   const trace: FlowTrace[] = [];
 
@@ -50,7 +48,7 @@ export const fordFulkerson = (
       );
       if (!connectingEdge) throw 'the adj list must be wrong! (1)';
       const connectingEdgeWeight = edgeIdToWeight[connectingEdge.id];
-      if (connectingEdgeWeight > 0 && !visited.has(nodeId)) {
+      if (connectingEdgeWeight.valueOf() > 0 && !visited.has(nodeId)) {
         const resultPath = dfs(nodeId, t, visited, [...path]);
         if (resultPath) return resultPath;
       }
@@ -74,7 +72,7 @@ export const fordFulkerson = (
         );
         if (!connectingEdge) throw 'the adj list must be wrong! (2)';
         const connectingEdgeWeight = edgeIdToWeight[connectingEdge.id];
-        pathFlow = Math.min(pathFlow, connectingEdgeWeight);
+        pathFlow = Math.min(pathFlow, connectingEdgeWeight.valueOf());
       }
 
       for (let i = 0; i < path.length - 1; i++) {
@@ -86,10 +84,12 @@ export const fordFulkerson = (
         const connectingVU = graph.edges.value.find(
           (e) => e.from === v && e.to === u,
         );
-        if (!connectingUV || !connectingVU)
+        if (!connectingUV || !connectingVU) {
           throw 'the adj list must be wrong! (3)';
-        edgeIdToWeight[connectingUV.id] -= pathFlow;
-        edgeIdToWeight[connectingVU.id] += pathFlow;
+        }
+        const pathFlowFraction = new Fraction(pathFlow);
+        edgeIdToWeight[connectingUV.id].sub(pathFlowFraction);
+        edgeIdToWeight[connectingVU.id].add(pathFlowFraction);
         trace.push({
           [connectingUV.id]: edgeIdToWeight[connectingUV.id],
           [connectingVU.id]: edgeIdToWeight[connectingVU.id],

@@ -34,8 +34,10 @@ export const kruskal = (graph: Graph) => {
   };
 
   const run = () => {
-    const sortedEdges = Object.values(edges.value).sort((edgeA, edgeB) => {
-      return getEdgeWeight(edgeA.id) - getEdgeWeight(edgeB.id);
+    const sortedEdges = edges.value.toSorted((edgeA, edgeB) => {
+      const weightA = getEdgeWeight(edgeA.id);
+      const weightB = getEdgeWeight(edgeB.id);
+      return weightA.valueOf() - weightB.valueOf();
     });
 
     const parent = new Map<string, string>();

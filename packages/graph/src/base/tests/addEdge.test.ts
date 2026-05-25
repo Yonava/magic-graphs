@@ -1,4 +1,5 @@
 import { generateId } from '@magic/utils/id';
+import { Fraction } from 'mathjs';
 import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';
@@ -25,7 +26,7 @@ describe('base graph - addEdge', () => {
       from: graph.nodes.value[0].id,
       to: graph.nodes.value[1].id,
       id: generateId(),
-      label: 'a',
+      weight: new Fraction(1),
     };
     graph.addEdge(basicDirectedEdge);
     expect(graph.edges.value).toEqual([basicDirectedEdge]);
@@ -34,7 +35,7 @@ describe('base graph - addEdge', () => {
       from: graph.nodes.value[2].id,
       to: graph.nodes.value[3].id,
       id: generateId(),
-      label: 'b',
+      weight: new Fraction(2),
     };
     graph.addEdge(basicUndirectedEdge);
     expect(graph.edges.value).toEqual([basicDirectedEdge, basicUndirectedEdge]);
@@ -48,7 +49,7 @@ describe('base graph - addEdge', () => {
     } as const;
     graph.addEdge(edge1);
     const [addedEdge1] = graph.edges.value;
-    expect(addedEdge1.label).toEqual(ADD_EDGE_DEFAULTS.label);
+    expect(addedEdge1.weight).toEqual(ADD_EDGE_DEFAULTS().weight);
     expect(addedEdge1.id).toBeDefined();
   });
 

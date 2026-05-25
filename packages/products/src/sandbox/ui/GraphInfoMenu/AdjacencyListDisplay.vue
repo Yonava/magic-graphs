@@ -18,9 +18,7 @@
     return node;
   };
 
-  const isWeighted = computed(
-    () => graph.value.settings.value.displayEdgeLabels,
-  );
+  const isWeighted = computed(() => graph.value.settings.value.isGraphWeighted);
 </script>
 
 <template>

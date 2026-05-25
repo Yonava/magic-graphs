@@ -8,7 +8,7 @@ import { AUTO_ANIMATE_DURATION_MS } from '@magic/shapes/animation/autoAnimate';
 export const BINARY_TREE_GRAPH_SETTINGS: Partial<GraphSettings> = {
   persistentStorageKey: 'binary-trees',
   interactive: false,
-  displayEdgeLabels: false,
+  isGraphWeighted: false,
   animations: (defineTimeline) => ({
     arrow: {
       edgeAdded: defineTimeline({

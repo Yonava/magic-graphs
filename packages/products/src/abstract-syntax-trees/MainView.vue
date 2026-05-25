@@ -2,6 +2,7 @@
   import { GEdge, GNode } from '@magic/graph/types';
   import { getCtx } from '@magic/utils/ctx';
   import { debounce } from '@magic/utils/debounce';
+  import { Fraction } from 'mathjs';
   import * as ts from 'typescript';
 
   import { computed, onMounted, ref, watch } from 'vue';
@@ -87,7 +88,7 @@
         to: getASTNodeId(astEdge.toNode),
         from: getASTNodeId(astEdge.fromNode),
         id: getASTEdgeId(astEdge),
-        label: '',
+        weight: new Fraction(1),
       }),
     );
 

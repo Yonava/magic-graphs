@@ -9,7 +9,7 @@ import type { FlowTrace } from '../algo/fordFulkerson';
 import { FLOW_USETHEME_ID } from '../constants';
 import { isResidual } from '../misc/useResidualEdges';
 
-type WeightMap = Map<GEdge['id'], number>;
+type WeightMap = Map<GEdge['id'], GEdge['weight']>;
 
 export const useSimulationTheme = (
   graph: Graph,
@@ -65,7 +65,7 @@ export const useSimulationTheme = (
 
   const labelEdges = (edge: GEdge) => {
     const weight = weightMapAtStep.value.get(edge.id);
-    if (weight === undefined) return edge.label;
+    if (weight === undefined) return edge.weight.toString();
     return weight.toString();
   };
 

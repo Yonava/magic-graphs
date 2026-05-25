@@ -64,10 +64,15 @@ export const useFocus = (graph: BaseGraph) => {
       const edge = graph.getEdge(schemaItem.id);
       if (!edge) throw new Error('textarea only implemented for edges');
 
-      const newLabel = graph.settings.value.edgeInputToLabel(textAreaContent);
-      if (newLabel === undefined || edge.label === newLabel) return;
+      const newWeight = graph.settings.value.edgeInputToWeight(textAreaContent);
+      if (
+        newWeight === undefined ||
+        edge.weight.valueOf() === newWeight.valueOf()
+      ) {
+        return;
+      }
 
-      graph.editEdgeLabel(edge.id, newLabel);
+      graph.editEdgeLabel(edge.id, newWeight);
     });
   };
 

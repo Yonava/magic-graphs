@@ -3,6 +3,7 @@
  * such as addNode, removeNode, etc.
  */
 import type { Coordinate } from '@magic/shapes/types/utility';
+import { Fraction } from 'mathjs';
 
 import type { DeepReadonly } from 'vue';
 
@@ -122,9 +123,10 @@ export const EDIT_EDGE_LABEL_OPTIONS_DEFAULTS: EditEdgeLabelOptions = {
 /**
  * defaults for newly added edges
  */
-export const ADD_EDGE_DEFAULTS = {
-  label: '',
-} as const;
+export const ADD_EDGE_DEFAULTS = () =>
+  ({
+    weight: new Fraction(1),
+  }) as const;
 
 /**
  * stores info about the last mouse position on the graph

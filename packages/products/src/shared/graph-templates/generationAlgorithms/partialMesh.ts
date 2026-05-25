@@ -1,10 +1,11 @@
 import type { GEdge, GNode } from '@magic/graph/types';
 import { generateId } from '@magic/utils/id';
+import { Fraction } from 'mathjs';
 
 import { AutoGenerateGraphOptions } from '../templateTypes';
 
 type GeneratePartialMeshOptions = {
-  edgeLabel: AutoGenerateGraphOptions['edgeLabel'];
+  edgeLabel: AutoGenerateGraphOptions['edgeWeight'];
   connectionProbability: number;
   maxConnectionsPerNode: number;
 };
@@ -21,7 +22,11 @@ export const generatePartialMesh = (
   nodes: GNode[],
   options: PartialGeneratePartialMeshOptions = {},
 ) => {
-  const { edgeLabel, connectionProbability, maxConnectionsPerNode } = {
+  const {
+    edgeLabel: edgeWeight,
+    connectionProbability,
+    maxConnectionsPerNode,
+  } = {
     ...GENERATE_PARTIAL_MESH_DEFAULTS,
     ...options,
   };
@@ -36,13 +41,13 @@ export const generatePartialMesh = (
     const edgeKey = `${from}-${to}`;
     if (existingEdges.has(edgeKey)) return;
 
-    const label =
-      typeof edgeLabel === 'function' ? edgeLabel(from, to) : edgeLabel!;
+    const weight =
+      typeof edgeWeight === 'function' ? edgeWeight(from, to) : edgeWeight;
     edges.push({
       id: generateId(),
       from,
       to,
-      label,
+      weight: new Fraction(weight),
     });
     connections.set(from, (connections.get(from) || 0) + 1);
     connections.set(to, (connections.get(to) || 0) + 1);

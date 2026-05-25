@@ -22,7 +22,7 @@ export const useEdgeThickener = (graph: Graph, themeId = FLOW_USETHEME_ID) => {
   const { getEdgeWeight } = graph.helpers;
 
   const thickener = (edge: GEdge) => {
-    const edgeWeight = getEdgeWeight(edge.id);
+    const edgeWeight = getEdgeWeight(edge.id).valueOf();
     if (edgeWeight === 0) return ZERO_THICKNESS;
     const adjustedWeight = edgeWeight * 2;
     const rawPercentage =

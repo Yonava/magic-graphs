@@ -12,7 +12,6 @@ import { getConnectedEdges } from '../helpers';
 import { nodeLetterLabelGetter } from '../labels';
 import type { GraphSettings } from '../settings';
 import type { GEdge, GNode } from '../types';
-import { AnimationKeyframe } from './../../../shapes/src/animation/interpolation/types';
 import type { GraphAnimations } from './animations';
 import {
   ADD_EDGE_DEFAULTS,
@@ -186,7 +185,10 @@ export const useGraphCRUD = ({
    * @returns the added edge or undefined if not added
    */
   const addEdge = (
-    edge: PartiallyPartial<GEdge, keyof typeof ADD_EDGE_DEFAULTS | 'id'>,
+    edge: PartiallyPartial<
+      GEdge,
+      keyof ReturnType<typeof ADD_EDGE_DEFAULTS> | 'id'
+    >,
     options: Partial<AddEdgeOptions> = {},
   ) => {
     const fullOptions = {
@@ -214,7 +216,7 @@ export const useGraphCRUD = ({
     }
 
     const newEdge: GEdge = {
-      ...ADD_EDGE_DEFAULTS,
+      ...ADD_EDGE_DEFAULTS(),
       id: generateId(),
       ...edge,
     };
@@ -315,7 +317,7 @@ export const useGraphCRUD = ({
 
   const editEdgeLabel = (
     edgeId: GEdge['id'],
-    newLabel: GEdge['label'],
+    newWeight: GEdge['weight'],
     options: Partial<EditEdgeLabelOptions> = {},
   ) => {
     const fullOptions = {
@@ -326,10 +328,10 @@ export const useGraphCRUD = ({
     const edge = getEdge(edgeId);
     if (!edge) return;
 
-    const oldLabel = edge.label;
-    edge.label = newLabel;
+    const oldWeight = edge.weight;
+    edge.weight = newWeight;
 
-    emit('onEdgeLabelEdited', edge, oldLabel, fullOptions);
+    emit('onEdgeLabelEdited', edge, oldWeight, fullOptions);
     emit('onStructureChange');
   };
 

@@ -3,18 +3,36 @@ import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
 
 import { GraphTheme, resolveThemeForEdge } from '../..';
-import { getConnectedNodes, getEdgesAlongPath } from '../../../helpers';
-import { GEdge } from '../../../types';
+import { getConnectedNodes } from '../../../helpers';
+import { GEdge, GNode } from '../../../types';
+import { GraphInterface } from '../../types';
 import { textDefaults } from './text';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
+// forked from graph helpers because graph helpers require BaseGraph instance and
+// schematics are being created from inside the base graph
+// TODO remove fork when PR from GH issue "[graph] proposal for centralized dynamic theme resolution API" lands
+const getEdgesBetweenConnectedNodes =
+  (graph: GraphInterface) => (nodeId1: GNode['id'], nodeId2: GNode['id']) => {
+    const isConnecting = (edge: GEdge) => {
+      const fromNode1ToNode2 = edge.from === nodeId1 && edge.to === nodeId2;
+      const fromNode2ToNode1 = edge.from === nodeId2 && edge.to === nodeId1;
+      return fromNode1ToNode2 || fromNode2ToNode1;
+    };
+
+    return graph.edges.value.filter(isConnecting);
+  };
+
 const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
   const styles = resolveThemeForEdge(graph.getTheme, edge);
-  const { displayEdgeLabels, isGraphDirected } = graph.settings.value;
+  const { isGraphDirected, isGraphWeighted } = graph.settings.value;
 
   const [fromNode, toNode] = getConnectedNodes(edge.id, graph);
-  const edgesAlongPath = getEdgesAlongPath(fromNode.id, toNode.id, graph);
+  const edgesAlongPath = getEdgesBetweenConnectedNodes(graph)(
+    fromNode.id,
+    toNode.id,
+  );
 
   const multipleEdgesInPath = edgesAlongPath.length > 1;
   const isSelfDirected = toNode.id === fromNode.id;
@@ -90,7 +108,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     },
   };
 
-  const textArea = displayEdgeLabels ? textAreaOnEdge : undefined;
+  const textArea = isGraphWeighted ? textAreaOnEdge : undefined;
 
   const upDistance = (fromNodeSize + fromNodeBorderWidth) * GOLDEN_RATIO;
   const downDistance =
@@ -152,7 +170,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
 
 export const edgeShared = {
   ...textDefaults,
-  text: ({ label }: GEdge) => label,
+  text: ({ weight }: GEdge) => weight.toString(),
   width: 10,
   shape: edgeShape,
 } as const;

@@ -6,7 +6,7 @@ import type { GraphSettings } from '@magic/graph/settings';
 export const MST_GRAPH_SETTINGS: Partial<GraphSettings> = {
   persistentStorageKey: 'min-spanning-tree',
   isGraphDirected: false,
-  edgeInputToLabel: (input) => {
+  edgeInputToWeight: (input) => {
     const parsedInput = Number(input);
     const isNegative = parsedInput < 0;
     const isNotNumber = isNaN(parsedInput);

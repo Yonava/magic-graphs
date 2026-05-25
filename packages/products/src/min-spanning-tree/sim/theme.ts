@@ -25,7 +25,7 @@ export const useSimulationTheme = (
   const colorEdge = (edge: GEdge) => {
     if (graph.focus.isFocused(edge.id)) return;
 
-    const color = graph.baseTheme.value.edgeColor;
+    const color = graph.baseTheme.value.edge.base.color;
     const inMST = mstAtStep.value.some((e) => e.id === edge.id);
     if (inMST) return color;
     else return color + DIM_FACTOR;
@@ -34,15 +34,15 @@ export const useSimulationTheme = (
   const colorEdgeText = (edge: GEdge) => {
     if (graph.focus.isFocused(edge.id)) return;
 
-    const color = graph.baseTheme.value.edgeTextColor;
+    const color = graph.baseTheme.value.edge.base.textColor;
     const inMST = mstAtStep.value.some((e) => e.id === edge.id);
     if (inMST) return color;
     else return color + DIM_FACTOR;
   };
 
   const activate = () => {
-    setTheme('edgeColor', colorEdge);
-    setTheme('edgeTextColor', colorEdgeText);
+    setTheme('edge.base.color', colorEdge);
+    setTheme('edge.base.textColor', colorEdgeText);
   };
 
   const deactivate = () => {
