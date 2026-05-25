@@ -89,15 +89,13 @@ const getEdgeBetween: CurriedNodeHelpers['getEdgeBetween'] =
 
     return graph.edges.value.find((edge) => {
       if (isGraphDirected) {
-        // Strict mapping: must go directly from source to target
         return edge.from === fromNodeId && edge.to === toNodeId;
-      } else {
-        // Undirected mapping: connection in either direction counts
-        return (
-          (edge.from === fromNodeId && edge.to === toNodeId) ||
-          (edge.from === toNodeId && edge.to === fromNodeId)
-        );
       }
+
+      return (
+        (edge.from === fromNodeId && edge.to === toNodeId) ||
+        (edge.from === toNodeId && edge.to === fromNodeId)
+      );
     });
   };
 
