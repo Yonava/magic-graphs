@@ -144,12 +144,14 @@ export const dijkstras = (graph: TransitionMatrix, source: number) => {
 
         // Check if there's an edge and path through current node is shorter
         if (
-          edgeWeight > 0 &&
+          edgeWeight.valueOf() > 0 &&
           distances[currentNode] !== Number.POSITIVE_INFINITY &&
-          distances[currentNode] + edgeWeight < distances[adjacentNode]
+          distances[currentNode] + edgeWeight.valueOf() <
+            distances[adjacentNode]
         ) {
           // Update distance
-          distances[adjacentNode] = distances[currentNode] + edgeWeight;
+          distances[adjacentNode] =
+            distances[currentNode] + edgeWeight.valueOf();
           previousNode[adjacentNode] = currentNode;
 
           // Add to priority queue

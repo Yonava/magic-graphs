@@ -8,7 +8,7 @@
   import { useNonNullGraphColors } from '../../../shared/useGlobalGraphColors';
   import TransitionMatrixLabel from './TransitionMatrixLabel.vue';
 
-  const { transitionMatrix } = useTransitionMatrix(graph.value);
+  const transitionMatrix = useTransitionMatrix(graph.value);
 
   const graphColors = useNonNullGraphColors();
 
