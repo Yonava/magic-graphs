@@ -17,6 +17,7 @@
     "trivago",
     "unlabel",
     "unref",
+    "unserialize",
     "usetoast"
   ],
   "editor.formatOnSave": true,
