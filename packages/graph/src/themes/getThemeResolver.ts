@@ -75,10 +75,6 @@ export function getThemeResolver(
       ...themeArgs,
     ) as Exclude<UnwrapMaybeGetter<PathValue<GraphTheme, ThemeMapPath>>, void>;
 
-    if (!value) {
-      throw new Error('Value unresolved');
-    }
-
     return value;
   };
 
