@@ -10,9 +10,10 @@ export const MARKOV_CHAIN_GRAPH_SETTINGS: Partial<GraphSettings> = {
     // fraction throws an error if the input cannot be parsed or
     // is a divide by zero operation
     try {
-      // TODO make the amount to simply configurable by the user
-      const fraction = new Fraction(input).simplify(0.001);
-      if (fraction.valueOf() === 0) return; // 0 edges make no sense in a markov chain
+      const fraction = new Fraction(input);
+      const numericValue = fraction.valueOf();
+      // markov chain edges must be between 0 and 1
+      if (numericValue <= 0 || numericValue > 1) return;
       return fraction;
     } catch {}
   },

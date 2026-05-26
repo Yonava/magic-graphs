@@ -10,7 +10,7 @@ import { textDefaults } from './text';
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
 // forked from graph helpers because graph helpers require BaseGraph instance and
-// schematics are being created from inside the base graph
+// schematics are being created from inside the base graph GH issue #577
 // TODO remove fork when PR for https://github.com/Yonava/magic-graphs/issues/574 lands
 const getEdgesBetweenConnectedNodes =
   (graph: GraphInterface) => (nodeId1: GNode['id'], nodeId2: GNode['id']) => {
@@ -23,7 +23,7 @@ const getEdgesBetweenConnectedNodes =
     return graph.edges.value.filter(isConnecting);
   };
 
-// TODO remove this fork as well!
+// TODO remove this fork as well! GH issue #577
 const getConnectedNodes = (graph: GraphInterface) => (edgeId: GEdge['id']) => {
   const edge = graph.getEdge(edgeId);
   if (!edge) throw new Error(`Edge with ID ${edgeId} not found`);
@@ -179,7 +179,9 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
 
 export const edgeShared = {
   ...textDefaults,
-  text: ({ weight }: GEdge) => weight.toFraction(),
+  text: ({ weight }: GEdge) => {
+    return weight.toFraction();
+  },
   width: 10,
   shape: edgeShape,
 } as const;

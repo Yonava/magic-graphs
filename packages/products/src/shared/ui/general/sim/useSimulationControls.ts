@@ -1,5 +1,3 @@
-// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
-// eslint-disable-next-line
 import type { GraphEventMap } from '@magic/graph/events';
 import { localKeys } from '@magic/utils/localStorage';
 import { useLocalStorage } from '@vueuse/core';

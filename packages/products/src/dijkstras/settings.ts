@@ -1,4 +1,5 @@
 import type { GraphSettings } from '@magic/graph/settings';
+import { Fraction } from 'mathjs';
 
 /**
  * settings for dijkstras useGraph instance
@@ -8,10 +9,13 @@ export const DIJKSTRAS_GRAPH_SETTINGS: Partial<GraphSettings> = {
   userAddedEdgeRuleNoSelfLoops: true,
   userAddedEdgeRuleOneEdgePerPath: true,
   edgeInputToWeight: (input) => {
-    const number = parseInt(input);
-    if (isNaN(number)) return;
-    const isNegative = number < 0;
-    if (isNegative) return;
-    return number.toString();
+    // fraction throws an error if the input cannot be parsed or
+    // is a divide by zero operation
+    try {
+      const fraction = new Fraction(input);
+      // dijkstras only works on positive weight edges
+      if (fraction.valueOf() <= 0) return;
+      return fraction;
+    } catch {}
   },
 };
