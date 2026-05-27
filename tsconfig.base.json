@@ -16,7 +16,7 @@
     "rewriteRelativeImportExtensions": true,
 
     /* Allow .vue extensions */
-    // "allowArbitraryExtensions": true,
+    "allowArbitraryExtensions": true,
 
     /* Build settings */
     "composite": true,
