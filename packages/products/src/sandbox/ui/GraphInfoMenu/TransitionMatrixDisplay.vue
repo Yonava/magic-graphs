@@ -4,8 +4,8 @@
 
   import { computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../shared/globalGraph';
-  import { useNonNullGraphColors } from '../../../shared/useGlobalGraphColors';
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
+  import { useNonNullGraphColors } from '../../../shared/useGlobalGraphColors.ts';
   import TransitionMatrixLabel from './TransitionMatrixLabel.vue';
 
   const transitionMatrix = useTransitionMatrix(graph.value);

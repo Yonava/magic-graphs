@@ -3,7 +3,7 @@
 
   import { computed } from 'vue';
 
-  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors';
+  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors.ts';
 
   const colors = useNonNullGraphColors();
 

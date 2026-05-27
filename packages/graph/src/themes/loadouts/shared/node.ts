@@ -1,7 +1,7 @@
 import colors from '@magic/utils/colors';
 
 import { GraphTheme, resolveThemeForNode } from '../..';
-import { GNode } from '../../../types';
+import { GNode } from '../../../types.ts';
 import { textDefaults } from './text';
 
 const nodeCircle: GraphTheme['node']['base']['shape'] = (node, graph) => {

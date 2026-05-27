@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import GWell from '../../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
   import TransitionMatrixDisplay from './TransitionMatrixDisplay.vue';

@@ -11,7 +11,10 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true
   },
   "references": [{ "path": "../graph" }],
   "include": ["./src/**/*"]

@@ -10,9 +10,9 @@ import {
 import {
   centerNodesOnOriginCoordinates,
   getAverageCoordinates,
-} from './helpers';
-import type { AutoGenerateGraphOptions } from './templateTypes';
-import { AUTO_GENERATE_GRAPH_DEFAULTS } from './templateTypes';
+} from './helpers.ts';
+import type { AutoGenerateGraphOptions } from './templateTypes.ts';
+import { AUTO_GENERATE_GRAPH_DEFAULTS } from './templateTypes.ts';
 
 export const useAutoGenerate = (graph: Graph) => {
   const options = useLocalStorage<AutoGenerateGraphOptions>(

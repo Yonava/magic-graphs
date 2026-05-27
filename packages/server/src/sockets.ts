@@ -2,7 +2,7 @@ import { Collaborator, SocketEvents } from '@magic/graph/collab/types';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 
-import { trackGraphState } from './trackGraphState';
+import { trackGraphState } from './trackGraphState.ts';
 
 export const sockets = (httpServer: ReturnType<typeof createServer>) => {
   const io = new Server<SocketEvents, SocketEvents, {}, {}>(httpServer, {

@@ -11,5 +11,5 @@
     { "path": "../utils" },
     { "path": "../graph" }
   ],
-  "include": ["./src/**/*"]
+  "include": ["src/**/*"]
 }

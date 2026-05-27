@@ -2,7 +2,7 @@
   import type { PreferredGraphTheme } from '@magic/graph/themes/usePreferredTheme';
   import ToolbarButtonGroup from '@magic/ui/core/toolbar/ToolbarButtonGroup.vue';
 
-  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import GToolbar from '../../../shared/ui/graph-core/toolbar/GToolbarBase.vue';
   import GToolbarButton from '../../../shared/ui/graph-core/toolbar/GToolbarButton.vue';
 

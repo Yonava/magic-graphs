@@ -3,8 +3,8 @@ import express from 'express';
 import { createServer } from 'http';
 import path from 'path';
 
-import { LOCALHOST_PORT } from './constants';
-import { sockets } from './sockets';
+import { LOCALHOST_PORT } from './constants.ts';
+import { sockets } from './sockets.ts';
 
 dotenv.config();
 

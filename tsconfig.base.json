@@ -15,6 +15,9 @@
     "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true,
 
+    /* Allow .vue extensions */
+    // "allowArbitraryExtensions": true,
+
     /* Build settings */
     "composite": true,
     "declaration": true,

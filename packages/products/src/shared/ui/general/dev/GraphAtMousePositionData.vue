@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../../../shared/globalGraph.ts';
   import GText from '../../graph-core/GText.vue';
 
   const coords = computed(() => {

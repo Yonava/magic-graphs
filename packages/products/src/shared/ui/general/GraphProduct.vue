@@ -5,11 +5,11 @@
   import type { UnwrapRef } from 'vue';
 
   import AnnotationToolbar from '../../../sandbox/ui/AnnotationToolbar.vue';
-  import { devMode } from '../../../shared/globalGraph';
-  import { useGraphProduct } from '../../../shared/useGraphProduct';
-  import type { GraphWithCanvas } from '../../../shared/useGraphWithCanvas';
-  import type { SimulationDeclaration } from '../../../types';
-  import { getSimulationDeclarationsForProduct } from '../../../utils';
+  import { devMode } from '../../../shared/globalGraph.ts';
+  import { useGraphProduct } from '../../../shared/useGraphProduct.ts';
+  import type { GraphWithCanvas } from '../../../shared/useGraphWithCanvas.ts';
+  import type { SimulationDeclaration } from '../../../types.ts';
+  import { getSimulationDeclarationsForProduct } from '../../../utils.ts';
   import ProductDropdown from '../general/dropdown/ProductDropdown.vue';
   import SelectSimulation from '../general/sim/SelectSim.vue';
   import SimulationPlaybackControls from '../general/sim/SimulationPlaybackControls.vue';

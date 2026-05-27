@@ -28,10 +28,10 @@
     "mathjs": "catalog:",
     "monaco-editor": "^0.55.1",
     "tinycolor2": "catalog:",
-    "typescript": "~5.4.0",
     "vue-router": "catalog:"
   },
   "devDependencies": {
+    "fraction.js": "^5.3.4",
     "@types/tinycolor2": "catalog:",
     "primevue": "catalog:",
     "ts-essentials": "^10.2.0",

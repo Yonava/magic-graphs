@@ -3,8 +3,8 @@
 
   import { computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../../shared/globalGraph';
-  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors';
+  import { nonNullGraph as graph } from '../../../../shared/globalGraph.ts';
+  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors.ts';
 
   const colors = useNonNullGraphColors();
   const color = computed(() => colors.value.primary);

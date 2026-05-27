@@ -2,7 +2,7 @@ import keys from 'ctrl-keys';
 
 import { onUnmounted } from 'vue';
 
-import { PRODUCT_SHORTCUTS } from '../../../shared/shortcuts';
+import { PRODUCT_SHORTCUTS } from '../../../shared/shortcuts.ts';
 
 export const useEscSimulationShortcut = (stopSimulation: () => void) => {
   const ctrlKeys = keys();

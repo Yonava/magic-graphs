@@ -3,7 +3,7 @@
 
   import { computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import GHoverInfo from '../../../shared/ui/graph-core/GHoverInfo.vue';
   import { useBipartiteColorizer } from './useBipartiteColorizer';
   import { useCycleColorizer } from './useCycleColorizer';

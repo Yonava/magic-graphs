@@ -4,7 +4,7 @@
 
   import { computed, onUnmounted, ref } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
 
   type NodeProps = {
     size?: number;
