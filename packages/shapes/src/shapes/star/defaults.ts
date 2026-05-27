@@ -3,7 +3,7 @@ import {
   FILL_COLOR_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '../../defaults/schema.ts';
-import type { StarSchema } from './types';
+import type { StarSchema } from './types.ts';
 
 export const STAR_SCHEMA_DEFAULTS = {
   ...FILL_COLOR_DEFAULTS,

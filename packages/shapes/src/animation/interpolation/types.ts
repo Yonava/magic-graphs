@@ -3,7 +3,7 @@ import type { DeepRequired } from 'ts-essentials';
 
 import { TextArea } from '../../text/types.ts';
 import { Coordinate } from '../../types/utility.ts';
-import type { EasingFunction } from '../easing';
+import type { EasingFunction } from '../easing.ts';
 
 /**
  * Represents a keyframe in an animation, defining the value at a specific point in the animation timeline.

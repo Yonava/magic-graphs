@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { ELLIPSE_SCHEMA_DEFAULTS } from './defaults';
-import type { EllipseSchema } from './types';
+import type { EllipseSchema } from './types.ts';
 
 const Ellipse = createDocComponent<EllipseSchema>(ellipse);
 

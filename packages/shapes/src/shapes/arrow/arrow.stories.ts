@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { ARROW_SCHEMA_DEFAULTS } from './defaults';
-import type { ArrowSchema } from './types';
+import type { ArrowSchema } from './types.ts';
 
 const Arrow = createDocComponent<ArrowSchema>(arrow);
 

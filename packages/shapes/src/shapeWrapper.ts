@@ -1,5 +1,5 @@
 import { getCenterPoint } from './helpers';
-import type { Shape, ShapeProps } from './types';
+import type { Shape, ShapeProps } from './types.ts';
 
 export type ShapeFactoryWrapper = (shapeProps: ShapeProps) => Shape;
 

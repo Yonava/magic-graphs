@@ -7,7 +7,7 @@ import {
 } from '../../docs.ts';
 import { line } from '../line';
 import { LINE_SCHEMA_DEFAULTS } from './defaults';
-import type { LineSchema } from './types';
+import type { LineSchema } from './types.ts';
 
 const Line = createDocComponent<LineSchema>(line);
 

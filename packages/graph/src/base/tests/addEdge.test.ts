@@ -6,7 +6,7 @@ import { ref } from 'vue';
 
 import { useBaseGraph } from '..';
 import type { GEdge } from '../../types.ts';
-import { ADD_EDGE_DEFAULTS } from '../types';
+import { ADD_EDGE_DEFAULTS } from '../types.ts';
 
 describe('base graph - addEdge', () => {
   const graph = useBaseGraph(ref() as any);

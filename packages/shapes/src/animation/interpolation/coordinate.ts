@@ -1,6 +1,6 @@
 import type { Coordinate } from '../../types/utility.ts';
-import { interpolateNumber } from './number';
-import type { InterpolationFunction, NumberKeyframe } from './types';
+import { interpolateNumber } from './number.ts';
+import type { InterpolationFunction, NumberKeyframe } from './types.ts';
 
 export const interpolateCoordinate: InterpolationFunction<Coordinate> = (
   keyframes,

@@ -10,7 +10,7 @@ import {
   triangleEfficientHitbox,
   triangleHitbox,
 } from './hitbox';
-import type { TriangleSchema } from './types';
+import type { TriangleSchema } from './types.ts';
 
 export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const schema = resolveTriangleDefaults(options);

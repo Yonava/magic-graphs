@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 
 import { computed, readonly, ref } from 'vue';
 
-import type { Graph } from '../types';
+import type { Graph } from '../types.ts';
 import { usePaintCollabTags } from './collabTag';
 import { COLLAB_COLORS, SOCKET_URL } from './constants';
 import { useSocketEmitters } from './emit';
@@ -14,7 +14,7 @@ import type {
   CollaboratorMap,
   CollaboratorProfile,
   GraphSocket,
-} from './types';
+} from './types.ts';
 
 export const myCollaboratorProfile = useLocalStorage<CollaboratorProfile>(
   'collab-profile',

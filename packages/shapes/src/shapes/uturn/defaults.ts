@@ -4,7 +4,7 @@ import {
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '../../defaults/schema.ts';
-import type { UTurnSchema } from './types';
+import type { UTurnSchema } from './types.ts';
 
 export const UTURN_SCHEMA_DEFAULTS = {
   ...FILL_COLOR_DEFAULTS,

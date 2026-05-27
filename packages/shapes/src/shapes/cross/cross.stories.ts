@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { CROSS_SCHEMA_DEFAULTS } from './defaults';
-import type { CrossSchema } from './types';
+import type { CrossSchema } from './types.ts';
 
 const Cross = createDocComponent<CrossSchema>(cross);
 

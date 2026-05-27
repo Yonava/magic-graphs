@@ -1,6 +1,6 @@
 import { getCtx } from '@magic/utils/ctx';
 
-import type { TextBlock } from './types';
+import type { TextBlock } from './types.ts';
 
 const canvas = document.createElement('canvas');
 const ctx = getCtx(canvas);

@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { SCRIBBLE_SCHEMA_DEFAULTS } from './defaults';
-import type { ScribbleSchema } from './types';
+import type { ScribbleSchema } from './types.ts';
 
 const Scribble = createDocComponent<ScribbleSchema>(scribble);
 

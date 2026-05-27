@@ -1,6 +1,6 @@
 import colors from '@magic/utils/colors';
 
-import type { GraphTheme } from '../types';
+import type { GraphTheme } from '../types.ts';
 import { edgeShared } from './shared/edge.ts';
 import { nodeAnchorShared, nodeShared } from './shared/node.ts';
 

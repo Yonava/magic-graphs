@@ -1,7 +1,7 @@
 import { BaseGraph } from '../base';
 import { edgeHelpers } from './edge';
 import { nodeHelpers } from './node';
-import { EdgeHelpers, GraphHelpers, NodeHelpers } from './types';
+import { EdgeHelpers, GraphHelpers, NodeHelpers } from './types.ts';
 
 export const useGraphHelpers = (graph: BaseGraph): GraphHelpers => ({
   nodes: Object.keys(nodeHelpers).reduce(

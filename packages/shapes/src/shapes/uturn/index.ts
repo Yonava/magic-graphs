@@ -10,7 +10,7 @@ import {
   uturnHitbox,
 } from './hitbox';
 import { getTextAreaAnchorPoint } from './text';
-import type { UTurnSchema } from './types';
+import type { UTurnSchema } from './types.ts';
 
 export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   if (options.downDistance < 0) {

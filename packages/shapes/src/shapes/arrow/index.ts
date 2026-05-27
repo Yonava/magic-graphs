@@ -10,7 +10,7 @@ import {
   arrowHitbox,
   getArrowBoundingBox,
 } from './hitbox';
-import type { ArrowSchema } from './types';
+import type { ArrowSchema } from './types.ts';
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {

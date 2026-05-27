@@ -11,8 +11,8 @@ import type {
   TutorialSequence,
   TutorialStep,
 } from '../tutorials/types.ts';
-import type { Graph } from '../types';
-import type { TutorialControls } from './types';
+import type { Graph } from '../types.ts';
+import type { TutorialControls } from './types.ts';
 
 /**
  * creates functionality for an interactive tutorial sequence for a graph

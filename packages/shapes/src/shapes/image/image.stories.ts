@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { IMAGE_SCHEMA_DEFAULTS } from './defaults';
-import type { ImageSchema } from './types';
+import type { ImageSchema } from './types.ts';
 
 const Image = createDocComponent<ImageSchema>(image);
 

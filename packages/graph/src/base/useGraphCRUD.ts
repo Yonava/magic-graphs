@@ -10,7 +10,7 @@ import type { Ref } from 'vue';
 import type { Emitter } from '../events';
 import { nodeLetterLabelGetter } from '../labels';
 import type { GraphSettings } from '../settings';
-import type { GEdge, GNode } from '../types';
+import type { GEdge, GNode } from '../types.ts';
 import type { GraphAnimations } from './animations';
 import {
   ADD_EDGE_DEFAULTS,
@@ -22,7 +22,7 @@ import {
   MOVE_NODE_OPTIONS_DEFAULTS,
   REMOVE_EDGE_OPTIONS_DEFAULTS,
   REMOVE_NODE_OPTIONS_DEFAULTS,
-} from './types';
+} from './types.ts';
 import type {
   AddEdgeOptions,
   AddNodeOptions,
@@ -31,7 +31,7 @@ import type {
   MoveNodeOptions,
   RemoveEdgeOptions,
   RemoveNodeOptions,
-} from './types';
+} from './types.ts';
 import type { AggregatorProps } from './useAggregator';
 import type { EdgeMap, NodeMap } from './useNodeEdgeMap';
 

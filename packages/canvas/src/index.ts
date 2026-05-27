@@ -7,7 +7,7 @@ import { type DrawPattern, useBackgroundPattern } from './backgroundPattern';
 import { useCamera } from './camera';
 import { getDevicePixelRatio } from './camera/utils.ts';
 import { useMagicCoordinates } from './coordinates';
-import type { DrawContent, UseMagicCanvas } from './types';
+import type { DrawContent, UseMagicCanvas } from './types.ts';
 
 const REPAINT_FPS = 60;
 

@@ -9,7 +9,7 @@ import { Ref } from 'vue';
 
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import { GraphSettings } from '../settings';
-import type { GEdge, GNode } from '../types';
+import type { GEdge, GNode } from '../types.ts';
 import { ThemeGetter } from './getThemeResolver';
 
 export type TextStyles = {

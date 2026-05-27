@@ -6,7 +6,7 @@ import { resolveLineDefaults } from './defaults';
 import { drawLineWithCtx } from './draw';
 import { getLineBoundingBox, lineEfficientHitbox, lineHitbox } from './hitbox';
 import { getTextAreaAnchorPoint } from './text';
-import type { LineSchema } from './types';
+import type { LineSchema } from './types.ts';
 
 export const line: ShapeFactory<LineSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {

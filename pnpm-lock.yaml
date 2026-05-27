@@ -282,6 +282,9 @@ importers:
       express:
         specifier: ^4.21.1
         version: 4.21.2
+      mathjs:
+        specifier: 'catalog:'
+        version: 14.7.0
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1

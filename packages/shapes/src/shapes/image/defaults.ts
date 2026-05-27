@@ -1,6 +1,6 @@
 import { resolveDefaults } from '../../defaults/resolveDefaults.ts';
 import { ROTATION_DEFAULTS } from '../../defaults/schema.ts';
-import type { ImageSchema } from './types';
+import type { ImageSchema } from './types.ts';
 
 export const IMAGE_SCHEMA_DEFAULTS = {
   ...ROTATION_DEFAULTS,

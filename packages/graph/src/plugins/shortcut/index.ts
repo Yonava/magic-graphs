@@ -4,7 +4,7 @@ import type { BaseGraph } from '../../base.ts';
 import type { GraphAnnotationPlugin } from '../annotations';
 import type { GraphFocusPlugin } from '../focus';
 import type { GraphHistoryPlugin } from '../history';
-import type { PlatformShortcuts } from './types';
+import type { PlatformShortcuts } from './types.ts';
 
 export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
   ? 'Mac'

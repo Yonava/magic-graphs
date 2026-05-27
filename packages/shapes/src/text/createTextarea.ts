@@ -5,7 +5,7 @@ import { isPointInBoundingBox } from '../helpers';
 import type { BoundingBox } from '../types/utility.ts';
 import { getTextDimensions } from './getTextDimensions';
 import { HORIZONTAL_TEXT_PADDING } from './text';
-import type { OnTextAreaBlur, TextAreaWithAnchorPoint } from './types';
+import type { OnTextAreaBlur, TextAreaWithAnchorPoint } from './types.ts';
 
 export const createTextarea = (
   ctx: CanvasRenderingContext2D,

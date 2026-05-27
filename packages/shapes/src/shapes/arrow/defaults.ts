@@ -1,6 +1,6 @@
 import { resolveDefaults } from '../../defaults/resolveDefaults.ts';
 import { LINE_SCHEMA_DEFAULTS } from '../line/defaults.ts';
-import type { ArrowSchema } from './types';
+import type { ArrowSchema } from './types.ts';
 
 export const ARROW_SCHEMA_DEFAULTS = {
   ...LINE_SCHEMA_DEFAULTS,

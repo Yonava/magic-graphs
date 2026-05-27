@@ -6,7 +6,7 @@ import type { Coordinate } from '../../types/utility.ts';
 import { rect } from '../rect';
 import { resolveImageDefaults } from './defaults';
 import { drawImageWithCtx } from './draw';
-import type { ImageSchema } from './types';
+import type { ImageSchema } from './types.ts';
 
 export const image: ShapeFactory<ImageSchema> = (options) => {
   if (options.width < 0 || options.height < 0) {

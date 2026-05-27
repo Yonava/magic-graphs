@@ -10,7 +10,7 @@ import {
   scribbleEfficientHitbox,
   scribbleHitbox,
 } from './hitbox';
-import type { ScribbleSchema } from './types';
+import type { ScribbleSchema } from './types.ts';
 
 export const ERASER_BRUSH_WEIGHT = 50;
 

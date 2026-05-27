@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { TRIANGLE_SCHEMA_DEFAULTS } from './defaults';
-import type { TriangleSchema } from './types';
+import type { TriangleSchema } from './types.ts';
 
 const Triangle = createDocComponent<TriangleSchema>(triangle);
 

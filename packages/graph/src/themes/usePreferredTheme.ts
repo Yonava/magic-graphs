@@ -8,7 +8,7 @@ import { type GraphThemeName, THEME_NAMES } from '.';
 import type { BaseGraph } from '../base';
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
-import type { Graph } from '../types';
+import type { Graph } from '../types.ts';
 
 export type PreferredGraphTheme = GraphThemeName | 'auto';
 

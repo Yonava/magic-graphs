@@ -1,6 +1,6 @@
 import { resolveThemeForNode } from '../themes';
 import { BaseGraphNodeStyles, GraphInterface } from '../themes/types.ts';
-import type { GNode, SchemaItem } from '../types';
+import type { GNode, SchemaItem } from '../types.ts';
 
 export const getNodeSchematic = (
   node: GNode,

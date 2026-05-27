@@ -1,6 +1,6 @@
 import { resolveDefaults } from '../../defaults/resolveDefaults.ts';
 import { FILL_COLOR_DEFAULTS } from '../../defaults/schema.ts';
-import type { TriangleSchema } from './types';
+import type { TriangleSchema } from './types.ts';
 
 export const TRIANGLE_SCHEMA_DEFAULTS = {
   ...FILL_COLOR_DEFAULTS,

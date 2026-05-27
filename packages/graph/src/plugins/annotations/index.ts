@@ -15,7 +15,7 @@ import type { GraphMouseEvent } from '../../base/types.ts';
 import type { Aggregator } from '../../types.ts';
 import { BRUSH_WEIGHTS, COLORS } from './constants';
 import { useAnnotationHistory } from './history';
-import type { Annotation } from './types';
+import type { Annotation } from './types.ts';
 
 const ERASER_BRUSH_RADIUS = 10;
 

@@ -5,7 +5,7 @@ import type { Coordinate } from '../../types/utility.ts';
 import { resolveStarDefaults } from './defaults';
 import { drawStarWithCtx } from './draw';
 import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';
-import type { StarSchema } from './types';
+import type { StarSchema } from './types.ts';
 
 export const star: ShapeFactory<StarSchema> = (options) => {
   const schema = resolveStarDefaults(options);

@@ -2,9 +2,9 @@ import { delta } from '@magic/utils/deepDelta';
 import { DeepPartial } from 'ts-essentials';
 
 import type { GetAnimatedSchema } from '.';
-import type { EverySchemaPropName, SchemaId, ShapeName } from '../types';
+import type { EverySchemaPropName, SchemaId, ShapeName } from '../types.ts';
 import type { DefineTimeline } from './timeline/define.ts';
-import type { LooseSchema, LooseSchemaValue } from './types';
+import type { LooseSchema, LooseSchemaValue } from './types.ts';
 
 export const AUTO_ANIMATE_DURATION_MS = 500;
 /**

@@ -2,7 +2,7 @@ import graphlib from 'graphlib';
 
 import { computed } from 'vue';
 
-import type { Graph } from '../types';
+import type { Graph } from '../types.ts';
 
 /**
  * a magic graphs integration with the `graphlib` library.

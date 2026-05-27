@@ -1,7 +1,7 @@
 import type { ShapeFactory } from '../../types.ts';
 import { rect } from '../rect';
 import { SQUARE_SCHEMA_DEFAULTS } from './defaults';
-import type { SquareSchema } from './types';
+import type { SquareSchema } from './types.ts';
 
 export const square: ShapeFactory<SquareSchema> = (options) => ({
   ...rect({

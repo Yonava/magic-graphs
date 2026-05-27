@@ -1,7 +1,7 @@
 import { generateId } from '@magic/utils/id';
 import { Fraction } from 'mathjs';
 
-import type { GEdge, GNode, Graph } from './types';
+import type { GEdge, GNode, Graph } from './types.ts';
 
 /**
  * all data that will be transferred between graph instances

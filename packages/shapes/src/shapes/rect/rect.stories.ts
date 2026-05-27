@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { RECT_SCHEMA_DEFAULTS } from './defaults';
-import type { RectSchema } from './types';
+import type { RectSchema } from './types.ts';
 
 const Rect = createDocComponent<RectSchema>(rect);
 

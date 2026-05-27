@@ -1,7 +1,7 @@
 import type { DeepRequired } from 'ts-essentials';
 
 import { rect } from '../shapes/rect.ts';
-import type { ShapeTextProps } from '../types';
+import type { ShapeTextProps } from '../types.ts';
 import type { Coordinate } from '../types/utility.ts';
 import { createTextarea } from './createTextarea';
 import type { TextAreaWithDefaults } from './defaults';
@@ -10,7 +10,7 @@ import type {
   StartTextAreaEdit,
   TextAreaWithAnchorPoint,
   TextBlock,
-} from './types';
+} from './types.ts';
 
 export const HORIZONTAL_TEXT_PADDING = 20;
 

@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { SQUARE_SCHEMA_DEFAULTS } from './defaults';
-import type { SquareSchema } from './types';
+import type { SquareSchema } from './types.ts';
 
 const Square = createDocComponent<SquareSchema>(square);
 

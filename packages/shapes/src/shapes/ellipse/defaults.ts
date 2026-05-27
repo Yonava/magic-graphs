@@ -1,6 +1,6 @@
 import { resolveDefaults } from '../../defaults/resolveDefaults.ts';
 import { FILL_COLOR_DEFAULTS } from '../../defaults/schema.ts';
-import type { EllipseSchema } from './types';
+import type { EllipseSchema } from './types.ts';
 
 export const ELLIPSE_SCHEMA_DEFAULTS = {
   ...FILL_COLOR_DEFAULTS,

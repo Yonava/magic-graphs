@@ -20,7 +20,7 @@ import type {
 } from '../plugins/history/types.ts';
 import type { GraphSettings } from '../settings';
 import type { GraphThemeName } from '../themes';
-import type { GEdge, GNode, Graph } from '../types';
+import type { GEdge, GNode, Graph } from '../types.ts';
 
 export type BaseGraphEventMap = {
   /**

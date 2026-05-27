@@ -1,4 +1,4 @@
-import type { MagicCanvasOptions } from './types';
+import type { MagicCanvasOptions } from './types.ts';
 
 /* eslint-enable */
 

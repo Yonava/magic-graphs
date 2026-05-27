@@ -1,6 +1,6 @@
 import { SEQUENCES } from '../tutorials/sequences.ts';
 import { useGraphTutorial } from '../tutorials/useGraphTutorial.ts';
-import type { Graph } from '../types';
+import type { Graph } from '../types.ts';
 
 /**
  * implements useGraphTutorial with the basics tutorial sequence

@@ -17,5 +17,5 @@
     "rewriteRelativeImportExtensions": true
   },
   "references": [{ "path": "../graph" }],
-  "include": ["./src/**/*"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

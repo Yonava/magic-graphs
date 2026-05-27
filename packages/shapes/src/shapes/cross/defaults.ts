@@ -5,7 +5,7 @@ import {
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS,
 } from '../../defaults/schema.ts';
-import type { CrossSchema } from './types';
+import type { CrossSchema } from './types.ts';
 
 export const CROSS_SCHEMA_DEFAULTS = {
   ...ROTATION_DEFAULTS,

@@ -10,11 +10,11 @@ import type {
   ShapeFactory,
   ShapeName,
   WithId,
-} from '../types';
-import { shapeProps } from '../types';
+} from '../types.ts';
+import { shapeProps } from '../types.ts';
 import { useAutoAnimate } from './autoAnimate';
 import { useDefineTimeline } from './timeline/define.ts';
-import type { ActiveAnimation, LooseSchema } from './types';
+import type { ActiveAnimation, LooseSchema } from './types.ts';
 import { getAnimationProgress, getCurrentRunCount } from './utils';
 
 type ActiveAnimationsMap = Map<SchemaId, ActiveAnimation[]>;

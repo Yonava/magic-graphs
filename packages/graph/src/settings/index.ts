@@ -3,7 +3,7 @@ import { Fraction } from 'mathjs';
 import type { DeepPartial } from 'ts-essentials';
 
 import type { GraphAnimations } from '../base/animations.ts';
-import type { GEdge, GNode, SchemaItem } from '../types';
+import type { GEdge, GNode, SchemaItem } from '../types.ts';
 
 /**
  * BASE GRAPH SETTINGS

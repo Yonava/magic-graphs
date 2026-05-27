@@ -7,7 +7,7 @@ import type { Coordinate } from '../../types/utility.ts';
 import { resolveRectDefaults } from './defaults';
 import { drawRectWithCtx } from './draw';
 import { getRectBoundingBox, rectEfficientHitbox, rectHitbox } from './hitbox';
-import type { RectSchema } from './types';
+import type { RectSchema } from './types.ts';
 
 export const rect: ShapeFactory<RectSchema> = (options) => {
   validateBorderRadius(options);

@@ -3,7 +3,7 @@
 
   import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-  import type { MagicCanvasProps } from './types';
+  import type { MagicCanvasProps } from './types.ts';
 
   const props = defineProps<MagicCanvasProps['ref']>();
 

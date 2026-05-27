@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { UTURN_SCHEMA_DEFAULTS } from './defaults';
-import type { UTurnSchema } from './types';
+import type { UTurnSchema } from './types.ts';
 
 const UTurn = createDocComponent<UTurnSchema>(uturn);
 

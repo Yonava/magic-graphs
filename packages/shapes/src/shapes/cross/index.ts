@@ -9,7 +9,7 @@ import {
   crossHitbox,
   getCrossBoundingBox,
 } from './hitbox';
-import type { CrossSchema } from './types';
+import type { CrossSchema } from './types.ts';
 
 export const cross: ShapeFactory<CrossSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {

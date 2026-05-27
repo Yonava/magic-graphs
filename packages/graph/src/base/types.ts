@@ -7,7 +7,7 @@ import { Fraction } from 'mathjs';
 
 import type { DeepReadonly } from 'vue';
 
-import type { SchemaItem } from '../types';
+import type { SchemaItem } from '../types.ts';
 
 export type FocusOption = {
   /**

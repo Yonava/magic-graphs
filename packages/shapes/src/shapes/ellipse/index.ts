@@ -9,7 +9,7 @@ import {
   ellipseHitbox,
   getEllipseBoundingBox,
 } from './hitbox';
-import type { EllipseSchema } from './types';
+import type { EllipseSchema } from './types.ts';
 
 export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   if (options.radiusX < 0 || options.radiusY < 0) {

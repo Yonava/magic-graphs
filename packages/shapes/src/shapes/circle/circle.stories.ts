@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { CIRCLE_SCHEMA_DEFAULTS } from './defaults';
-import type { CircleSchema } from './types';
+import type { CircleSchema } from './types.ts';
 
 const Circle = createDocComponent<CircleSchema>(circle);
 

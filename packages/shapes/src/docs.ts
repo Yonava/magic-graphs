@@ -10,7 +10,7 @@ import { rect } from './shapes/rect.ts';
 import type { RectSchema } from './shapes/rect/types.ts';
 import { square } from './shapes/square.ts';
 import type { SquareSchema } from './shapes/square/types.ts';
-import type { ShapeFactory } from './types';
+import type { ShapeFactory } from './types.ts';
 import type { AnchorPoint } from './types/schema.ts';
 import type { BoundingBox, Coordinate } from './types/utility.ts';
 

@@ -2,7 +2,7 @@ import { onUnmounted, ref } from 'vue';
 
 import type { BaseGraph } from './base';
 import { GraphHelpers } from './helpers/types.ts';
-import type { GEdge, GNode } from './types';
+import type { GEdge, GNode } from './types.ts';
 
 /**
  * a mapping of nodes to their neighbors.

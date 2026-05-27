@@ -7,7 +7,7 @@ import {
   createDocComponent,
 } from '../../docs.ts';
 import { STAR_SCHEMA_DEFAULTS } from './defaults';
-import type { StarSchema } from './types';
+import type { StarSchema } from './types.ts';
 
 const Star = createDocComponent<StarSchema>(star);
 
