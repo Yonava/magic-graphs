@@ -4,7 +4,7 @@
   import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import GButton from '../../shared/ui/graph-core/button/GButton.vue';
   import AutoGenerateSettingsMenu from './AutoGenerateSettingsMenu.vue';
-  import { useAutoGenerate } from './useAutoGenerate';
+  import { useAutoGenerate } from './useAutoGenerate.ts';
 
   const { generate, options } = useAutoGenerate(graph.value);
 </script>

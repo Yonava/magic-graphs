@@ -23,6 +23,7 @@
     "@magic/utils": "workspace:*",
     "@vueuse/core": "catalog:",
     "ctrl-keys": "catalog:",
+    "fraction.js": "^5.3.4",
     "gsap": "^3.12.5",
     "lz-string": "catalog:",
     "mathjs": "catalog:",
@@ -31,7 +32,6 @@
     "vue-router": "catalog:"
   },
   "devDependencies": {
-    "fraction.js": "^5.3.4",
     "@types/tinycolor2": "catalog:",
     "primevue": "catalog:",
     "ts-essentials": "^10.2.0",

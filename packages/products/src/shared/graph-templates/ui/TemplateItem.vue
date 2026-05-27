@@ -4,7 +4,7 @@
   import { ref, toRefs } from 'vue';
 
   import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
-  import type { GraphTemplate } from '../types';
+  import type { GraphTemplate } from '../types.ts';
 
   const props = defineProps<{
     template: GraphTemplate;

@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist/types",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "rewriteRelativeImportExtensions": false,
+    "types": ["node"]
   },
   "references": [
     { "path": "../canvas" },
@@ -11,5 +13,5 @@
     { "path": "../utils" },
     { "path": "../graph" }
   ],
-  "include": ["src/**/*"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

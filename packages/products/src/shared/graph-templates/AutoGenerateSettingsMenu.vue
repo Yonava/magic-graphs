@@ -7,8 +7,8 @@
 
   import GWell from '../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../shared/ui/graph-core/button/GButton.vue';
-  import type { AutoGenerateGraphOptions } from './templateTypes';
-  import { AUTO_GENERATE_GRAPH_DEFAULTS } from './templateTypes';
+  import type { AutoGenerateGraphOptions } from './templateTypes.ts';
+  import { AUTO_GENERATE_GRAPH_DEFAULTS } from './templateTypes.ts';
 
   const props = defineProps<{
     options: AutoGenerateGraphOptions;
