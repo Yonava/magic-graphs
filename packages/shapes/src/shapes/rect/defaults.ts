@@ -1,9 +1,9 @@
-import { resolveDefaults } from '../../defaults/resolveDefaults';
+import { resolveDefaults } from '../../defaults/resolveDefaults.ts';
 import {
   BORDER_RADIUS_DEFAULTS,
   FILL_COLOR_DEFAULTS,
   ROTATION_DEFAULTS,
-} from '../../defaults/schema';
+} from '../../defaults/schema.ts';
 import type { RectSchema } from './types';
 
 export const RECT_SCHEMA_DEFAULTS = {

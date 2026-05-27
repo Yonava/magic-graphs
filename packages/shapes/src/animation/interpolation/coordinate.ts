@@ -1,4 +1,4 @@
-import type { Coordinate } from '../../types/utility';
+import type { Coordinate } from '../../types/utility.ts';
 import { interpolateNumber } from './number';
 import type { InterpolationFunction, NumberKeyframe } from './types';
 

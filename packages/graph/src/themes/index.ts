@@ -1,13 +1,13 @@
-import type { ThemeGetter } from '../themes/getThemeResolver';
-import { DARK_THEME } from '../themes/loadouts/dark';
-import { LIGHT_THEME } from '../themes/loadouts/light';
-import { PINK_THEME } from '../themes/loadouts/pink';
+import type { ThemeGetter } from '../themes/getThemeResolver.ts';
+import { DARK_THEME } from '../themes/loadouts/dark.ts';
+import { LIGHT_THEME } from '../themes/loadouts/light.ts';
+import { PINK_THEME } from '../themes/loadouts/pink.ts';
 import type {
   BaseGraphEdgeStyles,
   BaseGraphNodeStyles,
   GraphTheme as GraphThemeImport,
-} from '../themes/types';
-import type { GEdge, GNode } from '../types';
+} from '../themes/types.ts';
+import type { GEdge, GNode } from '../types.ts';
 
 export type GraphTheme = GraphThemeImport;
 export type GraphThemeKey = keyof GraphTheme;

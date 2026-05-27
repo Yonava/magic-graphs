@@ -3,8 +3,8 @@ import type { GNode, Graph } from '@magic/graph/types';
 import { computed, ref } from 'vue';
 
 import { AVLTree, getBalance, getHeight } from './tree/avl';
-import { syncGraphWithTree } from './tree/graphToAVL';
-import { TreeNode } from './tree/treeNode';
+import { syncGraphWithTree } from './tree/graphToAVL.ts';
+import { TreeNode } from './tree/treeNode.ts';
 import { useTreeHistory } from './treeHistory';
 import { createSimulationRunner } from './treeSim';
 

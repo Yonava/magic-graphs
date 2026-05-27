@@ -1,5 +1,5 @@
-import type { FocusOption } from '../../base/types';
-import type { GEdge, GNode } from '../../types';
+import type { FocusOption } from '../../base/types.ts';
+import type { GEdge, GNode } from '../../types.ts';
 
 /**
  * affected items that are nodes and have been moved

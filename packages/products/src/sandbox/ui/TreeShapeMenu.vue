@@ -6,8 +6,8 @@
 
   import { computed, toRef } from 'vue';
 
-  import { nonNullGraph as graph } from '../../shared/globalGraph';
-  import { TreeGraphPositionerSyncControls } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync';
+  import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
+  import { TreeGraphPositionerSyncControls } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync.ts';
   import GraphNode from '../../shared/ui/graph-core/GNode.vue';
   import GWell from '../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../shared/ui/graph-core/button/GButton.vue';

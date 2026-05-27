@@ -1,4 +1,4 @@
-import type { ShapeFactory } from '../../types';
+import type { ShapeFactory } from '../../types.ts';
 import { ellipse } from '../ellipse';
 import { CIRCLE_SCHEMA_DEFAULTS } from './defaults';
 import type { CircleSchema } from './types';

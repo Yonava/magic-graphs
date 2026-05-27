@@ -1,5 +1,5 @@
-import { resolveDefaults } from '../../defaults/resolveDefaults';
-import { FILL_COLOR_DEFAULTS } from '../../defaults/schema';
+import { resolveDefaults } from '../../defaults/resolveDefaults.ts';
+import { FILL_COLOR_DEFAULTS } from '../../defaults/schema.ts';
 import type { ScribbleSchema } from './types';
 
 export const SCRIBBLE_SCHEMA_DEFAULTS = {

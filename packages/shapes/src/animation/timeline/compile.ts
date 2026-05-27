@@ -5,19 +5,19 @@ import {
   type EasingFunction,
   type EasingOption,
   easingOptionToFunction,
-} from '../../animation/easing';
+} from '../../animation/easing.ts';
 import {
   interpolateColor,
   isColorString,
-} from '../../animation/interpolation/color';
-import { interpolateCoordinate } from '../../animation/interpolation/coordinate';
-import { interpolateNumber } from '../../animation/interpolation/number';
-import { interpolateTextArea } from '../../animation/interpolation/textArea';
-import type { AnimationKeyframe } from '../../animation/interpolation/types';
-import { resolveTextArea } from '../../text/defaults';
-import type { TextArea } from '../../text/types';
-import type { EverySchemaPropName, ShapeName } from '../../types';
-import type { Coordinate } from '../../types/utility';
+} from '../../animation/interpolation/color.ts';
+import { interpolateCoordinate } from '../../animation/interpolation/coordinate.ts';
+import { interpolateNumber } from '../../animation/interpolation/number.ts';
+import { interpolateTextArea } from '../../animation/interpolation/textArea.ts';
+import type { AnimationKeyframe } from '../../animation/interpolation/types.ts';
+import { resolveTextArea } from '../../text/defaults.ts';
+import type { TextArea } from '../../text/types.ts';
+import type { EverySchemaPropName, ShapeName } from '../../types.ts';
+import type { Coordinate } from '../../types/utility.ts';
 import type {
   ImperativeTrack,
   Timeline,

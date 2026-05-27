@@ -1,6 +1,6 @@
-import { rotatePoint } from '../../helpers';
-import { getColorAtPercentage } from '../../helpers';
-import type { GradientStop } from '../../types/utility';
+import { rotatePoint } from '../../helpers.ts';
+import { getColorAtPercentage } from '../../helpers.ts';
+import type { GradientStop } from '../../types/utility.ts';
 import { arrow } from '../arrow';
 import { line } from '../line';
 import type { UTurnSchemaWithDefaults } from './defaults';

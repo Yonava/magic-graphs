@@ -3,12 +3,12 @@
 
   import { computed } from 'vue';
 
-  import { useSCCColorizer } from '../../sandbox/ui/GraphInfoMenu/useSCCColorizer';
-  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import { useSCCColorizer } from '../../sandbox/ui/GraphInfoMenu/useSCCColorizer.ts';
+  import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import GHoverInfoTop from '../../shared/ui/graph-core/GHoverInfoTop.vue';
   import GWell from '../../shared/ui/graph-core/GWell.vue';
-  import definitions from '../markov/definitions';
-  import type { MarkovChain } from '../markov/useMarkovChain';
+  import definitions from '../markov/definitions.ts';
+  import type { MarkovChain } from '../markov/useMarkovChain.ts';
   import { useInvalidStateColorizer } from './useInvalidStateColorizer';
   import { usePeriodicityLabels } from './usePeriodicityLabels';
 

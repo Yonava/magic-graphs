@@ -1,9 +1,9 @@
-import { resolveDefaults } from '../../defaults/resolveDefaults';
+import { resolveDefaults } from '../../defaults/resolveDefaults.ts';
 import {
   FILL_COLOR_DEFAULTS,
   LINE_WIDTH_DEFAULTS,
   ROTATION_DEFAULTS,
-} from '../../defaults/schema';
+} from '../../defaults/schema.ts';
 import type { UTurnSchema } from './types';
 
 export const UTURN_SCHEMA_DEFAULTS = {

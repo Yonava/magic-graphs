@@ -2,7 +2,7 @@ import type { GNode, Graph } from '@magic/graph/src/types';
 
 import { computed, readonly, ref } from 'vue';
 
-import { useGTextTip } from '../../shared/ui/graph-core/useGTextTip';
+import { useGTextTip } from '../../shared/ui/graph-core/useGTextTip.ts';
 import { selectNode } from './select';
 
 type NodeStateOptions = {

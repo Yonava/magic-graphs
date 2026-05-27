@@ -3,7 +3,7 @@ import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import { getCtx } from '@magic/utils/ctx';
 import { average } from '@magic/utils/math';
 
-import { nonNullGraph as graph } from '../../shared/globalGraph';
+import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
 
 export const getAverageCoordinates = (coords: Coordinate[]) => {
   const { magicCanvas: canvas } = graph.value;

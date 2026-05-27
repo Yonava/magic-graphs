@@ -9,15 +9,15 @@ import type {
   MoveNodeOptions,
   RemoveEdgeOptions,
   RemoveNodeOptions,
-} from '../base/types';
-import type { GraphMouseEvent } from '../base/types';
-import type { GraphState } from '../collab/types';
-import type { NodeAnchor } from '../plugins/anchors/types';
+} from '../base/types.ts';
+import type { GraphMouseEvent } from '../base/types.ts';
+import type { GraphState } from '../collab/types.ts';
+import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import type {
   HistoryRecord,
   RedoHistoryOptions,
   UndoHistoryOptions,
-} from '../plugins/history/types';
+} from '../plugins/history/types.ts';
 import type { GraphSettings } from '../settings';
 import type { GraphThemeName } from '../themes';
 import type { GEdge, GNode, Graph } from '../types';

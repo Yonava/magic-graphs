@@ -3,7 +3,7 @@ import type { GEdge, Graph } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { Fraction } from 'mathjs';
 
-import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner';
+import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner.ts';
 import type { TreeNodeKeyArray } from './avl';
 import type { TreeNode } from './treeNode';
 

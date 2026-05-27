@@ -5,7 +5,7 @@ import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
-} from '../../docs';
+} from '../../docs.ts';
 import { RECT_SCHEMA_DEFAULTS } from './defaults';
 import type { RectSchema } from './types';
 

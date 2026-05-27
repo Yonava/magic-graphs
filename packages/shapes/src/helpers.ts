@@ -1,7 +1,7 @@
 import tinycolor from 'tinycolor2';
 
-import type { ArrowSchema } from './shapes/arrow/types';
-import type { BorderRadius } from './types/schema';
+import type { ArrowSchema } from './shapes/arrow/types.ts';
+import type { BorderRadius } from './types/schema.ts';
 import type {
   BorderRadiusArrayValue,
   BoundingBox,
@@ -9,7 +9,7 @@ import type {
   DashPattern,
   GradientStop,
   Stroke,
-} from './types/utility';
+} from './types/utility.ts';
 
 /**
  * rotates a point around a center point by a given angle in radians

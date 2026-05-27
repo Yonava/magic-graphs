@@ -5,7 +5,7 @@ import { onMounted, ref, watch } from 'vue';
 
 import { type DrawPattern, useBackgroundPattern } from './backgroundPattern';
 import { useCamera } from './camera';
-import { getDevicePixelRatio } from './camera/utils';
+import { getDevicePixelRatio } from './camera/utils.ts';
 import { useMagicCoordinates } from './coordinates';
 import type { DrawContent, UseMagicCanvas } from './types';
 

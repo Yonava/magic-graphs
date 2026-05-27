@@ -1,8 +1,8 @@
 import colors from '@magic/utils/colors';
 
 import type { GraphTheme } from '../types';
-import { edgeShared } from './shared/edge';
-import { nodeAnchorShared, nodeShared } from './shared/node';
+import { edgeShared } from './shared/edge.ts';
+import { nodeAnchorShared, nodeShared } from './shared/node.ts';
 
 const REDDISH_GRAY = 'rgb(100, 60, 70)';
 

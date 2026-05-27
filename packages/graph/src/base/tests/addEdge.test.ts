@@ -5,7 +5,7 @@ import { describe, expect, test } from 'vitest';
 import { ref } from 'vue';
 
 import { useBaseGraph } from '..';
-import type { GEdge } from '../../types';
+import type { GEdge } from '../../types.ts';
 import { ADD_EDGE_DEFAULTS } from '../types';
 
 describe('base graph - addEdge', () => {

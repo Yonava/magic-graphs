@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import GHoverInfoTop from '../../shared/ui/graph-core/GHoverInfoTop.vue';
   import GWell from '../../shared/ui/graph-core/GWell.vue';
   import type { TreeControls } from '../useTree';

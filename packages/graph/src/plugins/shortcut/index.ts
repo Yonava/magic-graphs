@@ -1,6 +1,6 @@
 import keys from 'ctrl-keys';
 
-import type { BaseGraph } from '../../base';
+import type { BaseGraph } from '../../base.ts';
 import type { GraphAnnotationPlugin } from '../annotations';
 import type { GraphFocusPlugin } from '../focus';
 import type { GraphHistoryPlugin } from '../history';

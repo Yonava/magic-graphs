@@ -6,7 +6,7 @@ import { ref } from 'vue';
 import {
   generateClusterNodes,
   generateCohesiveEdges,
-} from './generationAlgorithms/randomGeneration';
+} from './generationAlgorithms/randomGeneration.ts';
 import {
   centerNodesOnOriginCoordinates,
   getAverageCoordinates,

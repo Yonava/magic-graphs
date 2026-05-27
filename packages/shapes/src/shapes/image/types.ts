@@ -1,4 +1,4 @@
-import type { RectSchema } from '../rect/types';
+import type { RectSchema } from '../rect/types.ts';
 import type { LoadImageOptions } from './cache';
 
 type RectProps = Omit<RectSchema, 'borderRadius' | 'fillColor'>;

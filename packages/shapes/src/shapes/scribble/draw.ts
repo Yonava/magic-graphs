@@ -1,5 +1,5 @@
 import { ERASER_BRUSH_WEIGHT } from '.';
-import { circle } from '../../shapes/circle';
+import { circle } from '../../shapes/circle.ts';
 import type { ScribbleSchemaWithDefaults } from './defaults';
 
 export const drawScribbleWithCtx =

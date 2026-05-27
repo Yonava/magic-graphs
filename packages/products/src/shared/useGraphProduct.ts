@@ -12,7 +12,7 @@ import { onBeforeUnmount, onMounted } from 'vue';
 
 import { type LocationQueryValue, useRoute, useRouter } from 'vue-router';
 
-import { graph as globalGraph } from '../shared/globalGraph';
+import { graph as globalGraph } from '../shared/globalGraph.ts';
 import { ProductInfo } from '../types';
 import { routeToProduct } from '../utils';
 

@@ -2,8 +2,8 @@
   import type { GNode } from '@magic/graph/types';
   import colors from '@magic/utils/colors';
 
-  import { nonNullGraph as graph } from '../../shared/globalGraph';
-  import { INF_STR, SIM_COLORS } from '../sim/theme';
+  import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
+  import { INF_STR, SIM_COLORS } from '../sim/theme.ts';
 
   const { getTheme, focus } = graph.value;
   const { isFocused } = focus;

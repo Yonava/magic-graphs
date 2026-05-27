@@ -1,5 +1,5 @@
-import type { BaseGraph } from '../../base';
-import type { AdjacencyLists } from '../../useAdjacencyList';
+import type { BaseGraph } from '../../base.ts';
+import type { AdjacencyLists } from '../../useAdjacencyList.ts';
 import { useBidirectionalEdges } from './bidirectional';
 import { useBipartite } from './bipartite';
 import { useComplete } from './complete';

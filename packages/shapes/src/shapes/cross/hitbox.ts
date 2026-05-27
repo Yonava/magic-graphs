@@ -2,9 +2,9 @@ import {
   areBoundingBoxesOverlapping,
   normalizeBoundingBox,
   toBorderRadiusArray,
-} from '../../helpers';
-import { rectHitbox } from '../../shapes/rect/hitbox';
-import type { BoundingBox, Coordinate } from '../../types/utility';
+} from '../../helpers.ts';
+import { rectHitbox } from '../../shapes/rect/hitbox.ts';
+import type { BoundingBox, Coordinate } from '../../types/utility.ts';
 import type { CrossSchemaWithDefaults } from './defaults';
 
 /**

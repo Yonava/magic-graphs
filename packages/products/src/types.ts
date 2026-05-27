@@ -2,9 +2,9 @@ import type { Graph } from '@magic/graph/types';
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import { GraphTemplate } from './shared/graph-templates/types';
-import type { SimulationGuard } from './shared/ui/general/sim/guard';
-import type { SimulationRunner } from './shared/ui/general/sim/types';
+import { GraphTemplate } from './shared/graph-templates/types.ts';
+import type { SimulationGuard } from './shared/ui/general/sim/guard.ts';
+import type { SimulationRunner } from './shared/ui/general/sim/types.ts';
 import type { ProductCategory } from './utils';
 
 /**

@@ -1,4 +1,4 @@
-import { GraphInterface } from '../themes/types';
+import { GraphInterface } from '../themes/types.ts';
 import type { GEdge, SchemaItem } from '../types';
 
 export const getEdgeSchematic = (

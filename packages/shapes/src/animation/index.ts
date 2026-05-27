@@ -1,7 +1,7 @@
 import type { UnionToIntersection } from 'ts-essentials';
 
 import { shapes } from '..';
-import { getSchemaWithDefaults } from '../defaults/shapes';
+import { getSchemaWithDefaults } from '../defaults/shapes.ts';
 import type {
   EverySchemaProp,
   EverySchemaPropName,
@@ -13,7 +13,7 @@ import type {
 } from '../types';
 import { shapeProps } from '../types';
 import { useAutoAnimate } from './autoAnimate';
-import { useDefineTimeline } from './timeline/define';
+import { useDefineTimeline } from './timeline/define.ts';
 import type { ActiveAnimation, LooseSchema } from './types';
 import { getAnimationProgress, getCurrentRunCount } from './utils';
 

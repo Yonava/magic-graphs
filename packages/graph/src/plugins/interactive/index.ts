@@ -1,6 +1,6 @@
-import type { BaseGraph } from '../../base';
-import type { GraphMouseEvent } from '../../base/types';
-import type { GNode } from '../../types';
+import type { BaseGraph } from '../../base.ts';
+import type { GraphMouseEvent } from '../../base/types.ts';
+import type { GNode } from '../../types.ts';
 
 /**
  * interactive allows users to create, edit and delete nodes and edges

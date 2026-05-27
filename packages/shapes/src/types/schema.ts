@@ -1,4 +1,4 @@
-import type { TextArea as TextAreaDefinition } from '../text/types';
+import type { TextArea as TextAreaDefinition } from '../text/types.ts';
 import type {
   BorderRadiusArrayValue,
   Coordinate,

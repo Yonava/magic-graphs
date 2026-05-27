@@ -1,8 +1,8 @@
 import type { DeepRequired } from 'ts-essentials';
 
-import { rect } from '../shapes/rect';
+import { rect } from '../shapes/rect.ts';
 import type { ShapeTextProps } from '../types';
-import type { Coordinate } from '../types/utility';
+import type { Coordinate } from '../types/utility.ts';
 import { createTextarea } from './createTextarea';
 import type { TextAreaWithDefaults } from './defaults';
 import { getTextDimensions } from './getTextDimensions';

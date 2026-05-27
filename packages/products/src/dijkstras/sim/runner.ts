@@ -2,10 +2,10 @@ import type { Graph } from '@magic/graph/types';
 
 import { ref } from 'vue';
 
-import type { SimulationRunner } from '../../shared/ui/general/sim/types';
-import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
-import { useDijkstra } from '../algo/useDijkstra';
-import type { DijkstrasTraceStep } from '../algo/useDijkstra';
+import type { SimulationRunner } from '../../shared/ui/general/sim/types.ts';
+import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
+import { useDijkstra } from '../algo/useDijkstra.ts';
+import type { DijkstrasTraceStep } from '../algo/useDijkstra.ts';
 import state from '../state';
 import { useSimulationTheme } from './theme';
 

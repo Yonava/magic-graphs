@@ -1,8 +1,8 @@
 import { Color } from '@magic/utils/colors';
 import type { DeepRequired } from 'ts-essentials';
 
-import { TextArea } from '../../text/types';
-import { Coordinate } from '../../types/utility';
+import { TextArea } from '../../text/types.ts';
+import { Coordinate } from '../../types/utility.ts';
 import type { EasingFunction } from '../easing';
 
 /**

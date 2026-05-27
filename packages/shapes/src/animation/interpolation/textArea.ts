@@ -1,4 +1,4 @@
-import { TextAreaWithDefaults } from '../../text/defaults';
+import { TextAreaWithDefaults } from '../../text/defaults.ts';
 import { interpolateColor } from './color';
 import { interpolateNumber } from './number';
 import type {

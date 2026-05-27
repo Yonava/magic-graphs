@@ -3,7 +3,7 @@ import type { Graph } from '@magic/graph/types';
 
 import { useRoute, useRouter } from 'vue-router';
 
-import { nonNullGraph as globalGraph } from './shared/globalGraph';
+import { nonNullGraph as globalGraph } from './shared/globalGraph.ts';
 import type { ProductInfo, SimulationDeclarationGetter } from './types';
 
 /** all info.ts imported dynamically */

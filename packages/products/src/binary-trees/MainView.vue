@@ -2,8 +2,8 @@
   import GraphProduct from '../shared/ui/general/GraphProduct.vue';
   import StopSimButton from '../shared/ui/general/StopSimButton.vue';
   import SimulationPlaybackControls from '../shared/ui/general/sim/SimulationPlaybackControls.vue';
-  import { useEscSimulationShortcut } from '../shared/ui/general/useEscSimulationShortcut';
-  import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
+  import { useEscSimulationShortcut } from '../shared/ui/general/useEscSimulationShortcut.ts';
+  import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
   import { BINARY_TREE_GRAPH_SETTINGS } from './settings';
   import state from './state';
   import AddNodePanel from './ui/AddNodePanel.vue';

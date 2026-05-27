@@ -2,8 +2,8 @@ import {
   areBoundingBoxesOverlapping,
   isPointInLine,
   normalizeBoundingBox,
-} from '../../helpers';
-import type { BoundingBox, Coordinate } from '../../types/utility';
+} from '../../helpers.ts';
+import type { BoundingBox, Coordinate } from '../../types/utility.ts';
 import type { LineSchemaWithDefaults } from './defaults';
 
 /**

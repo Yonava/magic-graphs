@@ -3,9 +3,13 @@
 import { generateId } from '@magic/utils/id';
 import type { DeepReadonly, DeepRequired } from 'ts-essentials';
 
-import type { SchemaWithDefaults } from '../../defaults/shapes';
-import { TextArea } from '../../text/types';
-import type { EverySchemaProp, ShapeNameToSchema, WithId } from '../../types';
+import type { SchemaWithDefaults } from '../../defaults/shapes.ts';
+import { TextArea } from '../../text/types.ts';
+import type {
+  EverySchemaProp,
+  ShapeNameToSchema,
+  WithId,
+} from '../../types.ts';
 import type { EasingOption } from '../easing';
 import { type CompiledTimeline, compileTimeline } from './compile';
 

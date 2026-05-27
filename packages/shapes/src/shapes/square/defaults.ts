@@ -1,5 +1,5 @@
-import { resolveDefaults } from '../../defaults/resolveDefaults';
-import { RECT_SCHEMA_DEFAULTS } from '../rect/defaults';
+import { resolveDefaults } from '../../defaults/resolveDefaults.ts';
+import { RECT_SCHEMA_DEFAULTS } from '../rect/defaults.ts';
 import type { SquareSchema } from './types';
 
 export const SQUARE_SCHEMA_DEFAULTS = {

@@ -1,6 +1,6 @@
 import type { DeepRequired } from 'ts-essentials';
 
-import type { TextArea as TextAreaSchema } from '../types/schema';
+import type { TextArea as TextAreaSchema } from '../types/schema.ts';
 import type { TextArea, TextBlock } from './types';
 
 export const TEXTAREA_DEFAULTS = {

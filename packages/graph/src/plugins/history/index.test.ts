@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';
 
-import { useBaseGraph } from '../../base';
+import { useBaseGraph } from '../../base.ts';
 import { useHistory } from './index';
 
 describe('useHistoryGraph', () => {

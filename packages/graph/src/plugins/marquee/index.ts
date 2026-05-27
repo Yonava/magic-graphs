@@ -5,9 +5,9 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { ref } from 'vue';
 import { computed } from 'vue';
 
-import type { BaseGraph } from '../../base';
-import type { GraphMouseEvent } from '../../base/types';
-import type { Aggregator } from '../../types';
+import type { BaseGraph } from '../../base.ts';
+import type { GraphMouseEvent } from '../../base/types.ts';
+import type { Aggregator } from '../../types.ts';
 import type { GraphFocusPlugin } from '../focus';
 import { getEncapsulatedNodeBox } from './helpers';
 

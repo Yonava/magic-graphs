@@ -10,7 +10,7 @@ import {
   type FullThemeMap,
   type ThemeMapEntry,
   type ValidGraphThemePath,
-} from '../themes/types';
+} from '../themes/types.ts';
 
 export type ResolveThemeMap<Path extends ValidGraphThemePath> = PathValue<
   FullThemeMap,

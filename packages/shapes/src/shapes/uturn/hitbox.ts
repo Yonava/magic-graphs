@@ -2,9 +2,9 @@ import {
   areBoundingBoxesOverlapping,
   normalizeBoundingBox,
   rotatePoint,
-} from '../../helpers';
-import { circle } from '../../shapes/circle';
-import type { BoundingBox, Coordinate } from '../../types/utility';
+} from '../../helpers.ts';
+import { circle } from '../../shapes/circle.ts';
+import type { BoundingBox, Coordinate } from '../../types/utility.ts';
 import { arrow } from '../arrow';
 import { line } from '../line';
 import type { UTurnSchemaWithDefaults } from './defaults';

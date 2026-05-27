@@ -1,4 +1,4 @@
-import { rotatePoint } from '../../helpers';
+import { rotatePoint } from '../../helpers.ts';
 import type { UTurnSchemaWithDefaults } from './defaults';
 
 export const getTextAreaAnchorPoint = (uturn: UTurnSchemaWithDefaults) => {

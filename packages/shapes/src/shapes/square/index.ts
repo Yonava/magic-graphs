@@ -1,4 +1,4 @@
-import type { ShapeFactory } from '../../types';
+import type { ShapeFactory } from '../../types.ts';
 import { rect } from '../rect';
 import { SQUARE_SCHEMA_DEFAULTS } from './defaults';
 import type { SquareSchema } from './types';

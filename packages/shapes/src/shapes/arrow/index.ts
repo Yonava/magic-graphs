@@ -1,8 +1,8 @@
-import { shapeFactoryWrapper } from '../../shapeWrapper';
-import { getShapeTextProps } from '../../text/text';
-import type { ShapeFactory } from '../../types';
-import type { Coordinate } from '../../types/utility';
-import { getTextAreaAnchorPoint } from '../line/text';
+import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
+import { getShapeTextProps } from '../../text/text.ts';
+import type { ShapeFactory } from '../../types.ts';
+import type { Coordinate } from '../../types/utility.ts';
+import { getTextAreaAnchorPoint } from '../line/text.ts';
 import { resolveArrowDefaults } from './defaults';
 import { drawArrowWithCtx } from './draw';
 import {

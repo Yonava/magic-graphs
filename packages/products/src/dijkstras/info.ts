@@ -1,6 +1,6 @@
 import type { ProductInfo } from '../types';
-import { canRunDijkstras } from './sim/guard';
-import { useSimulationRunner } from './sim/runner';
+import { canRunDijkstras } from './sim/guard.ts';
+import { useSimulationRunner } from './sim/runner.ts';
 import state from './state';
 import templates from './templates';
 

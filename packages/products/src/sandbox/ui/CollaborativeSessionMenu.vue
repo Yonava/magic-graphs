@@ -11,11 +11,11 @@
 
   import { useRouter } from 'vue-router';
 
-  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import GWell from '../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../shared/ui/graph-core/button/GButton.vue';
   import GInputText from '../../shared/ui/graph-core/input/GInputText.vue';
-  import { productIdToProduct, useProductRouting } from '../../utils';
+  import { productIdToProduct, useProductRouting } from '../../utils.ts';
   import GraphSandboxProductInfo from '../info';
 
   const router = useRouter();

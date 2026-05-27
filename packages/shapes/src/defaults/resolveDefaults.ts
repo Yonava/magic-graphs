@@ -1,8 +1,8 @@
 import type { PartiallyRequired } from '@magic/utils/types';
 import type { Prettify } from 'ts-essentials';
 
-import { resolveTextArea } from '../text/defaults';
-import type { TextArea } from '../types/schema';
+import { resolveTextArea } from '../text/defaults.ts';
+import type { TextArea } from '../types/schema.ts';
 
 type WithDefaults<
   Schema extends TextArea,

@@ -2,8 +2,8 @@ import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GEdge, GNode, Graph } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
-import type { SimulationControls } from '../../shared/ui/general/sim/types';
-import type { BasicSearchTrace } from '../algo/types';
+import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
+import type { BasicSearchTrace } from '../algo/types.ts';
 
 export const SIM_COLORS = {
   CURRENT: colors.AMBER_600,

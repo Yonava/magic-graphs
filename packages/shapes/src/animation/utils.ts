@@ -1,4 +1,4 @@
-import type { CompiledTimeline } from './timeline/compile';
+import type { CompiledTimeline } from './timeline/compile.ts';
 import type { ActiveAnimation } from './types';
 
 /**

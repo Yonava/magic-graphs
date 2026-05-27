@@ -1,4 +1,4 @@
-import type { GraphTemplate } from '../shared/graph-templates/types';
+import type { GraphTemplate } from '../shared/graph-templates/types.ts';
 
 const templates: GraphTemplate[] = [
   {

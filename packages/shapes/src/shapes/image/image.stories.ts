@@ -5,7 +5,7 @@ import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
-} from '../../docs';
+} from '../../docs.ts';
 import { IMAGE_SCHEMA_DEFAULTS } from './defaults';
 import type { ImageSchema } from './types';
 

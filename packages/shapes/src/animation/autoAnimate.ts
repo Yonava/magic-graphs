@@ -3,7 +3,7 @@ import { DeepPartial } from 'ts-essentials';
 
 import type { GetAnimatedSchema } from '.';
 import type { EverySchemaPropName, SchemaId, ShapeName } from '../types';
-import type { DefineTimeline } from './timeline/define';
+import type { DefineTimeline } from './timeline/define.ts';
 import type { LooseSchema, LooseSchemaValue } from './types';
 
 export const AUTO_ANIMATE_DURATION_MS = 500;

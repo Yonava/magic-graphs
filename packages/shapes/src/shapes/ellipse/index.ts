@@ -1,8 +1,8 @@
-import { shapeFactoryWrapper } from '../../shapeWrapper';
-import { drawEllipseWithCtx } from '../../shapes/ellipse/draw';
-import { getShapeTextProps } from '../../text/text';
-import type { ShapeFactory } from '../../types';
-import type { Coordinate } from '../../types/utility';
+import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
+import { drawEllipseWithCtx } from '../../shapes/ellipse/draw.ts';
+import { getShapeTextProps } from '../../text/text.ts';
+import type { ShapeFactory } from '../../types.ts';
+import type { Coordinate } from '../../types/utility.ts';
 import { resolveEllipseDefaults } from './defaults';
 import {
   ellipseEfficientHitbox,

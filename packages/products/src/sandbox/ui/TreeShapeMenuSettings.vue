@@ -8,8 +8,8 @@
   import {
     TREE_FORMATION_OPTIONS_DEFAULTS,
     UseTreeGraphPositionerOptions,
-  } from '../../shared/graph-tree-positioner/useTreeGraphPositioner';
-  import { TreeGraphPositionerSyncControls } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync';
+  } from '../../shared/graph-tree-positioner/useTreeGraphPositioner.ts';
+  import { TreeGraphPositionerSyncControls } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync.ts';
   import GWell from '../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../shared/ui/graph-core/button/GButton.vue';
 

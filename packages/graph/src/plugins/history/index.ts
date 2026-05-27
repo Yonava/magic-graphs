@@ -3,10 +3,10 @@ import { debounce } from '@magic/utils/debounce';
 
 import { computed, ref } from 'vue';
 
-import type { BaseGraph } from '../../base';
-import type { HistoryOption } from '../../base/types';
-import type { GraphState } from '../../collab/types';
-import type { GEdge, GNode } from '../../types';
+import type { BaseGraph } from '../../base.ts';
+import type { HistoryOption } from '../../base/types.ts';
+import type { GraphState } from '../../collab/types.ts';
+import type { GEdge, GNode } from '../../types.ts';
 import {
   DEFAULT_REDO_HISTORY_OPTIONS,
   DEFAULT_UNDO_HISTORY_OPTIONS,

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import CIcon from '@magic/ui/core/Icon.vue';
 
-  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import GButton from '../../shared/ui/graph-core/button/GButton.vue';
   import AutoGenerateSettingsMenu from './AutoGenerateSettingsMenu.vue';
   import { useAutoGenerate } from './useAutoGenerate';

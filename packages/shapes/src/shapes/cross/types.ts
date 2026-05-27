@@ -5,7 +5,7 @@ import type {
   LineWidth,
   Rotation,
   TextArea,
-} from '../../types/schema';
+} from '../../types/schema.ts';
 
 export type CrossSchema = {
   size: number;

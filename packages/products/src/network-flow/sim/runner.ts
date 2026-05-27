@@ -5,15 +5,15 @@ import { computed } from 'vue';
 import type {
   SimulationControls,
   SimulationRunner,
-} from '../../shared/ui/general/sim/types';
-import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
-import type { FlowTrace } from '../algo/fordFulkerson';
-import { useFordFulkerson } from '../algo/useFordFulkerson';
+} from '../../shared/ui/general/sim/types.ts';
+import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
+import type { FlowTrace } from '../algo/fordFulkerson.ts';
+import { useFordFulkerson } from '../algo/useFordFulkerson.ts';
 import { FLOW_USETHEME_ID } from '../constants';
-import { useResidualEdges } from '../misc/useResidualEdges';
+import { useResidualEdges } from '../misc/useResidualEdges.ts';
 import state from '../state';
-import { useEdgeThickener } from '../theme/useEdgeThickener';
-import { useSourceSinkTheme } from '../theme/useSourceSinkTheme';
+import { useEdgeThickener } from '../theme/useEdgeThickener.ts';
+import { useSourceSinkTheme } from '../theme/useSourceSinkTheme.ts';
 import { useSimulationTheme } from './theme';
 
 export type FlowSimulationControls = SimulationControls<FlowTrace>;

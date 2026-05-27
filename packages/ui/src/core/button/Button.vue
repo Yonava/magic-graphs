@@ -4,7 +4,7 @@
 
   import { computed, ref } from 'vue';
 
-  import { useClassAttrs } from '../../useClassAttrs';
+  import { useClassAttrs } from '../../useClassAttrs.ts';
 
   const props = defineProps<{
     /**

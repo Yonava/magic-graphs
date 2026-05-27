@@ -10,9 +10,9 @@ import type { IntervalHandler } from '@magic/utils/types';
 
 import { computed, ref, watch } from 'vue';
 
-import type { BaseGraph } from '../../base';
-import type { GraphMouseEvent } from '../../base/types';
-import type { Aggregator } from '../../types';
+import type { BaseGraph } from '../../base.ts';
+import type { GraphMouseEvent } from '../../base/types.ts';
+import type { Aggregator } from '../../types.ts';
 import { BRUSH_WEIGHTS, COLORS } from './constants';
 import { useAnnotationHistory } from './history';
 import type { Annotation } from './types';

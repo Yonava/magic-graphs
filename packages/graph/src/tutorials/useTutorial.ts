@@ -1,5 +1,5 @@
-import { SEQUENCES } from '../tutorials/sequences';
-import { useGraphTutorial } from '../tutorials/useGraphTutorial';
+import { SEQUENCES } from '../tutorials/sequences.ts';
+import { useGraphTutorial } from '../tutorials/useGraphTutorial.ts';
 import type { Graph } from '../types';
 
 /**

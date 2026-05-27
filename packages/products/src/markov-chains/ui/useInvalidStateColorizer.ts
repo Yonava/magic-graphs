@@ -2,7 +2,7 @@ import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode, Graph } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
-import type { MarkovChain } from '../markov/useMarkovChain';
+import type { MarkovChain } from '../markov/useMarkovChain.ts';
 
 const USETHEME_ID = 'markov-invalid-state';
 

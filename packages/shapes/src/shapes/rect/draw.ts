@@ -2,7 +2,7 @@ import {
   drawStrokeOntoShape,
   normalizeBoundingBox,
   toBorderRadiusArray,
-} from '../../helpers';
+} from '../../helpers.ts';
 import type { RectSchemaWithDefaults } from './defaults';
 
 export const drawRectWithCtx =

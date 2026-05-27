@@ -1,5 +1,5 @@
-import { resolveDefaults } from '../../defaults/resolveDefaults';
-import { LINE_SCHEMA_DEFAULTS } from '../line/defaults';
+import { resolveDefaults } from '../../defaults/resolveDefaults.ts';
+import { LINE_SCHEMA_DEFAULTS } from '../line/defaults.ts';
 import type { ArrowSchema } from './types';
 
 export const ARROW_SCHEMA_DEFAULTS = {

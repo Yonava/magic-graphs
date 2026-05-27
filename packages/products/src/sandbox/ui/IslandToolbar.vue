@@ -4,8 +4,8 @@
 
   import { computed } from 'vue';
 
-  import { devMode, nonNullGraph as graph } from '../../shared/globalGraph';
-  import { useTreeGraphPositionerSync } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync';
+  import { devMode, nonNullGraph as graph } from '../../shared/globalGraph.ts';
+  import { useTreeGraphPositionerSync } from '../../shared/graph-tree-positioner/useTreeGraphPositionerSync.ts';
   import GToolbar from '../../shared/ui/graph-core/toolbar/GToolbarBase.vue';
   import GToolbarButton from '../../shared/ui/graph-core/toolbar/GToolbarButton.vue';
   import GToolbarDivider from '../../shared/ui/graph-core/toolbar/GToolbarDivider.vue';

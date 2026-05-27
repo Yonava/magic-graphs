@@ -4,12 +4,12 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { readonly, ref } from 'vue';
 
-import type { BaseGraph } from '../../base';
-import type { GraphMouseEvent } from '../../base/types';
-import { prioritizeNode } from '../../helpers/prioritization';
-import type { NodeAnchor } from '../../plugins/anchors/types';
-import type { GraphFocusPlugin } from '../../plugins/focus';
-import type { GNode, SchemaItem } from '../../types';
+import type { BaseGraph } from '../../base.ts';
+import type { GraphMouseEvent } from '../../base/types.ts';
+import { prioritizeNode } from '../../helpers/prioritization.ts';
+import type { NodeAnchor } from '../../plugins/anchors/types.ts';
+import type { GraphFocusPlugin } from '../../plugins/focus.ts';
+import type { GNode, SchemaItem } from '../../types.ts';
 
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors

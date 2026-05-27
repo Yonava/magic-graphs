@@ -3,8 +3,8 @@ import type {
   FillGradient,
   LineWidth,
   TextArea,
-} from '../../types/schema';
-import type { Coordinate, DashPattern } from '../../types/utility';
+} from '../../types/schema.ts';
+import type { Coordinate, DashPattern } from '../../types/utility.ts';
 
 export type LineSchema = {
   start: Coordinate;

@@ -2,8 +2,8 @@ import {
   areBoundingBoxesOverlapping,
   normalizeBoundingBox,
   rotatePoint,
-} from '../../helpers';
-import type { BoundingBox, Coordinate } from '../../types/utility';
+} from '../../helpers.ts';
+import type { BoundingBox, Coordinate } from '../../types/utility.ts';
 import type { StarSchemaWithDefaults } from './defaults';
 import type { StarSchema } from './types';
 

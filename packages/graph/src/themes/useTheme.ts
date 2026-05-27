@@ -1,6 +1,6 @@
 import { generateId } from '@magic/utils/id';
 
-import type { ValidGraphThemePath } from '../themes/types';
+import type { ValidGraphThemePath } from '../themes/types.ts';
 import type { Graph } from '../types';
 import { ResolveThemeMap, getDataFromNestedPath } from './getThemeResolver';
 

@@ -1,8 +1,8 @@
 import colors from '@magic/utils/colors';
 
 import { GraphTheme } from '..';
-import { edgeShared } from './shared/edge';
-import { nodeAnchorShared, nodeShared } from './shared/node';
+import { edgeShared } from './shared/edge.ts';
+import { nodeAnchorShared, nodeShared } from './shared/node.ts';
 
 const nodeSharedLight = {
   textColor: colors.GRAY_900,

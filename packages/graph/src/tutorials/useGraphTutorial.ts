@@ -4,13 +4,13 @@ import type { MaybeRef } from 'vue';
 import {
   DEFAULT_HIGHLIGHT_CLASS_NAME,
   DEFAULT_INTERVAL,
-} from '../tutorials/types';
+} from '../tutorials/types.ts';
 import type {
   GraphEventStep,
   IntervalStep,
   TutorialSequence,
   TutorialStep,
-} from '../tutorials/types';
+} from '../tutorials/types.ts';
 import type { Graph } from '../types';
 import type { TutorialControls } from './types';
 

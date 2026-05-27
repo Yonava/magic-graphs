@@ -4,15 +4,15 @@ import { generateId } from '@magic/utils/id';
 
 import { defineComponent, h, onMounted, watch } from 'vue';
 
-import { cross } from './shapes/cross';
-import type { CrossSchema } from './shapes/cross/types';
-import { rect } from './shapes/rect';
-import type { RectSchema } from './shapes/rect/types';
-import { square } from './shapes/square';
-import type { SquareSchema } from './shapes/square/types';
+import { cross } from './shapes/cross.ts';
+import type { CrossSchema } from './shapes/cross/types.ts';
+import { rect } from './shapes/rect.ts';
+import type { RectSchema } from './shapes/rect/types.ts';
+import { square } from './shapes/square.ts';
+import type { SquareSchema } from './shapes/square/types.ts';
 import type { ShapeFactory } from './types';
-import type { AnchorPoint } from './types/schema';
-import type { BoundingBox, Coordinate } from './types/utility';
+import type { AnchorPoint } from './types/schema.ts';
+import type { BoundingBox, Coordinate } from './types/utility.ts';
 
 const atMarkerSchema = (at: Coordinate): CrossSchema => ({
   at,

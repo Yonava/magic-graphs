@@ -7,7 +7,7 @@ import { Builtin, PathValue, Paths } from 'ts-essentials';
 
 import { Ref } from 'vue';
 
-import type { NodeAnchor } from '../plugins/anchors/types';
+import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import { GraphSettings } from '../settings';
 import type { GEdge, GNode } from '../types';
 import { ThemeGetter } from './getThemeResolver';

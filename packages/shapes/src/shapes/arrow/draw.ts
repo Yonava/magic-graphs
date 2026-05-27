@@ -1,4 +1,4 @@
-import { calculateArrowHeadCorners, getArrowHeadSize } from '../../helpers';
+import { calculateArrowHeadCorners, getArrowHeadSize } from '../../helpers.ts';
 import { line } from '../line';
 import { triangle } from '../triangle';
 import type { ArrowSchemaWithDefaults } from './defaults';

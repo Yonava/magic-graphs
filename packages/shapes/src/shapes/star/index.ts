@@ -1,7 +1,7 @@
-import { shapeFactoryWrapper } from '../../shapeWrapper';
-import { getShapeTextProps } from '../../text/text';
-import type { ShapeFactory } from '../../types';
-import type { Coordinate } from '../../types/utility';
+import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
+import { getShapeTextProps } from '../../text/text.ts';
+import type { ShapeFactory } from '../../types.ts';
+import type { Coordinate } from '../../types/utility.ts';
 import { resolveStarDefaults } from './defaults';
 import { drawStarWithCtx } from './draw';
 import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';

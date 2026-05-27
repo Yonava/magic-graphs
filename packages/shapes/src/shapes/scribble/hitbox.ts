@@ -1,5 +1,5 @@
-import { normalizeBoundingBox } from '../../helpers';
-import type { BoundingBox, Coordinate } from '../../types/utility';
+import { normalizeBoundingBox } from '../../helpers.ts';
+import type { BoundingBox, Coordinate } from '../../types/utility.ts';
 import { circle } from '../circle';
 import { line } from '../line';
 import { rect } from '../rect';

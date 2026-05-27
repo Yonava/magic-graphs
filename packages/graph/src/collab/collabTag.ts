@@ -6,7 +6,7 @@ import colors from '@magic/utils/colors';
 
 import type { Ref } from 'vue';
 
-import type { Collaborator, CollaboratorMap } from '../collab/types';
+import type { Collaborator, CollaboratorMap } from '../collab/types.ts';
 
 export const collabTagShapes = (collaborator: Collaborator) => {
   const {

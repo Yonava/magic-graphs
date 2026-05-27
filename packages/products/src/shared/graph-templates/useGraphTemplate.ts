@@ -6,7 +6,7 @@ import { useLocalStorage } from '@vueuse/core';
 
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-import { products } from '../../utils';
+import { products } from '../../utils.ts';
 import {
   centerNodesOnOriginCoordinates,
   createImageFromCanvasRegion,

@@ -3,10 +3,10 @@ import { Coordinate } from '@magic/shapes/types/utility';
 
 import { ref } from 'vue';
 
-import { getNodeDepths } from '../graph-use-node-depth/useNodeDepth';
-import { binaryTreePositioner } from './positioners/binaryTreePositioner';
-import { standardTreePositioner } from './positioners/standardTreePositioner';
-import { TreeGraphPositionerOptions } from './positioners/types';
+import { getNodeDepths } from '../graph-use-node-depth/useNodeDepth.ts';
+import { binaryTreePositioner } from './positioners/binaryTreePositioner.ts';
+import { standardTreePositioner } from './positioners/standardTreePositioner.ts';
+import { TreeGraphPositionerOptions } from './positioners/types.ts';
 
 type TreeShape = 'standard' | 'binary';
 
