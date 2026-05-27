@@ -1,7 +1,7 @@
 import type { Ref } from 'vue';
 
-import type { DrawPattern } from './backgroundPattern';
-import type { Camera } from './camera';
+import type { DrawPattern } from './backgroundPattern.ts';
+import type { Camera } from './camera/index.ts';
 
 export type Coordinate = {
   x: number;

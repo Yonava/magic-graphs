@@ -14,14 +14,14 @@
     "simulate:prod": "rm -rf node_modules packages/*/dist && pnpm install && pnpm build:types && pnpm --filter client build-only && pnpm --filter server start"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^24.2.1",
     "@vitejs/plugin-vue": "^5.0.5",
     "concurrently": "^8.2.2",
-    "typescript": "~5.4.0",
-    "vitest": "^3.2.4",
-    "vue-tsc": "^3.0.7",
     "prettier": "^3.4.2",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2"
+    "typescript": "~6.0.3",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^3.0.7"
   },
   "engines": {
     "node": ">=22.0.0"

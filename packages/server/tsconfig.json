@@ -4,19 +4,15 @@
     "outDir": "dist",
     "target": "ES2022",
     "module": "CommonJS",
-    "moduleResolution": "Node",
+    "moduleResolution": "nodenext",
     "strict": true,
     "noImplicitAny": true,
     "declaration": false,
     "skipLibCheck": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "paths": {
-      "@magic/graph/*": ["../graph/src/*"]
-    }
+    "esModuleInterop": true
   },
   "references": [{ "path": "../graph" }],
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["./src/**/*"]
 }

@@ -20,7 +20,6 @@ import { getAnimationProgress, getCurrentRunCount } from './utils';
 type ActiveAnimationsMap = Map<SchemaId, ActiveAnimation[]>;
 export type GetAnimatedSchema = (schemaId: SchemaId) => LooseSchema | undefined;
 
-// @ts-expect-error removing this causes a "invisible" type error. need to get to the bottom of this
 export const useAnimatedShapes = () => {
   /**
    * a mapping between shapes (via ids) and the animations currently
