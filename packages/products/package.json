@@ -2,8 +2,11 @@
   "name": "@magic/products",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "exports": {
-    "./*": "./src/*"
+    "./*": {
+      "types": "./dist/types/*.d.ts"
+    }
   },
   "scripts": {
     "build:types": "vue-tsc -b ."

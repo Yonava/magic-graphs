@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./*": "./src/*"
+    "./*": {
+      "types": "./dist/types/*.d.ts"
+    }
   },
   "scripts": {
     "build:types": "tsc -b .",
