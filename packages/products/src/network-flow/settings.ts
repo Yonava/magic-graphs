@@ -1,6 +1,7 @@
 import { LETTERS, graphLabelGetter } from '@magic/graph/labels';
 import type { GraphSettings } from '@magic/graph/settings';
 import type { Graph } from '@magic/graph/types';
+import { Fraction } from 'mathjs';
 
 import { SINK_LABEL, SOURCE_LABEL } from './constants';
 
@@ -20,12 +21,17 @@ export const flowNodeLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
  */
 export const FLOW_GRAPH_SETTINGS: Partial<GraphSettings> = {
   persistentStorageKey: 'network-flow',
-  userAddedDefaultEdgeWeight: '5',
+  userAddedDefaultEdgeWeight: () => new Fraction(5),
   userAddedEdgeRuleNoSelfLoops: true,
   userAddedEdgeRuleOneEdgePerPath: true,
-  edgeInputToWeight: (input) => {
-    const num = Number(input);
-    const isValid = !isNaN(num) && num >= 0 && num < 100;
-    return isValid ? input : undefined;
+  edgeInputToWeight: (input: string) => {
+    // fraction throws an error if the input cannot be parsed or
+    // is a divide by zero operation
+    try {
+      const fraction = new Fraction(input);
+      const numericValue = fraction.valueOf();
+      if (numericValue <= 0) return;
+      return fraction;
+    } catch {}
   },
 };
