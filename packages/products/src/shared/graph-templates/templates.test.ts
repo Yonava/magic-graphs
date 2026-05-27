@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import {
   centerNodesOnOriginCoordinates,
   getAverageCoordinates,
-} from './helpers';
+} from './helpers.ts';
 
 describe('getAverageCoordinates', () => {
   it('returns the average coordinates of nodes', () => {

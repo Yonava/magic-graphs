@@ -12,7 +12,7 @@
   import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors.ts';
   import PlaybackButton from './PlaybackButton.vue';
   import ProgressBar from './ProgressBar.vue';
-  import type { SimulationControls } from './types';
+  import type { SimulationControls } from './types.ts';
 
   const colors = useNonNullGraphColors();
 

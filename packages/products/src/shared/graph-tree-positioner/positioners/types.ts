@@ -2,7 +2,7 @@ import { GNode, Graph } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 
 import { NodeDepth } from '../../graph-use-node-depth/useNodeDepth.ts';
-import { UseTreeGraphPositionerOptions } from '../useTreeGraphPositioner';
+import { UseTreeGraphPositionerOptions } from '../useTreeGraphPositioner.ts';
 
 export type NodePosition = { nodeId: GNode['id']; coords: Coordinate };
 

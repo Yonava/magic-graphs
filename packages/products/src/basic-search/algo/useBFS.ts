@@ -5,7 +5,7 @@ import { computed, ref, watch } from 'vue';
 
 import state from '../state';
 import { bfs } from './bfs';
-import type { BasicSearchTrace } from './types';
+import type { BasicSearchTrace } from './types.ts';
 
 const { startNode } = state;
 

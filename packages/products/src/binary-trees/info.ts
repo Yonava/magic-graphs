@@ -1,4 +1,4 @@
-import type { ProductInfo } from '../types';
+import type { ProductInfo } from '../types.ts';
 import state from './state';
 
 const info: ProductInfo = {

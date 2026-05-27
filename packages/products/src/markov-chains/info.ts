@@ -1,6 +1,6 @@
 import type { Graph } from '@magic/graph/types';
 
-import type { ProductInfo } from '../types';
+import type { ProductInfo } from '../types.ts';
 import { canRunMarkovChain } from './sim/guard.ts';
 import { useSimulationRunner } from './sim/runner.ts';
 import state from './state';

@@ -1,6 +1,6 @@
 import definitions from '@magic/graph/plugins/characteristics/definitions';
 
-import type { ReasonText, ReasonTextGetter } from './types';
+import type { ReasonText, ReasonTextGetter } from './types.ts';
 
 const minNodeText = (minNodes: number) => {
   if (minNodes === 1) return 'Requires at least 1 node';

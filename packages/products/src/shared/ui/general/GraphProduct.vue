@@ -21,7 +21,7 @@
   import ZoomToolbar from './ZoomToolbar.vue';
   import BenchmarkingMetrics from './dev/BenchmarkingMetrics.vue';
   import GraphAtMousePositionData from './dev/GraphAtMousePositionData.vue';
-  import { useEscSimulationShortcut } from './useEscSimulationShortcut';
+  import { useEscSimulationShortcut } from './useEscSimulationShortcut.ts';
 
   const props = defineProps<GraphWithCanvas>();
 

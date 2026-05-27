@@ -1,8 +1,8 @@
 import type { GNode, Graph } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
-import { getValue } from '@magic/utils/maybeGetter';
+import { getValue } from '@magic/utils/maybeGetter/index';
 
-import { NodePosition, TreeGraphPositioner } from './types';
+import { NodePosition, TreeGraphPositioner } from './types.ts';
 
 /**
  * an array which maps a tree index (root = 0, left child = 1, right child = 2, etc)

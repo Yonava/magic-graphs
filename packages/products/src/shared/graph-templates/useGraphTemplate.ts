@@ -11,8 +11,8 @@ import {
   centerNodesOnOriginCoordinates,
   createImageFromCanvasRegion,
   getAverageCoordinates,
-} from './helpers';
-import type { GraphTemplate } from './types';
+} from './helpers.ts';
+import type { GraphTemplate } from './types.ts';
 
 export const useGraphTemplate = (graph: Graph) => {
   const userTemplates = useLocalStorage<GraphTemplate[]>('graph-templates', []);

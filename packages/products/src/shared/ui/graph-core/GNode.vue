@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { resolveThemeForNode } from '@magic/graph/themes';
+  import { resolveThemeForNode } from '@magic/graph/themes/index';
   import type { GNode } from '@magic/graph/types';
 
   import { computed, onUnmounted, ref } from 'vue';
