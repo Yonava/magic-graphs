@@ -26,6 +26,7 @@ export type UnwrapThemeEntry<ThemeMapEntries> =
       : Parameters<Extract<ThemeMapEntries[number]['value'], AnyFunction>>
     : [];
 
+// TODO remove as part of https://github.com/Yonava/magic-graphs/issues/584
 export const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
   obj: Obj,
   path: Path,
