@@ -2,6 +2,7 @@ import type { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { clone } from '@magic/utils/clone';
 import { deepMerge } from '@magic/utils/deepMerge';
+import { delta } from '@magic/utils/delta/index';
 import type {
   KeyboardEventEntries,
   KeyboardEventMap,
@@ -12,7 +13,6 @@ import { onClickOutside, useElementHover } from '@vueuse/core';
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { delta } from '../../../utils/dist/types/delta/index.ts';
 import { generateSubscriber, getInitialEventBus } from '../events/index.ts';
 import { prioritizeNode } from '../helpers/prioritization.ts';
 import { getEdgeSchematic } from '../schematics/edge.ts';
@@ -71,6 +71,9 @@ export const useBaseGraph = (
 
   const nodes = ref<GNode[]>([]);
   const edges = ref<GEdge[]>([]);
+  const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
+  const getNode = (id: GNode['id']) => nodeIdToNodeMap.value.get(id);
+  const getEdge = (id: GEdge['id']) => edgeIdToEdgeMap.value.get(id);
 
   const graphAtMousePosition = ref<GraphAtMousePosition>({
     coords: { x: 0, y: 0 },
@@ -209,26 +212,8 @@ export const useBaseGraph = (
     }
   });
 
-  const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
-  const {
-    getNode,
-    getEdge,
-    addNode,
-    addEdge,
-    moveNode,
-    bulkMoveNode,
-    editEdgeLabel,
-    removeNode,
-    removeEdge,
-    bulkAddNode,
-    bulkRemoveNode,
-    bulkAddEdge,
-    bulkRemoveEdge,
-  } = useCommitTransaction({
-    nodes,
-    edges,
-    nodeMap: nodeIdToNodeMap,
-    edgeMap: edgeIdToEdgeMap,
+  const commitTransaction = useCommitTransaction({
+    getGraphState: () => ({ nodes: nodes.value, edges: edges.value }),
     onTransactionSuccess: (payload) => {
       emit('onTransactionComplete', payload);
       updateGraphAtMousePosition();
@@ -334,26 +319,6 @@ export const useBaseGraph = (
 
     nodeIdToIndex,
     edgeIdToIndex,
-
-    getNode,
-    getEdge,
-
-    addNode,
-    addEdge,
-
-    moveNode,
-    bulkMoveNode,
-
-    editEdgeLabel,
-
-    removeNode,
-    removeEdge,
-
-    bulkAddNode,
-    bulkRemoveNode,
-
-    bulkAddEdge,
-    bulkRemoveEdge,
 
     getSchemaItemsByCoordinates,
 
