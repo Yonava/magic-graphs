@@ -1,11 +1,11 @@
 import type { DeepRequired } from 'ts-essentials';
 
-import { rect } from '../shapes/rect.ts';
-import type { ShapeTextProps } from '../types.ts';
+import { rect } from '../shapes/rect/index.ts';
+import type { ShapeTextProps } from '../types/index.ts';
 import type { Coordinate } from '../types/utility.ts';
-import { createTextarea } from './createTextarea';
-import type { TextAreaWithDefaults } from './defaults';
-import { getTextDimensions } from './getTextDimensions';
+import { createTextarea } from './createTextarea.ts';
+import type { TextAreaWithDefaults } from './defaults.ts';
+import { getTextDimensions } from './getTextDimensions.ts';
 import type {
   StartTextAreaEdit,
   TextAreaWithAnchorPoint,

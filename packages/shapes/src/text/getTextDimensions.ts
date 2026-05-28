@@ -1,4 +1,4 @@
-import { getCtx } from '@magic/utils/ctx';
+import { getCtx } from '@magic/utils/ctx/index';
 
 import type { TextBlock } from './types.ts';
 

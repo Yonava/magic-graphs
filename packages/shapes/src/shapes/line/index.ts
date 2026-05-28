@@ -1,11 +1,15 @@
 import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
 import { getShapeTextProps } from '../../text/text.ts';
-import type { ShapeFactory } from '../../types.ts';
+import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
-import { resolveLineDefaults } from './defaults';
-import { drawLineWithCtx } from './draw';
-import { getLineBoundingBox, lineEfficientHitbox, lineHitbox } from './hitbox';
-import { getTextAreaAnchorPoint } from './text';
+import { resolveLineDefaults } from './defaults.ts';
+import { drawLineWithCtx } from './draw.ts';
+import {
+  getLineBoundingBox,
+  lineEfficientHitbox,
+  lineHitbox,
+} from './hitbox.ts';
+import { getTextAreaAnchorPoint } from './text.ts';
 import type { LineSchema } from './types.ts';
 
 export const line: ShapeFactory<LineSchema> = (options) => {

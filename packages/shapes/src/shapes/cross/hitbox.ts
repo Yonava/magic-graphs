@@ -5,7 +5,7 @@ import {
 } from '../../helpers.ts';
 import { rectHitbox } from '../../shapes/rect/hitbox.ts';
 import type { BoundingBox, Coordinate } from '../../types/utility.ts';
-import type { CrossSchemaWithDefaults } from './defaults';
+import type { CrossSchemaWithDefaults } from './defaults.ts';
 
 /**
  * @param point - the point to check if it is in the cross

@@ -1,4 +1,4 @@
-import type { LineSchemaWithDefaults } from './defaults';
+import type { LineSchemaWithDefaults } from './defaults.ts';
 
 export const drawLineWithCtx =
   (schema: LineSchemaWithDefaults) => (ctx: CanvasRenderingContext2D) => {

@@ -1,6 +1,6 @@
-import { rect } from '../rect';
-import { loadImage } from './cache';
-import type { ImageSchemaWithDefaults } from './defaults';
+import { rect } from '../rect/index.ts';
+import { loadImage } from './cache.ts';
+import type { ImageSchemaWithDefaults } from './defaults.ts';
 
 /**
  * checkerboard as placeholder for image that fails to load

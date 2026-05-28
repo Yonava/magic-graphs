@@ -1,11 +1,11 @@
 import { getCenterPoint } from '../../helpers.ts';
 import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
 import { getShapeTextProps } from '../../text/text.ts';
-import type { ShapeFactory } from '../../types.ts';
+import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
-import { rect } from '../rect';
-import { resolveImageDefaults } from './defaults';
-import { drawImageWithCtx } from './draw';
+import { rect } from '../rect/index.ts';
+import { resolveImageDefaults } from './defaults.ts';
+import { drawImageWithCtx } from './draw.ts';
 import type { ImageSchema } from './types.ts';
 
 export const image: ShapeFactory<ImageSchema> = (options) => {

@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import { image } from '.';
 import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
 } from '../../docs.ts';
-import { IMAGE_SCHEMA_DEFAULTS } from './defaults';
+import { IMAGE_SCHEMA_DEFAULTS } from './defaults.ts';
+import { image } from './index.ts';
 import type { ImageSchema } from './types.ts';
 
 const Image = createDocComponent<ImageSchema>(image);

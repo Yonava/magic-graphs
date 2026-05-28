@@ -1,4 +1,4 @@
-import type { EverySchemaPropName, WithId } from '../types.ts';
+import type { EverySchemaPropName, WithId } from '../types/index.ts';
 import type { TimelineId } from './timeline/define.ts';
 
 /**

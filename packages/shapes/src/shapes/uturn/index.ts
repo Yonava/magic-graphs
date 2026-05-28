@@ -1,15 +1,15 @@
 import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
 import { getShapeTextProps } from '../../text/text.ts';
-import type { ShapeFactory } from '../../types.ts';
+import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
-import { resolveUTurnDefaults } from './defaults';
-import { drawUTurnWithCtx } from './draw';
+import { resolveUTurnDefaults } from './defaults.ts';
+import { drawUTurnWithCtx } from './draw.ts';
 import {
   getUTurnBoundingBox,
   uturnEfficientHitbox,
   uturnHitbox,
-} from './hitbox';
-import { getTextAreaAnchorPoint } from './text';
+} from './hitbox.ts';
+import { getTextAreaAnchorPoint } from './text.ts';
 import type { UTurnSchema } from './types.ts';
 
 export const uturn: ShapeFactory<UTurnSchema> = (options) => {

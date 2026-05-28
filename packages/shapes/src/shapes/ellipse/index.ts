@@ -1,14 +1,14 @@
 import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
 import { drawEllipseWithCtx } from '../../shapes/ellipse/draw.ts';
 import { getShapeTextProps } from '../../text/text.ts';
-import type { ShapeFactory } from '../../types.ts';
+import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
-import { resolveEllipseDefaults } from './defaults';
+import { resolveEllipseDefaults } from './defaults.ts';
 import {
   ellipseEfficientHitbox,
   ellipseHitbox,
   getEllipseBoundingBox,
-} from './hitbox';
+} from './hitbox.ts';
 import type { EllipseSchema } from './types.ts';
 
 export const ellipse: ShapeFactory<EllipseSchema> = (options) => {

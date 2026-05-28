@@ -4,7 +4,7 @@ import {
   normalizeBoundingBox,
 } from '../../helpers.ts';
 import type { BoundingBox, Coordinate } from '../../types/utility.ts';
-import type { LineSchemaWithDefaults } from './defaults';
+import type { LineSchemaWithDefaults } from './defaults.ts';
 
 /**
  * @param point - the point to check if it is in the line

@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import { rect } from '.';
 import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
 } from '../../docs.ts';
-import { RECT_SCHEMA_DEFAULTS } from './defaults';
+import { RECT_SCHEMA_DEFAULTS } from './defaults.ts';
+import { rect } from './index.ts';
 import type { RectSchema } from './types.ts';
 
 const Rect = createDocComponent<RectSchema>(rect);

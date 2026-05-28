@@ -1,15 +1,15 @@
 import { getCenterPoint } from '../../helpers.ts';
 import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
 import { getShapeTextProps } from '../../text/text.ts';
-import type { ShapeFactory } from '../../types.ts';
+import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
-import { resolveTriangleDefaults } from './defaults';
-import { drawTriangleWithCtx } from './draw';
+import { resolveTriangleDefaults } from './defaults.ts';
+import { drawTriangleWithCtx } from './draw.ts';
 import {
   getTriangleBoundingBox,
   triangleEfficientHitbox,
   triangleHitbox,
-} from './hitbox';
+} from './hitbox.ts';
 import type { TriangleSchema } from './types.ts';
 
 export const triangle: ShapeFactory<TriangleSchema> = (options) => {

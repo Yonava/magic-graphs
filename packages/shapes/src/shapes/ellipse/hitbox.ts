@@ -3,7 +3,7 @@ import {
   normalizeBoundingBox,
 } from '../../helpers.ts';
 import type { BoundingBox, Coordinate } from '../../types/utility.ts';
-import type { EllipseSchemaWithDefaults } from './defaults';
+import type { EllipseSchemaWithDefaults } from './defaults.ts';
 
 export const ellipseHitbox =
   (schema: EllipseSchemaWithDefaults) => (point: Coordinate) => {

@@ -1,9 +1,9 @@
 import { normalizeBoundingBox } from '../../helpers.ts';
 import type { BoundingBox, Coordinate } from '../../types/utility.ts';
-import { circle } from '../circle';
-import { line } from '../line';
-import { rect } from '../rect';
-import type { ScribbleSchemaWithDefaults } from './defaults';
+import { circle } from '../circle/index.ts';
+import { line } from '../line/index.ts';
+import { rect } from '../rect/index.ts';
+import type { ScribbleSchemaWithDefaults } from './defaults.ts';
 
 /**
  * @param point - the point to check if it is in the scribble bounding box

@@ -2,7 +2,7 @@
 // eslint-disable-next-line
 import type { UnionToIntersection } from 'ts-essentials';
 
-import type { ShapeFactoryWrapper } from '../shapeWrapper';
+import type { ShapeFactoryWrapper } from '../shapeWrapper.ts';
 import type { ArrowSchema } from '../shapes/arrow/types.ts';
 import type { CircleSchema } from '../shapes/circle/types.ts';
 import type { CrossSchema } from '../shapes/cross/types.ts';
@@ -16,7 +16,7 @@ import type { StarSchema } from '../shapes/star/types.ts';
 import type { TriangleSchema } from '../shapes/triangle/types.ts';
 import type { UTurnSchema } from '../shapes/uturn/types.ts';
 import type { StartTextAreaEdit } from '../text/types.ts';
-import type { BoundingBox, Coordinate } from './utility';
+import type { BoundingBox, Coordinate } from './utility.ts';
 
 export type ShapeName =
   | 'circle'

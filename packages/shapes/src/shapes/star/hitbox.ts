@@ -4,7 +4,7 @@ import {
   rotatePoint,
 } from '../../helpers.ts';
 import type { BoundingBox, Coordinate } from '../../types/utility.ts';
-import type { StarSchemaWithDefaults } from './defaults';
+import type { StarSchemaWithDefaults } from './defaults.ts';
 import type { StarSchema } from './types.ts';
 
 const getStarPoints = (star: StarSchema): Coordinate[] => {

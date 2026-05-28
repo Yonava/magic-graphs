@@ -4,9 +4,9 @@ import {
   rotatePoint,
   toBorderRadiusArray,
 } from '../../helpers.ts';
-import { circle } from '../../shapes/circle.ts';
+import { circle } from '../../shapes/circle/index.ts';
 import type { BoundingBox, Coordinate } from '../../types/utility.ts';
-import type { RectSchemaWithDefaults } from './defaults';
+import type { RectSchemaWithDefaults } from './defaults.ts';
 
 type HitboxRect = {
   x: number;

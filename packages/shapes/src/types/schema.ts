@@ -4,7 +4,7 @@ import type {
   Coordinate,
   GradientStop,
   Stroke as StrokeDefinition,
-} from './utility';
+} from './utility.ts';
 
 export type AnchorPoint = {
   /**

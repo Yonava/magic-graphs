@@ -1,14 +1,14 @@
 import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
 import { getShapeTextProps } from '../../text/text.ts';
-import type { ShapeFactory } from '../../types.ts';
+import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
-import { resolveCrossDefaults } from './defaults';
-import { drawCrossWithCtx } from './draw';
+import { resolveCrossDefaults } from './defaults.ts';
+import { drawCrossWithCtx } from './draw.ts';
 import {
   crossEfficientHitbox,
   crossHitbox,
   getCrossBoundingBox,
-} from './hitbox';
+} from './hitbox.ts';
 import type { CrossSchema } from './types.ts';
 
 export const cross: ShapeFactory<CrossSchema> = (options) => {

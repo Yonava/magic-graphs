@@ -4,7 +4,7 @@ import {
   normalizeBoundingBox,
 } from '../../helpers.ts';
 import type { BoundingBox, Coordinate } from '../../types/utility.ts';
-import type { TriangleSchemaWithDefaults } from './defaults';
+import type { TriangleSchemaWithDefaults } from './defaults.ts';
 
 /**
  * uses barycentric coordinate system for triangles. dont ask me, im not that smart.

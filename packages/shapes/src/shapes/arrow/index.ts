@@ -1,15 +1,15 @@
 import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
 import { getShapeTextProps } from '../../text/text.ts';
-import type { ShapeFactory } from '../../types.ts';
+import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
 import { getTextAreaAnchorPoint } from '../line/text.ts';
-import { resolveArrowDefaults } from './defaults';
-import { drawArrowWithCtx } from './draw';
+import { resolveArrowDefaults } from './defaults.ts';
+import { drawArrowWithCtx } from './draw.ts';
 import {
   arrowEfficientHitbox,
   arrowHitbox,
   getArrowBoundingBox,
-} from './hitbox';
+} from './hitbox.ts';
 import type { ArrowSchema } from './types.ts';
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {

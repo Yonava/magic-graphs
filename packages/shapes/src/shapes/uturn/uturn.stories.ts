@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import { uturn } from '.';
 import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
 } from '../../docs.ts';
-import { UTURN_SCHEMA_DEFAULTS } from './defaults';
+import { UTURN_SCHEMA_DEFAULTS } from './defaults.ts';
+import { uturn } from './index.ts';
 import type { UTurnSchema } from './types.ts';
 
 const UTurn = createDocComponent<UTurnSchema>(uturn);

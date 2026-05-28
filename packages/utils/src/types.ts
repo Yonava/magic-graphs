@@ -14,9 +14,8 @@ export type PartiallyPartial<T, K extends keyof T> = Prettify<
  * @example
  * type T = PartiallyRequired<{ a?: number, b?: string }, 'a'> // { a: number, b?: string }
  */
-export type PartiallyRequired<T, K extends keyof T> = Prettify<
-  Omit<T, K> & Required<Pick<T, K>>
->;
+export type PartiallyRequired<T, K extends keyof T> = Omit<T, K> &
+  Required<Pick<T, K>>;
 
 /**
  * takes `any[]` out of a union of arrays

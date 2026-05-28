@@ -1,7 +1,7 @@
 import { calculateArrowHeadCorners, getArrowHeadSize } from '../../helpers.ts';
-import { line } from '../line';
-import { triangle } from '../triangle';
-import type { ArrowSchemaWithDefaults } from './defaults';
+import { line } from '../line/index.ts';
+import { triangle } from '../triangle/index.ts';
+import type { ArrowSchemaWithDefaults } from './defaults.ts';
 
 export const drawArrowWithCtx = (schema: ArrowSchemaWithDefaults) => {
   const { start, end, lineWidth, fillGradient, fillColor } = schema;

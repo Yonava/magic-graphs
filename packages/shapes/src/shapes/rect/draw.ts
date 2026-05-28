@@ -3,7 +3,7 @@ import {
   normalizeBoundingBox,
   toBorderRadiusArray,
 } from '../../helpers.ts';
-import type { RectSchemaWithDefaults } from './defaults';
+import type { RectSchemaWithDefaults } from './defaults.ts';
 
 export const drawRectWithCtx =
   (schema: RectSchemaWithDefaults) => (ctx: CanvasRenderingContext2D) => {

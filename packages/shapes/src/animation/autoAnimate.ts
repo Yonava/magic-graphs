@@ -1,8 +1,12 @@
-import { delta } from '@magic/utils/deepDelta';
+import { delta } from '@magic/utils/deepDelta/index';
 import { DeepPartial } from 'ts-essentials';
 
-import type { GetAnimatedSchema } from '.';
-import type { EverySchemaPropName, SchemaId, ShapeName } from '../types.ts';
+import type {
+  EverySchemaPropName,
+  SchemaId,
+  ShapeName,
+} from '../types/index.ts';
+import type { GetAnimatedSchema } from './index.ts';
 import type { DefineTimeline } from './timeline/define.ts';
 import type { LooseSchema, LooseSchemaValue } from './types.ts';
 

@@ -1,16 +1,16 @@
 import { getDevicePixelRatio } from '@magic/canvas/camera/utils';
-import { getCtx } from '@magic/utils/ctx';
+import { getCtx } from '@magic/utils/ctx/index';
 import { generateId } from '@magic/utils/id';
 
 import { defineComponent, h, onMounted, watch } from 'vue';
 
-import { cross } from './shapes/cross.ts';
+import { cross } from './shapes/cross/index.ts';
 import type { CrossSchema } from './shapes/cross/types.ts';
-import { rect } from './shapes/rect.ts';
+import { rect } from './shapes/rect/index.ts';
 import type { RectSchema } from './shapes/rect/types.ts';
-import { square } from './shapes/square.ts';
+import { square } from './shapes/square/index.ts';
 import type { SquareSchema } from './shapes/square/types.ts';
-import type { ShapeFactory } from './types.ts';
+import type { ShapeFactory } from './types/index.ts';
 import type { AnchorPoint } from './types/schema.ts';
 import type { BoundingBox, Coordinate } from './types/utility.ts';
 

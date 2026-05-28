@@ -3,11 +3,11 @@ import {
   normalizeBoundingBox,
   rotatePoint,
 } from '../../helpers.ts';
-import { circle } from '../../shapes/circle.ts';
+import { circle } from '../../shapes/circle/index.ts';
 import type { BoundingBox, Coordinate } from '../../types/utility.ts';
-import { arrow } from '../arrow';
-import { line } from '../line';
-import type { UTurnSchemaWithDefaults } from './defaults';
+import { arrow } from '../arrow/index.ts';
+import { line } from '../line/index.ts';
+import type { UTurnSchemaWithDefaults } from './defaults.ts';
 
 export const uturnHitbox = (schema: UTurnSchemaWithDefaults) => {
   const { spacing, at, downDistance, upDistance, lineWidth, rotation } = schema;

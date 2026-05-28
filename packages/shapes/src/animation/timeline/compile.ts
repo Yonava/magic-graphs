@@ -16,14 +16,14 @@ import { interpolateTextArea } from '../../animation/interpolation/textArea.ts';
 import type { AnimationKeyframe } from '../../animation/interpolation/types.ts';
 import { resolveTextArea } from '../../text/defaults.ts';
 import type { TextArea } from '../../text/types.ts';
-import type { EverySchemaPropName, ShapeName } from '../../types.ts';
+import type { EverySchemaPropName, ShapeName } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
 import type {
   ImperativeTrack,
   Timeline,
   TimelinePlaybackDelay,
   TimelinePlaybackDuration,
-} from './define';
+} from './define.ts';
 
 /**
  * @param schema the non-altered schema of the shape being animated

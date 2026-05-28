@@ -2,11 +2,15 @@ import { getCenterPoint } from '../../helpers.ts';
 import { validateBorderRadius } from '../../optionsValidator.ts';
 import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
 import { getShapeTextProps } from '../../text/text.ts';
-import type { ShapeFactory } from '../../types.ts';
+import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
-import { resolveRectDefaults } from './defaults';
-import { drawRectWithCtx } from './draw';
-import { getRectBoundingBox, rectEfficientHitbox, rectHitbox } from './hitbox';
+import { resolveRectDefaults } from './defaults.ts';
+import { drawRectWithCtx } from './draw.ts';
+import {
+  getRectBoundingBox,
+  rectEfficientHitbox,
+  rectHitbox,
+} from './hitbox.ts';
 import type { RectSchema } from './types.ts';
 
 export const rect: ShapeFactory<RectSchema> = (options) => {

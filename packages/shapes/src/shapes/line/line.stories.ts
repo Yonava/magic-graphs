@@ -5,8 +5,8 @@ import {
   DOC_MARKING_DEFAULTS,
   createDocComponent,
 } from '../../docs.ts';
-import { line } from '../line';
-import { LINE_SCHEMA_DEFAULTS } from './defaults';
+import { line } from '../line/index.ts';
+import { LINE_SCHEMA_DEFAULTS } from './defaults.ts';
 import type { LineSchema } from './types.ts';
 
 const Line = createDocComponent<LineSchema>(line);
