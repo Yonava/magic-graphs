@@ -1,3 +1,4 @@
+import { debounce } from '@magic/utils/debounce';
 import { local } from '@magic/utils/localStorage';
 import { Fraction } from 'mathjs';
 
@@ -53,12 +54,11 @@ export const usePersistent = (graph: BaseGraph) => {
     },
   };
 
-  const trackGraphState = async () => {
-    // lets all callbacks run on event bus before saving to storage
-    await new Promise((res) => setTimeout(res, 10));
+  const trackGraphState = debounce(async () => {
     nodeStorage.set(graph.nodes.value);
     edgeStorage.set(graph.edges.value);
-  };
+    // prevent lag while dragging nodes, as well as yields to all event callback before persisting
+  }, 250);
 
   const load = () =>
     graph.load(
@@ -69,26 +69,8 @@ export const usePersistent = (graph: BaseGraph) => {
       { history: false },
     );
 
-  const trackChangeEvents: GraphEvent[] = [
-    'onStructureChange',
-    'onNodeDrop',
-    'onGroupDrop',
-  ];
-
-  const listenForGraphStateEvents = () => {
-    trackChangeEvents.forEach((event) =>
-      graph.subscribe(event, trackGraphState),
-    );
-  };
-
-  const stopListeningForGraphStateEvents = () => {
-    trackChangeEvents.forEach((event) =>
-      graph.unsubscribe(event, trackGraphState),
-    );
-  };
-
   graph.subscribe('onSettingsChange', (diff) => {
-    stopListeningForGraphStateEvents();
+    graph.unsubscribe('onTransactionComplete', trackGraphState);
 
     // persistent was true, but now it is false
     const persistenceTurnedOff = 'persistent' in diff && !diff.persistent;
@@ -98,7 +80,7 @@ export const usePersistent = (graph: BaseGraph) => {
     const persistenceTurnedOn = 'persistent' in diff && diff.persistent;
     if (persistenceTurnedOn) {
       load();
-      listenForGraphStateEvents();
+      graph.subscribe('onTransactionComplete', trackGraphState);
 
       return;
     }
@@ -108,13 +90,13 @@ export const usePersistent = (graph: BaseGraph) => {
       load();
     }
 
-    listenForGraphStateEvents();
+    graph.subscribe('onTransactionComplete', trackGraphState);
   });
 
   if (graph.settings.value.persistent) {
     // ensure caller has a chance to sub to onStructureChange
     queueMicrotask(load);
-    listenForGraphStateEvents();
+    graph.subscribe('onTransactionComplete', trackGraphState);
   }
 
   return {

@@ -338,6 +338,12 @@ export const useBaseGraph = (
           },
         ],
       });
+      emit('onNodeAdded', addedNode, {
+        animate: false,
+        broadcast: false,
+        focus: true,
+        history: true,
+      });
       return addedNode;
     },
 
