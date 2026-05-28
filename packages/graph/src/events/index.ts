@@ -81,6 +81,7 @@ export const getInitialEventBus = () => {
     /**
      * BaseGraphEvents
      */
+    onTransactionComplete: new Set(),
     onStructureChange: new Set(),
 
     onNodeAdded: new Set(),

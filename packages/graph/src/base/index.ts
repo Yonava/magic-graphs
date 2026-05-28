@@ -1,7 +1,7 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { clone } from '@magic/utils/clone';
-import { delta } from '@magic/utils/deepDelta/index';
+import { delta } from '../../../utils/dist/types/delta/index.ts';
 import { deepMerge } from '@magic/utils/deepMerge';
 import type {
   KeyboardEventEntries,
@@ -31,7 +31,7 @@ import {
 import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types.ts';
 import type { GraphAtMousePosition, HistoryOption } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
-import { useGraphCRUD } from './useGraphCRUD.ts';
+import { useTransaction } from './useTransaction.ts';
 import { useGraphCursor } from './useGraphCursor.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { usePluginHoldController } from './usePluginHold.ts';
@@ -224,20 +224,16 @@ export const useBaseGraph = (
     bulkRemoveNode,
     bulkAddEdge,
     bulkRemoveEdge,
-  } = useGraphCRUD({
+  } = useTransaction({
     nodes,
     edges,
     nodeMap: nodeIdToNodeMap,
     edgeMap: edgeIdToEdgeMap,
-    emit,
-    settings,
-    updateGraphAtMousePosition,
-    updateAggregator,
-    animations,
-    autoAnimate,
-    activeAnimations,
-    draw,
-    magicCanvas,
+    onTransactionSuccess: (payload) => {
+      emit('onTransactionComplete', payload)
+      updateGraphAtMousePosition()
+      updateAggregator()
+    }
   });
 
   const nodeIdToIndex = computed(() =>

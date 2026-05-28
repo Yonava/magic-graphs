@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 
 import { delta } from './index.ts';
 
-test('deepDelta standard', () => {
+test('delta standard', () => {
   const yona = {
     name: 'yona',
     sex: 'm',

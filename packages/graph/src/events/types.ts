@@ -21,8 +21,14 @@ import type {
 import type { GraphSettings } from '../settings/index.ts';
 import type { GraphThemeName } from '../themes/index.ts';
 import type { GEdge, GNode, Graph } from '../types.ts';
+import { TransactionPayload } from '../base/useTransaction.ts';
 
 export type BaseGraphEventMap = {
+  /**
+   * fired once at the end of any atomic graph mutation batch.
+   * downstream plugins (Animation, History, Broadcast) should hook into this.
+   */
+  onTransactionComplete: (payload: DeepReadonly<TransactionPayload>) => void;
   /**
    * when one of the following occurs:
    * - a node is {@link Graph.addNode | added} or {@link Graph.removeNode | removed}

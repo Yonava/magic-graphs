@@ -1,4 +1,4 @@
-import type { GNodeMoveInstruction } from '@magic/graph/base/useGraphCRUD';
+import type { GNodeMoveInstruction } from '../../../../graph/dist/types/base/useTransaction.ts';
 import type { GEdge, Graph } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { Fraction } from 'mathjs';
