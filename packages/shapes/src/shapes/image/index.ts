@@ -1,12 +1,12 @@
-import { getCenterPoint } from '../../helpers';
-import { shapeFactoryWrapper } from '../../shapeWrapper';
-import { getShapeTextProps } from '../../text/text';
-import type { ShapeFactory } from '../../types';
-import type { Coordinate } from '../../types/utility';
-import { rect } from '../rect';
-import { resolveImageDefaults } from './defaults';
-import { drawImageWithCtx } from './draw';
-import type { ImageSchema } from './types';
+import { getCenterPoint } from '../../helpers.ts';
+import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
+import { getShapeTextProps } from '../../text/text.ts';
+import type { ShapeFactory } from '../../types/index.ts';
+import type { Coordinate } from '../../types/utility.ts';
+import { rect } from '../rect/index.ts';
+import { resolveImageDefaults } from './defaults.ts';
+import { drawImageWithCtx } from './draw.ts';
+import type { ImageSchema } from './types.ts';
 
 export const image: ShapeFactory<ImageSchema> = (options) => {
   if (options.width < 0 || options.height < 0) {

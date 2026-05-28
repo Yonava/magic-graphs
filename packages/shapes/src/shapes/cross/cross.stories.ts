@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import { cross } from '.';
 import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
-} from '../../docs';
-import { CROSS_SCHEMA_DEFAULTS } from './defaults';
-import type { CrossSchema } from './types';
+} from '../../docs.ts';
+import { CROSS_SCHEMA_DEFAULTS } from './defaults.ts';
+import { cross } from './index.ts';
+import type { CrossSchema } from './types.ts';
 
 const Cross = createDocComponent<CrossSchema>(cross);
 

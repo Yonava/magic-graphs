@@ -1,10 +1,10 @@
-import type { TextArea as TextAreaDefinition } from '../text/types';
+import type { TextArea as TextAreaDefinition } from '../text/types.ts';
 import type {
   BorderRadiusArrayValue,
   Coordinate,
   GradientStop,
   Stroke as StrokeDefinition,
-} from './utility';
+} from './utility.ts';
 
 export type AnchorPoint = {
   /**

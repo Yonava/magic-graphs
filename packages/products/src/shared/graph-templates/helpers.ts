@@ -1,9 +1,9 @@
-import { getMagicCoordinates } from '@magic/canvas/coordinates';
+import { getMagicCoordinates } from '@magic/canvas/coordinates/index';
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
-import { getCtx } from '@magic/utils/ctx';
+import { getCtx } from '@magic/utils/ctx/index';
 import { average } from '@magic/utils/math';
 
-import { nonNullGraph as graph } from '../../shared/globalGraph';
+import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
 
 export const getAverageCoordinates = (coords: Coordinate[]) => {
   const { magicCanvas: canvas } = graph.value;

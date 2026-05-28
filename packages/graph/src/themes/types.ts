@@ -1,16 +1,16 @@
-import { AnimatedShapeControls } from '@magic/shapes/animation';
+import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import type { FontWeight } from '@magic/shapes/text/types';
-import { Shape } from '@magic/shapes/types';
+import { Shape } from '@magic/shapes/types/index';
 import { Color } from '@magic/utils/colors';
-import type { MaybeGetter } from '@magic/utils/maybeGetter';
+import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
 import { Builtin, PathValue, Paths } from 'ts-essentials';
 
 import { Ref } from 'vue';
 
-import type { NodeAnchor } from '../plugins/anchors/types';
-import { GraphSettings } from '../settings';
-import type { GEdge, GNode } from '../types';
-import { ThemeGetter } from './getThemeResolver';
+import type { NodeAnchor } from '../plugins/anchors/types.ts';
+import { GraphSettings } from '../settings/index.ts';
+import type { GEdge, GNode } from '../types.ts';
+import { ThemeGetter } from './getThemeResolver.ts';
 
 export type TextStyles = {
   text: string;

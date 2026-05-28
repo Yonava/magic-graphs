@@ -1,5 +1,5 @@
-import { getTreeArray } from './treeArray';
-import { TreeNode } from './treeNode';
+import { getTreeArray } from './treeArray.ts';
+import { TreeNode } from './treeNode.ts';
 
 /**
  * An array representation of a binary tree, where each index corresponds to a tree position:

@@ -1,11 +1,11 @@
 import type { Ref } from 'vue';
 
-import { usePanAndZoom } from './panZoom';
+import { usePanAndZoom } from './panZoom.ts';
 import {
   type TransformOptions,
   addTransform,
   getDevicePixelRatio,
-} from './utils';
+} from './utils.ts';
 
 export const useCamera = (
   canvas: Ref<HTMLCanvasElement | undefined>,

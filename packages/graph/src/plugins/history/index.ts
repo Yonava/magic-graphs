@@ -3,20 +3,20 @@ import { debounce } from '@magic/utils/debounce';
 
 import { computed, ref } from 'vue';
 
-import type { BaseGraph } from '../../base';
-import type { HistoryOption } from '../../base/types';
-import type { GraphState } from '../../collab/types';
-import type { GEdge, GNode } from '../../types';
+import type { BaseGraph } from '../../base/index.ts';
+import type { HistoryOption } from '../../base/types.ts';
+import type { GraphState } from '../../collab/types.ts';
+import type { GEdge, GNode } from '../../types.ts';
 import {
   DEFAULT_REDO_HISTORY_OPTIONS,
   DEFAULT_UNDO_HISTORY_OPTIONS,
-} from './types';
+} from './types.ts';
 import type {
   GNodeMoveRecord,
   HistoryRecord,
   RedoHistoryOptions,
   UndoHistoryOptions,
-} from './types';
+} from './types.ts';
 
 /**
  * the max number of history records to keep in the undo and redo stacks

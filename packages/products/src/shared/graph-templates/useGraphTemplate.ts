@@ -6,13 +6,13 @@ import { useLocalStorage } from '@vueuse/core';
 
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-import { products } from '../../utils';
+import { products } from '../../utils.ts';
 import {
   centerNodesOnOriginCoordinates,
   createImageFromCanvasRegion,
   getAverageCoordinates,
-} from './helpers';
-import type { GraphTemplate } from './types';
+} from './helpers.ts';
+import type { GraphTemplate } from './types.ts';
 
 export const useGraphTemplate = (graph: Graph) => {
   const userTemplates = useLocalStorage<GraphTemplate[]>('graph-templates', []);

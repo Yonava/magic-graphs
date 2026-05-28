@@ -2,7 +2,7 @@ import type { Graph } from '@magic/graph/types';
 
 import { computed, ref } from 'vue';
 
-import { prim } from './prim';
+import { prim } from './prim.ts';
 
 export const usePrim = (graph: Graph) => {
   /**

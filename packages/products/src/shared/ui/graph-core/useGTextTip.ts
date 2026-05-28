@@ -3,7 +3,7 @@ import { useTextTip } from '@magic/ui/useTextTip';
 import { watch } from 'vue';
 import type { MaybeRef } from 'vue';
 
-import { useGraphColors } from '../../../shared/useGlobalGraphColors';
+import { useGraphColors } from '../../../shared/useGlobalGraphColors.ts';
 
 /**
  * a text tip themed after the global graph

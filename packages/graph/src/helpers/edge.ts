@@ -1,6 +1,6 @@
 import { Fraction } from 'mathjs';
 
-import { CurryWithBaseGraph, EdgeHelpers } from './types';
+import { CurryWithBaseGraph, EdgeHelpers } from './types.ts';
 
 type CurriedEdgeHelpers = CurryWithBaseGraph<EdgeHelpers>;
 

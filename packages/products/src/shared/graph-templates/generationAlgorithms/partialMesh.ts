@@ -2,7 +2,7 @@ import type { GEdge, GNode } from '@magic/graph/types';
 import { generateId } from '@magic/utils/id';
 import { Fraction } from 'mathjs';
 
-import { AutoGenerateGraphOptions } from '../templateTypes';
+import { AutoGenerateGraphOptions } from '../templateTypes.ts';
 
 type GeneratePartialMeshOptions = {
   edgeLabel: AutoGenerateGraphOptions['edgeWeight'];

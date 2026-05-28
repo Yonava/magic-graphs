@@ -1,4 +1,4 @@
-import type { AnchorPoint } from '../types/schema';
+import type { AnchorPoint } from '../types/schema.ts';
 
 /**
  * all font weights supported by html canvas

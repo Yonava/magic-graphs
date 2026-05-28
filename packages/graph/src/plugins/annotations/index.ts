@@ -1,6 +1,6 @@
-import { circle } from '@magic/shapes/shapes/circle';
+import { circle } from '@magic/shapes/shapes/circle/index';
 import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
-import type { WithId } from '@magic/shapes/types';
+import type { WithId } from '@magic/shapes/types/index';
 import type { Coordinate } from '@magic/shapes/types/utility';
 import colors from '@magic/utils/colors';
 import type { Color } from '@magic/utils/colors';
@@ -10,12 +10,12 @@ import type { IntervalHandler } from '@magic/utils/types';
 
 import { computed, ref, watch } from 'vue';
 
-import type { BaseGraph } from '../../base';
-import type { GraphMouseEvent } from '../../base/types';
-import type { Aggregator } from '../../types';
-import { BRUSH_WEIGHTS, COLORS } from './constants';
-import { useAnnotationHistory } from './history';
-import type { Annotation } from './types';
+import type { BaseGraph } from '../../base/index.ts';
+import type { GraphMouseEvent } from '../../base/types.ts';
+import type { Aggregator } from '../../types.ts';
+import { BRUSH_WEIGHTS, COLORS } from './constants.ts';
+import { useAnnotationHistory } from './history.ts';
+import type { Annotation } from './types.ts';
 
 const ERASER_BRUSH_RADIUS = 10;
 

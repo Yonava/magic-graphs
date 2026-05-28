@@ -2,10 +2,10 @@ import {
   areBoundingBoxesOverlapping,
   normalizeBoundingBox,
   rotatePoint,
-} from '../../helpers';
-import type { BoundingBox, Coordinate } from '../../types/utility';
-import type { StarSchemaWithDefaults } from './defaults';
-import type { StarSchema } from './types';
+} from '../../helpers.ts';
+import type { BoundingBox, Coordinate } from '../../types/utility.ts';
+import type { StarSchemaWithDefaults } from './defaults.ts';
+import type { StarSchema } from './types.ts';
 
 const getStarPoints = (star: StarSchema): Coordinate[] => {
   const { at, innerRadius, outerRadius, points = 5, rotation = 0 } = star;

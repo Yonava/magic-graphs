@@ -11,7 +11,7 @@ import {
   GENERATE_COHESIVE_EDGES_DEFAULTS,
   type PartialGenerateClusterNodesOptions,
   type PartialGenerateCohesiveEdgesOptions,
-} from '../templateTypes';
+} from '../templateTypes.ts';
 
 /**
  * Generates an array of nodes distributed across multiple clusters.

@@ -1,5 +1,5 @@
-import type { CompiledTimeline } from './timeline/compile';
-import type { ActiveAnimation } from './types';
+import type { CompiledTimeline } from './timeline/compile.ts';
+import type { ActiveAnimation } from './types.ts';
 
 /**
  * returns the number of times the animation has completed as a float.

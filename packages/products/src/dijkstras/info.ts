@@ -1,8 +1,8 @@
-import type { ProductInfo } from '../types';
-import { canRunDijkstras } from './sim/guard';
-import { useSimulationRunner } from './sim/runner';
-import state from './state';
-import templates from './templates';
+import type { ProductInfo } from '../types.ts';
+import { canRunDijkstras } from './sim/guard.ts';
+import { useSimulationRunner } from './sim/runner.ts';
+import state from './state.ts';
+import templates from './templates.ts';
 
 const info: ProductInfo = {
   route: {

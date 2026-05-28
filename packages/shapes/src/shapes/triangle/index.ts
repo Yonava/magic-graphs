@@ -1,16 +1,16 @@
-import { getCenterPoint } from '../../helpers';
-import { shapeFactoryWrapper } from '../../shapeWrapper';
-import { getShapeTextProps } from '../../text/text';
-import type { ShapeFactory } from '../../types';
-import type { Coordinate } from '../../types/utility';
-import { resolveTriangleDefaults } from './defaults';
-import { drawTriangleWithCtx } from './draw';
+import { getCenterPoint } from '../../helpers.ts';
+import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
+import { getShapeTextProps } from '../../text/text.ts';
+import type { ShapeFactory } from '../../types/index.ts';
+import type { Coordinate } from '../../types/utility.ts';
+import { resolveTriangleDefaults } from './defaults.ts';
+import { drawTriangleWithCtx } from './draw.ts';
 import {
   getTriangleBoundingBox,
   triangleEfficientHitbox,
   triangleHitbox,
-} from './hitbox';
-import type { TriangleSchema } from './types';
+} from './hitbox.ts';
+import type { TriangleSchema } from './types.ts';
 
 export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const schema = resolveTriangleDefaults(options);

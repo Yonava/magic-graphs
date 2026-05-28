@@ -2,11 +2,14 @@
   "name": "@magic/products",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "exports": {
-    "./*": "./src/*"
+    "./*": {
+      "types": "./dist/types/*.d.ts"
+    }
   },
   "scripts": {
-    "build:types": "vue-tsc -b ."
+    "build:types": "vue-tsc -b tsconfig.json"
   },
   "peerDependencies": {
     "primevue": "^4.2.4",
@@ -20,12 +23,12 @@
     "@magic/utils": "workspace:*",
     "@vueuse/core": "catalog:",
     "ctrl-keys": "catalog:",
+    "fraction.js": "^5.3.4",
     "gsap": "^3.12.5",
     "lz-string": "catalog:",
     "mathjs": "catalog:",
     "monaco-editor": "^0.55.1",
     "tinycolor2": "catalog:",
-    "typescript": "~5.4.0",
     "vue-router": "catalog:"
   },
   "devDependencies": {

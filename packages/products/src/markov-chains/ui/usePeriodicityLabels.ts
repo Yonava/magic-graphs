@@ -1,8 +1,8 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode, Graph } from '@magic/graph/types';
 
-import { USETHEME_ID } from '../constants';
-import type { MarkovChain } from '../markov/useMarkovChain';
+import { USETHEME_ID } from '../constants.ts';
+import type { MarkovChain } from '../markov/useMarkovChain.ts';
 
 export const usePeriodicityLabels = (graph: Graph, markov: MarkovChain) => {
   const { setTheme, removeTheme } = useTheme(graph, USETHEME_ID);

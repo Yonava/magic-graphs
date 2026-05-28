@@ -2,7 +2,7 @@ import type { Graph } from '@magic/graph/types';
 
 import { computed, ref } from 'vue';
 
-import { kruskal } from './kruskal';
+import { kruskal } from './kruskal.ts';
 
 export const useKruskal = (graph: Graph) => {
   /**

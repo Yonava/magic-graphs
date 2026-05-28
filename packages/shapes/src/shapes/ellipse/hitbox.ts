@@ -1,9 +1,9 @@
 import {
   areBoundingBoxesOverlapping,
   normalizeBoundingBox,
-} from '../../helpers';
-import type { BoundingBox, Coordinate } from '../../types/utility';
-import type { EllipseSchemaWithDefaults } from './defaults';
+} from '../../helpers.ts';
+import type { BoundingBox, Coordinate } from '../../types/utility.ts';
+import type { EllipseSchemaWithDefaults } from './defaults.ts';
 
 export const ellipseHitbox =
   (schema: EllipseSchemaWithDefaults) => (point: Coordinate) => {

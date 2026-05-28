@@ -1,10 +1,13 @@
 <script setup lang="ts">
   import { computed } from 'vue';
 
-  import { devMode } from '../../../../shared/globalGraph';
+  import { devMode } from '../../../../shared/globalGraph.ts';
   import GWell from '../../../../shared/ui/graph-core/GWell.vue';
-  import { PRODUCT_CATEGORY_RANK, products } from '../../../../utils';
-  import type { ProductCategory, ProductInfoWithMenu } from '../../../../utils';
+  import { PRODUCT_CATEGORY_RANK, products } from '../../../../utils.ts';
+  import type {
+    ProductCategory,
+    ProductInfoWithMenu,
+  } from '../../../../utils.ts';
   import ProductItem from './ProductItem.vue';
 
   const productsWithMenu = products.filter(

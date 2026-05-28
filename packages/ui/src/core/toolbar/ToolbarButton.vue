@@ -4,7 +4,7 @@
   import { computed, ref, toRef } from 'vue';
 
   import CIcon from '../../core/Icon.vue';
-  import { useTinycolor } from '../../useTinycolor';
+  import { useTinycolor } from '../../useTinycolor.ts';
 
   const props = withDefaults(
     defineProps<{

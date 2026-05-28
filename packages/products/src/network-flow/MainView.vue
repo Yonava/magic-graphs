@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import GraphProduct from '../shared/ui/general/GraphProduct.vue';
-  import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
-  import { FLOW_GRAPH_SETTINGS, flowNodeLabelGetter } from './settings';
-  import { useEdgeThickener } from './theme/useEdgeThickener';
-  import { useSourceSinkTheme } from './theme/useSourceSinkTheme';
+  import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
+  import { FLOW_GRAPH_SETTINGS, flowNodeLabelGetter } from './settings.ts';
+  import { useEdgeThickener } from './theme/useEdgeThickener.ts';
+  import { useSourceSinkTheme } from './theme/useSourceSinkTheme.ts';
   import FordFulkersonOutput from './ui/FordFulkersonOutput.vue';
   import SourceSinkControls from './ui/SourceSinkControls.vue';
 

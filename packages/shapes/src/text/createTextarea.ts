@@ -1,11 +1,11 @@
-import { getClientCoordinates } from '@magic/canvas/coordinates';
+import { getClientCoordinates } from '@magic/canvas/coordinates/index';
 import type { DeepRequired } from 'ts-essentials';
 
-import { isPointInBoundingBox } from '../helpers';
-import type { BoundingBox } from '../types/utility';
-import { getTextDimensions } from './getTextDimensions';
-import { HORIZONTAL_TEXT_PADDING } from './text';
-import type { OnTextAreaBlur, TextAreaWithAnchorPoint } from './types';
+import { isPointInBoundingBox } from '../helpers.ts';
+import type { BoundingBox } from '../types/utility.ts';
+import { getTextDimensions } from './getTextDimensions.ts';
+import { HORIZONTAL_TEXT_PADDING } from './text.ts';
+import type { OnTextAreaBlur, TextAreaWithAnchorPoint } from './types.ts';
 
 export const createTextarea = (
   ctx: CanvasRenderingContext2D,

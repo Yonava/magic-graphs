@@ -2,11 +2,14 @@
   "name": "@magic/ui",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "exports": {
-    "./*": "./src/*"
+    "./*": {
+      "types": "./dist/types/*.d.ts"
+    }
   },
   "scripts": {
-    "build:types": "tsc -b ."
+    "build:types": "tsc -b tsconfig.json"
   },
   "peerDependencies": {
     "vue": "^3.5.18",

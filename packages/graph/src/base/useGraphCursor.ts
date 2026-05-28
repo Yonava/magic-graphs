@@ -1,9 +1,9 @@
 import { computed, ref, watch } from 'vue';
 import type { Ref } from 'vue';
 
-import type { Subscriber } from '../events';
-import type { SchemaItem } from '../types';
-import type { GraphAtMousePosition } from './types';
+import type { Subscriber } from '../events/index.ts';
+import type { SchemaItem } from '../types.ts';
+import type { GraphAtMousePosition } from './types.ts';
 
 /**
  * cursor types supported by the browser

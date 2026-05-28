@@ -1,8 +1,8 @@
 import colors from '@magic/utils/colors';
 
-import { GraphTheme, resolveThemeForNode } from '../..';
-import { GNode } from '../../../types';
-import { textDefaults } from './text';
+import { GNode } from '../../../types.ts';
+import { GraphTheme, resolveThemeForNode } from '../../index.ts';
+import { textDefaults } from './text.ts';
 
 const nodeCircle: GraphTheme['node']['base']['shape'] = (node, graph) => {
   const styles = resolveThemeForNode(graph.getTheme, node);

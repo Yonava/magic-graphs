@@ -1,5 +1,8 @@
 <script setup lang="ts">
-  import { collabControls, myCollaboratorProfile } from '@magic/graph/collab';
+  import {
+    collabControls,
+    myCollaboratorProfile,
+  } from '@magic/graph/collab/index';
   import CIcon from '@magic/ui/core/Icon.vue';
   import CPopover from '@magic/ui/core/Popover.vue';
   import CButton from '@magic/ui/core/button/Button.vue';
@@ -11,12 +14,12 @@
 
   import { useRouter } from 'vue-router';
 
-  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import GWell from '../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../shared/ui/graph-core/button/GButton.vue';
   import GInputText from '../../shared/ui/graph-core/input/GInputText.vue';
-  import { productIdToProduct, useProductRouting } from '../../utils';
-  import GraphSandboxProductInfo from '../info';
+  import { productIdToProduct, useProductRouting } from '../../utils.ts';
+  import GraphSandboxProductInfo from '../info.ts';
 
   const router = useRouter();
   const { navigate } = useProductRouting();

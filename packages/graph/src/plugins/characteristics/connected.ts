@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import type { AdjacencyList, AdjacencyLists } from '../../useAdjacencyList';
+import type { AdjacencyList, AdjacencyLists } from '../../useAdjacencyList.ts';
 
 export const useConnected = ({
   adjacencyList: adjList,

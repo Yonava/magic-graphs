@@ -3,7 +3,7 @@ import { useLocalStorage } from '@vueuse/core';
 
 import { type Ref, onMounted } from 'vue';
 
-import { localKeys } from '../localStorage';
+import { localKeys } from '../localStorage.ts';
 
 export const MIN_ZOOM = 0.2;
 export const MAX_ZOOM = 10;

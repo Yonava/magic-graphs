@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../shared/globalGraph';
-  import { useFordFulkerson } from '../algo/useFordFulkerson';
+  import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
+  import { useFordFulkerson } from '../algo/useFordFulkerson.ts';
 
   const { output } = useFordFulkerson(graph.value);
   const maxFlow = computed(() => output.maxFlow.value);

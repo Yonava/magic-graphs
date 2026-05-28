@@ -4,6 +4,12 @@
   "workspaces": {
     "packages/client": {
       "ignore": ["env.d.ts"]
+    },
+    "packages/products": {
+      "ignoreDependencies": ["fraction.js"]
+    },
+    "packages/graph": {
+      "ignoreDependencies": ["fraction.js"]
     }
   }
 }

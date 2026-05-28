@@ -1,6 +1,6 @@
 import { type Ref, computed } from 'vue';
 
-import type { AdjacencyList } from '../../useAdjacencyList';
+import type { AdjacencyList } from '../../useAdjacencyList.ts';
 
 type BipartitePartition = [string[], string[]];
 type GetBipartitePartition = (

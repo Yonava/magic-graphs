@@ -2,8 +2,8 @@ import type { GNode, Graph } from '@magic/graph/types';
 
 import { computed, ref, watch } from 'vue';
 
-import state from '../state';
-import { dijkstras } from './dijkstra';
+import state from '../state.ts';
+import { dijkstras } from './dijkstra.ts';
 
 export type DijkstrasOutput = {
   startNode: GNode;

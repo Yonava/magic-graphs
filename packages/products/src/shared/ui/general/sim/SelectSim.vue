@@ -6,7 +6,7 @@
 
   import GWell from '../../../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../../../shared/ui/graph-core/button/GButton.vue';
-  import type { SimulationDeclaration } from '../../../../types';
+  import type { SimulationDeclaration } from '../../../../types.ts';
   import SelectSimGuard from './SelectSimGuard.vue';
   import SimCard from './SimCard.vue';
 

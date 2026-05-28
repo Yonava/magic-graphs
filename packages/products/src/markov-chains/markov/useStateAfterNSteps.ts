@@ -4,7 +4,7 @@ import { Fraction, matrix, multiply } from 'mathjs';
 import { computed, watch } from 'vue';
 import type { ComputedRef, Ref } from 'vue';
 
-import type { MarkovChainTrace } from '../sim/runner';
+import type { MarkovChainTrace } from '../sim/runner.ts';
 
 const memo = new Map<number, ReturnType<typeof getStateAfterNSteps>>();
 

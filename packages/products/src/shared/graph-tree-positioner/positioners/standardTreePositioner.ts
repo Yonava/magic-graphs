@@ -1,7 +1,7 @@
 import { roundToNearestN } from '@magic/utils/math';
-import { getValue } from '@magic/utils/maybeGetter';
+import { getValue } from '@magic/utils/maybeGetter/index';
 
-import { NodePosition, TreeGraphPositioner } from './types';
+import { NodePosition, TreeGraphPositioner } from './types.ts';
 
 export const standardTreePositioner: TreeGraphPositioner = ({
   nodeDepths,

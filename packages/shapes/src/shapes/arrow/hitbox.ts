@@ -1,12 +1,15 @@
-import { calculateArrowHeadCorners, normalizeBoundingBox } from '../../helpers';
-import { getLineBoundingBox } from '../../shapes/line/hitbox';
-import type { BoundingBox, Coordinate } from '../../types/utility';
-import { line } from '../line';
-import { triangle } from '../triangle';
+import {
+  calculateArrowHeadCorners,
+  normalizeBoundingBox,
+} from '../../helpers.ts';
+import { getLineBoundingBox } from '../../shapes/line/hitbox.ts';
+import type { BoundingBox, Coordinate } from '../../types/utility.ts';
+import { line } from '../line/index.ts';
+import { triangle } from '../triangle/index.ts';
 import {
   ARROW_SCHEMA_DEFAULTS,
   type ArrowSchemaWithDefaults,
-} from './defaults';
+} from './defaults.ts';
 
 export const arrowHitbox = (schema: ArrowSchemaWithDefaults) => {
   const { start, end, lineWidth: width } = schema;

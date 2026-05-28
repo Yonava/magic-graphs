@@ -2,8 +2,8 @@ import type { DefineTimeline } from '@magic/shapes/animation/timeline/define';
 import { Fraction } from 'mathjs';
 import type { DeepPartial } from 'ts-essentials';
 
-import type { GraphAnimations } from '../base/animations';
-import type { GEdge, GNode, SchemaItem } from '../types';
+import type { GraphAnimations } from '../base/animations.ts';
+import type { GEdge, GNode, SchemaItem } from '../types.ts';
 
 /**
  * BASE GRAPH SETTINGS

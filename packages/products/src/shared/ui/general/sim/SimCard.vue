@@ -4,7 +4,7 @@
   import { ref } from 'vue';
 
   import GVerticalCardButton from '../../../../shared/ui/graph-core/button/GVerticalCardButton.vue';
-  import type { SimulationDeclaration } from '../../../../types';
+  import type { SimulationDeclaration } from '../../../../types.ts';
 
   const props = defineProps<{
     simulation: SimulationDeclaration;

@@ -1,5 +1,5 @@
-import { drawStrokeOntoShape } from '../../helpers';
-import type { EllipseSchemaWithDefaults } from './defaults';
+import { drawStrokeOntoShape } from '../../helpers.ts';
+import type { EllipseSchemaWithDefaults } from './defaults.ts';
 
 export const drawEllipseWithCtx =
   (schema: EllipseSchemaWithDefaults) => (ctx: CanvasRenderingContext2D) => {

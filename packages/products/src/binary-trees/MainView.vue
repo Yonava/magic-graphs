@@ -2,14 +2,14 @@
   import GraphProduct from '../shared/ui/general/GraphProduct.vue';
   import StopSimButton from '../shared/ui/general/StopSimButton.vue';
   import SimulationPlaybackControls from '../shared/ui/general/sim/SimulationPlaybackControls.vue';
-  import { useEscSimulationShortcut } from '../shared/ui/general/useEscSimulationShortcut';
-  import { useGraphWithCanvas } from '../shared/useGraphWithCanvas';
-  import { BINARY_TREE_GRAPH_SETTINGS } from './settings';
-  import state from './state';
+  import { useEscSimulationShortcut } from '../shared/ui/general/useEscSimulationShortcut.ts';
+  import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
+  import { BINARY_TREE_GRAPH_SETTINGS } from './settings.ts';
+  import state from './state.ts';
   import AddNodePanel from './ui/AddNodePanel.vue';
   import CRUDControls from './ui/CRUDControls.vue';
   import TreeInfoLabels from './ui/TreeInfoLabels.vue';
-  import { useTree } from './useTree';
+  import { useTree } from './useTree.ts';
 
   const { simRunner } = state;
 

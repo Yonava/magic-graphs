@@ -1,8 +1,7 @@
-import type { Shape } from '@magic/shapes/types';
-import type { MaybeGetter } from '@magic/utils/maybeGetter';
+import type { Shape } from '@magic/shapes/types/index';
 import { Fraction } from 'mathjs';
 
-import { useGraph } from './useGraph';
+import { useGraph } from './useGraph.ts';
 
 export type { RemovableRef } from '@vueuse/core';
 export type {

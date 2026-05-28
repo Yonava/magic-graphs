@@ -4,15 +4,15 @@
   import { onUnmounted, ref, toRefs } from 'vue';
   import type { UnwrapRef } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../../shared/globalGraph';
-  import { PRODUCT_SHORTCUTS } from '../../../../shared/shortcuts';
+  import { nonNullGraph as graph } from '../../../../shared/globalGraph.ts';
+  import { PRODUCT_SHORTCUTS } from '../../../../shared/shortcuts.ts';
   import GText from '../../../../shared/ui/graph-core/GText.vue';
   import GButton from '../../../../shared/ui/graph-core/button/GButton.vue';
   import GSpreadSelect from '../../../../shared/ui/graph-core/select/GSpreadSelect.vue';
-  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors';
+  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors.ts';
   import PlaybackButton from './PlaybackButton.vue';
   import ProgressBar from './ProgressBar.vue';
-  import type { SimulationControls } from './types';
+  import type { SimulationControls } from './types.ts';
 
   const colors = useNonNullGraphColors();
 

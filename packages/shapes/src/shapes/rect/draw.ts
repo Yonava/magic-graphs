@@ -2,8 +2,8 @@ import {
   drawStrokeOntoShape,
   normalizeBoundingBox,
   toBorderRadiusArray,
-} from '../../helpers';
-import type { RectSchemaWithDefaults } from './defaults';
+} from '../../helpers.ts';
+import type { RectSchemaWithDefaults } from './defaults.ts';
 
 export const drawRectWithCtx =
   (schema: RectSchemaWithDefaults) => (ctx: CanvasRenderingContext2D) => {

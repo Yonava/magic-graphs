@@ -1,8 +1,9 @@
 import { Collaborator, SocketEvents } from '@magic/graph/collab/types';
 import { createServer } from 'http';
+import { Fraction } from 'mathjs';
 import { Server } from 'socket.io';
 
-import { trackGraphState } from './trackGraphState';
+import { trackGraphState } from './trackGraphState.ts';
 
 export const sockets = (httpServer: ReturnType<typeof createServer>) => {
   const io = new Server<SocketEvents, SocketEvents, {}, {}>(httpServer, {
@@ -95,11 +96,11 @@ export const sockets = (httpServer: ReturnType<typeof createServer>) => {
       socket.broadcast.to(tracker.getRoomId()).emit('edgeRemoved', edgeId);
     });
 
-    socket.on('edgeLabelEdited', (edgeId, newLabel) => {
-      tracker.updateEdge(edgeId, { label: newLabel });
+    socket.on('edgeLabelEdited', (edgeId, newWeight) => {
+      tracker.updateEdge(edgeId, { weight: new Fraction(newWeight) });
       socket.broadcast
         .to(tracker.getRoomId())
-        .emit('edgeLabelEdited', edgeId, newLabel);
+        .emit('edgeLabelEdited', edgeId, newWeight);
     });
 
     socket.on('collaboratorMoved', ({ x, y }) => {

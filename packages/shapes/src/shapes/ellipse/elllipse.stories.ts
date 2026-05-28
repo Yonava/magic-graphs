@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import { ellipse } from '.';
 import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
-} from '../../docs';
-import { ELLIPSE_SCHEMA_DEFAULTS } from './defaults';
-import type { EllipseSchema } from './types';
+} from '../../docs.ts';
+import { ELLIPSE_SCHEMA_DEFAULTS } from './defaults.ts';
+import { ellipse } from './index.ts';
+import type { EllipseSchema } from './types.ts';
 
 const Ellipse = createDocComponent<EllipseSchema>(ellipse);
 

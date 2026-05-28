@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import MagicCanvas from '@magic/canvas/MagicCanvas.vue';
   import { useMagicCanvas } from '@magic/canvas/index';
-  import { useAnimatedShapes } from '@magic/shapes/animation';
-  import { cross } from '@magic/shapes/shapes/cross';
+  import { useAnimatedShapes } from '@magic/shapes/animation/index';
+  import { cross } from '@magic/shapes/shapes/cross/index';
   import Button from '@magic/ui/core/button/Button.vue';
   import colors from '@magic/utils/colors';
 

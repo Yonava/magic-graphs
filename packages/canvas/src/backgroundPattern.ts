@@ -1,6 +1,6 @@
-import type { Camera } from './camera';
-import { getMagicCoordinates } from './coordinates';
-import type { Coordinate, DrawFns } from './types';
+import type { Camera } from './camera/index.ts';
+import { getMagicCoordinates } from './coordinates/index.ts';
+import type { Coordinate, DrawFns } from './types.ts';
 
 const STAGGER = 100;
 

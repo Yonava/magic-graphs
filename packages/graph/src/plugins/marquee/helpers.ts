@@ -1,7 +1,7 @@
 import type { BoundingBox } from '@magic/shapes/types/utility';
 
-import type { BaseGraph } from '../../base';
-import type { GNode } from '../../types';
+import type { BaseGraph } from '../../base/index.ts';
+import type { GNode } from '../../types.ts';
 
 export const getEncapsulatedNodeBox = (
   nodes: GNode[],

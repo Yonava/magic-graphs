@@ -6,7 +6,7 @@
   import ToolbarButtonGroup from '@magic/ui/core/toolbar/ToolbarButtonGroup.vue';
   import type { Color } from '@magic/utils/colors';
 
-  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import GToolbar from '../../shared/ui/graph-core/toolbar/GToolbarBase.vue';
   import GToolbarButton from '../../shared/ui/graph-core/toolbar/GToolbarButton.vue';
   import GToolbarButtonDivider from '../../shared/ui/graph-core/toolbar/GToolbarDivider.vue';

@@ -1,12 +1,12 @@
 import type { Graph } from '@magic/graph/types';
 
-import type { ProductInfo } from '../types';
-import { canRunMST } from './sim/guard';
+import type { ProductInfo } from '../types.ts';
+import { canRunMST } from './sim/guard.ts';
 import {
   useKruskalSimulationRunner,
   usePrimSimulationRunner,
-} from './sim/runner';
-import templates from './templates';
+} from './sim/runner.ts';
+import templates from './templates.ts';
 
 const info: ProductInfo = {
   route: {

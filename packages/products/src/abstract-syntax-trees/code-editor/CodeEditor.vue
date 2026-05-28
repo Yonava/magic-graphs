@@ -4,7 +4,7 @@
 
   import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-  import './MonacoEnvironment';
+  import './MonacoEnvironment.ts';
 
   const model = defineModel<string>();
 

@@ -5,7 +5,7 @@
 
   import { onUnmounted, ref } from 'vue';
 
-  import { PRODUCT_SHORTCUTS } from '../../../shared/shortcuts';
+  import { PRODUCT_SHORTCUTS } from '../../../shared/shortcuts.ts';
   import GDialog from '../../../shared/ui/graph-core/GDialog.vue';
   import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
   import HelpContent from './help/HelpContent.vue';

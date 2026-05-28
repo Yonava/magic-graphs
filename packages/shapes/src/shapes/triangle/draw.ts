@@ -1,5 +1,5 @@
-import { drawStrokeOntoShape } from '../../helpers';
-import type { TriangleSchemaWithDefaults } from './defaults';
+import { drawStrokeOntoShape } from '../../helpers.ts';
+import type { TriangleSchemaWithDefaults } from './defaults.ts';
 
 export const drawTriangleWithCtx =
   (schema: TriangleSchemaWithDefaults) => (ctx: CanvasRenderingContext2D) => {

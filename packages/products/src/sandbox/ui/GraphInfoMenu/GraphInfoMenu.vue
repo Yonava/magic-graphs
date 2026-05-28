@@ -3,7 +3,7 @@
 
   import { computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import GWell from '../../../shared/ui/graph-core/GWell.vue';
   import AdjacencyList from './AdjacencyList.vue';
   import ConnectedInfo from './ConnectedInfo.vue';

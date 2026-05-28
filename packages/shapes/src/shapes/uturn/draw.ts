@@ -1,9 +1,9 @@
-import { rotatePoint } from '../../helpers';
-import { getColorAtPercentage } from '../../helpers';
-import type { GradientStop } from '../../types/utility';
-import { arrow } from '../arrow';
-import { line } from '../line';
-import type { UTurnSchemaWithDefaults } from './defaults';
+import { rotatePoint } from '../../helpers.ts';
+import { getColorAtPercentage } from '../../helpers.ts';
+import type { GradientStop } from '../../types/utility.ts';
+import { arrow } from '../arrow/index.ts';
+import { line } from '../line/index.ts';
+import type { UTurnSchemaWithDefaults } from './defaults.ts';
 
 export const drawUTurnWithCtx = (schema: UTurnSchemaWithDefaults) => {
   const {

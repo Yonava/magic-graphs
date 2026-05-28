@@ -1,4 +1,4 @@
-import type { InterpolationFunction } from './types';
+import type { InterpolationFunction } from './types.ts';
 
 /**
  * Interpolates a numeric value based on the provided keyframes and easing function.

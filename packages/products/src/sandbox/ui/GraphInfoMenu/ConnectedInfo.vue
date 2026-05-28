@@ -3,11 +3,11 @@
 
   import { computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import GHoverInfo from '../../../shared/ui/graph-core/GHoverInfo.vue';
-  import { useBipartiteColorizer } from './useBipartiteColorizer';
-  import { useCycleColorizer } from './useCycleColorizer';
-  import { useSCCColorizer } from './useSCCColorizer';
+  import { useBipartiteColorizer } from './useBipartiteColorizer.ts';
+  import { useCycleColorizer } from './useCycleColorizer.ts';
+  import { useSCCColorizer } from './useSCCColorizer.ts';
 
   const isConnected = computed(
     () => graph.value.characteristics.isConnected.value,

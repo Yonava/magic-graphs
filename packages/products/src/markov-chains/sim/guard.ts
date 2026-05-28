@@ -1,9 +1,9 @@
 import type { Graph } from '@magic/graph/types';
 
-import { SimulationGuard } from '../../shared/ui/general/sim/guard';
-import definitions from '../markov/definitions';
-import { useMarkovChain } from '../markov/useMarkovChain';
-import { useInvalidStateColorizer } from '../ui/useInvalidStateColorizer';
+import { SimulationGuard } from '../../shared/ui/general/sim/guard/index.ts';
+import definitions from '../markov/definitions.ts';
+import { useMarkovChain } from '../markov/useMarkovChain.ts';
+import { useInvalidStateColorizer } from '../ui/useInvalidStateColorizer.ts';
 
 export const canRunMarkovChain = (graph: Graph) => {
   const markov = useMarkovChain(graph);

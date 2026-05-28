@@ -3,9 +3,9 @@
 
   import { computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import GWell from '../../shared/ui/graph-core/GWell.vue';
-  import type { MarkovChain } from '../markov/useMarkovChain';
+  import type { MarkovChain } from '../markov/useMarkovChain.ts';
   import MarkovClassNodes from './MarkovClassNodes.vue';
 
   const props = defineProps<{

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import type { GraphThemeName } from '@magic/graph/themes';
+  import type { GraphThemeName } from '@magic/graph/themes/index';
   import type { Color } from '@magic/utils/colors';
   import colors from '@magic/utils/colors';
 
   import { type StyleValue, computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
 
   const THEME_TO_TEXT_COLOR: Record<GraphThemeName, Color> = {
     light: colors.GRAY_900,

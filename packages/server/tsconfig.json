@@ -3,8 +3,8 @@
     "rootDir": "./src",
     "outDir": "dist",
     "target": "ES2022",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "strict": true,
     "noImplicitAny": true,
     "declaration": false,
@@ -12,11 +12,10 @@
     "strictNullChecks": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "paths": {
-      "@magic/graph/*": ["../graph/src/*"]
-    }
+
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true
   },
   "references": [{ "path": "../graph" }],
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

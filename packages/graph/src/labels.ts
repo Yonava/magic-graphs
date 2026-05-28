@@ -1,6 +1,6 @@
 import type { Ref } from 'vue';
 
-import type { Graph } from './types';
+import type { Graph } from './types.ts';
 
 export const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 export const NUMBERS = Array.from({ length: 999 }, (_, i) =>

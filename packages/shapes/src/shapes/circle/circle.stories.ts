@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import { circle } from '.';
 import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
-} from '../../docs';
-import { CIRCLE_SCHEMA_DEFAULTS } from './defaults';
-import type { CircleSchema } from './types';
+} from '../../docs.ts';
+import { CIRCLE_SCHEMA_DEFAULTS } from './defaults.ts';
+import { circle } from './index.ts';
+import type { CircleSchema } from './types.ts';
 
 const Circle = createDocComponent<CircleSchema>(circle);
 

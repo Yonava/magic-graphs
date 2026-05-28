@@ -1,8 +1,8 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode, Graph } from '@magic/graph/types';
 
-import type { SimulationControls } from '../../shared/ui/general/sim/types';
-import type { MarkovChainTrace } from './runner';
+import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
+import type { MarkovChainTrace } from './runner.ts';
 
 const USETHEME_ID = 'markov-chain-sim';
 

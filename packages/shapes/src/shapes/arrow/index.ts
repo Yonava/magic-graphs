@@ -1,16 +1,16 @@
-import { shapeFactoryWrapper } from '../../shapeWrapper';
-import { getShapeTextProps } from '../../text/text';
-import type { ShapeFactory } from '../../types';
-import type { Coordinate } from '../../types/utility';
-import { getTextAreaAnchorPoint } from '../line/text';
-import { resolveArrowDefaults } from './defaults';
-import { drawArrowWithCtx } from './draw';
+import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
+import { getShapeTextProps } from '../../text/text.ts';
+import type { ShapeFactory } from '../../types/index.ts';
+import type { Coordinate } from '../../types/utility.ts';
+import { getTextAreaAnchorPoint } from '../line/text.ts';
+import { resolveArrowDefaults } from './defaults.ts';
+import { drawArrowWithCtx } from './draw.ts';
 import {
   arrowEfficientHitbox,
   arrowHitbox,
   getArrowBoundingBox,
-} from './hitbox';
-import type { ArrowSchema } from './types';
+} from './hitbox.ts';
+import type { ArrowSchema } from './types.ts';
 
 export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   if (options.lineWidth && options.lineWidth < 0) {

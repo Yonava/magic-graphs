@@ -3,8 +3,8 @@ import { useNodeLabel } from '@magic/graph/themes/helpers/useNodeLabel';
 import type { GNode, Graph } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
-import type { TreeControls } from '../useTree';
-import { numberToColor } from './numberToColor';
+import type { TreeControls } from '../useTree.ts';
+import { numberToColor } from './numberToColor.ts';
 
 export const useHeightLabels = (graph: Graph, tree: TreeControls) => {
   const { nodeIdToHeight } = tree;

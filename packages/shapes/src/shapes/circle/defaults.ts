@@ -1,6 +1,6 @@
-import { resolveDefaults } from '../../defaults/resolveDefaults';
-import { ELLIPSE_SCHEMA_DEFAULTS } from '../ellipse/defaults';
-import type { CircleSchema } from './types';
+import { resolveDefaults } from '../../defaults/resolveDefaults.ts';
+import { ELLIPSE_SCHEMA_DEFAULTS } from '../ellipse/defaults.ts';
+import type { CircleSchema } from './types.ts';
 
 export const CIRCLE_SCHEMA_DEFAULTS = {
   ...ELLIPSE_SCHEMA_DEFAULTS,

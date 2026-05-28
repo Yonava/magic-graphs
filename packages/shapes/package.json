@@ -4,10 +4,12 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./*": "./src/*"
+    "./*": {
+      "types": "./dist/types/*.d.ts"
+    }
   },
   "scripts": {
-    "build:types": "tsc -b .",
+    "build:types": "tsc -b tsconfig.json",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -23,8 +25,8 @@
     "@storybook/vue3-vite": "^9.0.1",
     "@types/tinycolor2": "catalog:",
     "@vitejs/plugin-vue": "^5.0.5",
-    "storybook": "^9.0.1",
     "ts-essentials": "^10.2.0",
+    "storybook": "^9.0.1",
     "vite": "^7.1.10",
     "vue": "catalog:"
   }

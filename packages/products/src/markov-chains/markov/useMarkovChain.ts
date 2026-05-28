@@ -3,10 +3,10 @@ import { mergeSetArrayIntoSet } from '@magic/utils/sets';
 
 import { computed } from 'vue';
 
-import { useMarkovClasses } from './useMarkovClasses';
-import { useNodeIdToOutboundWeight } from './useMarkovNodeWeights';
-import { useMarkovPeriodicity } from './useMarkovPeriodicity';
-import { useMarkovSteadyState } from './useMarkovSteadyState';
+import { useMarkovClasses } from './useMarkovClasses.ts';
+import { useNodeIdToOutboundWeight } from './useMarkovNodeWeights.ts';
+import { useMarkovPeriodicity } from './useMarkovPeriodicity.ts';
+import { useMarkovSteadyState } from './useMarkovSteadyState.ts';
 
 /**
  * reactive markov chain characteristics

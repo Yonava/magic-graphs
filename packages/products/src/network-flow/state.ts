@@ -1,4 +1,4 @@
-import { useNodeState } from '../shared/graph/useNodeState';
+import { useNodeState } from '../shared/graph/useNodeState.ts';
 
 const sourceNode = useNodeState({
   setterTextTip: 'select source node',

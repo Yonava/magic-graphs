@@ -3,8 +3,8 @@ import type {
   FillGradient,
   Stroke,
   TextArea,
-} from '../../types/schema';
-import type { Coordinate } from '../../types/utility';
+} from '../../types/schema.ts';
+import type { Coordinate } from '../../types/utility.ts';
 
 export type TriangleSchema = {
   pointA: Coordinate;

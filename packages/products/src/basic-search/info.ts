@@ -1,9 +1,12 @@
 import type { Graph } from '@magic/graph/types';
 
-import type { ProductInfo } from '../types';
-import { canRunBasicSearch } from './sim/guard';
-import { useBFSSimulationRunner, useDFSSimulationRunner } from './sim/runner';
-import state from './state';
+import type { ProductInfo } from '../types.ts';
+import { canRunBasicSearch } from './sim/guard.ts';
+import {
+  useBFSSimulationRunner,
+  useDFSSimulationRunner,
+} from './sim/runner.ts';
+import state from './state.ts';
 
 const info: ProductInfo = {
   route: {

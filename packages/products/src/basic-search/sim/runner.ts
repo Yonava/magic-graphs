@@ -2,13 +2,13 @@ import type { Graph } from '@magic/graph/types';
 
 import type { ComputedRef } from 'vue';
 
-import type { SimulationRunner } from '../../shared/ui/general/sim/types';
-import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
-import type { BasicSearchTrace } from '../algo/types';
-import { useBFS } from '../algo/useBFS';
-import { useDFS } from '../algo/useDFS';
-import state from '../state';
-import { useSimulationTheme } from './theme';
+import type { SimulationRunner } from '../../shared/ui/general/sim/types.ts';
+import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
+import type { BasicSearchTrace } from '../algo/types.ts';
+import { useBFS } from '../algo/useBFS.ts';
+import { useDFS } from '../algo/useDFS.ts';
+import state from '../state.ts';
+import { useSimulationTheme } from './theme.ts';
 
 const { startNode } = state;
 

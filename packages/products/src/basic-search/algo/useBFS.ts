@@ -3,9 +3,9 @@ import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
 
 import { computed, ref, watch } from 'vue';
 
-import state from '../state';
-import { bfs } from './bfs';
-import type { BasicSearchTrace } from './types';
+import state from '../state.ts';
+import { bfs } from './bfs.ts';
+import type { BasicSearchTrace } from './types.ts';
 
 const { startNode } = state;
 

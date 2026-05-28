@@ -4,10 +4,10 @@ import {
   DEFAULT_STORIES,
   DOC_MARKING_DEFAULTS,
   createDocComponent,
-} from '../../docs';
-import { line } from '../line';
-import { LINE_SCHEMA_DEFAULTS } from './defaults';
-import type { LineSchema } from './types';
+} from '../../docs.ts';
+import { line } from '../line/index.ts';
+import { LINE_SCHEMA_DEFAULTS } from './defaults.ts';
+import type { LineSchema } from './types.ts';
 
 const Line = createDocComponent<LineSchema>(line);
 

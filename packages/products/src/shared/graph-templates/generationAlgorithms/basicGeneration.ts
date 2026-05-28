@@ -5,7 +5,7 @@ import { Fraction } from 'mathjs';
 
 import { ref } from 'vue';
 
-import type { AutoGenerateGraphOptions } from '../templateTypes';
+import type { AutoGenerateGraphOptions } from '../templateTypes.ts';
 
 /**
  * Generates a set of nodes

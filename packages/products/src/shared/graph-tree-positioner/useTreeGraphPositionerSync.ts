@@ -6,7 +6,7 @@ import { onUnmounted, ref, watch } from 'vue';
 import {
   UseTreeGraphPositionerOptions,
   useTreeGraphPositioner,
-} from './useTreeGraphPositioner';
+} from './useTreeGraphPositioner.ts';
 
 type UseTreeGraphPositionerSyncOptions = UseTreeGraphPositionerOptions & {
   /**

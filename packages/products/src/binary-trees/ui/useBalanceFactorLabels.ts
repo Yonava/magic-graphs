@@ -4,7 +4,7 @@ import type { GNode, Graph } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 import type { Color } from '@magic/utils/colors';
 
-import type { TreeControls } from '../useTree';
+import type { TreeControls } from '../useTree.ts';
 
 export const useBalanceFactorLabels = (graph: Graph, tree: TreeControls) => {
   const { nodeIdToBalanceFactor: nodeToBf } = tree;

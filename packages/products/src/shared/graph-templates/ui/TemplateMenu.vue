@@ -3,11 +3,11 @@
 
   import { computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import GWell from '../../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
   import AutoGenerate from '../AutoGenerate.vue';
-  import { useGraphTemplate } from '../useGraphTemplate';
+  import { useGraphTemplate } from '../useGraphTemplate.ts';
   import TemplateItem from './TemplateItem.vue';
 
   const {
@@ -19,7 +19,7 @@
     removeUserTemplate,
   } = useGraphTemplate(graph.value);
 
-  const color = computed(() => graph.value.baseTheme.value.graphBgColor);
+  const color = computed(() => graph.value.baseTheme.value.graph.color);
 </script>
 
 <template>

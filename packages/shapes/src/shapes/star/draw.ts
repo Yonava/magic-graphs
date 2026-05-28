@@ -1,4 +1,4 @@
-import type { StarSchemaWithDefaults } from './defaults';
+import type { StarSchemaWithDefaults } from './defaults.ts';
 
 export const drawStarWithCtx = (schema: StarSchemaWithDefaults) => {
   const {

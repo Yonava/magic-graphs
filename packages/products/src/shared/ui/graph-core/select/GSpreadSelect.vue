@@ -1,14 +1,13 @@
 <script
   setup
   lang="ts"
-  generic="TValue, TItem extends SpreadSelectItem<TValue>"
+  generic="TValue, TItem extends import('./types.ts').SpreadSelectItem<TValue>"
 >
   import { onClickOutside } from '@vueuse/core';
 
   import { computed, ref } from 'vue';
 
   import GButton from '../button/GButton.vue';
-  import type { SpreadSelectItem } from './SpreadSelectItem';
 
   const target = ref<HTMLDivElement>();
 

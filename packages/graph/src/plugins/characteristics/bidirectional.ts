@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import type { BaseGraph } from '../../base';
+import type { BaseGraph } from '../../base/index.ts';
 
 /**
  * all edges that link two nodes in both directions

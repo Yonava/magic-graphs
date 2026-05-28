@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
 import type { Ref } from 'vue';
 
-import type { Annotation } from './types';
+import type { Annotation } from './types.ts';
 
 type AnnotationHistoryRecord = {
   action: 'add' | 'remove';

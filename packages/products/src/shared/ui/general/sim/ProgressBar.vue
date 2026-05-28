@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { computed } from 'vue';
 
-  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors';
-  import { PROGRESS_DEFAULTS } from './progressTypes';
-  import type { ProgressBarOptions } from './progressTypes';
+  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors.ts';
+  import { PROGRESS_DEFAULTS } from './progressTypes.ts';
+  import type { ProgressBarOptions } from './progressTypes.ts';
 
   const colors = useNonNullGraphColors();
 

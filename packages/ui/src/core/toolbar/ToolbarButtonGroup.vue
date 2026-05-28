@@ -3,7 +3,7 @@
 
   import { computed } from 'vue';
 
-  import { useClassAttrs } from '../../useClassAttrs';
+  import { useClassAttrs } from '../../useClassAttrs.ts';
 
   const parentClasses = useClassAttrs();
   const defaultClasses = ['flex', 'items-center', 'relative', 'gap-1'];

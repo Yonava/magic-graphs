@@ -1,7 +1,7 @@
 import type { UnionToIntersection } from 'ts-essentials';
 
-import { shapes } from '..';
-import { getSchemaWithDefaults } from '../defaults/shapes';
+import { getSchemaWithDefaults } from '../defaults/shapes.ts';
+import { shapes } from '../index.ts';
 import type {
   EverySchemaProp,
   EverySchemaPropName,
@@ -10,17 +10,16 @@ import type {
   ShapeFactory,
   ShapeName,
   WithId,
-} from '../types';
-import { shapeProps } from '../types';
-import { useAutoAnimate } from './autoAnimate';
-import { useDefineTimeline } from './timeline/define';
-import type { ActiveAnimation, LooseSchema } from './types';
-import { getAnimationProgress, getCurrentRunCount } from './utils';
+} from '../types/index.ts';
+import { shapeProps } from '../types/index.ts';
+import { useAutoAnimate } from './autoAnimate.ts';
+import { useDefineTimeline } from './timeline/define.ts';
+import type { ActiveAnimation, LooseSchema } from './types.ts';
+import { getAnimationProgress, getCurrentRunCount } from './utils.ts';
 
 type ActiveAnimationsMap = Map<SchemaId, ActiveAnimation[]>;
 export type GetAnimatedSchema = (schemaId: SchemaId) => LooseSchema | undefined;
 
-// @ts-expect-error removing this causes a "invisible" type error. need to get to the bottom of this
 export const useAnimatedShapes = () => {
   /**
    * a mapping between shapes (via ids) and the animations currently

@@ -6,8 +6,8 @@ import {
   getAdjacencyList,
   getFullNodeAdjacencyList,
   getLabelAdjacencyList,
-} from './useAdjacencyList';
-import { useGraph } from './useGraph';
+} from './useAdjacencyList.ts';
+import { useGraph } from './useGraph.ts';
 
 const nodeA = { id: '1', label: 'a', x: 0, y: 0 };
 const nodeB = { id: '2', label: 'b', x: 0, y: 0 };

@@ -3,10 +3,10 @@ import {
   normalizeBoundingBox,
   rotatePoint,
   toBorderRadiusArray,
-} from '../../helpers';
-import { circle } from '../../shapes/circle';
-import type { BoundingBox, Coordinate } from '../../types/utility';
-import type { RectSchemaWithDefaults } from './defaults';
+} from '../../helpers.ts';
+import { circle } from '../../shapes/circle/index.ts';
+import type { BoundingBox, Coordinate } from '../../types/utility.ts';
+import type { RectSchemaWithDefaults } from './defaults.ts';
 
 type HitboxRect = {
   x: number;

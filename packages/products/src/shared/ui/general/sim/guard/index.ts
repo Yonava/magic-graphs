@@ -1,10 +1,10 @@
 import type { Graph } from '@magic/graph/types';
 import type { DeepReadonly } from 'ts-essentials';
 
-import { useCycleColorizer } from '../../../../../sandbox/ui/GraphInfoMenu/useCycleColorizer';
-import { CANT_RUN_REASONS } from './constants';
-import { useNodeEdgeTheme } from './theme/useNodeEdgeThemer';
-import type { Reason } from './types';
+import { useCycleColorizer } from '../../../../../sandbox/ui/GraphInfoMenu/useCycleColorizer.ts';
+import { CANT_RUN_REASONS } from './constants.ts';
+import { useNodeEdgeTheme } from './theme/useNodeEdgeThemer.ts';
+import type { Reason } from './types.ts';
 
 /**
  * determines if the simulation can run.

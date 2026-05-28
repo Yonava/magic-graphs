@@ -1,12 +1,12 @@
-import { circle } from '@magic/shapes/shapes/circle';
+import { circle } from '@magic/shapes/shapes/circle/index';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
-import { rect } from '@magic/shapes/shapes/rect';
+import { rect } from '@magic/shapes/shapes/rect/index';
 import type { RectSchema } from '@magic/shapes/shapes/rect/types';
 import colors from '@magic/utils/colors';
 
 import type { Ref } from 'vue';
 
-import type { Collaborator, CollaboratorMap } from '../collab/types';
+import type { Collaborator, CollaboratorMap } from '../collab/types.ts';
 
 export const collabTagShapes = (collaborator: Collaborator) => {
   const {

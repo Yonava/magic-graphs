@@ -1,4 +1,4 @@
-import { SchemaItem } from '../types';
+import { SchemaItem } from '../types.ts';
 
 /**
  * modifies the priority of the items passed in

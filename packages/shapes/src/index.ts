@@ -1,15 +1,15 @@
-import { arrow } from './shapes/arrow';
-import { circle } from './shapes/circle';
-import { cross } from './shapes/cross';
-import { ellipse } from './shapes/ellipse';
-import { image } from './shapes/image';
-import { line } from './shapes/line';
-import { rect } from './shapes/rect';
-import { scribble } from './shapes/scribble';
-import { square } from './shapes/square';
-import { star } from './shapes/star';
-import { triangle } from './shapes/triangle';
-import { uturn } from './shapes/uturn';
+import { arrow } from './shapes/arrow/index.ts';
+import { circle } from './shapes/circle/index.ts';
+import { cross } from './shapes/cross/index.ts';
+import { ellipse } from './shapes/ellipse/index.ts';
+import { image } from './shapes/image/index.ts';
+import { line } from './shapes/line/index.ts';
+import { rect } from './shapes/rect/index.ts';
+import { scribble } from './shapes/scribble/index.ts';
+import { square } from './shapes/square/index.ts';
+import { star } from './shapes/star/index.ts';
+import { triangle } from './shapes/triangle/index.ts';
+import { uturn } from './shapes/uturn/index.ts';
 
 export const shapes = {
   arrow,

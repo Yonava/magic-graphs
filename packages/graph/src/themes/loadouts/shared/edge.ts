@@ -2,10 +2,10 @@ import { getLargestAngularSpace } from '@magic/shapes/helpers';
 import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
 
-import { GraphTheme, resolveThemeForEdge } from '../..';
-import { GEdge, GNode } from '../../../types';
-import { GraphInterface } from '../../types';
-import { textDefaults } from './text';
+import { GEdge, GNode } from '../../../types.ts';
+import { GraphTheme, resolveThemeForEdge } from '../../index.ts';
+import { GraphInterface } from '../../types.ts';
+import { textDefaults } from './text.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 

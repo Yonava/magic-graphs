@@ -1,11 +1,11 @@
 import type { Graph } from '@magic/graph/types';
 
-import { useSimulationControls } from '../shared/ui/general/sim/useSimulationControls';
-import state from './state';
-import { useTargetNodeColor } from './theme/useTargetNodeColor';
-import type { AVLTree, TreeTraceStep } from './tree/avl';
-import { treeArrayToGraph } from './tree/treeArrayToGraph';
-import { getTreeTraceExplanation } from './ui/useTreeTraceExplainer';
+import { useSimulationControls } from '../shared/ui/general/sim/useSimulationControls.ts';
+import state from './state.ts';
+import { useTargetNodeColor } from './theme/useTargetNodeColor.ts';
+import type { AVLTree, TreeTraceStep } from './tree/avl.ts';
+import { treeArrayToGraph } from './tree/treeArrayToGraph.ts';
+import { getTreeTraceExplanation } from './ui/useTreeTraceExplainer.ts';
 
 const ROOT_POS = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 

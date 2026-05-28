@@ -1,7 +1,7 @@
 import type { Color } from '@magic/utils/colors';
 import tinycolor from 'tinycolor2';
 
-import type { InterpolationFunction } from './types';
+import type { InterpolationFunction } from './types.ts';
 
 /**
  * @returns true if the supplied string can be parsed as a color

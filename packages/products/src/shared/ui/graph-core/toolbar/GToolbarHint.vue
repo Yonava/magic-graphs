@@ -2,7 +2,7 @@
   import type { TutorialControls } from '@magic/graph/tutorials/types';
   import CToolbarHint from '@magic/ui/core/toolbar/ToolbarHint.vue';
 
-  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors';
+  import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors.ts';
 
   const colors = useNonNullGraphColors();
 

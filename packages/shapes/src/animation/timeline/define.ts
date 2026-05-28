@@ -3,11 +3,11 @@
 import { generateId } from '@magic/utils/id';
 import type { DeepReadonly, DeepRequired } from 'ts-essentials';
 
-import type { SchemaWithDefaults } from '../../defaults/shapes';
-import { TextArea } from '../../text/types';
-import type { EverySchemaProp, ShapeNameToSchema, WithId } from '../../types';
-import type { EasingOption } from '../easing';
-import { type CompiledTimeline, compileTimeline } from './compile';
+import type { SchemaWithDefaults } from '../../defaults/shapes.ts';
+import { TextArea } from '../../text/types.ts';
+import type { ShapeNameToSchema, WithId } from '../../types/index.ts';
+import type { EasingOption } from '../easing.ts';
+import { type CompiledTimeline, compileTimeline } from './compile.ts';
 
 type ShapeTarget = {
   /**

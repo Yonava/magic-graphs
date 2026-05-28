@@ -6,7 +6,7 @@
   import { computed } from 'vue';
 
   import GWell from '../../../../shared/ui/graph-core/GWell.vue';
-  import type { SimulationDeclaration } from '../../../../types';
+  import type { SimulationDeclaration } from '../../../../types.ts';
 
   const props = defineProps<{
     simulation: SimulationDeclaration;

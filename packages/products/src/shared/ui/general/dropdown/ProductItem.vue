@@ -11,8 +11,8 @@
     getCurrentProduct,
     isExternal,
     useProductRouting,
-  } from '../../../../utils';
-  import type { ProductInfoWithMenu } from '../../../../utils';
+  } from '../../../../utils.ts';
+  import type { ProductInfoWithMenu } from '../../../../utils.ts';
 
   const { navigate, navigateWithGraph } = useProductRouting();
   const currentProduct = getCurrentProduct();

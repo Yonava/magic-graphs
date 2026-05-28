@@ -1,6 +1,6 @@
-import type { GraphEventMap } from './types';
+import type { GraphEventMap } from './types.ts';
 
-export type { GraphEventMap } from './types';
+export type { GraphEventMap } from './types.ts';
 
 /**
  * turns a type that maps an events callback fn type to an actual event bus

@@ -1,4 +1,4 @@
-import type { TreeNode } from './treeNode';
+import type { TreeNode } from './treeNode.ts';
 
 /**
  * the node at the index of the tree or undefined if the tree index is empty

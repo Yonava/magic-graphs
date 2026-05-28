@@ -2,13 +2,13 @@ import { Fraction } from 'mathjs';
 
 import type { Ref } from 'vue';
 
-import type { Graph } from '../types';
+import type { Graph } from '../types.ts';
 import type {
   CollabSocketEvents,
   CollaboratorMap,
   GraphSocket,
   GraphSocketEvents,
-} from './types';
+} from './types.ts';
 
 type SocketListenOptions = {
   graph: Graph;

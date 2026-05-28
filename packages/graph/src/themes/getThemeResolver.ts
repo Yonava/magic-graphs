@@ -1,16 +1,16 @@
-import { getValue } from '@magic/utils/maybeGetter';
-import type { UnwrapMaybeGetter } from '@magic/utils/maybeGetter';
+import { getValue } from '@magic/utils/maybeGetter/index';
+import type { UnwrapMaybeGetter } from '@magic/utils/maybeGetter/index';
 import { Builtin, PathValue, Paths } from 'ts-essentials';
 
 import type { Ref } from 'vue';
 
-import type { GraphTheme, GraphThemeName } from '../themes';
-import { THEMES } from '../themes';
+import type { GraphTheme, GraphThemeName } from '../themes/index.ts';
+import { THEMES } from '../themes/index.ts';
 import {
   type FullThemeMap,
   type ThemeMapEntry,
   type ValidGraphThemePath,
-} from '../themes/types';
+} from '../themes/types.ts';
 
 export type ResolveThemeMap<Path extends ValidGraphThemePath> = PathValue<
   FullThemeMap,

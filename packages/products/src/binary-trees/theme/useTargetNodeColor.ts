@@ -20,8 +20,8 @@ export const useTargetNodeColor = (graph: Graph) => {
 
   const activate = (nodeId?: GNode['id']) => {
     if (nodeId) targetNodeId.value = nodeId;
-    setTheme('nodeBorderColor', colorNode);
-    setTheme('nodeAnchorColor', colorNode);
+    setTheme('node.base.borderColor', colorNode);
+    setTheme('nodeAnchor.base.color', colorNode);
   };
 
   const deactivate = () => {

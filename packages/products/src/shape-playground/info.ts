@@ -1,4 +1,4 @@
-import type { ProductInfo } from '../types';
+import type { ProductInfo } from '../types.ts';
 
 const route: ProductInfo = {
   route: {

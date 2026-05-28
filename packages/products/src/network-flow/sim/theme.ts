@@ -4,10 +4,10 @@ import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';
 
-import type { SimulationControls } from '../../shared/ui/general/sim/types';
-import type { FlowTrace } from '../algo/fordFulkerson';
-import { FLOW_USETHEME_ID } from '../constants';
-import { isResidual } from '../misc/useResidualEdges';
+import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
+import type { FlowTrace } from '../algo/fordFulkerson.ts';
+import { FLOW_USETHEME_ID } from '../constants.ts';
+import { isResidual } from '../misc/useResidualEdges.ts';
 
 type WeightMap = Map<GEdge['id'], GEdge['weight']>;
 

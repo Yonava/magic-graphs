@@ -6,11 +6,11 @@ import { computed } from 'vue';
 import type {
   SimulationRunner,
   TraceFunction,
-} from '../../shared/ui/general/sim/types';
-import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls';
-import { useStateAfterNSteps } from '../markov/useStateAfterNSteps';
-import state from '../state';
-import { useSimulationTheme } from './theme';
+} from '../../shared/ui/general/sim/types.ts';
+import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
+import { useStateAfterNSteps } from '../markov/useStateAfterNSteps.ts';
+import state from '../state.ts';
+import { useSimulationTheme } from './theme.ts';
 
 const { initialState } = state;
 

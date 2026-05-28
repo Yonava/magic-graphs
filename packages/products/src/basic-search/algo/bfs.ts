@@ -1,7 +1,7 @@
 import type { GNode } from '@magic/graph/types';
 import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
 
-import type { BasicSearchTrace } from './types';
+import type { BasicSearchTrace } from './types.ts';
 
 export const bfs = (adjList: AdjacencyList, startNode: GNode['id']) => {
   const trace: BasicSearchTrace[] = [];

@@ -1,5 +1,5 @@
-import { GEdge, GNode } from '../types';
-import { CurryWithBaseGraph, NodeHelpers } from './types';
+import { GEdge, GNode } from '../types.ts';
+import { CurryWithBaseGraph, NodeHelpers } from './types.ts';
 
 type CurriedNodeHelpers = CurryWithBaseGraph<NodeHelpers>;
 

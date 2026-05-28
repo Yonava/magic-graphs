@@ -1,4 +1,4 @@
-import type { RemoveAnyArray } from '../types';
+import type { RemoveAnyArray } from '../types.ts';
 
 /**
  * taking some data that may be a plain value or a function that returns that value

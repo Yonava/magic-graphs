@@ -1,11 +1,15 @@
-import { shapeFactoryWrapper } from '../../shapeWrapper';
-import { getShapeTextProps } from '../../text/text';
-import type { ShapeFactory } from '../../types';
-import type { Coordinate } from '../../types/utility';
-import { resolveStarDefaults } from './defaults';
-import { drawStarWithCtx } from './draw';
-import { getStarBoundingBox, starEfficientHitbox, starHitbox } from './hitbox';
-import type { StarSchema } from './types';
+import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
+import { getShapeTextProps } from '../../text/text.ts';
+import type { ShapeFactory } from '../../types/index.ts';
+import type { Coordinate } from '../../types/utility.ts';
+import { resolveStarDefaults } from './defaults.ts';
+import { drawStarWithCtx } from './draw.ts';
+import {
+  getStarBoundingBox,
+  starEfficientHitbox,
+  starHitbox,
+} from './hitbox.ts';
+import type { StarSchema } from './types.ts';
 
 export const star: ShapeFactory<StarSchema> = (options) => {
   const schema = resolveStarDefaults(options);

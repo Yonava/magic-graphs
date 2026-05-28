@@ -1,11 +1,11 @@
-import { TextAreaWithDefaults } from '../../text/defaults';
-import { interpolateColor } from './color';
-import { interpolateNumber } from './number';
+import { TextAreaWithDefaults } from '../../text/defaults.ts';
+import { interpolateColor } from './color.ts';
+import { interpolateNumber } from './number.ts';
 import type {
   ColorKeyframe,
   InterpolationFunction,
   NumberKeyframe,
-} from './types';
+} from './types.ts';
 
 export const interpolateTextArea: InterpolationFunction<
   TextAreaWithDefaults

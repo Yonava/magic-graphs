@@ -3,8 +3,8 @@ import type { Graph } from '@magic/graph/types';
 
 import { useRoute, useRouter } from 'vue-router';
 
-import { nonNullGraph as globalGraph } from './shared/globalGraph';
-import type { ProductInfo, SimulationDeclarationGetter } from './types';
+import { nonNullGraph as globalGraph } from './shared/globalGraph.ts';
+import type { ProductInfo, SimulationDeclarationGetter } from './types.ts';
 
 /** all info.ts imported dynamically */
 // @ts-expect-error all info.ts imported dynamically

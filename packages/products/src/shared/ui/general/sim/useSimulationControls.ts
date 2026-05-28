@@ -1,4 +1,4 @@
-import type { GraphEventMap } from '@magic/graph/events';
+import type { GraphEventMap } from '@magic/graph/events/index';
 import { localKeys } from '@magic/utils/localStorage';
 import { useLocalStorage } from '@vueuse/core';
 
@@ -9,7 +9,7 @@ import type {
   OnStepChangeCallback,
   SimulationControls,
   SimulationTrace,
-} from './types';
+} from './types.ts';
 
 /**
  * @returns the text to be displayed alongside the simulation at given step.

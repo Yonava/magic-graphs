@@ -1,16 +1,16 @@
-import { getCenterPoint } from '../../helpers';
-import { shapeFactoryWrapper } from '../../shapeWrapper';
-import { getShapeTextProps } from '../../text/text';
-import type { ShapeFactory } from '../../types';
-import type { Coordinate } from '../../types/utility';
-import { resolveScribbleDefaults } from './defaults';
-import { drawScribbleWithCtx } from './draw';
+import { getCenterPoint } from '../../helpers.ts';
+import { shapeFactoryWrapper } from '../../shapeWrapper.ts';
+import { getShapeTextProps } from '../../text/text.ts';
+import type { ShapeFactory } from '../../types/index.ts';
+import type { Coordinate } from '../../types/utility.ts';
+import { resolveScribbleDefaults } from './defaults.ts';
+import { drawScribbleWithCtx } from './draw.ts';
 import {
   getScribbleBoundingBox,
   scribbleEfficientHitbox,
   scribbleHitbox,
-} from './hitbox';
-import type { ScribbleSchema } from './types';
+} from './hitbox.ts';
+import type { ScribbleSchema } from './types.ts';
 
 export const ERASER_BRUSH_WEIGHT = 50;
 

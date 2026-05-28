@@ -2,12 +2,12 @@ import {
   areBoundingBoxesOverlapping,
   normalizeBoundingBox,
   rotatePoint,
-} from '../../helpers';
-import { circle } from '../../shapes/circle';
-import type { BoundingBox, Coordinate } from '../../types/utility';
-import { arrow } from '../arrow';
-import { line } from '../line';
-import type { UTurnSchemaWithDefaults } from './defaults';
+} from '../../helpers.ts';
+import { circle } from '../../shapes/circle/index.ts';
+import type { BoundingBox, Coordinate } from '../../types/utility.ts';
+import { arrow } from '../arrow/index.ts';
+import { line } from '../line/index.ts';
+import type { UTurnSchemaWithDefaults } from './defaults.ts';
 
 export const uturnHitbox = (schema: UTurnSchemaWithDefaults) => {
   const { spacing, at, downDistance, upDistance, lineWidth, rotation } = schema;

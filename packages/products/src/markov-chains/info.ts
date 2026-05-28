@@ -1,9 +1,9 @@
 import type { Graph } from '@magic/graph/types';
 
-import type { ProductInfo } from '../types';
-import { canRunMarkovChain } from './sim/guard';
-import { useSimulationRunner } from './sim/runner';
-import state from './state';
+import type { ProductInfo } from '../types.ts';
+import { canRunMarkovChain } from './sim/guard.ts';
+import { useSimulationRunner } from './sim/runner.ts';
+import state from './state.ts';
 
 const info: ProductInfo = {
   route: {

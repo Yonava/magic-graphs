@@ -1,15 +1,15 @@
 import { useMagicCanvas } from '@magic/canvas/index';
 import type { MagicCanvasProps } from '@magic/canvas/types';
-import type { GraphSettings } from '@magic/graph/settings';
+import type { GraphSettings } from '@magic/graph/settings/index';
 import type { Graph } from '@magic/graph/types';
 import { useGraph } from '@magic/graph/useGraph';
-import { cross } from '@magic/shapes/shapes/cross';
+import { cross } from '@magic/shapes/shapes/cross/index';
 
 import type { StyleValue } from 'vue';
 import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
 
-import { useGraphCanvasColor } from './useGraphCanvasColor';
+import { useGraphCanvasColor } from './useGraphCanvasColor.ts';
 
 type GraphCanvasCSS = { style: StyleValue };
 

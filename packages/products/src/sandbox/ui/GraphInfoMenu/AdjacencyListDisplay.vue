@@ -6,7 +6,7 @@
 
   import { computed } from 'vue';
 
-  import { nonNullGraph as graph } from '../../../shared/globalGraph';
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import GNode from '../../../shared/ui/graph-core/GNode.vue';
   import GWell from '../../../shared/ui/graph-core/GWell.vue';
 

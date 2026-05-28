@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue';
 
-import type { GraphEvent, GraphEventMap } from '../events';
-import type { Graph } from '../types';
+import type { GraphEvent, GraphEventMap } from '../events/index.ts';
+import type { Graph } from '../types.ts';
 
 /**
  * css class defined in App.vue, should move later, used as default for ElementHighlightOptions -> highlightElement.className
