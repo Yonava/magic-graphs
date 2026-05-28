@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { createServer } from 'http';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 import { LOCALHOST_PORT } from './constants.ts';
 import { sockets } from './sockets.ts';
@@ -12,6 +13,9 @@ const app = express();
 const server = createServer(app);
 
 app.use(express.json());
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const publicPath = path.resolve(__dirname, 'public');
 
