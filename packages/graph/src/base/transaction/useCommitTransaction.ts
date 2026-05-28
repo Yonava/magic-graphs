@@ -1,78 +1,12 @@
 import { shallowDelta } from '@magic/utils/delta/index';
 
-import type { GEdge, GNode } from '../types.ts';
-
-type GraphState = {
-  nodes: GNode[];
-  edges: GEdge[];
-};
-
-type TransactionOptions = {
-  getGraphState: () => GraphState;
-  onTransactionSuccess: (payload: TransactionPayload) => void;
-};
-
-type GNodeUpdatePayload = {
-  node: GNode;
-  previousValues: Partial<GNode>;
-};
-
-type GEdgeUpdatePayload = {
-  edge: GEdge;
-  previousValues: Partial<GEdge>;
-};
-
-type GNodeUpdateDraft = {
-  id: GNode['id'];
-  values: Partial<Omit<GNode, 'id'>>;
-};
-
-// these are all reference based so we forbid them from being updated
-const forbiddenEdgeKeyUpdates = [
-  'id',
-  'from',
-  'to',
-] as const satisfies (keyof GEdge)[];
-type ForbiddenEdgeKeyUpdates = (typeof forbiddenEdgeKeyUpdates)[number];
-
-type GEdgeUpdateDraft = {
-  id: GEdge['id'];
-  values: Partial<Omit<GEdge, ForbiddenEdgeKeyUpdates>>;
-};
-
-// Shape of the single payload downstream plugins can hook into
-export type TransactionPayload = {
-  addedNodes: GNode[];
-  addedEdges: GEdge[];
-
-  removedNodes: GNode[];
-  removedEdges: GEdge[];
-
-  updatedNodes: GNodeUpdatePayload[];
-  updatedEdges: GEdgeUpdatePayload[];
-};
-
-export type TransactionDraft = {
-  addNodes: GNode[];
-  addEdges: GEdge[];
-
-  removeNodeIds: GNode['id'][];
-  removeEdgeIds: GEdge['id'][];
-
-  updatedNodes: GNodeUpdateDraft[];
-  updatedEdges: GEdgeUpdateDraft[];
-};
-
-export const createEmptyPayload = (): TransactionPayload => ({
-  addedNodes: [],
-  addedEdges: [],
-
-  removedNodes: [],
-  removedEdges: [],
-
-  updatedNodes: [],
-  updatedEdges: [],
-});
+import type { GEdge, GNode } from '../../types.ts';
+import { createEmptyPayload } from './createEmptyPayload.ts';
+import type {
+  GraphState,
+  TransactionDraft,
+  TransactionOptions,
+} from './types.ts';
 
 export const useCommitTransaction = ({
   getGraphState,

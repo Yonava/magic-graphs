@@ -1,6 +1,7 @@
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import type { DeepPartial, DeepReadonly } from 'ts-essentials';
 
+import { TransactionPayload } from '../base/transaction/useCommitTransaction.ts';
 import type {
   AddEdgeOptions,
   AddNodeOptions,
@@ -11,7 +12,6 @@ import type {
   RemoveNodeOptions,
 } from '../base/types.ts';
 import type { GraphMouseEvent } from '../base/types.ts';
-import { TransactionPayload } from '../base/useCommitTransaction.ts';
 import type { GraphState } from '../collab/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import type {

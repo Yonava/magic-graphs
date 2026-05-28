@@ -1,4 +1,4 @@
-import { delta } from '../../../utils/dist/types/delta/index.ts';
+import { delta } from '@magic/utils/delta/index';
 import { DeepPartial } from 'ts-essentials';
 
 import type {

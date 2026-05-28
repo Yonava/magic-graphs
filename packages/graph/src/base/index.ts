@@ -28,10 +28,10 @@ import {
   type GraphAnimations,
   getDefaultGraphAnimations,
 } from './animations.ts';
+import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types.ts';
 import type { GraphAtMousePosition, HistoryOption } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
-import { useCommitTransaction } from './useCommitTransaction.ts';
 import { useGraphCursor } from './useGraphCursor.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { usePluginHoldController } from './usePluginHold.ts';
@@ -216,6 +216,8 @@ export const useBaseGraph = (
     getGraphState: () => ({ nodes: nodes.value, edges: edges.value }),
     onTransactionSuccess: (payload) => {
       emit('onTransactionComplete', payload);
+      nodes.value.push(...payload.addedNodes);
+      edges.value.push(...payload.addedEdges);
       updateGraphAtMousePosition();
       updateAggregator();
     },
