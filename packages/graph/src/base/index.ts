@@ -1,7 +1,6 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { clone } from '@magic/utils/clone';
-import { delta } from '../../../utils/dist/types/delta/index.ts';
 import { deepMerge } from '@magic/utils/deepMerge';
 import type {
   KeyboardEventEntries,
@@ -13,6 +12,7 @@ import { onClickOutside, useElementHover } from '@vueuse/core';
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
+import { delta } from '../../../utils/dist/types/delta/index.ts';
 import { generateSubscriber, getInitialEventBus } from '../events/index.ts';
 import { prioritizeNode } from '../helpers/prioritization.ts';
 import { getEdgeSchematic } from '../schematics/edge.ts';
@@ -31,7 +31,7 @@ import {
 import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types.ts';
 import type { GraphAtMousePosition, HistoryOption } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
-import { useTransaction } from './useTransaction.ts';
+import { useCommitTransaction } from './useCommitTransaction.ts';
 import { useGraphCursor } from './useGraphCursor.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { usePluginHoldController } from './usePluginHold.ts';
@@ -224,16 +224,16 @@ export const useBaseGraph = (
     bulkRemoveNode,
     bulkAddEdge,
     bulkRemoveEdge,
-  } = useTransaction({
+  } = useCommitTransaction({
     nodes,
     edges,
     nodeMap: nodeIdToNodeMap,
     edgeMap: edgeIdToEdgeMap,
     onTransactionSuccess: (payload) => {
-      emit('onTransactionComplete', payload)
-      updateGraphAtMousePosition()
-      updateAggregator()
-    }
+      emit('onTransactionComplete', payload);
+      updateGraphAtMousePosition();
+      updateAggregator();
+    },
   });
 
   const nodeIdToIndex = computed(() =>

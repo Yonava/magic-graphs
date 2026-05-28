@@ -11,6 +11,7 @@ import type {
   RemoveNodeOptions,
 } from '../base/types.ts';
 import type { GraphMouseEvent } from '../base/types.ts';
+import { TransactionPayload } from '../base/useCommitTransaction.ts';
 import type { GraphState } from '../collab/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import type {
@@ -21,7 +22,6 @@ import type {
 import type { GraphSettings } from '../settings/index.ts';
 import type { GraphThemeName } from '../themes/index.ts';
 import type { GEdge, GNode, Graph } from '../types.ts';
-import { TransactionPayload } from '../base/useTransaction.ts';
 
 export type BaseGraphEventMap = {
   /**

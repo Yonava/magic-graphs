@@ -1,8 +1,8 @@
-import type { GNodeMoveInstruction } from '../../../../graph/dist/types/base/useTransaction.ts';
 import type { GEdge, Graph } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { Fraction } from 'mathjs';
 
+import type { GNodeMoveInstruction } from '../../../../graph/dist/types/base/useCommitTransaction.ts';
 import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner.ts';
 import type { TreeNodeKeyArray } from './avl.ts';
 import type { TreeNode } from './treeNode.ts';
