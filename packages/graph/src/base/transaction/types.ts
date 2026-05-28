@@ -38,7 +38,6 @@ type GEdgeUpdateDraft = {
   values: Partial<Omit<GEdge, ForbiddenEdgeKeyUpdates>>;
 };
 
-// Shape of the single payload downstream plugins can hook into
 export type TransactionPayload = {
   addedNodes: GNode[];
   addedEdges: GEdge[];

@@ -8,14 +8,14 @@ import type {
   TransactionOptions,
 } from './types.ts';
 
-export const useCommitTransaction = ({
+export function useCommitTransaction({
   getGraphState,
   onTransactionSuccess,
-}: TransactionOptions) => {
+}: TransactionOptions) {
   // 1. Validation
   // 2. Process Mutation State
   // 3. Commit Payload and Return Confirmation
-  const commitTransaction = (draft: Partial<TransactionDraft>) => {
+  return (draft: Partial<TransactionDraft>) => {
     const { nodes, edges } = getGraphState();
     const { getNode, getEdge } = quickGetters({ nodes, edges });
 
@@ -85,9 +85,7 @@ export const useCommitTransaction = ({
     onTransactionSuccess(payload);
     return payload;
   };
-
-  return commitTransaction;
-};
+}
 
 function quickGetters({ nodes, edges }: GraphState) {
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));

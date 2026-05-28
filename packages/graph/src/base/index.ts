@@ -3,6 +3,7 @@ import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { clone } from '@magic/utils/clone';
 import { deepMerge } from '@magic/utils/deepMerge';
 import { delta } from '@magic/utils/delta/index';
+import { generateId } from '@magic/utils/id';
 import type {
   KeyboardEventEntries,
   KeyboardEventMap,
@@ -321,6 +322,24 @@ export const useBaseGraph = (
 
     nodeIdToIndex,
     edgeIdToIndex,
+
+    getNode,
+    getEdge,
+
+    addNode: () => {
+      const {
+        addedNodes: [addedNode],
+      } = commitTransaction({
+        addNodes: [
+          {
+            id: generateId(),
+            ...graphAtMousePosition.value.coords,
+            label: '!',
+          },
+        ],
+      });
+      return addedNode;
+    },
 
     getSchemaItemsByCoordinates,
 
