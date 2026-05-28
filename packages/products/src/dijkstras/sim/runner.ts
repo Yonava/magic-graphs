@@ -6,8 +6,8 @@ import type { SimulationRunner } from '../../shared/ui/general/sim/types.ts';
 import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
 import { useDijkstra } from '../algo/useDijkstra.ts';
 import type { DijkstrasTraceStep } from '../algo/useDijkstra.ts';
-import state from '../state';
-import { useSimulationTheme } from './theme';
+import state from '../state.ts';
+import { useSimulationTheme } from './theme.ts';
 
 const { startNode } = state;
 

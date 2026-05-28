@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { GEdge, GNode } from '@magic/graph/types';
-  import { getCtx } from '@magic/utils/ctx';
+  import { getCtx } from '@magic/utils/ctx/index';
   import { debounce } from '@magic/utils/debounce';
   import { Fraction } from 'mathjs';
   import * as ts from 'typescript';
@@ -12,7 +12,7 @@
   import GButton from '../shared/ui/graph-core/button/GButton.vue';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
   import CodeEditor from './code-editor/CodeEditor.vue';
-  import { AST_GRAPH_SETTINGS } from './settings';
+  import { AST_GRAPH_SETTINGS } from './settings.ts';
 
   type ASTNode = ts.Node;
   type ASTEdge = { fromNode: ts.Node; toNode: ts.Node };

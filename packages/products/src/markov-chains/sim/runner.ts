@@ -9,8 +9,8 @@ import type {
 } from '../../shared/ui/general/sim/types.ts';
 import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
 import { useStateAfterNSteps } from '../markov/useStateAfterNSteps.ts';
-import state from '../state';
-import { useSimulationTheme } from './theme';
+import state from '../state.ts';
+import { useSimulationTheme } from './theme.ts';
 
 const { initialState } = state;
 

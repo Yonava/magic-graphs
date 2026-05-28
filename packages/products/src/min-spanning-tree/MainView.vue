@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import GraphProduct from '../shared/ui/general/GraphProduct.vue';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
-  import { MST_GRAPH_SETTINGS } from './settings';
+  import { MST_GRAPH_SETTINGS } from './settings.ts';
 
   const graphWithCanvas = useGraphWithCanvas(MST_GRAPH_SETTINGS);
 </script>

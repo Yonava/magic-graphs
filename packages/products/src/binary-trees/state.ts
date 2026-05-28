@@ -1,7 +1,7 @@
 import { shallowRef } from 'vue';
 
 import type { SimulationRunner } from '../shared/ui/general/sim/types.ts';
-import type { TreeTraceStep } from './tree/avl';
+import type { TreeTraceStep } from './tree/avl.ts';
 
 export type TreeSimRunner = SimulationRunner<TreeTraceStep>;
 const simRunner = shallowRef<TreeSimRunner>();

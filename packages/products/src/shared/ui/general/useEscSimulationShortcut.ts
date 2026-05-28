@@ -1,4 +1,4 @@
-import keys from 'ctrl-keys';
+import { keys } from 'ctrl-keys';
 
 import { onUnmounted } from 'vue';
 

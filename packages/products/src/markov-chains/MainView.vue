@@ -8,7 +8,7 @@
   import GButton from '../shared/ui/graph-core/button/GButton.vue';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
   import { useMarkovChain } from './markov/useMarkovChain.ts';
-  import { MARKOV_CHAIN_GRAPH_SETTINGS } from './settings';
+  import { MARKOV_CHAIN_GRAPH_SETTINGS } from './settings.ts';
   import MarkovChainInfo from './ui/MarkovChainInfo.vue';
   import MarkovChainInfoLabels from './ui/MarkovChainInfoLabels.vue';
   import { useMarkovColorizer } from './ui/useMarkovColorizer.ts';

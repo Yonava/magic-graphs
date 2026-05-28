@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import GraphProduct from '../shared/ui/general/GraphProduct.vue';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
-  import { DIJKSTRAS_GRAPH_SETTINGS } from './settings';
+  import { DIJKSTRAS_GRAPH_SETTINGS } from './settings.ts';
   import { isRunning } from './sim/runner.ts';
   import CostDisplay from './ui/CostDisplay.vue';
 

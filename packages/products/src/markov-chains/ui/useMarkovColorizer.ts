@@ -2,7 +2,7 @@ import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode, Graph } from '@magic/graph/types';
 
 import { useSCCColorizer } from '../../sandbox/ui/GraphInfoMenu/useSCCColorizer.ts';
-import { USETHEME_ID } from '../constants';
+import { USETHEME_ID } from '../constants.ts';
 import type { MarkovChain } from '../markov/useMarkovChain.ts';
 
 export const useMarkovColorizer = (graph: Graph, markov: MarkovChain) => {

@@ -6,7 +6,7 @@ import { computed } from 'vue';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
 import type { FlowTrace } from '../algo/fordFulkerson.ts';
-import { FLOW_USETHEME_ID } from '../constants';
+import { FLOW_USETHEME_ID } from '../constants.ts';
 import { isResidual } from '../misc/useResidualEdges.ts';
 
 type WeightMap = Map<GEdge['id'], GEdge['weight']>;

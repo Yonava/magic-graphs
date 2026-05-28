@@ -9,8 +9,8 @@
   import GWell from '../../shared/ui/graph-core/GWell.vue';
   import definitions from '../markov/definitions.ts';
   import type { MarkovChain } from '../markov/useMarkovChain.ts';
-  import { useInvalidStateColorizer } from './useInvalidStateColorizer';
-  import { usePeriodicityLabels } from './usePeriodicityLabels';
+  import { useInvalidStateColorizer } from './useInvalidStateColorizer.ts';
+  import { usePeriodicityLabels } from './usePeriodicityLabels.ts';
 
   const props = defineProps<{
     markov: MarkovChain;

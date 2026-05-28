@@ -3,7 +3,7 @@
 
   import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import GButton from '../../shared/ui/graph-core/button/GButton.vue';
-  import state from '../state';
+  import state from '../state.ts';
 
   const { sourceNode, sinkNode } = state;
 </script>

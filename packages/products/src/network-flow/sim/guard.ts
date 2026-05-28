@@ -1,6 +1,6 @@
 import type { Graph } from '@magic/graph/types';
 
-import { SimulationGuard } from '../../shared/ui/general/sim/guard.ts';
+import { SimulationGuard } from '../../shared/ui/general/sim/guard/index.ts';
 
 export const canRunFordFulkerson = (graph: Graph) =>
   new SimulationGuard(graph)

@@ -3,9 +3,9 @@ import type { Graph } from '@magic/graph/types';
 import { computed, readonly, ref, watch } from 'vue';
 
 import { useResidualEdges } from '../misc/useResidualEdges.ts';
-import state from '../state';
-import { fordFulkerson } from './fordFulkerson';
-import type { FlowTrace } from './fordFulkerson';
+import state from '../state.ts';
+import { fordFulkerson } from './fordFulkerson.ts';
+import type { FlowTrace } from './fordFulkerson.ts';
 
 const { sourceNode, sinkNode } = state;
 

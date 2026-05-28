@@ -1,9 +1,9 @@
 import { LETTERS, graphLabelGetter } from '@magic/graph/labels';
-import type { GraphSettings } from '@magic/graph/settings';
+import type { GraphSettings } from '@magic/graph/settings/index';
 import type { Graph } from '@magic/graph/types';
 import { Fraction } from 'mathjs';
 
-import { SINK_LABEL, SOURCE_LABEL } from './constants';
+import { SINK_LABEL, SOURCE_LABEL } from './constants.ts';
 
 const ALPHABET_WITHOUT_SOURCE_SINK = LETTERS.filter(
   (l) => l !== SOURCE_LABEL && l !== SINK_LABEL,

@@ -9,7 +9,7 @@ import type {
 import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
 import { useKruskal } from '../algo/useKruskal.ts';
 import { usePrim } from '../algo/usePrim.ts';
-import { useSimulationTheme } from './theme';
+import { useSimulationTheme } from './theme.ts';
 
 export type MSTTrace = GEdge;
 export type MSTSimulationControls = SimulationControls<MSTTrace>;

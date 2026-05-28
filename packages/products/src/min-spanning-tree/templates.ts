@@ -1,3 +1,5 @@
+import Fraction from 'fraction.js';
+
 import type { GraphTemplate } from '../shared/graph-templates/types.ts';
 
 const templates: GraphTemplate[] = [
@@ -64,85 +66,85 @@ const templates: GraphTemplate[] = [
       ],
       edges: [
         {
-          label: '2',
+          weight: new Fraction('2'),
           id: 'ham4d00',
           from: '9ahn5ow',
           to: 'zxs2igh',
         },
         {
-          label: '4',
+          weight: new Fraction('4'),
           id: 'nrfl5v6',
           from: 'zxs2igh',
           to: 'msm96s6',
         },
         {
-          label: '5',
+          weight: new Fraction('5'),
           id: 'o2x178a',
           from: 'msm96s6',
           to: 'x31sqs1',
         },
         {
-          label: '8',
+          weight: new Fraction('8'),
           id: 'ro7b1ic',
           from: 'x31sqs1',
           to: 'rz3pnda',
         },
         {
-          label: '1',
+          weight: new Fraction('1'),
           id: '19suq9q',
           from: '9ahn5ow',
           to: '4o66u6a',
         },
         {
-          label: '4',
+          weight: new Fraction('4'),
           id: 'l103z1d',
           from: '9ahn5ow',
           to: 'jv60h9o',
         },
         {
-          label: '3',
+          weight: new Fraction('3'),
           id: 'h1xl528',
           from: 'jv60h9o',
           to: 'i0j3o1w',
         },
         {
-          label: '1',
+          weight: new Fraction('1'),
           id: '9vpj23r',
           from: 'jv60h9o',
           to: 'rz3pnda',
         },
         {
-          label: '6',
+          weight: new Fraction('6'),
           id: '678vx4v',
           from: '4o66u6a',
           to: 'cwq9ut3',
         },
         {
-          label: '1',
+          weight: new Fraction('1'),
           id: 's27dpd1',
           from: '4o66u6a',
           to: 'i0j3o1w',
         },
         {
-          label: '1',
+          weight: new Fraction('1'),
           id: 've0w5na',
           from: 'x31sqs1',
           to: '9ahn5ow',
         },
         {
-          label: '1',
+          weight: new Fraction('1'),
           id: 'kmoz02l',
           from: 'zxs2igh',
           to: 'cwq9ut3',
         },
         {
-          label: '5',
+          weight: new Fraction('5'),
           id: 'haubfvt',
           from: 'rz3pnda',
           to: '9ahn5ow',
         },
         {
-          label: '1',
+          weight: new Fraction('1'),
           id: 'yclk3h8',
           from: 'jv60h9o',
           to: '4o66u6a',

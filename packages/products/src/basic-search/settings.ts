@@ -1,4 +1,4 @@
-import type { GraphSettings } from '@magic/graph/settings';
+import type { GraphSettings } from '@magic/graph/settings/index';
 
 /**
  * settings for basic search useGraph instance

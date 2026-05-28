@@ -1,5 +1,5 @@
 import type { ProductInfo } from '../types.ts';
-import state from './state';
+import state from './state.ts';
 
 const info: ProductInfo = {
   route: {

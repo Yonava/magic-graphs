@@ -7,8 +7,8 @@ import { useSimulationControls } from '../../shared/ui/general/sim/useSimulation
 import type { BasicSearchTrace } from '../algo/types.ts';
 import { useBFS } from '../algo/useBFS.ts';
 import { useDFS } from '../algo/useDFS.ts';
-import state from '../state';
-import { useSimulationTheme } from './theme';
+import state from '../state.ts';
+import { useSimulationTheme } from './theme.ts';
 
 const { startNode } = state;
 

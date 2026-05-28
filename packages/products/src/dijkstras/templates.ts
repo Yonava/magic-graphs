@@ -1,3 +1,5 @@
+import Fraction from 'fraction.js';
+
 import type { GraphTemplate } from '../shared/graph-templates/types.ts';
 
 const templates: GraphTemplate[] = [
@@ -70,103 +72,103 @@ const templates: GraphTemplate[] = [
       ],
       edges: [
         {
-          label: '2',
+          weight: new Fraction(1),
           id: 'y1wgh62',
           from: 'x9p9i8x',
           to: 'b2rll3i',
         },
         {
-          label: '5',
+          weight: new Fraction(1),
           id: 'loztixb',
           from: 'b2rll3i',
           to: 'fvkeu0w',
         },
         {
-          label: '1',
+          weight: new Fraction(1),
           id: 'rpl8vwo',
           from: 'fvkeu0w',
           to: 'jcdp371',
         },
         {
-          label: '6',
+          weight: new Fraction(1),
           id: 'ph8bkto',
           from: 'jcdp371',
           to: 'fy2mn9l',
         },
         {
-          label: '1',
+          weight: new Fraction(1),
           id: 'sduxigd',
           from: 'fy2mn9l',
           to: 'foa09xw',
         },
         {
-          label: '1',
+          weight: new Fraction(1),
           id: '5laamxh',
           from: 'foa09xw',
           to: 'ewrl5ly',
         },
         {
-          label: '1',
+          weight: new Fraction(1),
           id: '30eh8dw',
           from: 'ewrl5ly',
           to: 's28s7h0',
         },
         {
-          label: '1',
+          weight: new Fraction(1),
           id: 'xxm1b9a',
           from: 's28s7h0',
           to: '64t4hj4',
         },
         {
-          label: '12',
+          weight: new Fraction(1),
           id: 'umxhdk2',
           from: 'foa09xw',
           to: '64t4hj4',
         },
         {
-          label: '13',
+          weight: new Fraction(1),
           id: '14k6y72',
           from: 'fy2mn9l',
           to: '64t4hj4',
         },
         {
-          label: '2',
+          weight: new Fraction(1),
           id: 'f51gwgj',
           from: 'jcdp371',
           to: 'foa09xw',
         },
         {
-          label: '1',
+          weight: new Fraction(1),
           id: 'n1sbpbs',
           from: 'fvkeu0w',
           to: 'fy2mn9l',
         },
         {
-          label: '9',
+          weight: new Fraction(1),
           id: 'ez6t270',
           from: 'jcdp371',
           to: 'ewrl5ly',
         },
         {
-          label: '7',
+          weight: new Fraction(1),
           id: 'dwofzhq',
           from: 'y2rtfe1',
           to: 'jcdp371',
         },
         {
-          label: '8',
+          weight: new Fraction(1),
           id: 'v6oxxo7',
           from: 'x9p9i8x',
           to: 'jcdp371',
         },
         {
-          label: '1',
+          weight: new Fraction(1),
           id: 'ldmmtm1',
           from: 'x9p9i8x',
           to: 'y2rtfe1',
         },
         {
-          label: '15',
+          weight: new Fraction(1),
           id: 'w65nyaa',
           from: 'y2rtfe1',
           to: 'ewrl5ly',

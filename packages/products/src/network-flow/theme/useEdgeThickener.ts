@@ -3,7 +3,7 @@ import type { GEdge, Graph } from '@magic/graph/types';
 
 import { onUnmounted } from 'vue';
 
-import { FLOW_USETHEME_ID } from '../constants';
+import { FLOW_USETHEME_ID } from '../constants.ts';
 
 const MIN_THICKNESS = 5;
 const MAX_THICKNESS = 25;

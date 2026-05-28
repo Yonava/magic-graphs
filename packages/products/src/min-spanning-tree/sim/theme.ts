@@ -4,7 +4,7 @@ import type { GEdge, Graph } from '@magic/graph/types';
 import { computed } from 'vue';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
-import type { MSTTrace } from './runner';
+import type { MSTTrace } from './runner.ts';
 
 /**
  * dims the color of the edge if it is not in the MST to ${DIM_FACTOR}%

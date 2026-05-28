@@ -2,9 +2,9 @@
   import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import GHoverInfoTop from '../../shared/ui/graph-core/GHoverInfoTop.vue';
   import GWell from '../../shared/ui/graph-core/GWell.vue';
-  import type { TreeControls } from '../useTree';
-  import { useBalanceFactorLabels } from './useBalanceFactorLabels';
-  import { useHeightLabels } from './useHeightLabels';
+  import type { TreeControls } from '../useTree.ts';
+  import { useBalanceFactorLabels } from './useBalanceFactorLabels.ts';
+  import { useHeightLabels } from './useHeightLabels.ts';
 
   const props = defineProps<{
     tree: TreeControls;

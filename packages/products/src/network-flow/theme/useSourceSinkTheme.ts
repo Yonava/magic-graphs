@@ -2,8 +2,8 @@ import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode, Graph } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
-import { FLOW_USETHEME_ID, SINK_LABEL, SOURCE_LABEL } from '../constants';
-import state from '../state';
+import { FLOW_USETHEME_ID, SINK_LABEL, SOURCE_LABEL } from '../constants.ts';
+import state from '../state.ts';
 
 const { sourceNode, sinkNode } = state;
 

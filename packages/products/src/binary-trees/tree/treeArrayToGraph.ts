@@ -4,8 +4,8 @@ import { Coordinate } from '@magic/shapes/types/utility';
 import { Fraction } from 'mathjs';
 
 import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner.ts';
-import type { TreeNodeKeyArray } from './avl';
-import type { TreeNode } from './treeNode';
+import type { TreeNodeKeyArray } from './avl.ts';
+import type { TreeNode } from './treeNode.ts';
 
 const newEdge = (from: number, to: number): GEdge => ({
   from: from.toString(),

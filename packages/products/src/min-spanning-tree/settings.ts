@@ -1,4 +1,5 @@
-import type { GraphSettings } from '@magic/graph/settings';
+import type { GraphSettings } from '@magic/graph/settings/index';
+import { Fraction } from 'mathjs';
 
 /**
  * settings for MST useGraph instance
@@ -7,10 +8,13 @@ export const MST_GRAPH_SETTINGS: Partial<GraphSettings> = {
   persistentStorageKey: 'min-spanning-tree',
   isGraphDirected: false,
   edgeInputToWeight: (input) => {
-    const parsedInput = Number(input);
-    const isNegative = parsedInput < 0;
-    const isNotNumber = isNaN(parsedInput);
-    if (isNegative || isNotNumber) return;
-    return parsedInput.toString();
+    // fraction throws an error if the input cannot be parsed or
+    // is a divide by zero operation
+    try {
+      const fraction = new Fraction(input);
+      // dijkstras only works on positive weight edges
+      if (fraction.valueOf() <= 0) return;
+      return fraction;
+    } catch {}
   },
 };

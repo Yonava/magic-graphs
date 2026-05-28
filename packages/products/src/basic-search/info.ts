@@ -6,7 +6,7 @@ import {
   useBFSSimulationRunner,
   useDFSSimulationRunner,
 } from './sim/runner.ts';
-import state from './state';
+import state from './state.ts';
 
 const info: ProductInfo = {
   route: {

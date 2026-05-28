@@ -1,6 +1,6 @@
 import type { Graph } from '@magic/graph/types';
 
-import type { AVLTree } from './avl';
+import type { AVLTree } from './avl.ts';
 
 /**
  * takes a graph and a tree and modifies the tree (in-place) such that it is in sync

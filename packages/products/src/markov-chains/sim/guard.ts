@@ -1,6 +1,6 @@
 import type { Graph } from '@magic/graph/types';
 
-import { SimulationGuard } from '../../shared/ui/general/sim/guard.ts';
+import { SimulationGuard } from '../../shared/ui/general/sim/guard/index.ts';
 import definitions from '../markov/definitions.ts';
 import { useMarkovChain } from '../markov/useMarkovChain.ts';
 import { useInvalidStateColorizer } from '../ui/useInvalidStateColorizer.ts';

@@ -2,11 +2,11 @@ import type { GNode, Graph } from '@magic/graph/types';
 
 import { computed, ref } from 'vue';
 
-import { AVLTree, getBalance, getHeight } from './tree/avl';
+import { AVLTree, getBalance, getHeight } from './tree/avl.ts';
 import { syncGraphWithTree } from './tree/graphToAVL.ts';
 import { TreeNode } from './tree/treeNode.ts';
-import { useTreeHistory } from './treeHistory';
-import { createSimulationRunner } from './treeSim';
+import { useTreeHistory } from './treeHistory.ts';
+import { createSimulationRunner } from './treeSim.ts';
 
 export const useTree = (graph: Graph) => {
   const tree = new AVLTree();

@@ -6,7 +6,7 @@ import {
   useKruskalSimulationRunner,
   usePrimSimulationRunner,
 } from './sim/runner.ts';
-import templates from './templates';
+import templates from './templates.ts';
 
 const info: ProductInfo = {
   route: {

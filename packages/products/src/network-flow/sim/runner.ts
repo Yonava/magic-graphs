@@ -9,12 +9,12 @@ import type {
 import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
 import type { FlowTrace } from '../algo/fordFulkerson.ts';
 import { useFordFulkerson } from '../algo/useFordFulkerson.ts';
-import { FLOW_USETHEME_ID } from '../constants';
+import { FLOW_USETHEME_ID } from '../constants.ts';
 import { useResidualEdges } from '../misc/useResidualEdges.ts';
-import state from '../state';
+import state from '../state.ts';
 import { useEdgeThickener } from '../theme/useEdgeThickener.ts';
 import { useSourceSinkTheme } from '../theme/useSourceSinkTheme.ts';
-import { useSimulationTheme } from './theme';
+import { useSimulationTheme } from './theme.ts';
 
 export type FlowSimulationControls = SimulationControls<FlowTrace>;
 export type FlowSimulationRunner = SimulationRunner<FlowTrace>;

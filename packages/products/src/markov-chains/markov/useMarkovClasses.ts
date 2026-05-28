@@ -2,7 +2,7 @@ import type { GNode, Graph } from '@magic/graph/types';
 
 import { computed } from 'vue';
 
-import type { ComponentAdjacencyMap } from './useComponentAdjacencyMap';
+import type { ComponentAdjacencyMap } from './useComponentAdjacencyMap.ts';
 
 /**
  * a set of states within a markov chain recurrent or transient class

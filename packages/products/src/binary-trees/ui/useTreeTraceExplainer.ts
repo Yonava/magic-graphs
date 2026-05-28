@@ -1,5 +1,5 @@
 import type { GetSimulationExplanation } from '../../shared/ui/general/sim/useSimulationControls.ts';
-import type { TreeTraceStep } from '../tree/avl';
+import type { TreeTraceStep } from '../tree/avl.ts';
 
 export const getTreeTraceExplanation: GetSimulationExplanation<
   TreeTraceStep

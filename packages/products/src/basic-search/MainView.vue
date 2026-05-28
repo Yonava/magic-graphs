@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import GraphProduct from '../shared/ui/general/GraphProduct.vue';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
-  import { BASIC_SEARCH_GRAPH_SETTINGS } from './settings';
+  import { BASIC_SEARCH_GRAPH_SETTINGS } from './settings.ts';
 
   const graphWithCanvas = useGraphWithCanvas(BASIC_SEARCH_GRAPH_SETTINGS);
 </script>

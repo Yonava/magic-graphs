@@ -5,7 +5,7 @@
 
   import GWell from '../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../shared/ui/graph-core/button/GButton.vue';
-  import type { TreeControls } from '../useTree';
+  import type { TreeControls } from '../useTree.ts';
 
   const props = defineProps<{
     tree: TreeControls;
