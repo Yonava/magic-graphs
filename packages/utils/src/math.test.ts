@@ -6,7 +6,7 @@ import {
   getPrimeFactors,
   lowestPrimeFactor,
   roundToNearestN,
-} from './math';
+} from './math.ts';
 
 describe('roundToNearestN', () => {
   test('rounds a number to the nearest multiple of n', () => {

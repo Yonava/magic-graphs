@@ -7,6 +7,9 @@
     },
     "packages/products": {
       "ignoreDependencies": ["fraction.js"]
+    },
+    "packages/graph": {
+      "ignoreDependencies": ["fraction.js"]
     }
   }
 }

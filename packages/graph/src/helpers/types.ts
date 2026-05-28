@@ -1,7 +1,7 @@
 import type { Fraction } from 'mathjs';
 
-import { BaseGraph } from '../base';
-import type { GraphSettings } from '../settings';
+import { BaseGraph } from '../base/index.ts';
+import type { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
 
 export type EdgeHelpers = {

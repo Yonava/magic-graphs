@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';
 
-import { useBaseGraph } from '..';
+import { useBaseGraph } from '../index.ts';
 
 describe('base graph - removeEdge', () => {
   const graph = useBaseGraph(ref() as any);

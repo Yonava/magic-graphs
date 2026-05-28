@@ -2,12 +2,12 @@ import { describe, expect, test } from 'vitest';
 
 import { ref } from 'vue';
 
-import { useBaseGraph } from './base';
+import { useBaseGraph } from './base/index.ts';
 import {
   graphLabelGetter,
   nodeLetterLabelGetter,
   nodeNumberLabelGetter,
-} from './labels';
+} from './labels.ts';
 
 describe('graph labels', () => {
   const graph = useBaseGraph(ref() as any);

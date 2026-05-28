@@ -1,8 +1,11 @@
 import { computed } from 'vue';
 
-import type { BaseGraph } from './base';
+import type { BaseGraph } from './base/index.ts';
 import type { GEdge, GNode } from './types.ts';
-import type { AdjacencyLists, WeightedAdjacencyList } from './useAdjacencyList';
+import type {
+  AdjacencyLists,
+  WeightedAdjacencyList,
+} from './useAdjacencyList.ts';
 
 /**
  * a 2D array (matrix) where matrix[i][j] represents the weight of

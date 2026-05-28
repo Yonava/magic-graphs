@@ -1,4 +1,4 @@
-import type { BaseGraph } from '../../base.ts';
+import type { BaseGraph } from '../../base/index.ts';
 import type { GraphMouseEvent } from '../../base/types.ts';
 import type { GNode } from '../../types.ts';
 

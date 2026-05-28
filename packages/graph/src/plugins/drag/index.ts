@@ -3,10 +3,10 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, ref } from 'vue';
 
-import type { BaseGraph } from '../../base.ts';
+import type { BaseGraph } from '../../base/index.ts';
 import type { GraphMouseEvent } from '../../base/types.ts';
 import type { GNode } from '../../types.ts';
-import type { NodeAnchorPlugin } from '../anchors';
+import type { NodeAnchorPlugin } from '../anchors/index.ts';
 
 /**
  * info for the node being dragged

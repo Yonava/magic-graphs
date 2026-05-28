@@ -1,11 +1,11 @@
-import type { BaseGraph } from '../../base.ts';
+import type { BaseGraph } from '../../base/index.ts';
 import type { AdjacencyLists } from '../../useAdjacencyList.ts';
-import { useBidirectionalEdges } from './bidirectional';
-import { useBipartite } from './bipartite';
-import { useComplete } from './complete';
-import { useConnected } from './connected';
-import { useCycles } from './cycles';
-import { useStronglyConnectedComponents } from './scc';
+import { useBidirectionalEdges } from './bidirectional.ts';
+import { useBipartite } from './bipartite.ts';
+import { useComplete } from './complete.ts';
+import { useConnected } from './connected.ts';
+import { useCycles } from './cycles.ts';
+import { useStronglyConnectedComponents } from './scc.ts';
 
 export const useCharacteristics = (graph: BaseGraph & AdjacencyLists) => {
   const connected = useConnected(graph);

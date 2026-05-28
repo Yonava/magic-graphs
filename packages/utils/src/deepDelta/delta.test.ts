@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { delta } from '.';
+import { delta } from './index.ts';
 
 test('deepDelta standard', () => {
   const yona = {

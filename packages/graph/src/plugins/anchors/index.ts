@@ -1,14 +1,14 @@
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
-import type { WithId } from '@magic/shapes/types';
+import type { WithId } from '@magic/shapes/types/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { readonly, ref } from 'vue';
 
-import type { BaseGraph } from '../../base.ts';
+import type { BaseGraph } from '../../base/index.ts';
 import type { GraphMouseEvent } from '../../base/types.ts';
 import { prioritizeNode } from '../../helpers/prioritization.ts';
 import type { NodeAnchor } from '../../plugins/anchors/types.ts';
-import type { GraphFocusPlugin } from '../../plugins/focus.ts';
+import type { GraphFocusPlugin } from '../../plugins/focus/index.ts';
 import type { GNode, SchemaItem } from '../../types.ts';
 
 /**

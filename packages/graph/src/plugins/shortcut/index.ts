@@ -1,9 +1,9 @@
-import keys from 'ctrl-keys';
+import { keys } from 'ctrl-keys';
 
-import type { BaseGraph } from '../../base.ts';
-import type { GraphAnnotationPlugin } from '../annotations';
-import type { GraphFocusPlugin } from '../focus';
-import type { GraphHistoryPlugin } from '../history';
+import type { BaseGraph } from '../../base/index.ts';
+import type { GraphAnnotationPlugin } from '../annotations/index.ts';
+import type { GraphFocusPlugin } from '../focus/index.ts';
+import type { GraphHistoryPlugin } from '../history/index.ts';
 import type { PlatformShortcuts } from './types.ts';
 
 export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')

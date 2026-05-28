@@ -4,11 +4,11 @@ import { useLocalStorage } from '@vueuse/core';
 
 import { watch } from 'vue';
 
-import { type GraphThemeName, THEME_NAMES } from '.';
-import type { BaseGraph } from '../base';
+import type { BaseGraph } from '../base/index.ts';
 // @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
 // eslint-disable-next-line
 import type { Graph } from '../types.ts';
+import { type GraphThemeName, THEME_NAMES } from './index.ts';
 
 export type PreferredGraphTheme = GraphThemeName | 'auto';
 

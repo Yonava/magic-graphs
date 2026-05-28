@@ -3,7 +3,7 @@ import { debounce } from '@magic/utils/debounce';
 
 import { computed, ref } from 'vue';
 
-import type { BaseGraph } from '../../base.ts';
+import type { BaseGraph } from '../../base/index.ts';
 import type { HistoryOption } from '../../base/types.ts';
 import type { GraphState } from '../../collab/types.ts';
 import type { GEdge, GNode } from '../../types.ts';

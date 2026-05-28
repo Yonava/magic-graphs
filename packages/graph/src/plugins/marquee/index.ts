@@ -5,11 +5,11 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { ref } from 'vue';
 import { computed } from 'vue';
 
-import type { BaseGraph } from '../../base.ts';
+import type { BaseGraph } from '../../base/index.ts';
 import type { GraphMouseEvent } from '../../base/types.ts';
 import type { Aggregator } from '../../types.ts';
-import type { GraphFocusPlugin } from '../focus';
-import { getEncapsulatedNodeBox } from './helpers';
+import type { GraphFocusPlugin } from '../focus/index.ts';
+import { getEncapsulatedNodeBox } from './helpers.ts';
 
 export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   const marqueeBox = ref<BoundingBox | undefined>();

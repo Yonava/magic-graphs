@@ -1,21 +1,21 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 
-import { useBaseGraph } from './base';
-import { useGraphHelpers } from './helpers';
-import { useNodeAnchors } from './plugins/anchors.ts';
-import { useAnnotations } from './plugins/annotations.ts';
-import { useCharacteristics } from './plugins/characteristics.ts';
-import { useNodeDrag } from './plugins/drag.ts';
-import { useFocus } from './plugins/focus.ts';
-import { useHistory } from './plugins/history.ts';
-import { useInteractive } from './plugins/interactive.ts';
-import { useMarquee } from './plugins/marquee.ts';
-import { usePersistent } from './plugins/persistent.ts';
-import { useShortcuts } from './plugins/shortcut.ts';
-import type { GraphSettings } from './settings';
+import { useBaseGraph } from './base/index.ts';
+import { useGraphHelpers } from './helpers/index.ts';
+import { useNodeAnchors } from './plugins/anchors/index.ts';
+import { useAnnotations } from './plugins/annotations/index.ts';
+import { useCharacteristics } from './plugins/characteristics/index.ts';
+import { useNodeDrag } from './plugins/drag/index.ts';
+import { useFocus } from './plugins/focus/index.ts';
+import { useHistory } from './plugins/history/index.ts';
+import { useInteractive } from './plugins/interactive/index.ts';
+import { useMarquee } from './plugins/marquee/index.ts';
+import { usePersistent } from './plugins/persistent/index.ts';
+import { useShortcuts } from './plugins/shortcut/index.ts';
+import type { GraphSettings } from './settings/index.ts';
 import { usePreferredTheme } from './themes/usePreferredTheme.ts';
-import { useAdjacencyList } from './useAdjacencyList';
-import { useTransitionMatrix } from './useTransitionMatrix';
+import { useAdjacencyList } from './useAdjacencyList.ts';
+import { useTransitionMatrix } from './useTransitionMatrix.ts';
 
 /**
  * a package brimming with tools for creating and managing graphs bringing

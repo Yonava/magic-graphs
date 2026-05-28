@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { deepMerge } from './deepMerge';
+import { deepMerge } from './deepMerge.ts';
 
 describe('deepMerge', () => {
   it('merges flat objects with rightmost priority', () => {

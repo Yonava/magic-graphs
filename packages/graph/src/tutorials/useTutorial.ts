@@ -1,4 +1,4 @@
-import { SEQUENCES } from '../tutorials/sequences.ts';
+import { SEQUENCES } from '../tutorials/sequences/index.ts';
 import { useGraphTutorial } from '../tutorials/useGraphTutorial.ts';
 import type { Graph } from '../types.ts';
 

@@ -1,9 +1,9 @@
 import { computed } from 'vue';
 
-import type { BaseGraph } from '../../base.ts';
+import type { BaseGraph } from '../../base/index.ts';
 import type { GNode } from '../../types.ts';
 import type { AdjacencyList, AdjacencyLists } from '../../useAdjacencyList.ts';
-import type { CharacteristicSCC } from './scc';
+import type { CharacteristicSCC } from './scc.ts';
 
 type GetCycles = (adjList: AdjacencyList) => GNode['id'][][];
 

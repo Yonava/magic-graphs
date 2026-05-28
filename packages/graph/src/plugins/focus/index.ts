@@ -1,14 +1,14 @@
-import { getCtx } from '@magic/utils/ctx';
+import { getCtx } from '@magic/utils/ctx/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, readonly, ref } from 'vue';
 
-import type { BaseGraph } from '../../base.ts';
+import type { BaseGraph } from '../../base/index.ts';
 import type { FocusOption, GraphMouseEvent } from '../../base/types.ts';
 import { ValidGraphThemePath } from '../../themes/types.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
-import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants';
+import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
 
 type NodeBaseThemePath = Extract<ValidGraphThemePath, `node.base.${string}`>;
 type EdgeBaseThemePath = Extract<ValidGraphThemePath, `edge.base.${string}`>;

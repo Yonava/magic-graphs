@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { camelCaseToTitleCase, capitalize } from './string';
+import { camelCaseToTitleCase, capitalize } from './string.ts';
 
 describe('capitalize', () => {
   test('capitalizes the first letter of a string', () => {

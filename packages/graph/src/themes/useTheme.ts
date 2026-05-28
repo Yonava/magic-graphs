@@ -2,7 +2,7 @@ import { generateId } from '@magic/utils/id';
 
 import type { ValidGraphThemePath } from '../themes/types.ts';
 import type { Graph } from '../types.ts';
-import { ResolveThemeMap, getDataFromNestedPath } from './getThemeResolver';
+import { ResolveThemeMap, getDataFromNestedPath } from './getThemeResolver.ts';
 
 /**
  * set and remove themes for a graph instance

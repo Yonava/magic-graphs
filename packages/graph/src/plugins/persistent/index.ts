@@ -1,8 +1,8 @@
 import { local } from '@magic/utils/localStorage';
 import { Fraction } from 'mathjs';
 
-import type { BaseGraph } from '../../base.ts';
-import type { GraphEvent } from '../../events.ts';
+import type { BaseGraph } from '../../base/index.ts';
+import type { GraphEvent } from '../../events/index.ts';
 import type { GEdge, GNode } from '../../types.ts';
 
 type Serializable<T> = {

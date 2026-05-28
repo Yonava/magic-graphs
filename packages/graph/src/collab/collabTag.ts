@@ -1,6 +1,6 @@
-import { circle } from '@magic/shapes/shapes/circle';
+import { circle } from '@magic/shapes/shapes/circle/index';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
-import { rect } from '@magic/shapes/shapes/rect';
+import { rect } from '@magic/shapes/shapes/rect/index';
 import type { RectSchema } from '@magic/shapes/shapes/rect/types';
 import colors from '@magic/utils/colors';
 

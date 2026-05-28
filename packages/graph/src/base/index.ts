@@ -1,7 +1,7 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
-import { useAnimatedShapes } from '@magic/shapes/animation';
+import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { clone } from '@magic/utils/clone';
-import { delta } from '@magic/utils/deepDelta';
+import { delta } from '@magic/utils/deepDelta/index';
 import { deepMerge } from '@magic/utils/deepMerge';
 import type {
   KeyboardEventEntries,
@@ -13,25 +13,28 @@ import { onClickOutside, useElementHover } from '@vueuse/core';
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { generateSubscriber, getInitialEventBus } from '../events';
+import { generateSubscriber, getInitialEventBus } from '../events/index.ts';
 import { prioritizeNode } from '../helpers/prioritization.ts';
 import { getEdgeSchematic } from '../schematics/edge.ts';
 import { getNodeSchematic } from '../schematics/node.ts';
-import { DEFAULT_GRAPH_SETTINGS } from '../settings';
-import type { GraphSettings } from '../settings';
-import { THEMES } from '../themes';
-import type { GraphThemeName } from '../themes';
+import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
+import type { GraphSettings } from '../settings/index.ts';
 import { getThemeResolver } from '../themes/getThemeResolver.ts';
+import { THEMES } from '../themes/index.ts';
+import type { GraphThemeName } from '../themes/index.ts';
 import { GraphInterface, getInitialThemeMap } from '../themes/types.ts';
 import type { Aggregator, GEdge, GNode } from '../types.ts';
-import { type GraphAnimations, getDefaultGraphAnimations } from './animations';
+import {
+  type GraphAnimations,
+  getDefaultGraphAnimations,
+} from './animations.ts';
 import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types.ts';
 import type { GraphAtMousePosition, HistoryOption } from './types.ts';
-import { useAggregator } from './useAggregator';
-import { useGraphCRUD } from './useGraphCRUD';
-import { useGraphCursor } from './useGraphCursor';
-import { useNodeEdgeMap } from './useNodeEdgeMap';
-import { usePluginHoldController } from './usePluginHold';
+import { useAggregator } from './useAggregator.ts';
+import { useGraphCRUD } from './useGraphCRUD.ts';
+import { useGraphCursor } from './useGraphCursor.ts';
+import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
+import { usePluginHoldController } from './usePluginHold.ts';
 
 export const useBaseGraph = (
   magicCanvas: MagicCanvasProps,

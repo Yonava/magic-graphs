@@ -1,17 +1,17 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
-import type { AnimatedShapeControls } from '@magic/shapes/animation';
+import type { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import type { Coordinate } from '@magic/shapes/types/utility';
-import { getCtx } from '@magic/utils/ctx';
+import { getCtx } from '@magic/utils/ctx/index';
 import { generateId } from '@magic/utils/id';
 import type { PartiallyPartial } from '@magic/utils/types';
 
 import type { Ref } from 'vue';
 
-import type { Emitter } from '../events';
-import { nodeLetterLabelGetter } from '../labels';
-import type { GraphSettings } from '../settings';
+import type { Emitter } from '../events/index.ts';
+import { nodeLetterLabelGetter } from '../labels.ts';
+import type { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
-import type { GraphAnimations } from './animations';
+import type { GraphAnimations } from './animations.ts';
 import {
   ADD_EDGE_DEFAULTS,
   ADD_EDGE_OPTIONS_DEFAULTS,
@@ -32,8 +32,8 @@ import type {
   RemoveEdgeOptions,
   RemoveNodeOptions,
 } from './types.ts';
-import type { AggregatorProps } from './useAggregator';
-import type { EdgeMap, NodeMap } from './useNodeEdgeMap';
+import type { AggregatorProps } from './useAggregator.ts';
+import type { EdgeMap, NodeMap } from './useNodeEdgeMap.ts';
 
 type GraphCRUDOptions = {
   emit: Emitter;

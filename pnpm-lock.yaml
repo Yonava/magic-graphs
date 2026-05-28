@@ -184,6 +184,9 @@ importers:
       ctrl-keys:
         specifier: 'catalog:'
         version: 1.0.6
+      fraction.js:
+        specifier: ^5.3.4
+        version: 5.3.4
       graphlib:
         specifier: ^2.1.8
         version: 2.1.8
