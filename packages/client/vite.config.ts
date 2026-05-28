@@ -24,7 +24,8 @@ export default defineConfig({
 
   server: {
     fs: {
-      allow: [r('../..')], // monorepo root
+      // monorepo root
+      allow: [r('../..')],
     },
   },
 

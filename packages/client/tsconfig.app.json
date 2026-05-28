@@ -1,15 +1,15 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
-    "rootDir": ".",
+    "rootDir": "./src",
     "types": ["vite/client"],
     "outDir": "./dist/types",
+    "allowImportingTsExtensions": true,
     "paths": {
-      "@magic/canvas/*": ["../ui/src/*"],
+      "@magic/ui/*": ["../ui/src/*"],
       "@magic/products/*": ["../products/src/*"]
     }
   },
   "references": [{ "path": "../ui" }, { "path": "../products" }],
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "../../types"],
-  "exclude": ["./dist", "**/node_modules"]
+  "include": ["env.d.ts", "src/**/*.ts", "src/**/*.vue"]
 }
