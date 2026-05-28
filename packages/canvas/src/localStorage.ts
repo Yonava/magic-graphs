@@ -1,6 +1,5 @@
-import type { MagicCanvasOptions } from './types.ts';
-
-/* eslint-enable */
+// utilized by jsdoc comments
+import type { Camera } from './camera/index.ts';
 
 type LocalStorageGetter = (...args: any[]) => string;
 type LocalStorageRecord = Record<string, string | LocalStorageGetter>;

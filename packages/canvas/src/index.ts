@@ -1,12 +1,12 @@
-import { getCtx } from '@magic/utils/ctx';
+import { getCtx } from '@magic/utils/ctx/index';
 import { useElementSize } from '@vueuse/core';
 
 import { onMounted, ref, watch } from 'vue';
 
-import { type DrawPattern, useBackgroundPattern } from './backgroundPattern';
-import { useCamera } from './camera';
+import { type DrawPattern, useBackgroundPattern } from './backgroundPattern.ts';
+import { useCamera } from './camera/index.ts';
 import { getDevicePixelRatio } from './camera/utils.ts';
-import { useMagicCoordinates } from './coordinates';
+import { useMagicCoordinates } from './coordinates/index.ts';
 import type { DrawContent, UseMagicCanvas } from './types.ts';
 
 const REPAINT_FPS = 60;
