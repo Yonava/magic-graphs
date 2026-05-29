@@ -7,7 +7,7 @@ export type GraphState = {
 
 export type TransactionOptions = {
   getGraphState: () => GraphState;
-  onTransactionSuccess: (payload: TransactionPayload) => void;
+  onTransactionSucceeded: (payload: TransactionPayload) => void;
 };
 
 type GNodeUpdatePayload = {

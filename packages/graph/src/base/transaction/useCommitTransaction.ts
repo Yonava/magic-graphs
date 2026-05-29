@@ -13,7 +13,7 @@ import type {
 // 3. ✅ Commit Payload and Return Confirmation
 export function useCommitTransaction({
   getGraphState,
-  onTransactionSuccess,
+  onTransactionSucceeded,
 }: TransactionOptions): CommitTransaction {
   return (draft) => {
     const { nodes, edges } = getGraphState();
@@ -82,7 +82,7 @@ export function useCommitTransaction({
       }
     }
 
-    onTransactionSuccess(payload);
+    onTransactionSucceeded(payload);
     return payload;
   };
 }

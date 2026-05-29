@@ -11,7 +11,7 @@ describe('useCommitTransaction', () => {
     const newNode: GNode = { id: 'new-node', label: '', x: 0, y: 0 };
     const commitTransaction = useCommitTransaction({
       getGraphState: () => ({ nodes: [], edges: [] }),
-      onTransactionSuccess: () => {},
+      onTransactionSucceeded: () => {},
     });
     const expectedPayload: TransactionPayload = {
       ...createEmptyPayload(),
@@ -36,7 +36,7 @@ describe('useCommitTransaction', () => {
         nodes: [node1, node2],
         edges: [connectedEdge],
       }),
-      onTransactionSuccess: () => {},
+      onTransactionSucceeded: () => {},
     });
 
     const expectedPayload: TransactionPayload = {
@@ -60,7 +60,7 @@ describe('useCommitTransaction', () => {
 
     const commitTransaction = useCommitTransaction({
       getGraphState: () => ({ nodes: [existingNode], edges: [] }),
-      onTransactionSuccess: () => {},
+      onTransactionSucceeded: () => {},
     });
 
     const expectedPayload: TransactionPayload = {
@@ -87,7 +87,7 @@ describe('useCommitTransaction', () => {
 
     const commitTransaction = useCommitTransaction({
       getGraphState: () => ({ nodes: [], edges: [] }),
-      onTransactionSuccess: successSpy,
+      onTransactionSucceeded: successSpy,
     });
 
     const payload = commitTransaction({ addNodes: [newNode] });

@@ -30,6 +30,7 @@ import {
   getDefaultGraphAnimations,
 } from './animations.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
+import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
 import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types.ts';
 import type { GraphAtMousePosition, HistoryOption } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
@@ -213,34 +214,16 @@ export const useBaseGraph = (
     }
   });
 
+  const onTransactionSucceeded = useTransactionSucceeded({
+    edges,
+    nodes,
+    emit,
+    updateAggregator,
+    updateGraphAtMousePosition,
+  });
   const commitTransaction = useCommitTransaction({
     getGraphState: () => ({ nodes: nodes.value, edges: edges.value }),
-    onTransactionSuccess: (payload) => {
-      if (payload.removedNodes.length || payload.removedEdges.length) {
-        const removedNodeIds = new Set(payload.removedNodes.map((n) => n.id));
-        const removedEdgeIds = new Set(payload.removedEdges.map((e) => e.id));
-
-        nodes.value = nodes.value.filter((n) => !removedNodeIds.has(n.id));
-        edges.value = edges.value.filter((e) => !removedEdgeIds.has(e.id));
-      }
-
-      nodes.value.push(...payload.addedNodes);
-      edges.value.push(...payload.addedEdges);
-
-      payload.updatedNodes.forEach((update) => {
-        const target = nodes.value.find((n) => n.id === update.node.id);
-        if (target) Object.assign(target, update.node);
-      });
-
-      payload.updatedEdges.forEach((update) => {
-        const target = edges.value.find((e) => e.id === update.edge.id);
-        if (target) Object.assign(target, update.edge);
-      });
-
-      updateGraphAtMousePosition();
-      updateAggregator();
-      emit('onTransactionComplete', payload);
-    },
+    onTransactionSucceeded,
   });
 
   const actions = useGraphActions({
