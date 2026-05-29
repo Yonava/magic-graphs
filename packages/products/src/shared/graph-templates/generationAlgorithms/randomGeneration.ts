@@ -1,4 +1,4 @@
-import { LETTERS, graphLabelGetter } from '@magic/graph/labels';
+import { LETTERS, useGraphLabelGetter } from '@magic/graph/labels';
 import type { GEdge, GNode } from '@magic/graph/types';
 import { angleDifference } from '@magic/shapes/helpers';
 import { generateId } from '@magic/utils/id';
@@ -43,7 +43,7 @@ export const generateClusterNodes = (
   clusterCenters.forEach((center) => {
     const angleStep = (2 * Math.PI) / maxNodesPerCluster;
 
-    const getLabel = graphLabelGetter(nodes, LETTERS);
+    const getLabel = useGraphLabelGetter(nodes, LETTERS);
 
     for (let i = 0; i < maxNodesPerCluster; i++) {
       const angle = angleStep * i * (Math.random() / 10 + 1);

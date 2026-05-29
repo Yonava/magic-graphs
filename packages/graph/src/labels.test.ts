@@ -4,9 +4,9 @@ import { ref } from 'vue';
 
 import { useBaseGraph } from './base/index.ts';
 import {
-  graphLabelGetter,
-  nodeLetterLabelGetter,
-  nodeNumberLabelGetter,
+  useGraphLabelGetter,
+  useNodeLetterLabelGetter,
+  useNodeNumberLabelGetter,
 } from './labels.ts';
 
 describe('graph labels', () => {
@@ -14,7 +14,7 @@ describe('graph labels', () => {
 
   test('graphLabelGetter', () => {
     graph.reset();
-    const getNewLabel = graphLabelGetter(graph.nodes, ['A', 'B', 'C']);
+    const getNewLabel = useGraphLabelGetter(graph.nodes, ['A', 'B', 'C']);
 
     const node1 = graph.addNode({ label: getNewLabel() });
     if (!node1) throw new Error('Failed to create node');
@@ -47,7 +47,7 @@ describe('graph labels', () => {
   test('nodeLetterLabelGetter', () => {
     graph.reset();
 
-    const getNewLabel = nodeLetterLabelGetter(graph);
+    const getNewLabel = useNodeLetterLabelGetter(graph);
 
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     for (let i = 0; i < alphabet.length; i++) {
@@ -61,7 +61,7 @@ describe('graph labels', () => {
   test('nodeNumberLabelGetter', () => {
     graph.reset();
 
-    const getNewLabel = nodeNumberLabelGetter(graph);
+    const getNewLabel = useNodeNumberLabelGetter(graph);
     for (let i = 0; i < 99; i++) {
       graph.addNode({ label: getNewLabel() });
       expect(graph.nodes.value[i].label).toBe((i + 1).toString());
