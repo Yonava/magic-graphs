@@ -22,7 +22,7 @@ type GEdgeUpdatePayload = {
 
 // these are all reference based so we forbid them from being updated
 const forbiddenNodeKeyUpdates = ['id'] as const satisfies (keyof GNode)[];
-type ForbiddenNodeKeyUpdates = (typeof forbiddenNodeKeyUpdates)[number];
+export type ForbiddenNodeKeyUpdates = (typeof forbiddenNodeKeyUpdates)[number];
 
 export type GNodeUpdateDraft = {
   id: GNode['id'];
@@ -35,7 +35,7 @@ const forbiddenEdgeKeyUpdates = [
   'from',
   'to',
 ] as const satisfies (keyof GEdge)[];
-type ForbiddenEdgeKeyUpdates = (typeof forbiddenEdgeKeyUpdates)[number];
+export type ForbiddenEdgeKeyUpdates = (typeof forbiddenEdgeKeyUpdates)[number];
 
 export type GEdgeUpdateDraft = {
   id: GEdge['id'];

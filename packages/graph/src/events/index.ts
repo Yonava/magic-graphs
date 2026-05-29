@@ -92,6 +92,10 @@ export const getInitialEventBus = () => {
     onEdgeRemoved: new Set(),
     onEdgeUpdated: new Set(),
 
+    onElementsAdded: new Set(),
+    onElementsRemoved: new Set(),
+    onElementsUpdated: new Set(),
+
     onDraw: new Set(),
     onNodeHoverChange: new Set(),
 

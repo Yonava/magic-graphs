@@ -6,6 +6,7 @@ import { readonly, ref } from 'vue';
 
 import type { BaseGraph } from '../../base/index.ts';
 import type { GraphMouseEvent } from '../../base/types.ts';
+import { GraphEvent, GraphEventMap } from '../../events/index.ts';
 import { prioritizeNode } from '../../helpers/prioritization.ts';
 import type { NodeAnchor } from '../../plugins/anchors/types.ts';
 import type { GraphFocusPlugin } from '../../plugins/focus/index.ts';
@@ -33,6 +34,13 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
   const clearAnchorState = () => {
     parentNode.value = undefined;
     currentDraggingAnchor.value = undefined;
+  };
+
+  const clearAnchorStateOnNodeMove: GraphEventMap['onNodeUpdated'] = (
+    _,
+    previousValues,
+  ) => {
+    if (previousValues.x || previousValues.y) clearAnchorState();
   };
 
   const setParentNode = (nodeId: GNode['id']) => {
@@ -251,8 +259,8 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     setParentNode(newParentNode.id);
   };
 
-  const clearAnchorStateIfParentRemoved = (node: GNode) => {
-    if (parentNode.value?.id === node.id) {
+  const clearAnchorStateIfParentRemoved = (nodeId: GNode['id']) => {
+    if (parentNode.value?.id === nodeId) {
       clearAnchorState();
     }
   };
@@ -333,7 +341,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.subscribe('onNodeAdded', checkForParentNodeUpdate);
     graph.subscribe('onNodeRemoved', checkForParentNodeUpdate);
     graph.subscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
-    graph.subscribe('onNodeMoved', clearAnchorState);
+    graph.subscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
     graph.subscribe('onNodeDrop', updateNodeAnchors);
     graph.subscribe('onMouseMove', checkForParentNodeUpdate);
     graph.subscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
@@ -346,7 +354,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.unsubscribe('onNodeAdded', checkForParentNodeUpdate);
     graph.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
     graph.unsubscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
-    graph.unsubscribe('onNodeMoved', clearAnchorState);
+    graph.unsubscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
     graph.unsubscribe('onNodeDrop', updateNodeAnchors);
     graph.unsubscribe('onMouseMove', checkForParentNodeUpdate);
     graph.unsubscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);

@@ -6,7 +6,11 @@ import {
   ElementRemovalPayload,
   ElementUpdatePayload,
 } from '../base/actions/types.ts';
-import { TransactionPayload } from '../base/transaction/types.ts';
+import {
+  ForbiddenEdgeKeyUpdates,
+  ForbiddenNodeKeyUpdates,
+  TransactionPayload,
+} from '../base/transaction/types.ts';
 import type { HistoryOption } from '../base/types.ts';
 import type { GraphMouseEvent } from '../base/types.ts';
 import type { GraphState } from '../collab/types.ts';
@@ -51,7 +55,10 @@ export type BaseGraphEventMap = {
   /**
    * when a single node is {@link Graph.actions.updateNode | updated}
    */
-  onNodeUpdated: (node: Readonly<GNode>) => void;
+  onNodeUpdated: (
+    node: Readonly<GNode>,
+    previousValues: Readonly<Partial<Omit<GNode, ForbiddenNodeKeyUpdates>>>,
+  ) => void;
 
   /**
    * when a single edge is {@link Graph.actions.addEdge | added} to the graph
@@ -64,7 +71,10 @@ export type BaseGraphEventMap = {
   /**
    * when an edge is {@link Graph.actions.updateEdge | updated} from the graph
    */
-  onEdgeUpdated: (edge: Readonly<GEdge>) => void;
+  onEdgeUpdated: (
+    edge: Readonly<GEdge>,
+    previousValues: Readonly<Partial<Omit<GEdge, ForbiddenEdgeKeyUpdates>>>,
+  ) => void;
 
   /**
    * when any nodes or edges are added

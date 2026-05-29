@@ -10,10 +10,8 @@ type TransactionEventPayloadResolverMap = {
 type EventMapPropagationPredicates =
   Partial<TransactionEventPayloadResolverMap>;
 
-const extractSingle = <T>(arr: T[]): T | undefined =>
-  arr.length === 1 ? arr[0] : undefined;
-const hasItems = (...arrays: any[][]): boolean =>
-  arrays.some((arr) => arr.length > 0);
+const extractSingle = <T>(arr: T[]) => (arr.length === 1 ? arr[0] : undefined);
+const hasItems = (...arrays: any[][]) => arrays.some((arr) => arr.length > 0);
 
 const eventNameToPredicateMap: EventMapPropagationPredicates = {
   onNodeAdded: ({ addedNodes }) => {
