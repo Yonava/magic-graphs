@@ -5,6 +5,7 @@ import { CommitTransaction } from '../transaction/types.ts';
 import {
   createAddEdgeHandler,
   createAddNodeHandler,
+  createRemoveEdgeHandler,
   createRemoveNodeHandler,
   createUpdateNodeHandler,
 } from './methods/index.ts';
@@ -26,7 +27,7 @@ export const useGraphActions = (
   updateNode: createUpdateNodeHandler(options),
 
   addEdge: createAddEdgeHandler(options),
-  removeEdge,
+  removeEdge: createRemoveEdgeHandler(options),
   updateEdge,
 
   addElements,
