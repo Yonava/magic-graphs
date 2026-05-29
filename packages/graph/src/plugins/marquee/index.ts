@@ -207,8 +207,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.subscribe('onMouseUp', endGroupDrag);
     graph.subscribe('onMouseMove', groupDrag);
 
-    graph.subscribe('onUndo', updateEncapsulatedNodeBox);
-    graph.subscribe('onRedo', updateEncapsulatedNodeBox);
+    graph.subscribe('onTransactionComplete', updateEncapsulatedNodeBox);
   };
 
   const deactivate = () => {
@@ -223,8 +222,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.unsubscribe('onMouseUp', endGroupDrag);
     graph.unsubscribe('onMouseMove', groupDrag);
 
-    graph.unsubscribe('onUndo', updateEncapsulatedNodeBox);
-    graph.unsubscribe('onRedo', updateEncapsulatedNodeBox);
+    graph.unsubscribe('onTransactionComplete', updateEncapsulatedNodeBox);
 
     if (marqueeBox.value) disengageMarqueeBox();
   };
