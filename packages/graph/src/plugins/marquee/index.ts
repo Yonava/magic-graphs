@@ -44,12 +44,15 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const dx = coords.x - groupDragCoordinates.value.x;
     const dy = coords.y - groupDragCoordinates.value.y;
     groupDragCoordinates.value = coords;
-    for (const node of graph.focus.focusedNodes.value) {
-      graph.moveNode(node.id, {
-        x: node.x + dx,
-        y: node.y + dy,
-      });
-    }
+    graph.actions.updateElements({
+      nodes: graph.focus.focusedNodes.value.map((node) => ({
+        id: node.id,
+        values: {
+          x: node.x + dx,
+          y: node.y + dy,
+        },
+      })),
+    });
     updateEncapsulatedNodeBox();
   };
 

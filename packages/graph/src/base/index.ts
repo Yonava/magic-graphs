@@ -243,7 +243,13 @@ export const useBaseGraph = (
     },
   });
 
-  const actions = useGraphActions({ commitTransaction });
+  const actions = useGraphActions({
+    commitTransaction,
+    graphState: {
+      nodes,
+      edges,
+    },
+  });
 
   const nodeIdToIndex = computed(() =>
     nodes.value.reduce<Map<GNode['id'], number>>((map, node, i) => {

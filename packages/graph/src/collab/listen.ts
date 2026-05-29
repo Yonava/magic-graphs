@@ -33,16 +33,24 @@ const collabListeners = ({
 
 const graphListeners = ({ graph }: SocketListenOptions): GraphSocketEvents => ({
   nodeAdded: (node) => {
-    graph.addNode(node, { broadcast: false, focus: false, history: false });
+    graph.actions.addNode(node, {
+      broadcast: false,
+      focus: false,
+      history: false,
+    });
   },
   nodeRemoved: (nodeId) => {
-    graph.removeNode(nodeId, { broadcast: false, history: false });
+    graph.actions.removeNode(nodeId, { broadcast: false, history: false });
   },
   nodeMoved: (node) => {
-    graph.moveNode(node.id, node, { broadcast: false });
+    graph.actions.updateNode({ id: node.id, values: node });
   },
   edgeAdded: (edge) => {
-    graph.addEdge(edge, { broadcast: false, focus: false, history: false });
+    graph.actions.actions.addEdge(edge, {
+      broadcast: false,
+      focus: false,
+      history: false,
+    });
   },
   edgeRemoved: (edgeId) => {
     graph.removeEdge(edgeId, { broadcast: false, history: false });

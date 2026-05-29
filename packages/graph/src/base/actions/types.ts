@@ -56,7 +56,7 @@ export type GraphActions = {
    */
   updateNode: (
     options: GNodeUpdateDraft,
-    legacyOptions: LegacyOptions,
+    legacyOptions?: LegacyOptions,
   ) => GNode;
 
   /**
@@ -66,7 +66,7 @@ export type GraphActions = {
    */
   addEdge: (
     edge: PartiallyPartial<GEdge, 'id' | 'weight'>,
-    options: LegacyOptions,
+    options?: LegacyOptions,
   ) => GEdge;
 
   /**
@@ -74,7 +74,7 @@ export type GraphActions = {
    * @param edgeId - The ID of the edge to delete.
    * @returns The edge instance that was deleted.
    */
-  removeEdge: (edgeId: GEdge['id'], options: LegacyOptions) => GEdge;
+  removeEdge: (edgeId: GEdge['id'], options?: LegacyOptions) => GEdge;
 
   /**
    * Updates fields on an {@link GEdge | edge}.
@@ -83,7 +83,7 @@ export type GraphActions = {
    */
   updateEdge: (
     options: GEdgeUpdateDraft,
-    legacyOptions: LegacyOptions,
+    legacyOptions?: LegacyOptions,
   ) => GEdge;
 
   /**
@@ -96,7 +96,7 @@ export type GraphActions = {
       nodes: Partial<GNode>[];
       edges: PartiallyPartial<GEdge, 'id' | 'weight'>[];
     }>,
-    options: LegacyOptions,
+    options?: LegacyOptions,
   ) => ElementAdditionPayload;
 
   /**
@@ -111,7 +111,7 @@ export type GraphActions = {
       nodeIds: GNode['id'][];
       edgeIds: GEdge['id'][];
     }>,
-    options: LegacyOptions,
+    options?: LegacyOptions,
   ) => ElementRemovalPayload;
 
   /**
@@ -124,6 +124,6 @@ export type GraphActions = {
       nodes: GNodeUpdateDraft[];
       edges: GEdgeUpdateDraft[];
     }>,
-    legacyOptions: LegacyOptions,
+    legacyOptions?: LegacyOptions,
   ) => ElementUpdatePayload;
 };

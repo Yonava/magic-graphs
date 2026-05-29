@@ -31,8 +31,8 @@ export const createAddNodeHandler = ({
   const addNode: GraphActions['addNode'] = (node) => {
     const nodeWithDefaults = resolveNodeDefaults(node);
     const { addedNodes } = commitTransaction({ addNodes: [nodeWithDefaults] });
-    const telemetryNode = addedNodes[0];
 
+    const telemetryNode = addedNodes[0];
     if (!telemetryNode) {
       throw new Error(
         `[Graph Actions] Failed to append node. Transaction rejected.`,
@@ -42,7 +42,6 @@ export const createAddNodeHandler = ({
     const liveNode = graphState.nodes.value.find(
       (n) => n.id === telemetryNode.id,
     );
-
     if (!liveNode) {
       throw new Error(
         `[Graph Actions] Node creation succeeded but entity was not found in live state.`,

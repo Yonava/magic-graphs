@@ -14,10 +14,10 @@ describe('useHistoryGraph', () => {
   };
 
   test('undoes and redoes', () => {
-    const node1 = historyGraph.addNode({});
-    const node2 = historyGraph.addNode({});
+    const node1 = historygraph.actions.addNode({});
+    const node2 = historygraph.actions.addNode({});
     if (!node1 || !node2) throw new Error('Node is undefined');
-    historyGraph.addEdge({ from: node1.id, to: node2.id });
+    historygraph.actions.actions.addEdge({ from: node1.id, to: node2.id });
     const record = historyGraph.undo();
     if (!record) throw new Error('Record is undefined');
     const { action, affectedItems } = record;
@@ -30,8 +30,8 @@ describe('useHistoryGraph', () => {
   });
 
   test('clears history', () => {
-    historyGraph.addNode({});
-    historyGraph.addNode({});
+    historygraph.actions.addNode({});
+    historygraph.actions.addNode({});
     historyGraph.undo();
     historyGraph.redo();
     historyGraph.clearHistory();
@@ -42,7 +42,7 @@ describe('useHistoryGraph', () => {
   test('can redo and can undo are correct', () => {
     expect(historyGraph.canUndo.value).toBe(false);
     expect(historyGraph.canRedo.value).toBe(false);
-    historyGraph.addNode({});
+    historygraph.actions.addNode({});
     expect(historyGraph.canUndo.value).toBe(true);
     historyGraph.undo();
     expect(historyGraph.canRedo.value).toBe(true);
@@ -50,7 +50,7 @@ describe('useHistoryGraph', () => {
   });
 
   test('moves nodes correctly', () => {
-    const node = historyGraph.addNode({});
+    const node = historygraph.actions.addNode({});
     if (!node) throw new Error('Node is undefined');
 
     // simulates a node being picked up and dropped in a new location

@@ -63,9 +63,12 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
     const dx = magicCoords.x - coords.x;
     const dy = magicCoords.y - coords.y;
 
-    graph.moveNode(nodeId, {
-      x: node.x + dx,
-      y: node.y + dy,
+    graph.actions.updateNode({
+      id: nodeId,
+      values: {
+        x: node.x + dx,
+        y: node.y + dy,
+      },
     });
 
     activeDrag.value.coords = magicCoords;

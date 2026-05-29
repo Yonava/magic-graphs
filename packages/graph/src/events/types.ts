@@ -31,8 +31,8 @@ export type BaseGraphEventMap = {
   onTransactionComplete: (payload: DeepReadonly<TransactionPayload>) => void;
   /**
    * when one of the following occurs:
-   * - a node is {@link Graph.addNode | added} or {@link Graph.removeNode | removed}
-   * - an edge is {@link Graph.addEdge | added} or {@link Graph.removeEdge | removed}
+   * - a node is {@link graph.actions.addNode | added} or {@link graph.actions.removeNode | removed}
+   * - an edge is {@link graph.actions.actions.addEdge | added} or {@link Graph.removeEdge | removed}
    * - an edge label is {@link Graph.editEdgeLabel | edited}
    * - the {@link Graph.load | graph load} api is invoked with new nodes and edges
    * - the {@link Graph.reset | graph reset} api is invoked clearing all nodes and edges
@@ -40,7 +40,7 @@ export type BaseGraphEventMap = {
    */
   onStructureChange: () => void;
   /**
-   * when a node is {@link Graph.addNode | added} to the graph
+   * when a node is {@link graph.actions.addNode | added} to the graph
    */
   onNodeAdded: (node: GNode, options: DeepReadonly<AddNodeOptions>) => void;
   /**
@@ -51,7 +51,7 @@ export type BaseGraphEventMap = {
     options: DeepReadonly<AddNodeOptions>,
   ) => void;
   /**
-   * when a node is {@link Graph.removeNode | removed} from the graph
+   * when a node is {@link graph.actions.removeNode | removed} from the graph
    */
   onNodeRemoved: (
     removedNode: GNode,
@@ -78,7 +78,7 @@ export type BaseGraphEventMap = {
     options: DeepReadonly<MoveNodeOptions>,
   ) => void;
   /**
-   * when an edge is {@link Graph.addEdge | added} to the graph
+   * when an edge is {@link graph.actions.actions.addEdge | added} to the graph
    */
   onEdgeAdded: (edge: GEdge, options: DeepReadonly<AddEdgeOptions>) => void;
   /**

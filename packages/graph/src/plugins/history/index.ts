@@ -401,16 +401,19 @@ export const useHistory = (graph: BaseGraph) => {
       for (const item of record.affectedItems) {
         if (item.graphType === 'node') {
           const { to, id } = item.data;
-          graph.moveNode(id, {
-            x: to.x,
-            y: to.y,
+          graph.actions.updateNode({
+            id,
+            values: to,
           });
         }
       }
     } else if (record.action === 'edit') {
-      for (const item of record.affectedItems) {
-        graph.editEdgeLabel(item.data.id, item.data.to, { history: false });
-      }
+      graph.actions.updateElements({
+        edges: record.affectedItems.map(({ data }) => ({
+          id: data.id,
+          values: { weight: data.to },
+        })),
+      });
     }
   };
 

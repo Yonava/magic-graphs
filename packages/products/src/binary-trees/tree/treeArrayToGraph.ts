@@ -48,7 +48,7 @@ export const treeArrayToGraph = (
   );
 
   for (const node of nodesNotInNewTree) {
-    graph.removeNode(node.id);
+    graph.actions.removeNode(node.id);
   }
 
   // the tree is empty and all the nodes have been removed
@@ -107,6 +107,6 @@ export const treeArrayToGraph = (
   graph.bulkMoveNode(movementObj, { animate: true });
 
   for (const edge of newTreeEdges) {
-    graph.addEdge(edge, { animate: true });
+    graph.actions.actions.addEdge(edge, { animate: true });
   }
 };
