@@ -12,20 +12,24 @@ const getNodeDefaults = () =>
     y: 0,
   }) as const satisfies Partial<GNode>;
 
+export const useResolveNodeDefaults = (
+  graphState: GraphActionsOptions['graphState'],
+) => {
+  const getLabel = useNodeLetterLabelGetter(graphState);
+  return (...[node]: Parameters<GraphActions['addNode']>): GNode => ({
+    ...getNodeDefaults(),
+    label: getLabel(),
+    ...node,
+  });
+};
+
 export const createAddNodeHandler = ({
   graphState,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['addNode'] => {
-  const getLabel = useNodeLetterLabelGetter(graphState);
-
+  const resolveNodeDefaults = useResolveNodeDefaults(graphState);
   const addNode: GraphActions['addNode'] = (node) => {
-    const defaults = {
-      ...getNodeDefaults(),
-      label: getLabel(),
-    } as const satisfies Partial<GNode>;
-
-    const nodeWithDefaults = { ...defaults, ...node };
-
+    const nodeWithDefaults = resolveNodeDefaults(node);
     const { addedNodes } = commitTransaction({ addNodes: [nodeWithDefaults] });
     const telemetryNode = addedNodes[0];
 

@@ -4,9 +4,13 @@ import { GEdge, GNode } from '../../types.ts';
 import { CommitTransaction } from '../transaction/types.ts';
 import {
   createAddEdgeHandler,
+  createAddElementsHandler,
   createAddNodeHandler,
   createRemoveEdgeHandler,
+  createRemoveElementsHandler,
   createRemoveNodeHandler,
+  createUpdateEdgeHandler,
+  createUpdateElementsHandler,
   createUpdateNodeHandler,
 } from './methods/index.ts';
 import { GraphActions } from './types.ts';
@@ -28,9 +32,9 @@ export const useGraphActions = (
 
   addEdge: createAddEdgeHandler(options),
   removeEdge: createRemoveEdgeHandler(options),
-  updateEdge,
+  updateEdge: createUpdateEdgeHandler(options),
 
-  addElements,
-  removeElements,
-  updateElements,
+  addElements: createAddElementsHandler(options),
+  removeElements: createRemoveElementsHandler(options),
+  updateElements: createUpdateElementsHandler(options),
 });

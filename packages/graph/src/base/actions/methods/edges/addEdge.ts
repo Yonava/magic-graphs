@@ -11,15 +11,19 @@ const getEdgeDefaults = () =>
     weight: new Fraction(1),
   }) as const satisfies Partial<GEdge>;
 
+export const resolveEdgeDefaults = (
+  ...[edge]: Parameters<GraphActions['addEdge']>
+): GEdge => ({
+  ...getEdgeDefaults(),
+  ...edge,
+});
+
 export const createAddEdgeHandler = ({
   graphState,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['addEdge'] => {
   const addEdge: GraphActions['addEdge'] = (edge) => {
-    const edgeWithDefaults = {
-      ...getEdgeDefaults(),
-      ...edge,
-    };
+    const edgeWithDefaults = resolveEdgeDefaults(edge);
 
     const { addedEdges } = commitTransaction({ addEdges: [edgeWithDefaults] });
     const telemetryEdge = addedEdges[0];

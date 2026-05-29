@@ -75,7 +75,7 @@ export type GraphActions = {
   addElements: (
     elements: Partial<{
       nodes: Partial<GNode>[];
-      edges: Partial<GEdge>[];
+      edges: PartiallyPartial<GEdge, 'id' | 'weight'>[];
     }>,
   ) => ElementAdditionPayload;
 
