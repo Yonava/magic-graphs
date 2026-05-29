@@ -20,7 +20,7 @@ type ElementUpdatePayload = Pick<
   'updatedNodes' | 'updatedEdges'
 >;
 
-type GraphActions = {
+export type GraphActions = {
   /**
    * Adds a single {@link GNode | node} to the graph. Missing properties get default values.
    * @param node - The node properties to insert.
@@ -84,10 +84,12 @@ type GraphActions = {
    * @param elementIds - Arrays of target node and/or edge IDs to delete.
    * @returns Lists of everything that got deleted during the operation.
    */
-  removeElements: (elementIds: {
-    nodeIds?: GNode['id'][];
-    edgeIds?: GEdge['id'][];
-  }) => ElementRemovalPayload;
+  removeElements: (
+    elementIds: Partial<{
+      nodeIds: GNode['id'][];
+      edgeIds: GEdge['id'][];
+    }>,
+  ) => ElementRemovalPayload;
 
   /**
    * Bulk updates multiple {@link GNode | nodes} and {@link GEdge | edges}.

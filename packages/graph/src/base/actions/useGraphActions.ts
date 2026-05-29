@@ -1,4 +1,5 @@
 import { CommitTransaction } from '../transaction/types.ts';
+import { GraphActions } from './types.ts';
 
 type GraphActionsOptions = {
   commitTransaction: CommitTransaction;
@@ -6,4 +7,4 @@ type GraphActionsOptions = {
 
 export const useGraphActions = ({
   commitTransaction,
-}: GraphActionsOptions) => {};
+}: GraphActionsOptions): GraphActions => {};

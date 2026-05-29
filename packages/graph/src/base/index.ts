@@ -3,7 +3,6 @@ import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { clone } from '@magic/utils/clone';
 import { deepMerge } from '@magic/utils/deepMerge';
 import { delta } from '@magic/utils/delta/index';
-import { generateId } from '@magic/utils/id';
 import type {
   KeyboardEventEntries,
   KeyboardEventMap,
@@ -25,6 +24,7 @@ import { THEMES } from '../themes/index.ts';
 import type { GraphThemeName } from '../themes/index.ts';
 import { GraphInterface, getInitialThemeMap } from '../themes/types.ts';
 import type { Aggregator, GEdge, GNode } from '../types.ts';
+import { useGraphActions } from './actions/useGraphActions.ts';
 import {
   type GraphAnimations,
   getDefaultGraphAnimations,
@@ -216,13 +216,34 @@ export const useBaseGraph = (
   const commitTransaction = useCommitTransaction({
     getGraphState: () => ({ nodes: nodes.value, edges: edges.value }),
     onTransactionSuccess: (payload) => {
-      emit('onTransactionComplete', payload);
+      if (payload.removedNodes.length || payload.removedEdges.length) {
+        const removedNodeIds = new Set(payload.removedNodes.map((n) => n.id));
+        const removedEdgeIds = new Set(payload.removedEdges.map((e) => e.id));
+
+        nodes.value = nodes.value.filter((n) => !removedNodeIds.has(n.id));
+        edges.value = edges.value.filter((e) => !removedEdgeIds.has(e.id));
+      }
+
       nodes.value.push(...payload.addedNodes);
       edges.value.push(...payload.addedEdges);
+
+      payload.updatedNodes.forEach((update) => {
+        const target = nodes.value.find((n) => n.id === update.node.id);
+        if (target) Object.assign(target, update.node);
+      });
+
+      payload.updatedEdges.forEach((update) => {
+        const target = edges.value.find((e) => e.id === update.edge.id);
+        if (target) Object.assign(target, update.edge);
+      });
+
       updateGraphAtMousePosition();
       updateAggregator();
+      emit('onTransactionComplete', payload);
     },
   });
+
+  const actions = useGraphActions({ commitTransaction });
 
   const nodeIdToIndex = computed(() =>
     nodes.value.reduce<Map<GNode['id'], number>>((map, node, i) => {
@@ -326,26 +347,7 @@ export const useBaseGraph = (
     getNode,
     getEdge,
 
-    addNode: () => {
-      const {
-        addedNodes: [addedNode],
-      } = commitTransaction({
-        addNodes: [
-          {
-            id: generateId(),
-            ...graphAtMousePosition.value.coords,
-            label: '!',
-          },
-        ],
-      });
-      emit('onNodeAdded', addedNode, {
-        animate: false,
-        broadcast: false,
-        focus: true,
-        history: true,
-      });
-      return addedNode;
-    },
+    actions,
 
     getSchemaItemsByCoordinates,
 
