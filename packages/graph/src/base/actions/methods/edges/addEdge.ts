@@ -12,7 +12,7 @@ const getEdgeDefaults = () =>
   }) as const satisfies Partial<GEdge>;
 
 export const resolveEdgeDefaults = (
-  ...[edge]: Parameters<GraphActions['addEdge']>
+  edge: Parameters<GraphActions['addEdge']>[0],
 ): GEdge => ({
   ...getEdgeDefaults(),
   ...edge,

@@ -16,7 +16,7 @@ export const useResolveNodeDefaults = (
   graphState: GraphActionsOptions['graphState'],
 ) => {
   const getLabel = useNodeLetterLabelGetter(graphState);
-  return (...[node]: Parameters<GraphActions['addNode']>): GNode => ({
+  return (node: Parameters<GraphActions['addNode']>[0]): GNode => ({
     ...getNodeDefaults(),
     label: getLabel(),
     ...node,
