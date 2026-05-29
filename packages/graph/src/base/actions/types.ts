@@ -57,7 +57,7 @@ export type GraphActions = {
   updateNode: (
     options: GNodeUpdateDraft,
     legacyOptions?: LegacyOptions,
-  ) => GNode;
+  ) => GNode | undefined;
 
   /**
    * Adds a single {@link GEdge | edge} connecting two existing {@link GNode | nodes}.

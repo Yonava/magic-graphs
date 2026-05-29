@@ -54,7 +54,7 @@ export const useInteractive = (graph: BaseGraph) => {
     const canCreateEdge = doesEdgeConformToRules(fromNode, toNode);
     if (!canCreateEdge) return;
 
-    graph.actions.actions.addEdge({
+    graph.actions.addEdge({
       from: fromNode.id,
       to: toNode.id,
       weight: graph.settings.value.userAddedDefaultEdgeWeight(),

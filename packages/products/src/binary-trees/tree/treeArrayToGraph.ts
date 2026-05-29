@@ -1,11 +1,15 @@
-import type { GEdge, Graph } from '@magic/graph/types';
+import type { GEdge, GNode, Graph } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { Fraction } from 'mathjs';
 
-import type { GNodeMoveInstruction } from '../../../../graph/dist/types/base/useCommitTransaction.ts';
 import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner.ts';
 import type { TreeNodeKeyArray } from './avl.ts';
 import type { TreeNode } from './treeNode.ts';
+
+type GNodeMoveInstruction = {
+  nodeId: GNode['id'];
+  coords: Coordinate;
+};
 
 const newEdge = (from: number, to: number): GEdge => ({
   from: from.toString(),
@@ -89,7 +93,7 @@ export const treeArrayToGraph = (
   });
 
   for (const edge of edgesNotInNewTree) {
-    graph.removeEdge(edge.id);
+    graph.actions.removeEdge(edge.id);
   }
 
   const movementObj = treeArray
@@ -104,9 +108,17 @@ export const treeArrayToGraph = (
     })
     .filter(Boolean) as GNodeMoveInstruction[];
 
-  graph.bulkMoveNode(movementObj, { animate: true });
+  graph.actions.updateElements(
+    {
+      nodes: movementObj.map((obj) => ({
+        id: obj.nodeId,
+        values: obj.coords,
+      })),
+    },
+    { animate: true },
+  );
 
   for (const edge of newTreeEdges) {
-    graph.actions.actions.addEdge(edge, { animate: true });
+    graph.actions.addEdge(edge, { animate: true });
   }
 };

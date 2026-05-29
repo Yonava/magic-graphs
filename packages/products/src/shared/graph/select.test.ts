@@ -22,7 +22,7 @@ describe('select from graph', () => {
 
   if (!node1 || !node2) throw new Error('failed to add nodes');
 
-  const edge = graph.actions.actions.addEdge({ from: node1.id, to: node2.id });
+  const edge = graph.actions.addEdge({ from: node1.id, to: node2.id });
 
   if (!edge) throw new Error('failed to add edge');
 

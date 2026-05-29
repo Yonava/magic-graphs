@@ -48,8 +48,11 @@ export const useShortcuts = (
   const defaultShortcutTriggerSelectAll = () => graph.focus.all();
   const defaultShortcutTriggerDelete = () => {
     if (settings.value.interactive === false) return;
-    graph.bulkRemoveNode([...graph.focus.focusedItemIds.value]);
-    graph.bulkRemoveEdge([...graph.focus.focusedItemIds.value]);
+    const ids = [...graph.focus.focusedItemIds.value];
+    graph.actions.removeElements({
+      nodeIds: ids,
+      edgeIds: ids,
+    });
   };
 
   /**
