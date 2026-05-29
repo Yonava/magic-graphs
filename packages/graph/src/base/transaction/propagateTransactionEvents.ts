@@ -10,53 +10,66 @@ type TransactionEventPayloadResolverMap = {
 type EventMapPropagationPredicates =
   Partial<TransactionEventPayloadResolverMap>;
 
+const extractSingle = <T>(arr: T[]): T | undefined =>
+  arr.length === 1 ? arr[0] : undefined;
+const hasItems = (...arrays: any[][]): boolean =>
+  arrays.some((arr) => arr.length > 0);
+
 const eventNameToPredicateMap: EventMapPropagationPredicates = {
-  onNodeAdded: (payload) => {
-    if (payload.addedNodes.length !== 1) return;
-    return {
-      args: [payload.addedNodes[0]],
-    };
+  onNodeAdded: ({ addedNodes }) => {
+    const node = extractSingle(addedNodes);
+    if (node) return { args: [node] };
   },
-  onNodeRemoved: (payload) => {
-    if (payload.removedNodes.length !== 1) return;
-    return {
-      args: [payload.removedNodes[0].id, payload.removedEdges.map((e) => e.id)],
-    };
+  onNodeRemoved: ({ removedNodes, removedEdges }) => {
+    const node = extractSingle(removedNodes);
+    if (node) {
+      return { args: [node.id, removedEdges.map((e) => e.id)] };
+    }
   },
-  onNodeUpdated: (payload) => {
-    if (payload.updatedNodes.length !== 1) return;
-    return {
-      args: [payload.updatedNodes[0].node],
-    };
+  onNodeUpdated: ({ updatedNodes }) => {
+    const update = extractSingle(updatedNodes);
+    if (update) return { args: [update.node] };
   },
-  onEdgeAdded: (payload) => {
-    if (payload.addedEdges.length !== 1) return;
-    return {
-      args: [payload.addedEdges[0]],
-    };
+  onEdgeAdded: ({ addedEdges }) => {
+    const edge = extractSingle(addedEdges);
+    if (edge) return { args: [edge] };
   },
-  onEdgeRemoved: (payload) => {
-    if (payload.removedEdges.length !== 1) return;
-    return {
-      args: [payload.removedEdges[0].id],
-    };
+  onEdgeRemoved: ({ removedEdges }) => {
+    const edge = extractSingle(removedEdges);
+    if (edge) return { args: [edge.id] };
   },
-  onEdgeUpdated: (payload) => {
-    if (payload.updatedEdges.length !== 1) return;
-    return {
-      args: [payload.updatedEdges[0].edge],
-    };
+  onEdgeUpdated: ({ updatedEdges }) => {
+    const update = extractSingle(updatedEdges);
+    if (update) return { args: [update.edge] };
+  },
+  onElementsAdded: ({ addedEdges, addedNodes }) => {
+    if (hasItems(addedNodes, addedEdges)) {
+      return { args: [{ addedEdges, addedNodes }] };
+    }
+  },
+  onElementsRemoved: ({ removedEdges, removedNodes }) => {
+    if (hasItems(removedNodes, removedEdges)) {
+      return { args: [{ removedEdges, removedNodes }] };
+    }
+  },
+  onElementsUpdated: ({ updatedEdges, updatedNodes }) => {
+    if (hasItems(updatedNodes, updatedEdges)) {
+      return { args: [{ updatedEdges, updatedNodes }] };
+    }
   },
   onStructureChange: (payload) => {
-    const edgeWeightChange = payload.updatedEdges.some(
+    const edgeWeightChanged = payload.updatedEdges.some(
       (e) => e.previousValues.weight?.valueOf() !== e.edge.weight.valueOf(),
     );
+
     const hasStructuralChanges =
-      payload.addedNodes.length > 0 ||
-      payload.removedNodes.length > 0 ||
-      payload.addedEdges.length > 0 ||
-      payload.removedEdges.length > 0 ||
-      edgeWeightChange;
+      edgeWeightChanged ||
+      hasItems(
+        payload.addedNodes,
+        payload.addedEdges,
+        payload.removedNodes,
+        payload.removedEdges,
+      );
 
     if (hasStructuralChanges) {
       return { args: [] };
@@ -73,7 +86,6 @@ export const propagateTransactionEvents = (
     if (!predicate) return;
 
     const result = predicate(payload);
-
     if (result && result.args) {
       emit(event, ...result.args);
     }

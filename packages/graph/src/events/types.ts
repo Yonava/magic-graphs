@@ -1,6 +1,11 @@
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import type { DeepPartial, DeepReadonly } from 'ts-essentials';
 
+import {
+  ElementAdditionPayload,
+  ElementRemovalPayload,
+  ElementUpdatePayload,
+} from '../base/actions/types.ts';
 import { TransactionPayload } from '../base/transaction/types.ts';
 import type { HistoryOption } from '../base/types.ts';
 import type { GraphMouseEvent } from '../base/types.ts';
@@ -60,6 +65,19 @@ export type BaseGraphEventMap = {
    * when an edge is {@link Graph.actions.updateEdge | updated} from the graph
    */
   onEdgeUpdated: (edge: Readonly<GEdge>) => void;
+
+  /**
+   * when any nodes or edges are added
+   */
+  onElementsAdded: (additions: DeepReadonly<ElementAdditionPayload>) => void;
+  /**
+   * when any nodes or edges are deleted
+   */
+  onElementsRemoved: (removals: DeepReadonly<ElementRemovalPayload>) => void;
+  /**
+   * when any nodes or edges are updated
+   */
+  onElementsUpdated: (updates: DeepReadonly<ElementUpdatePayload>) => void;
 
   /**
    * when the canvas is repainted

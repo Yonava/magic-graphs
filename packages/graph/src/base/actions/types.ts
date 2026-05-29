@@ -7,17 +7,17 @@ import {
   TransactionPayload,
 } from '../transaction/types.ts';
 
-type ElementRemovalPayload = Pick<
+export type ElementRemovalPayload = Pick<
   TransactionPayload,
   'removedNodes' | 'removedEdges'
 >;
 
-type ElementAdditionPayload = Pick<
+export type ElementAdditionPayload = Pick<
   TransactionPayload,
   'addedNodes' | 'addedEdges'
 >;
 
-type ElementUpdatePayload = Pick<
+export type ElementUpdatePayload = Pick<
   TransactionPayload,
   'updatedNodes' | 'updatedEdges'
 >;
