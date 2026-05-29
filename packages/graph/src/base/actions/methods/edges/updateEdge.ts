@@ -6,16 +6,9 @@ export const createUpdateEdgeHandler = ({
   commitTransaction,
 }: GraphActionsOptions): GraphActions['updateEdge'] => {
   const updateEdge: GraphActions['updateEdge'] = (update) => {
-    const { updatedEdges } = commitTransaction({
+    commitTransaction({
       updatedEdges: [update],
     });
-
-    const telemetryUpdate = updatedEdges[0];
-    if (!telemetryUpdate) {
-      throw new Error(
-        `[Graph Actions] Failed to update edge. Transaction rejected.`,
-      );
-    }
 
     const liveEdge = graphState.edges.value.find((e) => e.id === update.id);
     if (!liveEdge) {
