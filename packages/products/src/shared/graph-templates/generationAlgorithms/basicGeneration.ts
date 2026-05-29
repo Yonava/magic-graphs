@@ -1,4 +1,4 @@
-import { LETTERS, graphLabelGetter } from '@magic/graph/labels';
+import { LETTERS, useGraphLabelGetter } from '@magic/graph/labels';
 import type { GEdge, GNode } from '@magic/graph/types';
 import { generateId } from '@magic/utils/id';
 import { Fraction } from 'mathjs';
@@ -15,7 +15,7 @@ import type { AutoGenerateGraphOptions } from '../templateTypes.ts';
 export const generateNodes = (nodeCount: number) => {
   const nodes = ref<GNode[]>([]);
 
-  const getLabel = graphLabelGetter(nodes, LETTERS);
+  const getLabel = useGraphLabelGetter(nodes, LETTERS);
 
   for (let i = 0; i < nodeCount; i++) {
     nodes.value.push({

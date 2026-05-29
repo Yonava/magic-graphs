@@ -44,12 +44,15 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     const dx = coords.x - groupDragCoordinates.value.x;
     const dy = coords.y - groupDragCoordinates.value.y;
     groupDragCoordinates.value = coords;
-    for (const node of graph.focus.focusedNodes.value) {
-      graph.moveNode(node.id, {
-        x: node.x + dx,
-        y: node.y + dy,
-      });
-    }
+    graph.actions.updateElements({
+      nodes: graph.focus.focusedNodes.value.map((node) => ({
+        id: node.id,
+        values: {
+          x: node.x + dx,
+          y: node.y + dy,
+        },
+      })),
+    });
     updateEncapsulatedNodeBox();
   };
 
@@ -204,8 +207,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.subscribe('onMouseUp', endGroupDrag);
     graph.subscribe('onMouseMove', groupDrag);
 
-    graph.subscribe('onUndo', updateEncapsulatedNodeBox);
-    graph.subscribe('onRedo', updateEncapsulatedNodeBox);
+    graph.subscribe('onTransactionComplete', updateEncapsulatedNodeBox);
   };
 
   const deactivate = () => {
@@ -220,8 +222,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     graph.unsubscribe('onMouseUp', endGroupDrag);
     graph.unsubscribe('onMouseMove', groupDrag);
 
-    graph.unsubscribe('onUndo', updateEncapsulatedNodeBox);
-    graph.unsubscribe('onRedo', updateEncapsulatedNodeBox);
+    graph.unsubscribe('onTransactionComplete', updateEncapsulatedNodeBox);
 
     if (marqueeBox.value) disengageMarqueeBox();
   };

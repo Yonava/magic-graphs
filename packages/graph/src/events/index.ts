@@ -81,24 +81,20 @@ export const getInitialEventBus = () => {
     /**
      * BaseGraphEvents
      */
+    onTransactionComplete: new Set(),
     onStructureChange: new Set(),
 
     onNodeAdded: new Set(),
-    onBulkNodeAdded: new Set(),
-
     onNodeRemoved: new Set(),
-    onBulkNodeRemoved: new Set(),
-
-    onNodeMoved: new Set(),
-    onBulkNodeMoved: new Set(),
+    onNodeUpdated: new Set(),
 
     onEdgeAdded: new Set(),
-    onBulkEdgeAdded: new Set(),
-
     onEdgeRemoved: new Set(),
-    onBulkEdgeRemoved: new Set(),
+    onEdgeUpdated: new Set(),
 
-    onEdgeLabelEdited: new Set(),
+    onElementsAdded: new Set(),
+    onElementsRemoved: new Set(),
+    onElementsUpdated: new Set(),
 
     onDraw: new Set(),
     onNodeHoverChange: new Set(),

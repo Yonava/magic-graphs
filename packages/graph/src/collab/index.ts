@@ -7,7 +7,6 @@ import { computed, readonly, ref } from 'vue';
 import type { Graph } from '../types.ts';
 import { usePaintCollabTags } from './collabTag.ts';
 import { COLLAB_COLORS, SOCKET_URL } from './constants.ts';
-import { useSocketEmitters } from './emit.ts';
 import { startListening } from './listen.ts';
 import type {
   Collaborator,
@@ -48,8 +47,6 @@ const useCollab = () => {
   const graph = ref<Graph | undefined>();
 
   const paintCollabTag = usePaintCollabTags(collaborators);
-
-  useSocketEmitters(socket, graph);
 
   const resetCollabState = () => {
     meAsACollaborator.value = undefined;

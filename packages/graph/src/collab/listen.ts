@@ -33,25 +33,39 @@ const collabListeners = ({
 
 const graphListeners = ({ graph }: SocketListenOptions): GraphSocketEvents => ({
   nodeAdded: (node) => {
-    graph.addNode(node, { broadcast: false, focus: false, history: false });
-  },
-  nodeRemoved: (nodeId) => {
-    graph.removeNode(nodeId, { broadcast: false, history: false });
-  },
-  nodeMoved: (node) => {
-    graph.moveNode(node.id, node, { broadcast: false });
-  },
-  edgeAdded: (edge) => {
-    graph.addEdge(edge, { broadcast: false, focus: false, history: false });
-  },
-  edgeRemoved: (edgeId) => {
-    graph.removeEdge(edgeId, { broadcast: false, history: false });
-  },
-  edgeLabelEdited: (edgeId, newWeight) => {
-    graph.editEdgeLabel(edgeId, new Fraction(newWeight), {
+    graph.actions.addNode(node, {
       broadcast: false,
+      focus: false,
       history: false,
     });
+  },
+  nodeRemoved: (nodeId) => {
+    graph.actions.removeNode(nodeId, { broadcast: false, history: false });
+  },
+  nodeMoved: (node) => {
+    graph.actions.updateNode({ id: node.id, values: node });
+  },
+  edgeAdded: (edge) => {
+    graph.actions.addEdge(edge, {
+      broadcast: false,
+      focus: false,
+      history: false,
+    });
+  },
+  edgeRemoved: (edgeId) => {
+    graph.actions.removeEdge(edgeId, { broadcast: false, history: false });
+  },
+  edgeLabelEdited: (edgeId, newWeight) => {
+    graph.actions.updateEdge(
+      {
+        id: edgeId,
+        values: { weight: new Fraction(newWeight) },
+      },
+      {
+        broadcast: false,
+        history: false,
+      },
+    );
   },
 });
 

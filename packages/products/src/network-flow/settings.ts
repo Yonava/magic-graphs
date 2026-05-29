@@ -1,4 +1,4 @@
-import { LETTERS, graphLabelGetter } from '@magic/graph/labels';
+import { LETTERS, useGraphLabelGetter } from '@magic/graph/labels';
 import type { GraphSettings } from '@magic/graph/settings/index';
 import type { Graph } from '@magic/graph/types';
 import { Fraction } from 'mathjs';
@@ -13,7 +13,7 @@ const ALPHABET_WITHOUT_SOURCE_SINK = LETTERS.filter(
  * labeller network flow graph instances (nodes)
  */
 export const flowNodeLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
-  return graphLabelGetter(graph.nodes, ALPHABET_WITHOUT_SOURCE_SINK);
+  return useGraphLabelGetter(graph.nodes, ALPHABET_WITHOUT_SOURCE_SINK);
 };
 
 /**

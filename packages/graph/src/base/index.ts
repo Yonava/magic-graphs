@@ -1,8 +1,8 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { clone } from '@magic/utils/clone';
-import { delta } from '@magic/utils/deepDelta/index';
 import { deepMerge } from '@magic/utils/deepMerge';
+import { delta } from '@magic/utils/delta/index';
 import type {
   KeyboardEventEntries,
   KeyboardEventMap,
@@ -24,14 +24,16 @@ import { THEMES } from '../themes/index.ts';
 import type { GraphThemeName } from '../themes/index.ts';
 import { GraphInterface, getInitialThemeMap } from '../themes/types.ts';
 import type { Aggregator, GEdge, GNode } from '../types.ts';
+import { useGraphActions } from './actions/useGraphActions.ts';
 import {
   type GraphAnimations,
   getDefaultGraphAnimations,
 } from './animations.ts';
+import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
+import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
 import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types.ts';
 import type { GraphAtMousePosition, HistoryOption } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
-import { useGraphCRUD } from './useGraphCRUD.ts';
 import { useGraphCursor } from './useGraphCursor.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { usePluginHoldController } from './usePluginHold.ts';
@@ -71,6 +73,9 @@ export const useBaseGraph = (
 
   const nodes = ref<GNode[]>([]);
   const edges = ref<GEdge[]>([]);
+  const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
+  const getNode = (id: GNode['id']) => nodeIdToNodeMap.value.get(id);
+  const getEdge = (id: GEdge['id']) => edgeIdToEdgeMap.value.get(id);
 
   const graphAtMousePosition = ref<GraphAtMousePosition>({
     coords: { x: 0, y: 0 },
@@ -209,35 +214,24 @@ export const useBaseGraph = (
     }
   });
 
-  const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
-  const {
-    getNode,
-    getEdge,
-    addNode,
-    addEdge,
-    moveNode,
-    bulkMoveNode,
-    editEdgeLabel,
-    removeNode,
-    removeEdge,
-    bulkAddNode,
-    bulkRemoveNode,
-    bulkAddEdge,
-    bulkRemoveEdge,
-  } = useGraphCRUD({
-    nodes,
+  const onTransactionSucceeded = useTransactionSucceeded({
     edges,
-    nodeMap: nodeIdToNodeMap,
-    edgeMap: edgeIdToEdgeMap,
+    nodes,
     emit,
-    settings,
-    updateGraphAtMousePosition,
     updateAggregator,
-    animations,
-    autoAnimate,
-    activeAnimations,
-    draw,
-    magicCanvas,
+    updateGraphAtMousePosition,
+  });
+  const commitTransaction = useCommitTransaction({
+    getGraphState: () => ({ nodes: nodes.value, edges: edges.value }),
+    onTransactionSucceeded,
+  });
+
+  const actions = useGraphActions({
+    commitTransaction,
+    graphState: {
+      nodes,
+      edges,
+    },
   });
 
   const nodeIdToIndex = computed(() =>
@@ -342,22 +336,7 @@ export const useBaseGraph = (
     getNode,
     getEdge,
 
-    addNode,
-    addEdge,
-
-    moveNode,
-    bulkMoveNode,
-
-    editEdgeLabel,
-
-    removeNode,
-    removeEdge,
-
-    bulkAddNode,
-    bulkRemoveNode,
-
-    bulkAddEdge,
-    bulkRemoveEdge,
+    actions,
 
     getSchemaItemsByCoordinates,
 

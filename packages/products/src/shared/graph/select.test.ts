@@ -17,12 +17,12 @@ describe('select from graph', () => {
 
   const graph = useGraph(ref() as any);
 
-  const node1 = graph.addNode({ x: 100, y: 100 });
-  const node2 = graph.addNode({ x: 200, y: 200 });
+  const node1 = graph.actions.addNode({ x: 100, y: 100 });
+  const node2 = graph.actions.addNode({ x: 200, y: 200 });
 
   if (!node1 || !node2) throw new Error('failed to add nodes');
 
-  const edge = graph.addEdge({ from: node1.id, to: node2.id });
+  const edge = graph.actions.addEdge({ from: node1.id, to: node2.id });
 
   if (!edge) throw new Error('failed to add edge');
 

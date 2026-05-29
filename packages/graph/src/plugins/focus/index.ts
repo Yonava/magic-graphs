@@ -72,7 +72,10 @@ export const useFocus = (graph: BaseGraph) => {
         return;
       }
 
-      graph.editEdgeLabel(edge.id, newWeight);
+      graph.actions.updateEdge({
+        id: edge.id,
+        values: { weight: newWeight },
+      });
     });
   };
 
@@ -174,16 +177,16 @@ export const useFocus = (graph: BaseGraph) => {
   }
 
   const activate = () => {
-    graph.subscribe('onNodeAdded', setFocusToAddedItem);
-    graph.subscribe('onEdgeAdded', setFocusToAddedItem);
+    // graph.subscribe('onNodeAdded', setFocusToAddedItem);
+    // graph.subscribe('onEdgeAdded', setFocusToAddedItem);
     graph.subscribe('onMouseDown', handleFocusChange);
     graph.subscribe('onStructureChange', clearOutDeletedItemsFromFocus);
     graph.subscribe('onGraphReset', resetFocus);
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onNodeAdded', setFocusToAddedItem);
-    graph.unsubscribe('onEdgeAdded', setFocusToAddedItem);
+    // graph.unsubscribe('onNodeAdded', setFocusToAddedItem);
+    // graph.unsubscribe('onEdgeAdded', setFocusToAddedItem);
     graph.unsubscribe('onMouseDown', handleFocusChange);
     graph.unsubscribe('onStructureChange', clearOutDeletedItemsFromFocus);
     graph.unsubscribe('onGraphReset', resetFocus);

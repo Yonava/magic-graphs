@@ -57,12 +57,6 @@ export const useTreeGraphPositioner = (
 
   const optionsRef = ref(treeOptions);
 
-  /**
-   * whether nodes of the graph are currently
-   * being animated to their new positions
-   */
-  const reshapingActive = ref(false);
-
   const graphPositioner = (rootNode: GNode) => {
     const { adjacencyList } = graph.adjacencyList;
     const nodeDepths = getNodeDepths(rootNode, adjacencyList.value);
@@ -80,19 +74,22 @@ export const useTreeGraphPositioner = (
   };
 
   const shapeGraph = async (rootNode: GNode) => {
-    if (reshapingActive.value) return;
-
     const newPositions = graphPositioner(rootNode);
     if (!newPositions) return;
 
-    reshapingActive.value = true;
-    await graph.bulkMoveNode(newPositions, { animate: treeOptions.animate });
-    reshapingActive.value = false;
+    graph.actions.updateElements(
+      {
+        nodes: newPositions.map(({ coords, nodeId }) => ({
+          id: nodeId,
+          values: coords,
+        })),
+      },
+      { animate: treeOptions.animate },
+    );
   };
 
   return {
     shapeGraph,
-    reshapingActive,
     options: optionsRef,
   };
 };

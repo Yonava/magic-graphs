@@ -24,7 +24,7 @@ export type LabelledItem = { label: string };
  *  // remove "A" from the list of labelled items
  *  console.log(newLabel); // 'A'
  */
-export const graphLabelGetter =
+export const useGraphLabelGetter =
   (labelledItems: Ref<LabelledItem[]>, sequence: string[]) => () => {
     let labels = labelledItems.value.map(({ label }) => label);
 
@@ -60,8 +60,8 @@ export const graphLabelGetter =
  * @param graph - a graph instance
  * @returns a function that will return the next available letter label
  */
-export const nodeLetterLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
-  return graphLabelGetter(graph.nodes, LETTERS);
+export const useNodeLetterLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
+  return useGraphLabelGetter(graph.nodes, LETTERS);
 };
 
 /**
@@ -71,6 +71,6 @@ export const nodeLetterLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
  * @param graph - a graph instance
  * @returns a function that will return the next available number label
  */
-export const nodeNumberLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
-  return graphLabelGetter(graph.nodes, NUMBERS);
+export const useNodeNumberLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
+  return useGraphLabelGetter(graph.nodes, NUMBERS);
 };

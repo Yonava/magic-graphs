@@ -16,13 +16,13 @@ const nodeC = { id: '3', label: 'c', x: 0, y: 0 };
 const getGraph = () => {
   const graph = useGraph(ref() as any);
 
-  graph.addNode(nodeA);
-  graph.addNode(nodeB);
-  graph.addNode(nodeC);
+  graph.actions.addNode(nodeA);
+  graph.actions.addNode(nodeB);
+  graph.actions.addNode(nodeC);
 
-  graph.addEdge({ from: nodeA.id, to: nodeB.id });
-  graph.addEdge({ from: nodeB.id, to: nodeC.id });
-  graph.addEdge({ from: nodeC.id, to: nodeC.id });
+  graph.actions.addEdge({ from: nodeA.id, to: nodeB.id });
+  graph.actions.addEdge({ from: nodeB.id, to: nodeC.id });
+  graph.actions.addEdge({ from: nodeC.id, to: nodeC.id });
 
   return graph;
 };
