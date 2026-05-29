@@ -26,7 +26,7 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
   },
   onNodeUpdated: ({ updatedNodes }) => {
     const update = extractSingle(updatedNodes);
-    if (update) return { args: [update.node] };
+    if (update) return { args: [update.node, update.previousValues] };
   },
   onEdgeAdded: ({ addedEdges }) => {
     const edge = extractSingle(addedEdges);
@@ -38,7 +38,7 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
   },
   onEdgeUpdated: ({ updatedEdges }) => {
     const update = extractSingle(updatedEdges);
-    if (update) return { args: [update.edge] };
+    if (update) return { args: [update.edge, update.previousValues] };
   },
   onElementsAdded: ({ addedEdges, addedNodes }) => {
     if (hasItems(addedNodes, addedEdges)) {

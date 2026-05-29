@@ -1,6 +1,5 @@
 import { Ref } from 'vue';
 
-import { Emitter } from '../../events/index.ts';
 import { GEdge, GNode } from '../../types.ts';
 import { CommitTransaction } from '../transaction/types.ts';
 import {
