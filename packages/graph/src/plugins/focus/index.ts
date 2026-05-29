@@ -72,7 +72,10 @@ export const useFocus = (graph: BaseGraph) => {
         return;
       }
 
-      graph.editEdgeLabel(edge.id, newWeight);
+      graph.actions.updateEdge({
+        id: edge.id,
+        values: { weight: newWeight },
+      });
     });
   };
 

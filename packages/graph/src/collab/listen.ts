@@ -46,20 +46,26 @@ const graphListeners = ({ graph }: SocketListenOptions): GraphSocketEvents => ({
     graph.actions.updateNode({ id: node.id, values: node });
   },
   edgeAdded: (edge) => {
-    graph.actions.actions.addEdge(edge, {
+    graph.actions.addEdge(edge, {
       broadcast: false,
       focus: false,
       history: false,
     });
   },
   edgeRemoved: (edgeId) => {
-    graph.removeEdge(edgeId, { broadcast: false, history: false });
+    graph.actions.removeEdge(edgeId, { broadcast: false, history: false });
   },
   edgeLabelEdited: (edgeId, newWeight) => {
-    graph.editEdgeLabel(edgeId, new Fraction(newWeight), {
-      broadcast: false,
-      history: false,
-    });
+    graph.actions.updateEdge(
+      {
+        id: edgeId,
+        values: { weight: new Fraction(newWeight) },
+      },
+      {
+        broadcast: false,
+        history: false,
+      },
+    );
   },
 });
 

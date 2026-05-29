@@ -362,9 +362,15 @@ export const useHistory = (graph: BaseGraph) => {
         }
       }
     } else if (record.action === 'edit') {
-      for (const item of record.affectedItems) {
-        graph.editEdgeLabel(item.data.id, item.data.from, { history: false });
-      }
+      graph.actions.updateElements(
+        {
+          edges: record.affectedItems.map(({ data }) => ({
+            id: data.id,
+            values: { weight: data.from },
+          })),
+        },
+        { history: false },
+      );
     }
   };
 
