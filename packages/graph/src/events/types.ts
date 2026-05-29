@@ -40,7 +40,7 @@ export type BaseGraphEventMap = {
    * when a single node is {@link graph.actions.removeNode | removed} from the graph
    */
   onNodeRemoved: (
-    removedNode: Readonly<GNode['id']>,
+    removedNode: GNode['id'],
     removedEdges: Readonly<GEdge['id'][]>,
   ) => void;
   /**
@@ -55,7 +55,7 @@ export type BaseGraphEventMap = {
   /**
    * when a single edge is {@link Graph.actions.removeEdge | removed} from the graph
    */
-  onEdgeRemoved: (edge: Readonly<GEdge>) => void;
+  onEdgeRemoved: (edge: GEdge['id']) => void;
   /**
    * when an edge is {@link Graph.actions.updateEdge | updated} from the graph
    */
