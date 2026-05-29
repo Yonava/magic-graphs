@@ -1,5 +1,5 @@
 import { useGraph } from '@magic/graph/useGraph';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { ref } from 'vue';
 
@@ -26,7 +26,7 @@ describe('select from graph', () => {
 
   if (!edge) throw new Error('failed to add edge');
 
-  test('select from graph cancels properly', async () => {
+  it('select from graph cancels properly', async () => {
     const { selectedItemPromise, cancelSelection } = selectFromGraph(graph);
     setTimeout(cancelSelection, 100);
     const nodeSchema = await selectedItemPromise;
