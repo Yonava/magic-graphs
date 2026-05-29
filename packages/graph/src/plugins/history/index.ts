@@ -341,27 +341,24 @@ export const useHistory = (graph: BaseGraph) => {
     } else if (record.action === 'add') {
       for (const item of record.affectedItems) {
         if (item.graphType === 'node') {
-          graph.removeNode(item.data.id, { history: false });
+          graph.actions.removeNode(item.data.id, { history: false });
         } else if (item.graphType === 'edge') {
-          graph.removeEdge(item.data.id, { history: false });
+          graph.actions.removeEdge(item.data.id, { history: false });
         }
       }
     } else if (record.action === 'remove') {
       for (const item of record.affectedItems) {
         if (item.graphType === 'node') {
-          graph.addNode(item.data, { history: false, focus: false });
+          graph.actions.addNode(item.data, { history: false, focus: false });
         } else if (item.graphType === 'edge') {
-          graph.addEdge(item.data, { history: false, focus: false });
+          graph.actions.addEdge(item.data, { history: false, focus: false });
         }
       }
     } else if (record.action === 'move') {
       for (const item of record.affectedItems) {
         if (item.graphType === 'node') {
           const { from, id } = item.data;
-          graph.moveNode(id, {
-            x: from.x,
-            y: from.y,
-          });
+          graph.actions.updateNode({ id, values: from });
         }
       }
     } else if (record.action === 'edit') {
@@ -387,17 +384,17 @@ export const useHistory = (graph: BaseGraph) => {
     } else if (record.action === 'add') {
       for (const item of record.affectedItems) {
         if (item.graphType === 'node') {
-          graph.addNode(item.data, { history: false, focus: false });
+          graph.actions.addNode(item.data, { history: false, focus: false });
         } else if (item.graphType === 'edge') {
-          graph.addEdge(item.data, { history: false, focus: false });
+          graph.actions.addEdge(item.data, { history: false, focus: false });
         }
       }
     } else if (record.action === 'remove') {
       for (const item of record.affectedItems) {
         if (item.graphType === 'node') {
-          graph.removeNode(item.data.id, { history: false });
+          graph.actions.removeNode(item.data.id, { history: false });
         } else if (item.graphType === 'edge') {
-          graph.removeEdge(item.data.id, { history: false });
+          graph.actions.removeEdge(item.data.id, { history: false });
         }
       }
     } else if (record.action === 'move') {

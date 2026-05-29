@@ -17,27 +17,35 @@ export const createAddNodeHandler = ({
   commitTransaction,
 }: GraphActionsOptions): GraphActions['addNode'] => {
   const getLabel = useNodeLetterLabelGetter(graphState);
+
   const addNode: GraphActions['addNode'] = (node) => {
     const defaults = {
       ...getNodeDefaults(),
       label: getLabel(),
     } as const satisfies Partial<GNode>;
 
-    const nodeWithDefaults = {
-      ...defaults,
-      ...node,
-    };
+    const nodeWithDefaults = { ...defaults, ...node };
 
     const { addedNodes } = commitTransaction({ addNodes: [nodeWithDefaults] });
-    const addedNode = addedNodes[0];
+    const telemetryNode = addedNodes[0];
 
-    if (!addedNode) {
+    if (!telemetryNode) {
       throw new Error(
         `[Graph Actions] Failed to append node. Transaction rejected.`,
       );
     }
 
-    return addedNode;
+    const liveNode = graphState.nodes.value.find(
+      (n) => n.id === telemetryNode.id,
+    );
+
+    if (!liveNode) {
+      throw new Error(
+        `[Graph Actions] Node creation succeeded but entity was not found in live state.`,
+      );
+    }
+
+    return liveNode;
   };
 
   return addNode;

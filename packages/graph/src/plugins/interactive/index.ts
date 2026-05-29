@@ -17,7 +17,7 @@ export const useInteractive = (graph: BaseGraph) => {
 
     if (items.at(-1)?.graphType === 'node') return;
 
-    graph.addNode(coords);
+    graph.actions.addNode(coords);
   };
 
   const doesEdgeConformToRules = (fromNode: GNode, toNode: GNode) => {

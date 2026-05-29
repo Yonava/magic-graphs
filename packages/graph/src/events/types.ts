@@ -1,7 +1,7 @@
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import type { DeepPartial, DeepReadonly } from 'ts-essentials';
 
-import { TransactionPayload } from '../base/transaction/useCommitTransaction.ts';
+import { TransactionPayload } from '../base/transaction/types.ts';
 import type {
   AddEdgeOptions,
   AddNodeOptions,

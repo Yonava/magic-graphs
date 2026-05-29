@@ -1,3 +1,5 @@
+import { PartiallyPartial } from '@magic/utils/types';
+
 import { GEdge, GNode } from '../../types.ts';
 import {
   GEdgeUpdateDraft,
@@ -49,7 +51,7 @@ export type GraphActions = {
    * @param edge - The edge properties to insert.
    * @returns The newly created edge instance.
    */
-  addEdge: (edge: Partial<GEdge>) => GEdge;
+  addEdge: (edge: PartiallyPartial<GEdge, 'id' | 'weight'>) => GEdge;
 
   /**
    * Deletes a single {@link GEdge | edge} from the graph.

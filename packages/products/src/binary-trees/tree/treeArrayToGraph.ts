@@ -75,7 +75,7 @@ export const treeArrayToGraph = (
 
     const coordsOfNodeOnTree = positions[i];
 
-    graph.addNode(
+    graph.actions.addNode(
       {
         id: treeNodeKey.toString(),
         label: treeNodeKey.toString(),
