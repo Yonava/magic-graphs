@@ -3,19 +3,19 @@ import { shallowDelta } from '@magic/utils/delta/index';
 import type { GEdge, GNode } from '../../types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import type {
+  CommitTransaction,
   GraphState,
-  TransactionDraft,
   TransactionOptions,
 } from './types.ts';
 
+// 1. ❌ Validation
+// 2. ✅ Process Mutation State
+// 3. ✅ Commit Payload and Return Confirmation
 export function useCommitTransaction({
   getGraphState,
   onTransactionSuccess,
-}: TransactionOptions) {
-  // 1. Validation
-  // 2. Process Mutation State
-  // 3. Commit Payload and Return Confirmation
-  return (draft: Partial<TransactionDraft>) => {
+}: TransactionOptions): CommitTransaction {
+  return (draft) => {
     const { nodes, edges } = getGraphState();
     const { getNode, getEdge } = quickGetters({ nodes, edges });
 

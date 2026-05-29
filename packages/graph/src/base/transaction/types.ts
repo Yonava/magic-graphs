@@ -20,9 +20,13 @@ type GEdgeUpdatePayload = {
   previousValues: Partial<GEdge>;
 };
 
-type GNodeUpdateDraft = {
+// these are all reference based so we forbid them from being updated
+const forbiddenNodeKeyUpdates = ['id'] as const satisfies (keyof GNode)[];
+type ForbiddenNodeKeyUpdates = (typeof forbiddenNodeKeyUpdates)[number];
+
+export type GNodeUpdateDraft = {
   id: GNode['id'];
-  values: Partial<Omit<GNode, 'id'>>;
+  values: Partial<Omit<GNode, ForbiddenNodeKeyUpdates>>;
 };
 
 // these are all reference based so we forbid them from being updated
@@ -33,7 +37,7 @@ const forbiddenEdgeKeyUpdates = [
 ] as const satisfies (keyof GEdge)[];
 type ForbiddenEdgeKeyUpdates = (typeof forbiddenEdgeKeyUpdates)[number];
 
-type GEdgeUpdateDraft = {
+export type GEdgeUpdateDraft = {
   id: GEdge['id'];
   values: Partial<Omit<GEdge, ForbiddenEdgeKeyUpdates>>;
 };
@@ -59,3 +63,7 @@ export type TransactionDraft = {
   updatedNodes: GNodeUpdateDraft[];
   updatedEdges: GEdgeUpdateDraft[];
 };
+
+export type CommitTransaction = (
+  draft: Partial<TransactionDraft>,
+) => TransactionPayload;
