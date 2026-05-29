@@ -23,12 +23,14 @@ export const propagateTransactionEvents = (
   payload: TransactionPayload,
   emit: Emitter,
 ) => {
-  const e = Object.entries(predicates) as [
-    GraphEvent,
-    (payload: TransactionPayload) => boolean,
-  ][];
-  for (const [eventName, predicate] of e) {
-    if (!predicate(payload)) continue;
-    emit(eventName);
-  }
+  (Object.keys(predicates) as GraphEvent[]).forEach((event) => {
+    const predicate = predicates[event];
+    if (!predicate) return;
+
+    const result = predicate(payload);
+
+    if (result && result.args) {
+      emit(event, ...result.args);
+    }
+  });
 };

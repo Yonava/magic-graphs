@@ -27,7 +27,6 @@ export const useResolveNodeDefaults = (
 export const createAddNodeHandler = ({
   graphState,
   commitTransaction,
-  emit,
 }: GraphActionsOptions): GraphActions['addNode'] => {
   const resolveNodeDefaults = useResolveNodeDefaults(graphState);
   const addNode: GraphActions['addNode'] = (node, options) => {
@@ -50,7 +49,6 @@ export const createAddNodeHandler = ({
       );
     }
 
-    emit('onNodeAdded', liveNode, { ...ADD_NODE_OPTIONS_DEFAULTS, ...options });
     return liveNode;
   };
 

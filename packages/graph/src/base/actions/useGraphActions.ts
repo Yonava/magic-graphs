@@ -17,7 +17,6 @@ import {
 import { GraphActions } from './types.ts';
 
 export type GraphActionsOptions = {
-  emit: Emitter;
   commitTransaction: CommitTransaction;
   graphState: {
     nodes: Ref<GNode[]>;
