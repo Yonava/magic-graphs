@@ -1,5 +1,6 @@
 import { Ref } from 'vue';
 
+import { Emitter } from '../../events/index.ts';
 import { GEdge, GNode } from '../../types.ts';
 import { CommitTransaction } from '../transaction/types.ts';
 import {
@@ -16,6 +17,7 @@ import {
 import { GraphActions } from './types.ts';
 
 export type GraphActionsOptions = {
+  emit: Emitter;
   commitTransaction: CommitTransaction;
   graphState: {
     nodes: Ref<GNode[]>;

@@ -2,15 +2,7 @@ import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import type { DeepPartial, DeepReadonly } from 'ts-essentials';
 
 import { TransactionPayload } from '../base/transaction/types.ts';
-import type {
-  AddEdgeOptions,
-  AddNodeOptions,
-  EditEdgeLabelOptions,
-  HistoryOption,
-  MoveNodeOptions,
-  RemoveEdgeOptions,
-  RemoveNodeOptions,
-} from '../base/types.ts';
+import type { HistoryOption } from '../base/types.ts';
 import type { GraphMouseEvent } from '../base/types.ts';
 import type { GraphState } from '../collab/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
@@ -39,77 +31,36 @@ export type BaseGraphEventMap = {
    * - the `isGraphDirected` {@link Graph.settings | graph setting} is toggled
    */
   onStructureChange: () => void;
+
   /**
-   * when a node is {@link graph.actions.addNode | added} to the graph
+   * when a single node is {@link graph.actions.addNode | added} to the graph
    */
-  onNodeAdded: (node: GNode, options: DeepReadonly<AddNodeOptions>) => void;
+  onNodeAdded: (node: Readonly<GNode>) => void;
   /**
-   * when multiple nodes are added to the graph as a group
-   */
-  onBulkNodeAdded: (
-    nodes: Readonly<GNode[]>,
-    options: DeepReadonly<AddNodeOptions>,
-  ) => void;
-  /**
-   * when a node is {@link graph.actions.removeNode | removed} from the graph
+   * when a single node is {@link graph.actions.removeNode | removed} from the graph
    */
   onNodeRemoved: (
-    removedNode: GNode,
-    removedEdges: Readonly<GEdge[]>,
-    options: DeepReadonly<RemoveNodeOptions>,
+    removedNode: Readonly<GNode['id']>,
+    removedEdges: Readonly<GEdge['id'][]>,
   ) => void;
   /**
-   * when multiple nodes are removed from the graph as a group
+   * when a single node is {@link Graph.actions.updateNode | updated}
    */
-  onBulkNodeRemoved: (
-    removedNodes: Readonly<GNode[]>,
-    removedEdges: Readonly<GEdge[]>,
-    options: DeepReadonly<RemoveNodeOptions>,
-  ) => void;
+  onNodeUpdated: (node: Readonly<GNode>) => void;
+
   /**
-   * when a node is {@link Graph.moveNode | moved} to a new position on the canvas
+   * when a single edge is {@link Graph.actions.addEdge | added} to the graph
    */
-  onNodeMoved: (node: GNode, options: DeepReadonly<MoveNodeOptions>) => void;
+  onEdgeAdded: (edge: Readonly<GEdge>) => void;
   /**
-   * when multiple nodes are moved to new positions on the canvas in as a group
+   * when a single edge is {@link Graph.actions.removeEdge | removed} from the graph
    */
-  onBulkNodeMoved: (
-    nodes: Readonly<GNode[]>,
-    options: DeepReadonly<MoveNodeOptions>,
-  ) => void;
+  onEdgeRemoved: (edge: Readonly<GEdge>) => void;
   /**
-   * when an edge is {@link graph.actions.actions.addEdge | added} to the graph
+   * when an edge is {@link Graph.actions.updateEdge | updated} from the graph
    */
-  onEdgeAdded: (edge: GEdge, options: DeepReadonly<AddEdgeOptions>) => void;
-  /**
-   * when multiple edges are added to the graph as a group
-   */
-  onBulkEdgeAdded: (
-    edges: Readonly<GEdge[]>,
-    options: DeepReadonly<AddEdgeOptions>,
-  ) => void;
-  /**
-   * when an edge is {@link Graph.removeEdge | removed} from the graph
-   */
-  onEdgeRemoved: (
-    edge: GEdge,
-    options: DeepReadonly<RemoveEdgeOptions>,
-  ) => void;
-  /**
-   * when multiple edges are removed from the graph as a group
-   */
-  onBulkEdgeRemoved: (
-    edges: Readonly<GEdge[]>,
-    options: DeepReadonly<RemoveEdgeOptions>,
-  ) => void;
-  /**
-   * when an edge's text label is {@link Graph.editEdgeLabel | edited}
-   */
-  onEdgeLabelEdited: (
-    edge: GEdge,
-    oldWeight: GEdge['weight'],
-    options: DeepReadonly<EditEdgeLabelOptions>,
-  ) => void;
+  onEdgeUpdated: (edge: Readonly<GEdge>) => void;
+
   /**
    * when the canvas is repainted
    *
