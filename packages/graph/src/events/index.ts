@@ -11,10 +11,10 @@ export type GraphEventMapToEventBus<GraphEventMap extends GenericEventMap> = {
 export type BaseGraphEventBus = GraphEventMapToEventBus<BaseGraphEventMap>;
 
 /**
- * generates a `subscribe`, `unsubscribe`, and `emit` function for
+ * creates a `subscribe`, `unsubscribe`, and `emit` function for
  * registering, deregistering and broadcasting graph events.
  */
-export const generateSubscriber = <GraphEventMap extends GenericEventMap>(
+export const createEventHub = <GraphEventMap extends GenericEventMap>(
   eventBus: GraphEventMapToEventBus<GraphEventMap>,
 ) => ({
   /**
@@ -56,23 +56,19 @@ export const generateSubscriber = <GraphEventMap extends GenericEventMap>(
   },
 });
 
-/**
- * helper types for graph event architecture
- */
-
-export type GenerateSubscriber<GraphEventMap extends BaseGraphEventMap> =
-  typeof generateSubscriber<GraphEventMap>;
+export type EventHub<GraphEventMap extends BaseGraphEventMap> =
+  typeof createEventHub<GraphEventMap>;
 
 export type Subscriber<GraphEventMap extends BaseGraphEventMap> = ReturnType<
-  GenerateSubscriber<GraphEventMap>
+  EventHub<GraphEventMap>
 >['subscribe'];
 
 export type Unsubscriber<GraphEventMap extends BaseGraphEventMap> = ReturnType<
-  GenerateSubscriber<GraphEventMap>
+  EventHub<GraphEventMap>
 >['unsubscribe'];
 
 export type Emitter<GraphEventMap extends BaseGraphEventMap> = ReturnType<
-  GenerateSubscriber<GraphEventMap>
+  EventHub<GraphEventMap>
 >['emit'];
 
 export const getInitialBaseEventBus = (): BaseGraphEventBus => ({

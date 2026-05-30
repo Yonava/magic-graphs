@@ -12,7 +12,6 @@ import {
   TransactionPayload,
 } from '../base/transaction/types.ts';
 import type { GraphMouseEvent } from '../base/types.ts';
-import type { GraphState } from '../collab/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import type {
   HistoryRecord,

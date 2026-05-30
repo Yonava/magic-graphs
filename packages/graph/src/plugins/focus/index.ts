@@ -5,6 +5,7 @@ import { computed, readonly, ref } from 'vue';
 
 import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
 import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
+import { createEventHub, getInitialBaseEventBus } from '../../events/index.ts';
 import { BaseGraphEventMap } from '../../events/types.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
@@ -17,6 +18,7 @@ import {
   FocusOption,
   NodeBaseThemePath,
   NodeBaseToNodeFocusTheme,
+  getInitialFocusEventBus,
 } from './types.ts';
 
 type FocusTransactionWrapperOptions = {
@@ -41,7 +43,12 @@ export const useFocusPlugin = <
 ): GraphWithFocus<TransactionWrapperOptions, GraphEventMap> => {
   const focusedElementIds = ref(new Set<string>());
 
-  // graph.emit('onFocusChange');
+  const focusBus = getInitialFocusEventBus();
+  const baseBus = getInitialBaseEventBus();
+  const focus = createEventHub({ ...focusBus, ...baseBus });
+  bus.subscribe('onFocusChange', (e) => {});
+
+  return graph;
 };
 
 export const useFocus = (graph: BaseGraph) => {
