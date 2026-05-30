@@ -4,21 +4,21 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { computed, readonly, ref } from 'vue';
 
 import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
+import { BaseGraphEventMap } from '../../base/events.ts';
 import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
-import { createBaseGraphEventBus, createEventHub } from '../../events/index.ts';
-import { BaseGraphEventMap } from '../../events/types.ts';
+import { EventHub, createEventHub } from '../../events/createEventHub.ts';
+import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
-import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
+import { FOCUS_THEME_ID } from './constants.ts';
+import { FocusGraphEventMap, createFocusGraphEventBus } from './events.ts';
 import {
   EdgeBaseThemePath,
   EdgeBaseToNodeFocusTheme,
   FocusGraphControls,
-  FocusGraphEventMap,
   FocusOption,
   NodeBaseThemePath,
   NodeBaseToNodeFocusTheme,
-  getInitialFocusEventBus,
 } from './types.ts';
 
 type FocusTransactionWrapperOptions = {
@@ -41,19 +41,10 @@ export const useFocusPlugin = <
 >(
   graph: BaseGraph,
 ): GraphWithFocus<TransactionWrapperOptions, GraphEventMap> => {
-  const focusedElementIds = ref(new Set<string>());
+  const focusBus = createFocusGraphEventBus();
+  const focusHub: EventHub<FocusGraphEventMap> = createEventHub(focusBus);
+  const events = mergeEventHubs(focusHub, graph.events);
 
-  const focusBus = getInitialFocusEventBus();
-  const hub = createEventHub(focusBus);
-
-  const subscribe = () => {};
-
-  bus.subscribe('onFocusChange', (e) => {});
-
-  return graph;
-};
-
-export const useFocus = (graph: BaseGraph) => {
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
   const focusedElementIds = ref(new Set<string>());
 
@@ -66,8 +57,10 @@ export const useFocus = (graph: BaseGraph) => {
     const oldIds = new Set(focusedElementIds.value);
     focusedElementIds.value = new Set(ids);
 
-    graph.emit('onFocusChange', focusedElementIds.value, oldIds);
+    events.emit('onFocusChange', focusedElementIds.value, oldIds);
   };
+
+  const resetFocus = () => setFocus([]);
 
   const addToFocus = (id: string) => {
     const isInFocusAlready = focusedElementIds.value.has(id);
@@ -75,7 +68,7 @@ export const useFocus = (graph: BaseGraph) => {
 
     const oldIds = new Set([...focusedElementIds.value]);
     focusedElementIds.value.add(id);
-    graph.emit('onFocusChange', focusedElementIds.value, oldIds);
+    events.emit('onFocusChange', focusedElementIds.value, oldIds);
   };
 
   const handleTextArea = (schemaItem: SchemaItem) => {
@@ -127,17 +120,7 @@ export const useFocus = (graph: BaseGraph) => {
       resetFocus();
       return handleTextArea(topItem);
     }
-
-    const canFocus = FOCUSABLE_GRAPH_TYPES.some(
-      (type) => type === topItem.graphType,
-    );
-    if (!canFocus) return;
-
-    if (event.shiftKey) addToFocus(topItem.id);
-    else setFocus([topItem.id]);
   };
-
-  const resetFocus = () => setFocus([]);
 
   const focusAll = () => {
     const nodeIds = graph.nodes.value.map((node) => node.id);
@@ -198,79 +181,41 @@ export const useFocus = (graph: BaseGraph) => {
   }
 
   const activate = () => {
-    // graph.subscribe('onNodeAdded', setFocusToAddedItem);
-    // graph.subscribe('onEdgeAdded', setFocusToAddedItem);
-    graph.subscribe('onMouseDown', handleFocusChange);
-    graph.subscribe('onStructureChange', clearOutDeletedItemsFromFocus);
-    graph.subscribe('onGraphReset', resetFocus);
+    events.subscribe('onMouseDown', handleFocusChange);
+    events.subscribe('onStructureChange', clearOutDeletedItemsFromFocus);
   };
 
   const deactivate = () => {
-    // graph.unsubscribe('onNodeAdded', setFocusToAddedItem);
-    // graph.unsubscribe('onEdgeAdded', setFocusToAddedItem);
-    graph.unsubscribe('onMouseDown', handleFocusChange);
-    graph.unsubscribe('onStructureChange', clearOutDeletedItemsFromFocus);
-    graph.unsubscribe('onGraphReset', resetFocus);
+    events.unsubscribe('onMouseDown', handleFocusChange);
+    events.unsubscribe('onStructureChange', clearOutDeletedItemsFromFocus);
     resetFocus();
   };
 
-  const { hold, release } = graph.pluginHoldController('focus');
-
-  graph.subscribe('onSettingsChange', (diff) => {
-    if (diff.focusable === false) {
-      deactivate();
-      hold('marquee');
-    } else if (diff.focusable === true) {
-      activate();
-      release('marquee');
-    }
-  });
-
-  if (graph.settings.value.focusable) activate();
+  activate();
 
   return {
-    /**
-     * Sets the focus to the item with the given ids
-     *
-     * @param ids the ids of the items to focus
-     */
-    set: setFocus,
-    /**
-     * Resets the focus back to none
-     */
-    reset: resetFocus,
-    /**
-     * Adds an item to the current focus
-     *
-     * @param id the id of the item to add to the focus
-     */
-    add: addToFocus,
-    /**
-     * Focus all nodes and edges
-     */
-    all: focusAll,
-    /**
-     * asks if the item with the given id is focused
-     *
-     * @param id the id of the item to check
-     * @returns true if the item is focused
-     */
-    isFocused,
-    /**
-     * The ids of the focused item in the graph
-     */
-    focusedItemIds: readonly(focusedElementIds),
-    /**
-     * all the nodes that are focused
-     */
-    focusedNodes: computed(() =>
-      graph.nodes.value.filter((node) => isFocused(node.id)),
-    ),
-    /**
-     * all the edges that are focused
-     */
-    focusedEdges: computed(() =>
-      graph.edges.value.filter((edge) => isFocused(edge.id)),
-    ),
+    ...{
+      ...graph,
+      // TODO ensure tests are added to guarantee the correct event systems are being propagated!
+      events,
+    },
+    focus: {
+      set: setFocus,
+      reset: resetFocus,
+      add: addToFocus,
+      all: focusAll,
+      isFocused,
+      focusedItemIds: readonly(focusedElementIds),
+      focusedNodes: computed(() =>
+        graph.nodes.value.filter((node) => isFocused(node.id)),
+      ),
+      focusedEdges: computed(() =>
+        graph.edges.value.filter((edge) => isFocused(edge.id)),
+      ),
+    },
   };
+};
+
+export const useFocus = (graph: BaseGraph) => {
+  return {};
 };

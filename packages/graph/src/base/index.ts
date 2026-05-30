@@ -14,7 +14,6 @@ import { onClickOutside, useElementHover } from '@vueuse/core';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { createEventHub } from '../events/createEventHub.ts';
-import { createBaseGraphEventBus } from '../events/index.ts';
 import { prioritizeNode } from '../helpers/prioritization.ts';
 import { getEdgeSchematic } from '../schematics/edge.ts';
 import { getNodeSchematic } from '../schematics/node.ts';
@@ -31,6 +30,7 @@ import {
   getDefaultGraphAnimations,
 } from './animations.ts';
 import { useGraphCursor } from './cursor/useGraphCursor.ts';
+import { createBaseGraphEventBus } from './events.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
 import type { BaseGraph, GraphAtMousePosition } from './types.ts';

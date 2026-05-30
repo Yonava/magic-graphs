@@ -1,6 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
 
-import { EventMapToEventBus } from '../../events/index.ts';
 import { ValidGraphThemePath } from '../../themes/types.ts';
 import { GEdge, GNode } from '../../types.ts';
 
@@ -11,22 +10,6 @@ export type WithFocusSettings<T> = T & {
    */
   focusable: boolean;
 };
-
-export type FocusGraphEventMap = {
-  /**
-   * when the set of focused items changes
-   */
-  onFocusChange: (
-    newItemIds: Readonly<Set<string>>,
-    oldItemIds: Readonly<Set<string>>,
-  ) => void;
-};
-
-type FocusGraphEventBus = EventMapToEventBus<FocusGraphEventMap>;
-
-export const getInitialFocusEventBus = (): FocusGraphEventBus => ({
-  onFocusChange: new Set(),
-});
 
 export type FocusGraphControls = {
   /**
@@ -57,7 +40,7 @@ export type FocusGraphControls = {
   /**
    * The ids of all focused elements
    */
-  focusedItemIds: Readonly<Ref<string[]>>;
+  focusedItemIds: Readonly<Ref<ReadonlySet<string>>>;
   /**
    * All the nodes that are focused
    */

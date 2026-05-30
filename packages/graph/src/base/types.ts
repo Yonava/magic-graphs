@@ -5,8 +5,6 @@ import type { Coordinate } from '@magic/shapes/types/utility';
 import type { ComputedRef, DeepReadonly, Ref, ShallowRef } from 'vue';
 
 import { EventHub } from '../events/createEventHub.ts';
-import { BaseGraphEventBus } from '../events/index.ts';
-import { BaseGraphEventMap } from '../events/types.ts';
 import { GraphSettings } from '../settings/index.ts';
 import { ThemeGetter } from '../themes/getThemeResolver.ts';
 import { GraphThemeName, ThemeLoadouts } from '../themes/index.ts';
@@ -17,6 +15,7 @@ import {
   GraphActions,
 } from './actions/types.ts';
 import { GraphCursor } from './cursor/types.ts';
+import { BaseGraphEventMap } from './events.ts';
 import { AggregatorProps } from './useAggregator.ts';
 import { PluginHoldController } from './usePluginHold.ts';
 
