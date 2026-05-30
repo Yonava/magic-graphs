@@ -1,18 +1,13 @@
-import type { Coordinate } from '@magic/shapes/types/utility';
-import { debounce } from '@magic/utils/debounce';
-
 import { computed, ref } from 'vue';
 
-import type { BaseGraph } from '../../base/index.ts';
-import type { HistoryOption } from '../../base/types.ts';
-import type { GraphState } from '../../collab/types.ts';
-import type { GEdge, GNode } from '../../types.ts';
+import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
+import { BaseGraph } from '../../base/types.ts';
+import type { GEdge } from '../../types.ts';
 import {
   DEFAULT_REDO_HISTORY_OPTIONS,
   DEFAULT_UNDO_HISTORY_OPTIONS,
 } from './types.ts';
 import type {
-  GNodeMoveRecord,
   HistoryRecord,
   RedoHistoryOptions,
   UndoHistoryOptions,
@@ -28,6 +23,25 @@ const MAX_HISTORY = 100;
  * that should be added to the history stack
  */
 const MIN_DISTANCE = 3;
+
+type HistoryOption = {
+  /** Whether to add element(s) to history stack */
+  history?: boolean;
+};
+
+type HistoryTransactionWrapperOptions = {
+  addNode: HistoryOption;
+};
+
+type GraphWithHistory<
+  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+> = BaseGraph<HistoryTransactionWrapperOptions & TransactionWrapperOptions>;
+
+export const useHistoryPlugin = <
+  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+>(
+  graph: BaseGraph<TransactionWrapperOptions>,
+): GraphWithHistory<TransactionWrapperOptions> => graph;
 
 export const useHistory = (graph: BaseGraph) => {
   const undoStack = ref<HistoryRecord[]>([]);

@@ -22,11 +22,21 @@ export type ElementUpdatePayload = Pick<
   'updatedNodes' | 'updatedEdges'
 >;
 
-export type TransactionWrapperOptions = Partial<{
-  addNode: Record<string, any>;
+export type BaseTransactionWrapperOptions = Partial<{
+  addNode: {};
+  removeNode: {};
+  updateNode: {};
+
+  addEdge: {};
+  removeEdge: {};
+  updateEdge: {};
+
+  addElements: {};
+  removeElements: {};
+  updateElements: {};
 }>;
 
-export type GraphActions<Options extends TransactionWrapperOptions> = {
+export type GraphActions<Options extends BaseTransactionWrapperOptions = {}> = {
   /**
    * Adds a single {@link GNode | node} to the graph. Missing properties get default values.
    * @param node - The node properties to insert.
@@ -43,7 +53,7 @@ export type GraphActions<Options extends TransactionWrapperOptions> = {
    */
   removeNode: (
     nodeId: GNode['id'],
-    options?: LegacyOptions,
+    options?: Options['removeNode'],
   ) => ElementRemovalPayload;
 
   /**
@@ -53,7 +63,7 @@ export type GraphActions<Options extends TransactionWrapperOptions> = {
    */
   updateNode: (
     options: GNodeUpdateDraft,
-    legacyOptions?: LegacyOptions,
+    legacyOptions?: Options['updateNode'],
   ) => GNode;
 
   /**
@@ -63,7 +73,7 @@ export type GraphActions<Options extends TransactionWrapperOptions> = {
    */
   addEdge: (
     edge: PartiallyPartial<GEdge, 'id' | 'weight'>,
-    options?: LegacyOptions,
+    options?: Options['addEdge'],
   ) => GEdge;
 
   /**
@@ -71,7 +81,7 @@ export type GraphActions<Options extends TransactionWrapperOptions> = {
    * @param edgeId - The ID of the edge to delete.
    * @returns The edge instance that was deleted.
    */
-  removeEdge: (edgeId: GEdge['id'], options?: LegacyOptions) => GEdge;
+  removeEdge: (edgeId: GEdge['id'], options?: Options['removeEdge']) => GEdge;
 
   /**
    * Updates fields on an {@link GEdge | edge}.
@@ -80,7 +90,7 @@ export type GraphActions<Options extends TransactionWrapperOptions> = {
    */
   updateEdge: (
     options: GEdgeUpdateDraft,
-    legacyOptions?: LegacyOptions,
+    legacyOptions?: Options['updateEdge'],
   ) => GEdge;
 
   /**
@@ -93,7 +103,7 @@ export type GraphActions<Options extends TransactionWrapperOptions> = {
       nodes: Partial<GNode>[];
       edges: PartiallyPartial<GEdge, 'id' | 'weight'>[];
     }>,
-    options?: LegacyOptions,
+    options?: Options['addElements'],
   ) => ElementAdditionPayload;
 
   /**
@@ -108,7 +118,7 @@ export type GraphActions<Options extends TransactionWrapperOptions> = {
       nodeIds: GNode['id'][];
       edgeIds: GEdge['id'][];
     }>,
-    options?: LegacyOptions,
+    options?: Options['removeElements'],
   ) => ElementRemovalPayload;
 
   /**
@@ -121,6 +131,6 @@ export type GraphActions<Options extends TransactionWrapperOptions> = {
       nodes: GNodeUpdateDraft[];
       edges: GEdgeUpdateDraft[];
     }>,
-    legacyOptions?: LegacyOptions,
+    legacyOptions?: Options['updateElements'],
   ) => ElementUpdatePayload;
 };

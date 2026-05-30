@@ -3,11 +3,11 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, readonly, ref } from 'vue';
 
-import { TransactionWrapperOptions } from '../../base/actions/types.ts';
+import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
 import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
-import { GraphActions } from './../../base/actions/types';
+import { GraphActions as FocusTransactionWrapperOptions } from './../../base/actions/types';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
 import {
   EdgeBaseThemePath,
@@ -18,18 +18,20 @@ import {
   NodeBaseToNodeFocusTheme,
 } from './types.ts';
 
-type GraphActions = {
+type FocusTransactionWrapperOptions = {
   addNode: FocusOption;
 };
 
-type FocusGraph<Actions extends TransactionWrapperOptions> = BaseGraph<
-  GraphActions & Actions
-> &
+type GraphWithFocus<
+  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+> = BaseGraph<FocusTransactionWrapperOptions & TransactionWrapperOptions> &
   FocusAPI;
 
-export const useFocusPlugin = <Actions extends TransactionWrapperOptions>(
-  graph: BaseGraph<Actions>,
-): FocusGraph<Actions> => {
+export const useFocusPlugin = <
+  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+>(
+  graph: BaseGraph<TransactionWrapperOptions>,
+): GraphWithFocus<TransactionWrapperOptions> => {
   const focusedElementIds = ref(new Set<string>());
 };
 
@@ -127,7 +129,7 @@ export const useFocus = (graph: BaseGraph) => {
 
   const setFocusToAddedItem = (
     { id }: { id: string },
-    { focus }: FocusOption,
+    { focus: focus }: FocusOption,
   ) => {
     if (focus) setFocus([id]);
   };

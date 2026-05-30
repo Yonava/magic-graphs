@@ -16,7 +16,10 @@ import { ThemeGetter } from '../themes/getThemeResolver.ts';
 import { GraphThemeName, ThemeLoadouts } from '../themes/index.ts';
 import { FullThemeMap } from '../themes/types.ts';
 import type { GEdge, GNode, SchemaItem } from '../types.ts';
-import { GraphActions, TransactionWrapperOptions } from './actions/types.ts';
+import {
+  BaseTransactionWrapperOptions,
+  GraphActions,
+} from './actions/types.ts';
 import { GraphCursor } from './cursor/types.ts';
 import { AggregatorProps } from './useAggregator.ts';
 import { PluginHoldController } from './usePluginHold.ts';
@@ -46,7 +49,9 @@ export type GraphMouseEvent = DeepReadonly<GraphAtMousePosition> & {
   event: MouseEvent;
 };
 
-export type BaseGraph<T extends TransactionWrapperOptions = {}> = {
+export type BaseGraph<
+  TransactionWrapperOptions extends BaseTransactionWrapperOptions = {},
+> = {
   /**
    * all the nodes contained in the graph
    */
@@ -62,7 +67,7 @@ export type BaseGraph<T extends TransactionWrapperOptions = {}> = {
   getNode: (nodeId: GNode['id']) => GNode | undefined;
   getEdge: (edgeId: GEdge['id']) => GEdge | undefined;
 
-  actions: GraphActions<T>;
+  actions: GraphActions<TransactionWrapperOptions>;
 
   /**
    * a mapping of all graph events to a set of their callback functions
