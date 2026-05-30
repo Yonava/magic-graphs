@@ -67,16 +67,10 @@ export type FocusGraphSettings = {
    * @default true
    */
   focusable: boolean;
-  /**
-   * a list of {@link SchemaItem.id | item ids} that cannot be focused
-   * @default []
-   */
-  focusBlacklist: string[];
 };
 
 export const DEFAULT_FOCUS_SETTINGS: FocusGraphSettings = {
   focusable: true,
-  focusBlacklist: [],
 };
 
 /**
