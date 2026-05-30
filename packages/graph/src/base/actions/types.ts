@@ -22,20 +22,17 @@ export type ElementUpdatePayload = Pick<
   'updatedNodes' | 'updatedEdges'
 >;
 
-type LegacyOptions = Partial<{
-  history: boolean;
-  animate: boolean;
-  broadcast: boolean;
-  focus: boolean;
+export type TransactionWrapperOptions = Partial<{
+  addNode: Record<string, any>;
 }>;
 
-export type GraphActions = {
+export type GraphActions<Options extends TransactionWrapperOptions> = {
   /**
    * Adds a single {@link GNode | node} to the graph. Missing properties get default values.
    * @param node - The node properties to insert.
    * @returns The newly created node instance.
    */
-  addNode: (node: Partial<GNode>, options?: LegacyOptions) => GNode;
+  addNode: (node: Partial<GNode>, options?: Options['addNode']) => GNode;
 
   /**
    * Deletes a single {@link GNode | node} from the graph.

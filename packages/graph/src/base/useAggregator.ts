@@ -2,14 +2,10 @@ import type { Coordinate } from '@magic/shapes/types/utility';
 
 import { ref } from 'vue';
 
-import type { Emitter as GraphEventEmitter } from '../events/index.ts';
 import type { Aggregator, UpdateAggregator } from '../types.ts';
+import { BaseGraph } from './types.ts';
 
-export type UseAggregatorOptions = {
-  emit: GraphEventEmitter;
-};
-
-export const useAggregator = ({ emit }: UseAggregatorOptions) => {
+export const useAggregator = ({ emit }: Pick<BaseGraph, 'emit'>) => {
   const aggregator = ref<Aggregator>([]);
   const subscribeToAggregator: UpdateAggregator[] = [];
 

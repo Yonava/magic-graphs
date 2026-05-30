@@ -3,33 +3,33 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, readonly, ref } from 'vue';
 
-import type { BaseGraph } from '../../base/index.ts';
-import type { GraphMouseEvent } from '../../base/types.ts';
+import { TransactionWrapperOptions } from '../../base/actions/types.ts';
+import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
+import { GraphActions } from './../../base/actions/types';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
 import {
   EdgeBaseThemePath,
   EdgeBaseToNodeFocusTheme,
   FocusAPI,
+  FocusOption,
   NodeBaseThemePath,
   NodeBaseToNodeFocusTheme,
 } from './types.ts';
 
-type GraphWithOverrides<
-  Graph extends BaseGraph,
-  Overrides extends Partial<BaseGraph>,
-> = Overrides & Omit<Graph, keyof Overrides>;
+type GraphActions = {
+  addNode: FocusOption;
+};
 
-type FocusOverrides = {
-  addNode:
-}
+type FocusGraph<Actions extends TransactionWrapperOptions> = BaseGraph<
+  GraphActions & Actions
+> &
+  FocusAPI;
 
-type FocusGraph<Graph extends BaseGraph> = GraphWithOverrides<Graph, > & FocusAPI;
-
-export const useFocusPlugin = <Graph extends BaseGraph>(
-  graph: Graph,
-): FocusGraph<Graph> => {
+export const useFocusPlugin = <Actions extends TransactionWrapperOptions>(
+  graph: BaseGraph<Actions>,
+): FocusGraph<Actions> => {
   const focusedElementIds = ref(new Set<string>());
 };
 
