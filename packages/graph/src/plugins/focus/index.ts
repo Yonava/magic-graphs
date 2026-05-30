@@ -44,8 +44,10 @@ export const useFocusPlugin = <
   const focusedElementIds = ref(new Set<string>());
 
   const focusBus = getInitialFocusEventBus();
-  const baseBus = getInitialBaseEventBus();
-  const focus = createEventHub({ ...focusBus, ...baseBus });
+  const hub = createEventHub(focusBus);
+
+  const subscribe = () => {};
+
   bus.subscribe('onFocusChange', (e) => {});
 
   return graph;

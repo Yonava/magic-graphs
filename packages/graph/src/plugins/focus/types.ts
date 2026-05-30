@@ -1,6 +1,6 @@
 import { ComputedRef, Ref } from 'vue';
 
-import { GraphEventMapToEventBus } from '../../events/index.ts';
+import { EventMapToEventBus } from '../../events/index.ts';
 import { ValidGraphThemePath } from '../../themes/types.ts';
 import { GEdge, GNode } from '../../types.ts';
 
@@ -22,7 +22,7 @@ export type FocusGraphEventMap = {
   ) => void;
 };
 
-type FocusGraphEventBus = GraphEventMapToEventBus<FocusGraphEventMap>;
+type FocusGraphEventBus = EventMapToEventBus<FocusGraphEventMap>;
 
 export const getInitialFocusEventBus = (): FocusGraphEventBus => ({
   onFocusChange: new Set(),

@@ -2,20 +2,20 @@ import { AnyFunction } from 'ts-essentials';
 
 import { BaseGraphEventMap } from './types.ts';
 
-type GenericEventMap = Record<string, AnyFunction>;
+export type GenericEventMap = Record<string, AnyFunction>;
 
-export type GraphEventMapToEventBus<GraphEventMap extends GenericEventMap> = {
-  [EventName in keyof GraphEventMap]: Set<GraphEventMap[EventName]>;
+export type EventMapToEventBus<EventMap extends GenericEventMap> = {
+  [EventName in keyof EventMap]: Set<EventMap[EventName]>;
 };
 
-export type BaseGraphEventBus = GraphEventMapToEventBus<BaseGraphEventMap>;
+export type BaseGraphEventBus = EventMapToEventBus<BaseGraphEventMap>;
 
 /**
  * creates a `subscribe`, `unsubscribe`, and `emit` function for
  * registering, deregistering and broadcasting graph events.
  */
-export const createEventHub = <GraphEventMap extends GenericEventMap>(
-  eventBus: GraphEventMapToEventBus<GraphEventMap>,
+export const createEventHub = <EventMap extends GenericEventMap>(
+  eventBus: EventMapToEventBus<EventMap>,
 ) => ({
   /**
    * subscribe to an event to receive updates when it is emitted
@@ -24,10 +24,12 @@ export const createEventHub = <GraphEventMap extends GenericEventMap>(
    * @param eventCallback the callback function invoked when the event is emitted
    * @example subscribe('onNodeAdded', (node) => console.log(node)) // logs the node that was added
    */
-  subscribe: <EventName extends keyof GraphEventMap>(
+  subscribe: <EventName extends keyof EventMap>(
     eventName: EventName,
-    eventCallback: GraphEventMap[EventName],
-  ) => eventBus[eventName].add(eventCallback),
+    eventCallback: EventMap[EventName],
+  ) => {
+    eventBus[eventName].add(eventCallback);
+  },
   /**
    * unsubscribe from an event to stop receiving updates when it is emitted
    *
@@ -35,10 +37,12 @@ export const createEventHub = <GraphEventMap extends GenericEventMap>(
    * @param eventCallback the callback function to be removed from the event
    * @example unsubscribe('onNodeAdded', (node) => console.log(node)) // stops logging the node that was added
    */
-  unsubscribe: <EventName extends keyof GraphEventMap>(
+  unsubscribe: <EventName extends keyof EventMap>(
     eventName: EventName,
-    eventCallback: GraphEventMap[EventName],
-  ) => eventBus[eventName].delete(eventCallback),
+    eventCallback: EventMap[EventName],
+  ) => {
+    eventBus[eventName].delete(eventCallback);
+  },
   /**
    * push an event to all subscribers
    *
@@ -46,30 +50,32 @@ export const createEventHub = <GraphEventMap extends GenericEventMap>(
    * @param callbackArgs the arguments to be passed to the event's callbacks
    * @example emit('onNodeAdded', node) // invokes all onNodeAdded callbacks with the node as an argument
    */
-  emit: <EventName extends keyof GraphEventMap>(
+  emit: <EventName extends keyof EventMap>(
     eventName: EventName,
-    ...callbackArgs: Parameters<GraphEventMap[EventName]>
+    ...callbackArgs: Parameters<EventMap[EventName]>
   ) => {
     for (const callback of eventBus[eventName]) {
       callback(...callbackArgs);
     }
   },
+  /**
+   * all the keys of the provided event map
+   */
+  keys: new Set(Object.keys(eventBus) as (keyof EventMap)[]),
 });
 
-export type EventHub<GraphEventMap extends BaseGraphEventMap> =
-  typeof createEventHub<GraphEventMap>;
+export type EventHub<EventMap extends GenericEventMap> = ReturnType<
+  typeof createEventHub<EventMap>
+>;
 
-export type Subscriber<GraphEventMap extends BaseGraphEventMap> = ReturnType<
-  EventHub<GraphEventMap>
->['subscribe'];
+export type Subscriber<EventMap extends GenericEventMap> =
+  EventHub<EventMap>['subscribe'];
 
-export type Unsubscriber<GraphEventMap extends BaseGraphEventMap> = ReturnType<
-  EventHub<GraphEventMap>
->['unsubscribe'];
+export type Unsubscriber<EventMap extends GenericEventMap> =
+  EventHub<EventMap>['unsubscribe'];
 
-export type Emitter<GraphEventMap extends BaseGraphEventMap> = ReturnType<
-  EventHub<GraphEventMap>
->['emit'];
+export type Emitter<EventMap extends GenericEventMap> =
+  EventHub<EventMap>['emit'];
 
 export const getInitialBaseEventBus = (): BaseGraphEventBus => ({
   onTransactionComplete: new Set(),
