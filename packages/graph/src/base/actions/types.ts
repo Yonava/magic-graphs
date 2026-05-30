@@ -9,7 +9,7 @@ import {
 
 export type ElementRemovalPayload = Pick<
   TransactionPayload,
-  'removedNodes' | 'removedEdges'
+  'removedNodeIds' | 'removedEdgeIds'
 >;
 
 export type ElementAdditionPayload = Pick<

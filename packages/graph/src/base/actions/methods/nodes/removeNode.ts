@@ -5,10 +5,11 @@ export const createRemoveNodeHandler = ({
   commitTransaction,
 }: GraphActionsOptions): GraphActions['removeNode'] => {
   const removeNode: GraphActions['removeNode'] = (nodeId) => {
-    const { removedNodes, removedEdges } = commitTransaction({
-      removeNodeIds: [nodeId],
-    });
-    return { removedNodes, removedEdges };
+    const { removedNodeIds: removedNodes, removedEdgeIds: removedEdges } =
+      commitTransaction({
+        removeNodeIds: [nodeId],
+      });
+    return { removedNodeIds: removedNodes, removedEdgeIds: removedEdges };
   };
 
   return removeNode;

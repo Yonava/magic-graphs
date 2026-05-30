@@ -1,9 +1,13 @@
 import { getCtx } from '@magic/utils/ctx/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { DeepReadonly } from 'ts-essentials';
 
 import { computed, readonly, ref } from 'vue';
 
-import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
+import {
+  BaseTransactionWrapperOptions,
+  ElementRemovalPayload,
+} from '../../base/actions/types.ts';
 import { BaseGraphEventMap } from '../../base/events.ts';
 import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
@@ -60,7 +64,7 @@ export const useFocusPlugin = <
     events.emit('onFocusChange', focusedElementIds.value, oldIds);
   };
 
-  const resetFocus = () => setFocus([]);
+  const clearFocus = () => setFocus([]);
 
   const addToFocus = (id: string) => {
     const isInFocusAlready = focusedElementIds.value.has(id);
@@ -93,20 +97,29 @@ export const useFocusPlugin = <
     });
   };
 
-  const clearOutDeletedItemsFromFocus = () => {
-    const focusedIds = Array.from(focusedElementIds.value);
-    const newFocusedIds = focusedIds.filter(
-      (id) => graph.getNode(id) || graph.getEdge(id),
+  const clearRemovedElementsFromFocus = ({
+    removedNodeIds,
+    removedEdgeIds,
+  }: DeepReadonly<ElementRemovalPayload>) => {
+    const hasRemovedFocus =
+      removedNodeIds.some(isFocused) || removedEdgeIds.some(isFocused);
+
+    if (!hasRemovedFocus) return;
+
+    const removedIds = new Set<string>([...removedNodeIds, ...removedEdgeIds]);
+
+    const newFocusedIds = Array.from(focusedElementIds.value).filter(
+      (id) => !removedIds.has(id),
     );
-    if (newFocusedIds.length === focusedIds.length) return;
+
     setFocus(newFocusedIds);
   };
 
-  const handleFocusChange = ({ items, coords, event }: GraphMouseEvent) => {
+  const handleMouseDown = ({ items, coords, event }: GraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem) {
-      return event.shiftKey ? undefined : resetFocus();
+      return event.shiftKey ? undefined : clearFocus();
     }
 
     // handle text areas
@@ -117,7 +130,7 @@ export const useFocusPlugin = <
       topItem.graphType === 'edge';
 
     if (canEdit) {
-      resetFocus();
+      clearFocus();
       return handleTextArea(topItem);
     }
   };
@@ -126,13 +139,6 @@ export const useFocusPlugin = <
     const nodeIds = graph.nodes.value.map((node) => node.id);
     const edgeIds = graph.edges.value.map((edge) => edge.id);
     setFocus([...nodeIds, ...edgeIds]);
-  };
-
-  const setFocusToAddedItem = (
-    { id }: { id: string },
-    { focus: focus }: FocusOption,
-  ) => {
-    if (focus) setFocus([id]);
   };
 
   const isFocused = (id: string) => focusedElementIds.value.has(id);
@@ -181,14 +187,14 @@ export const useFocusPlugin = <
   }
 
   const activate = () => {
-    events.subscribe('onMouseDown', handleFocusChange);
-    events.subscribe('onStructureChange', clearOutDeletedItemsFromFocus);
+    events.subscribe('onMouseDown', handleMouseDown);
+    events.subscribe('onElementsRemoved', clearRemovedElementsFromFocus);
   };
 
   const deactivate = () => {
-    events.unsubscribe('onMouseDown', handleFocusChange);
-    events.unsubscribe('onStructureChange', clearOutDeletedItemsFromFocus);
-    resetFocus();
+    events.unsubscribe('onMouseDown', handleMouseDown);
+    events.unsubscribe('onElementsRemoved', clearRemovedElementsFromFocus);
+    clearFocus();
   };
 
   activate();
@@ -201,7 +207,7 @@ export const useFocusPlugin = <
     },
     focus: {
       set: setFocus,
-      reset: resetFocus,
+      clear: clearFocus,
       add: addToFocus,
       all: focusAll,
       isFocused,

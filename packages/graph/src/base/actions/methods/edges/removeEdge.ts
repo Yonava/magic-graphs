@@ -5,7 +5,7 @@ export const createRemoveEdgeHandler = ({
   commitTransaction,
 }: GraphActionsOptions): GraphActions['removeEdge'] => {
   const removeEdge: GraphActions['removeEdge'] = (edgeId) => {
-    const { removedEdges } = commitTransaction({
+    const { removedEdgeIds: removedEdges } = commitTransaction({
       removeEdgeIds: [edgeId],
     });
 

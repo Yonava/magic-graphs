@@ -3,14 +3,6 @@ import { ComputedRef, Ref } from 'vue';
 import { ValidGraphThemePath } from '../../themes/types.ts';
 import { GEdge, GNode } from '../../types.ts';
 
-export type WithFocusSettings<T> = T & {
-  /**
-   * if false, no elements on the graph can be focused
-   * @default true
-   */
-  focusable: boolean;
-};
-
 export type FocusGraphControls = {
   /**
    * Sets the focus to the element with the given ids
@@ -21,7 +13,7 @@ export type FocusGraphControls = {
   /**
    * Removes all elements from focus
    */
-  reset: () => void;
+  clear: () => void;
   /**
    * Adds an element to the current focus
    *

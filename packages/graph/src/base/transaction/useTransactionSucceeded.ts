@@ -22,9 +22,9 @@ export const useTransactionSucceeded = ({
   updateGraphAtMousePosition,
 }: TransactionSucceededOptions): TransactionOptions['onTransactionSucceeded'] => {
   return (payload) => {
-    if (payload.removedNodes.length || payload.removedEdges.length) {
-      const removedNodeIds = new Set(payload.removedNodes.map((n) => n.id));
-      const removedEdgeIds = new Set(payload.removedEdges.map((e) => e.id));
+    if (payload.removedNodeIds.length || payload.removedEdgeIds.length) {
+      const removedNodeIds = new Set(payload.removedNodeIds.map((n) => n.id));
+      const removedEdgeIds = new Set(payload.removedEdgeIds.map((e) => e.id));
 
       nodes.value = nodes.value.filter((n) => !removedNodeIds.has(n.id));
       edges.value = edges.value.filter((e) => !removedEdgeIds.has(e.id));

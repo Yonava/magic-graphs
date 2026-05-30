@@ -8,12 +8,13 @@ export const createRemoveElementsHandler = ({
     nodeIds: removeNodeIds,
     edgeIds: removeEdgeIds,
   }) => {
-    const { removedNodes, removedEdges } = commitTransaction({
-      removeNodeIds,
-      removeEdgeIds,
-    });
+    const { removedNodeIds: removedNodes, removedEdgeIds: removedEdges } =
+      commitTransaction({
+        removeNodeIds,
+        removeEdgeIds,
+      });
 
-    return { removedNodes, removedEdges };
+    return { removedNodeIds: removedNodes, removedEdgeIds: removedEdges };
   };
 
   return removeElements;
