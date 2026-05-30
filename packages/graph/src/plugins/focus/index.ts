@@ -29,8 +29,9 @@ type GraphWithFocus<
 > = BaseGraph<
   FocusTransactionWrapperOptions & TransactionWrapperOptions,
   FocusGraphEventMap & GraphEventMap
-> &
-  FocusGraphControls;
+> & {
+  focus: FocusGraphControls;
+};
 
 export const useFocusPlugin = <
   TransactionWrapperOptions extends BaseTransactionWrapperOptions,

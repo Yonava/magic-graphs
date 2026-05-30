@@ -5,8 +5,8 @@ import type { Coordinate } from '@magic/shapes/types/utility';
 import type { ComputedRef, DeepReadonly, Ref, ShallowRef } from 'vue';
 
 import {
+  BaseGraphEventBus,
   Emitter,
-  GraphEventBus,
   Subscriber,
   Unsubscriber,
 } from '../events/index.ts';
@@ -74,7 +74,7 @@ export type BaseGraph<
   /**
    * a mapping of all graph events to a set of their callback functions
    */
-  eventBus: GraphEventBus;
+  eventBus: BaseGraphEventBus;
   subscribe: Subscriber<EventMap>;
   unsubscribe: Unsubscriber<EventMap>;
   emit: Emitter<EventMap>;

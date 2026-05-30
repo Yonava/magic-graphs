@@ -32,6 +32,7 @@ export const useGraph = (
   const baseWithFocus = useFocusPlugin(useBaseGraph(canvas, settings));
 
   baseWithFocus.actions.addNode({}, {});
+  baseWithFocus.subscribe('onFocusChange', (e) => {});
   baseWithFocus.actions.addEdge({}, { edge: 'edge' });
 
   const history = useHistory(baseWithFocus);

@@ -1,9 +1,9 @@
 import { BaseGraphEventMap } from './types.ts';
 
-/**
- * turns a type that maps an events callback fn type to an actual event bus
- */
-export type GraphEventMapToBus<T> = Record<keyof T, Set<any>>;
+export type GraphEventMapToBus<GraphEventMap> = Record<
+  keyof GraphEventMap,
+  Set<any>
+>;
 
 export type BaseGraphEventBus = GraphEventMapToBus<BaseGraphEventMap>;
 
@@ -13,39 +13,47 @@ export type BaseGraphEventBus = GraphEventMapToBus<BaseGraphEventMap>;
 type PermissiveParams<T> = T extends (...args: infer P) => any ? P : never;
 
 /**
-  generates a "subscribe" and "unsubscribe" function for the event bus
-  in order to registering, deregistering and broadcast graph events in a type-safe manner
-*/
-export const generateSubscriber = <T extends BaseGraphEventMap>(
-  eventBus: GraphEventMapToBus<T>,
+ * generates a `subscribe`, `unsubscribe`, and `emit` function for
+ * registering, deregistering and broadcasting graph events.
+ */
+export const generateSubscriber = <GraphEventMap extends BaseGraphEventMap>(
+  eventBus: GraphEventMapToBus<GraphEventMap>,
 ) => ({
   /**
-   * lets you subscribe to a specific event to receive updates when it is emitted
+   * subscribe to an event to receive updates when it is emitted
    *
-   * @param event the name of the event to subscribe to
-   * @param fn the callback function to be called when the event is emitted
+   * @param eventName the name of the event to subscribe to
+   * @param eventCallback the callback function invoked when the event is emitted
    * @example subscribe('onNodeAdded', (node) => console.log(node)) // logs the node that was added
    */
-  subscribe: <K extends keyof T>(event: K, fn: T[K]) => eventBus[event].add(fn),
+  subscribe: <EventName extends keyof GraphEventMap>(
+    eventName: EventName,
+    eventCallback: GraphEventMap[EventName],
+  ) => eventBus[eventName].add(eventCallback),
   /**
-   * lets you unsubscribe from a specific event to stop receiving updates when it is emitted
+   * unsubscribe from an event to stop receiving updates when it is emitted
    *
-   * @param event the name of the event to unsubscribe from
-   * @param fn the callback function to be removed from the event
+   * @param eventName the name of the event to unsubscribe from
+   * @param eventCallback the callback function to be removed from the event
    * @example unsubscribe('onNodeAdded', (node) => console.log(node)) // stops logging the node that was added
    */
-  unsubscribe: <K extends keyof T>(event: K, fn: T[K]) =>
-    eventBus[event].delete(fn),
+  unsubscribe: <EventName extends keyof GraphEventMap>(
+    eventName: EventName,
+    eventCallback: GraphEventMap[EventName],
+  ) => eventBus[eventName].delete(eventCallback),
   /**
-   * lets you emit an event with the arguments corresponding to the event's callback function
+   * push an event to all subscribers
    *
-   * @param event the name of the event to emit
-   * @param args the arguments to be passed to the event's callback functions
+   * @param eventName the name of the event to push to
+   * @param callbackArgs the arguments to be passed to the event's callbacks
    * @example emit('onNodeAdded', node) // calls all onNodeAdded callbacks with the node as an argument
    */
-  emit: <K extends keyof T>(event: K, ...args: PermissiveParams<T[K]>) => {
-    for (const fn of eventBus[event]) {
-      fn(...args);
+  emit: <EventName extends keyof GraphEventMap>(
+    eventName: EventName,
+    ...callbackArgs: PermissiveParams<GraphEventMap[EventName]>
+  ) => {
+    for (const callback of eventBus[eventName]) {
+      callback(...callbackArgs);
     }
   },
 });
@@ -57,16 +65,16 @@ export const generateSubscriber = <T extends BaseGraphEventMap>(
 export type GenerateSubscriber<T extends BaseGraphEventMap> =
   typeof generateSubscriber<T>;
 
-export type Subscriber<T extends BaseGraphEventMap> = ReturnType<
-  GenerateSubscriber<T>
+export type Subscriber<GraphEventMap extends BaseGraphEventMap> = ReturnType<
+  GenerateSubscriber<GraphEventMap>
 >['subscribe'];
 
-export type Unsubscriber<T extends BaseGraphEventMap> = ReturnType<
-  GenerateSubscriber<T>
+export type Unsubscriber<GraphEventMap extends BaseGraphEventMap> = ReturnType<
+  GenerateSubscriber<GraphEventMap>
 >['unsubscribe'];
 
-export type Emitter<T extends BaseGraphEventMap> = ReturnType<
-  GenerateSubscriber<T>
+export type Emitter<GraphEventMap extends BaseGraphEventMap> = ReturnType<
+  GenerateSubscriber<GraphEventMap>
 >['emit'];
 
 export const getInitialBaseEventBus = (): BaseGraphEventBus => ({
