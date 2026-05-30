@@ -26,35 +26,27 @@ type EdgeBaseToNodeFocusTheme = {
 
 export const useFocus = (graph: BaseGraph) => {
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
-  const focusedItemIds = ref(new Set<string>());
+  const focusedElementIds = ref(new Set<string>());
 
   const setFocus = (ids: string[]) => {
-    const nonBlacklistedIds = ids.filter(
-      (id) => !graph.settings.value.focusBlacklist.includes(id),
+    const elementsAlreadyFocused = ids.every((id) =>
+      focusedElementIds.value.has(id),
     );
-    const sameLength = nonBlacklistedIds.length === focusedItemIds.value.size;
+    if (elementsAlreadyFocused) return;
 
-    const sameIds =
-      sameLength &&
-      nonBlacklistedIds.every((id) => focusedItemIds.value.has(id));
-    if (sameIds) return;
+    const oldIds = new Set(focusedElementIds.value);
+    focusedElementIds.value = new Set(ids);
 
-    const oldIds = new Set([...focusedItemIds.value]);
-    focusedItemIds.value = new Set(nonBlacklistedIds);
-
-    graph.emit('onFocusChange', focusedItemIds.value, oldIds);
+    graph.emit('onFocusChange', focusedElementIds.value, oldIds);
   };
 
   const addToFocus = (id: string) => {
-    const isInFocusAlready = focusedItemIds.value.has(id);
+    const isInFocusAlready = focusedElementIds.value.has(id);
     if (isInFocusAlready) return;
 
-    const isOnBlacklist = graph.settings.value.focusBlacklist.includes(id);
-    if (isOnBlacklist) return;
-
-    const oldIds = new Set([...focusedItemIds.value]);
-    focusedItemIds.value.add(id);
-    graph.emit('onFocusChange', focusedItemIds.value, oldIds);
+    const oldIds = new Set([...focusedElementIds.value]);
+    focusedElementIds.value.add(id);
+    graph.emit('onFocusChange', focusedElementIds.value, oldIds);
   };
 
   const handleTextArea = (schemaItem: SchemaItem) => {
@@ -80,7 +72,7 @@ export const useFocus = (graph: BaseGraph) => {
   };
 
   const clearOutDeletedItemsFromFocus = () => {
-    const focusedIds = Array.from(focusedItemIds.value);
+    const focusedIds = Array.from(focusedElementIds.value);
     const newFocusedIds = focusedIds.filter(
       (id) => graph.getNode(id) || graph.getEdge(id),
     );
@@ -131,7 +123,7 @@ export const useFocus = (graph: BaseGraph) => {
     if (focus) setFocus([id]);
   };
 
-  const isFocused = (id: string) => focusedItemIds.value.has(id);
+  const isFocused = (id: string) => focusedElementIds.value.has(id);
 
   const nodeBaseStylePathMapping: NodeBaseToNodeFocusTheme = {
     'node.base.color': 'node.focus.color',
@@ -238,7 +230,7 @@ export const useFocus = (graph: BaseGraph) => {
     /**
      * The ids of the focused item in the graph
      */
-    focusedItemIds: readonly(focusedItemIds),
+    focusedItemIds: readonly(focusedElementIds),
     /**
      * all the nodes that are focused
      */
