@@ -11,7 +11,6 @@ import {
   ForbiddenNodeKeyUpdates,
   TransactionPayload,
 } from '../base/transaction/types.ts';
-import type { HistoryOption } from '../base/types.ts';
 import type { GraphMouseEvent } from '../base/types.ts';
 import type { GraphState } from '../collab/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
@@ -104,17 +103,7 @@ export type BaseGraphEventMap = {
     newNode: GNode | undefined,
     oldNode: GNode | undefined,
   ) => void;
-  /**
-   * when the graph is {@link Graph.load | loaded} with new nodes and edges.
-   */
-  onGraphLoaded: (
-    previousState: GraphState,
-    historyOptions: HistoryOption,
-  ) => void;
-  /**
-   * when the graph has {@link Graph.reset | reset} and all nodes and edges have been removed
-   */
-  onGraphReset: () => void;
+
   /**
    * when the canvas is clicked on (native dom event)
    */
@@ -171,16 +160,6 @@ export type HistoryGraphEventMap = {
   onRedo: (
     historyRecord: DeepReadonly<HistoryRecord>,
     options: DeepReadonly<RedoHistoryOptions>,
-  ) => void;
-};
-
-export type FocusGraphEventMap = {
-  /**
-   * when the set of focused items changes
-   */
-  onFocusChange: (
-    newItemIds: Readonly<Set<string>>,
-    oldItemIds: Readonly<Set<string>>,
   ) => void;
 };
 
@@ -246,7 +225,6 @@ export type PersistentGraphEventMap = {};
  */
 export type GraphEventMap = BaseGraphEventMap &
   HistoryGraphEventMap &
-  FocusGraphEventMap &
   DraggableGraphEventMap &
   NodeAnchorGraphEventMap &
   MarqueeGraphEventMap &

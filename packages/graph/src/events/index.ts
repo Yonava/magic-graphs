@@ -58,95 +58,86 @@ export const generateSubscriber = <T extends GraphEventMap>(
  * helper types for graph event architecture
  */
 
-export type GenerateSubscriber<T extends GraphEventMap = GraphEventMap> =
+export type GenerateSubscriber<T extends GraphEventMap> =
   typeof generateSubscriber<T>;
 
-export type Subscriber<T extends GraphEventMap = GraphEventMap> = ReturnType<
+export type Subscriber<T extends GraphEventMap> = ReturnType<
   GenerateSubscriber<T>
 >['subscribe'];
 
-export type Unsubscriber<T extends GraphEventMap = GraphEventMap> = ReturnType<
+export type Unsubscriber<T extends GraphEventMap> = ReturnType<
   GenerateSubscriber<T>
 >['unsubscribe'];
 
-export type Emitter<T extends GraphEventMap = GraphEventMap> = ReturnType<
+export type Emitter<T extends GraphEventMap> = ReturnType<
   GenerateSubscriber<T>
 >['emit'];
 
 /**
  * @returns an empty event bus with all events initialized to empty sets
  */
-export const getInitialEventBus = () => {
-  const eventBus = {
-    /**
-     * BaseGraphEvents
-     */
-    onTransactionComplete: new Set(),
-    onStructureChange: new Set(),
+export const getInitialEventBus = (): GraphEventBus => ({
+  /**
+   * BaseGraphEvents
+   */
+  onTransactionComplete: new Set(),
+  onStructureChange: new Set(),
 
-    onNodeAdded: new Set(),
-    onNodeRemoved: new Set(),
-    onNodeUpdated: new Set(),
+  onNodeAdded: new Set(),
+  onNodeRemoved: new Set(),
+  onNodeUpdated: new Set(),
 
-    onEdgeAdded: new Set(),
-    onEdgeRemoved: new Set(),
-    onEdgeUpdated: new Set(),
+  onEdgeAdded: new Set(),
+  onEdgeRemoved: new Set(),
+  onEdgeUpdated: new Set(),
 
-    onElementsAdded: new Set(),
-    onElementsRemoved: new Set(),
-    onElementsUpdated: new Set(),
+  onElementsAdded: new Set(),
+  onElementsRemoved: new Set(),
+  onElementsUpdated: new Set(),
 
-    onDraw: new Set(),
-    onNodeHoverChange: new Set(),
+  onDraw: new Set(),
+  onNodeHoverChange: new Set(),
 
-    onGraphLoaded: new Set(),
-    onGraphReset: new Set(),
+  onGraphLoaded: new Set(),
+  onGraphReset: new Set(),
 
-    onClick: new Set(),
-    onMouseDown: new Set(),
-    onMouseUp: new Set(),
-    onMouseMove: new Set(),
-    onDblClick: new Set(),
-    onContextMenu: new Set(),
+  onClick: new Set(),
+  onMouseDown: new Set(),
+  onMouseUp: new Set(),
+  onMouseMove: new Set(),
+  onDblClick: new Set(),
+  onContextMenu: new Set(),
 
-    onKeyDown: new Set(),
-    onKeyUp: new Set(),
+  onKeyDown: new Set(),
+  onKeyUp: new Set(),
 
-    onThemeChange: new Set(),
-    onSettingsChange: new Set(),
+  onThemeChange: new Set(),
+  onSettingsChange: new Set(),
 
-    /**
-     * HistoryGraphEvents
-     */
-    onUndo: new Set(),
-    onRedo: new Set(),
+  /**
+   * HistoryGraphEvents
+   */
+  onUndo: new Set(),
+  onRedo: new Set(),
 
-    /**
-     * FocusGraphEvents
-     */
-    onFocusChange: new Set(),
+  /**
+   * DraggableGraphEvents
+   */
+  onNodeDragStart: new Set(),
+  onNodeDrop: new Set(),
 
-    /**
-     * DraggableGraphEvents
-     */
-    onNodeDragStart: new Set(),
-    onNodeDrop: new Set(),
+  /**
+   * NodeAnchorGraphEvents
+   */
+  onNodeAnchorDragStart: new Set(),
+  onNodeAnchorDrop: new Set(),
 
-    /**
-     * NodeAnchorGraphEvents
-     */
-    onNodeAnchorDragStart: new Set(),
-    onNodeAnchorDrop: new Set(),
+  /**
+   * MarqueeGraphEvents
+   */
+  onGroupDragStart: new Set(),
+  onGroupDrop: new Set(),
 
-    /**
-     * MarqueeGraphEvents
-     */
-    onGroupDragStart: new Set(),
-    onGroupDrop: new Set(),
-
-    onMarqueeBeginSelection: new Set(),
-    onMarqueeEndSelection: new Set(),
-  } as const satisfies GraphEventBus;
-
-  return eventBus;
-};
+  onMarqueeBeginSelection: new Set(),
+  onMarqueeEndSelection: new Set(),
+});

@@ -6,7 +6,7 @@ import { useNodeAnchors } from './plugins/anchors/index.ts';
 import { useAnnotations } from './plugins/annotations/index.ts';
 import { useCharacteristics } from './plugins/characteristics/index.ts';
 import { useNodeDrag } from './plugins/drag/index.ts';
-import { useFocus } from './plugins/focus/index.ts';
+import { useFocus, useFocusPlugin } from './plugins/focus/index.ts';
 import { useHistory } from './plugins/history/index.ts';
 import { useInteractive } from './plugins/interactive/index.ts';
 import { useMarquee } from './plugins/marquee/index.ts';
@@ -29,19 +29,18 @@ export const useGraph = (
   canvas: MagicCanvasProps,
   settings: Partial<GraphSettings> = {},
 ) => {
-  const base = useBaseGraph(canvas, settings);
+  const baseWithFocus = useFocusPlugin(useBaseGraph(canvas, settings));
 
-  const focus = useFocus(base);
-  const history = useHistory(base);
-  const marquee = useMarquee({ ...base, focus });
-  const nodeAnchors = useNodeAnchors({ ...base, focus });
-  const nodeDrag = useNodeDrag({ ...base, nodeAnchors });
-  const annotation = useAnnotations(base);
-  const persistent = usePersistent(base);
-  const preferredTheme = usePreferredTheme(base);
+  const history = useHistory(baseWithFocus);
+  const marquee = useMarquee({ ...baseWithFocus, focus });
+  const nodeAnchors = useNodeAnchors({ ...baseWithFocus, focus });
+  const nodeDrag = useNodeDrag({ ...baseWithFocus, nodeAnchors });
+  const annotation = useAnnotations(baseWithFocus);
+  const persistent = usePersistent(baseWithFocus);
+  const preferredTheme = usePreferredTheme(baseWithFocus);
 
   const shortcut = useShortcuts({
-    ...base,
+    ...baseWithFocus,
     history,
     focus,
     annotation,

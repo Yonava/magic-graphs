@@ -4,24 +4,33 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { computed, readonly, ref } from 'vue';
 
 import type { BaseGraph } from '../../base/index.ts';
-import type { FocusOption, GraphMouseEvent } from '../../base/types.ts';
-import { ValidGraphThemePath } from '../../themes/types.ts';
+import type { GraphMouseEvent } from '../../base/types.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
+import {
+  EdgeBaseThemePath,
+  EdgeBaseToNodeFocusTheme,
+  FocusAPI,
+  NodeBaseThemePath,
+  NodeBaseToNodeFocusTheme,
+} from './types.ts';
 
-type NodeBaseThemePath = Extract<ValidGraphThemePath, `node.base.${string}`>;
-type EdgeBaseThemePath = Extract<ValidGraphThemePath, `edge.base.${string}`>;
+type GraphWithOverrides<
+  Graph extends BaseGraph,
+  Overrides extends Partial<BaseGraph>,
+> = Overrides & Omit<Graph, keyof Overrides>;
 
-type NodeBaseToNodeFocusTheme = {
-  [Path in NodeBaseThemePath]: Path extends `node.base.${infer Style}`
-    ? `node.focus.${Style}`
-    : never;
-};
-type EdgeBaseToNodeFocusTheme = {
-  [Path in EdgeBaseThemePath]: Path extends `edge.base.${infer Style}`
-    ? `edge.focus.${Style}`
-    : never;
+type FocusOverrides = {
+  addNode:
+}
+
+type FocusGraph<Graph extends BaseGraph> = GraphWithOverrides<Graph, > & FocusAPI;
+
+export const useFocusPlugin = <Graph extends BaseGraph>(
+  graph: Graph,
+): FocusGraph<Graph> => {
+  const focusedElementIds = ref(new Set<string>());
 };
 
 export const useFocus = (graph: BaseGraph) => {
@@ -244,12 +253,4 @@ export const useFocus = (graph: BaseGraph) => {
       graph.edges.value.filter((edge) => isFocused(edge.id)),
     ),
   };
-};
-
-export type GraphFocusControls = ReturnType<typeof useFocus>;
-export type GraphFocusPlugin = {
-  /**
-   * controls for focusing items in the graph
-   */
-  focus: GraphFocusControls;
 };

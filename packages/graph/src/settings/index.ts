@@ -59,21 +59,6 @@ export const DEFAULT_BASE_SETTINGS: BaseGraphSettings = {
 };
 
 /**
- * FOCUS GRAPH SETTINGS
- */
-export type FocusGraphSettings = {
-  /**
-   * if false, no {@link SchemaItem | item} on the graph can be focused
-   * @default true
-   */
-  focusable: boolean;
-};
-
-export const DEFAULT_FOCUS_SETTINGS: FocusGraphSettings = {
-  focusable: true,
-};
-
-/**
  * DRAGGABLE GRAPH SETTINGS
  */
 export type DraggableGraphSettings = {
@@ -268,7 +253,6 @@ export const DEFAULT_SHORTCUT_SETTINGS: ShortcutGraphSettings = {
  * represents all settings on a graph instance
  */
 export type GraphSettings = BaseGraphSettings &
-  FocusGraphSettings &
   DraggableGraphSettings &
   NodeAnchorGraphSettings &
   MarqueeGraphSettings &
@@ -281,7 +265,6 @@ export type GraphSettings = BaseGraphSettings &
  */
 export const DEFAULT_GRAPH_SETTINGS = {
   ...DEFAULT_BASE_SETTINGS,
-  ...DEFAULT_FOCUS_SETTINGS,
   ...DEFAULT_DRAGGABLE_SETTINGS,
   ...DEFAULT_NODE_ANCHOR_SETTINGS,
   ...DEFAULT_MARQUEE_SETTINGS,
