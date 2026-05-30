@@ -1,23 +1,21 @@
+import { AnyFunction } from 'ts-essentials';
+
 import { BaseGraphEventMap } from './types.ts';
 
-export type GraphEventMapToBus<GraphEventMap> = Record<
-  keyof GraphEventMap,
-  Set<any>
->;
+type GenericEventMap = Record<string, AnyFunction>;
 
-export type BaseGraphEventBus = GraphEventMapToBus<BaseGraphEventMap>;
+export type GraphEventMapToEventBus<GraphEventMap extends GenericEventMap> = {
+  [EventName in keyof GraphEventMap]: Set<GraphEventMap[EventName]>;
+};
 
-/**
- * a version of Parameters<T> that removes constraints on T
- */
-type PermissiveParams<T> = T extends (...args: infer P) => any ? P : never;
+export type BaseGraphEventBus = GraphEventMapToEventBus<BaseGraphEventMap>;
 
 /**
  * generates a `subscribe`, `unsubscribe`, and `emit` function for
  * registering, deregistering and broadcasting graph events.
  */
-export const generateSubscriber = <GraphEventMap extends BaseGraphEventMap>(
-  eventBus: GraphEventMapToBus<GraphEventMap>,
+export const generateSubscriber = <GraphEventMap extends GenericEventMap>(
+  eventBus: GraphEventMapToEventBus<GraphEventMap>,
 ) => ({
   /**
    * subscribe to an event to receive updates when it is emitted
@@ -46,11 +44,11 @@ export const generateSubscriber = <GraphEventMap extends BaseGraphEventMap>(
    *
    * @param eventName the name of the event to push to
    * @param callbackArgs the arguments to be passed to the event's callbacks
-   * @example emit('onNodeAdded', node) // calls all onNodeAdded callbacks with the node as an argument
+   * @example emit('onNodeAdded', node) // invokes all onNodeAdded callbacks with the node as an argument
    */
   emit: <EventName extends keyof GraphEventMap>(
     eventName: EventName,
-    ...callbackArgs: PermissiveParams<GraphEventMap[EventName]>
+    ...callbackArgs: Parameters<GraphEventMap[EventName]>
   ) => {
     for (const callback of eventBus[eventName]) {
       callback(...callbackArgs);
@@ -62,8 +60,8 @@ export const generateSubscriber = <GraphEventMap extends BaseGraphEventMap>(
  * helper types for graph event architecture
  */
 
-export type GenerateSubscriber<T extends BaseGraphEventMap> =
-  typeof generateSubscriber<T>;
+export type GenerateSubscriber<GraphEventMap extends BaseGraphEventMap> =
+  typeof generateSubscriber<GraphEventMap>;
 
 export type Subscriber<GraphEventMap extends BaseGraphEventMap> = ReturnType<
   GenerateSubscriber<GraphEventMap>
