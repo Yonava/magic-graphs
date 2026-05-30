@@ -13,7 +13,7 @@ import { onClickOutside, useElementHover } from '@vueuse/core';
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { generateSubscriber, getInitialEventBus } from '../events/index.ts';
+import { generateSubscriber, getInitialBaseEventBus } from '../events/index.ts';
 import { prioritizeNode } from '../helpers/prioritization.ts';
 import { getEdgeSchematic } from '../schematics/edge.ts';
 import { getNodeSchematic } from '../schematics/node.ts';
@@ -51,7 +51,7 @@ export const useBaseGraph = (
     ...startupSettings,
   });
 
-  const eventBus = getInitialEventBus();
+  const eventBus = getInitialBaseEventBus();
   const { subscribe, unsubscribe, emit } = generateSubscriber(eventBus);
 
   const aggregator = useAggregator({ emit });

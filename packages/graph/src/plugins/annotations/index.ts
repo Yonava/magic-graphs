@@ -6,12 +6,10 @@ import colors from '@magic/utils/colors';
 import type { Color } from '@magic/utils/colors';
 import { generateId } from '@magic/utils/id';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
-import type { IntervalHandler } from '@magic/utils/types';
 
 import { computed, ref, watch } from 'vue';
 
-import type { BaseGraph } from '../../base/index.ts';
-import type { GraphMouseEvent } from '../../base/types.ts';
+import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
 import type { Aggregator } from '../../types.ts';
 import { BRUSH_WEIGHTS, COLORS } from './constants.ts';
 import { useAnnotationHistory } from './history.ts';
@@ -24,7 +22,7 @@ export const useAnnotations = (graph: BaseGraph) => {
   const selectedBrushWeight = ref(BRUSH_WEIGHTS[1]);
   const isErasing = ref(false);
   const isLaserPointing = ref(false);
-  const laserDecayInterval = ref<IntervalHandler>();
+  const laserDecayInterval = ref<NodeJS.Timeout>();
   const lastMoveTime = ref(Date.now());
   const erasedScribbleIds = ref(new Set<string>());
 

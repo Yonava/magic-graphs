@@ -7,10 +7,10 @@ import type { ComputedRef, DeepReadonly, Ref, ShallowRef } from 'vue';
 import {
   Emitter,
   GraphEventBus,
-  GraphEventMap,
   Subscriber,
   Unsubscriber,
 } from '../events/index.ts';
+import { BaseGraphEventMap } from '../events/types.ts';
 import { GraphSettings } from '../settings/index.ts';
 import { ThemeGetter } from '../themes/getThemeResolver.ts';
 import { GraphThemeName, ThemeLoadouts } from '../themes/index.ts';
@@ -50,7 +50,9 @@ export type GraphMouseEvent = DeepReadonly<GraphAtMousePosition> & {
 };
 
 export type BaseGraph<
-  TransactionWrapperOptions extends BaseTransactionWrapperOptions = {},
+  TransactionWrapperOptions extends BaseTransactionWrapperOptions =
+    BaseTransactionWrapperOptions,
+  EventMap extends BaseGraphEventMap = BaseGraphEventMap,
 > = {
   /**
    * all the nodes contained in the graph
@@ -73,9 +75,9 @@ export type BaseGraph<
    * a mapping of all graph events to a set of their callback functions
    */
   eventBus: GraphEventBus;
-  subscribe: Subscriber<GraphEventMap>;
-  unsubscribe: Unsubscriber<GraphEventMap>;
-  emit: Emitter<GraphEventMap>;
+  subscribe: Subscriber<EventMap>;
+  unsubscribe: Unsubscriber<EventMap>;
+  emit: Emitter<EventMap>;
 
   aggregator: AggregatorProps;
 

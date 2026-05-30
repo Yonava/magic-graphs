@@ -1,15 +1,11 @@
-import type { GraphEventMap } from './types.ts';
-
-export type { GraphEventMap } from './types.ts';
+import { BaseGraphEventMap } from './types.ts';
 
 /**
  * turns a type that maps an events callback fn type to an actual event bus
  */
-export type EventMapToEventBus<T> = Record<keyof T, Set<any>>;
+export type GraphEventMapToBus<T> = Record<keyof T, Set<any>>;
 
-export type GraphEventBus = EventMapToEventBus<GraphEventMap>;
-
-export type GraphEvent = keyof GraphEventMap;
+export type BaseGraphEventBus = GraphEventMapToBus<BaseGraphEventMap>;
 
 /**
  * a version of Parameters<T> that removes constraints on T
@@ -20,8 +16,8 @@ type PermissiveParams<T> = T extends (...args: infer P) => any ? P : never;
   generates a "subscribe" and "unsubscribe" function for the event bus
   in order to registering, deregistering and broadcast graph events in a type-safe manner
 */
-export const generateSubscriber = <T extends GraphEventMap>(
-  eventBus: EventMapToEventBus<T>,
+export const generateSubscriber = <T extends BaseGraphEventMap>(
+  eventBus: GraphEventMapToBus<T>,
 ) => ({
   /**
    * lets you subscribe to a specific event to receive updates when it is emitted
@@ -58,28 +54,22 @@ export const generateSubscriber = <T extends GraphEventMap>(
  * helper types for graph event architecture
  */
 
-export type GenerateSubscriber<T extends GraphEventMap> =
+export type GenerateSubscriber<T extends BaseGraphEventMap> =
   typeof generateSubscriber<T>;
 
-export type Subscriber<T extends GraphEventMap> = ReturnType<
+export type Subscriber<T extends BaseGraphEventMap> = ReturnType<
   GenerateSubscriber<T>
 >['subscribe'];
 
-export type Unsubscriber<T extends GraphEventMap> = ReturnType<
+export type Unsubscriber<T extends BaseGraphEventMap> = ReturnType<
   GenerateSubscriber<T>
 >['unsubscribe'];
 
-export type Emitter<T extends GraphEventMap> = ReturnType<
+export type Emitter<T extends BaseGraphEventMap> = ReturnType<
   GenerateSubscriber<T>
 >['emit'];
 
-/**
- * @returns an empty event bus with all events initialized to empty sets
- */
-export const getInitialEventBus = (): GraphEventBus => ({
-  /**
-   * BaseGraphEvents
-   */
+export const getInitialBaseEventBus = (): BaseGraphEventBus => ({
   onTransactionComplete: new Set(),
   onStructureChange: new Set(),
 
@@ -98,9 +88,6 @@ export const getInitialEventBus = (): GraphEventBus => ({
   onDraw: new Set(),
   onNodeHoverChange: new Set(),
 
-  onGraphLoaded: new Set(),
-  onGraphReset: new Set(),
-
   onClick: new Set(),
   onMouseDown: new Set(),
   onMouseUp: new Set(),
@@ -113,31 +100,4 @@ export const getInitialEventBus = (): GraphEventBus => ({
 
   onThemeChange: new Set(),
   onSettingsChange: new Set(),
-
-  /**
-   * HistoryGraphEvents
-   */
-  onUndo: new Set(),
-  onRedo: new Set(),
-
-  /**
-   * DraggableGraphEvents
-   */
-  onNodeDragStart: new Set(),
-  onNodeDrop: new Set(),
-
-  /**
-   * NodeAnchorGraphEvents
-   */
-  onNodeAnchorDragStart: new Set(),
-  onNodeAnchorDrop: new Set(),
-
-  /**
-   * MarqueeGraphEvents
-   */
-  onGroupDragStart: new Set(),
-  onGroupDrop: new Set(),
-
-  onMarqueeBeginSelection: new Set(),
-  onMarqueeEndSelection: new Set(),
 });

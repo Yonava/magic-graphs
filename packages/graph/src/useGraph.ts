@@ -29,9 +29,7 @@ export const useGraph = (
   canvas: MagicCanvasProps,
   settings: Partial<GraphSettings> = {},
 ) => {
-  const baseWithFocus = useHistoryPlugin(
-    useFocusPlugin(useBaseGraph(canvas, settings)),
-  );
+  const baseWithFocus = useFocusPlugin(useBaseGraph(canvas, settings));
 
   baseWithFocus.actions.addNode({}, {});
   baseWithFocus.actions.addEdge({}, { edge: 'edge' });

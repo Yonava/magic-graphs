@@ -215,17 +215,3 @@ export type MarqueeGraphEventMap = {
    */
   onMarqueeEndSelection: (marqueeBox: Readonly<BoundingBox>) => void;
 };
-
-export type AnnotationGraphEventMap = {};
-
-export type PersistentGraphEventMap = {};
-
-/**
- * a complete mapping of all graph events to their callback functions
- */
-export type GraphEventMap = BaseGraphEventMap &
-  HistoryGraphEventMap &
-  DraggableGraphEventMap &
-  NodeAnchorGraphEventMap &
-  MarqueeGraphEventMap &
-  PersistentGraphEventMap;
