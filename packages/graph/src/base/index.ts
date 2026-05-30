@@ -13,7 +13,8 @@ import { onClickOutside, useElementHover } from '@vueuse/core';
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { createEventHub, getInitialBaseEventBus } from '../events/index.ts';
+import { createEventHub } from '../events/createEventHub.ts';
+import { createBaseGraphEventBus } from '../events/index.ts';
 import { prioritizeNode } from '../helpers/prioritization.ts';
 import { getEdgeSchematic } from '../schematics/edge.ts';
 import { getNodeSchematic } from '../schematics/node.ts';
@@ -51,10 +52,10 @@ export const useBaseGraph = (
     ...startupSettings,
   });
 
-  const eventBus = getInitialBaseEventBus();
-  const { subscribe, unsubscribe, emit } = createEventHub(eventBus);
+  const eventBus = createBaseGraphEventBus();
+  const events = createEventHub(eventBus);
 
-  const aggregator = useAggregator({ emit });
+  const aggregator = useAggregator({ emit: events.emit });
 
   const canvasFocused = ref(true);
 
@@ -62,7 +63,7 @@ export const useBaseGraph = (
     canvasFocused.value = false;
   });
 
-  subscribe('onMouseDown', () => {
+  events.subscribe('onMouseDown', () => {
     const el = document.activeElement;
     if (el instanceof HTMLElement && typeof el.blur === 'function') el.blur();
     canvasFocused.value = true;
@@ -81,7 +82,7 @@ export const useBaseGraph = (
 
   const cursor = useGraphCursor({
     magicCanvas,
-    subscribe,
+    subscribe: events.subscribe,
     graphAtMousePosition,
   });
 
@@ -101,35 +102,35 @@ export const useBaseGraph = (
   const mouseEvents: Partial<MouseEventMap> = {
     click: (ev: MouseEvent) => {
       ev.preventDefault();
-      emit('onClick', graphMouseEv(ev));
+      events.emit('onClick', graphMouseEv(ev));
     },
     mousemove: (ev: MouseEvent) => {
       ev.preventDefault();
       updateGraphAtMousePosition();
-      emit('onMouseMove', graphMouseEv(ev));
+      events.emit('onMouseMove', graphMouseEv(ev));
     },
     mousedown: (ev: MouseEvent) => {
       ev.preventDefault();
       updateGraphAtMousePosition();
-      emit('onMouseDown', graphMouseEv(ev));
+      events.emit('onMouseDown', graphMouseEv(ev));
     },
     mouseup: (ev: MouseEvent) => {
       ev.preventDefault();
       updateGraphAtMousePosition();
-      emit('onMouseUp', graphMouseEv(ev));
+      events.emit('onMouseUp', graphMouseEv(ev));
     },
     dblclick: (ev: MouseEvent) => {
       ev.preventDefault();
-      emit('onDblClick', graphMouseEv(ev));
+      events.emit('onDblClick', graphMouseEv(ev));
     },
     contextmenu: (ev: MouseEvent) => {
-      emit('onContextMenu', graphMouseEv(ev));
+      events.emit('onContextMenu', graphMouseEv(ev));
     },
   };
 
   const keyboardEvents: Partial<KeyboardEventMap> = {
-    keydown: (ev: KeyboardEvent) => emit('onKeyDown', ev),
-    keyup: (ev: KeyboardEvent) => emit('onKeyUp', ev),
+    keydown: (ev: KeyboardEvent) => events.emit('onKeyDown', ev),
+    keyup: (ev: KeyboardEvent) => events.emit('onKeyUp', ev),
   };
 
   const shapes = useAnimatedShapes();
@@ -207,7 +208,7 @@ export const useBaseGraph = (
   const onTransactionSucceeded = useTransactionSucceeded({
     edges,
     nodes,
-    emit,
+    emit: events.emit,
     updateAggregator: aggregator.updateAggregator,
     updateGraphAtMousePosition,
   });
@@ -239,14 +240,14 @@ export const useBaseGraph = (
   );
 
   let currHoveredNode: GNode | undefined;
-  subscribe('onMouseMove', ({ items }) => {
+  events.subscribe('onMouseMove', ({ items }) => {
     const topItem = items.at(-1);
     // TODO change this to better support node anchors
     // that may be dragging over the node
     if (!topItem || topItem.graphType !== 'node') return;
     const node = getNode(topItem.id);
     if (node === currHoveredNode) return;
-    emit('onNodeHoverChange', node, currHoveredNode);
+    events.emit('onNodeHoverChange', node, currHoveredNode);
     currHoveredNode = node;
   });
 
@@ -259,7 +260,7 @@ export const useBaseGraph = (
   aggregator.subscribeToAggregator.push(liftHoveredNodeToTop);
 
   watch(themeName, async (newThemeName, oldThemeName) => {
-    emit('onThemeChange', newThemeName, oldThemeName);
+    events.emit('onThemeChange', newThemeName, oldThemeName);
   });
 
   const activeSettings = ref(clone(settings.value));
@@ -269,8 +270,8 @@ export const useBaseGraph = (
       const settingsDiff = delta(activeSettings.value, newSettings);
       if (!settingsDiff) return;
       activeSettings.value = clone(settings.value);
-      emit('onSettingsChange', settingsDiff);
-      if ('isGraphDirected' in settingsDiff) emit('onStructureChange');
+      events.emit('onSettingsChange', settingsDiff);
+      if ('isGraphDirected' in settingsDiff) events.emit('onStructureChange');
     },
     { deep: true },
   );
@@ -293,13 +294,7 @@ export const useBaseGraph = (
 
     actions,
 
-    /**
-     * a mapping of all graph events to a set of their callback functions
-     */
-    eventBus,
-    subscribe,
-    unsubscribe,
-    emit,
+    events,
 
     aggregator,
 

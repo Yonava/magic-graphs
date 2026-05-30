@@ -1,4 +1,5 @@
-import { EventHub, GenericEventMap } from './index.ts';
+import { EventHub } from './createEventHub.ts';
+import { GenericEventMap } from './index.ts';
 
 export const UNRECOGNIZED_KEY = (eventName: string) =>
   `Event Hub Invoked With Event ${eventName} Unrecognized`;
@@ -12,14 +13,13 @@ export const mergeEventHubs = <
   hub1: EventHub<EventMap1>,
   hub2: EventHub<EventMap2>,
 ): EventHub<EventMap1 & EventMap2> => {
-  const combinedKeys = new Set([...hub1.keys, ...hub2.keys]);
   const getKeyInHub = (eventName: keyof EventMap1 | keyof EventMap2) => {
     const keyInHub1 = hub1.keys.has(eventName as keyof EventMap1);
     const keyInHub2 = hub2.keys.has(eventName as keyof EventMap2);
     return { keyInHub1, keyInHub2 };
   };
   return {
-    keys: combinedKeys,
+    keys: new Set([...hub1.keys, ...hub2.keys]),
     subscribe: (eventName, eventCallback) => {
       const { keyInHub1, keyInHub2 } = getKeyInHub(eventName);
       if (keyInHub1) {

@@ -4,12 +4,8 @@ import type { Coordinate } from '@magic/shapes/types/utility';
 
 import type { ComputedRef, DeepReadonly, Ref, ShallowRef } from 'vue';
 
-import {
-  BaseGraphEventBus,
-  Emitter,
-  Subscriber,
-  Unsubscriber,
-} from '../events/index.ts';
+import { EventHub } from '../events/createEventHub.ts';
+import { BaseGraphEventBus } from '../events/index.ts';
 import { BaseGraphEventMap } from '../events/types.ts';
 import { GraphSettings } from '../settings/index.ts';
 import { ThemeGetter } from '../themes/getThemeResolver.ts';
@@ -71,13 +67,7 @@ export type BaseGraph<
 
   actions: GraphActions<TransactionWrapperOptions>;
 
-  /**
-   * a mapping of all graph events to a set of their callback functions
-   */
-  eventBus: BaseGraphEventBus;
-  subscribe: Subscriber<EventMap>;
-  unsubscribe: Unsubscriber<EventMap>;
-  emit: Emitter<EventMap>;
+  events: EventHub<EventMap>;
 
   aggregator: AggregatorProps;
 

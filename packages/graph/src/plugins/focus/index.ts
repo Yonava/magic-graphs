@@ -5,7 +5,7 @@ import { computed, readonly, ref } from 'vue';
 
 import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
 import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
-import { createEventHub, getInitialBaseEventBus } from '../../events/index.ts';
+import { createBaseGraphEventBus, createEventHub } from '../../events/index.ts';
 import { BaseGraphEventMap } from '../../events/types.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
