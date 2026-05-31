@@ -75,10 +75,17 @@ export type EdgeBaseToNodeFocusTheme = {
     : never;
 };
 
-type FocusTransactionWrapperOptions = {
+export type FocusTransactionWrapperOptions = {
   addNode: FocusOption;
   addEdge: FocusOption;
   addElements: FocusOption;
+};
+
+export type FocusPlugin = {
+  /**
+   * graph focus plugin controls
+   */
+  focus: FocusGraph;
 };
 
 export type GraphWithFocus<
@@ -88,10 +95,5 @@ export type GraphWithFocus<
 > = BaseGraph<
   FocusTransactionWrapperOptions & TransactionWrapperOptions,
   FocusGraphEventMap & GraphEventMap,
-  Plugins & {
-    /**
-     * graph focus plugin controls
-     */
-    focus: FocusGraph;
-  }
+  Plugins & FocusPlugin
 >;

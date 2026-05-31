@@ -29,10 +29,18 @@ export const useGraph = (
   canvas: MagicCanvasProps,
   settings: Partial<GraphSettings> = {},
 ) => {
-  const base = useBaseGraph(canvas, settings);
-  const baseFocus = useFocusPlugin(base);
-  const baseFocusHistory = useHistoryPlugin(baseFocus);
-  const baseFocusHistoryMarquee = useMarqueePlugin(baseFocusHistory);
+  const b = useBaseGraph(canvas, settings);
+  const bf = useFocusPlugin(b);
+  const bfh = useHistoryPlugin(bf);
+  const bfhm = useMarqueePlugin(bfh);
+
+  bfhm.history;
+
+  const bh = useHistoryPlugin(b);
+  const bhf = useFocusPlugin(bh);
+  const bhfm = useMarqueePlugin(bhf);
+
+  bhfm.history;
 
   // baseFocusHistoryMarquee.events.subscribe('onGroupDragStart', () => {});
   // baseFocusHistoryMarquee.actions.addNode({}, { focus: true, history: true });
@@ -50,16 +58,16 @@ export const useGraph = (
     annotation,
   });
 
-  const helpers = useGraphHelpers(base);
-  const adjacencyList = useAdjacencyList({ ...base, helpers });
-  const transitionMatrix = useTransitionMatrix({ ...base, adjacencyList });
+  const helpers = useGraphHelpers(b);
+  const adjacencyList = useAdjacencyList({ ...b, helpers });
+  const transitionMatrix = useTransitionMatrix({ ...b, adjacencyList });
 
-  const characteristics = useCharacteristics({ ...base, ...adjacencyList });
+  const characteristics = useCharacteristics({ ...b, ...adjacencyList });
 
-  useInteractive(base);
+  useInteractive(b);
 
   return {
-    ...base,
+    ...b,
 
     // plugin controllers
     focus,
