@@ -25,7 +25,7 @@ import {
 } from './types.ts';
 
 export const useFocusPlugin = <
-  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+  TransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
   Plugins,
 >(

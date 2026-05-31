@@ -2,7 +2,6 @@ import { generateId } from '@magic/utils/id';
 
 import { useNodeLetterLabelGetter } from '../../../../labels.ts';
 import { GNode } from '../../../../types.ts';
-import { ADD_NODE_OPTIONS_DEFAULTS } from '../../../types.ts';
 import { GraphActions } from '../../types.ts';
 import { GraphActionsOptions } from '../../useGraphActions.ts';
 
@@ -29,7 +28,7 @@ export const createAddNodeHandler = ({
   commitTransaction,
 }: GraphActionsOptions): GraphActions['addNode'] => {
   const resolveNodeDefaults = useResolveNodeDefaults(graphState);
-  const addNode: GraphActions['addNode'] = (node, options) => {
+  const addNode: GraphActions['addNode'] = (node) => {
     const nodeWithDefaults = resolveNodeDefaults(node);
     const { addedNodes } = commitTransaction({ addNodes: [nodeWithDefaults] });
 

@@ -5,17 +5,17 @@ export const createRemoveEdgeHandler = ({
   commitTransaction,
 }: GraphActionsOptions): GraphActions['removeEdge'] => {
   const removeEdge: GraphActions['removeEdge'] = (edgeId) => {
-    const { removedEdgeIds: removedEdges } = commitTransaction({
+    const { removedEdgeIds } = commitTransaction({
       removeEdgeIds: [edgeId],
     });
 
-    const removedEdge = removedEdges[0];
-    if (!removedEdge) {
+    const removedEdgeId = removedEdgeIds[0];
+    if (!removedEdgeId) {
       throw new Error(
         `[Graph Actions] Failed to remove edge. Transaction rejected.`,
       );
     }
-    return removedEdge;
+    return removedEdgeId;
   };
 
   return removeEdge;

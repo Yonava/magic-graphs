@@ -34,16 +34,10 @@ export const useGraph = (
   const bfh = useHistoryPlugin(bf);
   const bfhm = useMarqueePlugin(bfh);
 
-  bfhm.history;
-
-  const bh = useHistoryPlugin(b);
-  const bhf = useFocusPlugin(bh);
-  const bhfm = useMarqueePlugin(bhf);
-
-  bhfm.history;
-
-  // baseFocusHistoryMarquee.events.subscribe('onGroupDragStart', () => {});
-  // baseFocusHistoryMarquee.actions.addNode({}, { focus: true, history: true });
+  bfhm.events.subscribe('onUndo', () => {});
+  b.actions.addNode({});
+  bfhm.actions.addNode({}, { focus: true, history: true });
+  bf.actions.removeElements({}, { focus: true, history: true });
 
   const nodeAnchors = useNodeAnchors({ ...baseWithFocus, focus });
   const nodeDrag = useNodeDrag({ ...baseWithFocus, nodeAnchors });

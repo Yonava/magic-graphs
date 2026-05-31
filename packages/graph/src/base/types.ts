@@ -13,6 +13,7 @@ import type { GEdge, GNode, SchemaItem } from '../types.ts';
 import {
   BaseTransactionWrapperOptions,
   GraphActions,
+  MergeTransactionWrappersWithBase,
 } from './actions/types.ts';
 import { GraphCursor } from './cursor/types.ts';
 import { BaseGraphEventMap } from './events.ts';
@@ -45,8 +46,7 @@ export type GraphMouseEvent = DeepReadonly<GraphAtMousePosition> & {
 };
 
 export type BaseGraph<
-  TransactionWrapperOptions extends BaseTransactionWrapperOptions =
-    BaseTransactionWrapperOptions,
+  TransactionWrapperOptions = {},
   EventMap extends BaseGraphEventMap = BaseGraphEventMap,
   Plugins = {},
 > = {
@@ -65,7 +65,9 @@ export type BaseGraph<
   getNode: (nodeId: GNode['id']) => GNode | undefined;
   getEdge: (edgeId: GEdge['id']) => GEdge | undefined;
 
-  actions: GraphActions<TransactionWrapperOptions>;
+  actions: GraphActions<
+    MergeTransactionWrappersWithBase<TransactionWrapperOptions>
+  >;
 
   events: EventHub<EventMap>;
 
