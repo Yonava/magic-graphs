@@ -84,12 +84,14 @@ type FocusTransactionWrapperOptions = {
 export type GraphWithFocus<
   TransactionWrapperOptions extends BaseTransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
+  Plugins,
 > = BaseGraph<
   FocusTransactionWrapperOptions & TransactionWrapperOptions,
-  FocusGraphEventMap & GraphEventMap
-> & {
-  /**
-   * graph focus plugin controls
-   */
-  focus: FocusGraph;
-};
+  FocusGraphEventMap & GraphEventMap,
+  Plugins & {
+    /**
+     * graph focus plugin controls
+     */
+    focus: FocusGraph;
+  }
+>;

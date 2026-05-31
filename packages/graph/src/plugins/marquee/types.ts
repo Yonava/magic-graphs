@@ -20,12 +20,14 @@ export type MarqueeGraph = {
 export type GraphWithMarquee<
   TransactionWrapperOptions extends BaseTransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
+  Plugins,
 > = BaseGraph<
   TransactionWrapperOptions,
-  MarqueeGraphEventMap & GraphEventMap
-> & {
-  /**
-   * history plugin controls
-   */
-  marquee: MarqueeGraph;
-};
+  MarqueeGraphEventMap & GraphEventMap,
+  Plugins & {
+    /**
+     * history plugin controls
+     */
+    marquee: MarqueeGraph;
+  }
+>;

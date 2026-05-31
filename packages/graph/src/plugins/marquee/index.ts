@@ -19,9 +19,10 @@ import { GraphWithMarquee } from './types.ts';
 export const useMarqueePlugin = <
   TransactionWrapperOptions extends BaseTransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
+  Plugins,
 >(
-  graph: BaseGraph<TransactionWrapperOptions, GraphEventMap>,
-): GraphWithMarquee<TransactionWrapperOptions, GraphEventMap> => {
+  graph: BaseGraph<TransactionWrapperOptions, GraphEventMap, Plugins>,
+): GraphWithMarquee<TransactionWrapperOptions, GraphEventMap, Plugins> => {
   const marqueeBus = createMarqueeGraphEventBus();
   const marqueeHub: EventHub<MarqueeGraphEventMap> = createEventHub(marqueeBus);
   const events = mergeEventHubs(

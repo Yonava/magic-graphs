@@ -29,13 +29,14 @@ export const useGraph = (
   canvas: MagicCanvasProps,
   settings: Partial<GraphSettings> = {},
 ) => {
-  const baseWithFocus = useFocusPlugin(useBaseGraph(canvas, settings));
-  const baseWithFocusAndHistory = useHistoryPlugin(baseWithFocus);
+  const base = useBaseGraph(canvas, settings);
+  const baseFocus = useFocusPlugin(base);
+  const baseFocusHistory = useHistoryPlugin(baseFocus);
+  const baseFocusHistoryMarquee = useMarqueePlugin(baseFocusHistory);
 
-  // baseWithFocusAndHistory.events.subscribe('onFocusChange', () => {});
-  // baseWithFocusAndHistory.actions.addNode({}, { focus: true, history: true });
+  // baseFocusHistoryMarquee.events.subscribe('onGroupDragStart', () => {});
+  // baseFocusHistoryMarquee.actions.addNode({}, { focus: true, history: true });
 
-  const marquee = useMarqueePlugin(baseWithFocusAndHistory);
   const nodeAnchors = useNodeAnchors({ ...baseWithFocus, focus });
   const nodeDrag = useNodeDrag({ ...baseWithFocus, nodeAnchors });
   const annotation = useAnnotations(baseWithFocus);

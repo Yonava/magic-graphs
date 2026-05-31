@@ -17,15 +17,17 @@ type HistoryTransactionWrapperOptions = {
 export type GraphWithHistory<
   TransactionWrapperOptions extends BaseTransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
+  Plugins,
 > = BaseGraph<
   HistoryTransactionWrapperOptions & TransactionWrapperOptions,
-  HistoryGraphEventMap & GraphEventMap
-> & {
-  /**
-   * history plugin controls
-   */
-  history: HistoryGraph;
-};
+  HistoryGraphEventMap & GraphEventMap,
+  Plugins & {
+    /**
+     * history plugin controls
+     */
+    history: HistoryGraph;
+  }
+>;
 
 export type HistoryGraph = {
   /**

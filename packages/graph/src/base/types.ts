@@ -48,6 +48,7 @@ export type BaseGraph<
   TransactionWrapperOptions extends BaseTransactionWrapperOptions =
     BaseTransactionWrapperOptions,
   EventMap extends BaseGraphEventMap = BaseGraphEventMap,
+  Plugins = {},
 > = {
   /**
    * all the nodes contained in the graph
@@ -92,4 +93,4 @@ export type BaseGraph<
   graphAtMousePosition: Ref<GraphAtMousePosition>;
   updateGraphAtMousePosition: () => GraphAtMousePosition;
   cursor: GraphCursor;
-};
+} & Plugins;

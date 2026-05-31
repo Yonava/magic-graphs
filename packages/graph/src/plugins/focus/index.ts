@@ -27,9 +27,10 @@ import {
 export const useFocusPlugin = <
   TransactionWrapperOptions extends BaseTransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
+  Plugins,
 >(
-  graph: BaseGraph<TransactionWrapperOptions, GraphEventMap>,
-): GraphWithFocus<TransactionWrapperOptions, GraphEventMap> => {
+  graph: BaseGraph<TransactionWrapperOptions, GraphEventMap, Plugins>,
+): GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins> => {
   const focusBus = createFocusGraphEventBus();
   const focusHub: EventHub<FocusGraphEventMap> = createEventHub(focusBus);
   const events = mergeEventHubs(
