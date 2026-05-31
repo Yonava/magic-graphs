@@ -2,20 +2,24 @@ import { debounce } from '@magic/utils/debounce';
 import { local } from '@magic/utils/localStorage';
 import { Fraction } from 'mathjs';
 
-import type { BaseGraph } from '../../base/index.ts';
+import { BaseGraphEventMap } from '../../base/events.ts';
+import { BaseGraph } from '../../base/types.ts';
 import type { GEdge, GNode } from '../../types.ts';
+import { GraphWithLocalStorage, Serializable } from './types.ts';
 
-type Serializable<T> = {
-  [K in keyof T]: string;
-};
-
-export const usePersistent = (graph: BaseGraph) => {
+export const useLocalStoragePlugin = <
+  TransactionWrapperOptions,
+  GraphEventMap extends BaseGraphEventMap,
+  Plugins,
+>(
+  graph: BaseGraph<TransactionWrapperOptions, GraphEventMap, Plugins>,
+): GraphWithLocalStorage<TransactionWrapperOptions, GraphEventMap, Plugins> => {
   const canStore = (nodeOrEdge: { id: string }) => {
-    const list = graph.settings.value.persistentBlacklist;
+    const list = graph.settings.value.localStorageBlacklist;
     return !list.has(nodeOrEdge.id);
   };
 
-  const getKey = () => graph.settings.value.persistentStorageKey;
+  const getKey = () => graph.settings.value.localStorageKey;
 
   const nodeStorage = {
     get: () => {
@@ -53,23 +57,24 @@ export const usePersistent = (graph: BaseGraph) => {
     },
   };
 
-  const trackGraphState = debounce(async () => {
+  const save = debounce(async () => {
     nodeStorage.set(graph.nodes.value);
     edgeStorage.set(graph.edges.value);
     // prevent lag while dragging nodes, as well as yields to all event callback before persisting
   }, 250);
 
-  const load = () =>
-    graph.load(
-      {
-        nodes: nodeStorage.get(),
-        edges: edgeStorage.get(),
-      },
-      { history: false },
-    );
+  const load = () => {
+    graph.actions.removeElements({
+      nodeIds: graph.nodes.value.map((n) => n.id),
+    });
+    graph.actions.addElements({
+      nodes: nodeStorage.get(),
+      edges: edgeStorage.get(),
+    });
+  };
 
-  graph.subscribe('onSettingsChange', (diff) => {
-    graph.unsubscribe('onTransactionComplete', trackGraphState);
+  graph.events.subscribe('onSettingsChange', (diff) => {
+    graph.events.unsubscribe('onTransactionComplete', save);
 
     // persistent was true, but now it is false
     const persistenceTurnedOff = 'persistent' in diff && !diff.persistent;
@@ -79,7 +84,7 @@ export const usePersistent = (graph: BaseGraph) => {
     const persistenceTurnedOn = 'persistent' in diff && diff.persistent;
     if (persistenceTurnedOn) {
       load();
-      graph.subscribe('onTransactionComplete', trackGraphState);
+      graph.events.subscribe('onTransactionComplete', save);
 
       return;
     }
@@ -89,27 +94,17 @@ export const usePersistent = (graph: BaseGraph) => {
       load();
     }
 
-    graph.subscribe('onTransactionComplete', trackGraphState);
+    graph.events.subscribe('onTransactionComplete', save);
   });
 
-  if (graph.settings.value.persistent) {
-    // ensure caller has a chance to sub to onStructureChange
-    queueMicrotask(load);
-    graph.subscribe('onTransactionComplete', trackGraphState);
+  if (graph.settings.value.localStorage) {
+    graph.events.subscribe('onTransactionComplete', save);
   }
 
   return {
-    /**
-     * track the graph state on local storage
-     */
-    trackGraphState,
+    ...graph,
+    localStorage: {
+      save: save,
+    },
   };
-};
-
-export type GraphPersistentControls = ReturnType<typeof usePersistent>;
-export type GraphPersistentPlugin = {
-  /**
-   * controls for persisting the graph state to local storage
-   */
-  persistent: GraphPersistentControls;
 };

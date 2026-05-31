@@ -9,8 +9,8 @@ import { useNodeDrag } from './plugins/drag/index.ts';
 import { useFocusPlugin } from './plugins/focus/index.ts';
 import { useHistoryPlugin } from './plugins/history/index.ts';
 import { useInteractive } from './plugins/interactive/index.ts';
+import { useLocalStoragePlugin } from './plugins/localStorage/index.ts';
 import { useMarqueePlugin } from './plugins/marquee/index.ts';
-import { usePersistent } from './plugins/persistent/index.ts';
 import { useShortcuts } from './plugins/shortcut/index.ts';
 import type { GraphSettings } from './settings/index.ts';
 import { usePreferredTheme } from './themes/usePreferredTheme.ts';
@@ -33,16 +33,17 @@ export const useGraph = (
   const bf = useFocusPlugin(b);
   const bfh = useHistoryPlugin(bf);
   const bfhm = useMarqueePlugin(bfh);
+  const bfhmp = useLocalStoragePlugin(bfhm);
 
   bfhm.events.subscribe('onUndo', () => {});
   b.actions.addNode({});
-  bfhm.actions.addNode({}, { focus: true, history: true });
-  bf.actions.removeElements({}, { history: true });
+  bfhm.actions.addNode({}, { history: true });
+  bfh.actions.removeElements({}, { history: false });
+  bfhmp.localStorage.save;
 
   const nodeAnchors = useNodeAnchors({ ...baseWithFocus, focus });
   const nodeDrag = useNodeDrag({ ...baseWithFocus, nodeAnchors });
   const annotation = useAnnotations(baseWithFocus);
-  const persistent = usePersistent(baseWithFocus);
   const preferredTheme = usePreferredTheme(baseWithFocus);
 
   const shortcut = useShortcuts({

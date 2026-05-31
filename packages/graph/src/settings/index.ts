@@ -8,6 +8,10 @@ import {
   FocusGraphSettings,
 } from '../plugins/focus/settings.ts';
 import {
+  DEFAULT_LOCAL_STORAGE_SETTINGS,
+  LocalStorageGraphSettings,
+} from '../plugins/localStorage/settings.ts';
+import {
   DEFAULT_MARQUEE_SETTINGS,
   MarqueeGraphSettings,
 } from '../plugins/marquee/settings.ts';
@@ -133,33 +137,6 @@ export const DEFAULT_INTERACTIVE_SETTINGS: InteractiveGraphSettings = {
   userAddedEdgeRuleOneEdgePerPath: false,
 };
 
-/**
- * PERSISTENT GRAPH SETTINGS
- */
-export type PersistentGraphSettings = {
-  /**
-   * whether the nodes and edges of the graph will be saved in {@link localStorage | local storage}
-   * @default true
-   */
-  persistent: boolean;
-  /**
-   * the key used for saving the graph in {@link localStorage | local storage}
-   * @default "graph"
-   */
-  persistentStorageKey: string;
-  /**
-   * set of node or edge ids that will not be saved to localStorage
-   * @default new Set()
-   */
-  persistentBlacklist: Set<GNode['id'] | GEdge['id']>;
-};
-
-export const DEFAULT_PERSISTENT_SETTINGS: PersistentGraphSettings = {
-  persistent: true,
-  persistentStorageKey: 'graph',
-  persistentBlacklist: new Set(),
-};
-
 export type ShortcutGraphSettings = {
   /**
    * whether to enable keyboard shortcuts for the graph
@@ -245,7 +222,7 @@ export type GraphSettings = BaseGraphSettings &
   NodeAnchorGraphSettings &
   MarqueeGraphSettings &
   InteractiveGraphSettings &
-  PersistentGraphSettings &
+  LocalStorageGraphSettings &
   ShortcutGraphSettings;
 
 /**
@@ -258,6 +235,6 @@ export const DEFAULT_GRAPH_SETTINGS = {
   ...DEFAULT_NODE_ANCHOR_SETTINGS,
   ...DEFAULT_MARQUEE_SETTINGS,
   ...DEFAULT_INTERACTIVE_SETTINGS,
-  ...DEFAULT_PERSISTENT_SETTINGS,
+  ...DEFAULT_LOCAL_STORAGE_SETTINGS,
   ...DEFAULT_SHORTCUT_SETTINGS,
 } as const satisfies GraphSettings;
