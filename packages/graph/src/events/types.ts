@@ -1,30 +1,7 @@
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
-import type { DeepReadonly } from 'ts-essentials';
 
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
-import type {
-  HistoryRecord,
-  RedoHistoryOptions,
-  UndoHistoryOptions,
-} from '../plugins/history/types.ts';
 import type { GNode } from '../types.ts';
-
-export type HistoryGraphEventMap = {
-  /**
-   * when the undo action is triggered
-   */
-  onUndo: (
-    historyRecord: DeepReadonly<HistoryRecord>,
-    options: DeepReadonly<UndoHistoryOptions>,
-  ) => void;
-  /**
-   * when the redo action is triggered
-   */
-  onRedo: (
-    historyRecord: DeepReadonly<HistoryRecord>,
-    options: DeepReadonly<RedoHistoryOptions>,
-  ) => void;
-};
 
 export type DraggableGraphEventMap = {
   /**

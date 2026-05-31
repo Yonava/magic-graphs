@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import type { Aggregator, UpdateAggregator } from '../types.ts';
 import { BaseGraph } from './types.ts';
 
-export const useAggregator = ({ emit }: Pick<BaseGraph, 'emit'>) => {
+export const useAggregator = ({ events }: Pick<BaseGraph, 'events'>) => {
   const aggregator = ref<Aggregator>([]);
   const subscribeToAggregator: UpdateAggregator[] = [];
 
@@ -46,7 +46,7 @@ export const useAggregator = ({ emit }: Pick<BaseGraph, 'emit'>) => {
       item.shape.draw(ctx);
     }
 
-    emit('onDraw', ctx);
+    events.emit('onDraw', ctx);
   };
 
   /**

@@ -3,6 +3,10 @@ import { Fraction } from 'mathjs';
 import type { DeepPartial } from 'ts-essentials';
 
 import type { GraphAnimations } from '../base/animations.ts';
+import {
+  DEFAULT_FOCUS_SETTINGS,
+  FocusGraphSettings,
+} from '../plugins/focus/settings.ts';
 import type { GEdge, GNode, SchemaItem } from '../types.ts';
 
 /**
@@ -253,6 +257,7 @@ export const DEFAULT_SHORTCUT_SETTINGS: ShortcutGraphSettings = {
  * represents all settings on a graph instance
  */
 export type GraphSettings = BaseGraphSettings &
+  FocusGraphSettings &
   DraggableGraphSettings &
   NodeAnchorGraphSettings &
   MarqueeGraphSettings &
@@ -265,6 +270,7 @@ export type GraphSettings = BaseGraphSettings &
  */
 export const DEFAULT_GRAPH_SETTINGS = {
   ...DEFAULT_BASE_SETTINGS,
+  ...DEFAULT_FOCUS_SETTINGS,
   ...DEFAULT_DRAGGABLE_SETTINGS,
   ...DEFAULT_NODE_ANCHOR_SETTINGS,
   ...DEFAULT_MARQUEE_SETTINGS,

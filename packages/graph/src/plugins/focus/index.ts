@@ -19,35 +19,25 @@ import { FocusGraphEventMap, createFocusGraphEventBus } from './events.ts';
 import {
   EdgeBaseThemePath,
   EdgeBaseToNodeFocusTheme,
-  FocusGraphControls,
-  FocusOption,
+  GraphWithFocus,
   NodeBaseThemePath,
   NodeBaseToNodeFocusTheme,
 } from './types.ts';
-
-type FocusTransactionWrapperOptions = {
-  addNode: FocusOption;
-};
-
-type GraphWithFocus<
-  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
-  GraphEventMap extends BaseGraphEventMap,
-> = BaseGraph<
-  FocusTransactionWrapperOptions & TransactionWrapperOptions,
-  FocusGraphEventMap & GraphEventMap
-> & {
-  focus: FocusGraphControls;
-};
 
 export const useFocusPlugin = <
   TransactionWrapperOptions extends BaseTransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
 >(
-  graph: BaseGraph,
+  graph: BaseGraph<TransactionWrapperOptions, GraphEventMap>,
 ): GraphWithFocus<TransactionWrapperOptions, GraphEventMap> => {
   const focusBus = createFocusGraphEventBus();
   const focusHub: EventHub<FocusGraphEventMap> = createEventHub(focusBus);
-  const events = mergeEventHubs(focusHub, graph.events);
+  const events = mergeEventHubs(
+    focusHub,
+    // casting because graph.events could be arbitrarily due to it being stuffed with other events
+    // from plugins upstream
+    graph.events as EventHub<BaseGraphEventMap>,
+  );
 
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
   const focusedElementIds = ref(new Set<string>());
@@ -66,13 +56,37 @@ export const useFocusPlugin = <
 
   const clearFocus = () => setFocus([]);
 
-  const addToFocus = (id: string) => {
-    const isInFocusAlready = focusedElementIds.value.has(id);
-    if (isInFocusAlready) return;
+  const addToFocus = (id: string | Readonly<string[]>) => {
+    const elementsAddedToFocus = typeof id === 'object' ? id : [id];
+    const nonExistingElementIds = new Set(
+      elementsAddedToFocus.filter(
+        (newId) => !graph.getNode(newId) && !graph.getEdge(newId),
+      ),
+    );
+    if (nonExistingElementIds.size) {
+      console.warn(
+        `Attempted to focus non-existent items`,
+        nonExistingElementIds,
+      );
+    }
+    const stagedElementIds = elementsAddedToFocus.filter(
+      (newId) =>
+        !focusedElementIds.value.has(newId) &&
+        !nonExistingElementIds.has(newId),
+    );
+    if (stagedElementIds.length === 0) return;
 
-    const oldIds = new Set([...focusedElementIds.value]);
-    focusedElementIds.value.add(id);
-    events.emit('onFocusChange', focusedElementIds.value, oldIds);
+    const previousFocusedElementIds = new Set([...focusedElementIds.value]);
+    const newFocusedElementIds = new Set([
+      ...stagedElementIds,
+      ...previousFocusedElementIds,
+    ]);
+    focusedElementIds.value = newFocusedElementIds;
+    events.emit(
+      'onFocusChange',
+      newFocusedElementIds,
+      previousFocusedElementIds,
+    );
   };
 
   const handleTextArea = (schemaItem: SchemaItem) => {
@@ -197,13 +211,49 @@ export const useFocusPlugin = <
     clearFocus();
   };
 
-  activate();
+  const { hold, release } = graph.pluginHoldController('focus');
+
+  events.subscribe('onSettingsChange', (diff) => {
+    if (diff.focusable === false) {
+      deactivate();
+      hold('marquee');
+    } else if (diff.focusable === true) {
+      activate();
+      release('marquee');
+    }
+  });
+
+  if (graph.settings.value.focusable) activate();
 
   return {
-    ...{
-      ...graph,
-      // TODO ensure tests are added to guarantee the correct event systems are being propagated!
-      events,
+    ...graph,
+    // TODO ensure tests are added to guarantee the correct event systems are being propagated!
+    events,
+    actions: {
+      ...graph.actions,
+      addNode: (node, options) => {
+        const addedNode = graph.actions.addNode(node);
+        const focusOnAdded = options?.focus ?? true;
+        if (focusOnAdded) addToFocus(addedNode.id);
+        return addedNode;
+      },
+      addEdge: (edge, options) => {
+        const addedEdge = graph.actions.addEdge(edge);
+        const focusOnAdded = options?.focus ?? true;
+        if (focusOnAdded) addToFocus(addedEdge.id);
+        return addedEdge;
+      },
+      addElements: (elements, options) => {
+        const { addedNodes, addedEdges } = graph.actions.addElements(elements);
+        const focusOnAdded = options?.focus ?? true;
+        if (focusOnAdded) {
+          addToFocus([
+            ...addedNodes.map((n) => n.id),
+            ...addedEdges.map((e) => e.id),
+          ]);
+        }
+        return { addedNodes, addedEdges };
+      },
     },
     focus: {
       set: setFocus,
@@ -220,8 +270,4 @@ export const useFocusPlugin = <
       ),
     },
   };
-};
-
-export const useFocus = (graph: BaseGraph) => {
-  return {};
 };

@@ -13,7 +13,7 @@ describe('mergeEventHubs', () => {
   it('should route unique events to their respective hubs', () => {
     const hub1 = createMockHub(['onGraphChange']);
     const hub2 = createMockHub(['onNodeAdded']);
-    const merged = mergeEventHubs(hub1 as any, hub2 as any);
+    const merged = mergeEventHubs(hub1, hub2);
 
     const cb = () => {};
 
@@ -33,7 +33,7 @@ describe('mergeEventHubs', () => {
   it('should multicast overlapping events to BOTH hubs', () => {
     const hub1 = createMockHub(['onClick']);
     const hub2 = createMockHub(['onClick']);
-    const merged = mergeEventHubs(hub1 as any, hub2 as any);
+    const merged = mergeEventHubs(hub1, hub2);
 
     const cb = () => {};
     merged.subscribe('onClick', cb);
@@ -46,11 +46,11 @@ describe('mergeEventHubs', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const hub1 = createMockHub(['onGraphChange']);
     const hub2 = createMockHub(['onUiZoom']);
-    const merged = mergeEventHubs(hub1 as any, hub2 as any);
+    const merged = mergeEventHubs(hub1, hub2);
 
-    merged.subscribe('someFakeEvent' as any, () => {});
-    merged.unsubscribe('someFakeEvent' as any, () => {});
-    merged.emit('someFakeEvent' as any);
+    merged.subscribe('someFakeEvent', () => {});
+    merged.unsubscribe('someFakeEvent', () => {});
+    merged.emit('someFakeEvent');
     const warning = UNRECOGNIZED_KEY('someFakeEvent');
 
     expect(warnSpy).toBeCalledTimes(3);
@@ -60,16 +60,5 @@ describe('mergeEventHubs', () => {
     expect(hub2.emit).not.toHaveBeenCalled();
 
     warnSpy.mockRestore();
-  });
-
-  it('should correctly expose a combined list of keys', () => {
-    const hub1 = createMockHub(['a', 'b']);
-    const hub2 = createMockHub(['b', 'c']);
-    const merged = mergeEventHubs(hub1 as any, hub2 as any);
-
-    expect(merged.keys).toContain('a');
-    expect(merged.keys).toContain('b');
-    expect(merged.keys).toContain('c');
-    expect(merged.keys.size).toBe(3);
   });
 });

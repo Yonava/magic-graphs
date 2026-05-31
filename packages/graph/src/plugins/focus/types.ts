@@ -1,9 +1,13 @@
 import { ComputedRef, Ref } from 'vue';
 
+import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
+import { BaseGraphEventMap } from '../../base/events.ts';
+import { BaseGraph } from '../../base/types.ts';
 import { ValidGraphThemePath } from '../../themes/types.ts';
 import { GEdge, GNode } from '../../types.ts';
+import { FocusGraphEventMap } from './events.ts';
 
-export type FocusGraphControls = {
+export type FocusGraph = {
   /**
    * Sets the focus to the element with the given ids
    *
@@ -46,8 +50,9 @@ export type FocusGraphControls = {
 export type FocusOption = {
   /**
    * Whether to focus the added element(s).
+   * @default true
    */
-  focus: boolean;
+  focus?: boolean;
 };
 
 export type NodeBaseThemePath = Extract<
@@ -68,4 +73,23 @@ export type EdgeBaseToNodeFocusTheme = {
   [Path in EdgeBaseThemePath]: Path extends `edge.base.${infer Style}`
     ? `edge.focus.${Style}`
     : never;
+};
+
+type FocusTransactionWrapperOptions = {
+  addNode: FocusOption;
+  addEdge: FocusOption;
+  addElements: FocusOption;
+};
+
+export type GraphWithFocus<
+  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+  GraphEventMap extends BaseGraphEventMap,
+> = BaseGraph<
+  FocusTransactionWrapperOptions & TransactionWrapperOptions,
+  FocusGraphEventMap & GraphEventMap
+> & {
+  /**
+   * graph focus plugin controls
+   */
+  focus: FocusGraph;
 };

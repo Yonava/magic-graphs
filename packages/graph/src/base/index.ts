@@ -55,7 +55,7 @@ export const useBaseGraph = (
   const eventBus = createBaseGraphEventBus();
   const events = createEventHub(eventBus);
 
-  const aggregator = useAggregator({ emit: events.emit });
+  const aggregator = useAggregator({ events });
 
   const canvasFocused = ref(true);
 
@@ -148,7 +148,7 @@ export const useBaseGraph = (
       getEdge,
       getTheme,
       settings,
-      shapes: shapes.shapes,
+      shapes,
     };
 
     const edgeSchemaItems = edges.value

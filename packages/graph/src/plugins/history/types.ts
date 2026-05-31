@@ -1,124 +1,59 @@
-import type { FocusOption } from '../../base/types.ts';
-import type { GEdge, GNode } from '../../types.ts';
+import { ComputedRef, Ref } from 'vue';
 
-/**
- * affected items that are nodes and have been moved
- */
-export type GNodeMoveRecord = {
-  graphType: 'node';
-  data: {
-    id: string;
-    from: { x: number; y: number };
-    to: { x: number; y: number };
-  };
+import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
+import { BaseGraphEventMap } from '../../base/events.ts';
+import { BaseGraph } from '../../base/types.ts';
+import { HistoryGraphEventMap } from './events.ts';
+
+type HistoryOption = {
+  /** Whether to add element(s) to history stack */
+  history?: boolean;
 };
 
-export type GEdgeWeightEditRecord = {
-  graphType: 'edge';
-  data: {
-    id: GEdge['id'];
-    from: GEdge['weight'];
-    to: GEdge['weight'];
-  };
+type HistoryTransactionWrapperOptions = {
+  [K in keyof BaseTransactionWrapperOptions]-?: HistoryOption;
 };
 
-/**
- * affected items that are nodes
- */
-export type GNodeRecord = {
-  graphType: 'node';
-  data: GNode;
+export type GraphWithHistory<
+  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+  GraphEventMap extends BaseGraphEventMap,
+> = BaseGraph<
+  HistoryTransactionWrapperOptions & TransactionWrapperOptions,
+  HistoryGraphEventMap & GraphEventMap
+> & {
+  /**
+   * history plugin controls
+   */
+  history: HistoryGraph;
 };
 
-/**
- * affected items that are edges
- */
-export type GEdgeRecord = {
-  graphType: 'edge';
-  data: GEdge;
-};
-
-/**
- * a record indicating an item in the graph was added or removed
- */
-export type AddRemoveRecord = {
+export type HistoryGraph = {
   /**
-   * the action that was taken in order to create this record.
+   * undoes the last action and moves it to the redo stack
    */
-  action: 'add' | 'remove';
+  undo: () => void;
   /**
-   * the items that were affected by the action.
+   * redoes the last undone action and moves it to the undo stack
    */
-  affectedItems: (GNodeRecord | GEdgeRecord)[];
-};
-
-/**
- * a record indicating an item in the graph was moved
- */
-export type MoveRecord = {
+  redo: () => void;
   /**
-   * the action that was taken in order to create this record.
+   * true if there are actions to undo
    */
-  action: 'move';
+  canUndo: ComputedRef<boolean>;
   /**
-   * the items that were affected by the action.
+   * true if there are actions to redo
    */
-  affectedItems: GNodeMoveRecord[];
-};
-
-/**
- * a record indicating an item in the graph had its label edited
- */
-export type EditRecord = {
+  canRedo: ComputedRef<boolean>;
   /**
-   * the action that was taken in order to create this record.
+   * stores past actions to revert
    */
-  action: 'edit';
+  undoStack: Ref<any[]>;
   /**
-   * the items that were affected by the action.
+   * stores undone actions to reapply
    */
-  affectedItems: GEdgeWeightEditRecord[];
-};
-
-/**
- * a record indicating the graph state was *REPLACED* with a new state
- */
-export type LoadRecord = {
+  redoStack: Ref<any[]>;
   /**
-   * the action that was taken in order to create this record.
+   * clears the undo and redo stacks
    */
-  action: 'load';
-  /**
-   * state that replaced the current state. Also known as new state
-   */
-  affectedItems: (GNodeRecord | GEdgeRecord)[];
-  /**
-   * the state of the graph before replacement
-   */
-  previousState: {
-    nodes: GNodeRecord[];
-    edges: GEdgeRecord[];
-  };
-};
-
-/**
- * a record of an event stored in the history stack of a graph.
- * provides for undo/redo functionality
- */
-export type HistoryRecord =
-  | AddRemoveRecord
-  | MoveRecord
-  | EditRecord
-  | LoadRecord;
-
-export type UndoHistoryOptions = FocusOption;
-
-export const DEFAULT_UNDO_HISTORY_OPTIONS: UndoHistoryOptions = {
-  focus: true,
-};
-
-export type RedoHistoryOptions = FocusOption;
-
-export const DEFAULT_REDO_HISTORY_OPTIONS: RedoHistoryOptions = {
-  focus: true,
+  clearHistory: () => void;
 };
