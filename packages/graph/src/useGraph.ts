@@ -9,7 +9,7 @@ import { useNodeDrag } from './plugins/drag/index.ts';
 import { useFocusPlugin } from './plugins/focus/index.ts';
 import { useHistoryPlugin } from './plugins/history/index.ts';
 import { useInteractive } from './plugins/interactive/index.ts';
-import { useMarquee } from './plugins/marquee/index.ts';
+import { useMarqueePlugin } from './plugins/marquee/index.ts';
 import { usePersistent } from './plugins/persistent/index.ts';
 import { useShortcuts } from './plugins/shortcut/index.ts';
 import type { GraphSettings } from './settings/index.ts';
@@ -32,10 +32,10 @@ export const useGraph = (
   const baseWithFocus = useFocusPlugin(useBaseGraph(canvas, settings));
   const baseWithFocusAndHistory = useHistoryPlugin(baseWithFocus);
 
-  baseWithFocusAndHistory.events.subscribe('onFocusChange', () => {});
-  baseWithFocusAndHistory.actions.addNode({}, { focus: true, history: true });
+  // baseWithFocusAndHistory.events.subscribe('onFocusChange', () => {});
+  // baseWithFocusAndHistory.actions.addNode({}, { focus: true, history: true });
 
-  const marquee = useMarquee({ ...baseWithFocus, focus });
+  const marquee = useMarqueePlugin(baseWithFocusAndHistory);
   const nodeAnchors = useNodeAnchors({ ...baseWithFocus, focus });
   const nodeDrag = useNodeDrag({ ...baseWithFocus, nodeAnchors });
   const annotation = useAnnotations(baseWithFocus);

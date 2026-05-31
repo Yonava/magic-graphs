@@ -1,11 +1,16 @@
 import type { BoundingBox } from '@magic/shapes/types/utility';
 
-import type { BaseGraph } from '../../base/index.ts';
+import { BaseGraph } from '../../base/types.ts';
 import type { GNode } from '../../types.ts';
+
+export function getSurfaceArea(box: BoundingBox) {
+  const { width, height } = box;
+  return Math.abs(width * height);
+}
 
 export const getEncapsulatedNodeBox = (
   nodes: GNode[],
-  graph: BaseGraph,
+  graph: Pick<BaseGraph, 'getTheme'>,
 ): BoundingBox => {
   const encapsulatedNodeBox = {
     at: { x: Infinity, y: Infinity },

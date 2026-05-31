@@ -2,15 +2,15 @@ import type { Coordinate } from '@magic/shapes/types/utility';
 
 import { ref } from 'vue';
 
-import type { Aggregator, UpdateAggregator } from '../types.ts';
+import type { Aggregator, AggregatorTransformer } from '../types.ts';
 import { BaseGraph } from './types.ts';
 
 export const useAggregator = ({ events }: Pick<BaseGraph, 'events'>) => {
   const aggregator = ref<Aggregator>([]);
-  const subscribeToAggregator: UpdateAggregator[] = [];
+  const transformers: AggregatorTransformer[] = [];
 
   const updateAggregator = () => {
-    const resolvedSchemaItems = subscribeToAggregator.reduce<Aggregator>(
+    const resolvedSchemaItems = transformers.reduce<Aggregator>(
       (acc, fn) => fn(acc),
       [],
     );
@@ -67,7 +67,7 @@ export const useAggregator = ({ events }: Pick<BaseGraph, 'events'>) => {
 
   return {
     aggregator,
-    subscribeToAggregator,
+    transformers,
     updateAggregator,
     getSchemaItemsByCoordinates,
     draw,

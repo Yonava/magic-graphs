@@ -5,24 +5,38 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { ref } from 'vue';
 import { computed } from 'vue';
 
-import type { BaseGraph } from '../../base/index.ts';
-import type { GraphMouseEvent } from '../../base/types.ts';
+import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
+import { BaseGraphEventMap } from '../../base/events.ts';
+import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
+import { EventHub, createEventHub } from '../../events/createEventHub.ts';
+import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { Aggregator } from '../../types.ts';
-import type { GraphFocusPlugin } from '../focus/index.ts';
-import { getEncapsulatedNodeBox } from './helpers.ts';
+import { MARQUEE_SHAPE_ID } from './constants.ts';
+import { MarqueeGraphEventMap, createMarqueeGraphEventBus } from './events.ts';
+import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
+import { GraphWithMarquee } from './types.ts';
 
-export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
+export const useMarqueePlugin = <
+  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+  GraphEventMap extends BaseGraphEventMap,
+>(
+  graph: BaseGraph<TransactionWrapperOptions, GraphEventMap>,
+): GraphWithMarquee<TransactionWrapperOptions, GraphEventMap> => {
+  const marqueeBus = createMarqueeGraphEventBus();
+  const marqueeHub: EventHub<MarqueeGraphEventMap> = createEventHub(marqueeBus);
+  const events = mergeEventHubs(
+    marqueeHub,
+    // casting because graph.events could be arbitrarily due to it being stuffed with other events
+    // from plugins upstream
+    graph.events as EventHub<BaseGraphEventMap>,
+  );
+
   const marqueeBox = ref<BoundingBox | undefined>();
   const encapsulatedNodeBox = ref<BoundingBox | undefined>();
 
   const groupDragCoordinates = ref<Coordinate | undefined>();
 
   const { hold, release } = graph.pluginHoldController('marquee');
-
-  const getSurfaceArea = (box: BoundingBox) => {
-    const { width, height } = box;
-    return Math.abs(width * height);
-  };
 
   /**
    * given a mouse event, engages or disengages the marquee box
@@ -64,12 +78,12 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     if (topItem?.graphType !== 'encapsulated-node-box') return;
 
     groupDragCoordinates.value = coords;
-    graph.emit('onGroupDragStart', graph.focus.focusedNodes.value, coords);
+    events.emit('onGroupDragStart', graph.focus.focusedNodes.value, coords);
   };
 
   const endGroupDrag = () => {
     if (!groupDragCoordinates.value) return;
-    graph.emit(
+    events.emit(
       'onGroupDrop',
       graph.focus.focusedNodes.value,
       groupDragCoordinates.value,
@@ -79,22 +93,22 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
     hold('nodeAnchors');
-    graph.graphCursorDisabled.value = true;
+    graph.cursor.disabled.value = true;
     marqueeBox.value = {
       at: startingCoords,
       width: 0,
       height: 0,
     };
-    graph.emit('onMarqueeBeginSelection', startingCoords);
+    events.emit('onMarqueeBeginSelection', startingCoords);
   };
 
   const disengageMarqueeBox = () => {
     if (!marqueeBox.value) return;
     const finalMarqueeBox = marqueeBox.value;
     marqueeBox.value = undefined;
-    graph.graphCursorDisabled.value = false;
+    graph.cursor.disabled.value = false;
     release('nodeAnchors');
-    graph.emit('onMarqueeEndSelection', finalMarqueeBox);
+    events.emit('onMarqueeEndSelection', finalMarqueeBox);
   };
 
   const updateMarqueeSelectedItems = (box: BoundingBox) => {
@@ -102,7 +116,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     if (surfaceArea < 100) return;
     const targetedItems: string[] = [];
 
-    for (const { id, shape, graphType } of graph.aggregator.value) {
+    for (const { id, shape, graphType } of graph.aggregator.aggregator.value) {
       const { marqueeSelectableGraphTypes } = graph.settings.value;
       if (!marqueeSelectableGraphTypes.includes(graphType)) continue;
       const inSelectionBox = shape.efficientHitbox(box);
@@ -128,9 +142,8 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   };
 
   const getMarqueeBoxSchema = (box: BoundingBox) => {
-    const id = 'marquee-box';
-    const shape = graph.shapes.rect({
-      id,
+    const shape = graph.shapes.shapes.rect({
+      id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
       fillColor: graph.getTheme('marquee.color'),
       stroke: {
@@ -140,7 +153,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     });
 
     return {
-      id,
+      id: MARQUEE_SHAPE_ID,
       graphType: 'marquee-box',
       shape,
       priority: Infinity,
@@ -160,7 +173,7 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
 
   const getEncapsulatedNodeBoxSchema = (box: BoundingBox) => {
     const id = 'encapsulated-node-box';
-    const shape = graph.shapes.rect({
+    const shape = graph.shapes.shapes.rect({
       id,
       ...box,
       fillColor: graph.getTheme('marquee.encapsulatedNodeBoxColor'),
@@ -192,42 +205,42 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
     return aggregator;
   };
 
-  graph.subscribeToAggregator.push(addEncapsulatedNodeBoxToAggregator);
-  graph.subscribeToAggregator.push(addMarqueeBoxToAggregator);
+  graph.aggregator.transformers.push(addEncapsulatedNodeBoxToAggregator);
+  graph.aggregator.transformers.push(addMarqueeBoxToAggregator);
 
   const activate = () => {
-    graph.subscribe('onFocusChange', updateEncapsulatedNodeBox);
+    events.subscribe('onFocusChange', updateEncapsulatedNodeBox);
 
-    graph.subscribe('onMouseDown', handleMarqueeEngagement);
-    graph.subscribe('onMouseUp', disengageMarqueeBox);
-    graph.subscribe('onContextMenu', disengageMarqueeBox);
-    graph.subscribe('onMouseMove', setMarqueeBoxDimensions);
+    events.subscribe('onMouseDown', handleMarqueeEngagement);
+    events.subscribe('onMouseUp', disengageMarqueeBox);
+    events.subscribe('onContextMenu', disengageMarqueeBox);
+    events.subscribe('onMouseMove', setMarqueeBoxDimensions);
 
-    graph.subscribe('onMouseDown', beginGroupDrag);
-    graph.subscribe('onMouseUp', endGroupDrag);
-    graph.subscribe('onMouseMove', groupDrag);
+    events.subscribe('onMouseDown', beginGroupDrag);
+    events.subscribe('onMouseUp', endGroupDrag);
+    events.subscribe('onMouseMove', groupDrag);
 
-    graph.subscribe('onTransactionComplete', updateEncapsulatedNodeBox);
+    events.subscribe('onTransactionComplete', updateEncapsulatedNodeBox);
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onFocusChange', updateEncapsulatedNodeBox);
+    events.unsubscribe('onFocusChange', updateEncapsulatedNodeBox);
 
-    graph.unsubscribe('onMouseDown', handleMarqueeEngagement);
-    graph.unsubscribe('onMouseUp', disengageMarqueeBox);
-    graph.unsubscribe('onContextMenu', disengageMarqueeBox);
-    graph.unsubscribe('onMouseMove', setMarqueeBoxDimensions);
+    events.unsubscribe('onMouseDown', handleMarqueeEngagement);
+    events.unsubscribe('onMouseUp', disengageMarqueeBox);
+    events.unsubscribe('onContextMenu', disengageMarqueeBox);
+    events.unsubscribe('onMouseMove', setMarqueeBoxDimensions);
 
-    graph.unsubscribe('onMouseDown', beginGroupDrag);
-    graph.unsubscribe('onMouseUp', endGroupDrag);
-    graph.unsubscribe('onMouseMove', groupDrag);
+    events.unsubscribe('onMouseDown', beginGroupDrag);
+    events.unsubscribe('onMouseUp', endGroupDrag);
+    events.unsubscribe('onMouseMove', groupDrag);
 
-    graph.unsubscribe('onTransactionComplete', updateEncapsulatedNodeBox);
+    events.unsubscribe('onTransactionComplete', updateEncapsulatedNodeBox);
 
     if (marqueeBox.value) disengageMarqueeBox();
   };
 
-  graph.subscribe('onSettingsChange', (diff) => {
+  events.subscribe('onSettingsChange', (diff) => {
     if (diff.marquee === true) activate();
     else if (diff.marquee === false) deactivate();
   });
@@ -235,22 +248,18 @@ export const useMarquee = (graph: BaseGraph & GraphFocusPlugin) => {
   if (graph.settings.value.marquee) activate();
 
   return {
-    /**
-     * updates the bounding box around the nodes that are currently focused.
-     * use this when you are changing theme or position outside of the standard supported use cases
-     */
-    updateEncapsulatedNodeBox,
-    /**
-     * true when the marquee box is being actively sized by user
-     */
-    activelySelecting: computed(() => !!marqueeBox.value),
+    ...graph,
+    events,
+    marquee: {
+      /**
+       * updates the bounding box around the nodes that are currently focused.
+       * use this when you are changing theme or position outside of the standard supported use cases
+       */
+      updateEncapsulatedNodeBox,
+      /**
+       * true when the marquee box is being actively sized by user
+       */
+      activelySelecting: computed(() => !!marqueeBox.value),
+    },
   };
-};
-
-export type GraphMarqueeControls = ReturnType<typeof useMarquee>;
-export type GraphMarqueePlugin = {
-  /**
-   * controls for the marquee plugin
-   */
-  marquee: GraphMarqueeControls;
 };

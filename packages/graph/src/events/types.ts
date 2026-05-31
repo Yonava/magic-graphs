@@ -30,28 +30,3 @@ export type NodeAnchorGraphEventMap = {
     nodeAnchor: Readonly<NodeAnchor>,
   ) => void;
 };
-
-export type MarqueeGraphEventMap = {
-  /**
-   * when the user starts a marquee drag
-   */
-  onGroupDragStart: (
-    nodes: Readonly<GNode[]>,
-    startingCoordinates: Readonly<Coordinate>,
-  ) => void;
-  /**
-   * when the user drops a marquee drag
-   */
-  onGroupDrop: (
-    nodes: Readonly<GNode[]>,
-    endCoordinates: Readonly<Coordinate>,
-  ) => void;
-  /**
-   * when the user starts a marquee selection
-   */
-  onMarqueeBeginSelection: (startingCoords: Readonly<Coordinate>) => void;
-  /**
-   * when the user ends a marquee selection
-   */
-  onMarqueeEndSelection: (marqueeBox: Readonly<BoundingBox>) => void;
-};

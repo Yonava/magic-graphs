@@ -167,7 +167,7 @@ export const useBaseGraph = (
     return aggregator;
   };
 
-  aggregator.subscribeToAggregator.push(addNodesAndEdgesToAggregator);
+  aggregator.transformers.push(addNodesAndEdgesToAggregator);
 
   onMounted(() => {
     if (!magicCanvas.canvas.value) {
@@ -257,7 +257,7 @@ export const useBaseGraph = (
     return aggregator;
   };
 
-  aggregator.subscribeToAggregator.push(liftHoveredNodeToTop);
+  aggregator.transformers.push(liftHoveredNodeToTop);
 
   watch(themeName, async (newThemeName, oldThemeName) => {
     events.emit('onThemeChange', newThemeName, oldThemeName);

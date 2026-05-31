@@ -74,7 +74,7 @@ export type Aggregator = SchemaItem[];
  * the internal contents, these functions are layered on top of each other to create a pipeline
  * which will be invoked with a reducer each render cycle
  */
-export type UpdateAggregator = (aggregator: Aggregator) => Aggregator;
+export type AggregatorTransformer = (aggregator: Aggregator) => Aggregator;
 type BaseGraphTypes = 'node' | 'edge';
 type MarqueeGraphTypes = 'marquee-box' | 'encapsulated-node-box';
 type NodeAnchorGraphTypes = 'node-anchor' | 'link-preview';

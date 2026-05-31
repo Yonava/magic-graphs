@@ -7,6 +7,10 @@ import {
   DEFAULT_FOCUS_SETTINGS,
   FocusGraphSettings,
 } from '../plugins/focus/settings.ts';
+import {
+  DEFAULT_MARQUEE_SETTINGS,
+  MarqueeGraphSettings,
+} from '../plugins/marquee/settings.ts';
 import type { GEdge, GNode, SchemaItem } from '../types.ts';
 
 /**
@@ -91,27 +95,6 @@ export type NodeAnchorGraphSettings = {
 
 export const DEFAULT_NODE_ANCHOR_SETTINGS: NodeAnchorGraphSettings = {
   nodeAnchors: true,
-};
-
-/**
- * MARQUEE GRAPH SETTINGS
- */
-export type MarqueeGraphSettings = {
-  /**
-   * whether marquee selection is enabled
-   * @default true
-   */
-  marquee: boolean;
-  /**
-   * the types of graph items that can be marquee-selected
-   * @default ['node', 'edge']
-   */
-  marqueeSelectableGraphTypes: SchemaItem['graphType'][];
-};
-
-export const DEFAULT_MARQUEE_SETTINGS: MarqueeGraphSettings = {
-  marquee: true,
-  marqueeSelectableGraphTypes: ['node', 'edge'],
 };
 
 /**
