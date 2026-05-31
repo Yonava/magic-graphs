@@ -37,7 +37,7 @@ export const useGraph = (
   bfhm.events.subscribe('onUndo', () => {});
   b.actions.addNode({});
   bfhm.actions.addNode({}, { focus: true, history: true });
-  bf.actions.removeElements({}, { focus: true, history: true });
+  bf.actions.removeElements({}, { history: true });
 
   const nodeAnchors = useNodeAnchors({ ...baseWithFocus, focus });
   const nodeDrag = useNodeDrag({ ...baseWithFocus, nodeAnchors });

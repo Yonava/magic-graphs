@@ -11,11 +11,11 @@ type HistoryOption = {
 };
 
 type HistoryTransactionWrapperOptions = {
-  [K in keyof BaseTransactionWrapperOptions]-?: HistoryOption;
+  [K in keyof BaseTransactionWrapperOptions]: HistoryOption;
 };
 
 export type GraphWithHistory<
-  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+  TransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
   Plugins,
 > = BaseGraph<

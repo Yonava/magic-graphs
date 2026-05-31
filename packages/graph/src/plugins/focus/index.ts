@@ -4,12 +4,13 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { computed, readonly, ref } from 'vue';
 
-import {
-  BaseTransactionWrapperOptions,
-  ElementRemovalPayload,
-} from '../../base/actions/types.ts';
+import { ElementRemovalPayload } from '../../base/actions/types.ts';
 import { BaseGraphEventMap } from '../../base/events.ts';
-import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
+import type {
+  BaseGraph,
+  GraphMouseEvent,
+  InternalActions,
+} from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { useTheme } from '../../themes/useTheme.ts';
@@ -226,36 +227,43 @@ export const useFocusPlugin = <
 
   if (graph.settings.value.focusable) activate();
 
+  const upstreamActions = graph.actions as InternalActions;
+  const extendedActions: Partial<InternalActions> = {
+    ...upstreamActions,
+    addNode: (node, options) => {
+      const addedNode = upstreamActions.addNode(node, options);
+      const focusOnAdded = options?.focus ?? true;
+      if (focusOnAdded) addToFocus(addedNode.id);
+      return addedNode;
+    },
+    addEdge: (edge, options) => {
+      const addedEdge = upstreamActions.addEdge(edge, options);
+      const focusOnAdded = options?.focus ?? true;
+      if (focusOnAdded) addToFocus(addedEdge.id);
+      return addedEdge;
+    },
+    addElements: (elements, options) => {
+      const updatedElements = upstreamActions.addElements(elements, options);
+      const focusOnAdded = options?.focus ?? true;
+      if (focusOnAdded) {
+        addToFocus([
+          ...updatedElements.addedNodes.map((n) => n.id),
+          ...updatedElements.addedEdges.map((e) => e.id),
+        ]);
+      }
+      return updatedElements;
+    },
+  };
+
   return {
     ...graph,
     // TODO ensure tests are added to guarantee the correct event systems are being propagated!
     events,
-    actions: {
-      ...graph.actions,
-      addNode: (node, options) => {
-        const addedNode = graph.actions.addNode(node);
-        const focusOnAdded = options?.focus ?? true;
-        if (focusOnAdded) addToFocus(addedNode.id);
-        return addedNode;
-      },
-      addEdge: (edge, options) => {
-        const addedEdge = graph.actions.addEdge(edge);
-        const focusOnAdded = options?.focus ?? true;
-        if (focusOnAdded) addToFocus(addedEdge.id);
-        return addedEdge;
-      },
-      addElements: (elements, options) => {
-        const { addedNodes, addedEdges } = graph.actions.addElements(elements);
-        const focusOnAdded = options?.focus ?? true;
-        if (focusOnAdded) {
-          addToFocus([
-            ...addedNodes.map((n) => n.id),
-            ...addedEdges.map((e) => e.id),
-          ]);
-        }
-        return { addedNodes, addedEdges };
-      },
-    },
+    actions: extendedActions as GraphWithFocus<
+      TransactionWrapperOptions,
+      GraphEventMap,
+      Plugins
+    >['actions'],
     focus: {
       set: setFocus,
       clear: clearFocus,

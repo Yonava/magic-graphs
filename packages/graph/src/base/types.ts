@@ -96,3 +96,12 @@ export type BaseGraph<
   updateGraphAtMousePosition: () => GraphAtMousePosition;
   cursor: GraphCursor;
 } & Plugins;
+
+export type InternalActions = {
+  [Action in keyof BaseTransactionWrapperOptions]: (
+    ...args: [
+      ...Parameters<GraphActions[Action]>,
+      transactionOptions: Record<string, any>,
+    ]
+  ) => ReturnType<GraphActions[Action]>;
+};

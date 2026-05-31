@@ -1,6 +1,5 @@
 import { ComputedRef } from 'vue';
 
-import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
 import { BaseGraphEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import { FocusGraphEventMap } from '../focus/events.ts';
@@ -27,7 +26,7 @@ type MarqueePlugin = {
 };
 
 export type GraphWithMarquee<
-  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+  TransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
   Plugins,
 > = BaseGraph<

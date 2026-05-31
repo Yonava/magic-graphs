@@ -5,25 +5,20 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { ref } from 'vue';
 import { computed } from 'vue';
 
-import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
 import { BaseGraphEventMap } from '../../base/events.ts';
 import type { GraphMouseEvent } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { Aggregator } from '../../types.ts';
 import { FocusGraphEventMap } from '../focus/events.ts';
-import {
-  FocusPlugin,
-  FocusTransactionWrapperOptions,
-  GraphWithFocus,
-} from '../focus/types.ts';
+import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
 import { MarqueeGraphEventMap, createMarqueeGraphEventBus } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
 import { GraphWithMarquee } from './types.ts';
 
 export const useMarqueePlugin = <
-  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+  TransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
   Plugins,
 >(

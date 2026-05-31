@@ -1,6 +1,5 @@
 import { computed, ref } from 'vue';
 
-import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
 import { BaseGraphEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
@@ -10,7 +9,7 @@ import { HistoryGraphEventMap, createHistoryGraphEventBus } from './events.ts';
 import { GraphWithHistory } from './types.ts';
 
 export const useHistoryPlugin = <
-  TransactionWrapperOptions extends BaseTransactionWrapperOptions,
+  TransactionWrapperOptions,
   GraphEventMap extends BaseGraphEventMap,
   Plugins,
 >(
@@ -74,8 +73,12 @@ export const useHistoryPlugin = <
 
   return {
     ...graph,
-    // TODO add actions overrides
-    actions: graph.actions,
+    // TODO add actions overrides!
+    actions: graph.actions as GraphWithHistory<
+      TransactionWrapperOptions,
+      GraphEventMap,
+      Plugins
+    >['actions'],
     events,
     history: {
       /**
