@@ -16,7 +16,7 @@ import {
   MergeTransactionWrappersWithBase,
 } from './actions/types.ts';
 import { GraphCursor } from './cursor/types.ts';
-import { BaseGraphEventMap } from './events.ts';
+import { BaseEventMap } from './events.ts';
 import { AggregatorProps } from './useAggregator.ts';
 import { PluginHoldController } from './usePluginHold.ts';
 
@@ -47,7 +47,7 @@ export type GraphMouseEvent = DeepReadonly<GraphAtMousePosition> & {
 
 export type BaseGraph<
   TransactionWrapperOptions = {},
-  EventMap extends BaseGraphEventMap = BaseGraphEventMap,
+  EventMap extends BaseEventMap = BaseEventMap,
   Plugins = {},
 > = {
   /**

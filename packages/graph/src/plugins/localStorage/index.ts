@@ -2,14 +2,14 @@ import { debounce } from '@magic/utils/debounce';
 import { local } from '@magic/utils/localStorage';
 import { Fraction } from 'mathjs';
 
-import { BaseGraphEventMap } from '../../base/events.ts';
+import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import type { GEdge, GNode } from '../../types.ts';
 import { GraphWithLocalStorage, Serializable } from './types.ts';
 
 export const useLocalStoragePlugin = <
   TransactionWrapperOptions,
-  GraphEventMap extends BaseGraphEventMap,
+  GraphEventMap extends BaseEventMap,
   Plugins,
 >(
   graph: BaseGraph<TransactionWrapperOptions, GraphEventMap, Plugins>,

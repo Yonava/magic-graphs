@@ -5,7 +5,7 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { ref } from 'vue';
 import { computed } from 'vue';
 
-import { BaseGraphEventMap } from '../../base/events.ts';
+import { BaseEventMap } from '../../base/events.ts';
 import type { GraphMouseEvent } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
@@ -13,24 +13,24 @@ import type { Aggregator } from '../../types.ts';
 import { FocusGraphEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
-import { MarqueeGraphEventMap, createMarqueeGraphEventBus } from './events.ts';
+import { MarqueeEventMap, createMarqueeEventBus } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
 import { GraphWithMarquee } from './types.ts';
 
 export const useMarqueePlugin = <
   TransactionWrapperOptions,
-  GraphEventMap extends BaseGraphEventMap,
+  GraphEventMap extends BaseEventMap,
   Plugins,
 >(
   graph: GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins>,
 ): GraphWithMarquee<TransactionWrapperOptions, GraphEventMap, Plugins> => {
-  const marqueeBus = createMarqueeGraphEventBus();
-  const marqueeHub: EventHub<MarqueeGraphEventMap> = createEventHub(marqueeBus);
+  const marqueeBus = createMarqueeEventBus();
+  const marqueeHub: EventHub<MarqueeEventMap> = createEventHub(marqueeBus);
   const events = mergeEventHubs(
     marqueeHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseGraphEventMap & FocusGraphEventMap>,
+    graph.events as EventHub<BaseEventMap & FocusGraphEventMap>,
   );
 
   const marqueeBox = ref<BoundingBox | undefined>();

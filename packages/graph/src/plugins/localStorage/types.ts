@@ -1,4 +1,4 @@
-import { BaseGraphEventMap } from '../../base/events.ts';
+import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 
 export type Serializable<T> = {
@@ -9,7 +9,7 @@ type LocalStorageGraph = {
   /**
    * force-saves the current graph nodes and edges to localStorage.
    *
-   * ℹ️ **note:** this happens automatically on {@link BaseGraphEventMap.onTransactionComplete | `onTransactionComplete`} if enabled.
+   * ℹ️ **note:** this happens automatically on {@link BaseEventMap.onTransactionComplete | `onTransactionComplete`} if enabled.
    */
   save: () => void;
 };
@@ -23,7 +23,7 @@ type LocalStoragePlugin = {
 
 export type GraphWithLocalStorage<
   TransactionWrapperOptions,
-  GraphEventMap extends BaseGraphEventMap,
+  GraphEventMap extends BaseEventMap,
   Plugins,
 > = BaseGraph<
   TransactionWrapperOptions,

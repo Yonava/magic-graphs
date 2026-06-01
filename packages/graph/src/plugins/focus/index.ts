@@ -5,7 +5,7 @@ import { DeepReadonly } from 'ts-essentials';
 import { computed, readonly, ref } from 'vue';
 
 import { ElementRemovalPayload } from '../../base/actions/types.ts';
-import { BaseGraphEventMap } from '../../base/events.ts';
+import { BaseEventMap } from '../../base/events.ts';
 import type {
   BaseGraph,
   GraphMouseEvent,
@@ -16,7 +16,7 @@ import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
 import { FOCUS_THEME_ID } from './constants.ts';
-import { FocusGraphEventMap, createFocusGraphEventBus } from './events.ts';
+import { FocusGraphEventMap, createFocusEventBus } from './events.ts';
 import {
   EdgeBaseThemePath,
   EdgeBaseToNodeFocusTheme,
@@ -27,18 +27,18 @@ import {
 
 export const useFocusPlugin = <
   TransactionWrapperOptions,
-  GraphEventMap extends BaseGraphEventMap,
+  GraphEventMap extends BaseEventMap,
   Plugins,
 >(
   graph: BaseGraph<TransactionWrapperOptions, GraphEventMap, Plugins>,
 ): GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins> => {
-  const focusBus = createFocusGraphEventBus();
+  const focusBus = createFocusEventBus();
   const focusHub: EventHub<FocusGraphEventMap> = createEventHub(focusBus);
   const events = mergeEventHubs(
     focusHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseGraphEventMap>,
+    graph.events as EventHub<BaseEventMap>,
   );
 
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
