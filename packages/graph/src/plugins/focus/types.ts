@@ -1,14 +1,10 @@
 import { ComputedRef, Ref } from 'vue';
 
-import {
-  BaseTransactionWrapperOptions,
-  MergeTransactionWrappersWithBase,
-} from '../../base/actions/types.ts';
-import { BaseGraphEventMap } from '../../base/events.ts';
+import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import { ValidGraphThemePath } from '../../themes/types.ts';
-import { GEdge, GNode, Prettify } from '../../types.ts';
-import { FocusGraphEventMap } from './events.ts';
+import { GEdge, GNode } from '../../types.ts';
+import { FocusEventMap } from './events.ts';
 
 export type FocusGraph = {
   /**
@@ -93,30 +89,10 @@ export type FocusPlugin = {
 
 export type GraphWithFocus<
   TransactionWrapperOptions,
-  GraphEventMap extends BaseGraphEventMap,
+  EventMap extends BaseEventMap,
   Plugins,
 > = BaseGraph<
-  FocusTransactionWrapperOptions & TransactionWrapperOptions,
-  FocusGraphEventMap & GraphEventMap,
+  TransactionWrapperOptions & FocusTransactionWrapperOptions,
+  EventMap & FocusEventMap,
   Plugins & FocusPlugin
 >;
-
-type Trial = {
-  addNode: { trial: number };
-};
-
-type test<T> = FocusTransactionWrapperOptions & T;
-
-type resT = test<Trial>;
-
-type FocusTest = GraphWithFocus<resT, BaseGraphEventMap, {}>;
-
-const t: Pick<FocusTest['actions'], 'addNode' | 'removeElements'> = {
-  addNode: (nodeId, options) => {
-    options?.trial;
-    return {} as any;
-  },
-  removeElements: (arg1) => {
-    return arg1 as any;
-  },
-};

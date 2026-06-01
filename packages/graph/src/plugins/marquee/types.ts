@@ -2,7 +2,7 @@ import { ComputedRef } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
-import { FocusGraphEventMap } from '../focus/events.ts';
+import { FocusEventMap } from '../focus/events.ts';
 import { FocusPlugin, FocusTransactionWrapperOptions } from '../focus/types.ts';
 import { MarqueeEventMap } from './events.ts';
 
@@ -18,7 +18,7 @@ export type MarqueeGraph = {
   activelySelecting: ComputedRef<boolean>;
 };
 
-type MarqueePlugin = {
+export type MarqueePlugin = {
   /**
    * history plugin controls
    */
@@ -27,10 +27,10 @@ type MarqueePlugin = {
 
 export type GraphWithMarquee<
   TransactionWrapperOptions,
-  GraphEventMap extends BaseEventMap,
+  EventMap extends BaseEventMap,
   Plugins,
 > = BaseGraph<
   TransactionWrapperOptions & FocusTransactionWrapperOptions,
-  GraphEventMap & FocusGraphEventMap & MarqueeEventMap,
+  EventMap & FocusEventMap & MarqueeEventMap,
   Plugins & FocusPlugin & MarqueePlugin
 >;

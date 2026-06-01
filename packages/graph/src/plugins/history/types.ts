@@ -14,19 +14,21 @@ type HistoryTransactionWrapperOptions = {
   [K in keyof BaseTransactionWrapperOptions]: HistoryOption;
 };
 
+export type HistoryPlugin = {
+  /**
+   * history plugin controls
+   */
+  history: HistoryGraph;
+};
+
 export type GraphWithHistory<
   TransactionWrapperOptions,
-  GraphEventMap extends BaseEventMap,
+  EventMap extends BaseEventMap,
   Plugins,
 > = BaseGraph<
-  HistoryTransactionWrapperOptions & TransactionWrapperOptions,
-  HistoryEventMap & GraphEventMap,
-  Plugins & {
-    /**
-     * history plugin controls
-     */
-    history: HistoryGraph;
-  }
+  TransactionWrapperOptions & HistoryTransactionWrapperOptions,
+  EventMap & HistoryEventMap,
+  Plugins & HistoryPlugin
 >;
 
 export type HistoryGraph = {

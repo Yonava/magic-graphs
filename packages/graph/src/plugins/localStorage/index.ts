@@ -9,11 +9,11 @@ import { GraphWithLocalStorage, Serializable } from './types.ts';
 
 export const useLocalStoragePlugin = <
   TransactionWrapperOptions,
-  GraphEventMap extends BaseEventMap,
+  EventMap extends BaseEventMap,
   Plugins,
 >(
-  graph: BaseGraph<TransactionWrapperOptions, GraphEventMap, Plugins>,
-): GraphWithLocalStorage<TransactionWrapperOptions, GraphEventMap, Plugins> => {
+  graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
+): GraphWithLocalStorage<TransactionWrapperOptions, EventMap, Plugins> => {
   const canStore = (nodeOrEdge: { id: string }) => {
     const list = graph.settings.value.localStorageBlacklist;
     return !list.has(nodeOrEdge.id);

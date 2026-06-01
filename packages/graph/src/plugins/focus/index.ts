@@ -16,7 +16,7 @@ import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
 import { FOCUS_THEME_ID } from './constants.ts';
-import { FocusGraphEventMap, createFocusEventBus } from './events.ts';
+import { FocusEventMap, createFocusEventBus } from './events.ts';
 import {
   EdgeBaseThemePath,
   EdgeBaseToNodeFocusTheme,
@@ -27,13 +27,13 @@ import {
 
 export const useFocusPlugin = <
   TransactionWrapperOptions,
-  GraphEventMap extends BaseEventMap,
+  EventMap extends BaseEventMap,
   Plugins,
 >(
-  graph: BaseGraph<TransactionWrapperOptions, GraphEventMap, Plugins>,
-): GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins> => {
+  graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
+): GraphWithFocus<TransactionWrapperOptions, EventMap, Plugins> => {
   const focusBus = createFocusEventBus();
-  const focusHub: EventHub<FocusGraphEventMap> = createEventHub(focusBus);
+  const focusHub: EventHub<FocusEventMap> = createEventHub(focusBus);
   const events = mergeEventHubs(
     focusHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
@@ -261,7 +261,7 @@ export const useFocusPlugin = <
     events,
     actions: extendedActions as GraphWithFocus<
       TransactionWrapperOptions,
-      GraphEventMap,
+      EventMap,
       Plugins
     >['actions'],
     focus: {

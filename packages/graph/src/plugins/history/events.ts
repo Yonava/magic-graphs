@@ -4,11 +4,11 @@ export type HistoryEventMap = {
   /**
    * when the undo action is triggered
    */
-  onUndo: (historyRecord: string) => void;
+  onUndo: () => void;
   /**
    * when the redo action is triggered
    */
-  onRedo: (historyRecord: string) => void;
+  onRedo: () => void;
 };
 
 type HistoryEventBus = EventMapToEventBus<HistoryEventMap>;

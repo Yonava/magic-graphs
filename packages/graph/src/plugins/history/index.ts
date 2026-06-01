@@ -10,11 +10,11 @@ import { GraphWithHistory } from './types.ts';
 
 export const useHistoryPlugin = <
   TransactionWrapperOptions,
-  GraphEventMap extends BaseEventMap,
+  EventMap extends BaseEventMap,
   Plugins,
 >(
-  graph: BaseGraph<TransactionWrapperOptions, GraphEventMap, Plugins>,
-): GraphWithHistory<TransactionWrapperOptions, GraphEventMap, Plugins> => {
+  graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
+): GraphWithHistory<TransactionWrapperOptions, EventMap, Plugins> => {
   const historyBus = createHistoryEventBus();
   const historyHub: EventHub<HistoryEventMap> = createEventHub(historyBus);
   const events = mergeEventHubs(
@@ -47,7 +47,7 @@ export const useHistoryPlugin = <
 
     addToRedoStack(record);
     undoHistoryRecord(record);
-    events.emit('onUndo', record);
+    events.emit('onUndo');
 
     return record;
   };
@@ -58,7 +58,7 @@ export const useHistoryPlugin = <
 
     addToUndoStack(record);
     redoHistoryRecord(record);
-    events.emit('onRedo', record);
+    events.emit('onRedo');
 
     return record;
   };
@@ -76,7 +76,7 @@ export const useHistoryPlugin = <
     // TODO add actions overrides!
     actions: graph.actions as GraphWithHistory<
       TransactionWrapperOptions,
-      GraphEventMap,
+      EventMap,
       Plugins
     >['actions'],
     events,

@@ -1,6 +1,6 @@
 import { EventMapToEventBus } from '../../events/index.ts';
 
-export type FocusGraphEventMap = {
+export type FocusEventMap = {
   /**
    * when the set of focused items changes
    */
@@ -10,7 +10,7 @@ export type FocusGraphEventMap = {
   ) => void;
 };
 
-type FocusEventBus = EventMapToEventBus<FocusGraphEventMap>;
+type FocusEventBus = EventMapToEventBus<FocusEventMap>;
 
 export const createFocusEventBus = (): FocusEventBus => ({
   onFocusChange: new Set(),

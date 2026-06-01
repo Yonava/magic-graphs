@@ -14,7 +14,7 @@ type LocalStorageGraph = {
   save: () => void;
 };
 
-type LocalStoragePlugin = {
+export type LocalStoragePlugin = {
   /**
    * local storage plugin controls
    */
@@ -23,10 +23,10 @@ type LocalStoragePlugin = {
 
 export type GraphWithLocalStorage<
   TransactionWrapperOptions,
-  GraphEventMap extends BaseEventMap,
+  EventMap extends BaseEventMap,
   Plugins,
 > = BaseGraph<
   TransactionWrapperOptions,
-  GraphEventMap,
+  EventMap,
   Plugins & LocalStoragePlugin
 >;
