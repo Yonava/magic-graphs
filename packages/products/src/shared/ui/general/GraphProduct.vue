@@ -78,13 +78,13 @@
   const startPointerEvents = () => (disableUIPointerEvents.value = false);
 
   onMounted(() => {
-    props.graph.subscribe('onMouseDown', stopPointerEvents);
-    props.graph.subscribe('onMouseUp', startPointerEvents);
+    props.graph.events.subscribe('onMouseDown', stopPointerEvents);
+    props.graph.events.subscribe('onMouseUp', startPointerEvents);
   });
 
   onUnmounted(() => {
-    props.graph.unsubscribe('onMouseDown', stopPointerEvents);
-    props.graph.unsubscribe('onMouseUp', startPointerEvents);
+    props.graph.events.unsubscribe('onMouseDown', stopPointerEvents);
+    props.graph.events.unsubscribe('onMouseUp', startPointerEvents);
   });
 </script>
 

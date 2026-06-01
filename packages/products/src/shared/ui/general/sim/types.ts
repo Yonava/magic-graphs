@@ -1,6 +1,4 @@
-// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
-// eslint-disable-next-line
-import type { GraphEventMap } from '@magic/graph/events/index';
+import type { BaseEventMap } from '@magic/graph/base/events';
 
 import type { ComputedRef, Ref } from 'vue';
 
@@ -104,7 +102,7 @@ export type SimulationControls<T = any> = {
   showPlaybackSpeedControls: boolean;
   /**
    * if true, the simulation will pause when
-   * the graph {@link GraphEventMap.onStructureChange | structure changes}
+   * the graph {@link BaseEventMap.onStructureChange | structure changes}
    * @default true
    */
   pauseOnStructureChange: boolean;

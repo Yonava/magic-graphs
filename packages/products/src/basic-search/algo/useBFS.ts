@@ -1,5 +1,4 @@
 import type { Graph } from '@magic/graph/types';
-import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
 
 import { computed, ref, watch } from 'vue';
 
@@ -12,7 +11,7 @@ const { startNode } = state;
 export const useBFS = (graph: Graph) => {
   const trace = ref<BasicSearchTrace[]>([]);
 
-  const { adjacencyList } = useAdjacencyList(graph);
+  const { adjacencyList } = graph.adjacencyList;
 
   const update = () => {
     const node = startNode.get(graph);

@@ -20,7 +20,8 @@ export const syncGraphWithTree = (graph: Graph, tree: AVLTree) => {
   if (!treeRoot) {
     console.warn('could not parse tree from graph');
     // this syncs graph and tree by virtue of them both being empty
-    return graph.reset();
+    // return graph.reset();
+    return;
   }
 
   const q = [treeRoot];

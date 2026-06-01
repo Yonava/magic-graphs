@@ -76,12 +76,12 @@ export const useLocalStoragePlugin = <
   graph.events.subscribe('onSettingsChange', (diff) => {
     graph.events.unsubscribe('onTransactionComplete', save);
 
-    // persistent was true, but now it is false
-    const persistenceTurnedOff = 'persistent' in diff && !diff.persistent;
+    // localStorage was true, but now it is false
+    const persistenceTurnedOff = 'localStorage' in diff && !diff.localStorage;
     if (persistenceTurnedOff) return;
 
-    // persistent was false, but now it is true
-    const persistenceTurnedOn = 'persistent' in diff && diff.persistent;
+    // localStorage was false, but now it is true
+    const persistenceTurnedOn = 'localStorage' in diff && diff.localStorage;
     if (persistenceTurnedOn) {
       load();
       graph.events.subscribe('onTransactionComplete', save);
@@ -89,8 +89,8 @@ export const useLocalStoragePlugin = <
       return;
     }
 
-    // from here on out, persistent was true, but it was not in the diff
-    if ('persistentStorageKey' in diff) {
+    // from here on out, localStorage was true, but it was not in the diff
+    if ('localStorageKey' in diff) {
       load();
     }
 

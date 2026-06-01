@@ -16,7 +16,7 @@ export const useTreeHistory = (graph: Graph) => {
     const state = redoStack.value.pop();
     if (!state) return;
     undoStack.value.push(state);
-    graph.load(state);
+    // graph.load(state);
   };
 
   const undo = () => {
@@ -24,7 +24,7 @@ export const useTreeHistory = (graph: Graph) => {
     const state = undoStack.value.pop();
     if (!state) return;
     redoStack.value.push(state);
-    graph.load(state);
+    // graph.load(state);
   };
 
   return {

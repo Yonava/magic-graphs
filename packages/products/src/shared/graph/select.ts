@@ -3,7 +3,7 @@ import type { Graph, SchemaItem } from '@magic/graph/types';
 import tinycolor from 'tinycolor2';
 
 const animateNodePulse = (g: Graph) =>
-  g.defineTimeline({
+  g.shapes.defineTimeline({
     forShapes: ['circle'],
     durationMs: 2000,
     keyframes: [
@@ -135,24 +135,24 @@ export const selectFromGraph = (
    * initializes the selection process
    */
   const init = () => {
-    graph.subscribe('onClick', onClick);
+    graph.events.subscribe('onClick', onClick);
     hold('interactive');
     hold('focusable');
     const cursorPredicate =
       predicate === DEFAULT_PREDICATE
         ? (item: SchemaItem) => !!item
         : predicate;
-    graph.activateCursorSelectMode(cursorPredicate);
+    graph.cursor.activateCursorSelectMode(cursorPredicate);
   };
 
   /**
    * cleans up the selection process
    */
   const cleanup = () => {
-    graph.unsubscribe('onClick', onClick);
+    graph.events.unsubscribe('onClick', onClick);
     release('interactive');
     release('focusable');
-    graph.deactivateCursorSelectMode();
+    graph.cursor.deactivateCursorSelectMode();
   };
 
   /**

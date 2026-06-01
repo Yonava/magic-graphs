@@ -12,7 +12,7 @@ export const usePrim = (graph: Graph) => {
 
   const update = () => (trace.value = prim(graph));
 
-  graph.subscribe('onStructureChange', update);
+  graph.events.subscribe('onStructureChange', update);
 
   return {
     output: {

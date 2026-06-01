@@ -1,5 +1,3 @@
-import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
-
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import type { GNode } from '../types.ts';
 

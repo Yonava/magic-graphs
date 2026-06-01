@@ -1,7 +1,8 @@
 import type { ComputedRef, Ref } from 'vue';
 
-import type { GraphEvent, GraphEventMap } from '../events/index.ts';
+import { BaseEventMap } from '../base/events.ts';
 import type { Graph } from '../types.ts';
+import { GraphWithPlugins } from '../useGraph.ts';
 
 /**
  * css class defined in App.vue, should move later, used as default for ElementHighlightOptions -> highlightElement.className
@@ -11,7 +12,7 @@ export const DEFAULT_HIGHLIGHT_CLASS_NAME = 'element-highlight';
 /**
  * describes a step in a tutorial sequence for graph events defined in the useGraph event map
  */
-export type TutorialStepForEvent<T extends GraphEvent> = {
+export type TutorialStepForEvent<EventName extends keyof BaseEventMap> = {
   /**
    * the hint to display to the user in order to complete the step
    */
@@ -22,14 +23,14 @@ export type TutorialStepForEvent<T extends GraphEvent> = {
    * of the event and only if the predicate returns true
    */
   dismiss:
-    | T
+    | EventName
     | {
-        event: T;
+        event: EventName;
         /**
          * @param args the arguments passed to the event handler as defined in the event map
          * @returns true if the step should be dismissed
          */
-        predicate: (...args: Parameters<GraphEventMap[T]>) => boolean;
+        predicate: (...args: Parameters<BaseEventMap[EventName]>) => boolean;
       };
 };
 
@@ -116,8 +117,8 @@ export const DEFAULT_INTERVAL = 1000;
  * describes a step in a tutorial sequence for a graph event
  */
 export type GraphEventStep = {
-  [K in GraphEvent]: TutorialStepForEvent<K>;
-}[GraphEvent];
+  [EventName in keyof BaseEventMap]: TutorialStepForEvent<EventName>;
+}[keyof BaseEventMap];
 
 /**
  * describes a step in a tutorial sequence

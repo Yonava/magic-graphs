@@ -5,7 +5,7 @@ import { Fraction } from 'mathjs';
  * settings for dijkstras useGraph instance
  */
 export const DIJKSTRAS_GRAPH_SETTINGS: Partial<GraphSettings> = {
-  persistentStorageKey: 'dijkstras',
+  localStorageKey: 'dijkstras',
   userAddedEdgeRuleNoSelfLoops: true,
   userAddedEdgeRuleOneEdgePerPath: true,
   edgeInputToWeight: (input) => {

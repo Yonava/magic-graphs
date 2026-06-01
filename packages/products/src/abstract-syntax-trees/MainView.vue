@@ -103,10 +103,10 @@
     const { graph, canvas } = graphWithCanvas;
     const draw = () => {
       const ctx = getCtx(canvas.canvas.value);
-      graph.draw(ctx);
+      graph.magicCanvas.draw.content.value(ctx);
     };
-    const animate = graph.autoAnimate.captureFrame(draw);
-    graph.load(graphNodesAndEdges.value);
+    const animate = graph.shapes.autoAnimate.captureFrame(draw);
+    // graph.load(graphNodesAndEdges.value);
     shapeGraph(graphNodesAndEdges.value.rootNode);
     animate();
   };

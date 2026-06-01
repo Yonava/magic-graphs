@@ -5,5 +5,5 @@ import type { GraphSettings } from '@magic/graph/settings/index';
  */
 export const BASIC_SEARCH_GRAPH_SETTINGS: Partial<GraphSettings> = {
   isGraphWeighted: false,
-  persistentStorageKey: 'basic-search',
+  localStorageKey: 'basic-search',
 };

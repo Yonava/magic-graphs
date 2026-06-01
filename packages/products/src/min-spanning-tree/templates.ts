@@ -1,8 +1,6 @@
 import Fraction from 'fraction.js';
 
-import type { GraphTemplate } from '../shared/graph-templates/types.ts';
-
-const templates: GraphTemplate[] = [
+const templates = [
   {
     id: 'mst',
     title: 'Minimum Spanning Tree',
