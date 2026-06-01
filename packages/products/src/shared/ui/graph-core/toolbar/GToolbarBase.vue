@@ -3,7 +3,6 @@
   import CToolbar from '@magic/ui/core/toolbar/ToolbarBase.vue';
 
   import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors.ts';
-  import GToolbarHint from './GToolbarHint.vue';
 
   const colors = useNonNullGraphColors();
 
@@ -18,13 +17,5 @@
     :color="colors.primary"
   >
     <slot></slot>
-    <template #hint>
-      <div class="absolute w-full translate-y-14 pointer-events-none">
-        <GToolbarHint
-          v-if="hint"
-          :tutorial="hint"
-        />
-      </div>
-    </template>
   </CToolbar>
 </template>

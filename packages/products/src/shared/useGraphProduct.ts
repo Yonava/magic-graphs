@@ -1,4 +1,3 @@
-import { collabControls } from '@magic/graph/collab/index';
 import { USER_PLATFORM } from '@magic/graph/plugins/shortcut/index';
 import {
   decodeCompressedTransitData,
@@ -8,7 +7,7 @@ import type { Graph } from '@magic/graph/types';
 import { decompressFromEncodedURIComponent } from 'lz-string';
 import { useToast } from 'primevue/usetoast';
 
-import { onBeforeUnmount, onMounted } from 'vue';
+import { onBeforeUnmount } from 'vue';
 
 import { type LocationQueryValue, useRoute, useRouter } from 'vue-router';
 
@@ -100,28 +99,13 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
     product = getProductFromCurrentRoute(route.path);
   }
 
-  const { connectToRoom } = collabControls;
-  const roomId = route.query.rid;
-
-  const { productId, name } = product;
+  const { name } = product;
   document.title = `${name} - Magic Graphs`;
 
   globalGraph.value = graph;
 
   const sharedGraph = route.query[SHARE_GRAPH_QUERY_PARAM_KEY];
   if (sharedGraph) loadGraphFromURL(graph, sharedGraph);
-
-  onMounted(() => {
-    if (!roomId) return;
-    if (typeof roomId !== 'string')
-      return console.error('room id must be a string');
-
-    connectToRoom({
-      graph,
-      roomId,
-      productId,
-    });
-  });
 
   onBeforeUnmount(() => {
     product.state?.reset();
