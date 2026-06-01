@@ -5,7 +5,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { LOCALHOST_PORT } from './constants.ts';
-import { sockets } from './sockets.ts';
+
+// import { sockets } from './sockets.ts';
 
 dotenv.config();
 
@@ -32,4 +33,4 @@ server.listen(Number(PORT), '0.0.0.0', () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-sockets(server);
+// sockets(server);
