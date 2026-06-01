@@ -4,10 +4,7 @@ import { useLocalStorage } from '@vueuse/core';
 
 import { watch } from 'vue';
 
-import type { BaseGraph } from '../base/index.ts';
-// @typescript-eslint/no-unused-vars reports unused even if referenced in jsdoc
-// eslint-disable-next-line
-import type { Graph } from '../types.ts';
+import { GraphWithPlugins } from '../useGraph.ts';
 import { type GraphThemeName, THEME_NAMES } from './index.ts';
 
 export type PreferredGraphTheme = GraphThemeName | 'auto';
@@ -16,13 +13,13 @@ const DEFAULT_THEME: PreferredGraphTheme = 'auto';
 
 /**
  * creates a `ref` that when changed updates the
- * {@link Graph.themeName | graph theme} and saves the preference
+ * {@link GraphWithPlugins.themeName | graph theme} and saves the preference
  * to local storage for future sessions or when another graph is created that implements
  * `usePreferredTheme`
  *
  * @param graph the graph instance
  */
-export const usePreferredTheme = (graph: BaseGraph) => {
+export const usePreferredTheme = (graph: GraphWithPlugins) => {
   const isDark = useDark();
   const preferredTheme = useLocalStorage<PreferredGraphTheme>(
     localKeys.preferredTheme,

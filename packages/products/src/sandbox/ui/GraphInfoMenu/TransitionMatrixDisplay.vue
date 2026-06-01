@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { useTransitionMatrix } from '@magic/graph/useTransitionMatrix';
   import colors from '@magic/utils/colors';
 
   import { computed } from 'vue';
@@ -7,8 +6,6 @@
   import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import { useNonNullGraphColors } from '../../../shared/useGlobalGraphColors.ts';
   import TransitionMatrixLabel from './TransitionMatrixLabel.vue';
-
-  const transitionMatrix = useTransitionMatrix(graph.value);
 
   const graphColors = useNonNullGraphColors();
 
@@ -41,7 +38,7 @@
 
 <template>
   <div
-    v-if="transitionMatrix.length !== 0"
+    v-if="graph.transitionMatrix.value.length !== 0"
     class="flex py-6 items-center"
   >
     <div class="text-xl font-bold px-5 text-nowrap">T =</div>
@@ -50,7 +47,7 @@
       class="p-4 rounded"
     >
       <div
-        v-for="(row, rowIndex) in transitionMatrix"
+        v-for="(row, rowIndex) in graph.transitionMatrix.value"
         :key="'row-' + rowIndex"
         class="flex"
       >

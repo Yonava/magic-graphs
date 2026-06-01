@@ -7,6 +7,7 @@ import { Builtin, PathValue, Paths } from 'ts-essentials';
 
 import { Ref } from 'vue';
 
+import { BaseGraph } from '../base/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
@@ -27,12 +28,12 @@ export type BaseGraphNodeStyles = TextStyles & {
 };
 
 export type GraphInterface = {
-  shapes: AnimatedShapeControls['shapes'];
-  settings: Ref<GraphSettings>;
-  getTheme: ThemeGetter;
-  edges: Ref<GEdge[]>;
-  getNode: (id: GNode['id']) => GNode | undefined;
-  getEdge: (id: GEdge['id']) => GEdge | undefined;
+  shapes: BaseGraph['shapes'];
+  settings: BaseGraph['settings'];
+  getTheme: BaseGraph['getTheme'];
+  edges: BaseGraph['edges'];
+  getNode: BaseGraph['getNode'];
+  getEdge: BaseGraph['getEdge'];
 };
 
 export type BaseGraphNodeTheme = WrapWithNodeGetter<BaseGraphNodeStyles> & {

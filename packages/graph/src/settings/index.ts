@@ -3,6 +3,18 @@ import { Fraction } from 'mathjs';
 import type { DeepPartial } from 'ts-essentials';
 
 import type { GraphAnimations } from '../base/animations.ts';
+import {
+  DEFAULT_FOCUS_SETTINGS,
+  FocusGraphSettings,
+} from '../plugins/focus/settings.ts';
+import {
+  DEFAULT_LOCAL_STORAGE_SETTINGS,
+  LocalStorageGraphSettings,
+} from '../plugins/localStorage/settings.ts';
+import {
+  DEFAULT_MARQUEE_SETTINGS,
+  MarqueeGraphSettings,
+} from '../plugins/marquee/settings.ts';
 import type { GEdge, GNode, SchemaItem } from '../types.ts';
 
 /**
@@ -59,21 +71,6 @@ export const DEFAULT_BASE_SETTINGS: BaseGraphSettings = {
 };
 
 /**
- * FOCUS GRAPH SETTINGS
- */
-export type FocusGraphSettings = {
-  /**
-   * if false, no {@link SchemaItem | item} on the graph can be focused
-   * @default true
-   */
-  focusable: boolean;
-};
-
-export const DEFAULT_FOCUS_SETTINGS: FocusGraphSettings = {
-  focusable: true,
-};
-
-/**
  * DRAGGABLE GRAPH SETTINGS
  */
 export type DraggableGraphSettings = {
@@ -102,27 +99,6 @@ export type NodeAnchorGraphSettings = {
 
 export const DEFAULT_NODE_ANCHOR_SETTINGS: NodeAnchorGraphSettings = {
   nodeAnchors: true,
-};
-
-/**
- * MARQUEE GRAPH SETTINGS
- */
-export type MarqueeGraphSettings = {
-  /**
-   * whether marquee selection is enabled
-   * @default true
-   */
-  marquee: boolean;
-  /**
-   * the types of graph items that can be marquee-selected
-   * @default ['node', 'edge']
-   */
-  marqueeSelectableGraphTypes: SchemaItem['graphType'][];
-};
-
-export const DEFAULT_MARQUEE_SETTINGS: MarqueeGraphSettings = {
-  marquee: true,
-  marqueeSelectableGraphTypes: ['node', 'edge'],
 };
 
 /**
@@ -159,33 +135,6 @@ export const DEFAULT_INTERACTIVE_SETTINGS: InteractiveGraphSettings = {
   userAddedDefaultEdgeWeight: () => new Fraction(1),
   userAddedEdgeRuleNoSelfLoops: false,
   userAddedEdgeRuleOneEdgePerPath: false,
-};
-
-/**
- * PERSISTENT GRAPH SETTINGS
- */
-export type PersistentGraphSettings = {
-  /**
-   * whether the nodes and edges of the graph will be saved in {@link localStorage | local storage}
-   * @default true
-   */
-  persistent: boolean;
-  /**
-   * the key used for saving the graph in {@link localStorage | local storage}
-   * @default "graph"
-   */
-  persistentStorageKey: string;
-  /**
-   * set of node or edge ids that will not be saved to localStorage
-   * @default new Set()
-   */
-  persistentBlacklist: Set<GNode['id'] | GEdge['id']>;
-};
-
-export const DEFAULT_PERSISTENT_SETTINGS: PersistentGraphSettings = {
-  persistent: true,
-  persistentStorageKey: 'graph',
-  persistentBlacklist: new Set(),
 };
 
 export type ShortcutGraphSettings = {
@@ -273,7 +222,7 @@ export type GraphSettings = BaseGraphSettings &
   NodeAnchorGraphSettings &
   MarqueeGraphSettings &
   InteractiveGraphSettings &
-  PersistentGraphSettings &
+  LocalStorageGraphSettings &
   ShortcutGraphSettings;
 
 /**
@@ -286,6 +235,6 @@ export const DEFAULT_GRAPH_SETTINGS = {
   ...DEFAULT_NODE_ANCHOR_SETTINGS,
   ...DEFAULT_MARQUEE_SETTINGS,
   ...DEFAULT_INTERACTIVE_SETTINGS,
-  ...DEFAULT_PERSISTENT_SETTINGS,
+  ...DEFAULT_LOCAL_STORAGE_SETTINGS,
   ...DEFAULT_SHORTCUT_SETTINGS,
 } as const satisfies GraphSettings;

@@ -6,7 +6,7 @@ import { AUTO_ANIMATE_DURATION_MS } from '@magic/shapes/animation/autoAnimate';
  * settings for basic search useGraph instance
  */
 export const BINARY_TREE_GRAPH_SETTINGS: Partial<GraphSettings> = {
-  persistentStorageKey: 'binary-trees',
+  localStorageKey: 'binary-trees',
   interactive: false,
   isGraphWeighted: false,
   animations: (defineTimeline) => ({

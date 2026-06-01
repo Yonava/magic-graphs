@@ -126,7 +126,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX;
 
   if (isSelfDirected) {
-    const shape = graph.shapes.uturn({
+    const shape = graph.shapes.shapes.uturn({
       id: edge.id,
       spacing: styles.width * 1.2,
       at: { x: fromNode.x, y: fromNode.y },
@@ -152,7 +152,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
   if (areNodesTouching) return;
 
   if (!isGraphDirected) {
-    const shape = graph.shapes.line({
+    const shape = graph.shapes.shapes.line({
       id: edge.id,
       start: edgeStart,
       end: edgeEnd,
@@ -164,7 +164,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     return shape;
   }
 
-  const shape = graph.shapes.arrow({
+  const shape = graph.shapes.shapes.arrow({
     id: edge.id,
     start: edgeStart,
     end: edgeEnd,

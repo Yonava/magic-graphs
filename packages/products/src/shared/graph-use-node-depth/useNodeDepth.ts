@@ -1,5 +1,4 @@
 import type { GNode, Graph } from '@magic/graph/types';
-import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
 import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
 
 import { computed } from 'vue';
@@ -81,8 +80,9 @@ export const getNodeDepths = (startNode: GNode, adjList: AdjacencyList) => {
  * @returns reactive map of node id to depth and the depth of the tree
  */
 export const useNodeDepth = (graph: Graph, startNode: Ref<GNode>) => {
-  const { adjacencyList } = useAdjacencyList(graph);
-  return computed(() => getNodeDepths(startNode.value, adjacencyList.value));
+  return computed(() =>
+    getNodeDepths(startNode.value, graph.adjacencyList.adjacencyList.value),
+  );
 };
 
 export type NodeDepth = ReturnType<typeof getNodeDepths>;

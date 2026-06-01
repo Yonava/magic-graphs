@@ -6,25 +6,24 @@ import colors from '@magic/utils/colors';
 import type { Color } from '@magic/utils/colors';
 import { generateId } from '@magic/utils/id';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
-import type { IntervalHandler } from '@magic/utils/types';
 
 import { computed, ref, watch } from 'vue';
 
-import type { BaseGraph } from '../../base/index.ts';
 import type { GraphMouseEvent } from '../../base/types.ts';
 import type { Aggregator } from '../../types.ts';
+import { GraphWithPlugins } from '../../useGraph.ts';
 import { BRUSH_WEIGHTS, COLORS } from './constants.ts';
 import { useAnnotationHistory } from './history.ts';
 import type { Annotation } from './types.ts';
 
 const ERASER_BRUSH_RADIUS = 10;
 
-export const useAnnotations = (graph: BaseGraph) => {
+export const useAnnotations = (graph: GraphWithPlugins) => {
   const selectedColor = ref<Color>(COLORS[0]);
   const selectedBrushWeight = ref(BRUSH_WEIGHTS[1]);
   const isErasing = ref(false);
   const isLaserPointing = ref(false);
-  const laserDecayInterval = ref<IntervalHandler>();
+  const laserDecayInterval = ref<NodeJS.Timeout>();
   const lastMoveTime = ref(Date.now());
   const erasedScribbleIds = ref(new Set<string>());
 
@@ -73,7 +72,7 @@ export const useAnnotations = (graph: BaseGraph) => {
       }).getBoundingBox();
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
-        const shape = graph.shapes.scribble(scribble);
+        const shape = graph.shapes.shapes.scribble(scribble);
         return shape.efficientHitbox(eraserBoundingBox);
       });
 
@@ -103,7 +102,7 @@ export const useAnnotations = (graph: BaseGraph) => {
       }).getBoundingBox();
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
-        const shape = graph.shapes.scribble(scribble);
+        const shape = graph.shapes.shapes.scribble(scribble);
         return shape.efficientHitbox(eraserBoundingBox);
       });
 
@@ -186,7 +185,7 @@ export const useAnnotations = (graph: BaseGraph) => {
 
     if (isErasing.value && graph.canvasHovered.value) {
       const eraserId = 'annotation-eraser-cursor';
-      const eraserCursor = graph.shapes.circle({
+      const eraserCursor = graph.shapes.shapes.circle({
         id: eraserId,
         at: graph.graphAtMousePosition.value.coords,
         radius: ERASER_BRUSH_RADIUS,
@@ -205,7 +204,7 @@ export const useAnnotations = (graph: BaseGraph) => {
       });
     } else if (batch.value.length > 0 && isDrawing.value) {
       const incompleteAnnotationId = 'annotation-incomplete';
-      const incompleteScribble = graph.shapes.scribble({
+      const incompleteScribble = graph.shapes.shapes.scribble({
         id: incompleteAnnotationId,
         type: 'draw',
         points: batch.value,
@@ -221,7 +220,7 @@ export const useAnnotations = (graph: BaseGraph) => {
       });
     } else if (isLaserPointing.value && graph.canvasHovered.value) {
       const laserPointerCursorId = 'laser-pointer-cursor';
-      const laserPointerCursor = graph.shapes.circle({
+      const laserPointerCursor = graph.shapes.shapes.circle({
         id: laserPointerCursorId,
         at: graph.graphAtMousePosition.value.coords,
         radius: selectedBrushWeight.value,
@@ -241,7 +240,7 @@ export const useAnnotations = (graph: BaseGraph) => {
       aggregator.push({
         graphType: 'annotation',
         id: scribble.id,
-        shape: graph.shapes.scribble({
+        shape: graph.shapes.shapes.scribble({
           ...scribble,
           fillColor: scribble.fillColor + (isErased ? '50' : ''),
         }),
@@ -252,7 +251,7 @@ export const useAnnotations = (graph: BaseGraph) => {
     return aggregator;
   };
 
-  graph.subscribeToAggregator.push(addScribblesToAggregator);
+  graph.aggregator.transformers.push(addScribblesToAggregator);
 
   const activate = () => {
     const canvas = graph.magicCanvas.canvas.value;
@@ -265,13 +264,13 @@ export const useAnnotations = (graph: BaseGraph) => {
     hold('focusable');
     hold('draggable');
 
-    graph.graphCursorDisabled.value = true;
+    graph.cursor.disabled.value = true;
 
     canvas.style.cursor = 'crosshair';
 
-    graph.subscribe('onMouseDown', startDrawing);
-    graph.subscribe('onMouseMove', drawLine);
-    graph.subscribe('onMouseUp', stopDrawing);
+    graph.events.subscribe('onMouseDown', startDrawing);
+    graph.events.subscribe('onMouseMove', drawLine);
+    graph.events.subscribe('onMouseUp', stopDrawing);
   };
 
   const deactivate = () => {
@@ -286,13 +285,13 @@ export const useAnnotations = (graph: BaseGraph) => {
     release('focusable');
     release('draggable');
 
-    graph.graphCursorDisabled.value = false;
+    graph.cursor.disabled.value = false;
 
     canvas.style.cursor = 'default';
 
-    graph.unsubscribe('onMouseDown', startDrawing);
-    graph.unsubscribe('onMouseMove', drawLine);
-    graph.unsubscribe('onMouseUp', stopDrawing);
+    graph.events.unsubscribe('onMouseDown', startDrawing);
+    graph.events.unsubscribe('onMouseMove', drawLine);
+    graph.events.unsubscribe('onMouseUp', stopDrawing);
   };
 
   const load = (annotations: Annotation[]) => {

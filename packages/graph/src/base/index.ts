@@ -13,14 +13,14 @@ import { onClickOutside, useElementHover } from '@vueuse/core';
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { generateSubscriber, getInitialEventBus } from '../events/index.ts';
+import { createEventHub } from '../events/createEventHub.ts';
 import { prioritizeNode } from '../helpers/prioritization.ts';
 import { getEdgeSchematic } from '../schematics/edge.ts';
 import { getNodeSchematic } from '../schematics/node.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
 import { getThemeResolver } from '../themes/getThemeResolver.ts';
-import { THEMES } from '../themes/index.ts';
+import { THEME_LOADOUTS } from '../themes/index.ts';
 import type { GraphThemeName } from '../themes/index.ts';
 import { GraphInterface, getInitialThemeMap } from '../themes/types.ts';
 import type { Aggregator, GEdge, GNode } from '../types.ts';
@@ -29,21 +29,19 @@ import {
   type GraphAnimations,
   getDefaultGraphAnimations,
 } from './animations.ts';
+import { useGraphCursor } from './cursor/useGraphCursor.ts';
+import { createBaseEventBus } from './events.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
-import { LOAD_GRAPH_OPTIONS_DEFAULTS } from './types.ts';
-import type { GraphAtMousePosition, HistoryOption } from './types.ts';
+import type { BaseGraph, GraphAtMousePosition } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
-import { useGraphCursor } from './useGraphCursor.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { usePluginHoldController } from './usePluginHold.ts';
 
 export const useBaseGraph = (
   magicCanvas: MagicCanvasProps,
   startupSettings: Partial<GraphSettings> = {},
-) => {
-  const { canvas, cursorCoordinates } = magicCanvas;
-
+): BaseGraph => {
   const themeName = ref<GraphThemeName>('light');
 
   const themeMap = getInitialThemeMap();
@@ -54,10 +52,10 @@ export const useBaseGraph = (
     ...startupSettings,
   });
 
-  const pluginHoldController = usePluginHoldController(settings);
+  const eventBus = createBaseEventBus();
+  const events = createEventHub(eventBus);
 
-  const eventBus = getInitialEventBus();
-  const { subscribe, unsubscribe, emit } = generateSubscriber(eventBus);
+  const aggregator = useAggregator(events);
 
   const canvasFocused = ref(true);
 
@@ -65,7 +63,7 @@ export const useBaseGraph = (
     canvasFocused.value = false;
   });
 
-  subscribe('onMouseDown', () => {
+  events.subscribe('onMouseDown', () => {
     const el = document.activeElement;
     if (el instanceof HTMLElement && typeof el.blur === 'function') el.blur();
     canvasFocused.value = true;
@@ -82,16 +80,18 @@ export const useBaseGraph = (
     items: [],
   });
 
-  const graphCursorControls = useGraphCursor({
-    canvas,
-    subscribe,
+  const cursor = useGraphCursor({
+    magicCanvas,
+    subscribe: events.subscribe,
     graphAtMousePosition,
   });
 
   const updateGraphAtMousePosition = () =>
     (graphAtMousePosition.value = {
-      coords: cursorCoordinates.value,
-      items: getSchemaItemsByCoordinates(cursorCoordinates.value),
+      coords: magicCanvas.cursorCoordinates.value,
+      items: aggregator.getSchemaItemsByCoordinates(
+        magicCanvas.cursorCoordinates.value,
+      ),
     });
 
   const graphMouseEv = (event: MouseEvent) => ({
@@ -102,52 +102,43 @@ export const useBaseGraph = (
   const mouseEvents: Partial<MouseEventMap> = {
     click: (ev: MouseEvent) => {
       ev.preventDefault();
-      emit('onClick', graphMouseEv(ev));
+      events.emit('onClick', graphMouseEv(ev));
     },
     mousemove: (ev: MouseEvent) => {
       ev.preventDefault();
       updateGraphAtMousePosition();
-      emit('onMouseMove', graphMouseEv(ev));
+      events.emit('onMouseMove', graphMouseEv(ev));
     },
     mousedown: (ev: MouseEvent) => {
       ev.preventDefault();
       updateGraphAtMousePosition();
-      emit('onMouseDown', graphMouseEv(ev));
+      events.emit('onMouseDown', graphMouseEv(ev));
     },
     mouseup: (ev: MouseEvent) => {
       ev.preventDefault();
       updateGraphAtMousePosition();
-      emit('onMouseUp', graphMouseEv(ev));
+      events.emit('onMouseUp', graphMouseEv(ev));
     },
     dblclick: (ev: MouseEvent) => {
       ev.preventDefault();
-      emit('onDblClick', graphMouseEv(ev));
+      events.emit('onDblClick', graphMouseEv(ev));
     },
     contextmenu: (ev: MouseEvent) => {
-      emit('onContextMenu', graphMouseEv(ev));
+      events.emit('onContextMenu', graphMouseEv(ev));
     },
   };
 
   const keyboardEvents: Partial<KeyboardEventMap> = {
-    keydown: (ev: KeyboardEvent) => emit('onKeyDown', ev),
-    keyup: (ev: KeyboardEvent) => emit('onKeyUp', ev),
+    keydown: (ev: KeyboardEvent) => events.emit('onKeyDown', ev),
+    keyup: (ev: KeyboardEvent) => events.emit('onKeyUp', ev),
   };
 
-  const {
-    aggregator,
-    subscribeToAggregator,
-    updateAggregator,
-    getSchemaItemsByCoordinates,
-    draw,
-  } = useAggregator({ emit });
-
-  const { shapes, autoAnimate, defineTimeline, activeAnimations } =
-    useAnimatedShapes();
+  const shapes = useAnimatedShapes();
   const animations: GraphAnimations = deepMerge(
     // TODO: @Yonava fix bad type
-    getDefaultGraphAnimations(defineTimeline as any),
+    getDefaultGraphAnimations(shapes.defineTimeline as any),
     // TODO: @Yonava fix bad type
-    settings.value.animations(defineTimeline as any),
+    settings.value.animations(shapes.defineTimeline as any),
   );
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
@@ -176,17 +167,17 @@ export const useBaseGraph = (
     return aggregator;
   };
 
-  subscribeToAggregator.push(addNodesAndEdgesToAggregator);
+  aggregator.transformers.push(addNodesAndEdgesToAggregator);
 
   onMounted(() => {
-    if (!canvas.value) {
-      throw new Error('canvas element not found');
+    if (!magicCanvas.canvas.value) {
+      throw new Error('Canvas element not found in DOM');
     }
 
     for (const [event, listeners] of Object.entries(
       mouseEvents,
     ) as MouseEventEntries) {
-      canvas.value.addEventListener(event, listeners);
+      magicCanvas.canvas.value.addEventListener(event, listeners);
     }
 
     for (const [event, listeners] of Object.entries(
@@ -197,14 +188,14 @@ export const useBaseGraph = (
   });
 
   onBeforeUnmount(() => {
-    if (!canvas.value) {
-      throw new Error('Canvas element not found');
+    if (!magicCanvas.canvas.value) {
+      throw new Error('Canvas element not found in DOM');
     }
 
     for (const [event, listeners] of Object.entries(
       mouseEvents,
     ) as MouseEventEntries) {
-      canvas.value.removeEventListener(event, listeners);
+      magicCanvas.canvas.value.removeEventListener(event, listeners);
     }
 
     for (const [event, listeners] of Object.entries(
@@ -217,8 +208,8 @@ export const useBaseGraph = (
   const onTransactionSucceeded = useTransactionSucceeded({
     edges,
     nodes,
-    emit,
-    updateAggregator,
+    emit: events.emit,
+    updateAggregator: aggregator.updateAggregator,
     updateGraphAtMousePosition,
   });
   const commitTransaction = useCommitTransaction({
@@ -249,14 +240,14 @@ export const useBaseGraph = (
   );
 
   let currHoveredNode: GNode | undefined;
-  subscribe('onMouseMove', ({ items }) => {
+  events.subscribe('onMouseMove', ({ items }) => {
     const topItem = items.at(-1);
     // TODO change this to better support node anchors
     // that may be dragging over the node
     if (!topItem || topItem.graphType !== 'node') return;
     const node = getNode(topItem.id);
     if (node === currHoveredNode) return;
-    emit('onNodeHoverChange', node, currHoveredNode);
+    events.emit('onNodeHoverChange', node, currHoveredNode);
     currHoveredNode = node;
   });
 
@@ -266,45 +257,10 @@ export const useBaseGraph = (
     return aggregator;
   };
 
-  subscribeToAggregator.push(liftHoveredNodeToTop);
-
-  /**
-   * load a graph state into the graph
-   * @param graphState - the graph state to load (nodes and edges)
-   */
-  const load = (
-    graphState: { nodes: GNode[]; edges: GEdge[] },
-    options?: HistoryOption,
-  ) => {
-    const previousState = {
-      nodes: nodes.value,
-      edges: edges.value,
-    };
-
-    nodes.value = graphState.nodes;
-    edges.value = graphState.edges;
-
-    const historyOptions = {
-      ...LOAD_GRAPH_OPTIONS_DEFAULTS,
-      ...options,
-    };
-
-    emit('onGraphLoaded', previousState, historyOptions);
-    emit('onStructureChange');
-  };
-
-  /**
-   * reset the graph to an empty state with no nodes or edges
-   */
-  const reset = () => {
-    nodes.value = [];
-    edges.value = [];
-    emit('onGraphReset');
-    emit('onStructureChange');
-  };
+  aggregator.transformers.push(liftHoveredNodeToTop);
 
   watch(themeName, async (newThemeName, oldThemeName) => {
-    emit('onThemeChange', newThemeName, oldThemeName);
+    events.emit('onThemeChange', newThemeName, oldThemeName);
   });
 
   const activeSettings = ref(clone(settings.value));
@@ -314,8 +270,8 @@ export const useBaseGraph = (
       const settingsDiff = delta(activeSettings.value, newSettings);
       if (!settingsDiff) return;
       activeSettings.value = clone(settings.value);
-      emit('onSettingsChange', settingsDiff);
-      if ('isGraphDirected' in settingsDiff) emit('onStructureChange');
+      events.emit('onSettingsChange', settingsDiff);
+      if ('isGraphDirected' in settingsDiff) events.emit('onStructureChange');
     },
     { deep: true },
   );
@@ -338,34 +294,18 @@ export const useBaseGraph = (
 
     actions,
 
-    getSchemaItemsByCoordinates,
+    events,
 
-    /**
-     * a mapping of all graph events to a set of their callback functions
-     */
-    eventBus,
-    subscribe,
-    unsubscribe,
-    emit,
-
-    subscribeToAggregator,
     aggregator,
-    updateAggregator,
 
-    pluginHoldController,
+    pluginHoldController: usePluginHoldController(settings),
     shapes,
-    autoAnimate,
-    animations,
-    defineTimeline,
 
-    baseTheme: computed(() => THEMES[themeName.value]),
+    baseTheme: computed(() => THEME_LOADOUTS[themeName.value]),
     themeName,
     getTheme,
     themeMap,
     settings,
-
-    load,
-    reset,
 
     magicCanvas,
     /**
@@ -377,12 +317,8 @@ export const useBaseGraph = (
      */
     canvasHovered: useElementHover(magicCanvas.canvas),
 
-    draw,
-
     graphAtMousePosition,
     updateGraphAtMousePosition,
-    ...graphCursorControls,
+    cursor,
   };
 };
-
-export type BaseGraph = ReturnType<typeof useBaseGraph>;

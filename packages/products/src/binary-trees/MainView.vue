@@ -25,7 +25,7 @@
       tree.removeNode(Number(focusedNodes.value[0].label));
     if (focusedNodes.value.length === graph.nodes.value.length)
       tree.resetTree();
-    graph.focus.reset();
+    graph.focus.clear();
   };
 
   graph.settings.value.shortcutUndo = () => !simRunner.value && tree.undo();

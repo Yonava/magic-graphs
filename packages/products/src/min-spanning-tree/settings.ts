@@ -5,7 +5,7 @@ import { Fraction } from 'mathjs';
  * settings for MST useGraph instance
  */
 export const MST_GRAPH_SETTINGS: Partial<GraphSettings> = {
-  persistentStorageKey: 'min-spanning-tree',
+  localStorageKey: 'min-spanning-tree',
   isGraphDirected: false,
   edgeInputToWeight: (input) => {
     // fraction throws an error if the input cannot be parsed or

@@ -40,7 +40,6 @@ const info: ProductInfo = {
       runner: usePrimSimulationRunner(graph),
     },
   ],
-  templates,
 };
 
 export default info;

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
   import CIcon from '@magic/ui/core/Icon.vue';
   import CPopoverTooltip from '@magic/ui/core/PopoverTooltip.vue';
   import { getCommaList } from '@magic/utils/string';
@@ -9,8 +8,6 @@
   import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import GNode from '../../../shared/ui/graph-core/GNode.vue';
   import GWell from '../../../shared/ui/graph-core/GWell.vue';
-
-  const { weightedAdjacencyList } = useAdjacencyList(graph.value);
 
   const getNode = (nodeId: string) => {
     const node = graph.value.getNode(nodeId);
@@ -24,7 +21,7 @@
 <template>
   <div class="flex flex-col gap-4">
     <div
-      v-for="(value, key) in weightedAdjacencyList"
+      v-for="(value, key) in graph.adjacencyList.weightedAdjacencyList.value"
       :key="key"
       class="flex items-center"
     >

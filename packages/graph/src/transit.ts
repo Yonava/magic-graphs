@@ -35,10 +35,10 @@ export const getTransitData = (g: Graph): GraphTransitData => ({
 });
 
 export const setTransitData = (g: Graph, transitData: GraphTransitData) => {
-  g.load({
-    nodes: transitData.nodes,
-    edges: transitData.edges,
-  });
+  // g.load({
+  //   nodes: transitData.nodes,
+  //   edges: transitData.edges,
+  // });
 
   g.annotation.load(transitData.annotations);
 

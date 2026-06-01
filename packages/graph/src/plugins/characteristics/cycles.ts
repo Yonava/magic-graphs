@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import type { BaseGraph } from '../../base/index.ts';
+import type { BaseGraph } from '../../base/types.ts';
 import type { GNode } from '../../types.ts';
 import type { AdjacencyList, AdjacencyLists } from '../../useAdjacencyList.ts';
 import type { CharacteristicSCC } from './scc.ts';
@@ -53,9 +53,13 @@ export const getCycles: GetCycles = (adjList) => {
 };
 
 export const useCycles = (
-  graph: BaseGraph & CharacteristicSCC & AdjacencyLists,
+  graph: Pick<BaseGraph, 'settings'>,
+  scc: Pick<CharacteristicSCC, 'stronglyConnectedComponents'>,
+  adjacencyLists: Pick<AdjacencyLists, 'adjacencyList'>,
 ) => {
-  const { settings, stronglyConnectedComponents, adjacencyList } = graph;
+  const { settings } = graph;
+  const { stronglyConnectedComponents } = scc;
+  const { adjacencyList } = adjacencyLists;
 
   const cycles = computed(() => {
     const { isGraphDirected } = settings.value;

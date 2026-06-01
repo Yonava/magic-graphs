@@ -84,6 +84,7 @@ export const useTreeGraphPositioner = (
           values: coords,
         })),
       },
+      // @ts-expect-error migration
       { animate: treeOptions.animate },
     );
   };

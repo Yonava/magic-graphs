@@ -1,9 +1,7 @@
 import { keys } from 'ctrl-keys';
 
-import type { BaseGraph } from '../../base/index.ts';
-import type { GraphAnnotationPlugin } from '../annotations/index.ts';
-import type { GraphFocusPlugin } from '../focus/index.ts';
-import type { GraphHistoryPlugin } from '../history/index.ts';
+import { GraphWithPlugins } from '../../useGraph.ts';
+import { GraphAnnotationPlugin } from '../annotations/index.ts';
 import type { PlatformShortcuts } from './types.ts';
 
 export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
@@ -14,37 +12,23 @@ export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
  * a plugin that allows users to use keyboard shortcuts to interact with the graph
  */
 export const useShortcuts = (
-  graph: BaseGraph &
-    GraphHistoryPlugin &
-    GraphFocusPlugin &
-    GraphAnnotationPlugin,
+  graph: GraphWithPlugins & GraphAnnotationPlugin,
 ) => {
   const { settings } = graph;
 
   const ctrlKeysHandler = keys();
 
   const defaultShortcutTriggerUndo = () => {
-    if (graph.annotation.isActive.value) graph.annotation.undo();
-    if (settings.value.interactive) {
-      const action = graph.history.undo();
-      if (!action) return;
-      graph.focus.set(action.affectedItems.map((item) => item.data.id));
-    }
+    if (graph.annotation.isActive.value) return graph.annotation.undo();
+    if (settings.value.interactive) return graph.history.undo();
   };
 
   const defaultShortcutTriggerRedo = () => {
-    if (graph.annotation.isActive.value) {
-      graph.annotation.redo();
-      return;
-    }
-    if (settings.value.interactive) {
-      const action = graph.history.redo();
-      if (!action) return;
-      graph.focus.set(action.affectedItems.map((item) => item.data.id));
-    }
+    if (graph.annotation.isActive.value) graph.annotation.redo();
+    if (settings.value.interactive) return graph.history.redo();
   };
 
-  const defaultShortcutTriggerEscape = () => graph.focus.reset();
+  const defaultShortcutTriggerEscape = () => graph.focus.clear();
   const defaultShortcutTriggerSelectAll = () => graph.focus.all();
   const defaultShortcutTriggerDelete = () => {
     if (settings.value.interactive === false) return;
@@ -178,18 +162,18 @@ export const useShortcuts = (
   }
 
   const activate = () => {
-    graph.subscribe('onKeyDown', ctrlKeysHandler.handle);
-    graph.subscribe('onSettingsChange', updateBindings);
+    graph.events.subscribe('onKeyDown', ctrlKeysHandler.handle);
+    graph.events.subscribe('onSettingsChange', updateBindings);
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onKeyDown', ctrlKeysHandler.handle);
-    graph.unsubscribe('onSettingsChange', updateBindings);
+    graph.events.unsubscribe('onKeyDown', ctrlKeysHandler.handle);
+    graph.events.unsubscribe('onSettingsChange', updateBindings);
   };
 
   if (settings.value.shortcuts) activate();
 
-  graph.subscribe('onSettingsChange', (diff) => {
+  graph.events.subscribe('onSettingsChange', (diff) => {
     if (diff.shortcuts === true) activate();
     else if (diff.shortcuts === false) deactivate();
   });

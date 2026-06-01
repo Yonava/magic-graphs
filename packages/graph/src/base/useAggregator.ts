@@ -2,19 +2,16 @@ import type { Coordinate } from '@magic/shapes/types/utility';
 
 import { ref } from 'vue';
 
-import type { Emitter as GraphEventEmitter } from '../events/index.ts';
-import type { Aggregator, UpdateAggregator } from '../types.ts';
+import { EventHub } from '../events/createEventHub.ts';
+import type { Aggregator, AggregatorTransformer } from '../types.ts';
+import { BaseEventMap } from './events.ts';
 
-export type UseAggregatorOptions = {
-  emit: GraphEventEmitter;
-};
-
-export const useAggregator = ({ emit }: UseAggregatorOptions) => {
+export const useAggregator = ({ emit }: EventHub<BaseEventMap>) => {
   const aggregator = ref<Aggregator>([]);
-  const subscribeToAggregator: UpdateAggregator[] = [];
+  const transformers: AggregatorTransformer[] = [];
 
   const updateAggregator = () => {
-    const resolvedSchemaItems = subscribeToAggregator.reduce<Aggregator>(
+    const resolvedSchemaItems = transformers.reduce<Aggregator>(
       (acc, fn) => fn(acc),
       [],
     );
@@ -71,7 +68,7 @@ export const useAggregator = ({ emit }: UseAggregatorOptions) => {
 
   return {
     aggregator,
-    subscribeToAggregator,
+    transformers,
     updateAggregator,
     getSchemaItemsByCoordinates,
     draw,

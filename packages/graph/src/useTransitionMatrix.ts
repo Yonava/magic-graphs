@@ -1,6 +1,7 @@
 import { computed } from 'vue';
 
-import type { BaseGraph } from './base/index.ts';
+import { BaseEventMap } from './base/events.ts';
+import type { BaseGraph } from './base/types.ts';
 import type { GEdge, GNode } from './types.ts';
 import type {
   AdjacencyLists,
@@ -41,12 +42,14 @@ export const getTransitionMatrix = (
   return matrix;
 };
 
-export const useTransitionMatrix = (
-  graph: BaseGraph & {
-    adjacencyList: Pick<AdjacencyLists, 'weightedAdjacencyList'>;
-  },
-) => {
-  const { weightedAdjacencyList } = graph.adjacencyList;
+export const useTransitionMatrix = <A, B extends BaseEventMap, C>({
+  graph,
+  adjacencyList,
+}: {
+  graph: BaseGraph<A, B, C>;
+  adjacencyList: Pick<AdjacencyLists, 'weightedAdjacencyList'>;
+}) => {
+  const { weightedAdjacencyList } = adjacencyList;
 
   const transitionMatrix = computed(() => {
     return getTransitionMatrix(

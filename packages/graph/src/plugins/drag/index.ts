@@ -3,10 +3,9 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, ref } from 'vue';
 
-import type { BaseGraph } from '../../base/index.ts';
 import type { GraphMouseEvent } from '../../base/types.ts';
 import type { GNode } from '../../types.ts';
-import type { NodeAnchorPlugin } from '../anchors/index.ts';
+import { GraphWithPlugins } from '../../useGraph.ts';
 
 /**
  * info for the node being dragged
@@ -16,7 +15,7 @@ export type ActiveDragNode = {
   coords: Coordinate;
 };
 
-export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
+export const useNodeDrag = (graph: GraphWithPlugins) => {
   const activeDrag = ref<ActiveDragNode | undefined>();
   const { hold, release } = graph.pluginHoldController('node-drag');
 
@@ -31,7 +30,8 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
     if (!node) return;
 
     activeDrag.value = { nodeId: node.id, coords };
-    graph.emit('onNodeDragStart', node);
+    // @ts-expect-error migration
+    graph.events.emit('onNodeDragStart', node);
   };
 
   const drop = () => {
@@ -43,14 +43,13 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
 
     activeDrag.value = undefined;
 
-    graph.emit('onNodeDrop', droppedNode);
+    // @ts-expect-error migration
+    graph.events.emit('onNodeDrop', droppedNode);
     release('nodeAnchors');
 
     const { items } = graph.graphAtMousePosition.value;
     const topItem = items.at(-1);
     if (topItem?.id !== droppedNode.id) return;
-
-    graph.nodeAnchors.setParentNode(droppedNode.id);
   };
 
   const drag = ({ coords: magicCoords }: GraphMouseEvent) => {
@@ -75,21 +74,21 @@ export const useNodeDrag = (graph: BaseGraph & NodeAnchorPlugin) => {
   };
 
   const activate = () => {
-    graph.subscribe('onMouseDown', beginDrag);
-    graph.subscribe('onMouseUp', drop);
-    graph.subscribe('onMouseMove', drag);
-    graph.graphToCursorMap.value['node'] = 'grab';
+    graph.events.subscribe('onMouseDown', beginDrag);
+    graph.events.subscribe('onMouseUp', drop);
+    graph.events.subscribe('onMouseMove', drag);
+    graph.cursor.graphToCursorMap.value['node'] = 'grab';
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onMouseDown', beginDrag);
-    graph.unsubscribe('onMouseUp', drop);
-    graph.unsubscribe('onMouseMove', drag);
-    graph.graphToCursorMap.value['node'] = 'pointer';
+    graph.events.unsubscribe('onMouseDown', beginDrag);
+    graph.events.unsubscribe('onMouseUp', drop);
+    graph.events.unsubscribe('onMouseMove', drag);
+    graph.cursor.graphToCursorMap.value['node'] = 'pointer';
     if (activeDrag.value) drop();
   };
 
-  graph.subscribe('onSettingsChange', (diff) => {
+  graph.events.subscribe('onSettingsChange', (diff) => {
     if (diff.draggable === false) deactivate();
     else if (diff.draggable === true) activate();
   });

@@ -62,8 +62,8 @@ export const useGraphTutorial = (
       if (predicate) stepIndex.value++;
     };
 
-    graph.subscribe(dismissEvent, eventFired);
-    return () => graph.unsubscribe(dismissEvent, eventFired);
+    graph.events.subscribe(dismissEvent, eventFired);
+    return () => graph.events.unsubscribe(dismissEvent, eventFired);
   };
 
   const runCurrentStep = () => {

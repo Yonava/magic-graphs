@@ -9,11 +9,8 @@
   import GToolbar from '../../shared/ui/graph-core/toolbar/GToolbarBase.vue';
   import GToolbarButton from '../../shared/ui/graph-core/toolbar/GToolbarButton.vue';
   import GToolbarDivider from '../../shared/ui/graph-core/toolbar/GToolbarDivider.vue';
-  import CollaborativeSessionMenu from './CollaborativeSessionMenu.vue';
   import GraphInfoMenu from './GraphInfoMenu/GraphInfoMenu.vue';
   import TreeShapeMenu from './TreeShapeMenu.vue';
-
-  // import TemplateMenu from '@magic/graph/templates/ui/TemplateMenu.vue';
 
   const tutorial = useGraphTutorial(graph.value, [
     {
@@ -131,14 +128,6 @@
         />
       </GraphInfoMenu>
 
-      <CollaborativeSessionMenu v-slot="{ toggle, isOpen }">
-        <GToolbarButton
-          @click="toggle"
-          :active="isOpen"
-          icon="account-multiple"
-        />
-      </CollaborativeSessionMenu>
-
       <TreeShapeMenu
         v-slot="{ toggle, isOpen }"
         :controls="treePositionerControls"
@@ -153,14 +142,6 @@
           "
         />
       </TreeShapeMenu>
-
-      <!-- <TemplateMenu v-slot="{ toggle, isOpen }">
-        <GToolbarButton
-          @click="toggle"
-          :active="isOpen"
-          :icon="isOpen ? 'plus-box' : 'plus-box-outline'"
-        />
-      </TemplateMenu> -->
 
       <GToolbarButton
         @click="devMode = !devMode"

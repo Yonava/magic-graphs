@@ -20,7 +20,7 @@ export const flowNodeLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
  * settings for the network flow useGraph instance
  */
 export const FLOW_GRAPH_SETTINGS: Partial<GraphSettings> = {
-  persistentStorageKey: 'network-flow',
+  localStorageKey: 'network-flow',
   userAddedDefaultEdgeWeight: () => new Fraction(5),
   userAddedEdgeRuleNoSelfLoops: true,
   userAddedEdgeRuleOneEdgePerPath: true,

@@ -26,7 +26,7 @@ export function useCommitTransaction({
       for (const edgeId of draft.removeEdgeIds) {
         const edge = getEdge(edgeId);
         if (!edge) continue;
-        payload.removedEdges.push(edge);
+        payload.removedEdgeIds.push(edge.id);
       }
     }
 
@@ -34,13 +34,14 @@ export function useCommitTransaction({
       for (const nodeId of draft.removeNodeIds) {
         const node = getNode(nodeId);
         if (!node) continue;
-        payload.removedNodes.push(node);
-        const orphanedEdges = edges
+        payload.removedNodeIds.push(node.id);
+        const orphanedEdgeIds = edges
           .filter((edge) => edge.from === nodeId || edge.to === nodeId)
           .filter(
-            (edge) => !payload.removedEdges.some((e) => e.id === edge.id),
-          );
-        payload.removedEdges.push(...orphanedEdges);
+            (edge) => !payload.removedEdgeIds.some((id) => id === edge.id),
+          )
+          .map((edge) => edge.id);
+        payload.removedEdgeIds.push(...orphanedEdgeIds);
       }
     }
 

@@ -1,9 +1,10 @@
-import { Emitter, GraphEvent, GraphEventMap } from '../../events/index.ts';
+import { BaseEventMap } from '../events.ts';
+import { BaseGraph } from '../types.ts';
 import { TransactionPayload } from './types.ts';
 
 type TransactionEventPayloadResolverMap = {
-  [E in GraphEvent]: (payload: TransactionPayload) => {
-    args: Parameters<GraphEventMap[E]>;
+  [EventName in keyof BaseEventMap]: (payload: TransactionPayload) => {
+    args: Parameters<BaseEventMap[EventName]>;
   } | void;
 };
 
@@ -18,10 +19,10 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
     const node = extractSingle(addedNodes);
     if (node) return { args: [node] };
   },
-  onNodeRemoved: ({ removedNodes, removedEdges }) => {
-    const node = extractSingle(removedNodes);
-    if (node) {
-      return { args: [node.id, removedEdges.map((e) => e.id)] };
+  onNodeRemoved: ({ removedNodeIds, removedEdgeIds }) => {
+    const nodeId = extractSingle(removedNodeIds);
+    if (nodeId) {
+      return { args: [nodeId, removedEdgeIds] };
     }
   },
   onNodeUpdated: ({ updatedNodes }) => {
@@ -32,9 +33,9 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
     const edge = extractSingle(addedEdges);
     if (edge) return { args: [edge] };
   },
-  onEdgeRemoved: ({ removedEdges }) => {
-    const edge = extractSingle(removedEdges);
-    if (edge) return { args: [edge.id] };
+  onEdgeRemoved: ({ removedEdgeIds }) => {
+    const edgeId = extractSingle(removedEdgeIds);
+    if (edgeId) return { args: [edgeId] };
   },
   onEdgeUpdated: ({ updatedEdges }) => {
     const update = extractSingle(updatedEdges);
@@ -45,9 +46,9 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
       return { args: [{ addedEdges, addedNodes }] };
     }
   },
-  onElementsRemoved: ({ removedEdges, removedNodes }) => {
-    if (hasItems(removedNodes, removedEdges)) {
-      return { args: [{ removedEdges, removedNodes }] };
+  onElementsRemoved: ({ removedEdgeIds, removedNodeIds }) => {
+    if (hasItems(removedNodeIds, removedEdgeIds)) {
+      return { args: [{ removedEdgeIds, removedNodeIds }] };
     }
   },
   onElementsUpdated: ({ updatedEdges, updatedNodes }) => {
@@ -65,8 +66,8 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
       hasItems(
         payload.addedNodes,
         payload.addedEdges,
-        payload.removedNodes,
-        payload.removedEdges,
+        payload.removedNodeIds,
+        payload.removedEdgeIds,
       );
 
     if (hasStructuralChanges) {
@@ -77,15 +78,17 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
 
 export const propagateTransactionEvents = (
   payload: TransactionPayload,
-  emit: Emitter,
+  emit: BaseGraph['events']['emit'],
 ) => {
-  (Object.keys(eventNameToPredicateMap) as GraphEvent[]).forEach((event) => {
-    const predicate = eventNameToPredicateMap[event];
-    if (!predicate) return;
+  (Object.keys(eventNameToPredicateMap) as (keyof BaseEventMap)[]).forEach(
+    (event) => {
+      const predicate = eventNameToPredicateMap[event];
+      if (!predicate) return;
 
-    const result = predicate(payload);
-    if (result && result.args) {
-      emit(event, ...result.args);
-    }
-  });
+      const result = predicate(payload);
+      if (result && result.args) {
+        emit(event, ...result.args);
+      }
+    },
+  );
 };

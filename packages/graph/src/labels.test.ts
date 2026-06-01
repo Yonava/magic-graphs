@@ -13,7 +13,6 @@ describe('graph labels', () => {
   const graph = useBaseGraph(ref() as any);
 
   test('graphLabelGetter', () => {
-    graph.reset();
     const getNewLabel = useGraphLabelGetter(graph.nodes, ['A', 'B', 'C']);
 
     const node1 = graph.actions.addNode({ label: getNewLabel() });
@@ -45,8 +44,6 @@ describe('graph labels', () => {
   });
 
   test('nodeLetterLabelGetter', () => {
-    graph.reset();
-
     const getNewLabel = useNodeLetterLabelGetter(graph);
 
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -59,8 +56,6 @@ describe('graph labels', () => {
   });
 
   test('nodeNumberLabelGetter', () => {
-    graph.reset();
-
     const getNewLabel = useNodeNumberLabelGetter(graph);
     for (let i = 0; i < 99; i++) {
       graph.actions.addNode({ label: getNewLabel() });

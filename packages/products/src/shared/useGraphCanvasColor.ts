@@ -3,7 +3,7 @@ import type { Graph } from '@magic/graph/types';
 import { readonly, ref } from 'vue';
 
 export const useGraphCanvasColor = (graph: Graph) => {
-  const { subscribe, getTheme } = graph;
+  const { events, getTheme } = graph;
 
   const patternColor = ref(getTheme('graph.patternColor'));
   const bgColor = ref(getTheme('graph.color'));
@@ -13,7 +13,7 @@ export const useGraphCanvasColor = (graph: Graph) => {
     bgColor.value = getTheme('graph.color');
   };
 
-  subscribe('onThemeChange', changeCanvasColor);
+  events.subscribe('onThemeChange', changeCanvasColor);
 
   return {
     patternColor: readonly(patternColor),

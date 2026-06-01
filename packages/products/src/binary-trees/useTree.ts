@@ -73,7 +73,7 @@ export const useTree = (graph: Graph) => {
   const resetTree = () => {
     saveToHistory();
     tree.reset();
-    graph.reset();
+    // graph.reset();
     recomputeMaps();
   };
 
@@ -88,10 +88,10 @@ export const useTree = (graph: Graph) => {
     return balanceFactors.every((bf) => bf >= -1 && bf <= 1);
   });
 
-  graph.subscribe('onGraphLoaded', () => {
-    syncGraphWithTree(graph, tree);
-    recomputeMaps();
-  });
+  // graph.events.subscribe('onGraphLoaded', () => {
+  //   syncGraphWithTree(graph, tree);
+  //   recomputeMaps();
+  // });
 
   return {
     tree,

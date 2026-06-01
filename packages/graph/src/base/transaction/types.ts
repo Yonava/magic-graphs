@@ -46,8 +46,8 @@ export type TransactionPayload = {
   addedNodes: GNode[];
   addedEdges: GEdge[];
 
-  removedNodes: GNode[];
-  removedEdges: GEdge[];
+  removedNodeIds: GNode['id'][];
+  removedEdgeIds: GEdge['id'][];
 
   updatedNodes: GNodeUpdatePayload[];
   updatedEdges: GEdgeUpdatePayload[];

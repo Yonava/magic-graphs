@@ -9,7 +9,7 @@ import {
 
 export type ElementRemovalPayload = Pick<
   TransactionPayload,
-  'removedNodes' | 'removedEdges'
+  'removedNodeIds' | 'removedEdgeIds'
 >;
 
 export type ElementAdditionPayload = Pick<
@@ -22,20 +22,42 @@ export type ElementUpdatePayload = Pick<
   'updatedNodes' | 'updatedEdges'
 >;
 
-type LegacyOptions = Partial<{
-  history: boolean;
-  animate: boolean;
-  broadcast: boolean;
-  focus: boolean;
-}>;
+export type BaseTransactionWrapperOptions = {
+  addNode: never;
+  removeNode: never;
+  updateNode: never;
 
-export type GraphActions = {
+  addEdge: never;
+  removeEdge: never;
+  updateEdge: never;
+
+  addElements: never;
+  removeElements: never;
+  updateElements: never;
+};
+
+export type MergeTransactionWrappersWithBase<TransactionWrapperOptions> = {
+  [Option in keyof BaseTransactionWrapperOptions]: Option extends keyof TransactionWrapperOptions
+    ? TransactionWrapperOptions[Option]
+    : never;
+};
+
+type UpdateEdge = PartiallyPartial<GEdge, 'id' | 'weight'>;
+
+export type GraphActions<
+  OptionsParam = {},
+  Options extends Partial<
+    Record<keyof BaseTransactionWrapperOptions, unknown>
+  > = MergeTransactionWrappersWithBase<OptionsParam>,
+> = {
   /**
    * Adds a single {@link GNode | node} to the graph. Missing properties get default values.
    * @param node - The node properties to insert.
    * @returns The newly created node instance.
    */
-  addNode: (node: Partial<GNode>, options?: LegacyOptions) => GNode;
+  addNode: Options['addNode'] extends never
+    ? (node: Partial<GNode>) => GNode
+    : (node: Partial<GNode>, options?: Partial<Options['addNode']>) => GNode;
 
   /**
    * Deletes a single {@link GNode | node} from the graph.
@@ -44,60 +66,77 @@ export type GraphActions = {
    * @param nodeId - The ID of the node to delete.
    * @returns A list of all nodes and edges that were deleted.
    */
-  removeNode: (
-    nodeId: GNode['id'],
-    options?: LegacyOptions,
-  ) => ElementRemovalPayload;
+  removeNode: Options['removeNode'] extends never
+    ? (nodeId: GNode['id']) => ElementRemovalPayload
+    : (
+        nodeId: GNode['id'],
+        options?: Partial<Options['removeNode']>,
+      ) => ElementRemovalPayload;
 
   /**
    * Updates fields on a {@link GNode | node}.
    * @param options - Object containing the target node ID and the values to change.
    * @returns The updated node instance.
    */
-  updateNode: (
-    options: GNodeUpdateDraft,
-    legacyOptions?: LegacyOptions,
-  ) => GNode;
+  updateNode: Options['updateNode'] extends never
+    ? (options: GNodeUpdateDraft) => GNode
+    : (
+        options: GNodeUpdateDraft,
+        updateOptions?: Partial<Options['updateNode']>,
+      ) => GNode;
 
   /**
    * Adds a single {@link GEdge | edge} connecting two existing {@link GNode | nodes}.
    * @param edge - The edge properties to insert.
    * @returns The newly created edge instance.
    */
-  addEdge: (
-    edge: PartiallyPartial<GEdge, 'id' | 'weight'>,
-    options?: LegacyOptions,
-  ) => GEdge;
+  addEdge: Options['addEdge'] extends never
+    ? (edge: UpdateEdge) => GEdge
+    : (edge: UpdateEdge, options?: Partial<Options['addEdge']>) => GEdge;
 
   /**
    * Deletes a single {@link GEdge | edge} from the graph.
    * @param edgeId - The ID of the edge to delete.
    * @returns The edge instance that was deleted.
    */
-  removeEdge: (edgeId: GEdge['id'], options?: LegacyOptions) => GEdge;
+  removeEdge: Options['removeEdge'] extends never
+    ? (edgeId: GEdge['id']) => GEdge['id']
+    : (
+        edgeId: GEdge['id'],
+        options?: Partial<Options['removeEdge']>,
+      ) => GEdge['id'];
 
   /**
    * Updates fields on an {@link GEdge | edge}.
    * @param options - Object containing the target edge ID and the values to change.
    * @returns The updated edge instance.
    */
-  updateEdge: (
-    options: GEdgeUpdateDraft,
-    legacyOptions?: LegacyOptions,
-  ) => GEdge;
+  updateEdge: Options['updateEdge'] extends never
+    ? (options: GEdgeUpdateDraft) => GEdge
+    : (
+        options: GEdgeUpdateDraft,
+        updateOptions?: Options['updateEdge'],
+      ) => GEdge;
 
   /**
    * Bulk adds multiple {@link GNode | nodes} and {@link GEdge | edges}.
    * @param elements - Arrays of nodes and/or edges to insert.
    * @returns Lists of all nodes and/or edges that were successfully added.
    */
-  addElements: (
-    elements: Partial<{
-      nodes: Partial<GNode>[];
-      edges: PartiallyPartial<GEdge, 'id' | 'weight'>[];
-    }>,
-    options?: LegacyOptions,
-  ) => ElementAdditionPayload;
+  addElements: Options['addElements'] extends never
+    ? (
+        elements: Partial<{
+          nodes: Partial<GNode>[];
+          edges: UpdateEdge[];
+        }>,
+      ) => ElementAdditionPayload
+    : (
+        elements: Partial<{
+          nodes: Partial<GNode>[];
+          edges: UpdateEdge[];
+        }>,
+        options?: Options['addElements'],
+      ) => ElementAdditionPayload;
 
   /**
    * Bulk deletes multiple {@link GNode | nodes} and {@link GEdge | edges}.
@@ -106,24 +145,38 @@ export type GraphActions = {
    * @param elementIds - Arrays of target node and/or edge IDs to delete.
    * @returns Lists of everything that got deleted during the operation.
    */
-  removeElements: (
-    elementIds: Partial<{
-      nodeIds: GNode['id'][];
-      edgeIds: GEdge['id'][];
-    }>,
-    options?: LegacyOptions,
-  ) => ElementRemovalPayload;
+  removeElements: Options['removeElements'] extends never
+    ? (
+        elementIds: Partial<{
+          nodeIds: GNode['id'][];
+          edgeIds: GEdge['id'][];
+        }>,
+      ) => ElementRemovalPayload
+    : (
+        elementIds: Partial<{
+          nodeIds: GNode['id'][];
+          edgeIds: GEdge['id'][];
+        }>,
+        options?: Options['removeElements'],
+      ) => ElementRemovalPayload;
 
   /**
    * Bulk updates multiple {@link GNode | nodes} and {@link GEdge | edges}.
    * @param options - Collections of node and edge updates to run together.
    * @returns Lists of everything that got updated during the operation.
    */
-  updateElements: (
-    options: Partial<{
-      nodes: GNodeUpdateDraft[];
-      edges: GEdgeUpdateDraft[];
-    }>,
-    legacyOptions?: LegacyOptions,
-  ) => ElementUpdatePayload;
+  updateElements: Options['removeElements'] extends never
+    ? (
+        options: Partial<{
+          nodes: GNodeUpdateDraft[];
+          edges: GEdgeUpdateDraft[];
+        }>,
+      ) => ElementUpdatePayload
+    : (
+        options: Partial<{
+          nodes: GNodeUpdateDraft[];
+          edges: GEdgeUpdateDraft[];
+        }>,
+        updateOptions?: Options['updateElements'],
+      ) => ElementUpdatePayload;
 };

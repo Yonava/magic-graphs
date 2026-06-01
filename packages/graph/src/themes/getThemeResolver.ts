@@ -5,7 +5,7 @@ import { Builtin, PathValue, Paths } from 'ts-essentials';
 import type { Ref } from 'vue';
 
 import type { GraphTheme, GraphThemeName } from '../themes/index.ts';
-import { THEMES } from '../themes/index.ts';
+import { THEME_LOADOUTS } from '../themes/index.ts';
 import {
   type FullThemeMap,
   type ThemeMapEntry,
@@ -62,7 +62,7 @@ export function getThemeResolver(
       return themeValue !== undefined;
     });
 
-    const fallbackThemeMap = THEMES[themeName.value];
+    const fallbackThemeMap = THEME_LOADOUTS[themeName.value];
     const defaultValue = getDataFromNestedPath(fallbackThemeMap, themeMapPath);
 
     const getterOrValue = themeMapEntry?.value ?? defaultValue;

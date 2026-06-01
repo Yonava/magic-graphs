@@ -2,35 +2,42 @@ import type { Ref } from 'vue';
 
 import { GraphSettings } from '../settings/index.ts';
 
-type BoolSettingsKeys = {
+type BooleanSettingsKeys = {
   [K in keyof GraphSettings]: GraphSettings[K] extends boolean ? K : never;
 }[keyof GraphSettings];
 
-export const usePluginHoldController = (settings: Ref<GraphSettings>) => {
+/**
+ * temporarily disable (set to `false`) boolean graph settings.
+ *
+ * after a hold is released, the setting returns to its previous state
+ * before the hold
+ *
+ * @param holdId - a unique identifier for each consumer of `usePluginHoldController`
+ */
+export type PluginHoldController = (holdId: string) => {
+  hold: (setting: BooleanSettingsKeys) => void;
+  release: (setting: BooleanSettingsKeys) => void;
+};
+
+export const usePluginHoldController = (
+  settings: Ref<GraphSettings>,
+): PluginHoldController => {
   /**
    * maps the setting to the number of holds currently active
    */
-  const holdCountMap: Map<BoolSettingsKeys, number> = new Map();
+  const holdCountMap: Map<BooleanSettingsKeys, number> = new Map();
   /**
    * couples together the hold id with a setting. ensures idempotency
    * when invoking hold on a particular setting
    */
-  const holdIdSet: Set<`${string}-${BoolSettingsKeys}`> = new Set();
+  const holdIdSet: Set<`${string}-${BooleanSettingsKeys}`> = new Set();
   /**
    * maps of the settings before the hold went into effect
    */
-  const holdState: Map<BoolSettingsKeys, boolean> = new Map();
+  const holdState: Map<BooleanSettingsKeys, boolean> = new Map();
 
-  /**
-   * temporarily disable (set to `false`) boolean graph settings.
-   *
-   * after a hold is released, the setting returns to its previous state
-   * before the hold
-   *
-   * @param holdId - a unique identifier for each consumer of `usePluginHoldController`
-   */
-  const usePluginHold = (holdId: string) => {
-    const hold = (setting: BoolSettingsKeys) => {
+  return (holdId) => {
+    const hold = (setting: BooleanSettingsKeys) => {
       const holdAlreadyActive = holdIdSet.has(`${holdId}-${setting}`);
       if (holdAlreadyActive) return;
 
@@ -44,7 +51,7 @@ export const usePluginHoldController = (settings: Ref<GraphSettings>) => {
       holdIdSet.add(`${holdId}-${setting}`);
     };
 
-    const release = (setting: BoolSettingsKeys) => {
+    const release = (setting: BooleanSettingsKeys) => {
       if (!holdIdSet.has(`${holdId}-${setting}`)) return;
       const currentHolds = holdCountMap.get(setting) ?? 0;
       if (currentHolds === 0) return;
@@ -64,6 +71,4 @@ export const usePluginHoldController = (settings: Ref<GraphSettings>) => {
       release,
     };
   };
-
-  return usePluginHold;
 };

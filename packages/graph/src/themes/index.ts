@@ -12,15 +12,17 @@ import type { GEdge, GNode } from '../types.ts';
 export type GraphTheme = GraphThemeImport;
 export type GraphThemeKey = keyof GraphTheme;
 
-export const THEMES = {
+export const THEME_LOADOUTS = {
   light: LIGHT_THEME,
   dark: DARK_THEME,
   pink: PINK_THEME,
 } as const satisfies Record<string, GraphTheme>;
 
-export type GraphThemeName = keyof typeof THEMES;
+export type ThemeLoadouts = typeof THEME_LOADOUTS;
 
-export const THEME_NAMES = Object.keys(THEMES) as GraphThemeName[];
+export type GraphThemeName = keyof typeof THEME_LOADOUTS;
+
+export const THEME_NAMES = Object.keys(THEME_LOADOUTS) as GraphThemeName[];
 
 /**
  * gets the theme attributes for a GNode at the point in time the function is called

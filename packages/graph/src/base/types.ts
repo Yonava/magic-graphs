@@ -1,132 +1,24 @@
-/**
- * contains type defs and option defaults for base graph apis
- * such as addNode, removeNode, etc.
- */
+import { MagicCanvasProps } from '@magic/canvas/types';
+import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import type { Coordinate } from '@magic/shapes/types/utility';
-import { Fraction } from 'mathjs';
 
-import type { DeepReadonly } from 'vue';
+import type { ComputedRef, DeepReadonly, Ref, ShallowRef } from 'vue';
 
-import type { SchemaItem } from '../types.ts';
-
-export type FocusOption = {
-  /**
-   * whether to focus the added item/s
-   */
-  focus: boolean;
-};
-
-export type HistoryOption = {
-  /**
-   * whether to record this action in the history stack
-   */
-  history: boolean;
-};
-
-export type BroadcastOption = {
-  /**
-   * whether to broadcast this action to connected collaborators
-   */
-  broadcast: boolean;
-};
-
-export type PersistOption = {
-  /**
-   * whether this action will be tracked in local storage
-   */
-  persist: boolean;
-};
-
-export type AnimateOption = {
-  /**
-   * whether to animate this action
-   */
-  animate: boolean;
-};
-
-export type AddNodeOptions = FocusOption &
-  BroadcastOption &
-  HistoryOption &
-  AnimateOption;
-
-export const ADD_NODE_OPTIONS_DEFAULTS: AddNodeOptions = {
-  broadcast: true,
-  focus: true,
-  history: true,
-  animate: false,
-};
-
-export const BULK_ADD_NODE_OPTIONS_DEFAULTS: AddNodeOptions = {
-  broadcast: true,
-  focus: false,
-  history: true,
-  animate: false,
-};
-
-export type RemoveNodeOptions = BroadcastOption & HistoryOption;
-
-export const REMOVE_NODE_OPTIONS_DEFAULTS: RemoveNodeOptions = {
-  broadcast: true,
-  history: true,
-};
-
-export type AddEdgeOptions = FocusOption &
-  BroadcastOption &
-  HistoryOption &
-  AnimateOption;
-
-export const ADD_EDGE_OPTIONS_DEFAULTS: AddEdgeOptions = {
-  broadcast: true,
-  focus: false,
-  history: true,
-  animate: false,
-};
-
-export const BULK_ADD_EDGE_OPTIONS_DEFAULTS: AddEdgeOptions = {
-  broadcast: false,
-  focus: false,
-  history: false,
-  animate: true,
-};
-
-export const LOAD_GRAPH_OPTIONS_DEFAULTS: HistoryOption = {
-  history: true,
-};
-
-export type RemoveEdgeOptions = BroadcastOption & HistoryOption;
-
-export const REMOVE_EDGE_OPTIONS_DEFAULTS: RemoveEdgeOptions = {
-  broadcast: true,
-  history: true,
-};
-
-export type MoveNodeOptions = BroadcastOption;
-
-export const MOVE_NODE_OPTIONS_DEFAULTS: MoveNodeOptions = {
-  broadcast: true,
-};
-
-export type BulkMoveNodeOptions = BroadcastOption & AnimateOption;
-
-export const BULK_MOVE_NODE_OPTIONS_DEFAULTS: BulkMoveNodeOptions = {
-  broadcast: true,
-  animate: false,
-};
-
-export type EditEdgeLabelOptions = BroadcastOption & HistoryOption;
-
-export const EDIT_EDGE_LABEL_OPTIONS_DEFAULTS: EditEdgeLabelOptions = {
-  broadcast: true,
-  history: true,
-};
-
-/**
- * defaults for newly added edges
- */
-export const ADD_EDGE_DEFAULTS = () =>
-  ({
-    weight: new Fraction(1),
-  }) as const;
+import { EventHub } from '../events/createEventHub.ts';
+import { GraphSettings } from '../settings/index.ts';
+import { ThemeGetter } from '../themes/getThemeResolver.ts';
+import { GraphThemeName, ThemeLoadouts } from '../themes/index.ts';
+import { FullThemeMap } from '../themes/types.ts';
+import type { GEdge, GNode, SchemaItem } from '../types.ts';
+import {
+  BaseTransactionWrapperOptions,
+  GraphActions,
+  MergeTransactionWrappersWithBase,
+} from './actions/types.ts';
+import { GraphCursor } from './cursor/types.ts';
+import { BaseEventMap } from './events.ts';
+import { AggregatorProps } from './useAggregator.ts';
+import { PluginHoldController } from './usePluginHold.ts';
 
 /**
  * stores info about the last mouse position on the graph
@@ -151,4 +43,65 @@ export type GraphMouseEvent = DeepReadonly<GraphAtMousePosition> & {
    * the native browser event that triggered this graph event
    */
   event: MouseEvent;
+};
+
+export type BaseGraph<
+  TransactionWrapperOptions = {},
+  EventMap extends BaseEventMap = BaseEventMap,
+  Plugins = {},
+> = {
+  /**
+   * all the nodes contained in the graph
+   */
+  nodes: Ref<GNode[]>;
+  /**
+   * all the edges contained in the graph
+   */
+  edges: Ref<GEdge[]>;
+
+  nodeIdToIndex: ComputedRef<Map<GNode['id'], number>>;
+  edgeIdToIndex: ComputedRef<Map<GEdge['id'], number>>;
+
+  getNode: (nodeId: GNode['id']) => GNode | undefined;
+  getEdge: (edgeId: GEdge['id']) => GEdge | undefined;
+
+  actions: GraphActions<
+    MergeTransactionWrappersWithBase<TransactionWrapperOptions>
+  >;
+
+  events: EventHub<EventMap>;
+
+  aggregator: AggregatorProps;
+
+  pluginHoldController: PluginHoldController;
+  shapes: AnimatedShapeControls;
+
+  baseTheme: ComputedRef<ThemeLoadouts[GraphThemeName]>;
+  themeName: Ref<GraphThemeName>;
+  getTheme: ThemeGetter;
+  themeMap: FullThemeMap;
+  settings: Ref<GraphSettings>;
+
+  magicCanvas: MagicCanvasProps;
+  /**
+   * whether the canvas is currently focused in the browser
+   */
+  canvasFocused: Ref<boolean>;
+  /**
+   * whether the canvas is currently hovered by the mouse
+   */
+  canvasHovered: ShallowRef<boolean>;
+
+  graphAtMousePosition: Ref<GraphAtMousePosition>;
+  updateGraphAtMousePosition: () => GraphAtMousePosition;
+  cursor: GraphCursor;
+} & Plugins;
+
+export type InternalActions = {
+  [Action in keyof BaseTransactionWrapperOptions]: (
+    ...args: [
+      ...Parameters<GraphActions[Action]>,
+      transactionOptions: Record<string, any>,
+    ]
+  ) => ReturnType<GraphActions[Action]>;
 };

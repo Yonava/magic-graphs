@@ -1,13 +1,9 @@
 <script setup lang="ts">
-  import type { TutorialControls } from '@magic/graph/tutorials/types';
   import colors from '@magic/utils/colors';
-
-  import ToolbarHint from './ToolbarHint.vue';
 
   withDefaults(
     defineProps<{
       color?: string;
-      hint?: TutorialControls;
     }>(),
     {
       color: colors.GRAY_800,
@@ -24,11 +20,6 @@
     >
       <slot></slot>
     </div>
-    <slot name="hint">
-      <ToolbarHint
-        v-if="hint"
-        :tutorial="hint"
-      />
-    </slot>
+    <slot name="hint"></slot>
   </div>
 </template>

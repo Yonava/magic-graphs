@@ -86,6 +86,7 @@ export const treeArrayToGraph = (
         ...coordsOfNodeOnTree,
       },
       {
+        // @ts-expect-error migration
         animate: true,
         focus: false,
       },
@@ -115,10 +116,15 @@ export const treeArrayToGraph = (
         values: obj.coords,
       })),
     },
+    // @ts-expect-error migration
     { animate: true },
   );
 
   for (const edge of newTreeEdges) {
-    graph.actions.addEdge(edge, { animate: true });
+    graph.actions.addEdge(
+      edge,
+      // @ts-expect-error migration
+      { animate: true },
+    );
   }
 };

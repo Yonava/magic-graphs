@@ -9,7 +9,7 @@
     }
   },
   "scripts": {
-    "build:types": "tsc -b tsconfig.json"
+    "build:types": "vue-tsc -b tsconfig.json"
   },
   "peerDependencies": {
     "vue": "^3.5.18"
@@ -23,7 +23,6 @@
     "fraction.js": "^5.3.4",
     "graphlib": "^2.1.8",
     "mathjs": "catalog:",
-    "socket.io-client": "^4.8.1",
     "tinycolor2": "catalog:"
   },
   "devDependencies": {

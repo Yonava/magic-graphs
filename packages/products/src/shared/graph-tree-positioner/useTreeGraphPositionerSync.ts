@@ -49,16 +49,18 @@ export const useTreeGraphPositionerSync = (
 
   const activate = () => {
     updateShape();
-    graph.subscribe('onStructureChange', debouncedUpdateShape);
-    graph.subscribe('onNodeDrop', debouncedUpdateShape);
-    graph.subscribe('onGroupDrop', debouncedUpdateShape);
+    graph.events.subscribe('onStructureChange', debouncedUpdateShape);
+    // @ts-expect-error migration
+    graph.events.subscribe('onNodeDrop', debouncedUpdateShape);
+    graph.events.subscribe('onGroupDrop', debouncedUpdateShape);
     isActive.value = true;
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onStructureChange', debouncedUpdateShape);
-    graph.unsubscribe('onNodeDrop', debouncedUpdateShape);
-    graph.unsubscribe('onGroupDrop', debouncedUpdateShape);
+    graph.events.unsubscribe('onStructureChange', debouncedUpdateShape);
+    // @ts-expect-error migration
+    graph.events.unsubscribe('onNodeDrop', debouncedUpdateShape);
+    graph.events.unsubscribe('onGroupDrop', debouncedUpdateShape);
     isActive.value = false;
   };
 

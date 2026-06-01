@@ -2,7 +2,6 @@ import type { ProductInfo } from '../types.ts';
 import { canRunDijkstras } from './sim/guard.ts';
 import { useSimulationRunner } from './sim/runner.ts';
 import state from './state.ts';
-import templates from './templates.ts';
 
 const info: ProductInfo = {
   route: {
@@ -29,7 +28,6 @@ const info: ProductInfo = {
     },
   ],
   state,
-  templates,
 };
 
 export default info;

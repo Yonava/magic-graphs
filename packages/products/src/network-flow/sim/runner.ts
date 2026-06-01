@@ -40,7 +40,7 @@ export const useSimulationRunner = (graph: Graph): FlowSimulationRunner => {
     useSimulationTheme(graph, simControls);
 
   const start = async () => {
-    graph.settings.value.persistent = false;
+    graph.settings.value.localStorage = false;
 
     activateFlowColorizer();
     activeEdgeThickener();
@@ -71,7 +71,7 @@ export const useSimulationRunner = (graph: Graph): FlowSimulationRunner => {
     deactivateEdgeThickener();
 
     graph.settings.value.interactive = true;
-    graph.settings.value.persistent = true;
+    graph.settings.value.localStorage = true;
   };
 
   return {

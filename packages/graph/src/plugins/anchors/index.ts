@@ -4,13 +4,12 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { readonly, ref } from 'vue';
 
-import type { BaseGraph } from '../../base/index.ts';
+import { BaseEventMap } from '../../base/events.ts';
 import type { GraphMouseEvent } from '../../base/types.ts';
-import { GraphEvent, GraphEventMap } from '../../events/index.ts';
 import { prioritizeNode } from '../../helpers/prioritization.ts';
 import type { NodeAnchor } from '../../plugins/anchors/types.ts';
-import type { GraphFocusPlugin } from '../../plugins/focus/index.ts';
 import type { GNode, SchemaItem } from '../../types.ts';
+import { GraphWithPlugins } from '../../useGraph.ts';
 
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
@@ -21,7 +20,7 @@ import type { GNode, SchemaItem } from '../../types.ts';
  * - Parent Node: The node which anchors actively orbit around.
  * - Link Preview: The line that appears between the parent node and the anchor when the anchor is being dragged.
  */
-export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
+export const useNodeAnchors = (graph: GraphWithPlugins) => {
   /**
    * The node which anchors actively orbit around
    */
@@ -36,7 +35,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     currentDraggingAnchor.value = undefined;
   };
 
-  const clearAnchorStateOnNodeMove: GraphEventMap['onNodeUpdated'] = (
+  const clearAnchorStateOnNodeMove: BaseEventMap['onNodeUpdated'] = (
     _,
     previousValues,
   ) => {
@@ -96,7 +95,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
         nodeAnchorSchema.at.y = currentDraggingAnchor.value.y;
       }
 
-      const nodeAnchorShape = graph.shapes.circle(nodeAnchorSchema);
+      const nodeAnchorShape = graph.shapes.shapes.circle(nodeAnchorSchema);
 
       const beingDragged = anchor.id === currentDraggingAnchor.value?.id;
       anchorSchemas.push({
@@ -221,7 +220,7 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
 
     const width = isFocused ? focusWidth : baseWidth;
 
-    const shape = graph.shapes.line({
+    const shape = graph.shapes.shapes.line({
       id: 'link-preview',
       start,
       end,
@@ -274,7 +273,8 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     const anchor = getAnchor(ev);
     if (!anchor) return;
     currentDraggingAnchor.value = anchor;
-    graph.emit('onNodeAnchorDragStart', parentNode.value, anchor);
+    // @ts-expect-error migration
+    graph.events.emit('onNodeAnchorDragStart', parentNode.value, anchor);
   };
 
   const updateCurrentlyDraggingAnchorPosition = ({
@@ -293,7 +293,8 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     if (!currentDraggingAnchor.value) return;
     else if (!parentNode.value)
       throw new Error('active anchor without parent node');
-    graph.emit(
+    graph.events.emit(
+      // @ts-expect-error migration
       'onNodeAnchorDrop',
       parentNode.value,
       currentDraggingAnchor.value,
@@ -334,37 +335,45 @@ export const useNodeAnchors = (graph: BaseGraph & GraphFocusPlugin) => {
     return aggregator;
   };
 
-  graph.subscribeToAggregator.push(insertAnchorsIntoAggregator);
-  graph.subscribeToAggregator.push(insertLinkPreviewIntoAggregator);
+  graph.aggregator.transformers.push(insertAnchorsIntoAggregator);
+  graph.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
 
   const activate = () => {
-    graph.subscribe('onNodeAdded', checkForParentNodeUpdate);
-    graph.subscribe('onNodeRemoved', checkForParentNodeUpdate);
-    graph.subscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
-    graph.subscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
-    graph.subscribe('onNodeDrop', updateNodeAnchors);
-    graph.subscribe('onMouseMove', checkForParentNodeUpdate);
-    graph.subscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
-    graph.subscribe('onMouseMove', updateHoveredNodeAnchorId);
-    graph.subscribe('onMouseDown', setCurrentlyDraggingAnchor);
-    graph.subscribe('onMouseUp', dropAnchor);
+    graph.events.subscribe('onNodeAdded', checkForParentNodeUpdate);
+    graph.events.subscribe('onNodeRemoved', checkForParentNodeUpdate);
+    graph.events.subscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
+    graph.events.subscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
+    // @ts-expect-error migration
+    graph.events.subscribe('onNodeDrop', updateNodeAnchors);
+    graph.events.subscribe('onMouseMove', checkForParentNodeUpdate);
+    graph.events.subscribe(
+      'onMouseMove',
+      updateCurrentlyDraggingAnchorPosition,
+    );
+    graph.events.subscribe('onMouseMove', updateHoveredNodeAnchorId);
+    graph.events.subscribe('onMouseDown', setCurrentlyDraggingAnchor);
+    graph.events.subscribe('onMouseUp', dropAnchor);
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onNodeAdded', checkForParentNodeUpdate);
-    graph.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
-    graph.unsubscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
-    graph.unsubscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
-    graph.unsubscribe('onNodeDrop', updateNodeAnchors);
-    graph.unsubscribe('onMouseMove', checkForParentNodeUpdate);
-    graph.unsubscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
-    graph.unsubscribe('onMouseMove', updateHoveredNodeAnchorId);
-    graph.unsubscribe('onMouseDown', setCurrentlyDraggingAnchor);
-    graph.unsubscribe('onMouseUp', dropAnchor);
+    graph.events.unsubscribe('onNodeAdded', checkForParentNodeUpdate);
+    graph.events.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
+    graph.events.unsubscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
+    graph.events.unsubscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
+    // @ts-expect-error migration
+    graph.events.unsubscribe('onNodeDrop', updateNodeAnchors);
+    graph.events.unsubscribe('onMouseMove', checkForParentNodeUpdate);
+    graph.events.unsubscribe(
+      'onMouseMove',
+      updateCurrentlyDraggingAnchorPosition,
+    );
+    graph.events.unsubscribe('onMouseMove', updateHoveredNodeAnchorId);
+    graph.events.unsubscribe('onMouseDown', setCurrentlyDraggingAnchor);
+    graph.events.unsubscribe('onMouseUp', dropAnchor);
     clearAnchorState();
   };
 
-  graph.subscribe('onSettingsChange', (diff) => {
+  graph.events.subscribe('onSettingsChange', (diff) => {
     if (diff.nodeAnchors === true) activate();
     else if (diff.nodeAnchors === false) deactivate();
   });
