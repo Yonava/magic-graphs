@@ -1,19 +1,19 @@
 import { EventMapToEventBus } from '../../events/index.ts';
 
-export type HistoryGraphEventMap = {
+export type HistoryEventMap = {
   /**
    * when the undo action is triggered
    */
-  onUndo: (historyRecord: any) => void;
+  onUndo: (historyRecord: string) => void;
   /**
    * when the redo action is triggered
    */
-  onRedo: (historyRecord: any) => void;
+  onRedo: (historyRecord: string) => void;
 };
 
-type HistoryGraphEventBus = EventMapToEventBus<HistoryGraphEventMap>;
+type HistoryEventBus = EventMapToEventBus<HistoryEventMap>;
 
-export const createHistoryGraphEventBus = (): HistoryGraphEventBus => ({
+export const createHistoryEventBus = (): HistoryEventBus => ({
   onUndo: new Set(),
   onRedo: new Set(),
 });

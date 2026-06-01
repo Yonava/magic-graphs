@@ -16,7 +16,7 @@ import {
 } from './transaction/types.ts';
 import { GraphMouseEvent } from './types.ts';
 
-export type BaseGraphEventMap = {
+export type BaseEventMap = {
   /**
    * fired once at the end of any atomic graph mutation batch.
    * downstream plugins (Animation, History, Broadcast) should hook into this.
@@ -139,9 +139,9 @@ export type BaseGraphEventMap = {
   onSettingsChange: (diff: DeepPartial<GraphSettings>) => void;
 };
 
-export type BaseGraphEventBus = EventMapToEventBus<BaseGraphEventMap>;
+export type BaseEventBus = EventMapToEventBus<BaseEventMap>;
 
-export const createBaseGraphEventBus = (): BaseGraphEventBus => ({
+export const createBaseEventBus = (): BaseEventBus => ({
   onTransactionComplete: new Set(),
   onStructureChange: new Set(),
 

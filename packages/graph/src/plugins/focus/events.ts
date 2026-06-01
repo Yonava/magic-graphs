@@ -10,8 +10,8 @@ export type FocusGraphEventMap = {
   ) => void;
 };
 
-type FocusGraphEventBus = EventMapToEventBus<FocusGraphEventMap>;
+type FocusEventBus = EventMapToEventBus<FocusGraphEventMap>;
 
-export const createFocusGraphEventBus = (): FocusGraphEventBus => ({
+export const createFocusEventBus = (): FocusEventBus => ({
   onFocusChange: new Set(),
 });

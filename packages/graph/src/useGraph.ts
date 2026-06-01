@@ -17,6 +17,19 @@ import { usePreferredTheme } from './themes/usePreferredTheme.ts';
 import { useAdjacencyList } from './useAdjacencyList.ts';
 import { useTransitionMatrix } from './useTransitionMatrix.ts';
 
+const useGraphWithPlugins = (
+  canvas: MagicCanvasProps,
+  settings: Partial<GraphSettings> = {},
+) => {
+  return useLocalStoragePlugin(
+    useMarqueePlugin(
+      useHistoryPlugin(useFocusPlugin(useBaseGraph(canvas, settings))),
+    ),
+  );
+};
+
+export type GraphWithPlugins = ReturnType<typeof useGraphWithPlugins>;
+
 /**
  * a package brimming with tools for creating and managing graphs bringing
  * light and joy to the world
@@ -34,8 +47,9 @@ export const useGraph = (
   const bfh = useHistoryPlugin(bf);
   const bfhm = useMarqueePlugin(bfh);
   const bfhmp = useLocalStoragePlugin(bfhm);
+  // const graph = useGraphWithPlugins(canvas, settings)
 
-  bfhm.events.subscribe('onUndo', () => {});
+  bfhm.events.subscribe('onUndo', (el) => {});
   b.actions.addNode({});
   bfhm.actions.addNode({}, { history: true });
   bfh.actions.removeElements({}, { history: false });

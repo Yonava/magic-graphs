@@ -4,7 +4,7 @@ import { BoundingBox } from '@magic/shapes/types/utility';
 import { EventMapToEventBus } from '../../events/index.ts';
 import { GNode } from '../../types.ts';
 
-export type MarqueeGraphEventMap = {
+export type MarqueeEventMap = {
   /**
    * when the user starts a marquee drag
    */
@@ -29,9 +29,9 @@ export type MarqueeGraphEventMap = {
   onMarqueeEndSelection: (marqueeBox: Readonly<BoundingBox>) => void;
 };
 
-type MarqueeGraphEventBus = EventMapToEventBus<MarqueeGraphEventMap>;
+type MarqueeEventBus = EventMapToEventBus<MarqueeEventMap>;
 
-export const createMarqueeGraphEventBus = (): MarqueeGraphEventBus => ({
+export const createMarqueeEventBus = (): MarqueeEventBus => ({
   onGroupDragStart: new Set(),
   onGroupDrop: new Set(),
   onMarqueeBeginSelection: new Set(),

@@ -30,7 +30,7 @@ import {
   getDefaultGraphAnimations,
 } from './animations.ts';
 import { useGraphCursor } from './cursor/useGraphCursor.ts';
-import { createBaseGraphEventBus } from './events.ts';
+import { createBaseEventBus } from './events.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
 import type { BaseGraph, GraphAtMousePosition } from './types.ts';
@@ -52,7 +52,7 @@ export const useBaseGraph = (
     ...startupSettings,
   });
 
-  const eventBus = createBaseGraphEventBus();
+  const eventBus = createBaseEventBus();
   const events = createEventHub(eventBus);
 
   const aggregator = useAggregator({ events });
