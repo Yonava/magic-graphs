@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import type { BaseGraph } from '../../base/index.ts';
+import { BaseGraph } from '../../base/types.ts';
 import type { GEdge, GNode } from '../../types.ts';
 import type { AdjacencyLists } from '../../useAdjacencyList.ts';
 import TarjanGraph from './tarjans.ts';
@@ -36,9 +36,11 @@ export const getStronglyConnectedComponents: GetComponents = (nodes, edges) => {
 };
 
 export const useStronglyConnectedComponents = (
-  graph: BaseGraph & AdjacencyLists,
+  graph: Pick<BaseGraph, 'nodes' | 'edges'>,
+  adjacencyLists: Pick<AdjacencyLists, 'adjacencyList'>,
 ) => {
-  const { nodes, edges, adjacencyList } = graph;
+  const { nodes, edges } = graph;
+  const { adjacencyList } = adjacencyLists;
 
   const stronglyConnectedComponents = computed(() => {
     return getStronglyConnectedComponents(nodes.value, edges.value);
@@ -62,12 +64,11 @@ export const useStronglyConnectedComponents = (
    */
   const componentAdjacencyMap = computed(() => {
     const sccs = stronglyConnectedComponents.value;
-    const adjList = adjacencyList.value;
     const nodeToScc = nodeIdToConnectedComponent.value;
 
     return sccs.reduce<ComponentAdjacencyMap>((acc, comp, compIndex) => {
       const componentChildren = comp
-        .flatMap((node) => adjList[node.id] ?? [])
+        .flatMap((node) => adjacencyList.value[node.id] ?? [])
         .filter((nodeId) => nodeToScc.get(nodeId) !== compIndex)
         .map((nodeId) => nodeToScc.get(nodeId)!);
 

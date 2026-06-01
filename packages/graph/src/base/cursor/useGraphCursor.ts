@@ -4,6 +4,12 @@ import type { SchemaItem } from '../../types.ts';
 import type { BaseGraph } from '../types.ts';
 import { GraphCursor, GraphTypeToCursor } from './types.ts';
 
+type GraphCursorProps = {
+  subscribe: BaseGraph['events']['subscribe'];
+  magicCanvas: BaseGraph['magicCanvas'];
+  graphAtMousePosition: BaseGraph['graphAtMousePosition'];
+};
+
 /**
  * manages the cursor type when hovering over the graph
  *
@@ -16,10 +22,7 @@ export const useGraphCursor = ({
   subscribe,
   magicCanvas,
   graphAtMousePosition,
-}: Pick<
-  BaseGraph,
-  'subscribe' | 'magicCanvas' | 'graphAtMousePosition'
->): GraphCursor => {
+}: GraphCursorProps): GraphCursor => {
   const isMouseDown = ref(false);
   const disabled = ref(false);
 

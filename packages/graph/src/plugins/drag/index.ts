@@ -30,6 +30,7 @@ export const useNodeDrag = (graph: GraphWithPlugins) => {
     if (!node) return;
 
     activeDrag.value = { nodeId: node.id, coords };
+    // @ts-expect-error migration
     graph.events.emit('onNodeDragStart', node);
   };
 
@@ -42,6 +43,7 @@ export const useNodeDrag = (graph: GraphWithPlugins) => {
 
     activeDrag.value = undefined;
 
+    // @ts-expect-error migration
     graph.events.emit('onNodeDrop', droppedNode);
     release('nodeAnchors');
 

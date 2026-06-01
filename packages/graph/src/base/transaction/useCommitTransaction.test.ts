@@ -41,9 +41,9 @@ describe('useCommitTransaction', () => {
 
     const expectedPayload: TransactionPayload = {
       ...createEmptyPayload(),
-      removedNodeIds: [node1],
+      removedNodeIds: [node1.id],
       // the engine should implicitly catch that edge-1 is now an orphan
-      removedEdgeIds: [connectedEdge],
+      removedEdgeIds: [connectedEdge.id],
     };
 
     const payload = commitTransaction({ removeNodeIds: ['node-1'] });

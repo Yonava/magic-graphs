@@ -78,7 +78,7 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
 
 export const propagateTransactionEvents = (
   payload: TransactionPayload,
-  events: BaseGraph['events'],
+  emit: BaseGraph['events']['emit'],
 ) => {
   (Object.keys(eventNameToPredicateMap) as (keyof BaseEventMap)[]).forEach(
     (event) => {
@@ -87,7 +87,7 @@ export const propagateTransactionEvents = (
 
       const result = predicate(payload);
       if (result && result.args) {
-        events.emit(event, ...result.args);
+        emit(event, ...result.args);
       }
     },
   );
