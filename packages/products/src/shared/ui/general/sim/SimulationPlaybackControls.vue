@@ -80,11 +80,11 @@
   };
 
   if (pauseOnStructureChange) {
-    graph.value.subscribe('onStructureChange', pause);
+    graph.value.events.subscribe('onStructureChange', pause);
   }
 
   onUnmounted(() => {
-    graph.value.unsubscribe('onStructureChange', pause);
+    graph.value.events.unsubscribe('onStructureChange', pause);
   });
 
   const PLAYBACK_SPEEDS = [

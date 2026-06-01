@@ -24,11 +24,11 @@ type UseGraphWithCanvas = (settings: Partial<GraphSettings>) => GraphWithCanvas;
 export const useGraphWithCanvas: UseGraphWithCanvas = (
   settings: Partial<GraphSettings> = {},
 ) => {
-  const canvas = useMagicCanvas({ storageKey: settings.persistentStorageKey });
+  const canvas = useMagicCanvas({ storageKey: settings.localStorageKey });
   const graph = useGraph(canvas, settings);
   const { bgColor, patternColor } = useGraphCanvasColor(graph);
 
-  canvas.draw.content.value = graph.draw;
+  canvas.draw.content.value = graph.magicCanvas.draw.content.value;
   canvas.draw.backgroundPattern.value = (ctx, at, alpha) =>
     cross({
       at,

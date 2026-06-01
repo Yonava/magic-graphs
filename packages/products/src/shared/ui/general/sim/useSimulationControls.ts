@@ -1,4 +1,4 @@
-import type { GraphEventMap } from '@magic/graph/events/index';
+import { BaseEventMap } from '@magic/graph/base/events';
 import { localKeys } from '@magic/utils/localStorage';
 import { useLocalStorage } from '@vueuse/core';
 
@@ -45,7 +45,7 @@ export type SimulationControlsOptions<T> = {
   showPlaybackSpeedControls?: boolean;
   /**
    * if true, the simulation will pause when
-   * the graph {@link GraphEventMap.onStructureChange | structure changes}
+   * the graph {@link BaseEventMap.onStructureChange | structure changes}
    * @default true
    */
   pauseOnStructureChange?: boolean;

@@ -2,7 +2,6 @@ import type { Graph } from '@magic/graph/types';
 
 import type { RouteRecordRaw } from 'vue-router';
 
-import { GraphTemplate } from './shared/graph-templates/types.ts';
 import type { SimulationGuard } from './shared/ui/general/sim/guard/index.ts';
 import type { SimulationRunner } from './shared/ui/general/sim/types.ts';
 import type { ProductCategory } from './utils.ts';
@@ -102,9 +101,4 @@ export type ProductInfo = {
    * the product when invoked
    */
   state?: { reset: () => void };
-
-  /**
-   *  list of example graphs for the product
-   */
-  templates?: GraphTemplate[];
 };
