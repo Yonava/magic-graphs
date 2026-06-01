@@ -65,6 +65,7 @@ export const useInteractive = <A, B extends BaseEventMap, C>(
 
   const activate = () => {
     graph.events.subscribe('onClick', handleNodeCreation);
+    // @ts-expect-error migration
     graph.events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
     graph.settings.value.nodeAnchors = true;
     graph.settings.value.edgeLabelsEditable = true;
@@ -72,6 +73,7 @@ export const useInteractive = <A, B extends BaseEventMap, C>(
 
   const deactivate = () => {
     graph.events.unsubscribe('onClick', handleNodeCreation);
+    // @ts-expect-error migration
     graph.events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
     graph.settings.value.nodeAnchors = false;
     graph.settings.value.edgeLabelsEditable = false;

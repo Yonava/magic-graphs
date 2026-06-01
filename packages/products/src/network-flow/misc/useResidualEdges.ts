@@ -13,7 +13,7 @@ export const useResidualEdges = (graph: Graph) => {
     graph.edges.value = graph.edges.value.filter(
       (e) => !e.id.startsWith(RESIDUAL_ID),
     );
-    graph.localStorage.trackGraphState();
+    graph.localStorage.save();
   };
 
   const createResidualEdges = () => {

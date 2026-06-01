@@ -27,10 +27,14 @@ export type BaseGraphNodeStyles = TextStyles & {
   color: string;
 };
 
-export type GraphInterface = Pick<
-  BaseGraph,
-  'shapes' | 'settings' | 'getTheme' | 'edges' | 'getNode' | 'getEdge'
->;
+export type GraphInterface = {
+  shapes: BaseGraph['shapes'];
+  settings: BaseGraph['settings'];
+  getTheme: BaseGraph['getTheme'];
+  edges: BaseGraph['edges'];
+  getNode: BaseGraph['getNode'];
+  getEdge: BaseGraph['getEdge'];
+};
 
 export type BaseGraphNodeTheme = WrapWithNodeGetter<BaseGraphNodeStyles> & {
   shape: (node: GNode, graph: GraphInterface) => Shape | void;

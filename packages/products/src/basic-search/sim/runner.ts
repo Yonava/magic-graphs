@@ -14,25 +14,25 @@ const { startNode } = state;
 
 export type BasicSearchSimulationRunner = SimulationRunner<BasicSearchTrace>;
 
-const animateEdge = (g: Graph) =>
-  g.defineTimeline({
+const animateEdge = (graph: Graph) =>
+  graph.shapes.defineTimeline({
     forShapes: ['arrow', 'line'],
     durationMs: 700,
     keyframes: [],
     customInterpolations: {
       fillGradient: {
-        value: (p) => [
+        value: (progress) => [
           {
             color: 'red',
             offset: 0,
           },
           {
             color: 'red',
-            offset: p,
+            offset: progress,
           },
           {
             color: 'black',
-            offset: p,
+            offset: progress,
           },
         ],
         easing: 'in-out',

@@ -273,6 +273,7 @@ export const useNodeAnchors = (graph: GraphWithPlugins) => {
     const anchor = getAnchor(ev);
     if (!anchor) return;
     currentDraggingAnchor.value = anchor;
+    // @ts-expect-error migration
     graph.events.emit('onNodeAnchorDragStart', parentNode.value, anchor);
   };
 
@@ -293,6 +294,7 @@ export const useNodeAnchors = (graph: GraphWithPlugins) => {
     else if (!parentNode.value)
       throw new Error('active anchor without parent node');
     graph.events.emit(
+      // @ts-expect-error migration
       'onNodeAnchorDrop',
       parentNode.value,
       currentDraggingAnchor.value,
@@ -341,6 +343,7 @@ export const useNodeAnchors = (graph: GraphWithPlugins) => {
     graph.events.subscribe('onNodeRemoved', checkForParentNodeUpdate);
     graph.events.subscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
     graph.events.subscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
+    // @ts-expect-error migration
     graph.events.subscribe('onNodeDrop', updateNodeAnchors);
     graph.events.subscribe('onMouseMove', checkForParentNodeUpdate);
     graph.events.subscribe(
@@ -357,6 +360,7 @@ export const useNodeAnchors = (graph: GraphWithPlugins) => {
     graph.events.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
     graph.events.unsubscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
     graph.events.unsubscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
+    // @ts-expect-error migration
     graph.events.unsubscribe('onNodeDrop', updateNodeAnchors);
     graph.events.unsubscribe('onMouseMove', checkForParentNodeUpdate);
     graph.events.unsubscribe(

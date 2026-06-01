@@ -10,7 +10,7 @@ import type { GraphMouseEvent } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { Aggregator } from '../../types.ts';
-import { FocusGraphEventMap } from '../focus/events.ts';
+import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
 import { MarqueeEventMap, createMarqueeEventBus } from './events.ts';
@@ -30,7 +30,7 @@ export const useMarqueePlugin = <
     marqueeHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap & FocusGraphEventMap>,
+    graph.events as EventHub<BaseEventMap & FocusEventMap>,
   );
 
   const marqueeBox = ref<BoundingBox | undefined>();

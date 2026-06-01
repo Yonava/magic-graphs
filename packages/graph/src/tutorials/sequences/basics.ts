@@ -8,6 +8,7 @@ import type { Graph } from '../../types.ts';
 /**
  * pre-defined tutorial steps for basic graph editing
  */
+// @ts-expect-error migration
 export const BASICS_STEPS: (graph: Graph) => Record<string, TutorialStep> = (
   graph: Graph,
 ) => ({
@@ -64,13 +65,13 @@ const getRemoveNodeOrEdgeStep = (graph: Graph): TutorialStep => {
       setTheme('nodeAnchor.base.color', (node) =>
         node.label === '1' ? PURPLE_700 : RED_700,
       );
-      graph.subscribe('onEdgeRemoved', completeStep);
-      graph.subscribe('onNodeRemoved', completeStep);
+      graph.events.subscribe('onEdgeRemoved', completeStep);
+      graph.events.subscribe('onNodeRemoved', completeStep);
     },
     onDismiss: () => {
       removeAllThemes();
-      graph.unsubscribe('onEdgeRemoved', completeStep);
-      graph.unsubscribe('onNodeRemoved', completeStep);
+      graph.events.unsubscribe('onEdgeRemoved', completeStep);
+      graph.events.unsubscribe('onNodeRemoved', completeStep);
     },
   };
 };

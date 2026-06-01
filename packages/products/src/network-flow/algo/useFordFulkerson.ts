@@ -34,7 +34,7 @@ export const useFordFulkerson = (graph: Graph) => {
     cleanupResidualEdges();
   };
 
-  graph.subscribe('onStructureChange', update);
+  graph.events.subscribe('onStructureChange', update);
   watch([sourceNode.ref, sinkNode.ref], update, { immediate: true });
 
   return {
