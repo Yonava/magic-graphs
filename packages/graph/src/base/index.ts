@@ -55,7 +55,7 @@ export const useBaseGraph = (
   const eventBus = createBaseEventBus();
   const events = createEventHub(eventBus);
 
-  const aggregator = useAggregator({ events });
+  const aggregator = useAggregator(events);
 
   const canvasFocused = ref(true);
 

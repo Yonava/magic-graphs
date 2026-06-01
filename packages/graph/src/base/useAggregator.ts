@@ -2,10 +2,11 @@ import type { Coordinate } from '@magic/shapes/types/utility';
 
 import { ref } from 'vue';
 
+import { EventHub } from '../events/createEventHub.ts';
 import type { Aggregator, AggregatorTransformer } from '../types.ts';
-import { BaseGraph } from './types.ts';
+import { BaseEventMap } from './events.ts';
 
-export const useAggregator = ({ events }: Pick<BaseGraph, 'events'>) => {
+export const useAggregator = ({ emit }: EventHub<BaseEventMap>) => {
   const aggregator = ref<Aggregator>([]);
   const transformers: AggregatorTransformer[] = [];
 
@@ -46,7 +47,7 @@ export const useAggregator = ({ events }: Pick<BaseGraph, 'events'>) => {
       item.shape.draw(ctx);
     }
 
-    events.emit('onDraw', ctx);
+    emit('onDraw', ctx);
   };
 
   /**

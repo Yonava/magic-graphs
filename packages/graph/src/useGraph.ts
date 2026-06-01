@@ -82,8 +82,8 @@ export const useGraph = (
 ) => {
   const graph = useGraphWithPlugins(canvas, settings);
 
-  const nodeAnchors = useNodeAnchors({ ...baseWithFocus, focus });
-  const nodeDrag = useNodeDrag({ ...baseWithFocus, nodeAnchors });
+  const nodeAnchors = useNodeAnchors(graph);
+  const nodeDrag = useNodeDrag(graph);
   const annotation = useAnnotations(baseWithFocus);
   const preferredTheme = usePreferredTheme(baseWithFocus);
 
