@@ -10,7 +10,7 @@ type HistoryOption = {
   history?: boolean;
 };
 
-type HistoryTransactionWrapperOptions = {
+export type HistoryTransactionWrapperOptions = {
   [K in keyof BaseTransactionWrapperOptions]: HistoryOption;
 };
 

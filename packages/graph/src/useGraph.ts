@@ -1,13 +1,24 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 
+import { BaseEventMap } from './base/events.ts';
 import { useBaseGraph } from './base/index.ts';
 import { useGraphHelpers } from './helpers/index.ts';
 import { useNodeAnchors } from './plugins/anchors/index.ts';
 import { useAnnotations } from './plugins/annotations/index.ts';
 import { useCharacteristics } from './plugins/characteristics/index.ts';
 import { useNodeDrag } from './plugins/drag/index.ts';
+import { FocusEventMap } from './plugins/focus/events.ts';
 import { useFocusPlugin } from './plugins/focus/index.ts';
+import {
+  FocusPlugin,
+  FocusTransactionWrapperOptions,
+} from './plugins/focus/types.ts';
+import { HistoryEventMap } from './plugins/history/events.ts';
 import { useHistoryPlugin } from './plugins/history/index.ts';
+import {
+  HistoryPlugin,
+  HistoryTransactionWrapperOptions,
+} from './plugins/history/types.ts';
 import { useInteractive } from './plugins/interactive/index.ts';
 import { useLocalStoragePlugin } from './plugins/localStorage/index.ts';
 import { useMarqueePlugin } from './plugins/marquee/index.ts';
@@ -21,11 +32,38 @@ const useGraphWithPlugins = (
   canvas: MagicCanvasProps,
   settings: Partial<GraphSettings> = {},
 ) => {
-  return useLocalStoragePlugin(
-    useMarqueePlugin(
-      useHistoryPlugin(useFocusPlugin(useBaseGraph(canvas, settings))),
-    ),
+  // https://github.com/Yonava/magic-graphs/issues/606
+  // TODO get inference to work without explicit type parameters
+  const base = useBaseGraph(canvas, settings);
+  const baseFocus = useFocusPlugin<{}, BaseEventMap, {}>(base);
+  const baseFocusHistory = useHistoryPlugin<
+    FocusTransactionWrapperOptions,
+    BaseEventMap & FocusEventMap,
+    FocusPlugin
+  >(baseFocus);
+  const baseFocusHistoryMarquee = useMarqueePlugin<
+    FocusTransactionWrapperOptions & HistoryTransactionWrapperOptions,
+    BaseEventMap & FocusEventMap & HistoryEventMap,
+    FocusPlugin & HistoryPlugin
+  >(baseFocusHistory);
+  const baseFocusHistoryMarqueeLocal = useLocalStoragePlugin(
+    baseFocusHistoryMarquee,
   );
+
+  // ---------- TYPE TESTING
+  base.events.subscribe('onClick', (click) => {});
+  baseFocus.events.subscribe('onClick', (click) => {});
+  baseFocusHistory.events.subscribe('onClick', (click) => {});
+  baseFocusHistoryMarquee.events.subscribe('onClick', (click) => {});
+  baseFocusHistoryMarqueeLocal.events.subscribe('onClick', (click) => {});
+
+  base.actions.addNode({});
+  baseFocusHistoryMarquee.actions.addNode({}, { history: true });
+  baseFocusHistory.actions.removeElements({}, { history: false });
+  baseFocusHistoryMarqueeLocal.localStorage.save;
+  // ---------- TYPE TESTING
+
+  return baseFocusHistoryMarqueeLocal;
 };
 
 export type GraphWithPlugins = ReturnType<typeof useGraphWithPlugins>;
@@ -42,18 +80,7 @@ export const useGraph = (
   canvas: MagicCanvasProps,
   settings: Partial<GraphSettings> = {},
 ) => {
-  const b = useBaseGraph(canvas, settings);
-  const bf = useFocusPlugin(b);
-  const bfh = useHistoryPlugin(bf);
-  const bfhm = useMarqueePlugin(bfh);
-  const bfhmp = useLocalStoragePlugin(bfhm);
-  // const graph = useGraphWithPlugins(canvas, settings)
-
-  bfhm.events.subscribe('onUndo', (el) => {});
-  b.actions.addNode({});
-  bfhm.actions.addNode({}, { history: true });
-  bfh.actions.removeElements({}, { history: false });
-  bfhmp.localStorage.save;
+  const graph = useGraphWithPlugins(canvas, settings);
 
   const nodeAnchors = useNodeAnchors({ ...baseWithFocus, focus });
   const nodeDrag = useNodeDrag({ ...baseWithFocus, nodeAnchors });
@@ -67,16 +94,16 @@ export const useGraph = (
     annotation,
   });
 
-  const helpers = useGraphHelpers(b);
-  const adjacencyList = useAdjacencyList({ ...b, helpers });
-  const transitionMatrix = useTransitionMatrix({ ...b, adjacencyList });
+  const helpers = useGraphHelpers(base);
+  const adjacencyList = useAdjacencyList({ ...base, helpers });
+  const transitionMatrix = useTransitionMatrix({ ...base, adjacencyList });
 
-  const characteristics = useCharacteristics({ ...b, ...adjacencyList });
+  const characteristics = useCharacteristics({ ...base, ...adjacencyList });
 
-  useInteractive(b);
+  useInteractive(base);
 
   return {
-    ...b,
+    ...base,
 
     // plugin controllers
     focus,
