@@ -1,11 +1,13 @@
-import type { BaseGraph } from '../../base/index.ts';
-import type { GraphMouseEvent } from '../../base/types.ts';
+import { BaseEventMap } from '../../base/events.ts';
+import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
 import type { GNode } from '../../types.ts';
 
 /**
  * interactive allows users to create, edit and delete nodes and edges
  */
-export const useInteractive = (graph: BaseGraph) => {
+export const useInteractive = <A, B extends BaseEventMap, C>(
+  graph: BaseGraph<A, B, C>,
+) => {
   let lastClickTime = 0;
 
   const handleNodeCreation = ({ coords, items }: GraphMouseEvent) => {
@@ -62,15 +64,15 @@ export const useInteractive = (graph: BaseGraph) => {
   };
 
   const activate = () => {
-    graph.subscribe('onClick', handleNodeCreation);
-    graph.subscribe('onNodeAnchorDrop', handleEdgeCreation);
+    graph.events.subscribe('onClick', handleNodeCreation);
+    graph.events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
     graph.settings.value.nodeAnchors = true;
     graph.settings.value.edgeLabelsEditable = true;
   };
 
   const deactivate = () => {
-    graph.unsubscribe('onClick', handleNodeCreation);
-    graph.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
+    graph.events.unsubscribe('onClick', handleNodeCreation);
+    graph.events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
     graph.settings.value.nodeAnchors = false;
     graph.settings.value.edgeLabelsEditable = false;
   };
@@ -78,7 +80,7 @@ export const useInteractive = (graph: BaseGraph) => {
   if (graph.settings.value.interactive) activate();
   if (!graph.settings.value.interactive) deactivate();
 
-  graph.subscribe('onSettingsChange', (diff) => {
+  graph.events.subscribe('onSettingsChange', (diff) => {
     if (diff.interactive === true) activate();
     else if (diff.interactive === false) deactivate();
   });

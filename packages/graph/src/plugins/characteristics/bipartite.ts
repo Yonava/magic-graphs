@@ -1,6 +1,6 @@
-import { type Ref, computed } from 'vue';
+import { computed } from 'vue';
 
-import type { AdjacencyList } from '../../useAdjacencyList.ts';
+import type { AdjacencyList, AdjacencyLists } from '../../useAdjacencyList.ts';
 
 type BipartitePartition = [string[], string[]];
 type GetBipartitePartition = (
@@ -79,9 +79,11 @@ export const getBipartitePartition: GetBipartitePartition = (adjList) => {
   return groups;
 };
 
-export const useBipartite = (adjList: Ref<AdjacencyList>) => {
+export const useBipartite = (
+  adjacencyLists: Pick<AdjacencyLists, 'adjacencyList'>,
+) => {
   const bipartitePartition = computed(() =>
-    getBipartitePartition(adjList.value),
+    getBipartitePartition(adjacencyLists.adjacencyList.value),
   );
 
   const nodeIdToBipartitePartition = computed(() => {

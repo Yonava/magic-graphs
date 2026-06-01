@@ -138,9 +138,8 @@ export type WeightedAdjacencyList = Record<
  * // }
  */
 export const getWeightedAdjacencyList = (
-  graph: Pick<BaseGraph, 'settings' | 'getNode' | 'nodes' | 'edges'> & {
-    helpers: Pick<GraphHelpers, 'nodes'>;
-  },
+  graph: Pick<BaseGraph, 'settings' | 'getNode' | 'nodes' | 'edges'>,
+  helpers: Pick<GraphHelpers, 'nodes'>,
 ) => {
   const adjList = getAdjacencyList(graph);
   const adjListEntries = Object.entries(adjList);
@@ -149,19 +148,13 @@ export const getWeightedAdjacencyList = (
     (acc, [keyNodeId, toNodeIds]) => {
       acc[keyNodeId] = toNodeIds.map((toNodeId) => ({
         ...graph.getNode(toNodeId)!,
-        weight: graph.helpers.nodes.getEdgeBetween(keyNodeId, toNodeId)!.weight,
+        weight: helpers.nodes.getEdgeBetween(keyNodeId, toNodeId)!.weight,
       }));
       return acc;
     },
     {},
   );
 };
-
-type AdjacencyListGraphArg<A, B extends BaseEventMap, C> = BaseGraph<
-  A,
-  B,
-  C
-> & { helpers: GraphHelpers };
 
 /**
  * reactively updating adjacency lists for a graph
@@ -180,9 +173,13 @@ type AdjacencyListGraphArg<A, B extends BaseEventMap, C> = BaseGraph<
  *    'def456': [{ id: 'abc123', label: 'A', weight: 10, x: 100, y: 100 }]
  * }
  */
-export const useAdjacencyList = <A, B extends BaseEventMap, C>(
-  graph: AdjacencyListGraphArg<A, B, C>,
-) => {
+export const useAdjacencyList = <A, B extends BaseEventMap, C>({
+  graph,
+  helpers,
+}: {
+  graph: BaseGraph<A, B, C>;
+  helpers: GraphHelpers;
+}) => {
   const adjacencyList = ref<AdjacencyList>({});
   const labelAdjacencyList = ref<AdjacencyList>({});
   const fullNodeAdjacencyList = ref<FullNodeAdjacencyList>({});
@@ -195,7 +192,7 @@ export const useAdjacencyList = <A, B extends BaseEventMap, C>(
     adjacencyList.value = getAdjacencyList(graph);
     labelAdjacencyList.value = getLabelAdjacencyList(graph);
     fullNodeAdjacencyList.value = getFullNodeAdjacencyList(graph);
-    weightedAdjacencyList.value = getWeightedAdjacencyList(graph);
+    weightedAdjacencyList.value = getWeightedAdjacencyList(graph, helpers);
 
     directedAdjacencyList.value = getDirectedGraphAdjacencyList(graph);
     undirectedAdjacencyList.value = getUndirectedGraphAdjacencyList(graph);

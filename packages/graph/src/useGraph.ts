@@ -93,24 +93,22 @@ export const useGraph = (
   });
 
   const helpers = useGraphHelpers(graph);
-  const adjacencyList = useAdjacencyList({ ...graph, helpers });
-  const transitionMatrix = useTransitionMatrix({ ...base, adjacencyList });
+  const adjacencyList = useAdjacencyList({ graph, helpers });
+  const transitionMatrix = useTransitionMatrix({ graph, adjacencyList });
 
-  const characteristics = useCharacteristics({ ...base, ...adjacencyList });
+  const characteristics = useCharacteristics({ graph, adjacencyList });
 
-  useInteractive(base);
+  useInteractive(graph);
 
   return {
-    ...base,
+    ...graph,
 
-    // plugin controllers
-    focus,
-    history,
-    marquee,
+    // TODO convert to plugins
     nodeDrag,
     nodeAnchors,
+
+    // TODO purge from graph layer all together
     annotation,
-    persistent,
 
     // theme and style
     ...preferredTheme,

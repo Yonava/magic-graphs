@@ -1,8 +1,10 @@
 import { computed } from 'vue';
 
-import type { BaseGraph } from '../../base/index.ts';
+import { BaseGraph } from '../../base/types.ts';
 
-export const useComplete = (graph: BaseGraph) => {
+export const useComplete = (
+  graph: Pick<BaseGraph, 'settings' | 'nodes' | 'edges'>,
+) => {
   const isComplete = computed(() => {
     const isDirected = graph.settings.value.isGraphDirected;
     const n = graph.nodes.value.length;
