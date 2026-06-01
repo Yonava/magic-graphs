@@ -28,7 +28,7 @@ export const useGraphWithCanvas: UseGraphWithCanvas = (
   const graph = useGraph(canvas, settings);
   const { bgColor, patternColor } = useGraphCanvasColor(graph);
 
-  canvas.draw.content.value = graph.magicCanvas.draw.content.value;
+  canvas.draw.content.value = graph.aggregator.draw;
   canvas.draw.backgroundPattern.value = (ctx, at, alpha) =>
     cross({
       at,
