@@ -1,6 +1,6 @@
 import type { Fraction } from 'mathjs';
 
-import { BaseGraph } from '../base/index.ts';
+import { BaseGraph } from '../base/types.ts';
 import type { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
 

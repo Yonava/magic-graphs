@@ -1,6 +1,7 @@
 import { onUnmounted, ref } from 'vue';
 
-import type { BaseGraph } from './base/index.ts';
+import { BaseEventMap } from './base/events.ts';
+import type { BaseGraph } from './base/types.ts';
 import { GraphHelpers } from './helpers/types.ts';
 import type { GEdge, GNode } from './types.ts';
 
@@ -10,7 +11,9 @@ import type { GEdge, GNode } from './types.ts';
  */
 export type AdjacencyList = Record<string, string[]>;
 
-export const getDirectedGraphAdjacencyList = (graph: AdjacencyListGraphArg) => {
+export const getDirectedGraphAdjacencyList = (
+  graph: Pick<BaseGraph, 'nodes' | 'edges'>,
+) => {
   return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
     acc[node.id] = graph.edges.value
       .filter((edge) => edge.from === node.id)
@@ -20,7 +23,7 @@ export const getDirectedGraphAdjacencyList = (graph: AdjacencyListGraphArg) => {
 };
 
 export const getUndirectedGraphAdjacencyList = (
-  graph: AdjacencyListGraphArg,
+  graph: Pick<BaseGraph, 'nodes' | 'edges'>,
 ) => {
   return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
     acc[node.id] = graph.edges.value
@@ -40,7 +43,9 @@ export const getUndirectedGraphAdjacencyList = (
  * @example getAdjacencyList(graph)
  * // { 'abc123': ['def456'], 'def456': ['abc123'] }
  */
-export const getAdjacencyList = (graph: AdjacencyListGraphArg) => {
+export const getAdjacencyList = (
+  graph: Pick<BaseGraph, 'settings' | 'nodes' | 'edges'>,
+) => {
   const { isGraphDirected } = graph.settings.value;
   const fn = isGraphDirected
     ? getDirectedGraphAdjacencyList
@@ -55,7 +60,9 @@ export const getAdjacencyList = (graph: AdjacencyListGraphArg) => {
  * @example getLabelAdjacencyList(graph)
  * // { 'A': ['B'], 'B': ['A'] }
  */
-export const getLabelAdjacencyList = (graph: AdjacencyListGraphArg) => {
+export const getLabelAdjacencyList = (
+  graph: Pick<BaseGraph, 'settings' | 'getNode' | 'nodes' | 'edges'>,
+) => {
   const adjList = getAdjacencyList(graph);
   const adjListEntries = Object.entries(adjList);
 
@@ -89,7 +96,9 @@ export type FullNodeAdjacencyList = Record<GNode['id'], GNode[]>;
  * // 'def456': [{ id: 'abc123', label: 'A', x: 100, y: 100 }]
  * // }
  */
-export const getFullNodeAdjacencyList = (graph: AdjacencyListGraphArg) => {
+export const getFullNodeAdjacencyList = (
+  graph: Pick<BaseGraph, 'settings' | 'getNode' | 'nodes' | 'edges'>,
+) => {
   const adjList = getAdjacencyList(graph);
   const adjListEntries = Object.entries(adjList);
 
@@ -121,8 +130,6 @@ export type WeightedAdjacencyList = Record<
  * represents the weight of the edge connecting them
  *
  * @param graph the graph instance
- * @param fallbackWeight the weight between two adjacent nodes if the label of the edge connecting them
- * cannot be parsed as a number. defaults to 1
  * @returns an adjacency list using ids of nodes as keys and the full node objects with weights as values
  * @example getWeightedAdjacencyList(graph)
  * // {
@@ -130,7 +137,11 @@ export type WeightedAdjacencyList = Record<
  * //   'def456': [{ id: 'abc123', label: 'A', weight: 1, x: 100, y: 100 }]
  * // }
  */
-export const getWeightedAdjacencyList = (graph: AdjacencyListGraphArg) => {
+export const getWeightedAdjacencyList = (
+  graph: Pick<BaseGraph, 'settings' | 'getNode' | 'nodes' | 'edges'> & {
+    helpers: Pick<GraphHelpers, 'nodes'>;
+  },
+) => {
   const adjList = getAdjacencyList(graph);
   const adjListEntries = Object.entries(adjList);
 
@@ -146,7 +157,11 @@ export const getWeightedAdjacencyList = (graph: AdjacencyListGraphArg) => {
   );
 };
 
-type AdjacencyListGraphArg = BaseGraph & { helpers: GraphHelpers };
+type AdjacencyListGraphArg<A, B extends BaseEventMap, C> = BaseGraph<
+  A,
+  B,
+  C
+> & { helpers: GraphHelpers };
 
 /**
  * reactively updating adjacency lists for a graph
@@ -165,7 +180,9 @@ type AdjacencyListGraphArg = BaseGraph & { helpers: GraphHelpers };
  *    'def456': [{ id: 'abc123', label: 'A', weight: 10, x: 100, y: 100 }]
  * }
  */
-export const useAdjacencyList = (graph: AdjacencyListGraphArg) => {
+export const useAdjacencyList = <A, B extends BaseEventMap, C>(
+  graph: AdjacencyListGraphArg<A, B, C>,
+) => {
   const adjacencyList = ref<AdjacencyList>({});
   const labelAdjacencyList = ref<AdjacencyList>({});
   const fullNodeAdjacencyList = ref<FullNodeAdjacencyList>({});
@@ -186,10 +203,10 @@ export const useAdjacencyList = (graph: AdjacencyListGraphArg) => {
 
   update();
 
-  graph.subscribe('onStructureChange', update);
+  graph.events.subscribe('onStructureChange', update);
 
   onUnmounted(() => {
-    graph.unsubscribe('onStructureChange', update);
+    graph.events.unsubscribe('onStructureChange', update);
   });
 
   return {

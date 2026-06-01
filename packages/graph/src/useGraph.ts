@@ -84,18 +84,16 @@ export const useGraph = (
 
   const nodeAnchors = useNodeAnchors(graph);
   const nodeDrag = useNodeDrag(graph);
-  const annotation = useAnnotations(baseWithFocus);
-  const preferredTheme = usePreferredTheme(baseWithFocus);
+  const annotation = useAnnotations(graph);
+  const preferredTheme = usePreferredTheme(graph);
 
   const shortcut = useShortcuts({
-    ...baseWithFocus,
-    history,
-    focus,
+    ...graph,
     annotation,
   });
 
-  const helpers = useGraphHelpers(base);
-  const adjacencyList = useAdjacencyList({ ...base, helpers });
+  const helpers = useGraphHelpers(graph);
+  const adjacencyList = useAdjacencyList({ ...graph, helpers });
   const transitionMatrix = useTransitionMatrix({ ...base, adjacencyList });
 
   const characteristics = useCharacteristics({ ...base, ...adjacencyList });
