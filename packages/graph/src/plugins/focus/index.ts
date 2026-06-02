@@ -15,7 +15,7 @@ import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
-import { FOCUS_THEME_ID } from './constants.ts';
+import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
 import { FocusEventMap, createFocusEventBus } from './events.ts';
 import {
   EdgeBaseThemePath,
@@ -48,7 +48,7 @@ export const useFocusPlugin = <
     const elementsAlreadyFocused = ids.every((id) =>
       focusedElementIds.value.has(id),
     );
-    if (elementsAlreadyFocused) return;
+    if (ids.length > 0 && elementsAlreadyFocused) return;
 
     const oldIds = new Set(focusedElementIds.value);
     focusedElementIds.value = new Set(ids);
@@ -149,6 +149,14 @@ export const useFocusPlugin = <
       clearFocus();
       return handleTextArea(topItem);
     }
+
+    const canFocus = FOCUSABLE_GRAPH_TYPES.some(
+      (type) => type === topItem.graphType,
+    );
+    if (!canFocus) return;
+
+    if (event.shiftKey) addToFocus(topItem.id);
+    else setFocus([topItem.id]);
   };
 
   const focusAll = () => {

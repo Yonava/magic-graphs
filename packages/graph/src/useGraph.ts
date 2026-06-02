@@ -6,7 +6,9 @@ import { useGraphHelpers } from './helpers/index.ts';
 import { useNodeAnchors } from './plugins/anchors/index.ts';
 import { useAnnotations } from './plugins/annotations/index.ts';
 import { useCharacteristics } from './plugins/characteristics/index.ts';
-import { useNodeDrag } from './plugins/drag/index.ts';
+import { NodeDragEventMap } from './plugins/drag/events.ts';
+import { useNodeDragPlugin } from './plugins/drag/index.ts';
+import { NodeDragPlugin } from './plugins/drag/types.ts';
 import { FocusEventMap } from './plugins/focus/events.ts';
 import { useFocusPlugin } from './plugins/focus/index.ts';
 import {
@@ -36,32 +38,24 @@ const useGraphWithPlugins = (
   // TODO get inference to work without explicit type parameters
   const base = useBaseGraph(canvas, settings);
   const baseFocus = useFocusPlugin<{}, BaseEventMap, {}>(base);
-  const baseFocusHistory = useHistoryPlugin<
+  const baseFocusDrag = useNodeDragPlugin<
     FocusTransactionWrapperOptions,
     BaseEventMap & FocusEventMap,
     FocusPlugin
   >(baseFocus);
-  const baseFocusHistoryMarquee = useMarqueePlugin<
+  const baseFocusDragHistory = useHistoryPlugin<
+    FocusTransactionWrapperOptions,
+    BaseEventMap & FocusEventMap & NodeDragEventMap,
+    FocusPlugin & NodeDragPlugin
+  >(baseFocusDrag);
+  const baseFocusDragHistoryMarquee = useMarqueePlugin<
     FocusTransactionWrapperOptions & HistoryTransactionWrapperOptions,
-    BaseEventMap & FocusEventMap & HistoryEventMap,
-    FocusPlugin & HistoryPlugin
-  >(baseFocusHistory);
+    BaseEventMap & FocusEventMap & NodeDragEventMap & HistoryEventMap,
+    FocusPlugin & NodeDragPlugin & HistoryPlugin
+  >(baseFocusDragHistory);
   const baseFocusHistoryMarqueeLocal = useLocalStoragePlugin(
-    baseFocusHistoryMarquee,
+    baseFocusDragHistoryMarquee,
   );
-
-  // ---------- TYPE TESTING
-  base.events.subscribe('onClick', (click) => {});
-  baseFocus.events.subscribe('onClick', (click) => {});
-  baseFocusHistory.events.subscribe('onClick', (click) => {});
-  baseFocusHistoryMarquee.events.subscribe('onClick', (click) => {});
-  baseFocusHistoryMarqueeLocal.events.subscribe('onClick', (click) => {});
-
-  base.actions.addNode({});
-  baseFocusHistoryMarquee.actions.addNode({}, { history: true });
-  baseFocusHistory.actions.removeElements({}, { history: false });
-  baseFocusHistoryMarqueeLocal.localStorage.save;
-  // ---------- TYPE TESTING
 
   return baseFocusHistoryMarqueeLocal;
 };
@@ -83,7 +77,6 @@ export const useGraph = (
   const graph = useGraphWithPlugins(canvas, settings);
 
   const nodeAnchors = useNodeAnchors(graph);
-  const nodeDrag = useNodeDrag(graph);
   const annotation = useAnnotations(graph);
   const preferredTheme = usePreferredTheme(graph);
 
@@ -104,7 +97,6 @@ export const useGraph = (
     ...graph,
 
     // TODO convert to plugins
-    nodeDrag,
     nodeAnchors,
 
     // TODO purge from graph layer all together
