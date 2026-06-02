@@ -97,6 +97,7 @@ export const useNodeAnchorPlugin = <
       const isAnchorHovered = id === hoveredNodeAnchorId.value;
       const isAnchorDragged = id === currentDraggingAnchor.value?.id;
 
+      // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
       const isNodeFocused = graph.focus.isFocused(node.id);
       const isFocused = isNodeFocused || isAnchorHovered || isAnchorDragged;
 
@@ -144,6 +145,7 @@ export const useNodeAnchorPlugin = <
     if (!node) return (nodeAnchors.value = []);
     const { getTheme } = graph;
 
+    // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
     const isNodeFocused = graph.focus.isFocused(node.id);
 
     const anchorBaseRadius = getTheme('nodeAnchor.base.radius', node);
@@ -210,6 +212,7 @@ export const useNodeAnchorPlugin = <
     const end = { x, y };
     const { getTheme } = graph;
 
+    // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
     const isFocused = graph.focus.isFocused(parentNode.value.id);
 
     const baseColor = getTheme(
@@ -361,7 +364,8 @@ export const useNodeAnchorPlugin = <
     events.subscribe('onNodeRemoved', checkForParentNodeUpdate);
     events.subscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
     events.subscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
-    events.subscribe('onNodeDrop', updateNodeAnchors);
+    // TODO replace with core/base discrete node position change API
+    // events.subscribe('onNodeDrop', updateNodeAnchors);
     events.subscribe('onMouseMove', checkForParentNodeUpdate);
     events.subscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
     events.subscribe('onMouseMove', updateHoveredNodeAnchorId);
@@ -374,7 +378,8 @@ export const useNodeAnchorPlugin = <
     events.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
     events.unsubscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
     events.unsubscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
-    events.unsubscribe('onNodeDrop', updateNodeAnchors);
+    // TODO replace with core/base discrete node position change API
+    // events.unsubscribe('onNodeDrop', updateNodeAnchors);
     events.unsubscribe('onMouseMove', checkForParentNodeUpdate);
     events.unsubscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
     events.unsubscribe('onMouseMove', updateHoveredNodeAnchorId);
