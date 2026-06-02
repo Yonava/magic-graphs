@@ -81,13 +81,6 @@ export type BaseEventMap = {
   onElementsUpdated: (updates: DeepReadonly<ElementUpdatePayload>) => void;
 
   /**
-   * when the canvas is repainted
-   *
-   * **WARNING** items drawn to the canvas using ctx won't be tied to graphs internal state.
-   * see {@link Graph.aggregator | `aggregator`} if you need drawn item to integrate with graph APIs
-   */
-  onDraw: (ctx: CanvasRenderingContext2D) => void;
-  /**
    * when the node that the user is hovering over changes.
    * undefined if the user is not hovering over a node
    */
@@ -124,7 +117,6 @@ export const createBaseEventBus = (): BaseEventBus => ({
   onElementsRemoved: new Set(),
   onElementsUpdated: new Set(),
 
-  onDraw: new Set(),
   onNodeHoverChange: new Set(),
 
   onThemeChange: new Set(),

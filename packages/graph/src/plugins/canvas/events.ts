@@ -48,6 +48,14 @@ export type CanvasEventMap = {
    * when a key is released on the canvas (proxies native dom event)
    */
   onKeyUp: (ev: KeyboardEvent) => void;
+
+  /**
+   * when the canvas is repainted
+   *
+   * **WARNING** items drawn to the canvas using ctx won't be tied to graphs internal state.
+   * see {@link Graph.aggregator | `aggregator`} if you need drawn item to integrate with graph APIs
+   */
+  onDraw: (ctx: CanvasRenderingContext2D) => void;
 };
 
 type CanvasEventBus = EventMapToEventBus<CanvasEventMap>;
@@ -62,4 +70,6 @@ export const createCanvasEventBus = (): CanvasEventBus => ({
 
   onKeyDown: new Set(),
   onKeyUp: new Set(),
+
+  onDraw: new Set(),
 });

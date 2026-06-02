@@ -1,11 +1,14 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
 
+import { ref } from 'vue';
+
 import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { CanvasEventMap, createCanvasEventBus } from './events.ts';
 import { GraphWithCanvas } from './types.ts';
+import { useAggregator } from './useAggregator.ts';
 
 export const useCanvasPlugin = <
   TransactionWrapperOptions,
@@ -23,6 +26,10 @@ export const useCanvasPlugin = <
     // from plugins upstream
     graph.events as EventHub<BaseEventMap>,
   );
+
+  const aggregator = useAggregator({ emit: events.emit });
+
+  const canvasFocused = ref(true);
 
   return {
     ...graph,
