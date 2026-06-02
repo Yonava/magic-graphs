@@ -53,7 +53,6 @@ export const useFocusPlugin = <
     const oldIds = new Set([...focusedElementIds.value]);
     focusedElementIds.value = new Set(ids);
 
-    console.log(focusedElementIds.value, oldIds);
     events.emit('onFocusChange', focusedElementIds.value, oldIds);
   };
 
