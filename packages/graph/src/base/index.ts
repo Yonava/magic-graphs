@@ -1,4 +1,3 @@
-import type { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { clone } from '@magic/utils/clone';
 import { deepMerge } from '@magic/utils/deepMerge';
@@ -9,13 +8,12 @@ import type {
   MouseEventEntries,
   MouseEventMap,
 } from '@magic/utils/types';
-import { onClickOutside, useElementHover } from '@vueuse/core';
+import { useElementHover } from '@vueuse/core';
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { createEventHub } from '../events/createEventHub.ts';
 import { prioritizeNode } from '../helpers/prioritization.ts';
-import { useAggregator } from '../plugins/canvas/useAggregator.ts';
 import { getEdgeSchematic } from '../schematics/edge.ts';
 import { getNodeSchematic } from '../schematics/node.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
@@ -54,113 +52,11 @@ export const useBaseGraph = (
   const eventBus = createBaseEventBus();
   const events = createEventHub(eventBus);
 
-  onClickOutside(magicCanvas.canvas, () => {
-    canvasFocused.value = false;
-  });
-
-  events.subscribe('onMouseDown', () => {
-    const el = document.activeElement;
-    if (el instanceof HTMLElement && typeof el.blur === 'function') el.blur();
-    canvasFocused.value = true;
-  });
-
   const nodes = ref<GNode[]>([]);
   const edges = ref<GEdge[]>([]);
   const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
   const getNode = (id: GNode['id']) => nodeIdToNodeMap.value.get(id);
   const getEdge = (id: GEdge['id']) => edgeIdToEdgeMap.value.get(id);
-
-  const graphAtMousePosition = ref<GraphAtMousePosition>({
-    coords: { x: 0, y: 0 },
-    items: [],
-  });
-
-  const cursor = useGraphCursor({
-    magicCanvas,
-    subscribe: events.subscribe,
-    graphAtMousePosition,
-  });
-
-  const updateGraphAtMousePosition = () =>
-    (graphAtMousePosition.value = {
-      coords: magicCanvas.cursorCoordinates.value,
-      items: aggregator.getSchemaItemsByCoordinates(
-        magicCanvas.cursorCoordinates.value,
-      ),
-    });
-
-  const graphMouseEv = (event: MouseEvent) => ({
-    ...graphAtMousePosition.value,
-    event,
-  });
-
-  const mouseEvents: Partial<MouseEventMap> = {
-    click: (ev: MouseEvent) => {
-      ev.preventDefault();
-      events.emit('onClick', graphMouseEv(ev));
-    },
-    mousemove: (ev: MouseEvent) => {
-      ev.preventDefault();
-      updateGraphAtMousePosition();
-      events.emit('onMouseMove', graphMouseEv(ev));
-    },
-    mousedown: (ev: MouseEvent) => {
-      ev.preventDefault();
-      updateGraphAtMousePosition();
-      events.emit('onMouseDown', graphMouseEv(ev));
-    },
-    mouseup: (ev: MouseEvent) => {
-      ev.preventDefault();
-      updateGraphAtMousePosition();
-      events.emit('onMouseUp', graphMouseEv(ev));
-    },
-    dblclick: (ev: MouseEvent) => {
-      ev.preventDefault();
-      events.emit('onDblClick', graphMouseEv(ev));
-    },
-    contextmenu: (ev: MouseEvent) => {
-      events.emit('onContextMenu', graphMouseEv(ev));
-    },
-  };
-
-  const keyboardEvents: Partial<KeyboardEventMap> = {
-    keydown: (ev: KeyboardEvent) => events.emit('onKeyDown', ev),
-    keyup: (ev: KeyboardEvent) => events.emit('onKeyUp', ev),
-  };
-
-  const shapes = useAnimatedShapes();
-  const animations: GraphAnimations = deepMerge(
-    // TODO: @Yonava fix bad type
-    getDefaultGraphAnimations(shapes.defineTimeline as any),
-    // TODO: @Yonava fix bad type
-    settings.value.animations(shapes.defineTimeline as any),
-  );
-
-  const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
-    const options: GraphInterface = {
-      edges,
-      getNode,
-      getEdge,
-      getTheme,
-      settings,
-      shapes,
-    };
-
-    const edgeSchemaItems = edges.value
-      .map((edge) => getEdgeSchematic(edge, options))
-      .filter(Boolean)
-      .map((item, i) => ({ ...item!, priority: i * 10 }));
-
-    const nodeSchemaItems = nodes.value
-      .map((node) => getNodeSchematic(node, options))
-      .filter(Boolean)
-      .map((item, i) => ({ ...item!, priority: i * 10 + 1000 }));
-
-    aggregator.push(...edgeSchemaItems);
-    aggregator.push(...nodeSchemaItems);
-
-    return aggregator;
-  };
 
   aggregator.transformers.push(addNodesAndEdgesToAggregator);
 
