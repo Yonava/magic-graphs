@@ -34,17 +34,6 @@ export type GraphAtMousePosition = {
   items: SchemaItem[];
 };
 
-/**
- * a standard mouse event along with extra graph related info
- * regarding the mouse position
- */
-export type GraphMouseEvent = DeepReadonly<GraphAtMousePosition> & {
-  /**
-   * the native browser event that triggered this graph event
-   */
-  event: MouseEvent;
-};
-
 export type BaseGraph<
   TransactionWrapperOptions = {},
   EventMap extends BaseEventMap = BaseEventMap,

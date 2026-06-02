@@ -14,7 +14,6 @@ import {
   ForbiddenNodeKeyUpdates,
   TransactionPayload,
 } from './transaction/types.ts';
-import { GraphMouseEvent } from './types.ts';
 
 export type BaseEventMap = {
   /**
@@ -98,38 +97,6 @@ export type BaseEventMap = {
   ) => void;
 
   /**
-   * when the canvas is clicked on (native dom event)
-   */
-  onClick: (ev: GraphMouseEvent) => void;
-  /**
-   * when the user clicks the mouse button on the canvas (native dom event)
-   */
-  onMouseDown: (ev: GraphMouseEvent) => void;
-  /**
-   * when the user releases the mouse button on the canvas (native dom event)
-   */
-  onMouseUp: (ev: GraphMouseEvent) => void;
-  /**
-   * when the user moves the mouse on the canvas (native dom event)
-   */
-  onMouseMove: (ev: GraphMouseEvent) => void;
-  /**
-   * when the canvas is double clicked on (native dom event)
-   */
-  onDblClick: (ev: GraphMouseEvent) => void;
-  /**
-   * when the canvas is right clicked on (native dom event)
-   */
-  onContextMenu: (ev: GraphMouseEvent) => void;
-  /**
-   * when a key is pressed down on the canvas (native dom event)
-   */
-  onKeyDown: (ev: KeyboardEvent) => void;
-  /**
-   * when a key is released on the canvas (native dom event)
-   */
-  onKeyUp: (ev: KeyboardEvent) => void;
-  /**
    * when the {@link Graph.themeName | theme} of the graph has changed
    */
   onThemeChange: (newTheme: GraphThemeName, oldTheme: GraphThemeName) => void;
@@ -159,16 +126,6 @@ export const createBaseEventBus = (): BaseEventBus => ({
 
   onDraw: new Set(),
   onNodeHoverChange: new Set(),
-
-  onClick: new Set(),
-  onMouseDown: new Set(),
-  onMouseUp: new Set(),
-  onMouseMove: new Set(),
-  onDblClick: new Set(),
-  onContextMenu: new Set(),
-
-  onKeyDown: new Set(),
-  onKeyUp: new Set(),
 
   onThemeChange: new Set(),
   onSettingsChange: new Set(),
