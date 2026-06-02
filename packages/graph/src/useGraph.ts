@@ -7,6 +7,9 @@ import { NodeAnchorEventMap } from './plugins/anchors/events.ts';
 import { useNodeAnchorPlugin } from './plugins/anchors/index.ts';
 import { NodeAnchorPlugin } from './plugins/anchors/types.ts';
 import { useAnnotations } from './plugins/annotations/index.ts';
+import { CanvasEventMap } from './plugins/canvas/events.ts';
+import { useCanvasPlugin } from './plugins/canvas/index.ts';
+import { CanvasPlugin } from './plugins/canvas/types.ts';
 import { useCharacteristics } from './plugins/characteristics/index.ts';
 import { NodeDragEventMap } from './plugins/drag/events.ts';
 import { useNodeDragPlugin } from './plugins/drag/index.ts';
@@ -38,43 +41,58 @@ const useGraphWithPlugins = (
 ) => {
   // https://github.com/Yonava/magic-graphs/issues/606
   // TODO get inference to work without explicit type parameters
-  const base = useBaseGraph(canvas, settings);
+  const base = useBaseGraph(settings);
 
-  const baseFocus = useFocusPlugin<{}, BaseEventMap, {}>(base);
+  const baseCanvas = useCanvasPlugin<{}, BaseEventMap, {}>(base, canvas);
 
-  const baseFocusDrag = useNodeDragPlugin<
+  const baseCanvasFocus = useFocusPlugin<
+    {},
+    BaseEventMap & CanvasEventMap,
+    CanvasPlugin
+  >(baseCanvas);
+
+  const baseCanvasFocusDrag = useNodeDragPlugin<
     FocusTransactionWrapperOptions,
-    BaseEventMap & FocusEventMap,
-    FocusPlugin
-  >(baseFocus);
+    BaseEventMap & CanvasEventMap & FocusEventMap,
+    CanvasPlugin & FocusPlugin
+  >(baseCanvasFocus);
 
-  const baseFocusDragAnchor = useNodeAnchorPlugin<
+  const baseCanvasFocusDragAnchor = useNodeAnchorPlugin<
     FocusTransactionWrapperOptions,
-    BaseEventMap & FocusEventMap & NodeDragEventMap,
-    FocusPlugin & NodeDragPlugin
-  >(baseFocusDrag);
+    BaseEventMap & CanvasEventMap & FocusEventMap & NodeDragEventMap,
+    CanvasPlugin & FocusPlugin & NodeDragPlugin
+  >(baseCanvasFocusDrag);
 
-  const baseFocusDragAnchorHistory = useHistoryPlugin<
+  const baseCanvasFocusDragAnchorHistory = useHistoryPlugin<
     FocusTransactionWrapperOptions,
-    BaseEventMap & FocusEventMap & NodeDragEventMap & NodeAnchorEventMap,
-    FocusPlugin & NodeDragPlugin & NodeAnchorPlugin
-  >(baseFocusDragAnchor);
+    BaseEventMap &
+      CanvasEventMap &
+      FocusEventMap &
+      NodeDragEventMap &
+      NodeAnchorEventMap,
+    CanvasPlugin & FocusPlugin & NodeDragPlugin & NodeAnchorPlugin
+  >(baseCanvasFocusDragAnchor);
 
   const baseFocusDragAnchorHistoryMarquee = useMarqueePlugin<
     FocusTransactionWrapperOptions & HistoryTransactionWrapperOptions,
     BaseEventMap &
+      CanvasEventMap &
       FocusEventMap &
       NodeDragEventMap &
       NodeAnchorEventMap &
       HistoryEventMap,
-    FocusPlugin & NodeDragPlugin & NodeAnchorPlugin & HistoryPlugin
-  >(baseFocusDragAnchorHistory);
+    CanvasPlugin &
+      FocusPlugin &
+      NodeDragPlugin &
+      NodeAnchorPlugin &
+      HistoryPlugin
+  >(baseCanvasFocusDragAnchorHistory);
 
-  const baseFocusDragAnchorHistoryMarqueeLocal = useLocalStoragePlugin(
+  const baseCanvasFocusDragAnchorHistoryMarqueeLocal = useLocalStoragePlugin(
     baseFocusDragAnchorHistoryMarquee,
   );
 
-  return baseFocusDragAnchorHistoryMarqueeLocal;
+  return baseCanvasFocusDragAnchorHistoryMarqueeLocal;
 };
 
 export type GraphWithPlugins = ReturnType<typeof useGraphWithPlugins>;

@@ -6,10 +6,10 @@ import { ref } from 'vue';
 import { computed } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
-import type { GraphMouseEvent } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { Aggregator } from '../../types.ts';
+import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
@@ -47,14 +47,14 @@ export const useMarqueePlugin = <
     items,
     coords,
     event,
-  }: GraphMouseEvent) => {
+  }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (topItem?.graphType !== 'encapsulated-node-box') release('nodeAnchors');
     if (!topItem) engageMarqueeBox(coords);
   };
 
-  const groupDrag = ({ coords }: GraphMouseEvent) => {
+  const groupDrag = ({ coords }: CanvasGraphMouseEvent) => {
     if (!groupDragCoordinates.value) return;
 
     const dx = coords.x - groupDragCoordinates.value.x;
@@ -72,7 +72,7 @@ export const useMarqueePlugin = <
     updateEncapsulatedNodeBox();
   };
 
-  const beginGroupDrag = ({ items, coords, event }: GraphMouseEvent) => {
+  const beginGroupDrag = ({ items, coords, event }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     if (marqueeBox.value) return;
 
@@ -135,7 +135,7 @@ export const useMarqueePlugin = <
     );
   };
 
-  const setMarqueeBoxDimensions = ({ coords }: GraphMouseEvent) => {
+  const setMarqueeBoxDimensions = ({ coords }: CanvasGraphMouseEvent) => {
     if (!marqueeBox.value) return;
     const { x, y } = coords;
     marqueeBox.value.width = x - marqueeBox.value.at.x;

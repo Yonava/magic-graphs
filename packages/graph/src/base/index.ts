@@ -39,7 +39,6 @@ import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { usePluginHoldController } from './usePluginHold.ts';
 
 export const useBaseGraph = (
-  magicCanvas: MagicCanvasProps,
   startupSettings: Partial<GraphSettings> = {},
 ): BaseGraph => {
   const themeName = ref<GraphThemeName>('light');

@@ -4,10 +4,12 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { computed, ref } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
-import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
+import type { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { GNode } from '../../types.ts';
+import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
 import { NodeDragEventMap, createNodeDragEventBus } from './events.ts';
 import { GraphWithNodeDrag } from './types.ts';
 
@@ -21,8 +23,8 @@ export type ActiveDragNode = {
 
 export const useNodeDragPlugin = <
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap,
-  Plugins,
+  EventMap extends BaseEventMap & CanvasEventMap,
+  Plugins extends CanvasPlugin,
 >(
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeDrag<TransactionWrapperOptions, EventMap, Plugins> => {
@@ -32,12 +34,12 @@ export const useNodeDragPlugin = <
   const nodeDragHub: EventHub<NodeDragEventMap> = createEventHub(nodeDragBus);
   const events = mergeEventHubs(
     nodeDragHub,
-    // casting because graph.events could be arbitrarily due to it being stuffed with other events
+    // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap>,
+    graph.events as EventHub<BaseEventMap & CanvasEventMap>,
   );
 
-  const beginDrag = ({ items, coords, event }: GraphMouseEvent) => {
+  const beginDrag = ({ items, coords, event }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem || topItem.graphType !== 'node') return;
@@ -68,7 +70,7 @@ export const useNodeDragPlugin = <
     if (topItem?.id !== droppedNode.id) return;
   };
 
-  const drag = ({ coords: magicCoords }: GraphMouseEvent) => {
+  const drag = ({ coords: magicCoords }: CanvasGraphMouseEvent) => {
     if (!activeDrag.value) return;
 
     const { nodeId, coords } = activeDrag.value;
