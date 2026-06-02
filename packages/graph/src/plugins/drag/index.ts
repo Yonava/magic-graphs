@@ -8,7 +8,6 @@ import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { GNode } from '../../types.ts';
-import { GraphWithPlugins } from '../../useGraph.ts';
 import { NodeDragEventMap, createNodeDragEventBus } from './events.ts';
 import { GraphWithNodeDrag } from './types.ts';
 
@@ -20,7 +19,7 @@ export type ActiveDragNode = {
   coords: Coordinate;
 };
 
-export const useNodeDrag = <
+export const useNodeDragPlugin = <
   TransactionWrapperOptions,
   EventMap extends BaseEventMap,
   Plugins,

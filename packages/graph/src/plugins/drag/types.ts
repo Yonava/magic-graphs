@@ -12,7 +12,7 @@ type NodeDragGraph = {
   currentlyDraggingNode: ComputedRef<GNode | undefined>;
 };
 
-type NodeDragPlugin = {
+export type NodeDragPlugin = {
   /**
    * graph node drag plugin controls
    */
