@@ -14,7 +14,8 @@ import type {
   NodeAnchor,
 } from '../../plugins/anchors/types.ts';
 import type { GNode, SchemaItem } from '../../types.ts';
-import { CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
 import { NodeAnchorEventMap, createNodeAnchorEventBus } from './events.ts';
 
 /**
@@ -28,8 +29,8 @@ import { NodeAnchorEventMap, createNodeAnchorEventBus } from './events.ts';
  */
 export const useNodeAnchorPlugin = <
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap,
-  Plugins,
+  EventMap extends BaseEventMap & CanvasEventMap,
+  Plugins extends CanvasPlugin,
 >(
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeAnchor<TransactionWrapperOptions, EventMap, Plugins> => {
@@ -40,7 +41,7 @@ export const useNodeAnchorPlugin = <
     nodeAnchorHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap>,
+    graph.events as EventHub<BaseEventMap & CanvasEventMap>,
   );
   /**
    * The node which anchors actively orbit around

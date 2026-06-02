@@ -2,11 +2,12 @@ import type { Coordinate } from '@magic/shapes/types/utility';
 
 import { ref } from 'vue';
 
-import { EventHub } from '../events/createEventHub.ts';
-import type { Aggregator, AggregatorTransformer } from '../types.ts';
-import { BaseEventMap } from './events.ts';
+import { BaseEventMap } from '../../base/events.ts';
+import { EventHub } from '../../events/createEventHub.ts';
+import type { Aggregator, AggregatorTransformer } from '../../types.ts';
+import { CanvasEventMap } from './events.ts';
 
-export const useAggregator = ({ emit }: EventHub<BaseEventMap>) => {
+export const useAggregator = ({ emit }: EventHub<CanvasEventMap>) => {
   const aggregator = ref<Aggregator>([]);
   const transformers: AggregatorTransformer[] = [];
 

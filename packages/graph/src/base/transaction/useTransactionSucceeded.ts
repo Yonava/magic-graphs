@@ -1,8 +1,8 @@
 import { Ref } from 'vue';
 
+import { AggregatorProps } from '../../plugins/canvas/useAggregator.ts';
 import { GEdge, GNode } from '../../types.ts';
 import { BaseGraph } from '../types.ts';
-import { AggregatorProps } from '../useAggregator.ts';
 import { propagateTransactionEvents } from './propagateTransactionEvents.ts';
 import { TransactionOptions } from './types.ts';
 

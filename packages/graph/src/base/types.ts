@@ -1,10 +1,11 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
-import type { Coordinate } from '@magic/shapes/types/utility';
 
-import type { ComputedRef, DeepReadonly, Ref, ShallowRef } from 'vue';
+import type { ComputedRef, Ref, ShallowRef } from 'vue';
 
 import { EventHub } from '../events/createEventHub.ts';
+import { GraphAtMousePosition } from '../plugins/canvas/types.ts';
+import { AggregatorProps } from '../plugins/canvas/useAggregator.ts';
 import { GraphSettings } from '../settings/index.ts';
 import { ThemeGetter } from '../themes/getThemeResolver.ts';
 import { GraphThemeName, ThemeLoadouts } from '../themes/index.ts';
@@ -17,22 +18,7 @@ import {
 } from './actions/types.ts';
 import { GraphCursor } from './cursor/types.ts';
 import { BaseEventMap } from './events.ts';
-import { AggregatorProps } from './useAggregator.ts';
 import { PluginHoldController } from './usePluginHold.ts';
-
-/**
- * stores info about the last mouse position on the graph
- */
-export type GraphAtMousePosition = {
-  /**
-   * coordinates translated to the graph's coordinate system
-   */
-  coords: Coordinate;
-  /**
-   * the schema items at the coordinates of the mouse
-   */
-  items: SchemaItem[];
-};
 
 export type BaseGraph<
   TransactionWrapperOptions = {},

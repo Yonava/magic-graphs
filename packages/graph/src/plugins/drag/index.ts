@@ -30,6 +30,7 @@ export const useNodeDragPlugin = <
 ): GraphWithNodeDrag<TransactionWrapperOptions, EventMap, Plugins> => {
   const activeDrag = ref<ActiveDragNode | undefined>();
   const { hold, release } = graph.pluginHoldController('node-drag');
+
   const nodeDragBus = createNodeDragEventBus();
   const nodeDragHub: EventHub<NodeDragEventMap> = createEventHub(nodeDragBus);
   const events = mergeEventHubs(

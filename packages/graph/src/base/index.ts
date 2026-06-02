@@ -15,6 +15,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { createEventHub } from '../events/createEventHub.ts';
 import { prioritizeNode } from '../helpers/prioritization.ts';
+import { useAggregator } from '../plugins/canvas/useAggregator.ts';
 import { getEdgeSchematic } from '../schematics/edge.ts';
 import { getNodeSchematic } from '../schematics/node.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
@@ -33,8 +34,7 @@ import { useGraphCursor } from './cursor/useGraphCursor.ts';
 import { createBaseEventBus } from './events.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
-import type { BaseGraph, GraphAtMousePosition } from './types.ts';
-import { useAggregator } from './useAggregator.ts';
+import type { BaseGraph } from './types.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { usePluginHoldController } from './usePluginHold.ts';
 
@@ -53,10 +53,6 @@ export const useBaseGraph = (
 
   const eventBus = createBaseEventBus();
   const events = createEventHub(eventBus);
-
-  const aggregator = useAggregator(events);
-
-  const canvasFocused = ref(true);
 
   onClickOutside(magicCanvas.canvas, () => {
     canvasFocused.value = false;

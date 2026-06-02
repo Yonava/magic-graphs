@@ -9,7 +9,8 @@ import { BaseEventMap } from '../../base/events.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { Aggregator } from '../../types.ts';
-import { CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
@@ -19,8 +20,8 @@ import { GraphWithMarquee } from './types.ts';
 
 export const useMarqueePlugin = <
   TransactionWrapperOptions,
-  GraphEventMap extends BaseEventMap,
-  Plugins,
+  GraphEventMap extends BaseEventMap & CanvasEventMap,
+  Plugins extends CanvasPlugin,
 >(
   graph: GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins>,
 ): GraphWithMarquee<TransactionWrapperOptions, GraphEventMap, Plugins> => {
@@ -30,7 +31,7 @@ export const useMarqueePlugin = <
     marqueeHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap & FocusEventMap>,
+    graph.events as EventHub<BaseEventMap & CanvasEventMap & FocusEventMap>,
   );
 
   const marqueeBox = ref<BoundingBox | undefined>();

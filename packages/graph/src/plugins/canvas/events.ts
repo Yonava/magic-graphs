@@ -1,7 +1,7 @@
 import { DeepReadonly } from 'ts-essentials';
 
-import { GraphAtMousePosition } from '../../base/types.ts';
 import { EventMapToEventBus } from '../../events/index.ts';
+import { GraphAtMousePosition } from './types.ts';
 
 /**
  * a standard mouse event along with extra graph related info
