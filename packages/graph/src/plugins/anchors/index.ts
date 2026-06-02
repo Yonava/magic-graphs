@@ -5,7 +5,7 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { readonly, ref } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
-import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
+import type { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { prioritizeNode } from '../../helpers/prioritization.ts';
@@ -14,6 +14,7 @@ import type {
   NodeAnchor,
 } from '../../plugins/anchors/types.ts';
 import type { GNode, SchemaItem } from '../../types.ts';
+import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { NodeAnchorEventMap, createNodeAnchorEventBus } from './events.ts';
 
 /**
@@ -75,7 +76,7 @@ export const useNodeAnchorPlugin = <
 
   const hoveredNodeAnchorId = ref<NodeAnchor['id']>();
 
-  const updateHoveredNodeAnchorId = ({ items }: GraphMouseEvent) => {
+  const updateHoveredNodeAnchorId = ({ items }: CanvasGraphMouseEvent) => {
     const topItem = items.at(-1);
     if (!topItem) return (hoveredNodeAnchorId.value = undefined);
 
@@ -197,7 +198,7 @@ export const useNodeAnchorPlugin = <
   /**
    * the anchor at the given event location
    */
-  const getAnchor = ({ items, event }: GraphMouseEvent) => {
+  const getAnchor = ({ items, event }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem || topItem.graphType !== 'node-anchor') return;
@@ -287,7 +288,7 @@ export const useNodeAnchorPlugin = <
     }
   };
 
-  const setCurrentlyDraggingAnchor = (ev: GraphMouseEvent) => {
+  const setCurrentlyDraggingAnchor = (ev: CanvasGraphMouseEvent) => {
     if (!parentNode.value) return;
     /**
      * TODO shouldn't getAnchor be unnecessary here because the top item in this event should
@@ -301,7 +302,7 @@ export const useNodeAnchorPlugin = <
 
   const updateCurrentlyDraggingAnchorPosition = ({
     coords,
-  }: GraphMouseEvent) => {
+  }: CanvasGraphMouseEvent) => {
     if (!currentDraggingAnchor.value) return;
     const { x, y } = coords;
     currentDraggingAnchor.value.x = x;

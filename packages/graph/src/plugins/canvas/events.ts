@@ -9,43 +9,43 @@ import { EventMapToEventBus } from '../../events/index.ts';
  */
 export type CanvasGraphMouseEvent = DeepReadonly<GraphAtMousePosition> & {
   /**
-   * the native browser event that triggered this graph event
+   * the native browser event that triggered this canvas graph event
    */
   event: MouseEvent;
 };
 
 export type CanvasEventMap = {
   /**
-   * when the canvas is clicked on (native dom event)
+   * when the canvas is clicked on (proxies native dom event)
    */
   onClick: (ev: CanvasGraphMouseEvent) => void;
   /**
-   * when the user clicks the mouse button on the canvas (native dom event)
+   * when the user clicks the mouse button on the canvas (proxies native dom event)
    */
   onMouseDown: (ev: CanvasGraphMouseEvent) => void;
   /**
-   * when the user releases the mouse button on the canvas (native dom event)
+   * when the user releases the mouse button on the canvas (proxies native dom event)
    */
   onMouseUp: (ev: CanvasGraphMouseEvent) => void;
   /**
-   * when the user moves the mouse on the canvas (native dom event)
+   * when the user moves the mouse on the canvas (proxies native dom event)
    */
   onMouseMove: (ev: CanvasGraphMouseEvent) => void;
   /**
-   * when the canvas is double clicked on (native dom event)
+   * when the canvas is double clicked on (proxies native dom event)
    */
   onDblClick: (ev: CanvasGraphMouseEvent) => void;
   /**
-   * when the canvas is right clicked on (native dom event)
+   * when the canvas is right clicked on (proxies native dom event)
    */
   onContextMenu: (ev: CanvasGraphMouseEvent) => void;
 
   /**
-   * when a key is pressed down on the canvas (native dom event)
+   * when a key is pressed down on the canvas (proxies native dom event)
    */
   onKeyDown: (ev: KeyboardEvent) => void;
   /**
-   * when a key is released on the canvas (native dom event)
+   * when a key is released on the canvas (proxies native dom event)
    */
   onKeyUp: (ev: KeyboardEvent) => void;
 };
