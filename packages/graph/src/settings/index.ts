@@ -4,6 +4,14 @@ import type { DeepPartial } from 'ts-essentials';
 
 import type { GraphAnimations } from '../base/animations.ts';
 import {
+  DEFAULT_NODE_ANCHOR_SETTINGS,
+  NodeAnchorGraphSettings,
+} from '../plugins/anchors/settings.ts';
+import {
+  DEFAULT_DRAGGABLE_SETTINGS,
+  DraggableGraphSettings,
+} from '../plugins/drag/settings.ts';
+import {
   DEFAULT_FOCUS_SETTINGS,
   FocusGraphSettings,
 } from '../plugins/focus/settings.ts';
@@ -68,37 +76,6 @@ export const DEFAULT_BASE_SETTINGS: BaseGraphSettings = {
   newNodeLabelGetter: null,
   isGraphDirected: true,
   animations: () => ({}),
-};
-
-/**
- * DRAGGABLE GRAPH SETTINGS
- */
-export type DraggableGraphSettings = {
-  /**
-   * whether the nodes on the graph are draggable
-   * @default true
-   */
-  draggable: boolean;
-};
-
-export const DEFAULT_DRAGGABLE_SETTINGS: DraggableGraphSettings = {
-  draggable: true,
-};
-
-/**
- * NODE ANCHOR GRAPH SETTINGS
- */
-export type NodeAnchorGraphSettings = {
-  /**
-   * whether node anchors are enabled, if true, anchors will spawn around nodes while hovered
-   * enabling edge creation
-   * @default true
-   */
-  nodeAnchors: boolean;
-};
-
-export const DEFAULT_NODE_ANCHOR_SETTINGS: NodeAnchorGraphSettings = {
-  nodeAnchors: true,
 };
 
 /**

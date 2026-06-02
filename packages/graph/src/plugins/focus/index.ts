@@ -50,9 +50,10 @@ export const useFocusPlugin = <
     );
     if (ids.length > 0 && elementsAlreadyFocused) return;
 
-    const oldIds = new Set(focusedElementIds.value);
+    const oldIds = new Set([...focusedElementIds.value]);
     focusedElementIds.value = new Set(ids);
 
+    console.log(focusedElementIds.value, oldIds);
     events.emit('onFocusChange', focusedElementIds.value, oldIds);
   };
 
@@ -241,20 +242,20 @@ export const useFocusPlugin = <
     addNode: (node, options) => {
       const addedNode = upstreamActions.addNode(node, options);
       const focusOnAdded = options?.focus ?? true;
-      if (focusOnAdded) addToFocus(addedNode.id);
+      if (focusOnAdded) setFocus([addedNode.id]);
       return addedNode;
     },
     addEdge: (edge, options) => {
       const addedEdge = upstreamActions.addEdge(edge, options);
       const focusOnAdded = options?.focus ?? true;
-      if (focusOnAdded) addToFocus(addedEdge.id);
+      if (focusOnAdded) setFocus([addedEdge.id]);
       return addedEdge;
     },
     addElements: (elements, options) => {
       const updatedElements = upstreamActions.addElements(elements, options);
       const focusOnAdded = options?.focus ?? true;
       if (focusOnAdded) {
-        addToFocus([
+        setFocus([
           ...updatedElements.addedNodes.map((n) => n.id),
           ...updatedElements.addedEdges.map((e) => e.id),
         ]);

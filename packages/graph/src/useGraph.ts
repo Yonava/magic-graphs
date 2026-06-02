@@ -3,7 +3,9 @@ import type { MagicCanvasProps } from '@magic/canvas/types';
 import { BaseEventMap } from './base/events.ts';
 import { useBaseGraph } from './base/index.ts';
 import { useGraphHelpers } from './helpers/index.ts';
-import { useNodeAnchors } from './plugins/anchors/index.ts';
+import { NodeAnchorEventMap } from './plugins/anchors/events.ts';
+import { useNodeAnchorPlugin } from './plugins/anchors/index.ts';
+import { NodeAnchorPlugin } from './plugins/anchors/types.ts';
 import { useAnnotations } from './plugins/annotations/index.ts';
 import { useCharacteristics } from './plugins/characteristics/index.ts';
 import { NodeDragEventMap } from './plugins/drag/events.ts';
@@ -37,27 +39,42 @@ const useGraphWithPlugins = (
   // https://github.com/Yonava/magic-graphs/issues/606
   // TODO get inference to work without explicit type parameters
   const base = useBaseGraph(canvas, settings);
+
   const baseFocus = useFocusPlugin<{}, BaseEventMap, {}>(base);
+
   const baseFocusDrag = useNodeDragPlugin<
     FocusTransactionWrapperOptions,
     BaseEventMap & FocusEventMap,
     FocusPlugin
   >(baseFocus);
-  const baseFocusDragHistory = useHistoryPlugin<
+
+  const baseFocusDragAnchor = useNodeAnchorPlugin<
     FocusTransactionWrapperOptions,
     BaseEventMap & FocusEventMap & NodeDragEventMap,
     FocusPlugin & NodeDragPlugin
   >(baseFocusDrag);
-  const baseFocusDragHistoryMarquee = useMarqueePlugin<
+
+  const baseFocusDragAnchorHistory = useHistoryPlugin<
+    FocusTransactionWrapperOptions,
+    BaseEventMap & FocusEventMap & NodeDragEventMap & NodeAnchorEventMap,
+    FocusPlugin & NodeDragPlugin & NodeAnchorPlugin
+  >(baseFocusDragAnchor);
+
+  const baseFocusDragAnchorHistoryMarquee = useMarqueePlugin<
     FocusTransactionWrapperOptions & HistoryTransactionWrapperOptions,
-    BaseEventMap & FocusEventMap & NodeDragEventMap & HistoryEventMap,
-    FocusPlugin & NodeDragPlugin & HistoryPlugin
-  >(baseFocusDragHistory);
-  const baseFocusHistoryMarqueeLocal = useLocalStoragePlugin(
-    baseFocusDragHistoryMarquee,
+    BaseEventMap &
+      FocusEventMap &
+      NodeDragEventMap &
+      NodeAnchorEventMap &
+      HistoryEventMap,
+    FocusPlugin & NodeDragPlugin & NodeAnchorPlugin & HistoryPlugin
+  >(baseFocusDragAnchorHistory);
+
+  const baseFocusDragAnchorHistoryMarqueeLocal = useLocalStoragePlugin(
+    baseFocusDragAnchorHistoryMarquee,
   );
 
-  return baseFocusHistoryMarqueeLocal;
+  return baseFocusDragAnchorHistoryMarqueeLocal;
 };
 
 export type GraphWithPlugins = ReturnType<typeof useGraphWithPlugins>;
@@ -76,7 +93,6 @@ export const useGraph = (
 ) => {
   const graph = useGraphWithPlugins(canvas, settings);
 
-  const nodeAnchors = useNodeAnchors(graph);
   const annotation = useAnnotations(graph);
   const preferredTheme = usePreferredTheme(graph);
 
@@ -95,9 +111,6 @@ export const useGraph = (
 
   return {
     ...graph,
-
-    // TODO convert to plugins
-    nodeAnchors,
 
     // TODO purge from graph layer all together
     annotation,

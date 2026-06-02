@@ -1,3 +1,10 @@
+import { Ref } from 'vue';
+
+import { BaseEventMap } from '../../base/events.ts';
+import { BaseGraph } from '../../base/types.ts';
+import { GNode } from '../../types.ts';
+import { NodeAnchorEventMap } from './events.ts';
+
 /**
  * an anchor instance that is attached to a node
  */
@@ -20,3 +27,36 @@ export type NodeAnchor = {
    */
   id: string;
 };
+
+type NodeAnchorGraph = {
+  /**
+   * the node anchor that is currently being dragged by the user
+   */
+  currentDraggingAnchor: Readonly<Ref<NodeAnchor | undefined>>;
+  /**
+   * the parent node of the active anchor
+   */
+  parentNode: Readonly<Ref<GNode | undefined>>;
+  /**
+   * set the parent node and spawn anchors around it
+   */
+  setParentNode: (nodeId: GNode['id']) => void;
+  clearAnchorState: () => void;
+};
+
+export type NodeAnchorPlugin = {
+  /**
+   * graph node anchor plugin controls
+   */
+  nodeAnchor: NodeAnchorGraph;
+};
+
+export type GraphWithNodeAnchor<
+  TransactionWrapperOptions,
+  EventMap extends BaseEventMap,
+  Plugins,
+> = BaseGraph<
+  TransactionWrapperOptions,
+  EventMap & NodeAnchorEventMap,
+  Plugins & NodeAnchorPlugin
+>;
