@@ -3,9 +3,14 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, ref } from 'vue';
 
-import type { GraphMouseEvent } from '../../base/types.ts';
+import { BaseEventMap } from '../../base/events.ts';
+import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
+import { EventHub, createEventHub } from '../../events/createEventHub.ts';
+import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { GNode } from '../../types.ts';
 import { GraphWithPlugins } from '../../useGraph.ts';
+import { NodeDragEventMap, createNodeDragEventBus } from './events.ts';
+import { GraphWithNodeDrag } from './types.ts';
 
 /**
  * info for the node being dragged
@@ -15,9 +20,23 @@ export type ActiveDragNode = {
   coords: Coordinate;
 };
 
-export const useNodeDrag = (graph: GraphWithPlugins) => {
+export const useNodeDrag = <
+  TransactionWrapperOptions,
+  EventMap extends BaseEventMap,
+  Plugins,
+>(
+  graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
+): GraphWithNodeDrag<TransactionWrapperOptions, EventMap, Plugins> => {
   const activeDrag = ref<ActiveDragNode | undefined>();
   const { hold, release } = graph.pluginHoldController('node-drag');
+  const nodeDragBus = createNodeDragEventBus();
+  const nodeDragHub: EventHub<NodeDragEventMap> = createEventHub(nodeDragBus);
+  const events = mergeEventHubs(
+    nodeDragHub,
+    // casting because graph.events could be arbitrarily due to it being stuffed with other events
+    // from plugins upstream
+    graph.events as EventHub<BaseEventMap>,
+  );
 
   const beginDrag = ({ items, coords, event }: GraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
@@ -30,8 +49,7 @@ export const useNodeDrag = (graph: GraphWithPlugins) => {
     if (!node) return;
 
     activeDrag.value = { nodeId: node.id, coords };
-    // @ts-expect-error migration
-    graph.events.emit('onNodeDragStart', node);
+    events.emit('onNodeDragStart', node);
   };
 
   const drop = () => {
@@ -43,8 +61,7 @@ export const useNodeDrag = (graph: GraphWithPlugins) => {
 
     activeDrag.value = undefined;
 
-    // @ts-expect-error migration
-    graph.events.emit('onNodeDrop', droppedNode);
+    events.emit('onNodeDrop', droppedNode);
     release('nodeAnchors');
 
     const { items } = graph.graphAtMousePosition.value;
@@ -74,21 +91,21 @@ export const useNodeDrag = (graph: GraphWithPlugins) => {
   };
 
   const activate = () => {
-    graph.events.subscribe('onMouseDown', beginDrag);
-    graph.events.subscribe('onMouseUp', drop);
-    graph.events.subscribe('onMouseMove', drag);
+    events.subscribe('onMouseDown', beginDrag);
+    events.subscribe('onMouseUp', drop);
+    events.subscribe('onMouseMove', drag);
     graph.cursor.graphToCursorMap.value['node'] = 'grab';
   };
 
   const deactivate = () => {
-    graph.events.unsubscribe('onMouseDown', beginDrag);
-    graph.events.unsubscribe('onMouseUp', drop);
-    graph.events.unsubscribe('onMouseMove', drag);
+    events.unsubscribe('onMouseDown', beginDrag);
+    events.unsubscribe('onMouseUp', drop);
+    events.unsubscribe('onMouseMove', drag);
     graph.cursor.graphToCursorMap.value['node'] = 'pointer';
     if (activeDrag.value) drop();
   };
 
-  graph.events.subscribe('onSettingsChange', (diff) => {
+  events.subscribe('onSettingsChange', (diff) => {
     if (diff.draggable === false) deactivate();
     else if (diff.draggable === true) activate();
   });
@@ -97,15 +114,14 @@ export const useNodeDrag = (graph: GraphWithPlugins) => {
   if (!graph.settings.value.draggable) deactivate();
 
   return {
-    /**
-     * the node that is currently being dragged or undefined if no node is being dragged
-     */
-    currentlyDraggingNode: computed(() => {
-      return activeDrag.value
-        ? graph.getNode(activeDrag.value.nodeId)
-        : undefined;
-    }),
+    ...graph,
+    events,
+    nodeDrag: {
+      currentlyDraggingNode: computed(() => {
+        return activeDrag.value
+          ? graph.getNode(activeDrag.value.nodeId)
+          : undefined;
+      }),
+    },
   };
 };
-
-export type GraphNodeDragControls = ReturnType<typeof useNodeDrag>;
