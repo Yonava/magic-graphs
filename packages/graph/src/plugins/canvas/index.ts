@@ -1,9 +1,10 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { deepMerge } from '@magic/utils/deepMerge';
-import { onClickOutside } from '@vueuse/core';
+import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
+import { onClickOutside, useElementHover } from '@vueuse/core';
 
-import { ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 import {
   GraphAnimations,
@@ -96,7 +97,10 @@ export const useCanvasPlugin = <
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const edgeSchemaItems = graph.edges.value
       .map((edge) => {
-        const shape = graph.getTheme('edge.base.shape', edge, graph);
+        const shape = graph.getTheme('edge.base.shape', edge, {
+          ...graph,
+          shapes,
+        });
         if (!shape) return;
 
         return {
@@ -110,7 +114,10 @@ export const useCanvasPlugin = <
 
     const nodeSchemaItems = graph.nodes.value
       .map((node) => {
-        const shape = graph.getTheme('node.base.shape', node, graph);
+        const shape = graph.getTheme('node.base.shape', node, {
+          ...graph,
+          shapes,
+        });
         if (!shape) return;
 
         return {
@@ -130,9 +137,57 @@ export const useCanvasPlugin = <
 
   aggregator.transformers.push(addNodesAndEdgesToAggregator);
 
+  onMounted(() => {
+    if (!magicCanvas.canvas.value) {
+      throw new Error('Canvas element not found in DOM');
+    }
+
+    for (const [event, listeners] of Object.entries(
+      mouseEvents,
+    ) as MouseEventEntries) {
+      magicCanvas.canvas.value.addEventListener(event, listeners);
+    }
+
+    for (const [event, listeners] of Object.entries(
+      keyboardEvents,
+    ) as KeyboardEventEntries) {
+      document.addEventListener(event, listeners);
+    }
+  });
+
+  onBeforeUnmount(() => {
+    if (!magicCanvas.canvas.value) {
+      throw new Error('Canvas element not found in DOM');
+    }
+
+    for (const [event, listeners] of Object.entries(
+      mouseEvents,
+    ) as MouseEventEntries) {
+      magicCanvas.canvas.value.removeEventListener(event, listeners);
+    }
+
+    for (const [event, listeners] of Object.entries(
+      keyboardEvents,
+    ) as KeyboardEventEntries) {
+      document.removeEventListener(event, listeners);
+    }
+  });
+
   return {
     ...graph,
     events,
-    canvas: {},
+    canvas: {
+      aggregator,
+      shapes,
+
+      magicCanvas,
+
+      canvasFocused,
+      canvasHovered: useElementHover(magicCanvas.canvas),
+
+      graphAtMousePosition,
+      updateGraphAtMousePosition,
+      cursor,
+    },
   };
 };

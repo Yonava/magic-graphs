@@ -10,13 +10,12 @@ import { GraphSettings } from '../settings/index.ts';
 import { ThemeGetter } from '../themes/getThemeResolver.ts';
 import { GraphThemeName, ThemeLoadouts } from '../themes/index.ts';
 import { FullThemeMap } from '../themes/types.ts';
-import type { GEdge, GNode, SchemaItem } from '../types.ts';
+import type { GEdge, GNode } from '../types.ts';
 import {
   BaseTransactionWrapperOptions,
   GraphActions,
   MergeTransactionWrappersWithBase,
 } from './actions/types.ts';
-import { GraphCursor } from './cursor/types.ts';
 import { BaseEventMap } from './events.ts';
 import { PluginHoldController } from './usePluginHold.ts';
 
@@ -46,30 +45,13 @@ export type BaseGraph<
 
   events: EventHub<EventMap>;
 
-  aggregator: AggregatorProps;
-
   pluginHoldController: PluginHoldController;
-  shapes: AnimatedShapeControls;
 
   baseTheme: ComputedRef<ThemeLoadouts[GraphThemeName]>;
   themeName: Ref<GraphThemeName>;
   getTheme: ThemeGetter;
   themeMap: FullThemeMap;
   settings: Ref<GraphSettings>;
-
-  magicCanvas: MagicCanvasProps;
-  /**
-   * whether the canvas is currently focused in the browser
-   */
-  canvasFocused: Ref<boolean>;
-  /**
-   * whether the canvas is currently hovered by the mouse
-   */
-  canvasHovered: ShallowRef<boolean>;
-
-  graphAtMousePosition: Ref<GraphAtMousePosition>;
-  updateGraphAtMousePosition: () => GraphAtMousePosition;
-  cursor: GraphCursor;
 } & Plugins;
 
 export type InternalActions = {

@@ -9,8 +9,6 @@ import { TransactionOptions } from './types.ts';
 type TransactionSucceededOptions = {
   nodes: Ref<GNode[]>;
   edges: Ref<GEdge[]>;
-  updateGraphAtMousePosition: () => void;
-  updateAggregator: AggregatorProps['updateAggregator'];
   emit: BaseGraph['events']['emit'];
 };
 
@@ -18,8 +16,6 @@ export const useTransactionSucceeded = ({
   nodes,
   edges,
   emit,
-  updateAggregator,
-  updateGraphAtMousePosition,
 }: TransactionSucceededOptions): TransactionOptions['onTransactionSucceeded'] => {
   return (payload) => {
     if (payload.removedNodeIds.length || payload.removedEdgeIds.length) {
@@ -43,9 +39,6 @@ export const useTransactionSucceeded = ({
       if (target) Object.assign(target, update.edge);
     });
 
-    updateGraphAtMousePosition();
-    updateAggregator();
     propagateTransactionEvents(payload, emit);
-    emit('onTransactionComplete', payload);
   };
 };

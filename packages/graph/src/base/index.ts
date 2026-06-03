@@ -1,34 +1,17 @@
-import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { clone } from '@magic/utils/clone';
-import { deepMerge } from '@magic/utils/deepMerge';
 import { delta } from '@magic/utils/delta/index';
-import type {
-  KeyboardEventEntries,
-  KeyboardEventMap,
-  MouseEventEntries,
-  MouseEventMap,
-} from '@magic/utils/types';
-import { useElementHover } from '@vueuse/core';
 
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { createEventHub } from '../events/createEventHub.ts';
-import { prioritizeNode } from '../helpers/prioritization.ts';
-import { getEdgeSchematic } from '../schematics/edge.ts';
-import { getNodeSchematic } from '../schematics/node.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
 import { getThemeResolver } from '../themes/getThemeResolver.ts';
 import { THEME_LOADOUTS } from '../themes/index.ts';
 import type { GraphThemeName } from '../themes/index.ts';
-import { GraphInterface, getInitialThemeMap } from '../themes/types.ts';
-import type { Aggregator, GEdge, GNode } from '../types.ts';
+import { getInitialThemeMap } from '../themes/types.ts';
+import type { GEdge, GNode } from '../types.ts';
 import { useGraphActions } from './actions/useGraphActions.ts';
-import {
-  type GraphAnimations,
-  getDefaultGraphAnimations,
-} from './animations.ts';
-import { useGraphCursor } from './cursor/useGraphCursor.ts';
 import { createBaseEventBus } from './events.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
@@ -58,50 +41,10 @@ export const useBaseGraph = (
   const getNode = (id: GNode['id']) => nodeIdToNodeMap.value.get(id);
   const getEdge = (id: GEdge['id']) => edgeIdToEdgeMap.value.get(id);
 
-  aggregator.transformers.push(addNodesAndEdgesToAggregator);
-
-  onMounted(() => {
-    if (!magicCanvas.canvas.value) {
-      throw new Error('Canvas element not found in DOM');
-    }
-
-    for (const [event, listeners] of Object.entries(
-      mouseEvents,
-    ) as MouseEventEntries) {
-      magicCanvas.canvas.value.addEventListener(event, listeners);
-    }
-
-    for (const [event, listeners] of Object.entries(
-      keyboardEvents,
-    ) as KeyboardEventEntries) {
-      document.addEventListener(event, listeners);
-    }
-  });
-
-  onBeforeUnmount(() => {
-    if (!magicCanvas.canvas.value) {
-      throw new Error('Canvas element not found in DOM');
-    }
-
-    for (const [event, listeners] of Object.entries(
-      mouseEvents,
-    ) as MouseEventEntries) {
-      magicCanvas.canvas.value.removeEventListener(event, listeners);
-    }
-
-    for (const [event, listeners] of Object.entries(
-      keyboardEvents,
-    ) as KeyboardEventEntries) {
-      document.removeEventListener(event, listeners);
-    }
-  });
-
   const onTransactionSucceeded = useTransactionSucceeded({
     edges,
     nodes,
     emit: events.emit,
-    updateAggregator: aggregator.updateAggregator,
-    updateGraphAtMousePosition,
   });
   const commitTransaction = useCommitTransaction({
     getGraphState: () => ({ nodes: nodes.value, edges: edges.value }),
@@ -174,22 +117,5 @@ export const useBaseGraph = (
     getTheme,
     themeMap,
     settings,
-
-    aggregator,
-    shapes,
-
-    magicCanvas,
-    /**
-     * whether the canvas is currently focused in the browser
-     */
-    canvasFocused,
-    /**
-     * whether the canvas is currently hovered by the mouse
-     */
-    canvasHovered: useElementHover(magicCanvas.canvas),
-
-    graphAtMousePosition,
-    updateGraphAtMousePosition,
-    cursor,
   };
 };
