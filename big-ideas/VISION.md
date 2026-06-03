@@ -6,27 +6,27 @@ _Written June 2026. A record of the strategy._
 
 ## What Is Magic Graphs
 
-Magic Graphs is a discrete mathematics IDE for CS education. Not a graph tool, not a visualization library — a complete interactive environment covering the visual layer of the CS theory curriculum: graph algorithms, set theory, Markov chains, network flow, binary trees, path finding, and every other canvas-representable experience in the standard CS program.
+Magic Graphs is a discrete mathematics IDE for CS education. Not just a generic graph tool or a visualization library but a complete interactive environment spanning the entire visual realm of undergraduate CS theory for example: BFS/DFS, Strongly Connected Components, Sets, Markov Chains, Network Flow, Trees, Path Finding, and a bunch of other canvas-representable experiences.
 
-It is built on a high-quality SDK (`@magic/graph`) that powers every product experience. The products dogfood the SDK. The SDK is validated by the products. They are not separate concerns.
+Each of these examples are packaged as product experiences and built with the core SDK (`@magic/graph`) and rendered with the canvas primitives in `@magic/shapes`. The products dogfood the SDK. The SDK is validated by the products. The products get better when the SDK gets better, and new product features surface the blind spots that the SDK doesn't address on a system level.
 
-Product experiences are designed to deliver time-to-value in under a minute. Double click to add a few nodes, drag a couple edges, edit the edge weights and get instant feedback. On Markov Chains? Steady state vectors update, recurrent classes are highlighted, and transient states populate instantly. On Set Theory? Targeted set space highlights, mathematical syntax errors in the LaTeX keyboard are flagged, editing the set space by dragging a set provides live results.
+Product experiences are designed to be immediately intuitive and obviously useful. Double click to add a few nodes, drag anchors to connect them with edges, edit the edge weights and get instant feedback. On Markov Chains? Steady state vectors update, recurrent classes are highlighted, and transient states populate instantly. On Set Theory? Targeted set space highlights, mathematical syntax errors in the LaTeX keyboard are flagged, editing the set space by dragging a set provides live results.
 
 ---
 
-## Why This Has a Chance
+## Why This Isn't Won't Be "Just A Dream" If We Execute
 
-The competition kinda sucks. JFLAP, VisuAlgo, David Galles' applets — these are Java applications from 2003 or read-only animations. None of them let a professor build a custom graph, run an algorithm, pause mid-execution, annotate it freehand, and share the exact state with 200 students via a URL. Magic Graphs does all of that today.
+The [competition](./COMPETITION.md) sucks! The landscape consists of Java applications from 2003 or hard to use, clunky, and unintuitive read-only animations. None of them let a professor build a custom graph on a fluid canvas, run an algorithm, pause mid-execution, annotate it freehand, and share the exact state with 200 students via a URL or invite live collaboration with students in the classroom. Magic Graphs does all of that today.
 
-The validation signals are real and independent:
+The idea has already been validated by the real-world:
 
 - 4th place out of 200+ at HackUMass, WolframAlpha Letter Award Winner
-- Organic student adoption on Piazza from a single post about the Markov chain product — students sharing a study tool they were never assigned
-- Interest from professors and software engineers alike when viewing early stage demos
+- Experienced organic student adoption via Piazza posts demonstrating real users found real utility immediately
+- Interest from professors like Timothy Richards & Peter Haas, along with industry pros like Alexander Lichter (at SquiggleConf 2025) and other software engineers.
 
-The distribution strategy has an unfair advantage: direct personal relationships with professors who are actively frustrated with their current tooling and are known to be open to better options.
+Our philosophy simple. Building with an emphasis on product and engineering quality, slowly, without pressure to monetize.
 
-Our philosophy is building this right, slowly, without pressure to monetize prematurely. Providing students, TAs, and professors alike with excellent tooling for a fraction of the cost of stale textbooks or competing ed-tech platforms because all learners deserve great technology.
+**We provide students, TAs, and professors with excellent tools for a fraction of the cost of stale textbooks or competing ed-tech platforms because all learners deserve a great educational experience regardless of ability to pay.**
 
 ---
 
@@ -34,47 +34,91 @@ Our philosophy is building this right, slowly, without pressure to monetize prem
 
 ### Breadth and attention to design detail are the moat
 
-A competitor can clone Dijkstra's. They cannot easily clone the entire discrete math curriculum with a shared canvas engine, consistent UX, annotation layer, shareable links, and simulation controls — all built on a typed, composable SDK. Catalog completeness is what converts Magic Graphs from a useful tool into the default answer to "how do I teach this visually."
+A competitor can clone Dijkstra's. They cannot easily clone the entire discrete math curriculum with a shared canvas engine, consistent UX, annotation layer, shareable links, and simulation controls all built with an obsessive product focus and attention to detail. Catalog completeness is what converts Magic Graphs from a useful tool into the default answer to "how do I teach this visually."
 
-Target coverage: sets, path finding, binary trees, network flow, Markov chains, spanning trees, BFS/DFS, and every other topic that lives in the standard algorithms and discrete math curriculum.
+For more information, read [COMPETITION.md](./COMPETITION.md)
 
 ### The demo-to-organic-adoption loop
 
-Professors do not need to put this on the syllabus. They open it in lecture to demonstrate a concept. Students see it, want it, find it themselves. This is how the Markov chain Piazza adoption happened — nobody assigned it. This loop is the primary growth engine and it requires no institutional buy-in to activate.
+Professors do not need to put Magic Canvas on the syllabus (although they absolutely could). They open it in lecture to demonstrate a concept. Students see it, want it, and will find our link. The Markov chain Piazza adoption demonstrates that students will see the value right away and seek the product out. I believe this to be our primary growth engine and it requires no institutional buy-in to activate.
 
 ### The professor experience must be flawless
 
-The professor is not a power user. They are pulling up a URL five minutes before a lecture. If loading is slow, sharing a graph is more than two clicks, or the algorithm output is wrong once in front of 200 students — the tool is dead. Correctness and reliability are the non-negotiables. Everything else is secondary.
+The average professor is not a power user. They are pulling up a URL five minutes before a lecture. If loading is slow and lags, sharing a graph is a pain in the ass, or worst of all, the algorithm output is wrong only **once** in front of 200 students, Magic Graphs hangs itself. Correctness and reliability are the non-negotiables. Everything else is secondary.
 
 ---
 
-## The Monetization Model
+## Making This Financially Sustainable
 
-### Tiered by value, not by lock-in
+### Tiered by value
 
-**Free**: Open the app, load a shared link, use the basic sandbox. No account required. This is the distribution mechanism — it keeps friction at zero for the first contact moment.
+**Free**: Open the app, load a shared link, use the basic sandbox. No account required. Zero friction. This makes it effortless to get your hands on it, and means everyone can use Magic Graphs even if they don't have the means to upgrade to a paid tier.
 
-**$2/semester**: Unlocks simulation execution, algorithm playback, workspace saving. This is the individual student tier. Low enough that the logistical friction of account sharing outweighs the cost. Priced as an explicit signal that this is a lean, high-velocity product — not a mature enterprise suite.
+**$2/semester**: Unlocks one product experience in full including the ability to take part in collaboration and graph sharing features. This is the individual student tier. Low enough that the logistical friction of account sharing outweighs the cost. Priced as an explicit signal that this is a lean, high-velocity product — not a mature enterprise suite.
 
-**$5/semester**: Full suite access across all products. Natural upgrade when a student hits a second course that uses a different tool.
+**$8/semester**: Full suite access across all products and features. Natural upgrade when a student takes a second course, or a course that has very dense curriculum spanning multiple product experiences.
 
-**Institutional / LMS integration**: Per-department annual contracts in the $5,000-15,000/year range. Canvas, Blackboard, Moodle integration. This is the tier that makes this a viable small business that can justify multiple full-time maintainers. One department head signs, every professor and every student gets access. Requires real usage density to justify, which the lower tiers build.
+**Institutional / LMS integration**: Per-department annual contracts in the $5,000-15,000/year range. Canvas, Blackboard, Moodle integration. This is the tier that makes this a viable business that can justify multiple full-time maintainers. When one department head signs, every professor, student, and course staff gets access. This is where metrics from per school student adoption come in handy as the more students use it, the more proven value exists for an institution.
 
-### Why $2 is the right floor
+**White Glove Partner**: For universities that want to build their own custom product experiences on top of `@magic/graph`. We scope and co-develop the experience with them, provide direct team access, guaranteed support response times, and ongoing maintenance. $25,000-100,000+ per engagement depending on scope, with an annual retainer. Reserved for a small number of research-active partners where the relationship also generates academic visibility, think conference presentations, CS education papers, and citations that reach every CS education researcher in the world.
 
-A user who won't pay $2 is not a user whose feedback is reliable. The minor financial exchange filters for actual skin-in-the-game users and creates an honest feedback loop. It also sets the right expectation — $2 implies "lean and fast-moving," not "enterprise and bloated."
+### Why Charge $2?
 
-### The revenue ceiling
+A user who won't pay $2 is not a user whose feedback is, generally speaking, reliable. The minor financial exchange filters for actual skin-in-the-game users and creates an honest feedback loop. It also sets the expectation that the product is a tool worth paying for, but a very specialized, lean tool.
 
-The US alone has ~4,000 colleges and universities. Conservative 10% penetration at the $2 student tier, institutional conversion where adoption is dense, and LMS integration contracts at scale produces a realistic path to $2-4M ARR on the ed-tech business alone. This is before the SDK licensing tier is factored in.
+### What Is Realistic In Terms of Revenue?
 
-For context: 1/4 the reach of Desmos in a narrower, more monetizable niche (college CS students who have a clear payment model) implies 2-5M monthly actives at peak semester periods, institutional presence at 500-1,000 universities, and SDK licensing revenue from companies building adjacent tools. At that scale with a 3-5 person team and near-zero marginal infrastructure cost (compute is client-side), the margins are exceptional.
+The US alone has ~4,000 colleges and universities, ~6,000 in the entire English speaking world, and 25,000-50,000 globally.
+
+Globally roughly 1.5 to 2 million students graduate with computer science (CS) and related degrees worldwide, translating to 6 to 8 million active students at any given time concentrated mainly in 1. India (~1.2m) 2. USA (~600k) 3. China (~425k).
+
+We model two scenarios: a **base case** reflecting disciplined execution and real but modest adoption, and a **high-end case** reflecting strong organic growth and institutional traction.
+
+#### Base Case
+
+Assume 8% of North American + Western European students at a $3.50 average semester price, and 2% of students globally at an average of $2.50.
+
+(800,000 x 0.08) x $3.50 = $224,000 / Semester
+(6,200,000 x 0.02) x $2.50 = $310,000 / Semester
+
+= $534,000 x 2 = **$1,068,000 in Student Subscriptions Annually**
+
+50 institutional partnerships at $8,000 each:
+
+50 x $8,000 = **$400,000 in Institutional Contracts Annually**
+
+2 white glove university partners at $35,000 each:
+
+2 x $35,000 = **$70,000 in White Glove Partnerships Annually**
+
+Base case total: **~$1.5M ARR**
+
+#### High-End Case
+
+Assume 12% of North American + Western European students at a $4 average semester price, and 4% of students globally at an average of $3.
+
+(800,000 x 0.12) x $4 = $384,000 / Semester
+(6,200,000 x 0.04) x $3 = $744,000 / Semester
+
+= $1,128,000 x 2 = **$2,256,000 in Student Subscriptions Annually**
+
+150 institutional partnerships at $10,000 each:
+
+150 x $10,000 = **$1,500,000 in Institutional Contracts Annually**
+
+8 white glove university partners at $50,000 each:
+
+8 x $50,000 = **$400,000 in White Glove Partnerships Annually**
+
+High-end total: **~$4.15M ARR**
+
+At either scale, with a 3-5 person team and near-zero marginal infrastructure cost (compute is client-side), the margins are exceptional.
 
 ---
 
-## The SDK Business (Year 3+)
+## The SDK Business (Year 3+ Long Term)
 
-The ed-tech product is also the best advertisement for the SDK. When a developer at a company building a network topology visualizer, workflow builder, or org chart tool finds Magic Graphs, they see a production-grade application built on top of `@magic/graph`. That is the demo. That is the proof it works.
+The Magic Graphs ed-tech platform is also the best advertisement for the SDK one could ask for. When a developer at a company building a network topology visualizer, workflow builder, or org chart tool finds Magic Graphs, they see a production-grade application built on top of `@magic/graph` and `@magic/shapes`. That is the demo. That is the proof it works.
 
 Companies that will pay for `@magic/graph`:
 
@@ -84,9 +128,14 @@ Companies that will pay for `@magic/graph`:
 - Knowledge graph UIs
 - Decision tree builders
 
-All of them hit the same wall: Canvas rendering is hard, hit detection is hard, performance at scale is hard, reactive data models for graph state are hard. Magic Graphs has solved all of this. A small team at a B2B SaaS company will pay $1,500-3,000/year rather than spend 3 months building and owning this themselves.
+All of them hit the same wall: Canvas rendering is hard, hit detection is hard, performance at scale is hard, reactive data models for graph state are hard. Magic Graphs has solved all of this and will continue to solve these problems even more elegantly as a necessary condition of our success. A small team at a B2B SaaS company will pay $1,500-3,000/year rather than spend 3 months building and owning this themselves.
 
 10-15 SDK customers puts meaningful revenue on the board. 50 customers is a significant business line on its own.
+
+Conservatively at 25 customers: 25 x $2,000 = $50,000 in additional annual revenue.
+At real traction with 50 customers: 50 x $3,000 = **$150,000 in additional annual revenue.**
+
+SDK revenue compounds the ed-tech business without adding meaningful overhead — the same codebase, the same engineering investment, a second revenue stream.
 
 ---
 
@@ -94,48 +143,37 @@ All of them hit the same wall: Canvas rendering is hard, hit detection is hard, 
 
 ### Now → September, 2026
 
-The deadline is the start of fall semester. Professors finalize syllabi and set up tools in the last two weeks of August.
+Before September we should have completed the following:
 
-The goal is not to ship more features. The goal is:
-
-1. Mathematical correctness guaranteed by robust automated tests across all algorithm implementations
-2. Property-based testing on the expression evaluator (commutativity, De Morgan's laws, distributivity verified across thousands of generated inputs)
-3. Stability: No crashes during a live demo, reliable behavior under real classroom conditions
-4. Shareable link flow polished to two clicks or fewer
-
-The product already has the magic. The job is not breaking it on the way to the user.
+1. Mathematical Correctness: Guarantee 100% accuracy via robust automated tests including property-based testing on all algorithm and mathematical implementations
+2. Stability: No crashes, obviously glitchy or buggy behavior.
+3. Polished Product Catalog: The catalog should roll-out with complete feeling and polished product experiences that all clearly have a reason for existing and rapid time-to-value.
 
 ### Fall 2026
 
-Get in front of professors personally. Tabling events at CS buildings, targeting students leaving algorithms and discrete math lectures. One professor, one class, real students. Free during this phase — the signal needed is usage, not revenue. This is our open beta.
+Get in front of professors personally. Tabling events at CS buildings, targeting students leaving algorithms and discrete math lectures.
 
-Watch what professors do with the annotation layer. Watch what students share with each other. Watch which products get opened most. This data shapes everything that follows.
+The only goal? Spread Magic Graphs to the first real users.
+
+This will be a free "open beta" with no tiers or subscriptions. Will students get and stay on the platform?
+
+Watch what professors do with the annotation layer. Watch what students share with each other. Watch which products get opened most. We pool analytics on everything so we can act in data informed approach going forward.
 
 ### Spring 2027
 
-First payment validation. One class, $2/student, Stripe link, manual process. No paywall infrastructure needed — just a real transaction with real students. If 40% of a class pays $2 for an optional study tool, the model is validated.
+Get at least one professor to use Magic Graphs in lecture while rolling out the $2 model.
 
 ### 2027-2028
 
-Build usage density. Refine based on a full year of classroom feedback. Begin SDK documentation and outreach to developer teams who have found the product organically. Pursue the first institutional LMS conversation when usage data justifies it.
+Refine based on a full year of classroom feedback. Begin SDK documentation and outreach to developer teams who have found the product organically. Pursue the first institutional LMS conversation when usage data justifies it.
 
 ### 2028-2029
 
-The flywheel. Professors at conferences are mentioning it. Developers who evaluated the SDK are telling colleagues. Inbound starts. Each new customer costs less than the last. Consider bringing on 1-2 people who combine theory depth with engineering ability.
+The flywheel. Professors at conferences are mentioning it. Developers who evaluated the SDK are telling colleagues. Inbound starts. Each new customer costs less than the last.
 
 ### 2029+
 
-At real scale (1/4 the reach of Desmos in this niche) this is a 3-5 person team generating $5-6M ARR with exceptional margins, full ownership, and the freedom to go deep on interesting problems because the business is stable. Not a unicorn outcome. Something better: a durable, profitable craft business at software scale, built on something genuinely loved by the people who use it.
-
----
-
-## The Team Vision
-
-The right team for this business is not a large one. 2-3 people with complementary instincts:
-
-- Deep theory knowledge: The math has to be right and the product has to go deeper than any competitor will follow
-- Engineering discipline: The SDK quality is the moat, it has to be maintained with rigor
-- Customer instinct: Someone has to love students and professors as much as they love the code
+At real scale this is a 3-5 person team generating $5-6M ARR with exceptional margins, full ownership, and the freedom to go deep on interesting problems because the business is stable. At this point we will have a durable, profitable craft software business, built on something genuinely loved by the people who use it.
 
 ---
 
@@ -143,10 +181,6 @@ The right team for this business is not a large one. 2-3 people with complementa
 
 In a category flooded with AI tools that instantly produce homework answers, Magic Graphs is the antidote. LLMs cannot synthesize spatial intuition. They notoriously struggle with topological reasoning. Magic Graphs allows students to visually manipulate nodes, execute mutations, and build genuine comprehension that will survive not only the exam they are studying for, but their career ahead of them as well.
 
-But moreover: it is built with a level of engineering discipline, typed plugin architecture, transaction system, composable simulation controls, custom expression evaluator, that puts it in a different category than the landscape of hastily assembled ed-tech tools. That quality is visible to anyone who looks at the code, which matters for developer trust in the SDK and for long-term maintainability.
+Moreover, we will build Magic Graphs with a level of engineering discipline that puts it in a different category than the landscape of hastily assembled ed-tech tools. That quality is visible to anyone who looks at the code, which matters for developer trust in the SDK and for long-term maintainability.
 
 This was started out of love for TypeScript, graph theory, and education. That origin will always be the most important thing about it.
-
----
-
-_The goal is one professor, one class, real students, real usage data. Everything else follows from that._
