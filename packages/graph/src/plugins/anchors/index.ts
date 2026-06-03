@@ -269,7 +269,7 @@ export const useNodeAnchorPlugin = <
   const checkForParentNodeUpdate = () => {
     if (currentDraggingAnchor.value) return;
 
-    const { items } = graph.graphAtMousePosition.value;
+    const { items } = graph.canvas.graphAtMousePosition.value;
     const topItem = items.at(-1);
     if (!topItem) return clearAnchorState();
     if (topItem.graphType === 'node-anchor') return;

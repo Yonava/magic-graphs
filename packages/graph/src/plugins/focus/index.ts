@@ -195,7 +195,10 @@ export const useFocusPlugin = <
       if (!isFocused(node.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.getTheme(nodeFocusPath, node, graph) as any;
+      return graph.getTheme(nodeFocusPath, node, {
+        ...graph,
+        shapes: graph.canvas.shapes,
+      }) as any;
     });
   }
 
@@ -204,7 +207,10 @@ export const useFocusPlugin = <
       if (!isFocused(edge.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.getTheme(edgeFocusPath, edge, graph) as any;
+      return graph.getTheme(edgeFocusPath, edge, {
+        ...graph,
+        shapes: graph.canvas.shapes,
+      }) as any;
     });
   }
 

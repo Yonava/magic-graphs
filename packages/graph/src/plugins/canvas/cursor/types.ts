@@ -1,6 +1,6 @@
 import { Ref } from 'vue';
 
-import { SchemaItem } from '../../types.ts';
+import { SchemaItem } from '../../../types.ts';
 
 /**
  * cursor types supported by the browser

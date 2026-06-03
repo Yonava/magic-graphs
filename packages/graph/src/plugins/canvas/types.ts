@@ -24,7 +24,7 @@ export type GraphAtMousePosition = {
   items: SchemaItem[];
 };
 
-type CanvasGraph = {
+export type CanvasGraph = {
   magicCanvas: MagicCanvasProps;
   aggregator: AggregatorProps;
   shapes: AnimatedShapeControls;

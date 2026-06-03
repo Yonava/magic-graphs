@@ -9,9 +9,9 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, ref, watch } from 'vue';
 
-import type { GraphMouseEvent } from '../../base/types.ts';
 import type { Aggregator } from '../../types.ts';
 import { GraphWithPlugins } from '../../useGraph.ts';
+import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { BRUSH_WEIGHTS, COLORS } from './constants.ts';
 import { useAnnotationHistory } from './history.ts';
 import type { Annotation } from './types.ts';
@@ -62,7 +62,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
   /**
    * starts drawing from the current mouse position
    */
-  const startDrawing = ({ coords, event }: GraphMouseEvent) => {
+  const startDrawing = ({ coords, event }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
 
     if (isErasing.value) {
@@ -91,7 +91,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
    * the delta between two mouse points while
    * mouse is being dragged
    */
-  const drawLine = ({ coords }: GraphMouseEvent) => {
+  const drawLine = ({ coords }: CanvasGraphMouseEvent) => {
     if (!isDrawing.value || !lastPoint.value) return;
     if (batch.value.length === 0) return;
 
@@ -183,11 +183,11 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
   const addScribblesToAggregator = (aggregator: Aggregator) => {
     if (!isActive.value) return aggregator;
 
-    if (isErasing.value && graph.canvasHovered.value) {
+    if (isErasing.value && graph.canvas.canvasHovered.value) {
       const eraserId = 'annotation-eraser-cursor';
       const eraserCursor = graph.canvas.shapes.shapes.circle({
         id: eraserId,
-        at: graph.graphAtMousePosition.value.coords,
+        at: graph.canvas.graphAtMousePosition.value.coords,
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
@@ -218,11 +218,11 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
         shape: incompleteScribble,
         priority: 5001,
       });
-    } else if (isLaserPointing.value && graph.canvasHovered.value) {
+    } else if (isLaserPointing.value && graph.canvas.canvasHovered.value) {
       const laserPointerCursorId = 'laser-pointer-cursor';
       const laserPointerCursor = graph.canvas.shapes.shapes.circle({
         id: laserPointerCursorId,
-        at: graph.graphAtMousePosition.value.coords,
+        at: graph.canvas.graphAtMousePosition.value.coords,
         radius: selectedBrushWeight.value,
         fillColor: selectedColor.value,
       });

@@ -62,7 +62,7 @@ export const useCanvasPlugin = <
   });
 
   const cursor = useGraphCursor({
-    magicCanvas,
+    canvas: magicCanvas.canvas,
     subscribe: events.subscribe,
     graphAtMousePosition,
   });

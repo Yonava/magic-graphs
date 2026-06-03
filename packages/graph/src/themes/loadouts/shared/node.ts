@@ -7,7 +7,7 @@ import { textDefaults } from './text.ts';
 const nodeCircle: GraphTheme['node']['base']['shape'] = (node, graph) => {
   const styles = resolveThemeForNode(graph.getTheme, node);
 
-  return graph.canvas.shapes.shapes.circle({
+  return graph.shapes.shapes.circle({
     id: node.id,
     at: {
       x: node.x,

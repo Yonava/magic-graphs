@@ -18,9 +18,9 @@ export type GraphTransitData = {
 
   annotations: Graph['annotation']['annotations']['value'];
 
-  cameraPanX: Graph['magicCanvas']['camera']['state']['panX']['value'];
-  cameraPanY: Graph['magicCanvas']['camera']['state']['panY']['value'];
-  cameraZoom: Graph['magicCanvas']['camera']['state']['zoom']['value'];
+  cameraPanX: Graph['canvas']['magicCanvas']['camera']['state']['panX']['value'];
+  cameraPanY: Graph['canvas']['magicCanvas']['camera']['state']['panY']['value'];
+  cameraZoom: Graph['canvas']['magicCanvas']['camera']['state']['zoom']['value'];
 };
 
 export const getTransitData = (graph: Graph): GraphTransitData => ({
@@ -34,15 +34,15 @@ export const getTransitData = (graph: Graph): GraphTransitData => ({
   cameraZoom: graph.canvas.magicCanvas.camera.state.zoom.value,
 });
 
-export const setTransitData = (g: Graph, transitData: GraphTransitData) => {
+export const setTransitData = (graph: Graph, transitData: GraphTransitData) => {
   // g.load({
   //   nodes: transitData.nodes,
   //   edges: transitData.edges,
   // });
 
-  g.annotation.load(transitData.annotations);
+  graph.annotation.load(transitData.annotations);
 
-  const { state: cameraState } = g.magicCanvas.camera;
+  const { state: cameraState } = graph.canvas.magicCanvas.camera;
   cameraState.panX.value = transitData.cameraPanX;
   cameraState.panY.value = transitData.cameraPanY;
   cameraState.zoom.value = transitData.cameraZoom;
