@@ -61,6 +61,12 @@ export const useCanvasPlugin = <
     canvasFocused.value = true;
   });
 
+  events.subscribe('onTransactionComplete', () => {
+    // ensure aggregator has an up to date snapshot of the canvas
+    aggregator.updateAggregator();
+    updateGraphAtMousePosition();
+  });
+
   const cursor = useGraphCursor({
     canvas: magicCanvas.canvas,
     subscribe: events.subscribe,
