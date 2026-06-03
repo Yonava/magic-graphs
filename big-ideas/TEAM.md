@@ -14,18 +14,24 @@ Every algorithm we ship has to be provably correct and tested against textbook r
 - Verify implementations against academic sources.
 - Help build out the content for each product experience surface such as tooltips, the step explanations, the mathematical context that makes the tool genuinely useful for learning rather than just visually impressive.
 
-Your Olin background is especially relevant here! This is a credential that earns professor trust when we walk into a department and say "the math is right."
+Ian's Olin background is especially relevant as it lends institutional credibility to the mathematical rigor, accuracy, and reliability.
 
-You can also grow into product development. The individual product experiences such as Dijkstra's, network flow, set theory, binary trees are much more accessible than the core SDK (if I do my job well 👀).
+Ian can also grow into product development. The individual product experiences such as Dijkstra's, network flow, set theory, binary trees are much more accessible than the core SDK (if Yona does his job properly 👀).
 
 ### Thomas — Relationships, Growth & Business Development
 
-Environmental and chemical systems are fundamentally graph problems. Flow networks, optimization under constraints, resource allocation. Thomas understands applied use cases for these tools at a level most people on a software team never develop. See CoLab for reference...
+Thomas' highly outgoing nature means he can own the customer relationships that will enable the business to scale sustainably.
 
-Your highly outgoing nature means you can own the customer relationships that will enable the business to scale sustainably.
+Having been a large contributor to the code base, he possess the technical and problem solving abilities to triage and patch issues quickly as they surface.
 
-Having been a large contributor to the code base, you possess the technical and problem solving abilities to triage and patch issues quickly as they surface.
+He will lead key initiatives such as:
 
-Professor outreach. Tabling events at CS buildings. Conference presence. The conversations with department heads that eventually become institutional contracts. The content and demos that drive organic discovery. The business development work that turns a great product into a known product.
+- Professor outreach.
+- Boots on the ground tabling events.
+- Conference presence.
+- The conversations with department heads that eventually become institutional contracts.
+- Product content and demos that drive organic discovery.
 
-Just like Ian, you are perfectly positioned to contribute to the growing product library and build out the content and mathematical layer.
+In short, the business development work that turns a great product into a known product.
+
+His skill sets can contribute to the growing product library and build out the content and mathematical layer.
