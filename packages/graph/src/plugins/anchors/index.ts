@@ -118,7 +118,8 @@ export const useNodeAnchorPlugin = <
         nodeAnchorSchema.at.y = currentDraggingAnchor.value.y;
       }
 
-      const nodeAnchorShape = graph.shapes.shapes.circle(nodeAnchorSchema);
+      const nodeAnchorShape =
+        graph.canvas.shapes.shapes.circle(nodeAnchorSchema);
 
       const beingDragged = anchor.id === currentDraggingAnchor.value?.id;
       anchorSchemas.push({
@@ -245,7 +246,7 @@ export const useNodeAnchorPlugin = <
 
     const width = isFocused ? focusWidth : baseWidth;
 
-    const shape = graph.shapes.shapes.line({
+    const shape = graph.canvas.shapes.shapes.line({
       id: 'link-preview',
       start,
       end,
@@ -358,8 +359,8 @@ export const useNodeAnchorPlugin = <
     return aggregator;
   };
 
-  graph.aggregator.transformers.push(insertAnchorsIntoAggregator);
-  graph.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
+  graph.canvas.aggregator.transformers.push(insertAnchorsIntoAggregator);
+  graph.canvas.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
 
   const activate = () => {
     events.subscribe('onNodeAdded', checkForParentNodeUpdate);

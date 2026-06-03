@@ -79,11 +79,11 @@ export const useShortcuts = (
       graph.settings.value.shortcutDelete,
     );
     triggerZoomIn.fn = getFn(
-      graph.magicCanvas.camera.actions.zoomIn,
+      graph.canvas.magicCanvas.camera.actions.zoomIn,
       settings.value.shortcutZoomIn,
     );
     triggerZoomOut.fn = getFn(
-      graph.magicCanvas.camera.actions.zoomOut,
+      graph.canvas.magicCanvas.camera.actions.zoomOut,
       settings.value.shortcutZoomOut,
     );
   };

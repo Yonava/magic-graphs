@@ -103,9 +103,9 @@
     const { graph, canvas } = graphWithCanvas;
     const draw = () => {
       const ctx = getCtx(canvas.canvas.value);
-      graph.magicCanvas.draw.content.value(ctx);
+      graph.canvas.magicCanvas.draw.content.value(ctx);
     };
-    const animate = graph.shapes.autoAnimate.captureFrame(draw);
+    const animate = graph.canvas.shapes.autoAnimate.captureFrame(draw);
     // graph.load(graphNodesAndEdges.value);
     shapeGraph(graphNodesAndEdges.value.rootNode);
     animate();

@@ -53,7 +53,7 @@ export type CanvasEventMap = {
    * when the canvas is repainted
    *
    * **WARNING** items drawn to the canvas using ctx won't be tied to graphs internal state.
-   * see {@link Graph.aggregator | `aggregator`} if you need drawn item to integrate with graph APIs
+   * see {@link graph.canvas.aggregator | `aggregator`} if you need drawn item to integrate with graph APIs
    */
   onDraw: (ctx: CanvasRenderingContext2D) => void;
 };

@@ -15,8 +15,8 @@ import { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { Aggregator } from '../../types.ts';
-import { emitKeyboardEvents, emitMouseEvents } from './DOMEvents.ts';
 import { useGraphCursor } from './cursor/useGraphCursor.ts';
+import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
   CanvasEventMap,
   CanvasGraphMouseEvent,

@@ -33,7 +33,7 @@
     } = graph.value.annotation;
 
     (isActive.value ? deactivate : activate)();
-    graph.value.canvasFocused.value = true;
+    graph.value.canvas.canvasFocused.value = true;
   };
 
   const { undo, redo } = graph.value.shortcut.trigger;

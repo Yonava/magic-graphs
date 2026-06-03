@@ -15,7 +15,7 @@ const { startNode } = state;
 export type BasicSearchSimulationRunner = SimulationRunner<BasicSearchTrace>;
 
 const animateEdge = (graph: Graph) =>
-  graph.shapes.defineTimeline({
+  graph.canvas.shapes.defineTimeline({
     forShapes: ['arrow', 'line'],
     durationMs: 700,
     keyframes: [],

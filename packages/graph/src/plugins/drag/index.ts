@@ -66,7 +66,7 @@ export const useNodeDragPlugin = <
     events.emit('onNodeDrop', droppedNode);
     release('nodeAnchors');
 
-    const { items } = graph.graphAtMousePosition.value;
+    const { items } = graph.canvas.graphAtMousePosition.value;
     const topItem = items.at(-1);
     if (topItem?.id !== droppedNode.id) return;
   };
@@ -96,14 +96,14 @@ export const useNodeDragPlugin = <
     events.subscribe('onMouseDown', beginDrag);
     events.subscribe('onMouseUp', drop);
     events.subscribe('onMouseMove', drag);
-    graph.cursor.graphToCursorMap.value['node'] = 'grab';
+    graph.canvas.cursor.graphToCursorMap.value['node'] = 'grab';
   };
 
   const deactivate = () => {
     events.unsubscribe('onMouseDown', beginDrag);
     events.unsubscribe('onMouseUp', drop);
     events.unsubscribe('onMouseMove', drag);
-    graph.cursor.graphToCursorMap.value['node'] = 'pointer';
+    graph.canvas.cursor.graphToCursorMap.value['node'] = 'pointer';
     if (activeDrag.value) drop();
   };
 

@@ -23,15 +23,15 @@ export type GraphTransitData = {
   cameraZoom: Graph['magicCanvas']['camera']['state']['zoom']['value'];
 };
 
-export const getTransitData = (g: Graph): GraphTransitData => ({
-  nodes: g.nodes.value,
-  edges: g.edges.value,
+export const getTransitData = (graph: Graph): GraphTransitData => ({
+  nodes: graph.nodes.value,
+  edges: graph.edges.value,
 
-  annotations: g.annotation.annotations.value,
+  annotations: graph.annotation.annotations.value,
 
-  cameraPanX: g.magicCanvas.camera.state.panX.value,
-  cameraPanY: g.magicCanvas.camera.state.panY.value,
-  cameraZoom: g.magicCanvas.camera.state.zoom.value,
+  cameraPanX: graph.canvas.magicCanvas.camera.state.panX.value,
+  cameraPanY: graph.canvas.magicCanvas.camera.state.panY.value,
+  cameraZoom: graph.canvas.magicCanvas.camera.state.zoom.value,
 });
 
 export const setTransitData = (g: Graph, transitData: GraphTransitData) => {

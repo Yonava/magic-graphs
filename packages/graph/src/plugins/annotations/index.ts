@@ -72,7 +72,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
       }).getBoundingBox();
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
-        const shape = graph.shapes.shapes.scribble(scribble);
+        const shape = graph.canvas.shapes.shapes.scribble(scribble);
         return shape.efficientHitbox(eraserBoundingBox);
       });
 
@@ -102,7 +102,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
       }).getBoundingBox();
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
-        const shape = graph.shapes.shapes.scribble(scribble);
+        const shape = graph.canvas.shapes.shapes.scribble(scribble);
         return shape.efficientHitbox(eraserBoundingBox);
       });
 
@@ -175,7 +175,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
   const hideCursor = computed(() => isErasing.value || isLaserPointing.value);
 
   watch(hideCursor, () => {
-    const canvas = graph.magicCanvas.canvas.value;
+    const canvas = graph.canvas.magicCanvas.canvas.value;
     if (!canvas) return;
     canvas.style.cursor = hideCursor.value ? 'none' : 'crosshair';
   });
@@ -185,7 +185,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
 
     if (isErasing.value && graph.canvasHovered.value) {
       const eraserId = 'annotation-eraser-cursor';
-      const eraserCursor = graph.shapes.shapes.circle({
+      const eraserCursor = graph.canvas.shapes.shapes.circle({
         id: eraserId,
         at: graph.graphAtMousePosition.value.coords,
         radius: ERASER_BRUSH_RADIUS,
@@ -204,7 +204,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
       });
     } else if (batch.value.length > 0 && isDrawing.value) {
       const incompleteAnnotationId = 'annotation-incomplete';
-      const incompleteScribble = graph.shapes.shapes.scribble({
+      const incompleteScribble = graph.canvas.shapes.shapes.scribble({
         id: incompleteAnnotationId,
         type: 'draw',
         points: batch.value,
@@ -220,7 +220,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
       });
     } else if (isLaserPointing.value && graph.canvasHovered.value) {
       const laserPointerCursorId = 'laser-pointer-cursor';
-      const laserPointerCursor = graph.shapes.shapes.circle({
+      const laserPointerCursor = graph.canvas.shapes.shapes.circle({
         id: laserPointerCursorId,
         at: graph.graphAtMousePosition.value.coords,
         radius: selectedBrushWeight.value,
@@ -240,7 +240,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
       aggregator.push({
         graphType: 'annotation',
         id: scribble.id,
-        shape: graph.shapes.shapes.scribble({
+        shape: graph.canvas.shapes.shapes.scribble({
           ...scribble,
           fillColor: scribble.fillColor + (isErased ? '50' : ''),
         }),
@@ -251,10 +251,10 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
     return aggregator;
   };
 
-  graph.aggregator.transformers.push(addScribblesToAggregator);
+  graph.canvas.aggregator.transformers.push(addScribblesToAggregator);
 
   const activate = () => {
-    const canvas = graph.magicCanvas.canvas.value;
+    const canvas = graph.canvas.magicCanvas.canvas.value;
     if (!canvas) return;
 
     isActive.value = true;
@@ -264,7 +264,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
     hold('focusable');
     hold('draggable');
 
-    graph.cursor.disabled.value = true;
+    graph.canvas.cursor.disabled.value = true;
 
     canvas.style.cursor = 'crosshair';
 
@@ -274,7 +274,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
   };
 
   const deactivate = () => {
-    const canvas = graph.magicCanvas.canvas.value;
+    const canvas = graph.canvas.magicCanvas.canvas.value;
     if (!canvas) return;
 
     isActive.value = false;
@@ -285,7 +285,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
     release('focusable');
     release('draggable');
 
-    graph.cursor.disabled.value = false;
+    graph.canvas.cursor.disabled.value = false;
 
     canvas.style.cursor = 'default';
 

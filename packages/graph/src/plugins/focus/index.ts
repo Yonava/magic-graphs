@@ -90,7 +90,7 @@ export const useFocusPlugin = <
   };
 
   const handleTextArea = (schemaItem: SchemaItem) => {
-    const ctx = getCtx(graph.magicCanvas.canvas);
+    const ctx = getCtx(graph.canvas.magicCanvas.canvas);
 
     schemaItem.shape.startTextAreaEdit?.(ctx, (textAreaContent) => {
       const edge = graph.getEdge(schemaItem.id);

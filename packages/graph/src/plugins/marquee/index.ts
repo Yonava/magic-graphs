@@ -96,7 +96,7 @@ export const useMarqueePlugin = <
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
     hold('nodeAnchors');
-    graph.cursor.disabled.value = true;
+    graph.canvas.cursor.disabled.value = true;
     marqueeBox.value = {
       at: startingCoords,
       width: 0,
@@ -109,7 +109,7 @@ export const useMarqueePlugin = <
     if (!marqueeBox.value) return;
     const finalMarqueeBox = marqueeBox.value;
     marqueeBox.value = undefined;
-    graph.cursor.disabled.value = false;
+    graph.canvas.cursor.disabled.value = false;
     release('nodeAnchors');
     events.emit('onMarqueeEndSelection', finalMarqueeBox);
   };
@@ -119,7 +119,8 @@ export const useMarqueePlugin = <
     if (surfaceArea < 100) return;
     const targetedItems: string[] = [];
 
-    for (const { id, shape, graphType } of graph.aggregator.aggregator.value) {
+    for (const { id, shape, graphType } of graph.canvas.aggregator.aggregator
+      .value) {
       const { marqueeSelectableGraphTypes } = graph.settings.value;
       if (!marqueeSelectableGraphTypes.includes(graphType)) continue;
       const inSelectionBox = shape.efficientHitbox(box);
@@ -145,7 +146,7 @@ export const useMarqueePlugin = <
   };
 
   const getMarqueeBoxSchema = (box: BoundingBox) => {
-    const shape = graph.shapes.shapes.rect({
+    const shape = graph.canvas.shapes.shapes.rect({
       id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
       fillColor: graph.getTheme('marquee.color'),
@@ -176,7 +177,7 @@ export const useMarqueePlugin = <
 
   const getEncapsulatedNodeBoxSchema = (box: BoundingBox) => {
     const id = 'encapsulated-node-box';
-    const shape = graph.shapes.shapes.rect({
+    const shape = graph.canvas.shapes.shapes.rect({
       id,
       ...box,
       fillColor: graph.getTheme('marquee.encapsulatedNodeBoxColor'),
@@ -208,8 +209,8 @@ export const useMarqueePlugin = <
     return aggregator;
   };
 
-  graph.aggregator.transformers.push(addEncapsulatedNodeBoxToAggregator);
-  graph.aggregator.transformers.push(addMarqueeBoxToAggregator);
+  graph.canvas.aggregator.transformers.push(addEncapsulatedNodeBoxToAggregator);
+  graph.canvas.aggregator.transformers.push(addMarqueeBoxToAggregator);
 
   const activate = () => {
     events.subscribe('onFocusChange', updateEncapsulatedNodeBox);
