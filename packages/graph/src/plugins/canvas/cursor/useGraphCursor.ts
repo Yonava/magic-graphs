@@ -1,13 +1,15 @@
 import { computed, ref, watch } from 'vue';
 
-import type { SchemaItem } from '../../types.ts';
-import type { BaseGraph } from '../types.ts';
+import { EventHub } from '../../../events/createEventHub.ts';
+import { SchemaItem } from '../../../types.ts';
+import { CanvasEventMap } from '../events.ts';
+import { CanvasGraph } from '../types.ts';
 import { GraphCursor, GraphTypeToCursor } from './types.ts';
 
 type GraphCursorProps = {
-  subscribe: BaseGraph['events']['subscribe'];
-  magicCanvas: BaseGraph['magicCanvas'];
-  graphAtMousePosition: BaseGraph['graphAtMousePosition'];
+  subscribe: EventHub<CanvasEventMap>['subscribe'];
+  canvas: CanvasGraph['magicCanvas']['canvas'];
+  graphAtMousePosition: CanvasGraph['graphAtMousePosition'];
 };
 
 /**
@@ -20,7 +22,7 @@ type GraphCursorProps = {
  */
 export const useGraphCursor = ({
   subscribe,
-  magicCanvas,
+  canvas,
   graphAtMousePosition,
 }: GraphCursorProps): GraphCursor => {
   const isMouseDown = ref(false);
@@ -61,9 +63,9 @@ export const useGraphCursor = ({
   };
 
   const changeCursorType = () => {
-    if (!magicCanvas.canvas.value || disabled.value) return;
+    if (!canvas.value || disabled.value) return;
     const topItem = graphAtMousePosition.value.items.at(-1);
-    magicCanvas.canvas.value.style.cursor = getCursorType(topItem);
+    canvas.value.style.cursor = getCursorType(topItem);
   };
 
   subscribe('onMouseDown', () => {

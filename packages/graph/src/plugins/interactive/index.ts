@@ -1,16 +1,14 @@
-import { BaseEventMap } from '../../base/events.ts';
-import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
 import type { GNode } from '../../types.ts';
+import { GraphWithPlugins } from '../../useGraph.ts';
+import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 
 /**
  * interactive allows users to create, edit and delete nodes and edges
  */
-export const useInteractive = <A, B extends BaseEventMap, C>(
-  graph: BaseGraph<A, B, C>,
-) => {
+export const useInteractive = (graph: GraphWithPlugins) => {
   let lastClickTime = 0;
 
-  const handleNodeCreation = ({ coords, items }: GraphMouseEvent) => {
+  const handleNodeCreation = ({ coords, items }: CanvasGraphMouseEvent) => {
     const ABOUT_A_FEW_HUNDRED_MS = 350;
     const timeDiff = Date.now() - lastClickTime;
     const closeEnoughInTime = timeDiff < ABOUT_A_FEW_HUNDRED_MS;
@@ -45,7 +43,7 @@ export const useInteractive = <A, B extends BaseEventMap, C>(
   };
 
   const handleEdgeCreation = (fromNode: GNode) => {
-    const { items } = graph.graphAtMousePosition.value;
+    const { items } = graph.canvas.graphAtMousePosition.value;
 
     const nodeUnderneathAnchor = items.findLast((i) => i.graphType === 'node');
     if (!nodeUnderneathAnchor) return;
@@ -65,7 +63,6 @@ export const useInteractive = <A, B extends BaseEventMap, C>(
 
   const activate = () => {
     graph.events.subscribe('onClick', handleNodeCreation);
-    // @ts-expect-error migration
     graph.events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
     graph.settings.value.nodeAnchors = true;
     graph.settings.value.edgeLabelsEditable = true;
@@ -73,7 +70,6 @@ export const useInteractive = <A, B extends BaseEventMap, C>(
 
   const deactivate = () => {
     graph.events.unsubscribe('onClick', handleNodeCreation);
-    // @ts-expect-error migration
     graph.events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
     graph.settings.value.nodeAnchors = false;
     graph.settings.value.edgeLabelsEditable = false;

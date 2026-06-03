@@ -7,12 +7,12 @@
   const coords = computed(() => {
     const {
       coords: { x, y },
-    } = graph.value.graphAtMousePosition.value;
+    } = graph.value.canvas.graphAtMousePosition.value;
     return { x: Math.round(x), y: Math.round(y) };
   });
 
   const hoveredItems = computed(() => {
-    const { items } = graph.value.graphAtMousePosition.value;
+    const { items } = graph.value.canvas.graphAtMousePosition.value;
     return items.map(
       (item) => `${item.graphType} - ${item.shape.name} (${item.id})`,
     );

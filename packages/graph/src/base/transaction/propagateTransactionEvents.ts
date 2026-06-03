@@ -91,4 +91,5 @@ export const propagateTransactionEvents = (
       }
     },
   );
+  emit('onTransactionComplete', payload);
 };

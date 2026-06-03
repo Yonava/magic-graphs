@@ -1,9 +1,9 @@
-import type { GraphMouseEvent } from '@magic/graph/base/types';
+import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
 import type { Graph, SchemaItem } from '@magic/graph/types';
 import tinycolor from 'tinycolor2';
 
-const animateNodePulse = (g: Graph) =>
-  g.shapes.defineTimeline({
+const animateNodePulse = (graph: Graph) =>
+  graph.canvas.shapes.defineTimeline({
     forShapes: ['circle'],
     durationMs: 2000,
     keyframes: [
@@ -123,7 +123,7 @@ export const selectFromGraph = (
     (res) => (resolver = res),
   );
 
-  const onClick = ({ items }: GraphMouseEvent) => {
+  const onClick = ({ items }: CanvasGraphMouseEvent) => {
     const topItem = items.at(-1);
     if (!topItem || !predicate(topItem)) return;
     resolve(topItem);
@@ -142,7 +142,7 @@ export const selectFromGraph = (
       predicate === DEFAULT_PREDICATE
         ? (item: SchemaItem) => !!item
         : predicate;
-    graph.cursor.activateCursorSelectMode(cursorPredicate);
+    graph.canvas.cursor.activateCursorSelectMode(cursorPredicate);
   };
 
   /**
@@ -152,7 +152,7 @@ export const selectFromGraph = (
     graph.events.unsubscribe('onClick', onClick);
     release('interactive');
     release('focusable');
-    graph.cursor.deactivateCursorSelectMode();
+    graph.canvas.cursor.deactivateCursorSelectMode();
   };
 
   /**

@@ -5,7 +5,7 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { readonly, ref } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
-import type { BaseGraph, GraphMouseEvent } from '../../base/types.ts';
+import type { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { prioritizeNode } from '../../helpers/prioritization.ts';
@@ -14,6 +14,8 @@ import type {
   NodeAnchor,
 } from '../../plugins/anchors/types.ts';
 import type { GNode, SchemaItem } from '../../types.ts';
+import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
 import { NodeAnchorEventMap, createNodeAnchorEventBus } from './events.ts';
 
 /**
@@ -27,8 +29,8 @@ import { NodeAnchorEventMap, createNodeAnchorEventBus } from './events.ts';
  */
 export const useNodeAnchorPlugin = <
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap,
-  Plugins,
+  EventMap extends BaseEventMap & CanvasEventMap,
+  Plugins extends CanvasPlugin,
 >(
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeAnchor<TransactionWrapperOptions, EventMap, Plugins> => {
@@ -39,7 +41,7 @@ export const useNodeAnchorPlugin = <
     nodeAnchorHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap>,
+    graph.events as EventHub<BaseEventMap & CanvasEventMap>,
   );
   /**
    * The node which anchors actively orbit around
@@ -75,7 +77,7 @@ export const useNodeAnchorPlugin = <
 
   const hoveredNodeAnchorId = ref<NodeAnchor['id']>();
 
-  const updateHoveredNodeAnchorId = ({ items }: GraphMouseEvent) => {
+  const updateHoveredNodeAnchorId = ({ items }: CanvasGraphMouseEvent) => {
     const topItem = items.at(-1);
     if (!topItem) return (hoveredNodeAnchorId.value = undefined);
 
@@ -116,7 +118,8 @@ export const useNodeAnchorPlugin = <
         nodeAnchorSchema.at.y = currentDraggingAnchor.value.y;
       }
 
-      const nodeAnchorShape = graph.shapes.shapes.circle(nodeAnchorSchema);
+      const nodeAnchorShape =
+        graph.canvas.shapes.shapes.circle(nodeAnchorSchema);
 
       const beingDragged = anchor.id === currentDraggingAnchor.value?.id;
       anchorSchemas.push({
@@ -197,7 +200,7 @@ export const useNodeAnchorPlugin = <
   /**
    * the anchor at the given event location
    */
-  const getAnchor = ({ items, event }: GraphMouseEvent) => {
+  const getAnchor = ({ items, event }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem || topItem.graphType !== 'node-anchor') return;
@@ -243,7 +246,7 @@ export const useNodeAnchorPlugin = <
 
     const width = isFocused ? focusWidth : baseWidth;
 
-    const shape = graph.shapes.shapes.line({
+    const shape = graph.canvas.shapes.shapes.line({
       id: 'link-preview',
       start,
       end,
@@ -266,7 +269,7 @@ export const useNodeAnchorPlugin = <
   const checkForParentNodeUpdate = () => {
     if (currentDraggingAnchor.value) return;
 
-    const { items } = graph.graphAtMousePosition.value;
+    const { items } = graph.canvas.graphAtMousePosition.value;
     const topItem = items.at(-1);
     if (!topItem) return clearAnchorState();
     if (topItem.graphType === 'node-anchor') return;
@@ -287,7 +290,7 @@ export const useNodeAnchorPlugin = <
     }
   };
 
-  const setCurrentlyDraggingAnchor = (ev: GraphMouseEvent) => {
+  const setCurrentlyDraggingAnchor = (ev: CanvasGraphMouseEvent) => {
     if (!parentNode.value) return;
     /**
      * TODO shouldn't getAnchor be unnecessary here because the top item in this event should
@@ -301,7 +304,7 @@ export const useNodeAnchorPlugin = <
 
   const updateCurrentlyDraggingAnchorPosition = ({
     coords,
-  }: GraphMouseEvent) => {
+  }: CanvasGraphMouseEvent) => {
     if (!currentDraggingAnchor.value) return;
     const { x, y } = coords;
     currentDraggingAnchor.value.x = x;
@@ -356,8 +359,8 @@ export const useNodeAnchorPlugin = <
     return aggregator;
   };
 
-  graph.aggregator.transformers.push(insertAnchorsIntoAggregator);
-  graph.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
+  graph.canvas.aggregator.transformers.push(insertAnchorsIntoAggregator);
+  graph.canvas.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
 
   const activate = () => {
     events.subscribe('onNodeAdded', checkForParentNodeUpdate);

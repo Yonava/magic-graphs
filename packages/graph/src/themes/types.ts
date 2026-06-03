@@ -9,6 +9,7 @@ import { Ref } from 'vue';
 
 import { BaseGraph } from '../base/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
+import { CanvasGraph } from '../plugins/canvas/types.ts';
 import { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
 import { ThemeGetter } from './getThemeResolver.ts';
@@ -28,7 +29,7 @@ export type BaseGraphNodeStyles = TextStyles & {
 };
 
 export type GraphInterface = {
-  shapes: BaseGraph['shapes'];
+  shapes: CanvasGraph['shapes'];
   settings: BaseGraph['settings'];
   getTheme: BaseGraph['getTheme'];
   edges: BaseGraph['edges'];

@@ -1,49 +1,23 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
-import type { Coordinate } from '@magic/shapes/types/utility';
 
-import type { ComputedRef, DeepReadonly, Ref, ShallowRef } from 'vue';
+import type { ComputedRef, Ref, ShallowRef } from 'vue';
 
 import { EventHub } from '../events/createEventHub.ts';
+import { GraphAtMousePosition } from '../plugins/canvas/types.ts';
+import { AggregatorProps } from '../plugins/canvas/useAggregator.ts';
 import { GraphSettings } from '../settings/index.ts';
 import { ThemeGetter } from '../themes/getThemeResolver.ts';
 import { GraphThemeName, ThemeLoadouts } from '../themes/index.ts';
 import { FullThemeMap } from '../themes/types.ts';
-import type { GEdge, GNode, SchemaItem } from '../types.ts';
+import type { GEdge, GNode } from '../types.ts';
 import {
   BaseTransactionWrapperOptions,
   GraphActions,
   MergeTransactionWrappersWithBase,
 } from './actions/types.ts';
-import { GraphCursor } from './cursor/types.ts';
 import { BaseEventMap } from './events.ts';
-import { AggregatorProps } from './useAggregator.ts';
 import { PluginHoldController } from './usePluginHold.ts';
-
-/**
- * stores info about the last mouse position on the graph
- */
-export type GraphAtMousePosition = {
-  /**
-   * coordinates translated to the graph's coordinate system
-   */
-  coords: Coordinate;
-  /**
-   * the schema items at the coordinates of the mouse
-   */
-  items: SchemaItem[];
-};
-
-/**
- * a standard mouse event along with extra graph related info
- * regarding the mouse position
- */
-export type GraphMouseEvent = DeepReadonly<GraphAtMousePosition> & {
-  /**
-   * the native browser event that triggered this graph event
-   */
-  event: MouseEvent;
-};
 
 export type BaseGraph<
   TransactionWrapperOptions = {},
@@ -71,30 +45,13 @@ export type BaseGraph<
 
   events: EventHub<EventMap>;
 
-  aggregator: AggregatorProps;
-
   pluginHoldController: PluginHoldController;
-  shapes: AnimatedShapeControls;
 
   baseTheme: ComputedRef<ThemeLoadouts[GraphThemeName]>;
   themeName: Ref<GraphThemeName>;
   getTheme: ThemeGetter;
   themeMap: FullThemeMap;
   settings: Ref<GraphSettings>;
-
-  magicCanvas: MagicCanvasProps;
-  /**
-   * whether the canvas is currently focused in the browser
-   */
-  canvasFocused: Ref<boolean>;
-  /**
-   * whether the canvas is currently hovered by the mouse
-   */
-  canvasHovered: ShallowRef<boolean>;
-
-  graphAtMousePosition: Ref<GraphAtMousePosition>;
-  updateGraphAtMousePosition: () => GraphAtMousePosition;
-  cursor: GraphCursor;
 } & Plugins;
 
 export type InternalActions = {

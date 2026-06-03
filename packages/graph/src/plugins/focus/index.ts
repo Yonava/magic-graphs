@@ -6,15 +6,13 @@ import { computed, readonly, ref } from 'vue';
 
 import { ElementRemovalPayload } from '../../base/actions/types.ts';
 import { BaseEventMap } from '../../base/events.ts';
-import type {
-  BaseGraph,
-  GraphMouseEvent,
-  InternalActions,
-} from '../../base/types.ts';
+import type { BaseGraph, InternalActions } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
+import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
 import { FocusEventMap, createFocusEventBus } from './events.ts';
 import {
@@ -27,8 +25,8 @@ import {
 
 export const useFocusPlugin = <
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap,
-  Plugins,
+  EventMap extends BaseEventMap & CanvasEventMap,
+  Plugins extends CanvasPlugin,
 >(
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithFocus<TransactionWrapperOptions, EventMap, Plugins> => {
@@ -36,9 +34,9 @@ export const useFocusPlugin = <
   const focusHub: EventHub<FocusEventMap> = createEventHub(focusBus);
   const events = mergeEventHubs(
     focusHub,
-    // casting because graph.events could be arbitrarily due to it being stuffed with other events
+    // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap>,
+    graph.events as EventHub<BaseEventMap & CanvasEventMap>,
   );
 
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
@@ -53,7 +51,6 @@ export const useFocusPlugin = <
     const oldIds = new Set([...focusedElementIds.value]);
     focusedElementIds.value = new Set(ids);
 
-    console.log(focusedElementIds.value, oldIds);
     events.emit('onFocusChange', focusedElementIds.value, oldIds);
   };
 
@@ -93,7 +90,7 @@ export const useFocusPlugin = <
   };
 
   const handleTextArea = (schemaItem: SchemaItem) => {
-    const ctx = getCtx(graph.magicCanvas.canvas);
+    const ctx = getCtx(graph.canvas.magicCanvas.canvas);
 
     schemaItem.shape.startTextAreaEdit?.(ctx, (textAreaContent) => {
       const edge = graph.getEdge(schemaItem.id);
@@ -132,7 +129,7 @@ export const useFocusPlugin = <
     setFocus(newFocusedIds);
   };
 
-  const handleMouseDown = ({ items, coords, event }: GraphMouseEvent) => {
+  const handleMouseDown = ({ items, coords, event }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem) {
@@ -198,7 +195,10 @@ export const useFocusPlugin = <
       if (!isFocused(node.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.getTheme(nodeFocusPath, node, graph) as any;
+      return graph.getTheme(nodeFocusPath, node, {
+        ...graph,
+        shapes: graph.canvas.shapes,
+      }) as any;
     });
   }
 
@@ -207,7 +207,10 @@ export const useFocusPlugin = <
       if (!isFocused(edge.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.getTheme(edgeFocusPath, edge, graph) as any;
+      return graph.getTheme(edgeFocusPath, edge, {
+        ...graph,
+        shapes: graph.canvas.shapes,
+      }) as any;
     });
   }
 

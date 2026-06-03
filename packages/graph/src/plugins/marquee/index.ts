@@ -6,10 +6,11 @@ import { ref } from 'vue';
 import { computed } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
-import type { GraphMouseEvent } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { Aggregator } from '../../types.ts';
+import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
@@ -19,8 +20,8 @@ import { GraphWithMarquee } from './types.ts';
 
 export const useMarqueePlugin = <
   TransactionWrapperOptions,
-  GraphEventMap extends BaseEventMap,
-  Plugins,
+  GraphEventMap extends BaseEventMap & CanvasEventMap,
+  Plugins extends CanvasPlugin,
 >(
   graph: GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins>,
 ): GraphWithMarquee<TransactionWrapperOptions, GraphEventMap, Plugins> => {
@@ -30,7 +31,7 @@ export const useMarqueePlugin = <
     marqueeHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap & FocusEventMap>,
+    graph.events as EventHub<BaseEventMap & CanvasEventMap & FocusEventMap>,
   );
 
   const marqueeBox = ref<BoundingBox | undefined>();
@@ -47,14 +48,14 @@ export const useMarqueePlugin = <
     items,
     coords,
     event,
-  }: GraphMouseEvent) => {
+  }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (topItem?.graphType !== 'encapsulated-node-box') release('nodeAnchors');
     if (!topItem) engageMarqueeBox(coords);
   };
 
-  const groupDrag = ({ coords }: GraphMouseEvent) => {
+  const groupDrag = ({ coords }: CanvasGraphMouseEvent) => {
     if (!groupDragCoordinates.value) return;
 
     const dx = coords.x - groupDragCoordinates.value.x;
@@ -72,7 +73,7 @@ export const useMarqueePlugin = <
     updateEncapsulatedNodeBox();
   };
 
-  const beginGroupDrag = ({ items, coords, event }: GraphMouseEvent) => {
+  const beginGroupDrag = ({ items, coords, event }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     if (marqueeBox.value) return;
 
@@ -95,7 +96,7 @@ export const useMarqueePlugin = <
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
     hold('nodeAnchors');
-    graph.cursor.disabled.value = true;
+    graph.canvas.cursor.disabled.value = true;
     marqueeBox.value = {
       at: startingCoords,
       width: 0,
@@ -108,7 +109,7 @@ export const useMarqueePlugin = <
     if (!marqueeBox.value) return;
     const finalMarqueeBox = marqueeBox.value;
     marqueeBox.value = undefined;
-    graph.cursor.disabled.value = false;
+    graph.canvas.cursor.disabled.value = false;
     release('nodeAnchors');
     events.emit('onMarqueeEndSelection', finalMarqueeBox);
   };
@@ -118,7 +119,8 @@ export const useMarqueePlugin = <
     if (surfaceArea < 100) return;
     const targetedItems: string[] = [];
 
-    for (const { id, shape, graphType } of graph.aggregator.aggregator.value) {
+    for (const { id, shape, graphType } of graph.canvas.aggregator.aggregator
+      .value) {
       const { marqueeSelectableGraphTypes } = graph.settings.value;
       if (!marqueeSelectableGraphTypes.includes(graphType)) continue;
       const inSelectionBox = shape.efficientHitbox(box);
@@ -135,7 +137,7 @@ export const useMarqueePlugin = <
     );
   };
 
-  const setMarqueeBoxDimensions = ({ coords }: GraphMouseEvent) => {
+  const setMarqueeBoxDimensions = ({ coords }: CanvasGraphMouseEvent) => {
     if (!marqueeBox.value) return;
     const { x, y } = coords;
     marqueeBox.value.width = x - marqueeBox.value.at.x;
@@ -144,7 +146,7 @@ export const useMarqueePlugin = <
   };
 
   const getMarqueeBoxSchema = (box: BoundingBox) => {
-    const shape = graph.shapes.shapes.rect({
+    const shape = graph.canvas.shapes.shapes.rect({
       id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
       fillColor: graph.getTheme('marquee.color'),
@@ -175,7 +177,7 @@ export const useMarqueePlugin = <
 
   const getEncapsulatedNodeBoxSchema = (box: BoundingBox) => {
     const id = 'encapsulated-node-box';
-    const shape = graph.shapes.shapes.rect({
+    const shape = graph.canvas.shapes.shapes.rect({
       id,
       ...box,
       fillColor: graph.getTheme('marquee.encapsulatedNodeBoxColor'),
@@ -207,8 +209,8 @@ export const useMarqueePlugin = <
     return aggregator;
   };
 
-  graph.aggregator.transformers.push(addEncapsulatedNodeBoxToAggregator);
-  graph.aggregator.transformers.push(addMarqueeBoxToAggregator);
+  graph.canvas.aggregator.transformers.push(addEncapsulatedNodeBoxToAggregator);
+  graph.canvas.aggregator.transformers.push(addMarqueeBoxToAggregator);
 
   const activate = () => {
     events.subscribe('onFocusChange', updateEncapsulatedNodeBox);

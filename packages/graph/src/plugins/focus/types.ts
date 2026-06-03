@@ -4,6 +4,8 @@ import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import { ValidGraphThemePath } from '../../themes/types.ts';
 import { GEdge, GNode } from '../../types.ts';
+import { CanvasEventMap } from '../canvas/events.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';
 
 export type FocusGraph = {
@@ -93,6 +95,6 @@ export type GraphWithFocus<
   Plugins,
 > = BaseGraph<
   TransactionWrapperOptions & FocusTransactionWrapperOptions,
-  EventMap & FocusEventMap,
-  Plugins & FocusPlugin
+  EventMap & CanvasEventMap & FocusEventMap,
+  Plugins & CanvasPlugin & FocusPlugin
 >;
