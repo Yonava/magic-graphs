@@ -13,7 +13,6 @@ import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import { GraphInterface } from '../../themes/types.ts';
 import { Aggregator } from '../../types.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './DOMEvents.ts';
 import { useGraphCursor } from './cursor/useGraphCursor.ts';
@@ -95,22 +94,31 @@ export const useCanvasPlugin = <
   );
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
-    const options: GraphInterface = {
-      edges: graph.edges,
-      getNode: graph.getNode,
-      getEdge: graph.getEdge,
-      getTheme: graph.getTheme,
-      settings: graph.settings,
-      shapes,
-    };
+    const edgeSchemaItems = graph.edges.value
+      .map((edge) => {
+        const shape = graph.getTheme('edge.base.shape', edge, graph);
+        if (!shape) return;
 
-    const edgeSchemaItems = options.edges.value
-      .map((edge) => getEdgeSchematic(edge, options))
+        return {
+          shape: shape,
+          id: edge.id,
+          graphType: 'edge',
+        } as const;
+      })
       .filter(Boolean)
       .map((item, i) => ({ ...item!, priority: i * 10 }));
 
-    const nodeSchemaItems = nodes.value
-      .map((node) => getNodeSchematic(node, options))
+    const nodeSchemaItems = graph.nodes.value
+      .map((node) => {
+        const shape = graph.getTheme('node.base.shape', node, graph);
+        if (!shape) return;
+
+        return {
+          shape: shape,
+          id: node.id,
+          graphType: 'node',
+        } as const;
+      })
       .filter(Boolean)
       .map((item, i) => ({ ...item!, priority: i * 10 + 1000 }));
 
@@ -119,6 +127,8 @@ export const useCanvasPlugin = <
 
     return aggregator;
   };
+
+  aggregator.transformers.push(addNodesAndEdgesToAggregator);
 
   return {
     ...graph,

@@ -81,15 +81,6 @@ export type BaseEventMap = {
   onElementsUpdated: (updates: DeepReadonly<ElementUpdatePayload>) => void;
 
   /**
-   * when the node that the user is hovering over changes.
-   * undefined if the user is not hovering over a node
-   */
-  onNodeHoverChange: (
-    newNode: GNode | undefined,
-    oldNode: GNode | undefined,
-  ) => void;
-
-  /**
    * when the {@link Graph.themeName | theme} of the graph has changed
    */
   onThemeChange: (newTheme: GraphThemeName, oldTheme: GraphThemeName) => void;
@@ -116,8 +107,6 @@ export const createBaseEventBus = (): BaseEventBus => ({
   onElementsAdded: new Set(),
   onElementsRemoved: new Set(),
   onElementsUpdated: new Set(),
-
-  onNodeHoverChange: new Set(),
 
   onThemeChange: new Set(),
   onSettingsChange: new Set(),

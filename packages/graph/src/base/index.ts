@@ -130,26 +130,6 @@ export const useBaseGraph = (
     }, new Map()),
   );
 
-  let currHoveredNode: GNode | undefined;
-  events.subscribe('onMouseMove', ({ items }) => {
-    const topItem = items.at(-1);
-    // TODO change this to better support node anchors
-    // that may be dragging over the node
-    if (!topItem || topItem.graphType !== 'node') return;
-    const node = getNode(topItem.id);
-    if (node === currHoveredNode) return;
-    events.emit('onNodeHoverChange', node, currHoveredNode);
-    currHoveredNode = node;
-  });
-
-  const liftHoveredNodeToTop = (aggregator: Aggregator) => {
-    if (!currHoveredNode) return aggregator;
-    prioritizeNode(currHoveredNode.id, aggregator);
-    return aggregator;
-  };
-
-  aggregator.transformers.push(liftHoveredNodeToTop);
-
   watch(themeName, async (newThemeName, oldThemeName) => {
     events.emit('onThemeChange', newThemeName, oldThemeName);
   });
@@ -187,16 +167,16 @@ export const useBaseGraph = (
 
     events,
 
-    aggregator,
-
     pluginHoldController: usePluginHoldController(settings),
-    shapes,
 
     baseTheme: computed(() => THEME_LOADOUTS[themeName.value]),
     themeName,
     getTheme,
     themeMap,
     settings,
+
+    aggregator,
+    shapes,
 
     magicCanvas,
     /**
