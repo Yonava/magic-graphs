@@ -2,7 +2,9 @@
 
 ## Yona — Engineering & Architecture
 
-The SDK, the core graph engine, the plugin system, the canvas rendering pipeline. The hard TypeScript and Vue work that makes everything else possible. Final word on architectural decisions. Primary engineer on the products layer.
+The SDK, the core graph engine, the plugin system, the canvas rendering pipeline. The TypeScript and Vue work that makes everything else possible.
+
+Leads coding and architectural decisions.
 
 ## Ian — Mathematical Correctness & Algorithm Depth
 
