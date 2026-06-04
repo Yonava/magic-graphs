@@ -85,8 +85,8 @@
 
     const graphEdges = edges.map(
       (astEdge): GEdge => ({
-        to: getASTNodeId(astEdge.toNode),
-        from: getASTNodeId(astEdge.fromNode),
+        target: getASTNodeId(astEdge.toNode),
+        source: getASTNodeId(astEdge.fromNode),
         id: getASTEdgeId(astEdge),
         weight: new Fraction(1),
       }),

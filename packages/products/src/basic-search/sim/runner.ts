@@ -1,9 +1,8 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import type { ComputedRef } from 'vue';
 
 import type { SimulationRunner } from '../../shared/ui/general/sim/types.ts';
 import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { BasicSearchTrace } from '../algo/types.ts';
 import { useBFS } from '../algo/useBFS.ts';
 import { useDFS } from '../algo/useDFS.ts';
@@ -66,9 +65,9 @@ const useSimulationRunner = (
     for (const edge of graph.edges.value) {
       stopAnimation({ shapeId: edge.id });
       if (
-        traceAtStep.value.currentNodeId === edge.from &&
-        !traceAtStep.value.visited.has(edge.to) &&
-        traceAtStep.value.queue?.includes(edge.to)
+        traceAtStep.value.currentNodeId === edge.source &&
+        !traceAtStep.value.visited.has(edge.target) &&
+        traceAtStep.value.queue?.includes(edge.target)
       ) {
         playAnimation({ shapeId: edge.id, runCount: 1 });
       }

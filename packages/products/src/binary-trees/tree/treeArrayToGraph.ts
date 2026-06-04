@@ -1,9 +1,9 @@
 import type { GEdge, GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { Fraction } from 'mathjs';
 
 import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { TreeNodeKeyArray } from './avl.ts';
 import type { TreeNode } from './treeNode.ts';
 
@@ -12,10 +12,10 @@ type GNodeMoveInstruction = {
   coords: Coordinate;
 };
 
-const newEdge = (from: number, to: number): GEdge => ({
-  from: from.toString(),
-  to: to.toString(),
-  id: `${from}-${to}`,
+const newEdge = (source: number, target: number): GEdge => ({
+  source: source.toString(),
+  target: target.toString(),
+  id: `${source}-${target}`,
   weight: new Fraction(1),
 });
 

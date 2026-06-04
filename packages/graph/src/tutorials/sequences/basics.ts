@@ -38,7 +38,7 @@ export const BASICS_STEPS: (
     hint: 'You can even create self directed edges! Make sure you are in "directed" mode and drag an anchor inwards',
     dismiss: {
       event: 'onEdgeAdded',
-      predicate: (edge) => edge.to === edge.from,
+      predicate: (edge) => edge.target === edge.source,
     },
   },
   editEdgeWeight: {

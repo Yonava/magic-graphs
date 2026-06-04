@@ -20,8 +20,8 @@ export const useResidualEdges = (graph: Graph) => {
     cleanupResidualEdges();
     const residualEdges = graph.edges.value.map((e) => ({
       ...e,
-      to: e.from,
-      from: e.to,
+      to: e.source,
+      from: e.target,
       label: '0',
       id: createResidualId(e.id),
     }));

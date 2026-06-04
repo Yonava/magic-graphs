@@ -20,8 +20,8 @@ export const useGraphLib = (graph: BaseGraph) =>
     for (const node of nodes.value) graphLibInstance.setNode(node.id);
     for (const edge of edges.value)
       graphLibInstance.setEdge({
-        v: edge.from,
-        w: edge.to,
+        v: edge.source,
+        w: edge.target,
         name: edge.id,
       });
 

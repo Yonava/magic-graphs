@@ -1,4 +1,5 @@
 import type { GEdge } from '@magic/graph/types';
+
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 export type Parent = Map<string, string>;
@@ -50,8 +51,8 @@ export const kruskal = (graph: Graph) => {
 
     const mst: GEdge[] = [];
     for (const edge of sortedEdges) {
-      const sourceRoot = find(parent, edge.from);
-      const targetRoot = find(parent, edge.to);
+      const sourceRoot = find(parent, edge.source);
+      const targetRoot = find(parent, edge.target);
 
       if (sourceRoot !== targetRoot) {
         mst.push(edge);

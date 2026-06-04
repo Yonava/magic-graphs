@@ -1,7 +1,8 @@
 import type { GEdge, GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { getAdjacencyList } from '@magic/graph/useAdjacencyList';
 import { Fraction } from 'mathjs';
+
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 export type FlowTrace = Record<GEdge['id'], GEdge['weight']>;
 
@@ -45,7 +46,7 @@ export const fordFulkerson = (
 
     for (const nodeId of adjacentNodeIds) {
       const connectingEdge = graph.edges.value.find(
-        (e) => e.from === s && e.to === nodeId,
+        (e) => e.source === s && e.target === nodeId,
       );
       if (!connectingEdge) throw 'the adj list must be wrong! (1)';
       const connectingEdgeWeight = edgeIdToWeight[connectingEdge.id];
@@ -69,7 +70,7 @@ export const fordFulkerson = (
         const u = path[i];
         const v = path[i + 1];
         const connectingEdge = graph.edges.value.find(
-          (e) => e.from === u && e.to === v,
+          (e) => e.source === u && e.target === v,
         );
         if (!connectingEdge) throw 'the adj list must be wrong! (2)';
         const connectingEdgeWeight = edgeIdToWeight[connectingEdge.id];
@@ -80,10 +81,10 @@ export const fordFulkerson = (
         const u = path[i];
         const v = path[i + 1];
         const connectingUV = graph.edges.value.find(
-          (e) => e.from === u && e.to === v,
+          (e) => e.source === u && e.target === v,
         );
         const connectingVU = graph.edges.value.find(
-          (e) => e.from === v && e.to === u,
+          (e) => e.source === v && e.target === u,
         );
         if (!connectingUV || !connectingVU) {
           throw 'the adj list must be wrong! (3)';

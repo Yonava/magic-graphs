@@ -16,10 +16,10 @@ const getConnectedNodes: CurriedEdgeHelpers['getConnectedNodes'] =
   (graph) => (edgeId) => {
     const edge = graph.getEdge(edgeId);
     if (!edge) throw new Error(`Edge with ID ${edgeId} not found`);
-    const fromNode = graph.getNode(edge.from);
-    const toNode = graph.getNode(edge.to);
-    if (!fromNode || !toNode) throw new Error('nodes not found');
-    return { fromNode, toNode };
+    const sourceNode = graph.getNode(edge.source);
+    const targetNode = graph.getNode(edge.target);
+    if (!sourceNode || !targetNode) throw new Error('nodes not found');
+    return { sourceNode, targetNode };
   };
 
 export const edgeHelpers: CurriedEdgeHelpers = {
@@ -32,10 +32,10 @@ export const edgeHelpers: CurriedEdgeHelpers = {
     if (!edge) throw new Error(`Edge with ID ${edgeId} not found`);
 
     if (isGraphDirected) {
-      return edge.from === nodeId;
+      return edge.source === nodeId;
     }
 
-    return edge.from === nodeId || edge.to === nodeId;
+    return edge.source === nodeId || edge.target === nodeId;
   },
   isPointingTowardNode: (graph) => (edgeId, nodeId) => {
     const { isGraphDirected } = graph.settings.value;
@@ -44,9 +44,9 @@ export const edgeHelpers: CurriedEdgeHelpers = {
     if (!edge) throw new Error(`Edge with ID ${edgeId} not found`);
 
     if (isGraphDirected) {
-      return edge.to === nodeId;
+      return edge.target === nodeId;
     }
 
-    return edge.from === nodeId || edge.to === nodeId;
+    return edge.source === nodeId || edge.target === nodeId;
   },
 };

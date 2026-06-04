@@ -36,7 +36,7 @@ export function useCommitTransaction({
         if (!node) continue;
         payload.removedNodeIds.push(node.id);
         const orphanedEdgeIds = edges
-          .filter((edge) => edge.from === nodeId || edge.to === nodeId)
+          .filter((edge) => edge.source === nodeId || edge.target === nodeId)
           .filter(
             (edge) => !payload.removedEdgeIds.some((id) => id === edge.id),
           )
