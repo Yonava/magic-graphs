@@ -1,8 +1,5 @@
-import { getTransitData, setTransitData } from '@magic/graph/transit';
-
 import { useRoute, useRouter } from 'vue-router';
 
-import { nonNullGraph as globalGraph } from './shared/globalGraph.ts';
 import { Graph } from './shared/useGraphWithCanvas.ts';
 import type { ProductInfo, SimulationDeclarationGetter } from './types.ts';
 
@@ -112,11 +109,9 @@ export const useProductRouting = () => {
    * annotations and canvas camera positioning
    */
   const navigateWithGraph = async (product: ProductInfo) => {
-    const data = getTransitData(globalGraph.value);
     await navigate(product);
     // wait one tick for the global graph to update
     await new Promise((res) => setTimeout(res, 0));
-    setTransitData(globalGraph.value, data);
   };
 
   return {

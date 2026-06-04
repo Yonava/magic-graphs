@@ -2,28 +2,28 @@ import graphlib from 'graphlib';
 
 import { computed } from 'vue';
 
-import type { Graph } from '../types.ts';
+import { BaseGraph } from '../base/types.ts';
 
 /**
  * a magic graphs integration with the `graphlib` library.
  * ..lib api reference: https://github.com/dagrejs/graphlib/wiki/API-Reference
  */
-export const useGraphLib = (graph: Graph) =>
+export const useGraphLib = (graph: BaseGraph) =>
   computed(() => {
     const directed = graph.settings.value.isGraphDirected;
-    const g = new graphlib.Graph({
+    const graphLibInstance = new graphlib.Graph({
       directed,
       multigraph: true,
     });
 
     const { nodes, edges } = graph;
-    for (const node of nodes.value) g.setNode(node.id);
+    for (const node of nodes.value) graphLibInstance.setNode(node.id);
     for (const edge of edges.value)
-      g.setEdge({
+      graphLibInstance.setEdge({
         v: edge.from,
         w: edge.to,
         name: edge.id,
       });
 
-    return g;
+    return graphLibInstance;
   });

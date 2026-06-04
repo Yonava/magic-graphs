@@ -1,25 +1,11 @@
-import { USER_PLATFORM } from '@magic/graph/plugins/shortcut/index';
-import {
-  decodeCompressedTransitData,
-  setTransitData,
-} from '@magic/graph/transit';
-import { decompressFromEncodedURIComponent } from 'lz-string';
-import { useToast } from 'primevue/usetoast';
-
 import { onBeforeUnmount } from 'vue';
 
-import { type LocationQueryValue, useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 import { graph as globalGraph } from '../shared/globalGraph.ts';
 import { ProductInfo } from '../types.ts';
 import { routeToProduct } from '../utils.ts';
 import { Graph } from './useGraphWithCanvas.ts';
-
-/**
- * query param key we assign an encoded graph to when sharing
- * a graph via url
- */
-export const SHARE_GRAPH_QUERY_PARAM_KEY = 'g';
 
 export const getProductFromCurrentRoute = (routePath: string) => {
   const productInfo = routeToProduct[routePath];
@@ -28,58 +14,6 @@ export const getProductFromCurrentRoute = (routePath: string) => {
   }
 
   return productInfo;
-};
-
-/**
- * takes a graph which has been encoded into a url query param, loads it in, then
- * displays a toast. Only used for the share graph feature.
- */
-const loadGraphFromURL = (
-  graph: Graph,
-  compressedAndUriEncodedTransitData: LocationQueryValue | LocationQueryValue[],
-) => {
-  const router = useRouter();
-  const route = useRoute();
-  const toast = useToast();
-
-  const successToast = () => {
-    const undoShortcut = USER_PLATFORM === 'Mac' ? '⌘+Z' : 'Ctrl+Z';
-    toast.add({
-      summary: `Loaded graph from link successfully. Press ${undoShortcut} to undo.`,
-      severity: 'success',
-      life: 5000,
-    });
-  };
-
-  const failedToast = () =>
-    toast.add({
-      summary: 'Failed to load graph from link 😕',
-      severity: 'error',
-      life: 5000,
-    });
-
-  router.replace({ path: route.path, query: {} });
-
-  if (typeof compressedAndUriEncodedTransitData !== 'string') {
-    console.error('graph share failed - serialized transit data not a string');
-    failedToast();
-    return;
-  }
-
-  try {
-    const decodedUriComponent = decompressFromEncodedURIComponent(
-      compressedAndUriEncodedTransitData,
-    );
-    const transitData = decodeCompressedTransitData(decodedUriComponent);
-
-    // wait one tick to allow graph in localStorage to be loaded before overwriting
-    setTimeout(() => setTransitData(graph, transitData), 0);
-
-    successToast();
-  } catch {
-    console.error('graph share failed - could not parse graph transit data');
-    failedToast();
-  }
 };
 
 /**
@@ -103,9 +37,6 @@ export const useGraphProduct = (graph: Graph, product?: ProductInfo) => {
   document.title = `${name} - Magic Graphs`;
 
   globalGraph.value = graph;
-
-  const sharedGraph = route.query[SHARE_GRAPH_QUERY_PARAM_KEY];
-  if (sharedGraph) loadGraphFromURL(graph, sharedGraph);
 
   onBeforeUnmount(() => {
     product.state?.reset();
