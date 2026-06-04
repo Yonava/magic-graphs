@@ -6,7 +6,6 @@ import { useGraphHelpers } from './helpers/index.ts';
 import { NodeAnchorEventMap } from './plugins/anchors/events.ts';
 import { useNodeAnchorPlugin } from './plugins/anchors/index.ts';
 import { NodeAnchorPlugin } from './plugins/anchors/types.ts';
-import { useAnnotations } from './plugins/annotations/index.ts';
 import { CanvasEventMap } from './plugins/canvas/events.ts';
 import { useCanvasPlugin } from './plugins/canvas/index.ts';
 import { CanvasPlugin } from './plugins/canvas/types.ts';
@@ -111,13 +110,9 @@ export const useGraph = (
 ) => {
   const graph = useGraphWithPlugins(canvas, settings);
 
-  const annotation = useAnnotations(graph);
   const preferredTheme = usePreferredTheme(graph);
 
-  const shortcut = useShortcuts({
-    ...graph,
-    annotation,
-  });
+  const shortcut = useShortcuts(graph);
 
   const helpers = useGraphHelpers(graph);
   const adjacencyList = useAdjacencyList({ graph, helpers });
@@ -130,8 +125,8 @@ export const useGraph = (
   return {
     ...graph,
 
-    // TODO purge from graph layer all together
-    annotation,
+    // TODO this belongs in products/shared
+    shortcut,
 
     // theme and style
     ...preferredTheme,
@@ -141,8 +136,6 @@ export const useGraph = (
     transitionMatrix,
     characteristics,
 
-    // helper functions
-    shortcut,
     helpers,
   };
 };

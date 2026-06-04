@@ -1,7 +1,6 @@
 import { keys } from 'ctrl-keys';
 
 import { GraphWithPlugins } from '../../useGraph.ts';
-import { GraphAnnotationPlugin } from '../annotations/index.ts';
 import type { PlatformShortcuts } from './types.ts';
 
 export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
@@ -11,20 +10,16 @@ export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
 /**
  * a plugin that allows users to use keyboard shortcuts to interact with the graph
  */
-export const useShortcuts = (
-  graph: GraphWithPlugins & GraphAnnotationPlugin,
-) => {
+export const useShortcuts = (graph: GraphWithPlugins) => {
   const { settings } = graph;
 
   const ctrlKeysHandler = keys();
 
   const defaultShortcutTriggerUndo = () => {
-    if (graph.annotation.isActive.value) return graph.annotation.undo();
     if (settings.value.interactive) return graph.history.undo();
   };
 
   const defaultShortcutTriggerRedo = () => {
-    if (graph.annotation.isActive.value) graph.annotation.redo();
     if (settings.value.interactive) return graph.history.redo();
   };
 

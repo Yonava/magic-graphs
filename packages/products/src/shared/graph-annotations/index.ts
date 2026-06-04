@@ -1,3 +1,6 @@
+import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
+import type { Aggregator } from '@magic/graph/types';
+import { GraphWithPlugins } from '@magic/graph/useGraph';
 import { circle } from '@magic/shapes/shapes/circle/index';
 import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
 import type { WithId } from '@magic/shapes/types/index';
@@ -9,16 +12,13 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, ref, watch } from 'vue';
 
-import type { Aggregator } from '../../types.ts';
-import { GraphWithPlugins } from '../../useGraph.ts';
-import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { BRUSH_WEIGHTS, COLORS } from './constants.ts';
 import { useAnnotationHistory } from './history.ts';
 import type { Annotation } from './types.ts';
 
 const ERASER_BRUSH_RADIUS = 10;
 
-export const useAnnotations = (graph: GraphWithPlugins) => {
+export const useGraphAnnotations = (graph: GraphWithPlugins) => {
   const selectedColor = ref<Color>(COLORS[0]);
   const selectedBrushWeight = ref(BRUSH_WEIGHTS[1]);
   const isErasing = ref(false);
@@ -34,7 +34,6 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
 
   const isActive = ref(false);
 
-  const { hold, release } = graph.pluginHoldController('annotations');
   const history = useAnnotationHistory(scribbles);
 
   const clear = () => {
@@ -259,13 +258,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
 
     isActive.value = true;
 
-    hold('interactive');
-    hold('marquee');
-    hold('focusable');
-    hold('draggable');
-
     graph.canvas.cursor.disabled.value = true;
-
     canvas.style.cursor = 'crosshair';
 
     graph.events.subscribe('onMouseDown', startDrawing);
@@ -280,13 +273,7 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
     isActive.value = false;
     isErasing.value = false;
 
-    release('interactive');
-    release('marquee');
-    release('focusable');
-    release('draggable');
-
     graph.canvas.cursor.disabled.value = false;
-
     canvas.style.cursor = 'default';
 
     graph.events.unsubscribe('onMouseDown', startDrawing);
@@ -314,17 +301,13 @@ export const useAnnotations = (graph: GraphWithPlugins) => {
 
     load,
 
-    undo: history.undo,
-    redo: history.redo,
-    canUndo: history.canUndo,
-    canRedo: history.canRedo,
+    history: {
+      undo: history.undo,
+      redo: history.redo,
+      canUndo: history.canUndo,
+      canRedo: history.canRedo,
+    },
   };
 };
 
-export type GraphAnnotationControls = ReturnType<typeof useAnnotations>;
-export type GraphAnnotationPlugin = {
-  /**
-   * controls for facilitating the "marking up" or drawing over the graph
-   */
-  annotation: GraphAnnotationControls;
-};
+export type GraphAnnotationsControls = ReturnType<typeof useGraphAnnotations>;
