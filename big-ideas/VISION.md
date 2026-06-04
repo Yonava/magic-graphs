@@ -14,7 +14,7 @@ Product experiences are designed to be immediately intuitive and obviously usefu
 
 ---
 
-## Why This Isn't Won't Be "Just A Dream" If We Execute
+## Why This Won't Be "Just A Dream" If We Act
 
 The [competition](./COMPETITION.md) sucks! The landscape consists of Java applications from 2003 or hard to use, clunky, and unintuitive read-only animations. None of them let a professor build a custom graph on a fluid canvas, run an algorithm, pause mid-execution, annotate it freehand, and share the exact state with 200 students via a URL or invite live collaboration with students in the classroom. Magic Graphs does all of that today.
 
