@@ -1,4 +1,4 @@
-import type { Graph } from '@magic/graph/types';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 import { computed, readonly, ref, watch } from 'vue';
 

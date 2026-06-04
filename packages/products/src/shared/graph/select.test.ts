@@ -1,21 +1,12 @@
-import { useGraph } from '@magic/graph/useGraph';
 import { describe, expect, it } from 'vitest';
 
 import { ref } from 'vue';
 
+import { useGraphWithCanvas } from '../useGraphWithCanvas.ts';
 import { selectFromGraph } from './select.ts';
 
 describe('select from graph', () => {
-  // TODO get canvas to actually work in the test suite
-  // const canvas = document.createElement('canvas')
-  // canvas.width = 1000
-  // canvas.height = 1000
-  // canvas.style.position = 'fixed'
-  // canvas.style.top = '0'
-  // canvas.style.left = '0'
-  // document.body.appendChild(canvas)
-
-  const graph = useGraph(ref() as any);
+  const { graph } = useGraphWithCanvas(ref() as any);
 
   const node1 = graph.actions.addNode({ x: 100, y: 100 });
   const node2 = graph.actions.addNode({ x: 200, y: 200 });

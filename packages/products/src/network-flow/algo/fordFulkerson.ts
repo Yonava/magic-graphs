@@ -1,4 +1,5 @@
-import type { GEdge, GNode, Graph } from '@magic/graph/types';
+import type { GEdge, GNode } from '@magic/graph/types';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { getAdjacencyList } from '@magic/graph/useAdjacencyList';
 import { Fraction } from 'mathjs';
 

@@ -1,17 +1,18 @@
 import { PURPLE_700, RED_700 } from '@magic/utils/colors';
 
+import { BaseGraph } from '../../base/types.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import { TUTORIAL_THEME_ID } from '../../tutorials/types.ts';
 import { type TutorialStep } from '../../tutorials/types.ts';
-import type { Graph } from '../../types.ts';
 
 /**
  * pre-defined tutorial steps for basic graph editing
  */
-// @ts-expect-error migration
-export const BASICS_STEPS: (graph: Graph) => Record<string, TutorialStep> = (
-  graph: Graph,
-) => ({
+// @ts-expect-error migration: will complain that base graph events do not include
+// onNodeDrop
+export const BASICS_STEPS: (
+  graph: BaseGraph,
+) => Record<string, TutorialStep> = (graph: BaseGraph) => ({
   greeting: {
     hint: 'Welcome to the graph editor tutorial',
     dismiss: 'onClick',
@@ -50,7 +51,7 @@ export const BASICS_STEPS: (graph: Graph) => Record<string, TutorialStep> = (
   removeElement: getRemoveNodeOrEdgeStep(graph),
 });
 
-const getRemoveNodeOrEdgeStep = (graph: Graph): TutorialStep => {
+const getRemoveNodeOrEdgeStep = (graph: BaseGraph): TutorialStep => {
   let stepPassed = false;
   const completeStep = () => (stepPassed = true);
   const { setTheme, removeAllThemes } = useTheme(graph, TUTORIAL_THEME_ID);

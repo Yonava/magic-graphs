@@ -1,4 +1,5 @@
-import { GNode, Graph } from '@magic/graph/types';
+import { GNode } from '@magic/graph/types';
+import type { Graph } from '../../useGraphWithCanvas.ts';
 import { Coordinate } from '@magic/shapes/types/utility';
 
 import { NodeDepth } from '../../graph-use-node-depth/useNodeDepth.ts';

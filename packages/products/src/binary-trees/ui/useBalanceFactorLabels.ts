@@ -1,6 +1,7 @@
 import { useNodeColor } from '@magic/graph/themes/helpers/useNodeColor';
 import { useNodeLabel } from '@magic/graph/themes/helpers/useNodeLabel';
-import type { GNode, Graph } from '@magic/graph/types';
+import type { GNode } from '@magic/graph/types';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 import type { Color } from '@magic/utils/colors';
 

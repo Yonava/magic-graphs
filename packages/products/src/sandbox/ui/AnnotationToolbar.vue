@@ -17,7 +17,7 @@
     isErasing,
     color: selectedColor,
     isLaserPointing,
-  } = graph.value.annotation;
+  } = graph.value.annotations;
 
   const selectColor = (newColor: Color) => {
     selectedColor.value = newColor;

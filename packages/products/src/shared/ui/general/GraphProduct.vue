@@ -52,15 +52,15 @@
     runningSimulation.value = false;
     emit('simulation-stopped');
 
-    if (wasAnnotationActive.value) props.graph.annotation.activate();
+    if (wasAnnotationActive.value) props.graph.annotations.activate();
     wasAnnotationActive.value = false;
   };
 
   useEscSimulationShortcut(stopSimulation);
 
   const setActiveSimulation = (simulation: SimulationDeclaration) => {
-    wasAnnotationActive.value = props.graph.annotation.isActive.value;
-    props.graph.annotation.deactivate();
+    wasAnnotationActive.value = props.graph.annotations.isActive.value;
+    props.graph.annotations.deactivate();
 
     activeSimulation.value = simulation;
     startSimulation();
@@ -197,7 +197,7 @@
 
       <template v-else>
         <slot name="bottom-center">
-          <div v-show="graph.annotation.isActive.value">
+          <div v-show="graph.annotations.isActive.value">
             <AnnotationToolbar />
           </div>
         </slot>

@@ -1,6 +1,6 @@
 import { LETTERS, useGraphLabelGetter } from '@magic/graph/labels';
 import type { GraphSettings } from '@magic/graph/settings/index';
-import type { Graph } from '@magic/graph/types';
+import type { Graph } from '../shared/useGraphWithCanvas.ts';
 import { Fraction } from 'mathjs';
 
 import { SINK_LABEL, SOURCE_LABEL } from './constants.ts';

@@ -1,6 +1,6 @@
-import type { Graph } from '@magic/graph/types';
-
 import { readonly, ref } from 'vue';
+
+import { Graph } from './useGraphWithCanvas.ts';
 
 export const useGraphCanvasColor = (graph: Graph) => {
   const { events, getTheme } = graph;

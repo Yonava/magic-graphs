@@ -1,4 +1,5 @@
-import { GNode, Graph } from '@magic/graph/types';
+import { GNode } from '@magic/graph/types';
+import type { Graph } from '../useGraphWithCanvas.ts';
 import { debounce } from '@magic/utils/debounce';
 
 import { onUnmounted, ref, watch } from 'vue';

@@ -1,4 +1,5 @@
-import type { GNode, Graph } from '@magic/graph/types';
+import type { GNode } from '@magic/graph/types';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
 import { gcd, lowestPrimeFactor } from '@magic/utils/math';
 
