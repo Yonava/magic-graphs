@@ -1,7 +1,9 @@
+import { useTheme } from '@magic/graph/themes/useTheme';
+import type { GNode } from '@magic/graph/types';
+
 import type { MaybeRef } from 'vue';
 
-import { useTheme } from '../../themes/useTheme.ts';
-import type { GNode, Graph } from '../../types.ts';
+import { Graph } from '../useGraphWithCanvas.ts';
 
 /**
  * all types that we accept as a valid serializable label

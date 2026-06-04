@@ -13,7 +13,6 @@
 
   import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
-  import { SHARE_GRAPH_QUERY_PARAM_KEY } from '../../../shared/useGraphProduct.ts';
 
   const route = useRoute();
   const linkCopied = ref(false);
@@ -27,36 +26,32 @@
   };
 
   const copyLink = async () => {
-    if (linkCopied.value) return;
-    try {
-      const uncompressedData = getTransitData(graph.value);
-      const data = encodeCompressedTransitData(uncompressedData);
-      const compressedUriData = compressToEncodedURIComponent(data);
-
-      const shareKey = SHARE_GRAPH_QUERY_PARAM_KEY;
-      const baseUrl = `${location.origin}${route.path}`;
-      const url = `${baseUrl}?${shareKey}=${compressedUriData}`;
-
-      await navigator.clipboard.writeText(url);
-      linkCopied.value = true;
-
-      toast.add({
-        summary: 'Graph Share Link Copied to Clipboard!',
-        life: 3000,
-        severity: 'success',
-      });
-    } catch (e) {
-      clipboardCopyError.value = true;
-
-      toast.add({
-        summary: 'Failed to copy share link to clipboard!',
-        life: 3000,
-        severity: 'error',
-      });
-      console.error(e);
-    } finally {
-      setTimeout(resetButtonState, 3000);
-    }
+    // if (linkCopied.value) return;
+    // try {
+    //   const uncompressedData = getTransitData(graph.value);
+    //   const data = encodeCompressedTransitData(uncompressedData);
+    //   const compressedUriData = compressToEncodedURIComponent(data);
+    //   const shareKey = SHARE_GRAPH_QUERY_PARAM_KEY;
+    //   const baseUrl = `${location.origin}${route.path}`;
+    //   const url = `${baseUrl}?${shareKey}=${compressedUriData}`;
+    //   await navigator.clipboard.writeText(url);
+    //   linkCopied.value = true;
+    //   toast.add({
+    //     summary: 'Graph Share Link Copied to Clipboard!',
+    //     life: 3000,
+    //     severity: 'success',
+    //   });
+    // } catch (e) {
+    //   clipboardCopyError.value = true;
+    //   toast.add({
+    //     summary: 'Failed to copy share link to clipboard!',
+    //     life: 3000,
+    //     severity: 'error',
+    //   });
+    //   console.error(e);
+    // } finally {
+    //   setTimeout(resetButtonState, 3000);
+    // }
   };
 
   const icon = computed(() => {

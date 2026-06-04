@@ -1,8 +1,7 @@
 import type { ComputedRef, Ref } from 'vue';
 
 import { BaseEventMap } from '../base/events.ts';
-import type { Graph } from '../types.ts';
-import { GraphWithPlugins } from '../useGraph.ts';
+import { BaseGraph } from '../base/types.ts';
 
 /**
  * css class defined in App.vue, should move later, used as default for ElementHighlightOptions -> highlightElement.className
@@ -58,7 +57,7 @@ type SharedStepProps = {
    * if the precondition returns true, its like the condition for going to the next step is
    * already met, so the step will be skipped.
    */
-  precondition?: (graph: Graph) => boolean;
+  precondition?: (graph: BaseGraph) => boolean;
   /**
    * callback to run when the step is initialized.
    * runs before precondition
