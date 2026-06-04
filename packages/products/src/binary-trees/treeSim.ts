@@ -1,4 +1,4 @@
-import type { Graph } from '@magic/graph/types';
+import type { Graph } from '../shared/useGraphWithCanvas.ts';
 
 import { useSimulationControls } from '../shared/ui/general/sim/useSimulationControls.ts';
 import state from './state.ts';

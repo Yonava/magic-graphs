@@ -9,15 +9,6 @@ export type {
   Prettify,
   UnionToIntersection,
 } from 'ts-essentials';
-/**
- * the useGraph composition function
- */
-export type UseGraph = typeof useGraph;
-
-/**
- * a graph instance (the return value of useGraph)
- */
-export type Graph = ReturnType<UseGraph>;
 
 /**
  * a node in a graph instance

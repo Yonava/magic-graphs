@@ -7,7 +7,6 @@
     }>(),
     {
       color: colors.GRAY_800,
-      hint: undefined,
     },
   );
 </script>
@@ -20,6 +19,5 @@
     >
       <slot></slot>
     </div>
-    <slot name="hint"></slot>
   </div>
 </template>

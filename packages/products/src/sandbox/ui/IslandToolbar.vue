@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { useGraphTutorial } from '@magic/graph/tutorials/useGraphTutorial';
   import ToolbarButtonGroup from '@magic/ui/core/toolbar/ToolbarButtonGroup.vue';
 
   import { computed } from 'vue';
@@ -12,25 +11,12 @@
   import GraphInfoMenu from './GraphInfoMenu/GraphInfoMenu.vue';
   import TreeShapeMenu from './TreeShapeMenu.vue';
 
-  const tutorial = useGraphTutorial(graph.value, [
-    {
-      dismiss: 'onNodeAdded',
-      hint: 'Double click on the canvas to add a node.',
-    },
-    {
-      dismiss: 'onEdgeAdded',
-      hint: 'Hover node to show anchors, drag between them to add an edge.',
-    },
-  ]);
-
-  tutorial.start();
-
   const toggleAnnotation = () => {
     const {
       activate: activate,
       deactivate: deactivate,
       isActive: isActive,
-    } = graph.value.annotation;
+    } = graph.value.annotations;
 
     (isActive.value ? deactivate : activate)();
     graph.value.canvas.canvasFocused.value = true;
@@ -39,21 +25,19 @@
   const { undo, redo } = graph.value.shortcut.trigger;
 
   const canUndo = computed(() => {
-    const { isActive: annotationActive, canUndo: canUndoAnnotation } =
-      graph.value.annotation;
+    const annotations = graph.value.annotations;
     const { canUndo } = graph.value.history;
     const { settings } = graph.value;
-    if (annotationActive.value) return canUndoAnnotation.value;
+    if (annotations.isActive.value) return annotations.history.canUndo.value;
     if (!settings.value.interactive) return false;
     return canUndo.value;
   });
 
   const canRedo = computed(() => {
-    const { isActive: annotationActive, canRedo: canRedoAnnotation } =
-      graph.value.annotation;
+    const annotations = graph.value.annotations;
     const { canRedo } = graph.value.history;
     const { settings } = graph.value;
-    if (annotationActive.value) return canRedoAnnotation.value;
+    if (annotations.isActive.value) return annotations.history.canRedo.value;
     if (!settings.value.interactive) return false;
     return canRedo.value;
   });
@@ -64,7 +48,7 @@
 </script>
 
 <template>
-  <GToolbar :hint="tutorial">
+  <GToolbar>
     <ToolbarButtonGroup class="gap-0">
       <GToolbarButton
         @click="graph.settings.value.isGraphWeighted = true"
@@ -116,8 +100,8 @@
     <ToolbarButtonGroup>
       <GToolbarButton
         @click="toggleAnnotation"
-        :active="graph.annotation.isActive.value"
-        :icon="graph.annotation.isActive.value ? 'pencil' : 'pencil-outline'"
+        :active="graph.annotations.isActive.value"
+        :icon="graph.annotations.isActive.value ? 'pencil' : 'pencil-outline'"
       />
 
       <GraphInfoMenu v-slot="{ toggle, isOpen }">

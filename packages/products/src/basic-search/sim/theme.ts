@@ -1,5 +1,6 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
-import type { GEdge, GNode, Graph } from '@magic/graph/types';
+import type { GEdge, GNode } from '@magic/graph/types';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';

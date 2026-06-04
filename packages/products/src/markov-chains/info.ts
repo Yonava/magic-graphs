@@ -1,4 +1,4 @@
-import type { Graph } from '@magic/graph/types';
+import type { Graph } from '../shared/useGraphWithCanvas.ts';
 
 import type { ProductInfo } from '../types.ts';
 import { canRunMarkovChain } from './sim/guard.ts';

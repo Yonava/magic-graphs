@@ -1,5 +1,6 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
-import type { GNode, Graph } from '@magic/graph/types';
+import type { GNode } from '@magic/graph/types';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 
 import type { MarkovChain } from '../markov/useMarkovChain.ts';

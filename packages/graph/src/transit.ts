@@ -27,7 +27,7 @@ export const getTransitData = (graph: Graph): GraphTransitData => ({
   nodes: graph.nodes.value,
   edges: graph.edges.value,
 
-  annotations: graph.annotation.annotations.value,
+  annotations: graph.annotations.annotations.value,
 
   cameraPanX: graph.canvas.magicCanvas.camera.state.panX.value,
   cameraPanY: graph.canvas.magicCanvas.camera.state.panY.value,
@@ -40,7 +40,7 @@ export const setTransitData = (graph: Graph, transitData: GraphTransitData) => {
   //   edges: transitData.edges,
   // });
 
-  graph.annotation.load(transitData.annotations);
+  graph.annotations.load(transitData.annotations);
 
   const { state: cameraState } = graph.canvas.magicCanvas.camera;
   cameraState.panX.value = transitData.cameraPanX;

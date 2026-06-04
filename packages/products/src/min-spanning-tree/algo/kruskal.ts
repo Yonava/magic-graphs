@@ -1,4 +1,5 @@
-import type { GEdge, Graph } from '@magic/graph/types';
+import type { GEdge } from '@magic/graph/types';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 export type Parent = Map<string, string>;
 export type Rank = Map<string, number>;

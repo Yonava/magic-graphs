@@ -3,7 +3,6 @@ import {
   decodeCompressedTransitData,
   setTransitData,
 } from '@magic/graph/transit';
-import type { Graph } from '@magic/graph/types';
 import { decompressFromEncodedURIComponent } from 'lz-string';
 import { useToast } from 'primevue/usetoast';
 
@@ -14,6 +13,7 @@ import { type LocationQueryValue, useRoute, useRouter } from 'vue-router';
 import { graph as globalGraph } from '../shared/globalGraph.ts';
 import { ProductInfo } from '../types.ts';
 import { routeToProduct } from '../utils.ts';
+import { Graph } from './useGraphWithCanvas.ts';
 
 /**
  * query param key we assign an encoded graph to when sharing

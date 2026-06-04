@@ -1,4 +1,5 @@
-import type { GEdge, GNode, Graph } from '@magic/graph/types';
+import type { GEdge, GNode } from '@magic/graph/types';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { Fraction } from 'mathjs';
 

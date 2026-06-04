@@ -1,9 +1,8 @@
-import type { Graph } from '@magic/graph/types';
-
 import type { RouteRecordRaw } from 'vue-router';
 
 import type { SimulationGuard } from './shared/ui/general/sim/guard/index.ts';
 import type { SimulationRunner } from './shared/ui/general/sim/types.ts';
+import { Graph } from './shared/useGraphWithCanvas.ts';
 import type { ProductCategory } from './utils.ts';
 
 /**

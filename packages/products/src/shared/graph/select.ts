@@ -1,5 +1,6 @@
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
-import type { Graph, SchemaItem } from '@magic/graph/types';
+import type { SchemaItem } from '@magic/graph/types';
+import type { Graph } from '../useGraphWithCanvas.ts';
 import tinycolor from 'tinycolor2';
 
 const animateNodePulse = (graph: Graph) =>

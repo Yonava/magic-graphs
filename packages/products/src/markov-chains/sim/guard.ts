@@ -1,4 +1,4 @@
-import type { Graph } from '@magic/graph/types';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 import { SimulationGuard } from '../../shared/ui/general/sim/guard/index.ts';
 import definitions from '../markov/definitions.ts';

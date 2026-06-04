@@ -1,4 +1,4 @@
-import type { Graph } from '@magic/graph/types';
+import type { Graph } from '../../../../useGraphWithCanvas.ts';
 import type { DeepReadonly } from 'ts-essentials';
 
 import { useCycleColorizer } from '../../../../../sandbox/ui/GraphInfoMenu/useCycleColorizer.ts';

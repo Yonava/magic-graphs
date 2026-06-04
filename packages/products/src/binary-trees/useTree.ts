@@ -1,4 +1,5 @@
-import type { GNode, Graph } from '@magic/graph/types';
+import type { GNode } from '@magic/graph/types';
+import type { Graph } from '../shared/useGraphWithCanvas.ts';
 
 import { computed, ref } from 'vue';
 
