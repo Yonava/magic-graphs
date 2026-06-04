@@ -1,12 +1,12 @@
 # What Each Person Owns
 
-## Yona — Engineering & Architecture
+## Yona: Engineering & Architecture
 
 The SDK, the core graph engine, the plugin system, the canvas rendering pipeline. The TypeScript and Vue work that makes everything else possible.
 
 Leads coding and architectural decisions.
 
-## Ian — Mathematical Correctness & Algorithm Depth
+## Ian: Mathematical Correctness & Algorithm Depth
 
 This is the most important non-engineering work Magic Graphs needs right now and for the foreseeable future.
 
@@ -20,7 +20,7 @@ Ian's Olin background is especially relevant as it lends institutional credibili
 
 Ian can also grow into product development. The individual product experiences such as Dijkstra's, network flow, set theory, binary trees are much more accessible than the core SDK (if Yona does his job properly 👀).
 
-### Thomas — Relationships, Growth & Business Development
+### Thomas: Relationships, Growth & Business Development
 
 Thomas' highly outgoing nature means he can own the customer relationships that will enable the business to scale sustainably.
 
