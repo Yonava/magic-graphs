@@ -1,7 +1,8 @@
 import { generateId } from '@magic/utils/id';
 import { Fraction } from 'mathjs';
 
-import type { GEdge, GNode, Graph } from './types.ts';
+import { BaseGraph } from './base/types.ts';
+import type { GEdge, GNode } from './types.ts';
 
 /**
  * all data that will be transferred between graph instances
@@ -13,39 +14,23 @@ import type { GEdge, GNode, Graph } from './types.ts';
  * - exports a graph
  */
 export type GraphTransitData = {
-  nodes: Graph['nodes']['value'];
-  edges: Graph['edges']['value'];
-
-  annotations: Graph['annotation']['annotations']['value'];
-
-  cameraPanX: Graph['canvas']['magicCanvas']['camera']['state']['panX']['value'];
-  cameraPanY: Graph['canvas']['magicCanvas']['camera']['state']['panY']['value'];
-  cameraZoom: Graph['canvas']['magicCanvas']['camera']['state']['zoom']['value'];
+  nodes: BaseGraph['nodes']['value'];
+  edges: BaseGraph['edges']['value'];
 };
 
-export const getTransitData = (graph: Graph): GraphTransitData => ({
+export const getTransitData = (graph: BaseGraph): GraphTransitData => ({
   nodes: graph.nodes.value,
   edges: graph.edges.value,
-
-  annotations: graph.annotations.annotations.value,
-
-  cameraPanX: graph.canvas.magicCanvas.camera.state.panX.value,
-  cameraPanY: graph.canvas.magicCanvas.camera.state.panY.value,
-  cameraZoom: graph.canvas.magicCanvas.camera.state.zoom.value,
 });
 
-export const setTransitData = (graph: Graph, transitData: GraphTransitData) => {
-  // g.load({
+export const setTransitData = (
+  graph: BaseGraph,
+  transitData: GraphTransitData,
+) => {
+  // graph.load({
   //   nodes: transitData.nodes,
   //   edges: transitData.edges,
   // });
-
-  graph.annotations.load(transitData.annotations);
-
-  const { state: cameraState } = graph.canvas.magicCanvas.camera;
-  cameraState.panX.value = transitData.cameraPanX;
-  cameraState.panY.value = transitData.cameraPanY;
-  cameraState.zoom.value = transitData.cameraZoom;
 };
 
 const SCALE_FACTOR = 10;
@@ -62,7 +47,7 @@ const PROP_DELIMITER = '\x1D';
  * run encoded strings through {@link decodeCompressedTransitData} to decode!
  */
 export const encodeCompressedTransitData = (data: GraphTransitData) => {
-  const { nodes, edges, cameraPanX, cameraPanY, cameraZoom } = data;
+  const { nodes, edges } = data;
 
   const nodeData = nodes
     .reduce((compressedStr, node) => {
@@ -92,11 +77,7 @@ export const encodeCompressedTransitData = (data: GraphTransitData) => {
     }, '')
     .slice(1);
 
-  const panX = Math.round(cameraPanX / SCALE_FACTOR);
-  const panY = Math.round(cameraPanY / SCALE_FACTOR);
-  const zoom = cameraZoom.toFixed(2);
-
-  return [nodeData, edgeData, panX, panY, zoom].join(DATA_DELIMITER);
+  return [nodeData, edgeData].join(DATA_DELIMITER);
 };
 
 /**
@@ -138,10 +119,5 @@ export const decodeCompressedTransitData = (
   return {
     nodes,
     edges,
-    cameraPanX: Number(encodedPanX) * SCALE_FACTOR,
-    cameraPanY: Number(encodedPanY) * SCALE_FACTOR,
-    cameraZoom: Number(encodedZoom),
-
-    annotations: [],
   };
 };
