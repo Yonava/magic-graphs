@@ -13,30 +13,34 @@ The most widely used algorithm visualization tool in university CS courses. Buil
 
 Why they lose:
 
-- Read-only. You watch animations, you do not interact. You cannot build your own graph, modify edge weights mid-simulation, or manipulate the structure to test your intuition.
+- Read-only simulation experience. Building your own graph is clunky unintuitive and a paid in the ass.
+- No dragging or rearranging nodes and edges.
 - No sharing. You cannot create a specific graph state and send it to 200 students via a URL.
+- No collaboration tools. Single player only.
 - No annotation. A professor cannot circle a node, draw an arrow, or write on the canvas during a lecture.
 - No composability. Each algorithm is a separate page with no coherent platform experience connecting them.
-- No simulation controls that let a professor pause mid-execution and ask the class what happens next.
-- Visually dated. It communicates "academic project" not "professional tool."
+- Visually unappealing. It screams "academic project" not "consumer grade software."
+- Huge walls of text force fed to you via endless pop-ups. Info wise very rich, but gives textbook energy.
+- No rich interactivity, such as what our Canvas enabled.
 
 **David Galles' Data Structure Visualizations** (usfca.edu)
 The default fallback for professors who need something, anything, that works. Ancient UI built as individual standalone pages over many years.
 
 Why they lose:
 
-- Same read-only problem as VisuAlgo — you step through preset animations, you don't build and explore.
-- No platform. It's a collection of disconnected tools with no shared UX, no sharing, no state persistence.
+- Same read-only boat as VisuAlgo. You step through preset animations instead of building and exploring.
+- No platform. It's a collection of disconnected tools with no UX cohesion, no sharing, no state persistence.
 - Actively unmaintained. Bugs don't get fixed. Features don't get added.
 - Zero mobile or modern browser optimization.
+- It's really hard to use. One glance and it's the most obvious candidate for disruption.
 
 **JFLAP**
-Dominates automata theory and formal languages. Java desktop application requiring a local install. Captive academic audience because nothing better exists for its specific niche.
+Dominates automata theory and formal languages. Java desktop application requiring a local install (which alone is disqualifying). Captive academic audience because nothing better exists for its specific niche.
 
 Why they lose (in our space):
 
 - Desktop application in 2026. No sharing, no URL state, no instant access.
-- Scoped entirely to automata and formal languages — no graph algorithms, no set theory, no data structures.
+- Scoped entirely to automata and formal languages with no graph algorithms, no set theory, no data structures.
 - The tool students dread opening. High friction, low reward.
 
 **CS50 Visualization Tools**
@@ -56,6 +60,7 @@ Why they lose:
 - No algorithm execution. You can draw a graph but you cannot run Dijkstra's on it and watch it step through.
 - No mathematical correctness layer. No live bipartite detection, no steady state vectors, no transition matrices.
 - General purpose diagramming tools that happen to support graph-like shapes. Not built for CS education.
+- Like a designer using MSPaint instead of Figma. No structure, components, framing, or prototyping
 
 ---
 
@@ -63,17 +68,17 @@ Why they lose:
 
 The common thread across every competitor is the same: they built viewers, not tools. They show you a preset algorithm running on a preset graph. We built an environment where you construct the graph yourself, run any algorithm on it, pause it, annotate it, share it, and come back to it later.
 
-That is a fundamentally different product category dressed in similar clothes.
+That is a fundamentally different product category.
 
 Beyond interactivity, we win on:
 
-**Mathematical depth that earns professor trust.** The shunting-yard expression evaluator, the live transition matrix, the steady state vector computation, the simulation guard system that tells you why your graph can't run a specific algorithm — these are not cosmetic features. They are proof that the people who built this understand the mathematics. Professors probe tools immediately with edge cases. We hold up.
+**Mathematical depth that earns professor trust.** The shunting-yard expression evaluator, the live transition matrix, the steady state vector computation, the simulation guard system that tells you why your graph can't run a specific algorithm are not merely cosmetic features but deeply integrated with the way Magic Graphs is engineered on the most primitive layer. Professors probe tools immediately with edge cases. We hold up.
 
-**Platform coherence.** Every product experience shares the same canvas engine, the same annotation layer, the same shareable link mechanic, the same UI language. A professor who learns one product has learned all of them. That coherence is invisible until you've used five disconnected competitors in one semester and felt the friction.
+**Platform coherence.** Every product experience shares the same canvas engine, the same annotation layer, the same shareable link mechanic, the same keyboard shortcuts, the same UI language. A professor who learns one product has learned all of them. That coherence is invisible until you've used five disconnected competitors in one semester and felt the friction.
 
-**Time to value under a minute.** Add nodes, drag edges, run the simulation, get insight. No tutorial required. No account required. No friction between curiosity and comprehension.
+**Time to value under a minute.** Add nodes, drag edges, run the simulation, get insight. No tutorial required. No account required. No reading a whole damn instruction manual. No friction between curiosity and comprehension.
 
-**The annotation layer.** A freehand drawing layer on top of an interactive graph is something no competitor has. It transforms the tool from a student study aid into a professor lecture tool. That dual use case is the distribution engine.
+**What professors dont have but need.** A freehand drawing layer and multiplayer collaborative classroom support on top of an interactive graph is something no competitor has. It transforms the tool from a student study aid into a professors best friend during lecture.
 
 ---
 
@@ -85,9 +90,9 @@ Beyond interactivity, we win on:
 
 **Why it's real**: These platforms have the distribution and the institutional relationships we are still building. A Desmos graph theory module would get immediate attention from every math and CS professor who already uses Desmos.
 
-**Why we survive it**: First, none of them are currently doing this — the niche requires genuine mathematical depth that doesn't fit their roadmaps. Second, and more importantly, we get into LMS workflows first. If Magic Graphs is already the Canvas integration at 200 universities when Desmos decides to enter, we are the thing they have to displace rather than the thing they bundle around. Professor switching costs are enormous. They don't replace tools that work.
+**Why we survive it**: First, the niche requires genuine mathematical depth and engineering execution that outweighs what the business vertical is worth to companies of that magnitude. Second, we get into LMS workflows first. If Magic Graphs is already the Canvas integration at 200 universities when Desmos decides to enter, we are the thing they have to displace rather than the thing they bundle around. Professor switching costs are enormous. They don't replace tools that work.
 
-**Mitigation**: Move fast on LMS integration once usage density justifies it. Every semester of institutional adoption is a semester of switching cost accumulating in our favor.
+**Mitigation**: Do not delay or underestimate LMS integrations. Every semester of institutional adoption is a semester of switching cost accumulating in our favor.
 
 ### Risk 2 — A Well-Funded EdTech Startup Sees the Same Gap
 
