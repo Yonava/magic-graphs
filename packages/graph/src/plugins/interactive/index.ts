@@ -28,11 +28,11 @@ export const useInteractive = (graph: GraphWithPlugins) => {
 
     if (graph.settings.value.userAddedEdgeRuleOneEdgePerPath) {
       const edgeBetweenToAndFrom = graph.edges.value.find(
-        (edge) => edge.from === fromNode.id && edge.to === toNode.id,
+        (edge) => edge.source === fromNode.id && edge.target === toNode.id,
       );
 
       const edgeBetweenFromAndTo = graph.edges.value.find(
-        (edge) => edge.from === toNode.id && edge.to === fromNode.id,
+        (edge) => edge.source === toNode.id && edge.target === fromNode.id,
       );
 
       const violatesRule = edgeBetweenToAndFrom || edgeBetweenFromAndTo;
@@ -55,8 +55,8 @@ export const useInteractive = (graph: GraphWithPlugins) => {
     if (!canCreateEdge) return;
 
     graph.actions.addEdge({
-      from: fromNode.id,
-      to: toNode.id,
+      source: fromNode.id,
+      target: toNode.id,
       weight: graph.settings.value.userAddedDefaultEdgeWeight(),
     });
   };

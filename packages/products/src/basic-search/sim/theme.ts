@@ -1,9 +1,9 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GEdge, GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { BasicSearchTrace } from '../algo/types.ts';
 
 export const SIM_COLORS = {
@@ -31,9 +31,9 @@ export const useSimulationTheme = (
 
   const colorEdge = (edge: GEdge) => {
     if (
-      traceAtStep.value.currentNodeId === edge.from &&
-      !traceAtStep.value.visited.has(edge.to) &&
-      traceAtStep.value.queue?.includes(edge.to)
+      traceAtStep.value.currentNodeId === edge.source &&
+      !traceAtStep.value.visited.has(edge.target) &&
+      traceAtStep.value.queue?.includes(edge.target)
     ) {
       return 'red';
     }

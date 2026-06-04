@@ -10,10 +10,12 @@ export const useBidirectionalEdges = (graph: Pick<BaseGraph, 'edges'>) => {
   const bidirectionalEdges = computed(() => {
     const edges = graph.edges.value;
     return edges
-      .filter((edge) => edge.from !== edge.to)
+      .filter((edge) => edge.source !== edge.target)
       .filter((edge) => {
         return edges.some((otherEdge) => {
-          return edge.from === otherEdge.to && edge.to === otherEdge.from;
+          return (
+            edge.source === otherEdge.target && edge.target === otherEdge.source
+          );
         });
       });
   });

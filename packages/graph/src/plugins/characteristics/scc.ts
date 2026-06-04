@@ -26,7 +26,7 @@ export const getStronglyConnectedComponents: GetComponents = (nodes, edges) => {
   const nodeIds = nodes.map((node) => node.id);
 
   for (const edge of edges) {
-    tarjan.addEdge(nodeIds.indexOf(edge.from), nodeIds.indexOf(edge.to));
+    tarjan.addEdge(nodeIds.indexOf(edge.source), nodeIds.indexOf(edge.target));
   }
 
   const result = tarjan.SCC();

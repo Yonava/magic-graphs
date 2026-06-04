@@ -26,8 +26,8 @@ describe('useCommitTransaction', () => {
     const node2: GNode = { id: 'node-2', label: 'B', x: 10, y: 10 };
     const connectedEdge: GEdge = {
       id: 'edge-1',
-      from: 'node-1',
-      to: 'node-2',
+      source: 'node-1',
+      target: 'node-2',
       weight: new Fraction(1),
     };
 

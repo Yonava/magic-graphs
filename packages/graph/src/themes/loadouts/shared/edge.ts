@@ -15,8 +15,10 @@ const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 const getEdgesBetweenConnectedNodes =
   (graph: GraphInterface) => (nodeId1: GNode['id'], nodeId2: GNode['id']) => {
     const isConnecting = (edge: GEdge) => {
-      const fromNode1ToNode2 = edge.from === nodeId1 && edge.to === nodeId2;
-      const fromNode2ToNode1 = edge.from === nodeId2 && edge.to === nodeId1;
+      const fromNode1ToNode2 =
+        edge.source === nodeId1 && edge.target === nodeId2;
+      const fromNode2ToNode1 =
+        edge.source === nodeId2 && edge.target === nodeId1;
       return fromNode1ToNode2 || fromNode2ToNode1;
     };
 
@@ -27,8 +29,8 @@ const getEdgesBetweenConnectedNodes =
 const getConnectedNodes = (graph: GraphInterface) => (edgeId: GEdge['id']) => {
   const edge = graph.getEdge(edgeId);
   if (!edge) throw new Error(`Edge with ID ${edgeId} not found`);
-  const fromNode = graph.getNode(edge.from);
-  const toNode = graph.getNode(edge.to);
+  const fromNode = graph.getNode(edge.source);
+  const toNode = graph.getNode(edge.target);
   if (!fromNode || !toNode) throw new Error('nodes not found');
   return { fromNode, toNode };
 };
@@ -92,7 +94,8 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     graph.edges.value
       .filter(
         (e) =>
-          (e.from === fromNode.id || e.to === toNode.id) && e.from !== e.to,
+          (e.source === fromNode.id || e.target === toNode.id) &&
+          e.source !== e.target,
       )
       .map((e) => {
         const { fromNode, toNode } = getConnectedNodes(graph)(e.id);

@@ -12,11 +12,11 @@ export type EdgeHelpers = {
    */
   getWeight: (edgeId: GEdge['id']) => Fraction;
   /**
-   * resolves {@link GEdge.from | edge.from} and {@link GEdge.to | edge.to} fields into an their referenced {@link GNode | nodes}
+   * resolves {@link GEdge.source | edge.from} and {@link GEdge.target | edge.to} fields into an their referenced {@link GNode | nodes}
    */
   getConnectedNodes: (edgeId: GEdge['id']) => {
-    fromNode: GNode;
-    toNode: GNode;
+    sourceNode: GNode;
+    targetNode: GNode;
   };
   /**
    * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware predicate returning `true` if provided {@link GEdge | edge} directs into provided {@link GNode | node}
@@ -81,11 +81,11 @@ export type NodeHelpers = {
   /**
    * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware getter that returns the edge linking a source node to a target node
    *
-   * ℹ️ if the graph is undirected, this will return the edge regardless of whether it originates from `fromNodeId` or `toNodeId`
+   * ℹ️ if the graph is undirected, this will return the edge regardless of whether it originates from `sourceNodeId` or `targetNodeId`
    */
   getEdgeBetween: (
-    fromNodeId: GNode['id'],
-    toNodeId: GNode['id'],
+    sourceNodeId: GNode['id'],
+    targetNodeId: GNode['id'],
   ) => GEdge | undefined;
 };
 

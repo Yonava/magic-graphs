@@ -43,11 +43,11 @@ export type GEdge = {
   /**
    * {@link GNode.id | id} of the node that the edge is coming from
    */
-  to: string;
+  target: string;
   /**
    * {@link GNode.id | id} of the node that the edge is going to
    */
-  from: string;
+  source: string;
   /**
    * the weight of the edge
    * @default new Fraction(1)

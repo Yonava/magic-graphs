@@ -20,9 +20,9 @@ const getGraph = () => {
   graph.actions.addNode(nodeB);
   graph.actions.addNode(nodeC);
 
-  graph.actions.addEdge({ from: nodeA.id, to: nodeB.id });
-  graph.actions.addEdge({ from: nodeB.id, to: nodeC.id });
-  graph.actions.addEdge({ from: nodeC.id, to: nodeC.id });
+  graph.actions.addEdge({ source: nodeA.id, target: nodeB.id });
+  graph.actions.addEdge({ source: nodeB.id, target: nodeC.id });
+  graph.actions.addEdge({ source: nodeC.id, target: nodeC.id });
 
   return graph;
 };

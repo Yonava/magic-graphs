@@ -1,7 +1,7 @@
-import type { Graph } from '../../../../useGraphWithCanvas.ts';
 import type { DeepReadonly } from 'ts-essentials';
 
 import { useCycleColorizer } from '../../../../../sandbox/ui/GraphInfoMenu/useCycleColorizer.ts';
+import type { Graph } from '../../../../useGraphWithCanvas.ts';
 import { CANT_RUN_REASONS } from './constants.ts';
 import { useNodeEdgeTheme } from './theme/useNodeEdgeThemer.ts';
 import type { Reason } from './types.ts';
@@ -219,7 +219,7 @@ export class SimulationGuard {
   noSelfReferencingEdges() {
     const noSelfReferencing = () => {
       const selfReferencingEdgeIds = this.graph.edges.value
-        .filter((e) => e.from === e.to)
+        .filter((e) => e.source === e.target)
         .map((e) => e.id);
 
       if (selfReferencingEdgeIds.length === 0) return;

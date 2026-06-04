@@ -16,8 +16,8 @@ export const getDirectedGraphAdjacencyList = (
 ) => {
   return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
     acc[node.id] = graph.edges.value
-      .filter((edge) => edge.from === node.id)
-      .map((edge) => edge.to);
+      .filter((edge) => edge.source === node.id)
+      .map((edge) => edge.target);
     return acc;
   }, {});
 };
@@ -27,9 +27,9 @@ export const getUndirectedGraphAdjacencyList = (
 ) => {
   return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
     acc[node.id] = graph.edges.value
-      .filter((edge) => edge.from === node.id || edge.to === node.id)
+      .filter((edge) => edge.source === node.id || edge.target === node.id)
       .map((edge) => {
-        return edge.from === node.id ? edge.to : edge.from;
+        return edge.source === node.id ? edge.target : edge.source;
       });
     return acc;
   }, {});

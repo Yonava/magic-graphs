@@ -1,4 +1,5 @@
 import type { GEdge } from '@magic/graph/types';
+
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 export const prim = (graph: Graph) => {
@@ -9,8 +10,8 @@ export const prim = (graph: Graph) => {
 
     for (const edge of edges) {
       if (
-        (inMST.has(edge.from) && !inMST.has(edge.to)) ||
-        (inMST.has(edge.to) && !inMST.has(edge.from))
+        (inMST.has(edge.source) && !inMST.has(edge.target)) ||
+        (inMST.has(edge.target) && !inMST.has(edge.source))
       ) {
         if (!minEdge) minEdge = edge;
         const minEdgeCost = graph.helpers.edges.getWeight(minEdge.id);
@@ -41,8 +42,8 @@ export const prim = (graph: Graph) => {
       }
 
       mst.push(minEdge);
-      inMST.add(minEdge.from);
-      inMST.add(minEdge.to);
+      inMST.add(minEdge.source);
+      inMST.add(minEdge.target);
     }
 
     return mst;
