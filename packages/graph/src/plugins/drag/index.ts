@@ -29,7 +29,6 @@ export const useNodeDragPlugin = <
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeDrag<TransactionWrapperOptions, EventMap, Plugins> => {
   const activeDrag = ref<ActiveDragNode | undefined>();
-  const { hold, release } = graph.pluginHoldController('node-drag');
 
   const nodeDragRegistry = createNodeDragEventRegistry();
   const nodeDragHub: EventHub<NodeDragEventMap> =
@@ -45,8 +44,6 @@ export const useNodeDragPlugin = <
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem || topItem.graphType !== 'node') return;
-
-    hold('nodeAnchors');
 
     const node = graph.getNode(topItem.id);
     if (!node) return;
@@ -65,7 +62,6 @@ export const useNodeDragPlugin = <
     activeDrag.value = undefined;
 
     events.emit('onNodeDrop', droppedNode);
-    release('nodeAnchors');
 
     const { items } = graph.canvas.graphAtMousePosition.value;
     const topItem = items.at(-1);

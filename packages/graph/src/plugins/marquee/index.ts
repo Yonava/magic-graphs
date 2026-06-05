@@ -39,8 +39,6 @@ export const useMarqueePlugin = <
 
   const groupDragCoordinates = ref<Coordinate | undefined>();
 
-  const { hold, release } = graph.pluginHoldController('marquee');
-
   /**
    * given a mouse event, engages or disengages the marquee box
    */
@@ -51,7 +49,6 @@ export const useMarqueePlugin = <
   }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
-    if (topItem?.graphType !== 'encapsulated-node-box') release('nodeAnchors');
     if (!topItem) engageMarqueeBox(coords);
   };
 
@@ -95,7 +92,6 @@ export const useMarqueePlugin = <
   };
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
-    hold('nodeAnchors');
     graph.canvas.cursor.disabled.value = true;
     marqueeBox.value = {
       at: startingCoords,
@@ -110,7 +106,6 @@ export const useMarqueePlugin = <
     const finalMarqueeBox = marqueeBox.value;
     marqueeBox.value = undefined;
     graph.canvas.cursor.disabled.value = false;
-    release('nodeAnchors');
     events.emit('onMarqueeEndSelection', finalMarqueeBox);
   };
 

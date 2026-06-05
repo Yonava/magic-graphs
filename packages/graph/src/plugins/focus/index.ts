@@ -225,15 +225,11 @@ export const useFocusPlugin = <
     clearFocus();
   };
 
-  const { hold, release } = graph.pluginHoldController('focus');
-
   events.subscribe('onSettingsChange', (diff) => {
     if (diff.focusable === false) {
       deactivate();
-      hold('marquee');
     } else if (diff.focusable === true) {
       activate();
-      release('marquee');
     }
   });
 

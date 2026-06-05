@@ -17,7 +17,6 @@ import {
   MergeTransactionWrappersWithBase,
 } from './actions/types.ts';
 import { BaseEventMap } from './events.ts';
-import { PluginHoldController } from './usePluginHold.ts';
 
 export type BaseGraph<
   TransactionWrapperOptions = {},
@@ -44,8 +43,6 @@ export type BaseGraph<
   >;
 
   events: EventHub<EventMap>;
-
-  pluginHoldController: PluginHoldController;
 
   baseTheme: ComputedRef<ThemeLoadouts[GraphThemeName]>;
   themeName: Ref<GraphThemeName>;
