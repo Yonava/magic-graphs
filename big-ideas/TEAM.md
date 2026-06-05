@@ -6,6 +6,14 @@ The SDK, the core graph engine, the plugin system, the canvas rendering pipeline
 
 Leads coding and architectural decisions.
 
+## Xavier: AI Integration, Infrastructure, and Processes
+
+In the current iteration of Magic Graphs, Xavier has played an important role in configuring the mono-repo, fine tuning DX (concurrently for example), and introducing LLM focused documentation into the project.
+
+Xavier's interest in staying up-to-date on how the industry fine-tunes LLMs into workflows makes him perfect for leading AI integration, which will be a fundamental differentiator from the competition when marketing the SDK to small teams with existing AI workflows.
+
+His technical expertise combined with an eye for detail makes him the ideal person to lead the technical docs push, contribute to core feature development, review PRDs and code, as well as build out dev-ops and mono-repo infra.
+
 ## Ian: Mathematical Correctness & Algorithm Depth
 
 This is the most important non-engineering work Magic Graphs needs right now and for the foreseeable future.
