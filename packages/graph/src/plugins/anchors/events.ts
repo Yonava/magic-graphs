@@ -1,4 +1,4 @@
-import { EventMapToEventBus } from '../../events/index.ts';
+import { EventMapToEventRegistry } from '../../events/index.ts';
 import { GNode } from '../../types.ts';
 import { NodeAnchor } from './types.ts';
 
@@ -19,9 +19,9 @@ export type NodeAnchorEventMap = {
   ) => void;
 };
 
-type NodeAnchorEventBus = EventMapToEventBus<NodeAnchorEventMap>;
+type NodeAnchorEventRegistry = EventMapToEventRegistry<NodeAnchorEventMap>;
 
-export const createNodeAnchorEventBus = (): NodeAnchorEventBus => ({
+export const createNodeAnchorEventRegistry = (): NodeAnchorEventRegistry => ({
   onNodeAnchorDragStart: new Set(),
   onNodeAnchorDrop: new Set(),
 });

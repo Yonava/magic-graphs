@@ -1,4 +1,4 @@
-import { EventMapToEventBus } from '../../events/index.ts';
+import { EventMapToEventRegistry } from '../../events/index.ts';
 
 export type FocusEventMap = {
   /**
@@ -10,8 +10,8 @@ export type FocusEventMap = {
   ) => void;
 };
 
-type FocusEventBus = EventMapToEventBus<FocusEventMap>;
+type FocusEventRegistry = EventMapToEventRegistry<FocusEventMap>;
 
-export const createFocusEventBus = (): FocusEventBus => ({
+export const createFocusEventRegistry = (): FocusEventRegistry => ({
   onFocusChange: new Set(),
 });

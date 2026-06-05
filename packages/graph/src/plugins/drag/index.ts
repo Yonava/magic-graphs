@@ -10,7 +10,7 @@ import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { GNode } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
-import { NodeDragEventMap, createNodeDragEventBus } from './events.ts';
+import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
 import { GraphWithNodeDrag } from './types.ts';
 
 /**
@@ -31,7 +31,7 @@ export const useNodeDragPlugin = <
   const activeDrag = ref<ActiveDragNode | undefined>();
   const { hold, release } = graph.pluginHoldController('node-drag');
 
-  const nodeDragBus = createNodeDragEventBus();
+  const nodeDragBus = createNodeDragEventRegistry();
   const nodeDragHub: EventHub<NodeDragEventMap> = createEventHub(nodeDragBus);
   const events = mergeEventHubs(
     nodeDragHub,

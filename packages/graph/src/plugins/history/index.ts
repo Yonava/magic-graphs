@@ -5,7 +5,7 @@ import { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { MAX_HISTORY } from './constants.ts';
-import { HistoryEventMap, createHistoryEventBus } from './events.ts';
+import { HistoryEventMap, createHistoryEventRegistry } from './events.ts';
 import { GraphWithHistory } from './types.ts';
 
 export const useHistoryPlugin = <
@@ -15,7 +15,7 @@ export const useHistoryPlugin = <
 >(
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithHistory<TransactionWrapperOptions, EventMap, Plugins> => {
-  const historyBus = createHistoryEventBus();
+  const historyBus = createHistoryEventRegistry();
   const historyHub: EventHub<HistoryEventMap> = createEventHub(historyBus);
   const events = mergeEventHubs(
     historyHub,

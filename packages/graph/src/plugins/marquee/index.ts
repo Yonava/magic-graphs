@@ -14,7 +14,7 @@ import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
-import { MarqueeEventMap, createMarqueeEventBus } from './events.ts';
+import { MarqueeEventMap, createMarqueeEventRegistry } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
 import { GraphWithMarquee } from './types.ts';
 
@@ -25,7 +25,7 @@ export const useMarqueePlugin = <
 >(
   graph: GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins>,
 ): GraphWithMarquee<TransactionWrapperOptions, GraphEventMap, Plugins> => {
-  const marqueeBus = createMarqueeEventBus();
+  const marqueeBus = createMarqueeEventRegistry();
   const marqueeHub: EventHub<MarqueeEventMap> = createEventHub(marqueeBus);
   const events = mergeEventHubs(
     marqueeHub,

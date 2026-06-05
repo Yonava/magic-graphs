@@ -1,6 +1,6 @@
 import { DeepReadonly } from 'ts-essentials';
 
-import { EventMapToEventBus } from '../../events/index.ts';
+import { EventMapToEventRegistry } from '../../events/index.ts';
 import { GraphAtMousePosition } from './types.ts';
 
 /**
@@ -58,9 +58,9 @@ export type CanvasEventMap = {
   onDraw: (ctx: CanvasRenderingContext2D) => void;
 };
 
-type CanvasEventBus = EventMapToEventBus<CanvasEventMap>;
+type CanvasEventRegistry = EventMapToEventRegistry<CanvasEventMap>;
 
-export const createCanvasEventBus = (): CanvasEventBus => ({
+export const createCanvasEventRegistry = (): CanvasEventRegistry => ({
   onClick: new Set(),
   onMouseDown: new Set(),
   onMouseUp: new Set(),

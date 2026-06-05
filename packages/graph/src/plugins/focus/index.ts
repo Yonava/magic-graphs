@@ -14,7 +14,7 @@ import type { GEdge, GNode, SchemaItem } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
-import { FocusEventMap, createFocusEventBus } from './events.ts';
+import { FocusEventMap, createFocusEventRegistry } from './events.ts';
 import {
   EdgeBaseThemePath,
   EdgeBaseToNodeFocusTheme,
@@ -30,7 +30,7 @@ export const useFocusPlugin = <
 >(
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithFocus<TransactionWrapperOptions, EventMap, Plugins> => {
-  const focusBus = createFocusEventBus();
+  const focusBus = createFocusEventRegistry();
   const focusHub: EventHub<FocusEventMap> = createEventHub(focusBus);
   const events = mergeEventHubs(
     focusHub,

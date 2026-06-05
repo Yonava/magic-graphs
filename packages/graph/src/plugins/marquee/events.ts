@@ -1,7 +1,7 @@
 import { Coordinate } from '@magic/canvas/types';
 import { BoundingBox } from '@magic/shapes/types/utility';
 
-import { EventMapToEventBus } from '../../events/index.ts';
+import { EventMapToEventRegistry } from '../../events/index.ts';
 import { GNode } from '../../types.ts';
 
 export type MarqueeEventMap = {
@@ -29,9 +29,9 @@ export type MarqueeEventMap = {
   onMarqueeEndSelection: (marqueeBox: Readonly<BoundingBox>) => void;
 };
 
-type MarqueeEventBus = EventMapToEventBus<MarqueeEventMap>;
+type MarqueeEventRegistry = EventMapToEventRegistry<MarqueeEventMap>;
 
-export const createMarqueeEventBus = (): MarqueeEventBus => ({
+export const createMarqueeEventRegistry = (): MarqueeEventRegistry => ({
   onGroupDragStart: new Set(),
   onGroupDrop: new Set(),
   onMarqueeBeginSelection: new Set(),

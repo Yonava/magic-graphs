@@ -16,7 +16,7 @@ import type {
 import type { GNode, SchemaItem } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
-import { NodeAnchorEventMap, createNodeAnchorEventBus } from './events.ts';
+import { NodeAnchorEventMap, createNodeAnchorEventRegistry } from './events.ts';
 
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
@@ -34,7 +34,7 @@ export const useNodeAnchorPlugin = <
 >(
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeAnchor<TransactionWrapperOptions, EventMap, Plugins> => {
-  const nodeAnchorBus = createNodeAnchorEventBus();
+  const nodeAnchorBus = createNodeAnchorEventRegistry();
   const nodeAnchorHub: EventHub<NodeAnchorEventMap> =
     createEventHub(nodeAnchorBus);
   const events = mergeEventHubs(

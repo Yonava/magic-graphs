@@ -12,7 +12,7 @@ import type { GraphThemeName } from '../themes/index.ts';
 import { getInitialThemeMap } from '../themes/types.ts';
 import type { GEdge, GNode } from '../types.ts';
 import { useGraphActions } from './actions/useGraphActions.ts';
-import { createBaseEventBus } from './events.ts';
+import { createBaseEventRegistry } from './events.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
 import type { BaseGraph } from './types.ts';
@@ -32,8 +32,8 @@ export const useBaseGraph = (
     ...startupSettings,
   });
 
-  const eventBus = createBaseEventBus();
-  const events = createEventHub(eventBus);
+  const EventRegistry = createBaseEventRegistry();
+  const events = createEventHub(EventRegistry);
 
   const nodes = ref<GNode[]>([]);
   const edges = ref<GEdge[]>([]);
