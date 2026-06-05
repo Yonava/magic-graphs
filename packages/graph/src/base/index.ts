@@ -32,8 +32,8 @@ export const useBaseGraph = (
     ...startupSettings,
   });
 
-  const EventRegistry = createBaseEventRegistry();
-  const events = createEventHub(EventRegistry);
+  const eventRegistry = createBaseEventRegistry();
+  const events = createEventHub(eventRegistry);
 
   const nodes = ref<GNode[]>([]);
   const edges = ref<GEdge[]>([]);
