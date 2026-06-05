@@ -1,6 +1,6 @@
 import { DeepReadonly } from 'ts-essentials';
 
-import { EventMapToEventRegistry } from '../../events/index.ts';
+import { EventMapToEventRegistry } from '../../events/types.ts';
 import { GraphAtMousePosition } from './types.ts';
 
 /**

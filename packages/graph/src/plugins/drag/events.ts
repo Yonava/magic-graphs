@@ -1,4 +1,4 @@
-import { EventMapToEventRegistry } from '../../events/index.ts';
+import { EventMapToEventRegistry } from '../../events/types.ts';
 import { GNode } from '../../types.ts';
 
 export type NodeDragEventMap = {

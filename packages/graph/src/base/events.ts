@@ -1,6 +1,6 @@
 import { DeepPartial, DeepReadonly } from 'ts-essentials';
 
-import { EventMapToEventRegistry } from '../events/index.ts';
+import { EventMapToEventRegistry } from '../events/types.ts';
 import { GraphSettings } from '../settings/index.ts';
 import { GraphThemeName } from '../themes/index.ts';
 import { GEdge, GNode } from '../types.ts';

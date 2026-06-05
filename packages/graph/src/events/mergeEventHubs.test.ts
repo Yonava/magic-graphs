@@ -7,6 +7,7 @@ const createMockHub = (keys: string[]) => ({
   handle: vi.fn(),
   subscribe: vi.fn(),
   unsubscribe: vi.fn(),
+  unhandle: vi.fn(),
   emit: vi.fn(),
 });
 

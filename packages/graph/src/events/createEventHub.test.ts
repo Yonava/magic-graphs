@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import { createEventHub } from './createEventHub.ts';
-import type { EventMapToEventRegistry } from './index.ts';
+import type { EventMapToEventRegistry } from './types.ts';
 
 type MockEventMap = {
   onNodeAdded: (node: { id: string }) => void;

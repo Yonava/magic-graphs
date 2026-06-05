@@ -31,6 +31,9 @@ const createTestHub = <T extends Record<string, any>>(
     unsubscribe: (eventName, cb) => {
       subscribers.get(eventName)?.delete(cb);
     },
+    unhandle: (eventName, cb) => {
+      handlers.get(eventName)!.filter((item) => item.cb !== cb);
+    },
     emit: (eventName, ...args) => {
       subscribers.get(eventName)?.forEach((cb) => cb(...args));
       let consumed = false;

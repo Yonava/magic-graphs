@@ -1,48 +1,63 @@
-import { GenericEventMap } from './index.ts';
+import { AnyFunction } from 'ts-essentials';
+
+import { GenericEventMap } from './types.ts';
+import { getSortedByPriority } from './getSortedByPriority.ts';
 
 export type HandlerPriority = {
   /** all registered handlers that we you want to yield to */
   before: string[];
 };
 
-type HandlerData<CallbackArgs extends unknown[]> = {
+type WithConsume<Callback extends AnyFunction> = (
+  ...args: [...Parameters<Callback>, consume: () => void]
+) => ReturnType<Callback>;
+
+type HandlerData<Callback extends AnyFunction> = {
+  id: string | undefined;
   priority: HandlerPriority;
-  callback: (...args: [...CallbackArgs, consume: () => void]) => void;
+  callback: WithConsume<Callback>;
 };
 
 type HandlerRecord<EventMap extends GenericEventMap> = {
-  [EventName in keyof EventMap]?: HandlerData<
-    Parameters<EventMap[EventName]>
-  >[];
+  [EventName in keyof EventMap]?: HandlerData<EventMap[EventName]>[];
 };
 
-// TODO implement topological sort
-const getArraySortedByPriority = <
-  SortableItem extends { priority: HandlerPriority },
->(
-  array: SortableItem[],
+
+export const createEventHandler = <EventMap extends GenericEventMap>(
+  eventHubId?: string,
 ) => {
-  return [...array];
-};
-
-export const createEventHandler = <EventMap extends GenericEventMap>() => {
   const allHandlers: HandlerRecord<EventMap> = {};
   return {
-    register: <EventName extends keyof EventMap>(
+    handle: <EventName extends keyof EventMap>(
       eventName: EventName,
-      eventCallback: EventMap[EventName],
+      eventCallback: WithConsume<EventMap[EventName]>,
       priority: HandlerPriority = { before: [] },
+      handlerId?: string,
     ) => {
+      const id = handlerId && eventHubId
+        ? `${eventHubId}:${handlerId}`
+        : eventHubId ?? handlerId;
+
       const handlers = allHandlers[eventName] ?? [];
 
       // TODO check for duplicate handler registrations
 
-      allHandlers[eventName] = getArraySortedByPriority([
+      allHandlers[eventName] = getSortedByPriority([
         ...handlers,
-        { callback: eventCallback, priority },
+        { id, callback: eventCallback, priority },
       ]);
     },
-    fire: <EventName extends keyof EventMap>(
+    unhandle: <EventName extends keyof EventMap>(
+      eventName: EventName,
+      eventCallback: WithConsume<EventMap[EventName]>,
+    ) => {
+      const handlers = allHandlers[eventName];
+      if (!handlers) return;
+      allHandlers[eventName] = handlers.filter(
+        ({ callback }) => callback !== eventCallback,
+      );
+    },
+    fireHandlers: <EventName extends keyof EventMap>(
       eventName: EventName,
       ...callbackArgs: Parameters<EventMap[EventName]>
     ) => {

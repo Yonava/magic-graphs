@@ -1,4 +1,4 @@
-import { EventMapToEventRegistry } from '../../events/index.ts';
+import { EventMapToEventRegistry } from '../../events/types.ts';
 import { GNode } from '../../types.ts';
 import { NodeAnchor } from './types.ts';
 
