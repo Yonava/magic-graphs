@@ -1,8 +1,12 @@
 {
   "recommendations": [
-    "Vue.volar",
-    "streetsidesoftware.code-spell-checker",
-    "dbaeumer.vscode-eslint",
-    "aaron-bond.better-comments"
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"streetsidesoftware.code-spell-checker",
+		"vitest.explorer",
+		"webpro.vscode-knip",
+    "aaron-bond.better-comments",
+    "antfu.pnpm-catalog-lens",
+    "Vue.volar"
   ]
 }
