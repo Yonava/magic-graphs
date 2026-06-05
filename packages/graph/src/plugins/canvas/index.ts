@@ -25,6 +25,8 @@ import {
 import { GraphAtMousePosition, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
+export const CANVAS_EVENT_ID = 'canvas';
+
 export const useCanvasPlugin = <
   TransactionWrapperOptions,
   EventMap extends BaseEventMap,
@@ -34,7 +36,10 @@ export const useCanvasPlugin = <
   magicCanvas: MagicCanvasProps,
 ): GraphWithCanvas<TransactionWrapperOptions, EventMap, Plugins> => {
   const canvasRegistry = createCanvasEventRegistry();
-  const canvasHub: EventHub<CanvasEventMap> = createEventHub(canvasRegistry);
+  const canvasHub: EventHub<CanvasEventMap> = createEventHub(
+    canvasRegistry,
+    CANVAS_EVENT_ID,
+  );
   const events = mergeEventHubs(
     canvasHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events

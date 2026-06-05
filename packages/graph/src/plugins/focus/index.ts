@@ -23,6 +23,8 @@ import {
   NodeBaseToNodeFocusTheme,
 } from './types.ts';
 
+export const FOCUS_EVENT_ID = 'focus';
+
 export const useFocusPlugin = <
   TransactionWrapperOptions,
   EventMap extends BaseEventMap & CanvasEventMap,
@@ -31,7 +33,10 @@ export const useFocusPlugin = <
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithFocus<TransactionWrapperOptions, EventMap, Plugins> => {
   const focusRegistry = createFocusEventRegistry();
-  const focusHub: EventHub<FocusEventMap> = createEventHub(focusRegistry);
+  const focusHub: EventHub<FocusEventMap> = createEventHub(
+    focusRegistry,
+    FOCUS_EVENT_ID,
+  );
   const events = mergeEventHubs(
     focusHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events

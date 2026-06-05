@@ -1,4 +1,5 @@
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
+import { MARQUEE_EVENT_ID } from '@magic/graph/plugins/marquee/index';
 import type { Aggregator } from '@magic/graph/types';
 import { GraphWithPlugins } from '@magic/graph/useGraph';
 import { circle } from '@magic/shapes/shapes/circle/index';
@@ -17,6 +18,8 @@ import { useAnnotationHistory } from './history.ts';
 import type { Annotation } from './types.ts';
 
 const ERASER_BRUSH_RADIUS = 10;
+
+const PRIORITY = { before: [MARQUEE_EVENT_ID] };
 
 export const useGraphAnnotations = (graph: GraphWithPlugins) => {
   const selectedColor = ref<Color>(COLORS[0]);
@@ -61,9 +64,12 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
   /**
    * starts drawing from the current mouse position
    */
-  const startDrawing = ({ coords, event }: CanvasGraphMouseEvent) => {
+  const startDrawing = (
+    { coords, event }: CanvasGraphMouseEvent,
+    consume: () => void,
+  ) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
-
+    consume();
     if (isErasing.value) {
       const eraserBoundingBox = circle({
         at: coords,
@@ -90,10 +96,10 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
    * the delta between two mouse points while
    * mouse is being dragged
    */
-  const drawLine = ({ coords }: CanvasGraphMouseEvent) => {
+  const drawLine = ({ coords }: CanvasGraphMouseEvent, consume: () => void) => {
     if (!isDrawing.value || !lastPoint.value) return;
     if (batch.value.length === 0) return;
-
+    consume();
     if (isErasing.value) {
       const eraserBoundingBox = circle({
         at: coords,
@@ -125,9 +131,9 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
     lastMoveTime.value = Date.now();
   };
 
-  const stopDrawing = () => {
+  const stopDrawing = (_: unknown, consume: () => void) => {
     if (!isDrawing.value) return;
-
+    consume();
     isDrawing.value = false;
     lastPoint.value = undefined;
 
@@ -261,9 +267,9 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
     graph.canvas.cursor.disabled.value = true;
     canvas.style.cursor = 'crosshair';
 
-    graph.events.subscribe('onMouseDown', startDrawing);
-    graph.events.subscribe('onMouseMove', drawLine);
-    graph.events.subscribe('onMouseUp', stopDrawing);
+    graph.events.handle('onMouseDown', startDrawing, PRIORITY);
+    graph.events.handle('onMouseMove', drawLine, PRIORITY);
+    graph.events.handle('onMouseUp', stopDrawing, PRIORITY);
   };
 
   const deactivate = () => {
@@ -276,9 +282,9 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
     graph.canvas.cursor.disabled.value = false;
     canvas.style.cursor = 'default';
 
-    graph.events.unsubscribe('onMouseDown', startDrawing);
-    graph.events.unsubscribe('onMouseMove', drawLine);
-    graph.events.unsubscribe('onMouseUp', stopDrawing);
+    graph.events.unhandle('onMouseDown', startDrawing);
+    graph.events.unhandle('onMouseMove', drawLine);
+    graph.events.unhandle('onMouseUp', stopDrawing);
   };
 
   const load = (annotations: Annotation[]) => {

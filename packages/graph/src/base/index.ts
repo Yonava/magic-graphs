@@ -18,6 +18,8 @@ import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.t
 import type { BaseGraph } from './types.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 
+export const CORE_EVENT_ID = 'core';
+
 export const useBaseGraph = (
   startupSettings: Partial<GraphSettings> = {},
 ): BaseGraph => {
@@ -32,7 +34,7 @@ export const useBaseGraph = (
   });
 
   const eventRegistry = createBaseEventRegistry();
-  const events = createEventHub(eventRegistry);
+  const events = createEventHub(eventRegistry, CORE_EVENT_ID);
 
   const nodes = ref<GNode[]>([]);
   const edges = ref<GEdge[]>([]);

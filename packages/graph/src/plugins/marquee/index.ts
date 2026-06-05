@@ -18,7 +18,7 @@ import { MarqueeEventMap, createMarqueeEventRegistry } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
 import { GraphWithMarquee } from './types.ts';
 
-const MARQUEE_EVENT_ID = 'marquee';
+export const MARQUEE_EVENT_ID = 'marquee';
 
 export const useMarqueePlugin = <
   TransactionWrapperOptions,
@@ -215,14 +215,14 @@ export const useMarqueePlugin = <
   const activate = () => {
     events.subscribe('onFocusChange', updateEncapsulatedNodeBox);
 
-    events.subscribe('onMouseDown', handleMarqueeEngagement);
-    events.subscribe('onMouseUp', disengageMarqueeBox);
-    events.subscribe('onContextMenu', disengageMarqueeBox);
-    events.subscribe('onMouseMove', setMarqueeBoxDimensions);
+    events.handle('onMouseDown', handleMarqueeEngagement);
+    events.handle('onMouseUp', disengageMarqueeBox);
+    events.handle('onContextMenu', disengageMarqueeBox);
+    events.handle('onMouseMove', setMarqueeBoxDimensions);
 
-    events.subscribe('onMouseDown', beginGroupDrag);
-    events.subscribe('onMouseUp', endGroupDrag);
-    events.subscribe('onMouseMove', groupDrag);
+    events.handle('onMouseDown', beginGroupDrag);
+    events.handle('onMouseUp', endGroupDrag);
+    events.handle('onMouseMove', groupDrag);
 
     events.subscribe('onTransactionComplete', updateEncapsulatedNodeBox);
   };
@@ -230,14 +230,14 @@ export const useMarqueePlugin = <
   const deactivate = () => {
     events.unsubscribe('onFocusChange', updateEncapsulatedNodeBox);
 
-    events.unsubscribe('onMouseDown', handleMarqueeEngagement);
-    events.unsubscribe('onMouseUp', disengageMarqueeBox);
-    events.unsubscribe('onContextMenu', disengageMarqueeBox);
-    events.unsubscribe('onMouseMove', setMarqueeBoxDimensions);
+    events.handle('onMouseDown', handleMarqueeEngagement);
+    events.handle('onMouseUp', disengageMarqueeBox);
+    events.handle('onContextMenu', disengageMarqueeBox);
+    events.handle('onMouseMove', setMarqueeBoxDimensions);
 
-    events.unsubscribe('onMouseDown', beginGroupDrag);
-    events.unsubscribe('onMouseUp', endGroupDrag);
-    events.unsubscribe('onMouseMove', groupDrag);
+    events.handle('onMouseDown', beginGroupDrag);
+    events.handle('onMouseUp', endGroupDrag);
+    events.handle('onMouseMove', groupDrag);
 
     events.unsubscribe('onTransactionComplete', updateEncapsulatedNodeBox);
 

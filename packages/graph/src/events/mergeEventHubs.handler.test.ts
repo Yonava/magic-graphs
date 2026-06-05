@@ -12,7 +12,7 @@ const makeRegistry = <T extends Record<string, any>>(keys: (keyof T)[]) =>
 
 const makeHub = <T extends Record<string, any>>(
   keys: (keyof T)[],
-  hubId?: string,
+  hubId: string,
 ) => createEventHub<T>(makeRegistry<T>(keys), hubId);
 
 describe('mergeEventHubs — handler behavior', () => {
@@ -63,6 +63,7 @@ describe('mergeEventHubs — handler behavior', () => {
 
     const first = vi.fn((_x: number, consume: () => void) => consume());
     const second = vi.fn();
+    // @ts-expect-error thanks claude code
     merged.handle('onClick', first);
     merged.handle('onClick', second);
     merged.emit('onClick', 1);

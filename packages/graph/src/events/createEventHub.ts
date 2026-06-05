@@ -7,8 +7,9 @@ import { EventMapToEventRegistry, GenericEventMap } from './types.ts';
  */
 export const createEventHub = <EventMap extends GenericEventMap>(
   eventRegistry: EventMapToEventRegistry<EventMap>,
-  eventHubIdentifier?: string,
+  eventHubIdentifier: string,
 ) => {
+  // console.log(eventHubIdentifier);
   const { handle, unhandle, fireHandlers } =
     createEventHandler<EventMap>(eventHubIdentifier);
   return {

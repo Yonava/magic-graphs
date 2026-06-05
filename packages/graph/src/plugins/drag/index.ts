@@ -7,19 +7,12 @@ import { BaseEventMap } from '../../base/events.ts';
 import type { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import type { GNode } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
-import { GraphWithNodeDrag } from './types.ts';
+import { ActiveDragNode, GraphWithNodeDrag } from './types.ts';
 
-/**
- * info for the node being dragged
- */
-export type ActiveDragNode = {
-  nodeId: GNode['id'];
-  coords: Coordinate;
-};
+export const DRAG_EVENT_ID = 'drag';
 
 export const useNodeDragPlugin = <
   TransactionWrapperOptions,
@@ -31,8 +24,10 @@ export const useNodeDragPlugin = <
   const activeDrag = ref<ActiveDragNode | undefined>();
 
   const nodeDragRegistry = createNodeDragEventRegistry();
-  const nodeDragHub: EventHub<NodeDragEventMap> =
-    createEventHub(nodeDragRegistry);
+  const nodeDragHub: EventHub<NodeDragEventMap> = createEventHub(
+    nodeDragRegistry,
+    DRAG_EVENT_ID,
+  );
   const events = mergeEventHubs(
     nodeDragHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events

@@ -1,7 +1,7 @@
 import { AnyFunction } from 'ts-essentials';
 
-import { GenericEventMap } from './types.ts';
 import { getSortedByPriority } from './getSortedByPriority.ts';
+import { GenericEventMap } from './types.ts';
 
 export type HandlerPriority = {
   /** all registered handlers that we you want to yield to */
@@ -22,9 +22,8 @@ type HandlerRecord<EventMap extends GenericEventMap> = {
   [EventName in keyof EventMap]?: HandlerData<EventMap[EventName]>[];
 };
 
-
 export const createEventHandler = <EventMap extends GenericEventMap>(
-  eventHubId?: string,
+  eventHubId: string,
 ) => {
   const allHandlers: HandlerRecord<EventMap> = {};
   return {
@@ -34,9 +33,8 @@ export const createEventHandler = <EventMap extends GenericEventMap>(
       priority: HandlerPriority = { before: [] },
       handlerId?: string,
     ) => {
-      const id = handlerId && eventHubId
-        ? `${eventHubId}:${handlerId}`
-        : eventHubId ?? handlerId;
+      console.log(eventHubId);
+      const id = handlerId ? `${eventHubId}:${handlerId}` : eventHubId;
 
       const handlers = allHandlers[eventName] ?? [];
 

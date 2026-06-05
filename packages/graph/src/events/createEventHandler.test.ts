@@ -28,8 +28,18 @@ describe(createEventHandler, () => {
     it('invokes multiple handlers in priority order', () => {
       const { handle, fireHandlers } = createEventHandler<TestEventMap>('a');
       const order: string[] = [];
-      handle('onClick', (_, consume) => order.push('second'), { before: [] }, 'second');
-      handle('onClick', (_, consume) => order.push('first'), { before: ['a:second'] }, 'first');
+      handle(
+        'onClick',
+        (_, consume) => order.push('second'),
+        { before: [] },
+        'second',
+      );
+      handle(
+        'onClick',
+        (_, consume) => order.push('first'),
+        { before: ['a:second'] },
+        'first',
+      );
       fireHandlers('onClick', 1);
       expect(order).toEqual(['first', 'second']);
     });
@@ -38,7 +48,8 @@ describe(createEventHandler, () => {
       const { handle, fireHandlers } = createEventHandler<TestEventMap>('hub');
       const order: string[] = [];
       // hub2 handler runs before hub handler using hub-level id
-      const { handle: handle2, fireHandlers: fire2 } = createEventHandler<TestEventMap>('hub2');
+      const { handle: handle2, fireHandlers: fire2 } =
+        createEventHandler<TestEventMap>('hub2');
       // register on a shared handler record — just verify hub id matching via priority
       const cb = vi.fn();
       handle('onClick', cb, { before: [] });
@@ -56,7 +67,7 @@ describe(createEventHandler, () => {
     });
 
     it('uses handlerId alone when no hubId is set', () => {
-      const { handle, fireHandlers } = createEventHandler<TestEventMap>();
+      const { handle, fireHandlers } = createEventHandler<TestEventMap>('hub');
       const order: string[] = [];
       handle('onClick', () => order.push('b'), { before: [] }, 'b');
       handle('onClick', () => order.push('a'), { before: ['b'] }, 'a');
@@ -67,7 +78,8 @@ describe(createEventHandler, () => {
 
   describe('unhandle', () => {
     it('removes a handler so it is no longer invoked', () => {
-      const { handle, unhandle, fireHandlers } = createEventHandler<TestEventMap>('hub');
+      const { handle, unhandle, fireHandlers } =
+        createEventHandler<TestEventMap>('hub');
       const cb = vi.fn();
       handle('onClick', cb);
       unhandle('onClick', cb);
@@ -76,7 +88,8 @@ describe(createEventHandler, () => {
     });
 
     it('only removes the specified handler', () => {
-      const { handle, unhandle, fireHandlers } = createEventHandler<TestEventMap>('hub');
+      const { handle, unhandle, fireHandlers } =
+        createEventHandler<TestEventMap>('hub');
       const cb1 = vi.fn();
       const cb2 = vi.fn();
       handle('onClick', cb1);
@@ -88,7 +101,8 @@ describe(createEventHandler, () => {
     });
 
     it('is a no-op when the event has no handlers', () => {
-      const { unhandle, fireHandlers } = createEventHandler<TestEventMap>('hub');
+      const { unhandle, fireHandlers } =
+        createEventHandler<TestEventMap>('hub');
       expect(() => unhandle('onClick', vi.fn())).not.toThrow();
     });
   });
@@ -102,7 +116,8 @@ describe(createEventHandler, () => {
       handle('onClick', cb2, { before: ['hub:first'] }, 'never');
       // cb2 declares itself before cb1, so it runs first — but cb1 consumes
       // Re-register in natural order so cb1 fires first
-      const { handle: h, fireHandlers: fire } = createEventHandler<TestEventMap>('hub');
+      const { handle: h, fireHandlers: fire } =
+        createEventHandler<TestEventMap>('hub');
       const a = vi.fn((_x: number, consume: () => void) => consume());
       const b = vi.fn();
       h('onClick', a);
