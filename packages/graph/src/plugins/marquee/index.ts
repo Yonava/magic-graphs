@@ -25,8 +25,8 @@ export const useMarqueePlugin = <
 >(
   graph: GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins>,
 ): GraphWithMarquee<TransactionWrapperOptions, GraphEventMap, Plugins> => {
-  const marqueeBus = createMarqueeEventRegistry();
-  const marqueeHub: EventHub<MarqueeEventMap> = createEventHub(marqueeBus);
+  const marqueeRegistry = createMarqueeEventRegistry();
+  const marqueeHub: EventHub<MarqueeEventMap> = createEventHub(marqueeRegistry);
   const events = mergeEventHubs(
     marqueeHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events

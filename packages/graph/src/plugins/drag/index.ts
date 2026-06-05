@@ -31,8 +31,9 @@ export const useNodeDragPlugin = <
   const activeDrag = ref<ActiveDragNode | undefined>();
   const { hold, release } = graph.pluginHoldController('node-drag');
 
-  const nodeDragBus = createNodeDragEventRegistry();
-  const nodeDragHub: EventHub<NodeDragEventMap> = createEventHub(nodeDragBus);
+  const nodeDragRegistry = createNodeDragEventRegistry();
+  const nodeDragHub: EventHub<NodeDragEventMap> =
+    createEventHub(nodeDragRegistry);
   const events = mergeEventHubs(
     nodeDragHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events

@@ -30,8 +30,8 @@ export const useFocusPlugin = <
 >(
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithFocus<TransactionWrapperOptions, EventMap, Plugins> => {
-  const focusBus = createFocusEventRegistry();
-  const focusHub: EventHub<FocusEventMap> = createEventHub(focusBus);
+  const focusRegistry = createFocusEventRegistry();
+  const focusHub: EventHub<FocusEventMap> = createEventHub(focusRegistry);
   const events = mergeEventHubs(
     focusHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
