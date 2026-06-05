@@ -18,6 +18,8 @@ import { MarqueeEventMap, createMarqueeEventRegistry } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
 import { GraphWithMarquee } from './types.ts';
 
+const MARQUEE_EVENT_ID = 'marquee';
+
 export const useMarqueePlugin = <
   TransactionWrapperOptions,
   GraphEventMap extends BaseEventMap & CanvasEventMap,
@@ -26,7 +28,10 @@ export const useMarqueePlugin = <
   graph: GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins>,
 ): GraphWithMarquee<TransactionWrapperOptions, GraphEventMap, Plugins> => {
   const marqueeRegistry = createMarqueeEventRegistry();
-  const marqueeHub: EventHub<MarqueeEventMap> = createEventHub(marqueeRegistry);
+  const marqueeHub: EventHub<MarqueeEventMap> = createEventHub(
+    marqueeRegistry,
+    MARQUEE_EVENT_ID,
+  );
   const events = mergeEventHubs(
     marqueeHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events

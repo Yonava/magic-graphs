@@ -1,11 +1,6 @@
-import { MagicCanvasProps } from '@magic/canvas/types';
-import { AnimatedShapeControls } from '@magic/shapes/animation/index';
-
-import type { ComputedRef, Ref, ShallowRef } from 'vue';
+import type { ComputedRef, Ref } from 'vue';
 
 import { EventHub } from '../events/createEventHub.ts';
-import { GraphAtMousePosition } from '../plugins/canvas/types.ts';
-import { AggregatorProps } from '../plugins/canvas/useAggregator.ts';
 import { GraphSettings } from '../settings/index.ts';
 import { ThemeGetter } from '../themes/getThemeResolver.ts';
 import { GraphThemeName, ThemeLoadouts } from '../themes/index.ts';
