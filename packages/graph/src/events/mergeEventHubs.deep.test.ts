@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { HandlerPriority } from './createEventHandler.ts';
 import { EventHub } from './createEventHub.ts';
 import { mergeEventHubs } from './mergeEventHubs.ts';
 
@@ -8,9 +9,19 @@ const createTestHub = <T extends Record<string, any>>(
   keys: Array<keyof T>,
 ): EventHub<T> => {
   const subscribers = new Map<keyof T, Set<Function>>();
+  const handlers = new Map<
+    keyof T,
+    { callback: Function; priority: HandlerPriority }[]
+  >();
 
   return {
     keys: new Set(keys),
+    handle: (eventName, cb, priority = { before: [] }) => {
+      if (!handlers.has(eventName)) {
+        handlers.set(eventName, []);
+      }
+      handlers.get(eventName)!.push({ callback: cb, priority });
+    },
     subscribe: (eventName, cb) => {
       if (!subscribers.has(eventName)) {
         subscribers.set(eventName, new Set());
@@ -22,6 +33,10 @@ const createTestHub = <T extends Record<string, any>>(
     },
     emit: (eventName, ...args) => {
       subscribers.get(eventName)?.forEach((cb) => cb(...args));
+      let consumed = false;
+      handlers.get(eventName)?.forEach(({ callback }) => {
+        if (!consumed) callback(...args, () => (consumed = true));
+      });
     },
   };
 };

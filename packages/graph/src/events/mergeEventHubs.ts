@@ -44,6 +44,26 @@ export const mergeEventHubs = <
         UNRECOGNIZED_KEY_WARNING(eventName.toString());
       }
     },
+    handle: (eventName, eventCallback, priority) => {
+      const { keyInHub1, keyInHub2 } = getKeyInHub(eventName);
+      if (keyInHub1) {
+        hub1.handle(
+          eventName as keyof EventMap1,
+          eventCallback as any,
+          priority,
+        );
+      }
+      if (keyInHub2) {
+        hub2.handle(
+          eventName as keyof EventMap2,
+          eventCallback as any,
+          priority,
+        );
+      }
+      if (!keyInHub1 && !keyInHub2) {
+        UNRECOGNIZED_KEY_WARNING(eventName.toString());
+      }
+    },
     emit: (eventName, ...callbackArgs) => {
       const { keyInHub1, keyInHub2 } = getKeyInHub(eventName);
       if (keyInHub1) {

@@ -4,6 +4,7 @@ import { UNRECOGNIZED_KEY, mergeEventHubs } from './mergeEventHubs.ts';
 
 const createMockHub = (keys: string[]) => ({
   keys: new Set(keys),
+  handle: vi.fn(),
   subscribe: vi.fn(),
   unsubscribe: vi.fn(),
   emit: vi.fn(),
