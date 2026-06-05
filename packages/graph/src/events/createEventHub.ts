@@ -21,6 +21,24 @@ export const createEventHub = <EventMap extends GenericEventMap>(
     eventRegistry[eventName].add(eventCallback);
   },
   /**
+   * handle an event, and call consume to prevent lower priority handlers from receiving the event
+   *
+   * @param eventName the name of the event to handle
+   * @param eventCallback the callback function invoked when the event is emitted
+   * @param consume prevents the event from being handled by other handlers downstream (ie stops propagation)
+   * @example handle('onNodeAdded', (node, consume) => {
+   *  console.log(node)
+   *  // we handled the event 😎
+   *  consume()
+   * })
+   */
+  handle: <EventName extends keyof EventMap>(
+    eventName: EventName,
+    eventCallback: EventMap[EventName],
+  ) => {
+    eventRegistry[eventName].add(eventCallback);
+  },
+  /**
    * unsubscribe from an event to stop receiving updates when it is emitted
    *
    * @param eventName the name of the event to unsubscribe from
