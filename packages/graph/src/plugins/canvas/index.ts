@@ -20,7 +20,7 @@ import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
   CanvasEventMap,
   CanvasGraphMouseEvent,
-  createCanvasEventBus,
+  createCanvasEventRegistry,
 } from './events.ts';
 import { GraphAtMousePosition, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
@@ -33,8 +33,8 @@ export const useCanvasPlugin = <
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
   magicCanvas: MagicCanvasProps,
 ): GraphWithCanvas<TransactionWrapperOptions, EventMap, Plugins> => {
-  const canvasBus = createCanvasEventBus();
-  const canvasHub: EventHub<CanvasEventMap> = createEventHub(canvasBus);
+  const canvasRegistry = createCanvasEventRegistry();
+  const canvasHub: EventHub<CanvasEventMap> = createEventHub(canvasRegistry);
   const events = mergeEventHubs(
     canvasHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events

@@ -1,4 +1,4 @@
-import { EventMapToEventBus } from '../../events/index.ts';
+import { EventMapToEventRegistry } from '../../events/index.ts';
 import { GNode } from '../../types.ts';
 
 export type NodeDragEventMap = {
@@ -12,9 +12,9 @@ export type NodeDragEventMap = {
   onNodeDrop: (node: GNode) => void;
 };
 
-type NodeDragEventBus = EventMapToEventBus<NodeDragEventMap>;
+type NodeDragEventRegistry = EventMapToEventRegistry<NodeDragEventMap>;
 
-export const createNodeDragEventBus = (): NodeDragEventBus => ({
+export const createNodeDragEventRegistry = (): NodeDragEventRegistry => ({
   onNodeDragStart: new Set(),
   onNodeDrop: new Set(),
 });

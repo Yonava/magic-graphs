@@ -18,7 +18,7 @@ export type TutorialStepForEvent<EventName extends keyof BaseEventMap> = {
   hint: string;
   /**
    * the event that triggers a dismiss inquiry, if its just the event itself (T), then the step will be dismissed
-   * upon invocation of the event via event bus, if its an object, then the step will be dismissed upon invocation
+   * upon invocation of the event via the graph event hub, if its an object, then the step will be dismissed upon invocation
    * of the event and only if the predicate returns true
    */
   dismiss:

@@ -1,11 +1,11 @@
-import { EventMapToEventBus, GenericEventMap } from './index.ts';
+import { EventMapToEventRegistry, GenericEventMap } from './index.ts';
 
 /**
  * creates a `subscribe`, `unsubscribe`, and `emit` function for
  * registering, deregistering and broadcasting graph events.
  */
 export const createEventHub = <EventMap extends GenericEventMap>(
-  eventBus: EventMapToEventBus<EventMap>,
+  eventRegistry: EventMapToEventRegistry<EventMap>,
 ) => ({
   /**
    * subscribe to an event to receive updates when it is emitted
@@ -18,7 +18,7 @@ export const createEventHub = <EventMap extends GenericEventMap>(
     eventName: EventName,
     eventCallback: EventMap[EventName],
   ) => {
-    eventBus[eventName].add(eventCallback);
+    eventRegistry[eventName].add(eventCallback);
   },
   /**
    * unsubscribe from an event to stop receiving updates when it is emitted
@@ -31,7 +31,7 @@ export const createEventHub = <EventMap extends GenericEventMap>(
     eventName: EventName,
     eventCallback: EventMap[EventName],
   ) => {
-    eventBus[eventName].delete(eventCallback);
+    eventRegistry[eventName].delete(eventCallback);
   },
   /**
    * push an event to all subscribers
@@ -44,14 +44,14 @@ export const createEventHub = <EventMap extends GenericEventMap>(
     eventName: EventName,
     ...callbackArgs: Parameters<EventMap[EventName]>
   ) => {
-    for (const callback of eventBus[eventName]) {
+    for (const callback of eventRegistry[eventName]) {
       callback(...callbackArgs);
     }
   },
   /**
    * all the keys of the provided event map
    */
-  keys: new Set(Object.keys(eventBus) as (keyof EventMap)[]),
+  keys: new Set(Object.keys(eventRegistry) as (keyof EventMap)[]),
 });
 
 export type EventHub<EventMap extends GenericEventMap> = ReturnType<

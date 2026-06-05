@@ -1,6 +1,6 @@
 import { DeepPartial, DeepReadonly } from 'ts-essentials';
 
-import { EventMapToEventBus } from '../events/index.ts';
+import { EventMapToEventRegistry } from '../events/index.ts';
 import { GraphSettings } from '../settings/index.ts';
 import { GraphThemeName } from '../themes/index.ts';
 import { GEdge, GNode } from '../types.ts';
@@ -90,9 +90,9 @@ export type BaseEventMap = {
   onSettingsChange: (diff: DeepPartial<GraphSettings>) => void;
 };
 
-export type BaseEventBus = EventMapToEventBus<BaseEventMap>;
+export type BaseEventRegistry = EventMapToEventRegistry<BaseEventMap>;
 
-export const createBaseEventBus = (): BaseEventBus => ({
+export const createBaseEventRegistry = (): BaseEventRegistry => ({
   onTransactionComplete: new Set(),
   onStructureChange: new Set(),
 

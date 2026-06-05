@@ -1,4 +1,4 @@
-import { EventMapToEventBus } from '../../events/index.ts';
+import { EventMapToEventRegistry } from '../../events/index.ts';
 
 export type HistoryEventMap = {
   /**
@@ -11,9 +11,9 @@ export type HistoryEventMap = {
   onRedo: () => void;
 };
 
-type HistoryEventBus = EventMapToEventBus<HistoryEventMap>;
+type HistoryEventRegistry = EventMapToEventRegistry<HistoryEventMap>;
 
-export const createHistoryEventBus = (): HistoryEventBus => ({
+export const createHistoryEventRegistry = (): HistoryEventRegistry => ({
   onUndo: new Set(),
   onRedo: new Set(),
 });
