@@ -1,6 +1,6 @@
 # What Each Person Owns
 
-## Yona: Engineering & Architecture
+## Yona (& Xavier): Engineering & Architecture
 
 The SDK, the core graph engine, the plugin system, the canvas rendering pipeline. The TypeScript and Vue work that makes everything else possible.
 
@@ -20,7 +20,7 @@ Ian's Olin background is especially relevant as it lends institutional credibili
 
 Ian can also grow into product development. The individual product experiences such as Dijkstra's, network flow, set theory, binary trees are much more accessible than the core SDK (if Yona does his job properly 👀).
 
-### Thomas: Relationships, Growth & Business Development
+## Thomas: Relationships, Growth & Business Development
 
 Thomas' highly outgoing nature means he can own the customer relationships that will enable the business to scale sustainably.
 
