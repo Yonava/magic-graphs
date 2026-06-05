@@ -11,7 +11,7 @@ const createTestHub = <T extends Record<string, any>>(
   const subscribers = new Map<keyof T, Set<Function>>();
   const handlers = new Map<
     keyof T,
-    { callback: Function; priority: HandlerPriority }[]
+    { cb: Function; priority: HandlerPriority }[]
   >();
 
   return {
@@ -20,7 +20,7 @@ const createTestHub = <T extends Record<string, any>>(
       if (!handlers.has(eventName)) {
         handlers.set(eventName, []);
       }
-      handlers.get(eventName)!.push({ callback: cb, priority });
+      handlers.get(eventName)!.push({ cb, priority });
     },
     subscribe: (eventName, cb) => {
       if (!subscribers.has(eventName)) {
@@ -34,8 +34,8 @@ const createTestHub = <T extends Record<string, any>>(
     emit: (eventName, ...args) => {
       subscribers.get(eventName)?.forEach((cb) => cb(...args));
       let consumed = false;
-      handlers.get(eventName)?.forEach(({ callback }) => {
-        if (!consumed) callback(...args, () => (consumed = true));
+      handlers.get(eventName)?.forEach(({ cb }) => {
+        if (!consumed) cb(...args, () => (consumed = true));
       });
     },
   };

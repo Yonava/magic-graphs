@@ -10,7 +10,7 @@ const createMockHub = (keys: string[]) => ({
   emit: vi.fn(),
 });
 
-describe('mergeEventHubs', () => {
+describe(mergeEventHubs, () => {
   it('should route unique events to their respective hubs', () => {
     const hub1 = createMockHub(['onGraphChange']);
     const hub2 = createMockHub(['onNodeAdded']);
