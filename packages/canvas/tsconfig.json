@@ -3,8 +3,9 @@
   "compilerOptions": {
     "outDir": "./dist/types",
     "rootDir": "./src",
-    "types": ["node"]
+    "types": ["node"],
+    "rewriteRelativeImportExtensions": false
   },
   "references": [{ "path": "../utils" }],
-  "include": ["src/**/*.ts", "src/**/*.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

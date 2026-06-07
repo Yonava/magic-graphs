@@ -1,7 +1,5 @@
 # Magic Graphs — Competitive Landscape
 
-_An honest assessment of who we compete with, why we win, what could hurt us, and how we build a moat that compounds._
-
 ---
 
 ## The Competitive Landscape

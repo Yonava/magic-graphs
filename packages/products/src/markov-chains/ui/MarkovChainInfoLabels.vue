@@ -1,10 +1,9 @@
 <script setup lang="ts">
-  import { useNodeLabel } from '@magic/graph/themes/helpers/useNodeLabel';
-
   import { computed } from 'vue';
 
   import { useSCCColorizer } from '../../sandbox/ui/GraphInfoMenu/useSCCColorizer.ts';
   import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
+  import { useNodeLabel } from '../../shared/graph-theme-helpers/useNodeLabel.ts';
   import GHoverInfoTop from '../../shared/ui/graph-core/GHoverInfoTop.vue';
   import GWell from '../../shared/ui/graph-core/GWell.vue';
   import definitions from '../markov/definitions.ts';
