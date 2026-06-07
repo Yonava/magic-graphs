@@ -367,31 +367,39 @@ export const useNodeAnchorPlugin = <
   graph.canvas.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
 
   const activate = () => {
-    events.subscribe('onNodeAdded', checkForParentNodeUpdate);
-    events.subscribe('onNodeRemoved', checkForParentNodeUpdate);
-    events.subscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
-    events.subscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
+    events.handle('onNodeAdded', checkForParentNodeUpdate, ANCHOR_EVENT_ID);
+    events.handle('onNodeRemoved', checkForParentNodeUpdate, ANCHOR_EVENT_ID);
+    events.handle(
+      'onNodeRemoved',
+      clearAnchorStateIfParentRemoved,
+      ANCHOR_EVENT_ID,
+    );
+    events.handle('onNodeUpdated', clearAnchorStateOnNodeMove, ANCHOR_EVENT_ID);
     // TODO replace with core/base discrete node position change API
-    // events.subscribe('onNodeDrop', updateNodeAnchors);
-    events.subscribe('onMouseMove', checkForParentNodeUpdate);
-    events.subscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
-    events.subscribe('onMouseMove', updateHoveredNodeAnchorId);
-    events.subscribe('onMouseDown', setCurrentlyDraggingAnchor);
-    events.subscribe('onMouseUp', dropAnchor);
+    // events.handle('onNodeDrop', updateNodeAnchors, ANCHOR_EVENT_ID);
+    events.handle('onMouseMove', checkForParentNodeUpdate, ANCHOR_EVENT_ID);
+    events.handle(
+      'onMouseMove',
+      updateCurrentlyDraggingAnchorPosition,
+      ANCHOR_EVENT_ID,
+    );
+    events.handle('onMouseMove', updateHoveredNodeAnchorId, ANCHOR_EVENT_ID);
+    events.handle('onMouseDown', setCurrentlyDraggingAnchor, ANCHOR_EVENT_ID);
+    events.handle('onMouseUp', dropAnchor, ANCHOR_EVENT_ID);
   };
 
   const deactivate = () => {
-    events.unsubscribe('onNodeAdded', checkForParentNodeUpdate);
-    events.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
-    events.unsubscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
-    events.unsubscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
+    events.unhandle('onNodeAdded', checkForParentNodeUpdate);
+    events.unhandle('onNodeRemoved', checkForParentNodeUpdate);
+    events.unhandle('onNodeRemoved', clearAnchorStateIfParentRemoved);
+    events.unhandle('onNodeUpdated', clearAnchorStateOnNodeMove);
     // TODO replace with core/base discrete node position change API
-    // events.unsubscribe('onNodeDrop', updateNodeAnchors);
-    events.unsubscribe('onMouseMove', checkForParentNodeUpdate);
-    events.unsubscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
-    events.unsubscribe('onMouseMove', updateHoveredNodeAnchorId);
-    events.unsubscribe('onMouseDown', setCurrentlyDraggingAnchor);
-    events.unsubscribe('onMouseUp', dropAnchor);
+    // events.unhandle('onNodeDrop', updateNodeAnchors);
+    events.unhandle('onMouseMove', checkForParentNodeUpdate);
+    events.unhandle('onMouseMove', updateCurrentlyDraggingAnchorPosition);
+    events.unhandle('onMouseMove', updateHoveredNodeAnchorId);
+    events.unhandle('onMouseDown', setCurrentlyDraggingAnchor);
+    events.unhandle('onMouseUp', dropAnchor);
     clearAnchorState();
   };
 

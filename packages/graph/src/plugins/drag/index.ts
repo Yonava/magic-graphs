@@ -85,16 +85,16 @@ export const useNodeDragPlugin = <
   };
 
   const activate = () => {
-    events.subscribe('onMouseDown', beginDrag);
-    events.subscribe('onMouseUp', drop);
-    events.subscribe('onMouseMove', drag);
+    events.handle('onMouseDown', beginDrag, DRAG_EVENT_ID);
+    events.handle('onMouseUp', drop, DRAG_EVENT_ID);
+    events.handle('onMouseMove', drag, DRAG_EVENT_ID);
     graph.canvas.cursor.graphToCursorMap.value['node'] = 'grab';
   };
 
   const deactivate = () => {
-    events.unsubscribe('onMouseDown', beginDrag);
-    events.unsubscribe('onMouseUp', drop);
-    events.unsubscribe('onMouseMove', drag);
+    events.unhandle('onMouseDown', beginDrag);
+    events.unhandle('onMouseUp', drop);
+    events.unhandle('onMouseMove', drag);
     graph.canvas.cursor.graphToCursorMap.value['node'] = 'pointer';
     if (activeDrag.value) drop();
   };

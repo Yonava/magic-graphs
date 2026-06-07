@@ -1,4 +1,6 @@
+import { ANCHOR_EVENT_ID } from '@magic/graph/plugins/anchors/index';
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
+import { DRAG_EVENT_ID } from '@magic/graph/plugins/drag/index';
 import { MARQUEE_EVENT_ID } from '@magic/graph/plugins/marquee/index';
 import type { Aggregator } from '@magic/graph/types';
 import { GraphWithPlugins } from '@magic/graph/useGraph';
@@ -19,7 +21,7 @@ import type { Annotation } from './types.ts';
 
 const ERASER_BRUSH_RADIUS = 10;
 
-const PRIORITY = { before: [MARQUEE_EVENT_ID] };
+const PRIORITY = { before: [MARQUEE_EVENT_ID, DRAG_EVENT_ID, ANCHOR_EVENT_ID] };
 
 export const useGraphAnnotations = (graph: GraphWithPlugins) => {
   const selectedColor = ref<Color>(COLORS[0]);
@@ -267,9 +269,9 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
     graph.canvas.cursor.disabled.value = true;
     canvas.style.cursor = 'crosshair';
 
-    graph.events.handle('onMouseDown', startDrawing, PRIORITY);
-    graph.events.handle('onMouseMove', drawLine, PRIORITY);
-    graph.events.handle('onMouseUp', stopDrawing, PRIORITY);
+    graph.events.handle('onMouseDown', startDrawing, 'annotation', PRIORITY);
+    graph.events.handle('onMouseMove', drawLine, 'annotation', PRIORITY);
+    graph.events.handle('onMouseUp', stopDrawing, 'annotation', PRIORITY);
   };
 
   const deactivate = () => {

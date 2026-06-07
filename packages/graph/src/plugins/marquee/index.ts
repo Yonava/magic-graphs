@@ -215,14 +215,14 @@ export const useMarqueePlugin = <
   const activate = () => {
     events.subscribe('onFocusChange', updateEncapsulatedNodeBox);
 
-    events.handle('onMouseDown', handleMarqueeEngagement);
-    events.handle('onMouseUp', disengageMarqueeBox);
-    events.handle('onContextMenu', disengageMarqueeBox);
-    events.handle('onMouseMove', setMarqueeBoxDimensions);
+    events.handle('onMouseDown', handleMarqueeEngagement, MARQUEE_EVENT_ID);
+    events.handle('onMouseUp', disengageMarqueeBox, MARQUEE_EVENT_ID);
+    events.handle('onContextMenu', disengageMarqueeBox, MARQUEE_EVENT_ID);
+    events.handle('onMouseMove', setMarqueeBoxDimensions, MARQUEE_EVENT_ID);
 
-    events.handle('onMouseDown', beginGroupDrag);
-    events.handle('onMouseUp', endGroupDrag);
-    events.handle('onMouseMove', groupDrag);
+    events.handle('onMouseDown', beginGroupDrag, MARQUEE_EVENT_ID);
+    events.handle('onMouseUp', endGroupDrag, MARQUEE_EVENT_ID);
+    events.handle('onMouseMove', groupDrag, MARQUEE_EVENT_ID);
 
     events.subscribe('onTransactionComplete', updateEncapsulatedNodeBox);
   };
@@ -230,14 +230,14 @@ export const useMarqueePlugin = <
   const deactivate = () => {
     events.unsubscribe('onFocusChange', updateEncapsulatedNodeBox);
 
-    events.handle('onMouseDown', handleMarqueeEngagement);
-    events.handle('onMouseUp', disengageMarqueeBox);
-    events.handle('onContextMenu', disengageMarqueeBox);
-    events.handle('onMouseMove', setMarqueeBoxDimensions);
+    events.unhandle('onMouseDown', handleMarqueeEngagement);
+    events.unhandle('onMouseUp', disengageMarqueeBox);
+    events.unhandle('onContextMenu', disengageMarqueeBox);
+    events.unhandle('onMouseMove', setMarqueeBoxDimensions);
 
-    events.handle('onMouseDown', beginGroupDrag);
-    events.handle('onMouseUp', endGroupDrag);
-    events.handle('onMouseMove', groupDrag);
+    events.unhandle('onMouseDown', beginGroupDrag);
+    events.unhandle('onMouseUp', endGroupDrag);
+    events.unhandle('onMouseMove', groupDrag);
 
     events.unsubscribe('onTransactionComplete', updateEncapsulatedNodeBox);
 

@@ -22,27 +22,22 @@ type HandlerRecord<EventMap extends GenericEventMap> = {
   [EventName in keyof EventMap]?: HandlerData<EventMap[EventName]>[];
 };
 
-export const createEventHandler = <EventMap extends GenericEventMap>(
-  eventHubId: string,
-) => {
+export const createEventHandler = <EventMap extends GenericEventMap>() => {
   const allHandlers: HandlerRecord<EventMap> = {};
   return {
     handle: <EventName extends keyof EventMap>(
       eventName: EventName,
       eventCallback: WithConsume<EventMap[EventName]>,
+      handlerId: string,
       priority: HandlerPriority = { before: [] },
-      handlerId?: string,
     ) => {
-      console.log(eventHubId);
-      const id = handlerId ? `${eventHubId}:${handlerId}` : eventHubId;
-
       const handlers = allHandlers[eventName] ?? [];
 
       // TODO check for duplicate handler registrations
 
       allHandlers[eventName] = getSortedByPriority([
         ...handlers,
-        { id, callback: eventCallback, priority },
+        { id: handlerId, callback: eventCallback, priority },
       ]);
     },
     unhandle: <EventName extends keyof EventMap>(
@@ -62,8 +57,11 @@ export const createEventHandler = <EventMap extends GenericEventMap>(
       const handlers = allHandlers[eventName];
       if (!handlers) return;
       let consumed = false;
-      const consume = () => (consumed = true);
-      for (const { callback } of handlers) {
+      const consume = () => {
+        consumed = true;
+      };
+      // TODO fix topological sort so i don't need to reverse!
+      for (const { callback } of handlers.toReversed()) {
         if (consumed) return;
         callback(...callbackArgs, consume);
       }
