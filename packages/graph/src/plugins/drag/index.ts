@@ -55,7 +55,7 @@ export const useNodeDragPlugin = <
 
     events.emit('onNodeDrop', droppedNode);
 
-    const { items } = graph.canvas.graphAtMousePosition.value;
+    const { items } = graph.canvas.graphAtMousePosition;
     const topItem = items.at(-1);
     if (topItem?.id !== droppedNode.id) return;
   };

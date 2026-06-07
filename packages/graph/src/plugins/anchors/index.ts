@@ -271,7 +271,7 @@ export const useNodeAnchorPlugin = <
   const checkForParentNodeUpdate = () => {
     if (currentDraggingAnchor.value) return;
 
-    const { items } = graph.canvas.graphAtMousePosition.value;
+    const { items } = graph.canvas.graphAtMousePosition;
     const topItem = items.at(-1);
     if (!topItem) return clearAnchorState();
     if (topItem.graphType === 'node-anchor') return;
@@ -283,7 +283,6 @@ export const useNodeAnchorPlugin = <
     }
 
     if (newParentNode.id === parentNode.value?.id) return;
-    console.log('set parent node');
     setParentNode(newParentNode.id);
   };
 
@@ -366,8 +365,6 @@ export const useNodeAnchorPlugin = <
   graph.canvas.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
 
   const activate = () => {
-    events.handle('onNodeAdded', checkForParentNodeUpdate, ANCHOR_EVENT_ID);
-    events.handle('onNodeRemoved', checkForParentNodeUpdate, ANCHOR_EVENT_ID);
     events.handle(
       'onNodeRemoved',
       clearAnchorStateIfParentRemoved,
@@ -376,7 +373,11 @@ export const useNodeAnchorPlugin = <
     events.handle('onNodeUpdated', clearAnchorStateOnNodeMove, ANCHOR_EVENT_ID);
     // TODO replace with core/base discrete node position change API
     // events.handle('onNodeDrop', updateNodeAnchors, ANCHOR_EVENT_ID);
-    events.handle('onMouseMove', checkForParentNodeUpdate, ANCHOR_EVENT_ID);
+    events.handle(
+      'onGraphCursorUpdate',
+      checkForParentNodeUpdate,
+      ANCHOR_EVENT_ID,
+    );
     events.handle(
       'onMouseMove',
       updateCurrentlyDraggingAnchorPosition,
@@ -388,8 +389,6 @@ export const useNodeAnchorPlugin = <
   };
 
   const deactivate = () => {
-    events.unhandle('onNodeAdded', checkForParentNodeUpdate);
-    events.unhandle('onNodeRemoved', checkForParentNodeUpdate);
     events.unhandle('onNodeRemoved', clearAnchorStateIfParentRemoved);
     events.unhandle('onNodeUpdated', clearAnchorStateOnNodeMove);
     // TODO replace with core/base discrete node position change API

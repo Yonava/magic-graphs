@@ -1,5 +1,6 @@
 import { Coordinate, MagicCanvasProps } from '@magic/canvas/types';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
+import { DeepReadonly } from 'ts-essentials';
 
 import { Ref, ShallowRef } from 'vue';
 
@@ -37,8 +38,9 @@ export type CanvasGraph = {
    */
   canvasHovered: ShallowRef<boolean>;
 
-  graphAtMousePosition: Ref<GraphAtMousePosition>;
-  updateGraphAtMousePosition: () => GraphAtMousePosition;
+  graphAtMousePosition: DeepReadonly<GraphAtMousePosition>;
+  updateGraphAtMousePosition: () => DeepReadonly<GraphAtMousePosition>;
+
   cursor: GraphCursor;
 };
 

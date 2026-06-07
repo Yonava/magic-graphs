@@ -64,7 +64,7 @@ export const useGraphCursor = ({
 
   const changeCursorType = () => {
     if (!canvas.value || disabled.value) return;
-    const topItem = graphAtMousePosition.value.items.at(-1);
+    const topItem = graphAtMousePosition.items.at(-1);
     canvas.value.style.cursor = getCursorType(topItem);
   };
 

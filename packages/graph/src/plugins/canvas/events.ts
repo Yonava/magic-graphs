@@ -56,6 +56,8 @@ export type CanvasEventMap = {
    * see {@link graph.canvas.aggregator | `aggregator`} if you need drawn item to integrate with graph APIs
    */
   onDraw: (ctx: CanvasRenderingContext2D) => void;
+
+  onGraphCursorUpdate: (data: DeepReadonly<GraphAtMousePosition>) => void;
 };
 
 type CanvasEventRegistry = EventMapToEventRegistry<CanvasEventMap>;
@@ -72,4 +74,5 @@ export const createCanvasEventRegistry = (): CanvasEventRegistry => ({
   onKeyUp: new Set(),
 
   onDraw: new Set(),
+  onGraphCursorUpdate: new Set(),
 });

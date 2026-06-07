@@ -203,7 +203,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
       const eraserId = 'annotation-eraser-cursor';
       const eraserCursor = graph.canvas.shapes.shapes.circle({
         id: eraserId,
-        at: graph.canvas.graphAtMousePosition.value.coords,
+        at: graph.canvas.graphAtMousePosition.coords,
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
@@ -238,7 +238,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
       const laserPointerCursorId = 'laser-pointer-cursor';
       const laserPointerCursor = graph.canvas.shapes.shapes.circle({
         id: laserPointerCursorId,
-        at: graph.canvas.graphAtMousePosition.value.coords,
+        at: graph.canvas.graphAtMousePosition.coords,
         radius: selectedBrushWeight.value,
         fillColor: selectedColor.value,
       });

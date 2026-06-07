@@ -2,6 +2,7 @@ import { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
+import { DeepReadonly } from 'ts-essentials';
 
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 
@@ -43,10 +44,10 @@ export const useCanvasPlugin = <
 
   const canvasFocused = ref(true);
 
-  const graphAtMousePosition = ref<GraphAtMousePosition>({
+  const graphAtMousePosition: GraphAtMousePosition = {
     coords: { x: 0, y: 0 },
     items: [],
-  });
+  };
 
   onClickOutside(magicCanvas.canvas, () => {
     canvasFocused.value = false;
@@ -70,16 +71,18 @@ export const useCanvasPlugin = <
     graphAtMousePosition,
   });
 
-  const updateGraphAtMousePosition = () =>
-    (graphAtMousePosition.value = {
-      coords: magicCanvas.cursorCoordinates.value,
-      items: aggregator.getSchemaItemsByCoordinates(
-        magicCanvas.cursorCoordinates.value,
-      ),
-    });
+  const updateGraphAtMousePosition = (): DeepReadonly<GraphAtMousePosition> => {
+    const coords = magicCanvas.cursorCoordinates.value;
+    const roundedCoords = { x: Math.round(coords.x), y: Math.round(coords.y) };
+    const items = aggregator.getSchemaItemsByCoordinates(roundedCoords);
+    graphAtMousePosition.coords = roundedCoords;
+    graphAtMousePosition.items = items;
+    events.emit('onGraphCursorUpdate', graphAtMousePosition);
+    return graphAtMousePosition;
+  };
 
   const graphMouseEvent = (event: MouseEvent): CanvasGraphMouseEvent => ({
-    ...graphAtMousePosition.value,
+    ...graphAtMousePosition,
     event,
   });
 
@@ -186,6 +189,7 @@ export const useCanvasPlugin = <
 
       graphAtMousePosition,
       updateGraphAtMousePosition,
+
       cursor,
     },
   };
