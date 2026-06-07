@@ -76,7 +76,7 @@ export const getAngle = (point1: Coordinate, point2: Coordinate) => {
  * @param points - the list of points
  * @returns the midpoint of the largest angular space
  */
-export const getLargestAngularSpace = (
+export const getLargestAngularSpaceBisector = (
   center: Coordinate,
   points: Coordinate[],
 ) => {
