@@ -41,11 +41,11 @@ export type GEdge = {
    */
   id: string;
   /**
-   * {@link GNode.id | id} of the node that the edge is coming from
+   * {@link GNode.id | id} of the node that the edge is pointing towards
    */
   target: string;
   /**
-   * {@link GNode.id | id} of the node that the edge is going to
+   * {@link GNode.id | id} of the node that the edge is coming from
    */
   source: string;
   /**
