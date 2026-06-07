@@ -1,15 +1,10 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
-import { deepMerge } from '@magic/utils/deepMerge';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-import {
-  GraphAnimations,
-  getDefaultGraphAnimations,
-} from '../../base/animations.ts';
 import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
@@ -36,10 +31,7 @@ export const useCanvasPlugin = <
   magicCanvas: MagicCanvasProps,
 ): GraphWithCanvas<TransactionWrapperOptions, EventMap, Plugins> => {
   const canvasRegistry = createCanvasEventRegistry();
-  const canvasHub: EventHub<CanvasEventMap> = createEventHub(
-    canvasRegistry,
-    CANVAS_EVENT_ID,
-  );
+  const canvasHub: EventHub<CanvasEventMap> = createEventHub(canvasRegistry);
   const events = mergeEventHubs(
     canvasHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
@@ -100,10 +92,6 @@ export const useCanvasPlugin = <
   const keyboardEvents = emitKeyboardEvents(events.emit);
 
   const shapes = useAnimatedShapes();
-  const animations: GraphAnimations = deepMerge(
-    getDefaultGraphAnimations(shapes.defineTimeline),
-    graph.settings.value.animations(shapes.defineTimeline),
-  );
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const edgeSchemaItems = graph.edges.value

@@ -55,12 +55,6 @@ export type BaseGraphSettings = {
    * @default null
    */
   newNodeLabelGetter: null | (() => string);
-  /**
-   * graph animation overrides, used to override the default animations for the graph
-   *
-   * ⚠️ NOT REACTIVE ⚠️ changes after the graph is created will not take effect.
-   */
-  animations: (defineTimeline: DefineTimeline) => DeepPartial<GraphAnimations>;
 };
 
 export const DEFAULT_BASE_SETTINGS: BaseGraphSettings = {
@@ -75,7 +69,6 @@ export const DEFAULT_BASE_SETTINGS: BaseGraphSettings = {
   },
   newNodeLabelGetter: null,
   isGraphDirected: true,
-  animations: () => ({}),
 };
 
 /**

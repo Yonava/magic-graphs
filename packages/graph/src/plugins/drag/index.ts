@@ -1,4 +1,3 @@
-import type { Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { computed, ref } from 'vue';
@@ -24,10 +23,8 @@ export const useNodeDragPlugin = <
   const activeDrag = ref<ActiveDragNode | undefined>();
 
   const nodeDragRegistry = createNodeDragEventRegistry();
-  const nodeDragHub: EventHub<NodeDragEventMap> = createEventHub(
-    nodeDragRegistry,
-    DRAG_EVENT_ID,
-  );
+  const nodeDragHub: EventHub<NodeDragEventMap> =
+    createEventHub(nodeDragRegistry);
   const events = mergeEventHubs(
     nodeDragHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events

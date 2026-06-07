@@ -37,10 +37,8 @@ export const useNodeAnchorPlugin = <
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeAnchor<TransactionWrapperOptions, EventMap, Plugins> => {
   const nodeAnchorRegistry = createNodeAnchorEventRegistry();
-  const nodeAnchorHub: EventHub<NodeAnchorEventMap> = createEventHub(
-    nodeAnchorRegistry,
-    ANCHOR_EVENT_ID,
-  );
+  const nodeAnchorHub: EventHub<NodeAnchorEventMap> =
+    createEventHub(nodeAnchorRegistry);
   const events = mergeEventHubs(
     nodeAnchorHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
@@ -285,6 +283,7 @@ export const useNodeAnchorPlugin = <
     }
 
     if (newParentNode.id === parentNode.value?.id) return;
+    console.log('set parent node');
     setParentNode(newParentNode.id);
   };
 

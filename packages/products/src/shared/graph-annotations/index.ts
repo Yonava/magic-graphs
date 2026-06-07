@@ -2,6 +2,7 @@ import { ANCHOR_EVENT_ID } from '@magic/graph/plugins/anchors/index';
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
 import { DRAG_EVENT_ID } from '@magic/graph/plugins/drag/index';
 import { MARQUEE_EVENT_ID } from '@magic/graph/plugins/marquee/index';
+import { GraphThemeName } from '@magic/graph/themes/index';
 import type { Aggregator } from '@magic/graph/types';
 import { GraphWithPlugins } from '@magic/graph/useGraph';
 import { circle } from '@magic/shapes/shapes/circle/index';
@@ -19,7 +20,15 @@ import { BRUSH_WEIGHTS, COLORS } from './constants.ts';
 import { useAnnotationHistory } from './history.ts';
 import type { Annotation } from './types.ts';
 
+const THEME_TO_ERASER_OUTLINE: Record<GraphThemeName, Color> = {
+  light: colors.GRAY_900,
+  dark: colors.GRAY_100,
+  pink: colors.PINK_800,
+};
+
 const ERASER_BRUSH_RADIUS = 10;
+
+const ANNOTATION_EVENT_ID = 'product/annotation';
 
 const PRIORITY = { before: [MARQUEE_EVENT_ID, DRAG_EVENT_ID, ANCHOR_EVENT_ID] };
 
@@ -99,9 +108,9 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
    * mouse is being dragged
    */
   const drawLine = ({ coords }: CanvasGraphMouseEvent, consume: () => void) => {
+    consume();
     if (!isDrawing.value || !lastPoint.value) return;
     if (batch.value.length === 0) return;
-    consume();
     if (isErasing.value) {
       const eraserBoundingBox = circle({
         at: coords,
@@ -198,7 +207,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
-          color: graph.getTheme('graph.color'),
+          color: THEME_TO_ERASER_OUTLINE[graph.themeName.value],
           lineWidth: 2,
         },
       });
@@ -269,9 +278,19 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
     graph.canvas.cursor.disabled.value = true;
     canvas.style.cursor = 'crosshair';
 
-    graph.events.handle('onMouseDown', startDrawing, 'annotation', PRIORITY);
-    graph.events.handle('onMouseMove', drawLine, 'annotation', PRIORITY);
-    graph.events.handle('onMouseUp', stopDrawing, 'annotation', PRIORITY);
+    graph.events.handle(
+      'onMouseDown',
+      startDrawing,
+      ANNOTATION_EVENT_ID,
+      PRIORITY,
+    );
+    graph.events.handle('onMouseMove', drawLine, ANNOTATION_EVENT_ID, PRIORITY);
+    graph.events.handle(
+      'onMouseUp',
+      stopDrawing,
+      ANNOTATION_EVENT_ID,
+      PRIORITY,
+    );
   };
 
   const deactivate = () => {
