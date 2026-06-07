@@ -94,12 +94,12 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     graph.edges.value
       .filter(
         (e) =>
-          (e.source === fromNode.id || e.target === toNode.id) &&
-          e.source !== e.target,
+          (e.target === fromNode.id || e.source === toNode.id) &&
+          e.target !== e.source,
       )
       .map((e) => {
         const { fromNode, toNode } = getConnectedNodes(graph)(e.id);
-        return fromNode.id === fromNode.id ? toNode : fromNode;
+        return e.target === fromNode.id ? toNode : fromNode;
       })
       .filter(
         (point, index, self) =>
