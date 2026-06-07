@@ -39,22 +39,25 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
   const styles = resolveThemeForEdge(graph.getTheme, edge);
   const { isGraphDirected, isGraphWeighted } = graph.settings.value;
 
-  const { fromNode, toNode } = getConnectedNodes(graph)(edge.id);
+  const { fromNode: sourceNode, toNode } = getConnectedNodes(graph)(edge.id);
   const edgesAlongPath = getEdgesBetweenConnectedNodes(graph)(
-    fromNode.id,
+    sourceNode.id,
     toNode.id,
   );
 
   const multipleEdgesInPath = edgesAlongPath.length > 1;
-  const isSelfDirected = toNode.id === fromNode.id;
+  const isSelfDirected = toNode.id === sourceNode.id;
 
-  const fromNodeBorderWidth = graph.getTheme('node.base.borderWidth', fromNode);
+  const fromNodeBorderWidth = graph.getTheme(
+    'node.base.borderWidth',
+    sourceNode,
+  );
   const toNodeBorderWidth = graph.getTheme('node.base.borderWidth', toNode);
 
-  const fromNodeSize = graph.getTheme('node.base.size', fromNode);
+  const fromNodeSize = graph.getTheme('node.base.size', sourceNode);
   const toNodeSize = graph.getTheme('node.base.size', toNode);
 
-  const angle = Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x);
+  const angle = Math.atan2(toNode.y - sourceNode.y, toNode.x - sourceNode.x);
 
   const arrowHeadSpacingAwayFromNode =
     toNodeBorderWidth / 2 + WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX;
@@ -63,7 +66,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     y: (toNodeSize + arrowHeadSpacingAwayFromNode) * Math.sin(angle),
   };
 
-  const edgeStart = { x: fromNode.x, y: fromNode.y };
+  const edgeStart = { x: sourceNode.x, y: sourceNode.y };
   const edgeEnd = {
     x: toNode.x - (isGraphDirected ? arrowDrawOffset.x : 0),
     y: toNode.y - (isGraphDirected ? arrowDrawOffset.y : 0),
@@ -94,7 +97,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     graph.edges.value
       .filter(
         (e) =>
-          (e.target === fromNode.id || e.source === toNode.id) &&
+          (e.target === sourceNode.id || e.source === toNode.id) &&
           e.target !== e.source,
       )
       .map((e) => {
@@ -132,7 +135,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     const shape = graph.shapes.shapes.uturn({
       id: edge.id,
       spacing: styles.width * 1.2,
-      at: { x: fromNode.x, y: fromNode.y },
+      at: { x: sourceNode.x, y: sourceNode.y },
       upDistance,
       downDistance,
       rotation: largestAngularSpaceBisector,
@@ -147,7 +150,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
   const sumOfToAndFromNodeSize =
     fromNodeSize + fromNodeBorderWidth / 2 + toNodeSize + toNodeBorderWidth / 2;
   const distanceSquaredBetweenNodes =
-    (fromNode.x - toNode.x) ** 2 + (fromNode.y - toNode.y) ** 2;
+    (sourceNode.x - toNode.x) ** 2 + (sourceNode.y - toNode.y) ** 2;
   const areNodesTouching =
     sumOfToAndFromNodeSize ** 2 > distanceSquaredBetweenNodes;
 
