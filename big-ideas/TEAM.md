@@ -1,6 +1,6 @@
 # What Each Person Owns
 
-## Yona (& Xavier): Engineering & Architecture
+## Yona: Engineering & Architecture
 
 The SDK, the core graph engine, the plugin system, the canvas rendering pipeline. The TypeScript and Vue that makes the tech behind the curtain run smoothly.
 
