@@ -83,7 +83,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     edgeEnd.y += Math.sin(angle + Math.PI / 2) * bidirectionalEdgeSpacing;
   }
 
-  const largestAngularSpace = getLargestAngularSpaceBisector(
+  const largestAngularSpaceBisector = getLargestAngularSpaceBisector(
     edgeStart,
     /**
      * 1. Filter to remove self-referencing edge
@@ -106,8 +106,6 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
           index === self.findIndex((p) => p.x === point.x && p.y === point.y),
       ),
   );
-
-  console.log(largestAngularSpace);
 
   const graphColor = graph.getTheme('graph.color');
 
@@ -137,7 +135,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
       at: { x: fromNode.x, y: fromNode.y },
       upDistance,
       downDistance,
-      rotation: largestAngularSpace,
+      rotation: largestAngularSpaceBisector,
       lineWidth: styles.width,
       fillColor: styles.color,
       textArea,
