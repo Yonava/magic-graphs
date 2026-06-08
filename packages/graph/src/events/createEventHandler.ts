@@ -58,11 +58,6 @@ export const createEventHandler = <EventMap extends GenericEventMap>() => {
         ...handlers,
         { id: handlerId, callback: eventCallback, priority },
       ]);
-
-      if (eventName === 'onGraphCursorUpdate') {
-        console.log(priority);
-        console.log(allHandlers[eventName]);
-      }
     },
     unhandle: <EventName extends keyof EventMap>(
       eventName: EventName,
