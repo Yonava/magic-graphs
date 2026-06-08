@@ -1,6 +1,7 @@
 import { normalizeBoundingBox } from '@magic/shapes/helpers';
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { DeepReadonly } from 'ts-essentials';
 
 import { ref } from 'vue';
 import { computed } from 'vue';
@@ -9,14 +10,17 @@ import { BaseEventMap } from '../../base/events.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { Aggregator } from '../../types.ts';
+import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasPlugin } from '../canvas/types.ts';
+import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
 import { MarqueeEventMap, createMarqueeEventRegistry } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
 import { GraphWithMarquee } from './types.ts';
+
+export const MARQUEE_EVENT_ID = 'marquee';
 
 export const useMarqueePlugin = <
   TransactionWrapperOptions,
@@ -39,8 +43,6 @@ export const useMarqueePlugin = <
 
   const groupDragCoordinates = ref<Coordinate | undefined>();
 
-  const { hold, release } = graph.pluginHoldController('marquee');
-
   /**
    * given a mouse event, engages or disengages the marquee box
    */
@@ -51,7 +53,6 @@ export const useMarqueePlugin = <
   }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
-    if (topItem?.graphType !== 'encapsulated-node-box') release('nodeAnchors');
     if (!topItem) engageMarqueeBox(coords);
   };
 
@@ -95,7 +96,6 @@ export const useMarqueePlugin = <
   };
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
-    hold('nodeAnchors');
     graph.canvas.cursor.disabled.value = true;
     marqueeBox.value = {
       at: startingCoords,
@@ -110,7 +110,6 @@ export const useMarqueePlugin = <
     const finalMarqueeBox = marqueeBox.value;
     marqueeBox.value = undefined;
     graph.canvas.cursor.disabled.value = false;
-    release('nodeAnchors');
     events.emit('onMarqueeEndSelection', finalMarqueeBox);
   };
 
@@ -137,8 +136,13 @@ export const useMarqueePlugin = <
     );
   };
 
-  const setMarqueeBoxDimensions = ({ coords }: CanvasGraphMouseEvent) => {
+  const setMarqueeBoxDimensions = (
+    { coords }: DeepReadonly<GraphUnderCursor>,
+    consume: () => void,
+  ) => {
     if (!marqueeBox.value) return;
+    consume();
+
     const { x, y } = coords;
     marqueeBox.value.width = x - marqueeBox.value.at.x;
     marqueeBox.value.height = y - marqueeBox.value.at.y;
@@ -215,14 +219,21 @@ export const useMarqueePlugin = <
   const activate = () => {
     events.subscribe('onFocusChange', updateEncapsulatedNodeBox);
 
-    events.subscribe('onMouseDown', handleMarqueeEngagement);
-    events.subscribe('onMouseUp', disengageMarqueeBox);
-    events.subscribe('onContextMenu', disengageMarqueeBox);
-    events.subscribe('onMouseMove', setMarqueeBoxDimensions);
+    events.handle('onMouseDown', handleMarqueeEngagement, MARQUEE_EVENT_ID);
+    events.handle('onMouseUp', disengageMarqueeBox, MARQUEE_EVENT_ID);
+    events.handle('onContextMenu', disengageMarqueeBox, MARQUEE_EVENT_ID);
 
-    events.subscribe('onMouseDown', beginGroupDrag);
-    events.subscribe('onMouseUp', endGroupDrag);
-    events.subscribe('onMouseMove', groupDrag);
+    // if mouse is held down, resize the marquee box around the cursor position
+    events.handle(
+      'onGraphUnderCursorChange',
+      setMarqueeBoxDimensions,
+      MARQUEE_EVENT_ID,
+      { before: [ANCHOR_EVENT_ID] },
+    );
+
+    events.handle('onMouseDown', beginGroupDrag, MARQUEE_EVENT_ID);
+    events.handle('onMouseUp', endGroupDrag, MARQUEE_EVENT_ID);
+    events.handle('onMouseMove', groupDrag, MARQUEE_EVENT_ID);
 
     events.subscribe('onTransactionComplete', updateEncapsulatedNodeBox);
   };
@@ -230,14 +241,14 @@ export const useMarqueePlugin = <
   const deactivate = () => {
     events.unsubscribe('onFocusChange', updateEncapsulatedNodeBox);
 
-    events.unsubscribe('onMouseDown', handleMarqueeEngagement);
-    events.unsubscribe('onMouseUp', disengageMarqueeBox);
-    events.unsubscribe('onContextMenu', disengageMarqueeBox);
-    events.unsubscribe('onMouseMove', setMarqueeBoxDimensions);
+    events.unhandle('onMouseDown', handleMarqueeEngagement);
+    events.unhandle('onMouseUp', disengageMarqueeBox);
+    events.unhandle('onContextMenu', disengageMarqueeBox);
+    events.unhandle('onMouseMove', setMarqueeBoxDimensions);
 
-    events.unsubscribe('onMouseDown', beginGroupDrag);
-    events.unsubscribe('onMouseUp', endGroupDrag);
-    events.unsubscribe('onMouseMove', groupDrag);
+    events.unhandle('onMouseDown', beginGroupDrag);
+    events.unhandle('onMouseUp', endGroupDrag);
+    events.unhandle('onMouseMove', groupDrag);
 
     events.unsubscribe('onTransactionComplete', updateEncapsulatedNodeBox);
 

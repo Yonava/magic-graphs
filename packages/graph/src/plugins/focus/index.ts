@@ -13,6 +13,7 @@ import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode, SchemaItem } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
+import { DRAG_EVENT_ID } from '../drag/index.ts';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
 import { FocusEventMap, createFocusEventRegistry } from './events.ts';
 import {
@@ -22,6 +23,8 @@ import {
   NodeBaseThemePath,
   NodeBaseToNodeFocusTheme,
 } from './types.ts';
+
+export const FOCUS_EVENT_ID = 'focus';
 
 export const useFocusPlugin = <
   TransactionWrapperOptions,
@@ -215,25 +218,27 @@ export const useFocusPlugin = <
   }
 
   const activate = () => {
-    events.subscribe('onMouseDown', handleMouseDown);
+    // focus a node when clicked, or clear focus if background is clicked
+    events.handle('onMouseDown', handleMouseDown, FOCUS_EVENT_ID, {
+      before: [DRAG_EVENT_ID],
+    });
+
+    // clean up the focus so removed elements aren't in the state
     events.subscribe('onElementsRemoved', clearRemovedElementsFromFocus);
   };
 
   const deactivate = () => {
-    events.unsubscribe('onMouseDown', handleMouseDown);
+    events.unhandle('onMouseDown', handleMouseDown);
+
     events.unsubscribe('onElementsRemoved', clearRemovedElementsFromFocus);
     clearFocus();
   };
 
-  const { hold, release } = graph.pluginHoldController('focus');
-
   events.subscribe('onSettingsChange', (diff) => {
     if (diff.focusable === false) {
       deactivate();
-      hold('marquee');
     } else if (diff.focusable === true) {
       activate();
-      release('marquee');
     }
   });
 

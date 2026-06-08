@@ -1,5 +1,5 @@
 import { EventHub } from './createEventHub.ts';
-import { GenericEventMap } from './index.ts';
+import { GenericEventMap } from './types.ts';
 
 export const UNRECOGNIZED_KEY = (eventName: string) =>
   `Event Hub Invoked With Event ${eventName} Unrecognized`;
@@ -39,6 +39,40 @@ export const mergeEventHubs = <
       }
       if (keyInHub2) {
         hub2.unsubscribe(eventName as keyof EventMap2, eventCallback as any);
+      }
+      if (!keyInHub1 && !keyInHub2) {
+        UNRECOGNIZED_KEY_WARNING(eventName.toString());
+      }
+    },
+    unhandle: (eventName, eventCallback) => {
+      const { keyInHub1, keyInHub2 } = getKeyInHub(eventName);
+      if (keyInHub1) {
+        hub1.unhandle(eventName as keyof EventMap1, eventCallback as any);
+      }
+      if (keyInHub2) {
+        hub2.unhandle(eventName as keyof EventMap2, eventCallback as any);
+      }
+      if (!keyInHub1 && !keyInHub2) {
+        UNRECOGNIZED_KEY_WARNING(eventName.toString());
+      }
+    },
+    handle: (eventName, eventCallback, handlerId, priority) => {
+      const { keyInHub1, keyInHub2 } = getKeyInHub(eventName);
+      if (keyInHub1) {
+        hub1.handle(
+          eventName as keyof EventMap1,
+          eventCallback as any,
+          handlerId,
+          priority,
+        );
+      }
+      if (keyInHub2) {
+        hub2.handle(
+          eventName as keyof EventMap2,
+          eventCallback as any,
+          handlerId,
+          priority,
+        );
       }
       if (!keyInHub1 && !keyInHub2) {
         UNRECOGNIZED_KEY_WARNING(eventName.toString());

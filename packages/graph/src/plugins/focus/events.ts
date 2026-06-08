@@ -1,4 +1,4 @@
-import { EventMapToEventRegistry } from '../../events/index.ts';
+import { EventMapToEventRegistry } from '../../events/types.ts';
 
 export type FocusEventMap = {
   /**

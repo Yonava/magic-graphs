@@ -18,6 +18,8 @@ import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { NodeAnchorEventMap, createNodeAnchorEventRegistry } from './events.ts';
 
+export const ANCHOR_EVENT_ID = 'anchors';
+
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
  * when hovered over.
@@ -52,9 +54,12 @@ export const useNodeAnchorPlugin = <
    */
   const currentDraggingAnchor = ref<NodeAnchor>();
 
+  const hoveredNodeAnchorId = ref<NodeAnchor['id']>();
+
   const clearAnchorState = () => {
     parentNode.value = undefined;
     currentDraggingAnchor.value = undefined;
+    hoveredNodeAnchorId.value = undefined;
   };
 
   const clearAnchorStateOnNodeMove: BaseEventMap['onNodeUpdated'] = (
@@ -74,8 +79,6 @@ export const useNodeAnchorPlugin = <
     parentNode.value = node;
     updateNodeAnchors(node);
   };
-
-  const hoveredNodeAnchorId = ref<NodeAnchor['id']>();
 
   const updateHoveredNodeAnchorId = ({ items }: CanvasGraphMouseEvent) => {
     const topItem = items.at(-1);
@@ -269,7 +272,7 @@ export const useNodeAnchorPlugin = <
   const checkForParentNodeUpdate = () => {
     if (currentDraggingAnchor.value) return;
 
-    const { items } = graph.canvas.graphAtMousePosition.value;
+    const { items } = graph.canvas.graphUnderCursor;
     const topItem = items.at(-1);
     if (!topItem) return clearAnchorState();
     if (topItem.graphType === 'node-anchor') return;
@@ -312,7 +315,7 @@ export const useNodeAnchorPlugin = <
   };
 
   /**
-   * drops the active anchor and triggers graph events
+   * drops the active anchor and triggers onNodeAnchorDrop event
    */
   const dropAnchor = () => {
     if (!currentDraggingAnchor.value) return;
@@ -324,6 +327,15 @@ export const useNodeAnchorPlugin = <
       currentDraggingAnchor.value,
     );
     clearAnchorState();
+
+    // when we clear the node anchors, we must ensure that the
+    // aggregator updates so that it knows the node anchors
+    // and link preview are no longer on the canvas
+    graph.canvas.aggregator.updateAggregator();
+    graph.canvas.forceUpdateGraphUnderCursor();
+
+    // in case anchor was dropped a different node, set that new node as the parent node
+    checkForParentNodeUpdate();
   };
 
   const insertAnchorsIntoAggregator = (aggregator: SchemaItem[]) => {
@@ -363,31 +375,53 @@ export const useNodeAnchorPlugin = <
   graph.canvas.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
 
   const activate = () => {
-    events.subscribe('onNodeAdded', checkForParentNodeUpdate);
-    events.subscribe('onNodeRemoved', checkForParentNodeUpdate);
-    events.subscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
-    events.subscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
-    // TODO replace with core/base discrete node position change API
-    // events.subscribe('onNodeDrop', updateNodeAnchors);
-    events.subscribe('onMouseMove', checkForParentNodeUpdate);
-    events.subscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
-    events.subscribe('onMouseMove', updateHoveredNodeAnchorId);
-    events.subscribe('onMouseDown', setCurrentlyDraggingAnchor);
-    events.subscribe('onMouseUp', dropAnchor);
+    events.handle(
+      'onNodeRemoved',
+      clearAnchorStateIfParentRemoved,
+      ANCHOR_EVENT_ID,
+    );
+    events.handle('onNodeUpdated', clearAnchorStateOnNodeMove, ANCHOR_EVENT_ID);
+
+    // for when the user is mousing over the canvas. checks if a node is under the cursor
+    // to set the anchors on. onGraphUnderCursorChange because onMouseMove doesn't capture
+    // the cases where the canvas state changes under the cursor while the cursor is
+    // stationary, ie node being added via double click
+    events.handle(
+      'onGraphUnderCursorChange',
+      checkForParentNodeUpdate,
+      ANCHOR_EVENT_ID,
+    );
+
+    // for when a node is finished dragging, set the dropped node as anchor parent
+    events.handle('onMouseUp', checkForParentNodeUpdate, ANCHOR_EVENT_ID);
+
+    // if an anchor is being dragged, update its position
+    events.handle(
+      'onMouseMove',
+      updateCurrentlyDraggingAnchorPosition,
+      ANCHOR_EVENT_ID,
+    );
+
+    // scans the canvas when the cursor is moving and sets the hovered node anchor state
+    events.handle('onMouseMove', updateHoveredNodeAnchorId, ANCHOR_EVENT_ID);
+
+    // picks up the node anchor to begin drag
+    events.handle('onMouseDown', setCurrentlyDraggingAnchor, ANCHOR_EVENT_ID);
+
+    // drop the node anchor being dragged
+    events.handle('onMouseUp', dropAnchor, ANCHOR_EVENT_ID);
   };
 
   const deactivate = () => {
-    events.unsubscribe('onNodeAdded', checkForParentNodeUpdate);
-    events.unsubscribe('onNodeRemoved', checkForParentNodeUpdate);
-    events.unsubscribe('onNodeRemoved', clearAnchorStateIfParentRemoved);
-    events.unsubscribe('onNodeUpdated', clearAnchorStateOnNodeMove);
+    events.unhandle('onNodeRemoved', clearAnchorStateIfParentRemoved);
+    events.unhandle('onNodeUpdated', clearAnchorStateOnNodeMove);
     // TODO replace with core/base discrete node position change API
-    // events.unsubscribe('onNodeDrop', updateNodeAnchors);
-    events.unsubscribe('onMouseMove', checkForParentNodeUpdate);
-    events.unsubscribe('onMouseMove', updateCurrentlyDraggingAnchorPosition);
-    events.unsubscribe('onMouseMove', updateHoveredNodeAnchorId);
-    events.unsubscribe('onMouseDown', setCurrentlyDraggingAnchor);
-    events.unsubscribe('onMouseUp', dropAnchor);
+    // events.unhandle('onNodeDrop', updateNodeAnchors);
+    events.unhandle('onGraphUnderCursorChange', checkForParentNodeUpdate);
+    events.unhandle('onMouseMove', updateCurrentlyDraggingAnchorPosition);
+    events.unhandle('onMouseMove', updateHoveredNodeAnchorId);
+    events.unhandle('onMouseDown', setCurrentlyDraggingAnchor);
+    events.unhandle('onMouseUp', dropAnchor);
     clearAnchorState();
   };
 

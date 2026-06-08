@@ -1,15 +1,11 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
-import { deepMerge } from '@magic/utils/deepMerge';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
+import { DeepReadonly } from 'ts-essentials';
 
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-import {
-  GraphAnimations,
-  getDefaultGraphAnimations,
-} from '../../base/animations.ts';
 import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
@@ -22,8 +18,10 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
-import { GraphAtMousePosition, GraphWithCanvas } from './types.ts';
+import { GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
+
+export const CANVAS_EVENT_ID = 'canvas';
 
 export const useCanvasPlugin = <
   TransactionWrapperOptions,
@@ -46,10 +44,10 @@ export const useCanvasPlugin = <
 
   const canvasFocused = ref(true);
 
-  const graphAtMousePosition = ref<GraphAtMousePosition>({
+  const graphAtMousePosition: GraphUnderCursor = {
     coords: { x: 0, y: 0 },
     items: [],
-  });
+  };
 
   onClickOutside(magicCanvas.canvas, () => {
     canvasFocused.value = false;
@@ -61,10 +59,18 @@ export const useCanvasPlugin = <
     canvasFocused.value = true;
   });
 
-  events.subscribe('onTransactionComplete', () => {
-    // ensure aggregator has an up to date snapshot of the canvas
-    aggregator.updateAggregator();
-    updateGraphAtMousePosition();
+  events.subscribe('onTransactionComplete', (transaction) => {
+    if (transaction.updatedEdges.length || transaction.updatedNodes.length) {
+      // TODO remove when updates/mutations are removed transactions system
+      // prevents onGraphUnderCursorChange spam when handlers subscribe to the
+      // onGraphUnderCursorChange event. If this wasn't there, mouse move dom events
+      // would fire off an event, which would trigger the handlers in drag (for example)
+      // to fire off a update for the node, then that would land here retriggering the
+      // updateGraphAtMousePosition call resulting in duplicate event spam
+      return;
+    }
+
+    refreshCursorState();
   });
 
   const cursor = useGraphCursor({
@@ -73,32 +79,32 @@ export const useCanvasPlugin = <
     graphAtMousePosition,
   });
 
-  const updateGraphAtMousePosition = () =>
-    (graphAtMousePosition.value = {
-      coords: magicCanvas.cursorCoordinates.value,
-      items: aggregator.getSchemaItemsByCoordinates(
-        magicCanvas.cursorCoordinates.value,
-      ),
-    });
+  const refreshCursorState = (): DeepReadonly<GraphUnderCursor> => {
+    const coords = magicCanvas.cursorCoordinates.value;
+    graphAtMousePosition.coords = coords;
+
+    aggregator.updateAggregator();
+    const newElements = aggregator.getSchemaItemsByCoordinates(coords);
+    graphAtMousePosition.items = newElements;
+
+    events.emit('onGraphUnderCursorChange', graphAtMousePosition);
+    return graphAtMousePosition;
+  };
 
   const graphMouseEvent = (event: MouseEvent): CanvasGraphMouseEvent => ({
-    ...graphAtMousePosition.value,
+    ...graphAtMousePosition,
     event,
   });
 
   const mouseEvents = emitMouseEvents(
     graphMouseEvent,
     events.emit,
-    updateGraphAtMousePosition,
+    refreshCursorState,
   );
 
   const keyboardEvents = emitKeyboardEvents(events.emit);
 
   const shapes = useAnimatedShapes();
-  const animations: GraphAnimations = deepMerge(
-    getDefaultGraphAnimations(shapes.defineTimeline),
-    graph.settings.value.animations(shapes.defineTimeline),
-  );
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const edgeSchemaItems = graph.edges.value
@@ -188,11 +194,12 @@ export const useCanvasPlugin = <
 
       magicCanvas,
 
-      canvasFocused,
-      canvasHovered: useElementHover(magicCanvas.canvas),
+      focused: canvasFocused,
+      hovered: useElementHover(magicCanvas.canvas),
 
-      graphAtMousePosition,
-      updateGraphAtMousePosition,
+      graphUnderCursor: graphAtMousePosition,
+      forceUpdateGraphUnderCursor: refreshCursorState,
+
       cursor,
     },
   };

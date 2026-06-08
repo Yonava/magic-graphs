@@ -1,5 +1,5 @@
-import type { Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { DeepReadonly } from 'ts-essentials';
 
 import { computed, ref } from 'vue';
 
@@ -7,19 +7,13 @@ import { BaseEventMap } from '../../base/events.ts';
 import type { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import type { GNode } from '../../types.ts';
+import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasPlugin } from '../canvas/types.ts';
+import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
-import { GraphWithNodeDrag } from './types.ts';
+import { ActiveDragNode, GraphWithNodeDrag } from './types.ts';
 
-/**
- * info for the node being dragged
- */
-export type ActiveDragNode = {
-  nodeId: GNode['id'];
-  coords: Coordinate;
-};
+export const DRAG_EVENT_ID = 'drag';
 
 export const useNodeDragPlugin = <
   TransactionWrapperOptions,
@@ -29,7 +23,6 @@ export const useNodeDragPlugin = <
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeDrag<TransactionWrapperOptions, EventMap, Plugins> => {
   const activeDrag = ref<ActiveDragNode | undefined>();
-  const { hold, release } = graph.pluginHoldController('node-drag');
 
   const nodeDragRegistry = createNodeDragEventRegistry();
   const nodeDragHub: EventHub<NodeDragEventMap> =
@@ -41,15 +34,18 @@ export const useNodeDragPlugin = <
     graph.events as EventHub<BaseEventMap & CanvasEventMap>,
   );
 
-  const beginDrag = ({ items, coords, event }: CanvasGraphMouseEvent) => {
+  const beginDrag = (
+    { items, coords, event }: CanvasGraphMouseEvent,
+    consume: () => void,
+  ) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem || topItem.graphType !== 'node') return;
 
-    hold('nodeAnchors');
-
     const node = graph.getNode(topItem.id);
     if (!node) return;
+
+    consume();
 
     activeDrag.value = { nodeId: node.id, coords };
     events.emit('onNodeDragStart', node);
@@ -65,16 +61,18 @@ export const useNodeDragPlugin = <
     activeDrag.value = undefined;
 
     events.emit('onNodeDrop', droppedNode);
-    release('nodeAnchors');
 
-    const { items } = graph.canvas.graphAtMousePosition.value;
+    const { items } = graph.canvas.graphUnderCursor;
     const topItem = items.at(-1);
     if (topItem?.id !== droppedNode.id) return;
   };
 
-  const drag = ({ coords: magicCoords }: CanvasGraphMouseEvent) => {
+  const drag = (
+    { coords: magicCoords }: DeepReadonly<GraphUnderCursor>,
+    consume: () => void,
+  ) => {
     if (!activeDrag.value) return;
-
+    consume();
     const { nodeId, coords } = activeDrag.value;
     const node = graph.getNode(nodeId);
     if (!node) throw new Error('dragged node not found');
@@ -82,28 +80,36 @@ export const useNodeDragPlugin = <
     const dx = magicCoords.x - coords.x;
     const dy = magicCoords.y - coords.y;
 
+    const x = node.x + dx;
+    const y = node.y + dy;
+    if (!dx && !dy) return;
+    const newCoords = { x, y };
+
     graph.actions.updateNode({
       id: nodeId,
-      values: {
-        x: node.x + dx,
-        y: node.y + dy,
-      },
+      values: newCoords,
     });
 
-    activeDrag.value.coords = magicCoords;
+    activeDrag.value.coords = newCoords;
   };
 
   const activate = () => {
-    events.subscribe('onMouseDown', beginDrag);
-    events.subscribe('onMouseUp', drop);
-    events.subscribe('onMouseMove', drag);
+    events.handle('onMouseDown', beginDrag, DRAG_EVENT_ID, {
+      before: [ANCHOR_EVENT_ID],
+    });
+    events.handle('onMouseUp', drop, DRAG_EVENT_ID, {
+      before: [ANCHOR_EVENT_ID],
+    });
+    events.handle('onGraphUnderCursorChange', drag, DRAG_EVENT_ID, {
+      before: [ANCHOR_EVENT_ID],
+    });
     graph.canvas.cursor.graphToCursorMap.value['node'] = 'grab';
   };
 
   const deactivate = () => {
-    events.unsubscribe('onMouseDown', beginDrag);
-    events.unsubscribe('onMouseUp', drop);
-    events.unsubscribe('onMouseMove', drag);
+    events.unhandle('onMouseDown', beginDrag);
+    events.unhandle('onMouseUp', drop);
+    events.unhandle('onGraphUnderCursorChange', drag);
     graph.canvas.cursor.graphToCursorMap.value['node'] = 'pointer';
     if (activeDrag.value) drop();
   };

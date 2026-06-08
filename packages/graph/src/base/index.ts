@@ -17,7 +17,8 @@ import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
 import type { BaseGraph } from './types.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
-import { usePluginHoldController } from './usePluginHold.ts';
+
+export const CORE_EVENT_ID = 'core';
 
 export const useBaseGraph = (
   startupSettings: Partial<GraphSettings> = {},
@@ -91,13 +92,7 @@ export const useBaseGraph = (
   );
 
   return {
-    /**
-     * all the nodes contained in the graph
-     */
     nodes,
-    /**
-     * all the edges contained in the graph
-     */
     edges,
 
     nodeIdToIndex,
@@ -107,10 +102,7 @@ export const useBaseGraph = (
     getEdge,
 
     actions,
-
     events,
-
-    pluginHoldController: usePluginHoldController(settings),
 
     baseTheme: computed(() => THEME_LOADOUTS[themeName.value]),
     themeName,

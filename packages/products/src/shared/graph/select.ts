@@ -1,7 +1,8 @@
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
 import type { SchemaItem } from '@magic/graph/types';
-import type { Graph } from '../useGraphWithCanvas.ts';
 import tinycolor from 'tinycolor2';
+
+import type { Graph } from '../useGraphWithCanvas.ts';
 
 const animateNodePulse = (graph: Graph) =>
   graph.canvas.shapes.defineTimeline({
@@ -130,15 +131,11 @@ export const selectFromGraph = (
     resolve(topItem);
   };
 
-  const { hold, release } = graph.pluginHoldController('graph-select-api');
-
   /**
    * initializes the selection process
    */
   const init = () => {
     graph.events.subscribe('onClick', onClick);
-    hold('interactive');
-    hold('focusable');
     const cursorPredicate =
       predicate === DEFAULT_PREDICATE
         ? (item: SchemaItem) => !!item
@@ -151,8 +148,6 @@ export const selectFromGraph = (
    */
   const cleanup = () => {
     graph.events.unsubscribe('onClick', onClick);
-    release('interactive');
-    release('focusable');
     graph.canvas.cursor.deactivateCursorSelectMode();
   };
 

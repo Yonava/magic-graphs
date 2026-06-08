@@ -1,13 +1,13 @@
 import { DeepReadonly } from 'ts-essentials';
 
-import { EventMapToEventRegistry } from '../../events/index.ts';
-import { GraphAtMousePosition } from './types.ts';
+import { EventMapToEventRegistry } from '../../events/types.ts';
+import { GraphUnderCursor } from './types.ts';
 
 /**
  * a standard mouse event along with extra graph related info
  * regarding the mouse position
  */
-export type CanvasGraphMouseEvent = DeepReadonly<GraphAtMousePosition> & {
+export type CanvasGraphMouseEvent = DeepReadonly<GraphUnderCursor> & {
   /**
    * the native browser event that triggered this canvas graph event
    */
@@ -56,6 +56,8 @@ export type CanvasEventMap = {
    * see {@link graph.canvas.aggregator | `aggregator`} if you need drawn item to integrate with graph APIs
    */
   onDraw: (ctx: CanvasRenderingContext2D) => void;
+
+  onGraphUnderCursorChange: (data: DeepReadonly<GraphUnderCursor>) => void;
 };
 
 type CanvasEventRegistry = EventMapToEventRegistry<CanvasEventMap>;
@@ -72,4 +74,5 @@ export const createCanvasEventRegistry = (): CanvasEventRegistry => ({
   onKeyUp: new Set(),
 
   onDraw: new Set(),
+  onGraphUnderCursorChange: new Set(),
 });

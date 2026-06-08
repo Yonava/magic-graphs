@@ -1,7 +1,5 @@
 import { describe, expect, test } from 'vitest';
 
-import { ref } from 'vue';
-
 import { useBaseGraph } from './base/index.ts';
 import {
   useGraphLabelGetter,
@@ -10,9 +8,8 @@ import {
 } from './labels.ts';
 
 describe('graph labels', () => {
-  const graph = useBaseGraph(ref() as any);
-
   test('graphLabelGetter', () => {
+    const graph = useBaseGraph({});
     const getNewLabel = useGraphLabelGetter(graph.nodes, ['A', 'B', 'C']);
 
     const node1 = graph.actions.addNode({ label: getNewLabel() });
@@ -44,6 +41,7 @@ describe('graph labels', () => {
   });
 
   test('nodeLetterLabelGetter', () => {
+    const graph = useBaseGraph({});
     const getNewLabel = useNodeLetterLabelGetter(graph);
 
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -56,6 +54,7 @@ describe('graph labels', () => {
   });
 
   test('nodeNumberLabelGetter', () => {
+    const graph = useBaseGraph({});
     const getNewLabel = useNodeNumberLabelGetter(graph);
     for (let i = 0; i < 99; i++) {
       graph.actions.addNode({ label: getNewLabel() });

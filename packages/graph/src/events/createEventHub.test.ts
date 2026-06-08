@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import { createEventHub } from './createEventHub.ts';
-import type { EventMapToEventRegistry } from './index.ts';
+import type { EventMapToEventRegistry } from './types.ts';
 
 type MockEventMap = {
   onNodeAdded: (node: { id: string }) => void;
@@ -15,8 +15,8 @@ const createMockEventRegistry = (): EventMapToEventRegistry<MockEventMap> => ({
   onCoordinatesChange: new Set(),
 });
 
-describe('createEventHub', () => {
-  it('should successfully register a callback via subscribe', () => {
+describe(createEventHub, () => {
+  it('successfully registers a callback via subscribe', () => {
     const registry = createMockEventRegistry();
     const hub = createEventHub<MockEventMap>(registry);
     const callback = vi.fn();
@@ -27,7 +27,7 @@ describe('createEventHub', () => {
     expect(registry.onNodeAdded.size).toBe(1);
   });
 
-  it('should safely unregister a callback via unsubscribe', () => {
+  it('safely unregisters a callback via unsubscribe', () => {
     const registry = createMockEventRegistry();
     const hub = createEventHub<MockEventMap>(registry);
     const callback = vi.fn();
@@ -41,7 +41,7 @@ describe('createEventHub', () => {
     expect(registry.onNodeAdded.size).toBe(0);
   });
 
-  it('should broadcast to all subscribers with exact parameters when emit is invoked', () => {
+  it('broadcasts to all subscribers with exact parameters when emit is invoked', () => {
     const registry = createMockEventRegistry();
     const hub = createEventHub<MockEventMap>(registry);
 
@@ -57,7 +57,7 @@ describe('createEventHub', () => {
     expect(subscriberB).toHaveBeenCalledExactlyOnceWith(100, 250);
   });
 
-  it('should handle zero-argument event emissions cleanly', () => {
+  it('handles zero-argument event emissions cleanly', () => {
     const registry = createMockEventRegistry();
     const hub = createEventHub<MockEventMap>(registry);
     const callback = vi.fn();
@@ -68,14 +68,14 @@ describe('createEventHub', () => {
     expect(callback).toHaveBeenCalledExactlyOnceWith();
   });
 
-  it('should not throw or fail when emitting an event with no subscribers', () => {
+  it('does not throw or fail when emitting an event with no subscribers', () => {
     const registry = createMockEventRegistry();
     const hub = createEventHub<MockEventMap>(registry);
 
     expect(() => hub.emit('onNodeAdded', { id: '1' })).not.toThrow();
   });
 
-  it('should expose a Set containing all unique event names in the keys property', () => {
+  it('exposes a Set containing all unique event names in the keys property', () => {
     const registry = createMockEventRegistry();
     const hub = createEventHub<MockEventMap>(registry);
 

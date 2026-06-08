@@ -4,12 +4,14 @@ import { UNRECOGNIZED_KEY, mergeEventHubs } from './mergeEventHubs.ts';
 
 const createMockHub = (keys: string[]) => ({
   keys: new Set(keys),
+  handle: vi.fn(),
   subscribe: vi.fn(),
   unsubscribe: vi.fn(),
+  unhandle: vi.fn(),
   emit: vi.fn(),
 });
 
-describe('mergeEventHubs', () => {
+describe(mergeEventHubs, () => {
   it('should route unique events to their respective hubs', () => {
     const hub1 = createMockHub(['onGraphChange']);
     const hub2 = createMockHub(['onNodeAdded']);
