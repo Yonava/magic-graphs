@@ -1,6 +1,7 @@
 import { normalizeBoundingBox } from '@magic/shapes/helpers';
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { DeepReadonly } from 'ts-essentials';
 
 import { ref } from 'vue';
 import { computed } from 'vue';
@@ -9,8 +10,9 @@ import { BaseEventMap } from '../../base/events.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { Aggregator } from '../../types.ts';
+import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasPlugin } from '../canvas/types.ts';
+import { CanvasPlugin, GraphAtMousePosition } from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
@@ -28,10 +30,7 @@ export const useMarqueePlugin = <
   graph: GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins>,
 ): GraphWithMarquee<TransactionWrapperOptions, GraphEventMap, Plugins> => {
   const marqueeRegistry = createMarqueeEventRegistry();
-  const marqueeHub: EventHub<MarqueeEventMap> = createEventHub(
-    marqueeRegistry,
-    MARQUEE_EVENT_ID,
-  );
+  const marqueeHub: EventHub<MarqueeEventMap> = createEventHub(marqueeRegistry);
   const events = mergeEventHubs(
     marqueeHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
@@ -137,8 +136,13 @@ export const useMarqueePlugin = <
     );
   };
 
-  const setMarqueeBoxDimensions = ({ coords }: CanvasGraphMouseEvent) => {
+  const setMarqueeBoxDimensions = (
+    { coords }: DeepReadonly<GraphAtMousePosition>,
+    consume: () => void,
+  ) => {
     if (!marqueeBox.value) return;
+    consume();
+
     const { x, y } = coords;
     marqueeBox.value.width = x - marqueeBox.value.at.x;
     marqueeBox.value.height = y - marqueeBox.value.at.y;
@@ -218,7 +222,14 @@ export const useMarqueePlugin = <
     events.handle('onMouseDown', handleMarqueeEngagement, MARQUEE_EVENT_ID);
     events.handle('onMouseUp', disengageMarqueeBox, MARQUEE_EVENT_ID);
     events.handle('onContextMenu', disengageMarqueeBox, MARQUEE_EVENT_ID);
-    events.handle('onMouseMove', setMarqueeBoxDimensions, MARQUEE_EVENT_ID);
+
+    // if mouse is held down, resize the marquee box around the cursor position
+    events.handle(
+      'onGraphCursorUpdate',
+      setMarqueeBoxDimensions,
+      MARQUEE_EVENT_ID,
+      { before: [ANCHOR_EVENT_ID] },
+    );
 
     events.handle('onMouseDown', beginGroupDrag, MARQUEE_EVENT_ID);
     events.handle('onMouseUp', endGroupDrag, MARQUEE_EVENT_ID);

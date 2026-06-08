@@ -82,12 +82,13 @@ export const mergeEventHubs = <
         UNRECOGNIZED_KEY_WARNING(eventName.toString());
       }
     },
-    handle: (eventName, eventCallback, priority) => {
+    handle: (eventName, eventCallback, handlerId, priority) => {
       const { keyInHub1, keyInHub2 } = getKeyInHub(eventName);
       if (keyInHub1) {
         hub1.handle(
           eventName as keyof EventMap1,
           eventCallback as any,
+          handlerId,
           priority,
         );
       }
@@ -95,6 +96,7 @@ export const mergeEventHubs = <
         hub2.handle(
           eventName as keyof EventMap2,
           eventCallback as any,
+          handlerId,
           priority,
         );
       }

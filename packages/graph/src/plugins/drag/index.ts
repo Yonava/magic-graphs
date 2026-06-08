@@ -1,4 +1,5 @@
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { DeepReadonly } from 'ts-essentials';
 
 import { computed, ref } from 'vue';
 
@@ -6,8 +7,9 @@ import { BaseEventMap } from '../../base/events.ts';
 import type { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
+import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasPlugin } from '../canvas/types.ts';
+import { CanvasPlugin, GraphAtMousePosition } from '../canvas/types.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
 import { ActiveDragNode, GraphWithNodeDrag } from './types.ts';
 
@@ -32,13 +34,18 @@ export const useNodeDragPlugin = <
     graph.events as EventHub<BaseEventMap & CanvasEventMap>,
   );
 
-  const beginDrag = ({ items, coords, event }: CanvasGraphMouseEvent) => {
+  const beginDrag = (
+    { items, coords, event }: CanvasGraphMouseEvent,
+    consume: () => void,
+  ) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem || topItem.graphType !== 'node') return;
 
     const node = graph.getNode(topItem.id);
     if (!node) return;
+
+    consume();
 
     activeDrag.value = { nodeId: node.id, coords };
     events.emit('onNodeDragStart', node);
@@ -60,9 +67,12 @@ export const useNodeDragPlugin = <
     if (topItem?.id !== droppedNode.id) return;
   };
 
-  const drag = ({ coords: magicCoords }: CanvasGraphMouseEvent) => {
+  const drag = (
+    { coords: magicCoords }: DeepReadonly<GraphAtMousePosition>,
+    consume: () => void,
+  ) => {
     if (!activeDrag.value) return;
-
+    consume();
     const { nodeId, coords } = activeDrag.value;
     const node = graph.getNode(nodeId);
     if (!node) throw new Error('dragged node not found');
@@ -82,9 +92,15 @@ export const useNodeDragPlugin = <
   };
 
   const activate = () => {
-    events.handle('onMouseDown', beginDrag, DRAG_EVENT_ID);
-    events.handle('onMouseUp', drop, DRAG_EVENT_ID);
-    events.handle('onMouseMove', drag, DRAG_EVENT_ID);
+    events.handle('onMouseDown', beginDrag, DRAG_EVENT_ID, {
+      before: [ANCHOR_EVENT_ID],
+    });
+    events.handle('onMouseUp', drop, DRAG_EVENT_ID, {
+      before: [ANCHOR_EVENT_ID],
+    });
+    events.handle('onGraphCursorUpdate', drag, DRAG_EVENT_ID, {
+      before: [ANCHOR_EVENT_ID],
+    });
     graph.canvas.cursor.graphToCursorMap.value['node'] = 'grab';
   };
 

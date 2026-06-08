@@ -1,6 +1,8 @@
 import { ANCHOR_EVENT_ID } from '@magic/graph/plugins/anchors/index';
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
+import { GraphAtMousePosition } from '@magic/graph/plugins/canvas/types';
 import { DRAG_EVENT_ID } from '@magic/graph/plugins/drag/index';
+import { FOCUS_EVENT_ID } from '@magic/graph/plugins/focus/index';
 import { MARQUEE_EVENT_ID } from '@magic/graph/plugins/marquee/index';
 import { GraphThemeName } from '@magic/graph/themes/index';
 import type { Aggregator } from '@magic/graph/types';
@@ -13,24 +15,20 @@ import colors from '@magic/utils/colors';
 import type { Color } from '@magic/utils/colors';
 import { generateId } from '@magic/utils/id';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { DeepReadonly } from 'ts-essentials';
 
 import { computed, ref, watch } from 'vue';
 
-import { BRUSH_WEIGHTS, COLORS } from './constants.ts';
+import {
+  ANNOTATION_EVENT_ID,
+  BRUSH_WEIGHTS,
+  COLORS,
+  ERASER_BRUSH_RADIUS,
+  PRIORITY,
+  THEME_TO_ERASER_OUTLINE,
+} from './constants.ts';
 import { useAnnotationHistory } from './history.ts';
 import type { Annotation } from './types.ts';
-
-const THEME_TO_ERASER_OUTLINE: Record<GraphThemeName, Color> = {
-  light: colors.GRAY_900,
-  dark: colors.GRAY_100,
-  pink: colors.PINK_800,
-};
-
-const ERASER_BRUSH_RADIUS = 10;
-
-const ANNOTATION_EVENT_ID = 'product/annotation';
-
-const PRIORITY = { before: [MARQUEE_EVENT_ID, DRAG_EVENT_ID, ANCHOR_EVENT_ID] };
 
 export const useGraphAnnotations = (graph: GraphWithPlugins) => {
   const selectedColor = ref<Color>(COLORS[0]);
@@ -107,7 +105,10 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
    * the delta between two mouse points while
    * mouse is being dragged
    */
-  const drawLine = ({ coords }: CanvasGraphMouseEvent, consume: () => void) => {
+  const drawLine = (
+    { coords }: DeepReadonly<GraphAtMousePosition>,
+    consume: () => void,
+  ) => {
     consume();
     if (!isDrawing.value || !lastPoint.value) return;
     if (batch.value.length === 0) return;
@@ -284,7 +285,12 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
       ANNOTATION_EVENT_ID,
       PRIORITY,
     );
-    graph.events.handle('onMouseMove', drawLine, ANNOTATION_EVENT_ID, PRIORITY);
+    graph.events.handle(
+      'onGraphCursorUpdate',
+      drawLine,
+      ANNOTATION_EVENT_ID,
+      PRIORITY,
+    );
     graph.events.handle(
       'onMouseUp',
       stopDrawing,
@@ -304,7 +310,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
     canvas.style.cursor = 'default';
 
     graph.events.unhandle('onMouseDown', startDrawing);
-    graph.events.unhandle('onMouseMove', drawLine);
+    graph.events.unhandle('onGraphCursorUpdate', drawLine);
     graph.events.unhandle('onMouseUp', stopDrawing);
   };
 

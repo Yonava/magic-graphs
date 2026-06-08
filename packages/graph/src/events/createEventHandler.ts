@@ -58,6 +58,11 @@ export const createEventHandler = <EventMap extends GenericEventMap>() => {
         ...handlers,
         { id: handlerId, callback: eventCallback, priority },
       ]);
+
+      if (eventName === 'onGraphCursorUpdate') {
+        console.log(priority);
+        console.log(allHandlers[eventName]);
+      }
     },
     unhandle: <EventName extends keyof EventMap>(
       eventName: EventName,
@@ -79,8 +84,7 @@ export const createEventHandler = <EventMap extends GenericEventMap>() => {
       const consume = () => {
         consumed = true;
       };
-      // TODO fix topological sort so i don't need to reverse!
-      for (const { callback } of handlers.toReversed()) {
+      for (const { callback } of handlers) {
         if (consumed) return;
         callback(...callbackArgs, consume);
       }

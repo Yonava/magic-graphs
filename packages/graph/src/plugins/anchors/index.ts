@@ -371,13 +371,18 @@ export const useNodeAnchorPlugin = <
       ANCHOR_EVENT_ID,
     );
     events.handle('onNodeUpdated', clearAnchorStateOnNodeMove, ANCHOR_EVENT_ID);
-    // TODO replace with core/base discrete node position change API
-    // events.handle('onNodeDrop', updateNodeAnchors, ANCHOR_EVENT_ID);
+
+    // for when the user is mousing over the canvas. checks if a node is under the cursor
+    // to set the anchors on
     events.handle(
       'onGraphCursorUpdate',
       checkForParentNodeUpdate,
       ANCHOR_EVENT_ID,
     );
+
+    // for when a node is finished dragging, check set the parent node to the dropped node
+    events.handle('onMouseUp', checkForParentNodeUpdate, ANCHOR_EVENT_ID);
+
     events.handle(
       'onMouseMove',
       updateCurrentlyDraggingAnchorPosition,
@@ -393,7 +398,7 @@ export const useNodeAnchorPlugin = <
     events.unhandle('onNodeUpdated', clearAnchorStateOnNodeMove);
     // TODO replace with core/base discrete node position change API
     // events.unhandle('onNodeDrop', updateNodeAnchors);
-    events.unhandle('onMouseMove', checkForParentNodeUpdate);
+    events.unhandle('onGraphCursorUpdate', checkForParentNodeUpdate);
     events.unhandle('onMouseMove', updateCurrentlyDraggingAnchorPosition);
     events.unhandle('onMouseMove', updateHoveredNodeAnchorId);
     events.unhandle('onMouseDown', setCurrentlyDraggingAnchor);

@@ -62,6 +62,22 @@ export const useCanvasPlugin = <
   events.subscribe('onTransactionComplete', () => {
     // ensure aggregator has an up to date snapshot of the canvas
     aggregator.updateAggregator();
+
+    // this ensures that if a handler subscribing to "onGraphCursorUpdate" fires
+    // resulting in a transaction
+    // we ensure that there is a real reason to call updateGraphAtMousePosition before
+    // we go into an infinite loop
+    const oldElements = graphAtMousePosition.items;
+    const newElements = aggregator.getSchemaItemsByCoordinates(
+      graphAtMousePosition.coords,
+    );
+
+    const oldElementIds = oldElements.map((i) => i.id).join('-');
+    const newElementIds = newElements.map((i) => i.id).join('-');
+
+    graphAtMousePosition.items = newElements;
+    if (oldElementIds === newElementIds) return graphAtMousePosition;
+
     updateGraphAtMousePosition();
   });
 
@@ -74,9 +90,11 @@ export const useCanvasPlugin = <
   const updateGraphAtMousePosition = (): DeepReadonly<GraphAtMousePosition> => {
     const coords = magicCanvas.cursorCoordinates.value;
     const roundedCoords = { x: Math.round(coords.x), y: Math.round(coords.y) };
-    const items = aggregator.getSchemaItemsByCoordinates(roundedCoords);
     graphAtMousePosition.coords = roundedCoords;
-    graphAtMousePosition.items = items;
+
+    const newElements = aggregator.getSchemaItemsByCoordinates(roundedCoords);
+    graphAtMousePosition.items = newElements;
+
     events.emit('onGraphCursorUpdate', graphAtMousePosition);
     return graphAtMousePosition;
   };
