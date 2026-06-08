@@ -118,10 +118,7 @@ export const useMarqueePlugin = <
     if (surfaceArea < 100) return;
     const targetedItems: string[] = [];
 
-    for (const { id, shape, graphType } of graph.canvas.aggregator.aggregator
-      .value) {
-      const { marqueeSelectableGraphTypes } = graph.settings.value;
-      if (!marqueeSelectableGraphTypes.includes(graphType)) continue;
+    for (const { id, shape } of graph.canvas.aggregator.aggregator.value) {
       const inSelectionBox = shape.efficientHitbox(box);
       if (inSelectionBox) targetedItems.push(id);
     }
@@ -255,17 +252,14 @@ export const useMarqueePlugin = <
     if (marqueeBox.value) disengageMarqueeBox();
   };
 
-  events.subscribe('onSettingsChange', (diff) => {
-    if (diff.marquee === true) activate();
-    else if (diff.marquee === false) deactivate();
-  });
-
-  if (graph.settings.value.marquee) activate();
+  activate();
 
   return {
     ...graph,
     events,
     marquee: {
+      activate,
+      deactivate,
       /**
        * updates the bounding box around the nodes that are currently focused.
        * use this when you are changing theme or position outside of the standard supported use cases

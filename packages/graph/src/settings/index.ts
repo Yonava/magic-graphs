@@ -4,11 +4,7 @@ import {
   DEFAULT_LOCAL_STORAGE_SETTINGS,
   LocalStorageGraphSettings,
 } from '../plugins/localStorage/settings.ts';
-import {
-  DEFAULT_MARQUEE_SETTINGS,
-  MarqueeGraphSettings,
-} from '../plugins/marquee/settings.ts';
-import type { GEdge, GNode, SchemaItem } from '../types.ts';
+import type { GEdge, GNode } from '../types.ts';
 
 /**
  * BASE GRAPH SETTINGS
@@ -172,7 +168,6 @@ export const DEFAULT_SHORTCUT_SETTINGS: ShortcutGraphSettings = {
  * represents all settings on a graph instance
  */
 export type GraphSettings = BaseGraphSettings &
-  MarqueeGraphSettings &
   InteractiveGraphSettings &
   LocalStorageGraphSettings &
   ShortcutGraphSettings;
@@ -182,7 +177,6 @@ export type GraphSettings = BaseGraphSettings &
  */
 export const DEFAULT_GRAPH_SETTINGS = {
   ...DEFAULT_BASE_SETTINGS,
-  ...DEFAULT_MARQUEE_SETTINGS,
   ...DEFAULT_INTERACTIVE_SETTINGS,
   ...DEFAULT_LOCAL_STORAGE_SETTINGS,
   ...DEFAULT_SHORTCUT_SETTINGS,
