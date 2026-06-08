@@ -272,7 +272,7 @@ export const useNodeAnchorPlugin = <
   const checkForParentNodeUpdate = () => {
     if (currentDraggingAnchor.value) return;
 
-    const { items } = graph.canvas.graphAtMousePosition;
+    const { items } = graph.canvas.graphUnderCursor;
     const topItem = items.at(-1);
     if (!topItem) return clearAnchorState();
     if (topItem.graphType === 'node-anchor') return;
@@ -332,7 +332,7 @@ export const useNodeAnchorPlugin = <
     // aggregator updates so that it knows the node anchors
     // and link preview are no longer on the canvas
     graph.canvas.aggregator.updateAggregator();
-    graph.canvas.updateGraphAtMousePosition();
+    graph.canvas.forceUpdateGraphUnderCursor();
 
     // in case anchor was dropped a different node, set that new node as the parent node
     checkForParentNodeUpdate();
@@ -383,11 +383,11 @@ export const useNodeAnchorPlugin = <
     events.handle('onNodeUpdated', clearAnchorStateOnNodeMove, ANCHOR_EVENT_ID);
 
     // for when the user is mousing over the canvas. checks if a node is under the cursor
-    // to set the anchors on. onGraphCursorUpdate because onMouseMove doesn't capture
+    // to set the anchors on. onGraphUnderCursorChange because onMouseMove doesn't capture
     // the cases where the canvas state changes under the cursor while the cursor is
     // stationary, ie node being added via double click
     events.handle(
-      'onGraphCursorUpdate',
+      'onGraphUnderCursorChange',
       checkForParentNodeUpdate,
       ANCHOR_EVENT_ID,
     );
@@ -417,7 +417,7 @@ export const useNodeAnchorPlugin = <
     events.unhandle('onNodeUpdated', clearAnchorStateOnNodeMove);
     // TODO replace with core/base discrete node position change API
     // events.unhandle('onNodeDrop', updateNodeAnchors);
-    events.unhandle('onGraphCursorUpdate', checkForParentNodeUpdate);
+    events.unhandle('onGraphUnderCursorChange', checkForParentNodeUpdate);
     events.unhandle('onMouseMove', updateCurrentlyDraggingAnchorPosition);
     events.unhandle('onMouseMove', updateHoveredNodeAnchorId);
     events.unhandle('onMouseDown', setCurrentlyDraggingAnchor);

@@ -9,7 +9,7 @@ import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasPlugin, GraphAtMousePosition } from '../canvas/types.ts';
+import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
 import { ActiveDragNode, GraphWithNodeDrag } from './types.ts';
 
@@ -62,13 +62,13 @@ export const useNodeDragPlugin = <
 
     events.emit('onNodeDrop', droppedNode);
 
-    const { items } = graph.canvas.graphAtMousePosition;
+    const { items } = graph.canvas.graphUnderCursor;
     const topItem = items.at(-1);
     if (topItem?.id !== droppedNode.id) return;
   };
 
   const drag = (
-    { coords: magicCoords }: DeepReadonly<GraphAtMousePosition>,
+    { coords: magicCoords }: DeepReadonly<GraphUnderCursor>,
     consume: () => void,
   ) => {
     if (!activeDrag.value) return;
@@ -100,7 +100,7 @@ export const useNodeDragPlugin = <
     events.handle('onMouseUp', drop, DRAG_EVENT_ID, {
       before: [ANCHOR_EVENT_ID],
     });
-    events.handle('onGraphCursorUpdate', drag, DRAG_EVENT_ID, {
+    events.handle('onGraphUnderCursorChange', drag, DRAG_EVENT_ID, {
       before: [ANCHOR_EVENT_ID],
     });
     graph.canvas.cursor.graphToCursorMap.value['node'] = 'grab';
@@ -109,7 +109,7 @@ export const useNodeDragPlugin = <
   const deactivate = () => {
     events.unhandle('onMouseDown', beginDrag);
     events.unhandle('onMouseUp', drop);
-    events.unhandle('onGraphCursorUpdate', drag);
+    events.unhandle('onGraphUnderCursorChange', drag);
     graph.canvas.cursor.graphToCursorMap.value['node'] = 'pointer';
     if (activeDrag.value) drop();
   };

@@ -11,36 +11,54 @@ import { GraphCursor } from './cursor/types.ts';
 import { CanvasEventMap } from './events.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
-/**
- * stores info about the last mouse position on the graph
- */
-export type GraphAtMousePosition = {
+export type GraphUnderCursor = {
   /**
-   * coordinates translated to the graph's coordinate system
+   * coordinates of the cursor
    */
   coords: Coordinate;
   /**
-   * the schema items at the coordinates of the mouse
+   * the schema items under the cursor
    */
   items: SchemaItem[];
 };
 
 export type CanvasGraph = {
+  /** @internal */
   magicCanvas: MagicCanvasProps;
+  /**
+   * manages the set of schema items rendered on the canvas.
+   * use `aggregator.transformers` to register custom schema items for your extension.
+   */
   aggregator: AggregatorProps;
+  /**
+   * controls for adding and managing animated shapes on the canvas.
+   */
   shapes: AnimatedShapeControls;
   /**
    * whether the canvas is currently focused in the browser
    */
-  canvasFocused: Ref<boolean>;
+  focused: Ref<boolean>;
   /**
    * whether the canvas is currently hovered by the mouse
    */
-  canvasHovered: ShallowRef<boolean>;
-
-  graphAtMousePosition: DeepReadonly<GraphAtMousePosition>;
-  updateGraphAtMousePosition: () => DeepReadonly<GraphAtMousePosition>;
-
+  hovered: ShallowRef<boolean>;
+  /**
+   * the schema items currently under the cursor and the cursor's canvas coordinates.
+   * updated on mouse move and on any graph mutation that affects what is under the cursor.
+   */
+  graphUnderCursor: DeepReadonly<GraphUnderCursor>;
+  /**
+   * forces an update to `graphUnderCursor` with the latest canvas state,
+   * triggering the `onGraphUnderCursorChange` event.
+   *
+   * ℹ️ use this when your extension renders content outside the graph's built-in APIs
+   * (e.g. custom shapes or overlays) and needs to notify the system that cursor
+   * hit-testing may have changed.
+   */
+  forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
+  /**
+   * tools to customize the style of the cursor
+   */
   cursor: GraphCursor;
 };
 

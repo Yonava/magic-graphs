@@ -12,7 +12,7 @@ import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { Aggregator } from '../../types.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasPlugin, GraphAtMousePosition } from '../canvas/types.ts';
+import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
@@ -137,7 +137,7 @@ export const useMarqueePlugin = <
   };
 
   const setMarqueeBoxDimensions = (
-    { coords }: DeepReadonly<GraphAtMousePosition>,
+    { coords }: DeepReadonly<GraphUnderCursor>,
     consume: () => void,
   ) => {
     if (!marqueeBox.value) return;
@@ -225,7 +225,7 @@ export const useMarqueePlugin = <
 
     // if mouse is held down, resize the marquee box around the cursor position
     events.handle(
-      'onGraphCursorUpdate',
+      'onGraphUnderCursorChange',
       setMarqueeBoxDimensions,
       MARQUEE_EVENT_ID,
       { before: [ANCHOR_EVENT_ID] },

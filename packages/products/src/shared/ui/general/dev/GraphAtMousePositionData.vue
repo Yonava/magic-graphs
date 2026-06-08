@@ -1,17 +1,17 @@
 <script setup lang="ts">
-  import { GraphAtMousePosition } from '@magic/graph/plugins/canvas/types';
+  import { GraphUnderCursor } from '@magic/graph/plugins/canvas/types';
 
   import { computed, ref } from 'vue';
 
   import { nonNullGraph as graph } from '../../../../shared/globalGraph.ts';
   import GText from '../../graph-core/GText.vue';
 
-  const mouseData = ref<GraphAtMousePosition>({
+  const mouseData = ref<GraphUnderCursor>({
     coords: { x: 0, y: 0 },
     items: [],
   });
 
-  graph.value.events.subscribe('onGraphCursorUpdate', (data) => {
+  graph.value.events.subscribe('onGraphUnderCursorChange', (data) => {
     mouseData.value.coords = data.coords;
     mouseData.value.items = [...data.items];
   });

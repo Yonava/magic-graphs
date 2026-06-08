@@ -43,7 +43,7 @@ export const useInteractive = (graph: GraphWithPlugins) => {
   };
 
   const handleEdgeCreation = (fromNode: GNode) => {
-    const { items } = graph.canvas.graphAtMousePosition;
+    const { items } = graph.canvas.graphUnderCursor;
 
     const nodeUnderneathAnchor = items.findLast((i) => i.graphType === 'node');
     if (!nodeUnderneathAnchor) return;

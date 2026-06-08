@@ -9,7 +9,7 @@ import { GraphCursor, GraphTypeToCursor } from './types.ts';
 type GraphCursorProps = {
   subscribe: EventHub<CanvasEventMap>['subscribe'];
   canvas: CanvasGraph['magicCanvas']['canvas'];
-  graphAtMousePosition: CanvasGraph['graphAtMousePosition'];
+  graphAtMousePosition: CanvasGraph['graphUnderCursor'];
 };
 
 /**

@@ -18,7 +18,7 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
-import { GraphAtMousePosition, GraphWithCanvas } from './types.ts';
+import { GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
 export const CANVAS_EVENT_ID = 'canvas';
@@ -44,7 +44,7 @@ export const useCanvasPlugin = <
 
   const canvasFocused = ref(true);
 
-  const graphAtMousePosition: GraphAtMousePosition = {
+  const graphAtMousePosition: GraphUnderCursor = {
     coords: { x: 0, y: 0 },
     items: [],
   };
@@ -60,35 +60,17 @@ export const useCanvasPlugin = <
   });
 
   events.subscribe('onTransactionComplete', (transaction) => {
-    // ensure aggregator has an up to date snapshot of the canvas
-    aggregator.updateAggregator();
-
-    // this ensures that if a handler subscribing to "onGraphCursorUpdate" fires
-    // resulting in a transaction
-    // we ensure that there is a real reason to call updateGraphAtMousePosition before
-    // we go into an infinite loop
-    const oldElements = graphAtMousePosition.items;
-    const newElements = aggregator.getSchemaItemsByCoordinates(
-      graphAtMousePosition.coords,
-    );
-
-    const oldElementIds = oldElements.map((i) => i.id).join('-');
-    const newElementIds = newElements.map((i) => i.id).join('-');
-
-    graphAtMousePosition.items = newElements;
-    if (oldElementIds === newElementIds) return graphAtMousePosition;
-
     if (transaction.updatedEdges.length || transaction.updatedNodes.length) {
       // TODO remove when updates/mutations are removed transactions system
-      // prevents onGraphCursorUpdate spam when handlers subscribe to the
-      // onGraphCursorUpdate event. If this wasn't there, mouse move dom events
+      // prevents onGraphUnderCursorChange spam when handlers subscribe to the
+      // onGraphUnderCursorChange event. If this wasn't there, mouse move dom events
       // would fire off an event, which would trigger the handlers in drag (for example)
       // to fire off a update for the node, then that would land here retriggering the
       // updateGraphAtMousePosition call resulting in duplicate event spam
       return;
     }
 
-    updateGraphAtMousePosition();
+    refreshCursorState();
   });
 
   const cursor = useGraphCursor({
@@ -97,14 +79,15 @@ export const useCanvasPlugin = <
     graphAtMousePosition,
   });
 
-  const updateGraphAtMousePosition = (): DeepReadonly<GraphAtMousePosition> => {
+  const refreshCursorState = (): DeepReadonly<GraphUnderCursor> => {
     const coords = magicCanvas.cursorCoordinates.value;
     graphAtMousePosition.coords = coords;
 
+    aggregator.updateAggregator();
     const newElements = aggregator.getSchemaItemsByCoordinates(coords);
     graphAtMousePosition.items = newElements;
 
-    events.emit('onGraphCursorUpdate', graphAtMousePosition);
+    events.emit('onGraphUnderCursorChange', graphAtMousePosition);
     return graphAtMousePosition;
   };
 
@@ -116,7 +99,7 @@ export const useCanvasPlugin = <
   const mouseEvents = emitMouseEvents(
     graphMouseEvent,
     events.emit,
-    updateGraphAtMousePosition,
+    refreshCursorState,
   );
 
   const keyboardEvents = emitKeyboardEvents(events.emit);
@@ -211,11 +194,11 @@ export const useCanvasPlugin = <
 
       magicCanvas,
 
-      canvasFocused,
-      canvasHovered: useElementHover(magicCanvas.canvas),
+      focused: canvasFocused,
+      hovered: useElementHover(magicCanvas.canvas),
 
-      graphAtMousePosition,
-      updateGraphAtMousePosition,
+      graphUnderCursor: graphAtMousePosition,
+      forceUpdateGraphUnderCursor: refreshCursorState,
 
       cursor,
     },

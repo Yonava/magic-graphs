@@ -1,6 +1,6 @@
 import { ANCHOR_EVENT_ID } from '@magic/graph/plugins/anchors/index';
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
-import { GraphAtMousePosition } from '@magic/graph/plugins/canvas/types';
+import { GraphUnderCursor } from '@magic/graph/plugins/canvas/types';
 import { DRAG_EVENT_ID } from '@magic/graph/plugins/drag/index';
 import { FOCUS_EVENT_ID } from '@magic/graph/plugins/focus/index';
 import { MARQUEE_EVENT_ID } from '@magic/graph/plugins/marquee/index';
@@ -106,7 +106,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
    * mouse is being dragged
    */
   const drawLine = (
-    { coords }: DeepReadonly<GraphAtMousePosition>,
+    { coords }: DeepReadonly<GraphUnderCursor>,
     consume: () => void,
   ) => {
     consume();
@@ -200,11 +200,11 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
   const addScribblesToAggregator = (aggregator: Aggregator) => {
     if (!isActive.value) return aggregator;
 
-    if (isErasing.value && graph.canvas.canvasHovered.value) {
+    if (isErasing.value && graph.canvas.hovered.value) {
       const eraserId = 'annotation-eraser-cursor';
       const eraserCursor = graph.canvas.shapes.shapes.circle({
         id: eraserId,
-        at: graph.canvas.graphAtMousePosition.coords,
+        at: graph.canvas.graphUnderCursor.coords,
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
@@ -235,11 +235,11 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
         shape: incompleteScribble,
         priority: 5001,
       });
-    } else if (isLaserPointing.value && graph.canvas.canvasHovered.value) {
+    } else if (isLaserPointing.value && graph.canvas.hovered.value) {
       const laserPointerCursorId = 'laser-pointer-cursor';
       const laserPointerCursor = graph.canvas.shapes.shapes.circle({
         id: laserPointerCursorId,
-        at: graph.canvas.graphAtMousePosition.coords,
+        at: graph.canvas.graphUnderCursor.coords,
         radius: selectedBrushWeight.value,
         fillColor: selectedColor.value,
       });
@@ -286,7 +286,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
       PRIORITY,
     );
     graph.events.handle(
-      'onGraphCursorUpdate',
+      'onGraphUnderCursorChange',
       drawLine,
       ANNOTATION_EVENT_ID,
       PRIORITY,
@@ -310,7 +310,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
     canvas.style.cursor = 'default';
 
     graph.events.unhandle('onMouseDown', startDrawing);
-    graph.events.unhandle('onGraphCursorUpdate', drawLine);
+    graph.events.unhandle('onGraphUnderCursorChange', drawLine);
     graph.events.unhandle('onMouseUp', stopDrawing);
   };
 
