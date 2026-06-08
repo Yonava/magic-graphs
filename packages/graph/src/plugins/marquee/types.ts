@@ -2,6 +2,7 @@ import { ComputedRef } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
+import { GraphPlugin } from '../../types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { FocusPlugin, FocusTransactionWrapperOptions } from '../focus/types.ts';
 import { MarqueeEventMap } from './events.ts';
@@ -22,7 +23,7 @@ export type MarqueePlugin = {
   /**
    * history plugin controls
    */
-  marquee: MarqueeGraph;
+  marquee: GraphPlugin<MarqueeGraph>;
 };
 
 export type GraphWithMarquee<

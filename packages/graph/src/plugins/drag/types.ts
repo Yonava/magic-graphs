@@ -4,7 +4,7 @@ import { ComputedRef } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
-import { GNode } from '../../types.ts';
+import { GNode, GraphPlugin } from '../../types.ts';
 import { NodeDragEventMap } from './events.ts';
 
 type NodeDragGraph = {
@@ -26,7 +26,7 @@ export type NodeDragPlugin = {
   /**
    * graph node drag plugin controls
    */
-  nodeDrag: NodeDragGraph;
+  nodeDrag: GraphPlugin<NodeDragGraph>;
 };
 
 export type GraphWithNodeDrag<

@@ -1,29 +1,10 @@
-import type { DefineTimeline } from '@magic/shapes/animation/timeline/define';
 import { Fraction } from 'mathjs';
-import type { DeepPartial } from 'ts-essentials';
 
-import type { GraphAnimations } from '../base/animations.ts';
-import {
-  DEFAULT_NODE_ANCHOR_SETTINGS,
-  NodeAnchorGraphSettings,
-} from '../plugins/anchors/settings.ts';
-import {
-  DEFAULT_DRAGGABLE_SETTINGS,
-  DraggableGraphSettings,
-} from '../plugins/drag/settings.ts';
-import {
-  DEFAULT_FOCUS_SETTINGS,
-  FocusGraphSettings,
-} from '../plugins/focus/settings.ts';
 import {
   DEFAULT_LOCAL_STORAGE_SETTINGS,
   LocalStorageGraphSettings,
 } from '../plugins/localStorage/settings.ts';
-import {
-  DEFAULT_MARQUEE_SETTINGS,
-  MarqueeGraphSettings,
-} from '../plugins/marquee/settings.ts';
-import type { GEdge, GNode, SchemaItem } from '../types.ts';
+import type { GEdge, GNode } from '../types.ts';
 
 /**
  * BASE GRAPH SETTINGS
@@ -187,10 +168,6 @@ export const DEFAULT_SHORTCUT_SETTINGS: ShortcutGraphSettings = {
  * represents all settings on a graph instance
  */
 export type GraphSettings = BaseGraphSettings &
-  FocusGraphSettings &
-  DraggableGraphSettings &
-  NodeAnchorGraphSettings &
-  MarqueeGraphSettings &
   InteractiveGraphSettings &
   LocalStorageGraphSettings &
   ShortcutGraphSettings;
@@ -200,10 +177,6 @@ export type GraphSettings = BaseGraphSettings &
  */
 export const DEFAULT_GRAPH_SETTINGS = {
   ...DEFAULT_BASE_SETTINGS,
-  ...DEFAULT_FOCUS_SETTINGS,
-  ...DEFAULT_DRAGGABLE_SETTINGS,
-  ...DEFAULT_NODE_ANCHOR_SETTINGS,
-  ...DEFAULT_MARQUEE_SETTINGS,
   ...DEFAULT_INTERACTIVE_SETTINGS,
   ...DEFAULT_LOCAL_STORAGE_SETTINGS,
   ...DEFAULT_SHORTCUT_SETTINGS,

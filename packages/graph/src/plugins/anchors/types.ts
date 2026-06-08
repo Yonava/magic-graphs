@@ -2,7 +2,7 @@ import { Ref } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
-import { GNode } from '../../types.ts';
+import { GNode, GraphPlugin } from '../../types.ts';
 import { NodeAnchorEventMap } from './events.ts';
 
 /**
@@ -48,7 +48,7 @@ export type NodeAnchorPlugin = {
   /**
    * graph node anchor plugin controls
    */
-  nodeAnchor: NodeAnchorGraph;
+  nodeAnchor: GraphPlugin<NodeAnchorGraph>;
 };
 
 export type GraphWithNodeAnchor<

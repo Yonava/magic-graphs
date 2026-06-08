@@ -3,7 +3,7 @@ import { ComputedRef, Ref } from 'vue';
 import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import { ValidGraphThemePath } from '../../themes/types.ts';
-import { GEdge, GNode } from '../../types.ts';
+import { GEdge, GNode, GraphPlugin } from '../../types.ts';
 import { CanvasEventMap } from '../canvas/events.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';
@@ -86,7 +86,7 @@ export type FocusPlugin = {
   /**
    * graph focus plugin controls
    */
-  focus: FocusGraph;
+  focus: GraphPlugin<FocusGraph>;
 };
 
 export type GraphWithFocus<

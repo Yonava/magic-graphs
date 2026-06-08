@@ -70,8 +70,6 @@ export const useNodeAnchorPlugin = <
   };
 
   const setParentNode = (nodeId: GNode['id']) => {
-    if (graph.settings.value.nodeAnchors === false) return;
-
     const node = graph.getNode(nodeId);
 
     if (!node) throw new Error('node not found');
@@ -415,8 +413,6 @@ export const useNodeAnchorPlugin = <
   const deactivate = () => {
     events.unhandle('onNodeRemoved', clearAnchorStateIfParentRemoved);
     events.unhandle('onNodeUpdated', clearAnchorStateOnNodeMove);
-    // TODO replace with core/base discrete node position change API
-    // events.unhandle('onNodeDrop', updateNodeAnchors);
     events.unhandle('onGraphUnderCursorChange', checkForParentNodeUpdate);
     events.unhandle('onMouseMove', updateCurrentlyDraggingAnchorPosition);
     events.unhandle('onMouseMove', updateHoveredNodeAnchorId);
@@ -425,28 +421,16 @@ export const useNodeAnchorPlugin = <
     clearAnchorState();
   };
 
-  events.subscribe('onSettingsChange', (diff) => {
-    if (diff.nodeAnchors === true) activate();
-    else if (diff.nodeAnchors === false) deactivate();
-  });
-
-  if (graph.settings.value.nodeAnchors) activate();
+  activate();
 
   return {
     ...graph,
     events,
     nodeAnchor: {
-      /**
-       * the node anchor that is currently being dragged by the user
-       */
+      activate,
+      deactivate,
       currentDraggingAnchor: readonly(currentDraggingAnchor),
-      /**
-       * the parent node of the active anchor
-       */
       parentNode: readonly(parentNode),
-      /**
-       * set the parent node and spawn anchors around it
-       */
       setParentNode,
       clearAnchorState,
     },

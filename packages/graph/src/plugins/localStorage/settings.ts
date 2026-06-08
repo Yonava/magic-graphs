@@ -2,11 +2,6 @@ import { GEdge, GNode } from '../../types.ts';
 
 export type LocalStorageGraphSettings = {
   /**
-   * whether the nodes and edges of the graph will be saved in {@link localStorage | local storage}
-   * @default true
-   */
-  localStorage: boolean;
-  /**
    * the key used for saving the graph in {@link localStorage | local storage}
    * @default "graph"
    */
@@ -19,7 +14,6 @@ export type LocalStorageGraphSettings = {
 };
 
 export const DEFAULT_LOCAL_STORAGE_SETTINGS: LocalStorageGraphSettings = {
-  localStorage: true,
   localStorageKey: 'graph',
   localStorageBlacklist: new Set(),
 };
