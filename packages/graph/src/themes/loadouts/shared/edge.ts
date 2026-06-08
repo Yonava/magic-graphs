@@ -1,4 +1,4 @@
-import { getLargestAngularSpace } from '@magic/shapes/helpers';
+import { getLargestAngularSpaceBisector } from '@magic/shapes/helpers';
 import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
 
@@ -83,7 +83,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     edgeEnd.y += Math.sin(angle + Math.PI / 2) * bidirectionalEdgeSpacing;
   }
 
-  const largestAngularSpace = getLargestAngularSpace(
+  const largestAngularSpaceBisector = getLargestAngularSpaceBisector(
     edgeStart,
     /**
      * 1. Filter to remove self-referencing edge
@@ -94,12 +94,12 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
     graph.edges.value
       .filter(
         (e) =>
-          (e.source === fromNode.id || e.target === toNode.id) &&
-          e.source !== e.target,
+          (e.target === fromNode.id || e.source === toNode.id) &&
+          e.target !== e.source,
       )
       .map((e) => {
         const { fromNode, toNode } = getConnectedNodes(graph)(e.id);
-        return fromNode.id === fromNode.id ? toNode : fromNode;
+        return e.target === fromNode.id ? toNode : fromNode;
       })
       .filter(
         (point, index, self) =>
@@ -135,7 +135,7 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
       at: { x: fromNode.x, y: fromNode.y },
       upDistance,
       downDistance,
-      rotation: largestAngularSpace,
+      rotation: largestAngularSpaceBisector,
       lineWidth: styles.width,
       fillColor: styles.color,
       textArea,

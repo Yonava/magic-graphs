@@ -1,9 +1,9 @@
-import { useNodeColor } from '@magic/graph/themes/helpers/useNodeColor';
-import { useNodeLabel } from '@magic/graph/themes/helpers/useNodeLabel';
 import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 
+import { useNodeColor } from '../../shared/graph-theme-helpers/useNodeColor.ts';
+import { useNodeLabel } from '../../shared/graph-theme-helpers/useNodeLabel.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { TreeControls } from '../useTree.ts';
 import { numberToColor } from './numberToColor.ts';
 

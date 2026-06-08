@@ -10,7 +10,7 @@
     }
   },
   "scripts": {
-    "build:types": "tsc -b tsconfig.json"
+    "build:types": "vue-tsc -b tsconfig.json"
   },
   "peerDependencies": {
     "vue": "^3.5.18"

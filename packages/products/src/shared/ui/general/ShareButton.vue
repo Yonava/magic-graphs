@@ -1,8 +1,4 @@
 <script setup lang="ts">
-  import {
-    encodeCompressedTransitData,
-    getTransitData,
-  } from '@magic/graph/transit';
   import CIcon from '@magic/ui/core/Icon.vue';
   import { compressToEncodedURIComponent } from 'lz-string';
   import { useToast } from 'primevue/usetoast';

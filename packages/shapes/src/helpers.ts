@@ -70,13 +70,13 @@ export const getAngle = (point1: Coordinate, point2: Coordinate) => {
 };
 
 /**
- * calculates the midpoint of the largest angular between a center point and a list of points
+ * calculates the midpoint of the largest angle between a center point and a list of points
  *
  * @param center - the center point
  * @param points - the list of points
  * @returns the midpoint of the largest angular space
  */
-export const getLargestAngularSpace = (
+export const getLargestAngularSpaceBisector = (
   center: Coordinate,
   points: Coordinate[],
 ) => {

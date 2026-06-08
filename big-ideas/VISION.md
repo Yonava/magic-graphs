@@ -1,7 +1,5 @@
 # Magic Graphs: Vision & Plan
 
-_Written June 2026. A record of the strategy._
-
 ---
 
 ## What Is Magic Graphs
