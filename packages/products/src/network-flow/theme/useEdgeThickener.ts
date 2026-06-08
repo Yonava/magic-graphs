@@ -1,9 +1,7 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GEdge } from '@magic/graph/types';
+
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
-import { onUnmounted } from 'vue';
-
 import { FLOW_USETHEME_ID } from '../constants.ts';
 
 const MIN_THICKNESS = 5;
@@ -33,8 +31,6 @@ export const useEdgeThickener = (graph: Graph, themeId = FLOW_USETHEME_ID) => {
 
   const activate = () => setTheme('edge.base.width', thickener);
   const deactivate = () => removeTheme('edge.base.width');
-
-  onUnmounted(deactivate);
 
   return {
     activate,
