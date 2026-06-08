@@ -1,4 +1,4 @@
-import { AnyFunction } from 'ts-essentials';
+import type { AnyFunction } from 'ts-essentials';
 
 import { CORE_EVENT_ID } from '../base/index.ts';
 import { ANCHOR_EVENT_ID } from '../plugins/anchors/index.ts';
@@ -12,7 +12,7 @@ import { GenericEventMap } from './types.ts';
 
 export type HandlerPriority = {
   /** all registered handlers that we you want to yield to */
-  before: HandlerId[];
+  before: readonly HandlerId[];
 };
 
 export type HandlerId =

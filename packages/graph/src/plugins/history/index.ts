@@ -18,10 +18,7 @@ export const useHistoryPlugin = <
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithHistory<TransactionWrapperOptions, EventMap, Plugins> => {
   const historyRegistry = createHistoryEventRegistry();
-  const historyHub: EventHub<HistoryEventMap> = createEventHub(
-    historyRegistry,
-    HISTORY_EVENT_ID,
-  );
+  const historyHub: EventHub<HistoryEventMap> = createEventHub(historyRegistry);
   const events = mergeEventHubs(
     historyHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events

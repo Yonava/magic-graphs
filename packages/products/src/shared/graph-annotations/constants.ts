@@ -26,4 +26,4 @@ export const ANNOTATION_EVENT_ID = 'product/annotation';
 
 export const PRIORITY = {
   before: [MARQUEE_EVENT_ID, DRAG_EVENT_ID, ANCHOR_EVENT_ID, FOCUS_EVENT_ID],
-};
+} as const;
