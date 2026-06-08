@@ -5,7 +5,8 @@
   "private": true,
   "exports": {
     "./*": {
-      "types": "./dist/types/*.d.ts"
+      "types": "./dist/types/*.d.ts",
+      "default": "./src/*.ts"
     }
   },
   "scripts": {
