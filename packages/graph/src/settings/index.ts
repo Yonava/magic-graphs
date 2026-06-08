@@ -1,10 +1,6 @@
 import { Fraction } from 'mathjs';
 
 import {
-  DEFAULT_FOCUS_SETTINGS,
-  FocusGraphSettings,
-} from '../plugins/focus/settings.ts';
-import {
   DEFAULT_LOCAL_STORAGE_SETTINGS,
   LocalStorageGraphSettings,
 } from '../plugins/localStorage/settings.ts';
@@ -176,7 +172,6 @@ export const DEFAULT_SHORTCUT_SETTINGS: ShortcutGraphSettings = {
  * represents all settings on a graph instance
  */
 export type GraphSettings = BaseGraphSettings &
-  FocusGraphSettings &
   MarqueeGraphSettings &
   InteractiveGraphSettings &
   LocalStorageGraphSettings &
@@ -187,7 +182,6 @@ export type GraphSettings = BaseGraphSettings &
  */
 export const DEFAULT_GRAPH_SETTINGS = {
   ...DEFAULT_BASE_SETTINGS,
-  ...DEFAULT_FOCUS_SETTINGS,
   ...DEFAULT_MARQUEE_SETTINGS,
   ...DEFAULT_INTERACTIVE_SETTINGS,
   ...DEFAULT_LOCAL_STORAGE_SETTINGS,

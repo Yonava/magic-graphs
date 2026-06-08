@@ -234,15 +234,7 @@ export const useFocusPlugin = <
     clearFocus();
   };
 
-  events.subscribe('onSettingsChange', (diff) => {
-    if (diff.focusable === false) {
-      deactivate();
-    } else if (diff.focusable === true) {
-      activate();
-    }
-  });
-
-  if (graph.settings.value.focusable) activate();
+  activate();
 
   const upstreamActions = graph.actions as InternalActions;
   const extendedActions: Partial<InternalActions> = {
@@ -282,6 +274,8 @@ export const useFocusPlugin = <
       Plugins
     >['actions'],
     focus: {
+      activate,
+      deactivate,
       set: setFocus,
       clear: clearFocus,
       add: addToFocus,
