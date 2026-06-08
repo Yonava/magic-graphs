@@ -98,3 +98,15 @@ export type SchemaItem = {
    */
   shape: Shape;
 };
+
+export type GraphPlugin<PluginInterface extends Record<string, unknown>> =
+  PluginInterface & {
+    /**
+     * enable plugin
+     */
+    activate: () => void;
+    /**
+     * disable plugin
+     */
+    deactivate: () => void;
+  };

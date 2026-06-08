@@ -114,18 +114,12 @@ export const useNodeDragPlugin = <
     if (activeDrag.value) drop();
   };
 
-  events.subscribe('onSettingsChange', (diff) => {
-    if (diff.draggable === false) deactivate();
-    else if (diff.draggable === true) activate();
-  });
-
-  if (graph.settings.value.draggable) activate();
-  if (!graph.settings.value.draggable) deactivate();
-
   return {
     ...graph,
     events,
     nodeDrag: {
+      activate,
+      deactivate,
       currentlyDraggingNode: computed(() => {
         return activeDrag.value
           ? graph.getNode(activeDrag.value.nodeId)

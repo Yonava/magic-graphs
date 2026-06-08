@@ -1,16 +1,9 @@
-import type { DefineTimeline } from '@magic/shapes/animation/timeline/define';
 import { Fraction } from 'mathjs';
-import type { DeepPartial } from 'ts-essentials';
 
-import type { GraphAnimations } from '../base/animations.ts';
 import {
   DEFAULT_NODE_ANCHOR_SETTINGS,
   NodeAnchorGraphSettings,
 } from '../plugins/anchors/settings.ts';
-import {
-  DEFAULT_DRAGGABLE_SETTINGS,
-  DraggableGraphSettings,
-} from '../plugins/drag/settings.ts';
 import {
   DEFAULT_FOCUS_SETTINGS,
   FocusGraphSettings,
@@ -188,7 +181,6 @@ export const DEFAULT_SHORTCUT_SETTINGS: ShortcutGraphSettings = {
  */
 export type GraphSettings = BaseGraphSettings &
   FocusGraphSettings &
-  DraggableGraphSettings &
   NodeAnchorGraphSettings &
   MarqueeGraphSettings &
   InteractiveGraphSettings &
@@ -201,7 +193,6 @@ export type GraphSettings = BaseGraphSettings &
 export const DEFAULT_GRAPH_SETTINGS = {
   ...DEFAULT_BASE_SETTINGS,
   ...DEFAULT_FOCUS_SETTINGS,
-  ...DEFAULT_DRAGGABLE_SETTINGS,
   ...DEFAULT_NODE_ANCHOR_SETTINGS,
   ...DEFAULT_MARQUEE_SETTINGS,
   ...DEFAULT_INTERACTIVE_SETTINGS,
