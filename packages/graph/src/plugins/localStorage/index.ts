@@ -97,14 +97,12 @@ export const useLocalStoragePlugin = <
     graph.events.subscribe('onTransactionComplete', save);
   });
 
-  if (graph.settings.value.localStorage) {
-    graph.events.subscribe('onTransactionComplete', save);
-  }
+  graph.events.subscribe('onTransactionComplete', save);
 
   return {
     ...graph,
     localStorage: {
-      save: save,
+      save,
     },
   };
 };
