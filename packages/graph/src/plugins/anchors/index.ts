@@ -383,7 +383,9 @@ export const useNodeAnchorPlugin = <
     events.handle('onNodeUpdated', clearAnchorStateOnNodeMove, ANCHOR_EVENT_ID);
 
     // for when the user is mousing over the canvas. checks if a node is under the cursor
-    // to set the anchors on
+    // to set the anchors on. onGraphCursorUpdate because onMouseMove doesn't capture
+    // the cases where the canvas state changes under the cursor while the cursor is
+    // stationary, ie node being added via double click
     events.handle(
       'onGraphCursorUpdate',
       checkForParentNodeUpdate,

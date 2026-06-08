@@ -59,7 +59,7 @@ export const useCanvasPlugin = <
     canvasFocused.value = true;
   });
 
-  events.subscribe('onTransactionComplete', () => {
+  events.subscribe('onTransactionComplete', (transaction) => {
     // ensure aggregator has an up to date snapshot of the canvas
     aggregator.updateAggregator();
 
@@ -78,6 +78,16 @@ export const useCanvasPlugin = <
     graphAtMousePosition.items = newElements;
     if (oldElementIds === newElementIds) return graphAtMousePosition;
 
+    if (transaction.updatedEdges.length || transaction.updatedNodes.length) {
+      // TODO remove when updates/mutations are removed transactions system
+      // prevents onGraphCursorUpdate spam when handlers subscribe to the
+      // onGraphCursorUpdate event. If this wasn't there, mouse move dom events
+      // would fire off an event, which would trigger the handlers in drag (for example)
+      // to fire off a update for the node, then that would land here retriggering the
+      // updateGraphAtMousePosition call resulting in duplicate event spam
+      return;
+    }
+
     updateGraphAtMousePosition();
   });
 
@@ -89,10 +99,9 @@ export const useCanvasPlugin = <
 
   const updateGraphAtMousePosition = (): DeepReadonly<GraphAtMousePosition> => {
     const coords = magicCanvas.cursorCoordinates.value;
-    const roundedCoords = { x: Math.round(coords.x), y: Math.round(coords.y) };
-    graphAtMousePosition.coords = roundedCoords;
+    graphAtMousePosition.coords = coords;
 
-    const newElements = aggregator.getSchemaItemsByCoordinates(roundedCoords);
+    const newElements = aggregator.getSchemaItemsByCoordinates(coords);
     graphAtMousePosition.items = newElements;
 
     events.emit('onGraphCursorUpdate', graphAtMousePosition);

@@ -80,15 +80,17 @@ export const useNodeDragPlugin = <
     const dx = magicCoords.x - coords.x;
     const dy = magicCoords.y - coords.y;
 
+    const x = node.x + dx;
+    const y = node.y + dy;
+    if (!dx && !dy) return;
+    const newCoords = { x, y };
+
     graph.actions.updateNode({
       id: nodeId,
-      values: {
-        x: node.x + dx,
-        y: node.y + dy,
-      },
+      values: newCoords,
     });
 
-    activeDrag.value.coords = magicCoords;
+    activeDrag.value.coords = newCoords;
   };
 
   const activate = () => {
@@ -107,7 +109,7 @@ export const useNodeDragPlugin = <
   const deactivate = () => {
     events.unhandle('onMouseDown', beginDrag);
     events.unhandle('onMouseUp', drop);
-    events.unhandle('onMouseMove', drag);
+    events.unhandle('onGraphCursorUpdate', drag);
     graph.canvas.cursor.graphToCursorMap.value['node'] = 'pointer';
     if (activeDrag.value) drop();
   };
