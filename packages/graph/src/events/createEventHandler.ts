@@ -12,10 +12,10 @@ import { GenericEventMap } from './types.ts';
 
 export type HandlerPriority = {
   /** all registered handlers that we you want to yield to */
-  before: string[];
+  before: HandlerId[];
 };
 
-type HandlerId =
+export type HandlerId =
   | typeof CANVAS_EVENT_ID
   | typeof ANCHOR_EVENT_ID
   | typeof DRAG_EVENT_ID
