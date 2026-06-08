@@ -7,14 +7,14 @@ type TestEventMap = {
   onHover: () => void;
 };
 
-const HANDLER_ID = 'hub' as HandlerId;
+const TEST_HANDLER_ID = 'hub' as HandlerId;
 
 describe(createEventHandler, () => {
   describe('handle', () => {
     it('invokes a registered handler when fireHandlers is called', () => {
       const { handle, fireHandlers } = createEventHandler<TestEventMap>();
       const cb = vi.fn();
-      handle('onClick', cb, HANDLER_ID);
+      handle('onClick', cb, TEST_HANDLER_ID);
       fireHandlers('onClick', 42);
       expect(cb).toHaveBeenCalledExactlyOnceWith(42, expect.any(Function));
     });
@@ -22,7 +22,7 @@ describe(createEventHandler, () => {
     it('does not invoke handlers for other events', () => {
       const { handle, fireHandlers } = createEventHandler<TestEventMap>();
       const cb = vi.fn();
-      handle('onHover', cb, HANDLER_ID);
+      handle('onHover', cb, TEST_HANDLER_ID);
       fireHandlers('onClick', 1);
       expect(cb).not.toHaveBeenCalled();
     });
@@ -46,7 +46,7 @@ describe(createEventHandler, () => {
       const { handle, unhandle, fireHandlers } =
         createEventHandler<TestEventMap>();
       const cb = vi.fn();
-      handle('onClick', cb, HANDLER_ID);
+      handle('onClick', cb, TEST_HANDLER_ID);
       unhandle('onClick', cb);
       fireHandlers('onClick', 1);
       expect(cb).not.toHaveBeenCalled();
@@ -57,8 +57,8 @@ describe(createEventHandler, () => {
         createEventHandler<TestEventMap>();
       const cb1 = vi.fn();
       const cb2 = vi.fn();
-      handle('onClick', cb1, HANDLER_ID);
-      handle('onClick', cb2, HANDLER_ID);
+      handle('onClick', cb1, TEST_HANDLER_ID);
+      handle('onClick', cb2, TEST_HANDLER_ID);
       unhandle('onClick', cb1);
       fireHandlers('onClick', 1);
       expect(cb1).not.toHaveBeenCalled();

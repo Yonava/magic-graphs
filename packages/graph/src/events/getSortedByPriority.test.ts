@@ -1,15 +1,16 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { HandlerId } from './createEventHandler.ts';
 import { getSortedByPriority } from './getSortedByPriority.ts';
 
-const item = (id: string, before: string[] = []) => ({
+const item = (id: string, before: HandlerId[] = []) => ({
   id,
   priority: { before },
 });
 
 describe(getSortedByPriority, () => {
   it('returns a new array without mutating the input', () => {
-    const input = [item('b', ['a']), item('a')];
+    const input = [item('b', ['a' as HandlerId]), item('a')];
     const original = [...input];
     const result = getSortedByPriority(input);
     expect(input).toEqual(original);
@@ -26,12 +27,16 @@ describe(getSortedByPriority, () => {
   });
 
   it('places an item before the one it declares in before', () => {
-    const input = [item('b'), item('a', ['b'])];
+    const input = [item('b'), item('a', ['b' as HandlerId])];
     expect(getSortedByPriority(input).map((i) => i.id)).toEqual(['a', 'b']);
   });
 
   it('handles a chain: a before b before c', () => {
-    const input = [item('c'), item('b', ['c']), item('a', ['b'])];
+    const input = [
+      item('c'),
+      item('b', ['c' as HandlerId]),
+      item('a', ['b' as HandlerId]),
+    ];
     expect(getSortedByPriority(input).map((i) => i.id)).toEqual([
       'a',
       'b',
@@ -56,7 +61,11 @@ describe(getSortedByPriority, () => {
   });
 
   it('handles multiple before targets', () => {
-    const input = [item('b'), item('c'), item('a', ['b', 'c'])];
+    const input = [
+      item('b'),
+      item('c'),
+      item('a', ['b' as HandlerId, 'c' as HandlerId]),
+    ];
     const result = getSortedByPriority(input).map((i) => i.id);
     expect(result.indexOf('a')).toBeLessThan(result.indexOf('b'));
     expect(result.indexOf('a')).toBeLessThan(result.indexOf('c'));
@@ -64,7 +73,10 @@ describe(getSortedByPriority, () => {
 
   it('appends items involved in a cycle without throwing and warns', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    const input = [item('a', ['b']), item('b', ['a'])];
+    const input = [
+      item('a', ['b' as HandlerId]),
+      item('b', ['a' as HandlerId]),
+    ];
     const result = getSortedByPriority(input);
     expect(result).toHaveLength(2);
     expect(warnSpy).toHaveBeenCalledOnce();
