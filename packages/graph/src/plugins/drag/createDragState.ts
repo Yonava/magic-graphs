@@ -37,11 +37,6 @@ export const createDragState = <TData extends object>(
     activeDrag.x = newCoords.x;
     activeDrag.y = newCoords.y;
 
-    if ('x' in activeDrag.data && 'y' in activeDrag.data) {
-      activeDrag.data.x = currentPos.x + dx;
-      activeDrag.data.y = currentPos.y + dy;
-    }
-
     return {
       x: currentPos.x + dx,
       y: currentPos.y + dy,

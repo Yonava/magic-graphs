@@ -10,9 +10,14 @@ export const createAnchorDragState = () => {
     ...dragState,
     applyMove: (newCoords: Coordinate) => {
       const data = dragState.applyMove(newCoords);
-      const nodeAnchor = dragState._internals.activeDrag?.data;
-      if (!data || !nodeAnchor) return;
+      if (!data) return;
+      const nodeAnchor = nullThrows(
+        dragState.getDragState()?.data,
+        'data is defined so activeDrag must be populated',
+      );
+      // @ts-expect-error circumnavigate readonly restriction
       nodeAnchor.x = data.x;
+      // @ts-expect-error circumnavigate readonly restriction
       nodeAnchor.y = data.y;
     },
   };
