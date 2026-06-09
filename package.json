@@ -9,8 +9,8 @@
     "dev": "concurrently -c auto command 'pnpm:dev-*'",
     "dev-client": "pnpm --filter client dev",
     "dev-server": "pnpm --filter server dev",
-    "clean:nuke": "pnpm store prune && pnpm i && rimraf node_modules pnpm-lock.yaml packages/*/dist && pnpm install && vue-tsc -b tsconfig.json && pnpm build",
     "build:types": "vue-tsc -b tsconfig.json",
+    "clean:nuke": "rm -rf node_modules pnpm-lock.yaml packages/*/dist && pnpm i && pnpm build:types",
     "build:types:force": "vue-tsc -b tsconfig.json --clean && vue-tsc -b tsconfig.json",
     "simulate:prod": "rimraf node_modules packages/*/dist && pnpm install && pnpm build:types && pnpm --filter client build-only && pnpm --filter server start"
   },
