@@ -16,6 +16,7 @@ import type {
 import type { GNode, SchemaItem } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
+import { createAnchorDragState } from './createAnchorDragState.ts';
 import { NodeAnchorEventMap, createNodeAnchorEventRegistry } from './events.ts';
 
 export const ANCHOR_EVENT_ID = 'anchors';
@@ -49,16 +50,14 @@ export const useNodeAnchorPlugin = <
    * The node which anchors actively orbit around
    */
   const parentNode = ref<GNode>();
-  /**
-   * The anchor that is currently being dragged.
-   */
-  const currentDraggingAnchor = ref<NodeAnchor>();
+
+  const anchorDragState = createAnchorDragState();
 
   const hoveredNodeAnchorId = ref<NodeAnchor['id']>();
 
   const clearAnchorState = () => {
     parentNode.value = undefined;
-    currentDraggingAnchor.value = undefined;
+    anchorDragState.stopDrag();
     hoveredNodeAnchorId.value = undefined;
   };
 
@@ -97,8 +96,9 @@ export const useNodeAnchorPlugin = <
     for (const anchor of nodeAnchors.value) {
       const { x, y, id } = anchor;
 
+      const draggedAnchor = anchorDragState.getDragState()?.data;
       const isAnchorHovered = id === hoveredNodeAnchorId.value;
-      const isAnchorDragged = id === currentDraggingAnchor.value?.id;
+      const isAnchorDragged = id === draggedAnchor?.id;
 
       // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
       const isNodeFocused = graph.focus.isFocused(node.id);
@@ -111,18 +111,15 @@ export const useNodeAnchorPlugin = <
         fillColor: isFocused ? focusColor : color,
       };
 
-      if (
-        currentDraggingAnchor.value &&
-        currentDraggingAnchor.value.direction === anchor.direction
-      ) {
-        nodeAnchorSchema.at.x = currentDraggingAnchor.value.x;
-        nodeAnchorSchema.at.y = currentDraggingAnchor.value.y;
+      if (draggedAnchor && draggedAnchor.direction === anchor.direction) {
+        nodeAnchorSchema.at.x = draggedAnchor.x;
+        nodeAnchorSchema.at.y = draggedAnchor.y;
       }
 
       const nodeAnchorShape =
         graph.canvas.shapes.shapes.circle(nodeAnchorSchema);
 
-      const beingDragged = anchor.id === currentDraggingAnchor.value?.id;
+      const beingDragged = anchor.id === draggedAnchor?.id;
       anchorSchemas.push({
         id: anchor.id,
         graphType: 'node-anchor',
@@ -210,8 +207,9 @@ export const useNodeAnchorPlugin = <
   };
 
   const getUnprioritizedLinkPreviewSchema = () => {
-    if (!parentNode.value || !currentDraggingAnchor.value) return;
-    const { x, y } = currentDraggingAnchor.value;
+    const draggedAnchor = anchorDragState.getDragState()?.data;
+    if (!parentNode.value || !draggedAnchor) return;
+    const { x, y } = draggedAnchor;
     const start = { x: parentNode.value.x, y: parentNode.value.y };
     const end = { x, y };
     const { getTheme } = graph;
@@ -222,13 +220,13 @@ export const useNodeAnchorPlugin = <
     const baseColor = getTheme(
       'nodeAnchor.base.linkPreviewColor',
       parentNode.value,
-      currentDraggingAnchor.value,
+      draggedAnchor,
     );
 
     const focusColor = getTheme(
       'nodeAnchor.focus.linkPreviewColor',
       parentNode.value,
-      currentDraggingAnchor.value,
+      draggedAnchor,
     );
 
     const color = isFocused ? focusColor : baseColor;
@@ -236,13 +234,13 @@ export const useNodeAnchorPlugin = <
     const baseWidth = getTheme(
       'nodeAnchor.base.linkPreviewWidth',
       parentNode.value,
-      currentDraggingAnchor.value,
+      draggedAnchor,
     );
 
     const focusWidth = getTheme(
       'nodeAnchor.focus.linkPreviewWidth',
       parentNode.value,
-      currentDraggingAnchor.value,
+      draggedAnchor,
     );
 
     const width = isFocused ? focusWidth : baseWidth;
@@ -268,7 +266,8 @@ export const useNodeAnchorPlugin = <
    * checks if the users' cursor is hovering directly above a node, if so, sets it as parent
    */
   const checkForParentNodeUpdate = () => {
-    if (currentDraggingAnchor.value) return;
+    const draggedAnchor = anchorDragState.getDragState()?.data;
+    if (draggedAnchor) return;
 
     const { items } = graph.canvas.graphUnderCursor;
     const topItem = items.at(-1);
@@ -299,31 +298,23 @@ export const useNodeAnchorPlugin = <
      */
     const anchor = getAnchor(ev);
     if (!anchor) return;
-    currentDraggingAnchor.value = anchor;
+    anchorDragState.startDrag(ev.coords, anchor);
     events.emit('onNodeAnchorDragStart', parentNode.value, anchor);
   };
 
   const updateCurrentlyDraggingAnchorPosition = ({
     coords,
-  }: CanvasGraphMouseEvent) => {
-    if (!currentDraggingAnchor.value) return;
-    const { x, y } = coords;
-    currentDraggingAnchor.value.x = x;
-    currentDraggingAnchor.value.y = y;
-  };
+  }: CanvasGraphMouseEvent) => anchorDragState.applyMove(coords);
 
   /**
    * drops the active anchor and triggers onNodeAnchorDrop event
    */
   const dropAnchor = () => {
-    if (!currentDraggingAnchor.value) return;
+    const draggedAnchor = anchorDragState.getDragState()?.data;
+    if (!draggedAnchor) return;
     else if (!parentNode.value)
       throw new Error('active anchor without parent node');
-    events.emit(
-      'onNodeAnchorDrop',
-      parentNode.value,
-      currentDraggingAnchor.value,
-    );
+    events.emit('onNodeAnchorDrop', parentNode.value, draggedAnchor);
     clearAnchorState();
 
     // when we clear the node anchors, we must ensure that the
@@ -344,7 +335,8 @@ export const useNodeAnchorPlugin = <
   };
 
   const insertLinkPreviewIntoAggregator = (aggregator: SchemaItem[]) => {
-    if (!parentNode.value || !currentDraggingAnchor.value) return aggregator;
+    const draggedAnchor = anchorDragState.getDragState()?.data;
+    if (!parentNode.value || !draggedAnchor) return aggregator;
 
     const { id: parentNodeId } = parentNode.value;
 
@@ -429,7 +421,6 @@ export const useNodeAnchorPlugin = <
     nodeAnchor: {
       activate,
       deactivate,
-      currentDraggingAnchor: readonly(currentDraggingAnchor),
       parentNode: readonly(parentNode),
       setParentNode,
       clearAnchorState,
