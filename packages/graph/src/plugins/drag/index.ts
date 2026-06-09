@@ -82,7 +82,6 @@ export const useNodeDragPlugin = <
 
     const x = node.x + dx;
     const y = node.y + dy;
-    if (!dx && !dy) return;
     const newCoords = { x, y };
 
     graph.actions.updateNode({
@@ -113,6 +112,8 @@ export const useNodeDragPlugin = <
     graph.canvas.cursor.graphToCursorMap.value['node'] = 'pointer';
     if (activeDrag.value) drop();
   };
+
+  activate();
 
   return {
     ...graph,
