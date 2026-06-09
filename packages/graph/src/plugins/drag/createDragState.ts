@@ -8,7 +8,7 @@ type ActiveDrag<T extends object> = Coordinate & { data: T };
  *
  * @param getPosition returns the dragged item's current position given its data
  */
-export const useDragState = <T extends object>(
+export const createDragState = <T extends object>(
   getPosition: (data: T) => Coordinate,
 ) => {
   let activeDrag: ActiveDrag<T> | undefined;

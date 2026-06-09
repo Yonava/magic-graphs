@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { useDragState } from './useDragState.ts';
+import { createDragState } from './createDragState.ts';
 
 type Item = { x: number; y: number };
 
-const makeState = (item: Item) => useDragState<{ item: Item }>(() => item);
+const makeState = (item: Item) => createDragState<{ item: Item }>(() => item);
 
-describe(useDragState, () => {
+describe(createDragState, () => {
   describe('startDrag', () => {
     it('records the starting cursor position', () => {
       const item = { x: 10, y: 20 };
@@ -49,7 +49,7 @@ describe(useDragState, () => {
 
     it('accumulates deltas across multiple moves', () => {
       const item = { x: 0, y: 0 };
-      const state = useDragState<{ item: Item }>(() => item);
+      const state = createDragState<{ item: Item }>(() => item);
       state.startDrag({ x: 0, y: 0 }, { item });
 
       let result = state.applyMove({ x: 3, y: 4 });

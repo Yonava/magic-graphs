@@ -11,7 +11,7 @@ import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
 import { GraphWithNodeDrag } from './types.ts';
-import { useDragState } from './useDragState.ts';
+import { createDragState } from './createDragState.ts';
 
 export const DRAG_EVENT_ID = 'drag';
 
@@ -32,7 +32,7 @@ export const useNodeDragPlugin = <
     graph.events as EventHub<BaseEventMap & CanvasEventMap>,
   );
 
-  const dragState = useDragState((data: { nodeId: string }) =>
+  const dragState = createDragState((data: { nodeId: string }) =>
     nullThrows(graph.getNode(data.nodeId), 'dragged node not found'),
   );
 
