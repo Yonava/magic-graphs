@@ -1,7 +1,6 @@
+import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
-
-import { computed, ref } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
 import type { BaseGraph } from '../../base/types.ts';
@@ -33,11 +32,9 @@ export const useNodeDragPlugin = <
     graph.events as EventHub<BaseEventMap & CanvasEventMap>,
   );
 
-  const dragState = useDragState((data: { nodeId: string }) => {
-    const node = graph.getNode(data.nodeId);
-    if (!node) throw new Error('node not found');
-    return node;
-  });
+  const dragState = useDragState((data: { nodeId: string }) =>
+    nullThrows(graph.getNode(data.nodeId), 'dragged node not found'),
+  );
 
   const beginDrag = (
     { items, coords, event }: CanvasGraphMouseEvent,
@@ -59,11 +56,10 @@ export const useNodeDragPlugin = <
   const drop = () => {
     const data = dragState.stopDrag();
     if (!data) return;
-
-    const droppedNode = graph.getNode(data.nodeId);
-    if (!droppedNode) throw new Error('dropped node not found');
-
-    events.emit('onNodeDrop', droppedNode);
+    events.emit(
+      'onNodeDrop',
+      nullThrows(graph.getNode(data.nodeId), 'dropped node not found'),
+    );
   };
 
   const drag = (

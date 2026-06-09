@@ -1,8 +1,6 @@
 import { Coordinate } from '@magic/canvas/types';
 
-import { ref } from 'vue';
-
-type ActiveDrag<T> = Coordinate & { data: T };
+type ActiveDrag<T extends object> = Coordinate & { data: T };
 
 /**
  * tracks cursor delta and attached data for a drag interaction.
