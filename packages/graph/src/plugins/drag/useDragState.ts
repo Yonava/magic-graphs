@@ -2,7 +2,15 @@ import { Coordinate } from '@magic/canvas/types';
 
 import { computed, ref } from 'vue';
 
-export const useDragState = <T extends object>() => {
+/**
+ * tracks cursor delta and attached data for a drag interaction.
+ * `stopDrag` and `applyMove` return undefined when no drag is active for use as a guard.
+ *
+ * @param getPosition returns the dragged item's current position given its data
+ */
+export const useDragState = <T extends object>(
+  getPosition: (data: T) => Coordinate,
+) => {
   const activeDrag = ref<Coordinate & { data: T }>();
 
   const startDrag = (coords: Coordinate, data: T) => {
@@ -16,21 +24,27 @@ export const useDragState = <T extends object>() => {
     return data;
   };
 
-  const eventCalled = (newCoords: Coordinate, currentPos: Coordinate) => {
+  const applyMove = (newCoords: Coordinate) => {
     if (!activeDrag.value) return;
+
+    const currentPos = getPosition(activeDrag.value.data);
+
     const dx = newCoords.x - activeDrag.value.x;
     const dy = newCoords.y - activeDrag.value.y;
 
     activeDrag.value.x = newCoords.x;
     activeDrag.value.y = newCoords.y;
 
-    return { x: currentPos.x + dx, y: currentPos.y + dy };
+    return {
+      x: currentPos.x + dx,
+      y: currentPos.y + dy,
+      data: activeDrag.value.data,
+    };
   };
 
   return {
-    eventCalled,
+    applyMove,
     isDragging: computed(() => !!activeDrag.value),
-    activeDrag,
     startDrag,
     stopDrag,
   };

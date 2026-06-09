@@ -33,7 +33,11 @@ export const useNodeDragPlugin = <
     graph.events as EventHub<BaseEventMap & CanvasEventMap>,
   );
 
-  const dragState = useDragState<{ nodeId: string }>();
+  const dragState = useDragState((data: { nodeId: string }) => {
+    const node = graph.getNode(data.nodeId);
+    if (!node) throw new Error('node not found');
+    return node;
+  });
 
   const beginDrag = (
     { items, coords, event }: CanvasGraphMouseEvent,
@@ -66,17 +70,13 @@ export const useNodeDragPlugin = <
     { coords: magicCoords }: DeepReadonly<GraphUnderCursor>,
     consume: () => void,
   ) => {
-    if (!dragState.activeDrag.value) return;
-    consume();
-
-    const node = graph.getNode(dragState.activeDrag.value.data.nodeId);
-    if (!node) throw new Error('dragged node not found');
-
-    const newCoords = dragState.eventCalled(magicCoords, node);
+    const newCoords = dragState.applyMove(magicCoords);
     if (!newCoords) return;
 
+    consume();
+
     graph.actions.updateNode({
-      id: node.id,
+      id: newCoords.data.nodeId,
       values: newCoords,
     });
   };
