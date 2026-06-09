@@ -1,6 +1,8 @@
 import { Coordinate } from '@magic/canvas/types';
 
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
+
+type ActiveDrag<T> = Coordinate & { data: T };
 
 /**
  * tracks cursor delta and attached data for a drag interaction.
@@ -11,41 +13,40 @@ import { computed, ref } from 'vue';
 export const useDragState = <T extends object>(
   getPosition: (data: T) => Coordinate,
 ) => {
-  const activeDrag = ref<Coordinate & { data: T }>();
+  let activeDrag: ActiveDrag<T> | undefined;
 
   const startDrag = (coords: Coordinate, data: T) => {
-    activeDrag.value = { ...coords, data };
+    activeDrag = { ...coords, data };
   };
 
   const stopDrag = () => {
-    if (!activeDrag.value) return;
-    const { data } = activeDrag.value;
-    activeDrag.value = undefined;
+    if (!activeDrag) return;
+    const { data } = activeDrag;
+    activeDrag = undefined;
     return data;
   };
 
   const applyMove = (newCoords: Coordinate) => {
-    if (!activeDrag.value) return;
+    if (!activeDrag) return;
 
-    const currentPos = getPosition(activeDrag.value.data);
+    const currentPos = getPosition(activeDrag.data);
 
-    const dx = newCoords.x - activeDrag.value.x;
-    const dy = newCoords.y - activeDrag.value.y;
+    const dx = newCoords.x - activeDrag.x;
+    const dy = newCoords.y - activeDrag.y;
 
-    activeDrag.value.x = newCoords.x;
-    activeDrag.value.y = newCoords.y;
+    activeDrag.x = newCoords.x;
+    activeDrag.y = newCoords.y;
 
     return {
       x: currentPos.x + dx,
       y: currentPos.y + dy,
-      data: activeDrag.value.data,
+      data: activeDrag.data,
     };
   };
 
   return {
-    applyMove,
-    isDragging: computed(() => !!activeDrag.value),
     startDrag,
     stopDrag,
+    applyMove,
   };
 };
