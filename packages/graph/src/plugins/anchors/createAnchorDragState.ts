@@ -12,12 +12,10 @@ export const createAnchorDragState = () => {
       const data = dragState.applyMove(newCoords);
       if (!data) return;
       const nodeAnchor = nullThrows(
-        dragState.getDragState()?.data,
+        dragState._internals.accessActiveDrag()?.data,
         'data is defined so activeDrag must be populated',
       );
-      // @ts-expect-error circumnavigate readonly restriction
       nodeAnchor.x = data.x;
-      // @ts-expect-error circumnavigate readonly restriction
       nodeAnchor.y = data.y;
     },
   };

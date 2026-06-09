@@ -53,9 +53,9 @@ export const createDragState = <TData extends object>(
       // cast as readonly so consumers cannot type-safely mutate
       activeDrag as DeepReadonly<ActiveDrag<TData>> | undefined,
 
-    /** @internal escape hatch to access drag data */
+    /** @internal escape hatch to access a writable version of drag data */
     _internals: {
-      activeDrag,
+      accessActiveDrag: () => activeDrag,
     },
   };
 };
