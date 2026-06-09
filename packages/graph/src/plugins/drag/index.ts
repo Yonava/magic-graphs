@@ -1,7 +1,6 @@
+import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
-
-import { computed, ref } from 'vue';
 
 import { BaseEventMap } from '../../base/events.ts';
 import type { BaseGraph } from '../../base/types.ts';
@@ -11,7 +10,8 @@ import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
-import { ActiveDragNode, GraphWithNodeDrag } from './types.ts';
+import { GraphWithNodeDrag } from './types.ts';
+import { createDragState } from './createDragState.ts';
 
 export const DRAG_EVENT_ID = 'drag';
 
@@ -22,8 +22,6 @@ export const useNodeDragPlugin = <
 >(
   graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeDrag<TransactionWrapperOptions, EventMap, Plugins> => {
-  const activeDrag = ref<ActiveDragNode | undefined>();
-
   const nodeDragRegistry = createNodeDragEventRegistry();
   const nodeDragHub: EventHub<NodeDragEventMap> =
     createEventHub(nodeDragRegistry);
@@ -32,6 +30,10 @@ export const useNodeDragPlugin = <
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
     // from plugins upstream
     graph.events as EventHub<BaseEventMap & CanvasEventMap>,
+  );
+
+  const dragState = createDragState((data: { nodeId: string }) =>
+    nullThrows(graph.getNode(data.nodeId), 'dragged node not found'),
   );
 
   const beginDrag = (
@@ -47,49 +49,32 @@ export const useNodeDragPlugin = <
 
     consume();
 
-    activeDrag.value = { nodeId: node.id, coords };
+    dragState.startDrag(coords, { nodeId: node.id });
     events.emit('onNodeDragStart', node);
   };
 
   const drop = () => {
-    if (!activeDrag.value) return;
-
-    const { nodeId } = activeDrag.value;
-    const droppedNode = graph.getNode(nodeId);
-    if (!droppedNode) throw new Error('dropped node not found');
-
-    activeDrag.value = undefined;
-
-    events.emit('onNodeDrop', droppedNode);
-
-    const { items } = graph.canvas.graphUnderCursor;
-    const topItem = items.at(-1);
-    if (topItem?.id !== droppedNode.id) return;
+    const data = dragState.stopDrag();
+    if (!data) return;
+    events.emit(
+      'onNodeDrop',
+      nullThrows(graph.getNode(data.nodeId), 'dropped node not found'),
+    );
   };
 
   const drag = (
     { coords: magicCoords }: DeepReadonly<GraphUnderCursor>,
     consume: () => void,
   ) => {
-    if (!activeDrag.value) return;
+    const newCoords = dragState.applyMove(magicCoords);
+    if (!newCoords) return;
+
     consume();
-    const { nodeId, coords } = activeDrag.value;
-    const node = graph.getNode(nodeId);
-    if (!node) throw new Error('dragged node not found');
-
-    const dx = magicCoords.x - coords.x;
-    const dy = magicCoords.y - coords.y;
-
-    const x = node.x + dx;
-    const y = node.y + dy;
-    const newCoords = { x, y };
 
     graph.actions.updateNode({
-      id: nodeId,
+      id: newCoords.data.nodeId,
       values: newCoords,
     });
-
-    activeDrag.value.coords = newCoords;
   };
 
   const activate = () => {
@@ -110,7 +95,7 @@ export const useNodeDragPlugin = <
     events.unhandle('onMouseUp', drop);
     events.unhandle('onGraphUnderCursorChange', drag);
     graph.canvas.cursor.graphToCursorMap.value['node'] = 'pointer';
-    if (activeDrag.value) drop();
+    drop();
   };
 
   activate();
@@ -121,11 +106,6 @@ export const useNodeDragPlugin = <
     nodeDrag: {
       activate,
       deactivate,
-      currentlyDraggingNode: computed(() => {
-        return activeDrag.value
-          ? graph.getNode(activeDrag.value.nodeId)
-          : undefined;
-      }),
     },
   };
 };

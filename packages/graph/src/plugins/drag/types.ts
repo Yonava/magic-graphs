@@ -1,18 +1,11 @@
 import { Coordinate } from '@magic/canvas/types';
 
-import { ComputedRef } from 'vue';
-
 import { BaseEventMap } from '../../base/events.ts';
 import { BaseGraph } from '../../base/types.ts';
 import { GNode, GraphPlugin } from '../../types.ts';
 import { NodeDragEventMap } from './events.ts';
 
-type NodeDragGraph = {
-  /**
-   * the node that is currently being dragged or undefined if no node is being dragged
-   */
-  currentlyDraggingNode: ComputedRef<GNode | undefined>;
-};
+type NodeDragGraph = {};
 
 /**
  * info for the node being dragged
