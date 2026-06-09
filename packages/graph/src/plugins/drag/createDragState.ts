@@ -1,6 +1,8 @@
 import { Coordinate } from '@magic/canvas/types';
 
-type ActiveDrag<T extends object> = Coordinate & { data: T };
+import { DeepReadonly } from 'vue';
+
+type ActiveDrag<TData extends object> = Coordinate & { data: TData };
 
 /**
  * tracks cursor delta and attached data for a drag interaction.
@@ -8,12 +10,12 @@ type ActiveDrag<T extends object> = Coordinate & { data: T };
  *
  * @param getPosition returns the dragged item's current position given its data
  */
-export const createDragState = <T extends object>(
-  getPosition: (data: T) => Coordinate,
+export const createDragState = <TData extends object>(
+  getPosition: (data: TData) => Coordinate,
 ) => {
-  let activeDrag: ActiveDrag<T> | undefined;
+  let activeDrag: ActiveDrag<TData> | undefined;
 
-  const startDrag = (coords: Coordinate, data: T) => {
+  const startDrag = (coords: Coordinate, data: TData) => {
     activeDrag = { ...coords, data };
   };
 
@@ -35,16 +37,34 @@ export const createDragState = <T extends object>(
     activeDrag.x = newCoords.x;
     activeDrag.y = newCoords.y;
 
+    if ('x' in activeDrag.data && 'y' in activeDrag.data) {
+      activeDrag.data.x = currentPos.x + dx;
+      activeDrag.data.y = currentPos.y + dy;
+    }
+
     return {
       x: currentPos.x + dx,
       y: currentPos.y + dy,
-      data: activeDrag.data,
-    };
+      data: activeDrag.data as DeepReadonly<TData>,
+    } as const;
   };
 
   return {
     startDrag,
     stopDrag,
     applyMove,
+
+    getDragState: (): DeepReadonly<ActiveDrag<TData>> | undefined =>
+      // cast as readonly so consumers cannot type-safely mutate
+      activeDrag as DeepReadonly<ActiveDrag<TData>> | undefined,
+
+    /** @internal escape hatch to access drag data */
+    _internals: {
+      activeDrag,
+    },
   };
 };
+
+export type DragStateControls<TData extends object = object> = ReturnType<
+  typeof createDragState<TData>
+>;

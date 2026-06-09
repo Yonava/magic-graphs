@@ -30,10 +30,6 @@ export type NodeAnchor = {
 
 type NodeAnchorGraph = {
   /**
-   * the node anchor that is currently being dragged by the user
-   */
-  currentDraggingAnchor: Readonly<Ref<NodeAnchor | undefined>>;
-  /**
    * the parent node of the active anchor
    */
   parentNode: Readonly<Ref<GNode | undefined>>;
