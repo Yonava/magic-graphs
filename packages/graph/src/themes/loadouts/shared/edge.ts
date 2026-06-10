@@ -2,62 +2,44 @@ import { getLargestAngularSpaceBisector } from '@magic/shapes/helpers';
 import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
 
-import { GEdge, GNode } from '../../../types.ts';
+import { GEdge } from '../../../types.ts';
 import { GraphTheme, resolveThemeForEdge } from '../../index.ts';
 import { GraphInterface } from '../../types.ts';
 import { textDefaults } from './text.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
-// forked from graph helpers because graph helpers require CoreGraph instance and
-// schematics are being created from inside the base graph https://github.com/Yonava/magic-graphs/issues/577
-// TODO remove fork when PR for https://github.com/Yonava/magic-graphs/issues/574 lands
-const getEdgesBetweenConnectedNodes =
-  (graph: GraphInterface) => (nodeId1: GNode['id'], nodeId2: GNode['id']) => {
-    const isConnecting = (edge: GEdge) => {
-      const fromNode1ToNode2 =
-        edge.source === nodeId1 && edge.target === nodeId2;
-      const fromNode2ToNode1 =
-        edge.source === nodeId2 && edge.target === nodeId1;
-      return fromNode1ToNode2 || fromNode2ToNode1;
-    };
-
-    return graph.edges.value.filter(isConnecting);
-  };
-
-// TODO remove this fork as well! https://github.com/Yonava/magic-graphs/issues/577
-const getConnectedNodes = (graph: GraphInterface) => (edgeId: GEdge['id']) => {
-  const edge = graph.getEdge(edgeId);
-  if (!edge) throw new Error(`Edge with ID ${edgeId} not found`);
-  const fromNode = graph.getNode(edge.source);
-  const toNode = graph.getNode(edge.target);
-  if (!fromNode || !toNode) throw new Error('nodes not found');
-  return { fromNode, toNode };
-};
-
 const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
   const styles = resolveThemeForEdge(graph.getTheme, edge);
   const { isGraphDirected, isGraphWeighted } = graph.settings.value;
 
-  const { fromNode, toNode } = getConnectedNodes(graph)(edge.id);
-  const edgesAlongPath = getEdgesBetweenConnectedNodes(graph)(
-    fromNode.id,
-    toNode.id,
+  const { sourceNode, targetNode } = graph.helpers.edges.getConnectedNodes(
+    edge.id,
+  );
+  const edgesAlongPath = graph.helpers.nodes.getEdgesBetweenConnectedNodes(
+    sourceNode.id,
+    targetNode.id,
   );
 
   const multipleEdgesInPath = edgesAlongPath.length > 1;
-  const isSelfDirected = toNode.id === fromNode.id;
+  const isSelfDirected = targetNode.id === sourceNode.id;
 
   const fromNodeBorderWidth = graph.getTheme(
     'node.default.borderWidth',
-    fromNode,
+    sourceNode,
   );
-  const toNodeBorderWidth = graph.getTheme('node.default.borderWidth', toNode);
+  const toNodeBorderWidth = graph.getTheme(
+    'node.default.borderWidth',
+    targetNode,
+  );
 
-  const fromNodeSize = graph.getTheme('node.default.size', fromNode);
-  const toNodeSize = graph.getTheme('node.default.size', toNode);
+  const fromNodeSize = graph.getTheme('node.default.size', sourceNode);
+  const toNodeSize = graph.getTheme('node.default.size', targetNode);
 
-  const angle = Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x);
+  const angle = Math.atan2(
+    targetNode.y - sourceNode.y,
+    targetNode.x - sourceNode.x,
+  );
 
   const arrowHeadSpacingAwayFromNode =
     toNodeBorderWidth / 2 + WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX;
@@ -66,10 +48,10 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
     y: (toNodeSize + arrowHeadSpacingAwayFromNode) * Math.sin(angle),
   };
 
-  const edgeStart = { x: fromNode.x, y: fromNode.y };
+  const edgeStart = { x: sourceNode.x, y: sourceNode.y };
   const edgeEnd = {
-    x: toNode.x - (isGraphDirected ? arrowDrawOffset.x : 0),
-    y: toNode.y - (isGraphDirected ? arrowDrawOffset.y : 0),
+    x: targetNode.x - (isGraphDirected ? arrowDrawOffset.x : 0),
+    y: targetNode.y - (isGraphDirected ? arrowDrawOffset.y : 0),
   };
 
   /**
@@ -97,12 +79,14 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
     graph.edges.value
       .filter(
         (e) =>
-          (e.target === fromNode.id || e.source === toNode.id) &&
+          (e.target === sourceNode.id || e.source === targetNode.id) &&
           e.target !== e.source,
       )
       .map((e) => {
-        const { fromNode, toNode } = getConnectedNodes(graph)(e.id);
-        return e.target === fromNode.id ? toNode : fromNode;
+        const nodes = graph.helpers.edges.getConnectedNodes(e.id);
+        return e.target === nodes.sourceNode.id
+          ? nodes.targetNode
+          : nodes.sourceNode;
       })
       .filter(
         (point, index, self) =>
@@ -135,7 +119,7 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
     const shape = graph.shapes.shapes.uturn({
       id: edge.id,
       spacing: styles.width * 1.2,
-      at: { x: fromNode.x, y: fromNode.y },
+      at: { x: sourceNode.x, y: sourceNode.y },
       upDistance,
       downDistance,
       rotation: largestAngularSpaceBisector,
@@ -150,7 +134,7 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
   const sumOfToAndFromNodeSize =
     fromNodeSize + fromNodeBorderWidth / 2 + toNodeSize + toNodeBorderWidth / 2;
   const distanceSquaredBetweenNodes =
-    (fromNode.x - toNode.x) ** 2 + (fromNode.y - toNode.y) ** 2;
+    (sourceNode.x - targetNode.x) ** 2 + (sourceNode.y - targetNode.y) ** 2;
   const areNodesTouching =
     sumOfToAndFromNodeSize ** 2 > distanceSquaredBetweenNodes;
 

@@ -2,7 +2,6 @@ import type { MagicCanvasProps } from '@magic/canvas/types';
 
 import { CoreEventMap } from './core/events.ts';
 import { useCoreGraph } from './core/index.ts';
-import { useGraphHelpers } from './helpers/index.ts';
 import { NodeAnchorEventMap } from './plugins/anchors/events.ts';
 import { useNodeAnchorPlugin } from './plugins/anchors/index.ts';
 import { NodeAnchorPlugin } from './plugins/anchors/types.ts';
@@ -109,8 +108,7 @@ export const useGraph = (
 
   const shortcut = useShortcuts(graph);
 
-  const helpers = useGraphHelpers(graph);
-  const adjacencyList = useAdjacencyList({ graph, helpers });
+  const adjacencyList = useAdjacencyList(graph);
   const transitionMatrix = useTransitionMatrix({ graph, adjacencyList });
 
   const characteristics = useCharacteristics({ graph, adjacencyList });
@@ -130,7 +128,5 @@ export const useGraph = (
     adjacencyList,
     transitionMatrix,
     characteristics,
-
-    helpers,
   };
 };

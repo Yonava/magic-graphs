@@ -1,4 +1,4 @@
-import { GEdge, GNode } from '../types.ts';
+import { GEdge, GNode } from '../../types.ts';
 import { CurryWithCoreGraph, NodeHelpers } from './types.ts';
 
 type CurriedNodeHelpers = CurryWithCoreGraph<NodeHelpers>;
@@ -40,7 +40,7 @@ const getInboundEdges: CurriedNodeHelpers['getInboundEdges'] =
 const getParents: CurriedNodeHelpers['getParents'] = (graph) => (nodeId) => {
   const inboundEdges = getInboundEdges(graph);
   return inboundEdges(nodeId)
-    .map((edge) => edge.target)
+    .map((edge) => edge.source)
     .map((nodeId) => graph.getNode(nodeId)!);
 };
 

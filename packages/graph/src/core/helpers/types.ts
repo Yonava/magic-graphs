@@ -1,8 +1,8 @@
 import type { Fraction } from 'mathjs';
 
-import { CoreGraph } from '../core/types.ts';
-import type { GraphSettings } from '../settings/index.ts';
-import type { GEdge, GNode } from '../types.ts';
+import type { GraphSettings } from '../../settings/index.ts';
+import type { GEdge, GNode } from '../../types.ts';
+import { CoreGraph } from '../types.ts';
 
 export type EdgeHelpers = {
   /**
@@ -89,11 +89,15 @@ export type NodeHelpers = {
   ) => GEdge | undefined;
 };
 
+type FieldsNeededFromCoreGraph = 'getNode' | 'getEdge' | 'edges' | 'settings';
+
+export type CoreGraphForHelpers = Pick<CoreGraph, FieldsNeededFromCoreGraph>;
+
 export type CurryWithCoreGraph<Helpers> = {
-  [Key in keyof Helpers]: (graph: CoreGraph) => Helpers[Key];
+  [Key in keyof Helpers]: (graph: CoreGraphForHelpers) => Helpers[Key];
 };
 
-export type GraphHelpers = {
+export type CoreGraphHelpers = {
   edges: EdgeHelpers;
   nodes: NodeHelpers;
 };
