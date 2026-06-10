@@ -1,8 +1,8 @@
 import { LETTERS, useGraphLabelGetter } from '@magic/graph/labels';
 import type { GraphSettings } from '@magic/graph/settings/index';
-import type { Graph } from '../shared/useGraphWithCanvas.ts';
 import { Fraction } from 'mathjs';
 
+import type { Graph } from '../shared/useGraphWithCanvas.ts';
 import { SINK_LABEL, SOURCE_LABEL } from './constants.ts';
 
 const ALPHABET_WITHOUT_SOURCE_SINK = LETTERS.filter(
@@ -20,7 +20,6 @@ export const flowNodeLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
  * settings for the network flow useGraph instance
  */
 export const FLOW_GRAPH_SETTINGS: Partial<GraphSettings> = {
-  localStorageKey: 'network-flow',
   userAddedDefaultEdgeWeight: () => new Fraction(5),
   userAddedEdgeRuleNoSelfLoops: true,
   userAddedEdgeRuleOneEdgePerPath: true,

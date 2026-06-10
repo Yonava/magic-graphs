@@ -32,7 +32,7 @@ type UseGraphWithCanvas = (settings: Partial<GraphSettings>) => GraphWithCanvas;
 export const useGraphWithCanvas: UseGraphWithCanvas = (
   settings: Partial<GraphSettings> = {},
 ) => {
-  const canvas = useMagicCanvas({ storageKey: settings.localStorageKey });
+  const canvas = useMagicCanvas();
   const graphWithPlugins = useGraph(canvas, settings);
 
   const annotations = useGraphAnnotations(graphWithPlugins);

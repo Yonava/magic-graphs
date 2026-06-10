@@ -5,7 +5,6 @@ import { Fraction } from 'mathjs';
  * settings for graph sandbox useGraph instance
  */
 export const MARKOV_CHAIN_GRAPH_SETTINGS: Partial<GraphSettings> = {
-  localStorageKey: 'markov-chains',
   edgeInputToWeight: (input: string) => {
     // fraction throws an error if the input cannot be parsed or
     // is a divide by zero operation

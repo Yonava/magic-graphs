@@ -1,9 +1,5 @@
 import { Fraction } from 'mathjs';
 
-import {
-  DEFAULT_LOCAL_STORAGE_SETTINGS,
-  LocalStorageGraphSettings,
-} from '../plugins/localStorage/settings.ts';
 import type { GEdge, GNode } from '../types.ts';
 
 /**
@@ -169,7 +165,6 @@ export const DEFAULT_SHORTCUT_SETTINGS: ShortcutGraphSettings = {
  */
 export type GraphSettings = BaseGraphSettings &
   InteractiveGraphSettings &
-  LocalStorageGraphSettings &
   ShortcutGraphSettings;
 
 /**
@@ -178,6 +173,5 @@ export type GraphSettings = BaseGraphSettings &
 export const DEFAULT_GRAPH_SETTINGS = {
   ...DEFAULT_BASE_SETTINGS,
   ...DEFAULT_INTERACTIVE_SETTINGS,
-  ...DEFAULT_LOCAL_STORAGE_SETTINGS,
   ...DEFAULT_SHORTCUT_SETTINGS,
 } as const satisfies GraphSettings;

@@ -26,7 +26,6 @@ import {
   HistoryTransactionWrapperOptions,
 } from './plugins/history/types.ts';
 import { useInteractive } from './plugins/interactive/index.ts';
-import { useLocalStoragePlugin } from './plugins/localStorage/index.ts';
 import { useMarqueePlugin } from './plugins/marquee/index.ts';
 import { useShortcuts } from './plugins/shortcut/index.ts';
 import type { GraphSettings } from './settings/index.ts';
@@ -72,7 +71,7 @@ const useGraphWithPlugins = (
     CanvasPlugin & FocusPlugin & NodeDragPlugin & NodeAnchorPlugin
   >(baseCanvasFocusDragAnchor);
 
-  const baseFocusDragAnchorHistoryMarquee = useMarqueePlugin<
+  const baseCanvasFocusDragAnchorHistoryMarquee = useMarqueePlugin<
     FocusTransactionWrapperOptions & HistoryTransactionWrapperOptions,
     BaseEventMap &
       CanvasEventMap &
@@ -87,11 +86,7 @@ const useGraphWithPlugins = (
       HistoryPlugin
   >(baseCanvasFocusDragAnchorHistory);
 
-  const baseCanvasFocusDragAnchorHistoryMarqueeLocal = useLocalStoragePlugin(
-    baseFocusDragAnchorHistoryMarquee,
-  );
-
-  return baseCanvasFocusDragAnchorHistoryMarqueeLocal;
+  return baseCanvasFocusDragAnchorHistoryMarquee;
 };
 
 export type GraphWithPlugins = ReturnType<typeof useGraphWithPlugins>;
