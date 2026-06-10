@@ -1,5 +1,5 @@
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
-import type { CanvasElement } from '@magic/graph/types';
+import { CanvasElement } from '@magic/graph/plugins/canvas/types';
 import tinycolor from 'tinycolor2';
 
 import type { Graph } from '../useGraphWithCanvas.ts';
@@ -40,7 +40,7 @@ const animateNodePulse = (graph: Graph) =>
   });
 
 /**
- * selects schema items only of graph type 'node'
+ * selects canvas elements only of graph type 'node'
  *
  * @param graph the graph to select from
  * @returns a promise that resolves to the selected node or
@@ -48,7 +48,7 @@ const animateNodePulse = (graph: Graph) =>
  */
 export const selectNode = (graph: Graph) => {
   const { selectedItemPromise, cancelSelection } = selectFromGraph(graph, {
-    predicate: (item) => item.graphType === 'node',
+    predicate: (element) => element.graphType === 'node',
   });
 
   const pulse = animateNodePulse(graph);
@@ -67,7 +67,7 @@ export const selectNode = (graph: Graph) => {
 };
 
 /**
- * selects schema items only of graph type 'edge'
+ * selects canvas elements only of graph type 'edge'
  *
  * @param graph the graph to select from
  * @returns a promise that resolves to the selected edge or
@@ -75,7 +75,7 @@ export const selectNode = (graph: Graph) => {
  */
 export const selectEdge = (graph: Graph) => {
   const { selectedItemPromise, cancelSelection } = selectFromGraph(graph, {
-    predicate: (item) => item.graphType === 'edge',
+    predicate: (element) => element.graphType === 'edge',
   });
 
   return {

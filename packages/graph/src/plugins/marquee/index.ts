@@ -9,10 +9,14 @@ import { computed } from 'vue';
 import { CoreEventMap } from '../../core/events.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import type { Aggregator, CanvasElement } from '../../types.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
+import {
+  Aggregator,
+  CanvasElement,
+  CanvasPlugin,
+  GraphUnderCursor,
+} from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';

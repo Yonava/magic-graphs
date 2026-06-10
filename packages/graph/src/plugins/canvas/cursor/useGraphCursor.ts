@@ -1,9 +1,8 @@
 import { computed, ref, watch } from 'vue';
 
 import { EventHub } from '../../../events/createEventHub.ts';
-import { CanvasElement } from '../../../types.ts';
 import { CanvasEventMap } from '../events.ts';
-import { CanvasGraph } from '../types.ts';
+import { CanvasElement, CanvasGraph } from '../types.ts';
 import { GraphCursor, GraphTypeToCursor } from './types.ts';
 
 type GraphCursorProps = {
@@ -16,7 +15,7 @@ type GraphCursorProps = {
  * manages the cursor type when hovering over the graph
  *
  * @param subscribe - the event subscriber
- * @param canvas - the canvas element
+ * @param canvas - the HTML canvas element
  * @param graphAtMousePosition - the graph items at the mouse position
  * @returns the cursor manager
  */
@@ -35,28 +34,28 @@ export const useGraphCursor = ({
     'encapsulated-node-box': 'move',
   });
 
-  const isItemSelectable = ref<(item: CanvasElement) => boolean>();
-  const inSelectMode = computed(() => !!isItemSelectable.value);
+  const isElementSelectable = ref<(element: CanvasElement) => boolean>();
+  const inSelectMode = computed(() => !!isElementSelectable.value);
 
   const activateCursorSelectMode = (
-    predicate: (item: CanvasElement) => boolean,
+    predicate: (element: CanvasElement) => boolean,
   ) => {
-    isItemSelectable.value = predicate;
+    isElementSelectable.value = predicate;
   };
 
   const deactivateCursorSelectMode = () => {
-    isItemSelectable.value = undefined;
+    isElementSelectable.value = undefined;
   };
 
-  const getCursorType = (item: CanvasElement | undefined) => {
-    if (!item) return 'default';
+  const getCursorType = (canvasElement: CanvasElement | undefined) => {
+    if (!canvasElement) return 'default';
 
     if (inSelectMode.value) {
-      const isSelectable = isItemSelectable.value?.(item) ?? false;
+      const isSelectable = isElementSelectable.value?.(canvasElement) ?? false;
       return isSelectable ? 'pointer' : 'default';
     }
 
-    const cursor = graphToCursorMap.value[item.graphType] ?? 'default';
+    const cursor = graphToCursorMap.value[canvasElement.graphType] ?? 'default';
     if (cursor === 'grab' && isMouseDown.value) return 'grabbing';
 
     return cursor;

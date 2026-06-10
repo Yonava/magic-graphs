@@ -10,7 +10,6 @@ import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import { Aggregator } from '../../types.ts';
 import { useGraphCursor } from './cursor/useGraphCursor.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
@@ -18,7 +17,7 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
-import { GraphUnderCursor, GraphWithCanvas } from './types.ts';
+import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
 export const CANVAS_EVENT_ID = 'canvas';

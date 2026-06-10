@@ -1,6 +1,6 @@
 import { Ref } from 'vue';
 
-import { CanvasElement } from '../../../types.ts';
+import { CanvasElement } from '../types.ts';
 
 /**
  * cursor types supported by the browser
@@ -54,7 +54,7 @@ export type GraphCursor = {
    */
   graphToCursorMap: Ref<GraphTypeToCursor>;
   /**
-   * activates a cursor select mode, where only the schema items that pass the
+   * activates a cursor select mode, where only the canvas elements that pass the
    * `predicate` will receive a pointer cursor.
    * everything else will receive the default cursor as long as this mode is active.
    * @param predicate - a predicate that determines, given a schema item, whether it is selectable.

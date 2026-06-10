@@ -12,9 +12,9 @@ import type {
   GraphWithNodeAnchor,
   NodeAnchor,
 } from '../../plugins/anchors/types.ts';
-import type { CanvasElement, GNode } from '../../types.ts';
+import type { GNode } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasPlugin } from '../canvas/types.ts';
+import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';
 import { NodeAnchorEventMap, createNodeAnchorEventRegistry } from './events.ts';
 

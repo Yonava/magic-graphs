@@ -3,12 +3,12 @@ import type { Coordinate } from '@magic/shapes/types/utility';
 import { ref } from 'vue';
 
 import { EventHub } from '../../events/createEventHub.ts';
+import { CanvasEventMap } from './events.ts';
 import type {
   Aggregator,
   AggregatorTransformer,
   CanvasElement,
-} from '../../types.ts';
-import { CanvasEventMap } from './events.ts';
+} from './types.ts';
 
 export const useAggregator = ({
   emit,
@@ -67,10 +67,7 @@ export const useAggregator = ({
   const getCanvasElementsAtCoordinate = (coords: Coordinate) => {
     return aggregator.value
       .sort((a, b) => a.priority - b.priority)
-      .filter(
-        (item) =>
-          item.shape.shapeHitbox(coords) || item.shape.textHitbox?.(coords),
-      );
+      .filter((element) => element.shape.hitbox(coords));
   };
 
   return {

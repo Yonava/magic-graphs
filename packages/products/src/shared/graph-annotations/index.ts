@@ -1,11 +1,8 @@
-import { ANCHOR_EVENT_ID } from '@magic/graph/plugins/anchors/index';
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
-import { GraphUnderCursor } from '@magic/graph/plugins/canvas/types';
-import { DRAG_EVENT_ID } from '@magic/graph/plugins/drag/index';
-import { FOCUS_EVENT_ID } from '@magic/graph/plugins/focus/index';
-import { MARQUEE_EVENT_ID } from '@magic/graph/plugins/marquee/index';
-import { GraphThemeName } from '@magic/graph/themes/index';
-import type { Aggregator } from '@magic/graph/types';
+import {
+  Aggregator,
+  GraphUnderCursor,
+} from '@magic/graph/plugins/canvas/types';
 import { GraphWithPlugins } from '@magic/graph/useGraph';
 import { circle } from '@magic/shapes/shapes/circle/index';
 import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
