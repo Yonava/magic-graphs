@@ -1,6 +1,6 @@
 import { Ref } from 'vue';
 
-import { SchemaItem } from '../../../types.ts';
+import { CanvasElement } from '../types.ts';
 
 /**
  * cursor types supported by the browser
@@ -44,7 +44,7 @@ type Cursor =
   | 'zoom-out';
 
 export type GraphTypeToCursor = Partial<
-  Record<SchemaItem['graphType'], Cursor>
+  Record<CanvasElement['graphType'], Cursor>
 >;
 
 export type GraphCursor = {
@@ -54,7 +54,7 @@ export type GraphCursor = {
    */
   graphToCursorMap: Ref<GraphTypeToCursor>;
   /**
-   * activates a cursor select mode, where only the schema items that pass the
+   * activates a cursor select mode, where only the canvas elements that pass the
    * `predicate` will receive a pointer cursor.
    * everything else will receive the default cursor as long as this mode is active.
    * @param predicate - a predicate that determines, given a schema item, whether it is selectable.
@@ -62,7 +62,9 @@ export type GraphCursor = {
    * // in select mode
    * // only nodes will receive a pointer cursor
    */
-  activateCursorSelectMode: (predicate: (item: SchemaItem) => boolean) => void;
+  activateCursorSelectMode: (
+    predicate: (item: CanvasElement) => boolean,
+  ) => void;
   /**
    * deactivates the cursor select mode. to be called after `activateCursorSelectMode`.
    * @example activateCursorSelectMode((item) => item.graphType === 'node')

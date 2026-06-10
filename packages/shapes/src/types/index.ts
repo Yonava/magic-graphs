@@ -75,7 +75,7 @@ export type ShapeProps = {
   drawShape: (ctx: CanvasRenderingContext2D) => void;
 
   /**
-   * returns true if the point is within the shape or text area
+   * returns true if `shapeHitbox` or `textHitbox` are true
    */
   hitbox: (point: Coordinate) => boolean;
 

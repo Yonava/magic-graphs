@@ -10,7 +10,6 @@ import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import { Aggregator } from '../../types.ts';
 import { useGraphCursor } from './cursor/useGraphCursor.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
@@ -18,7 +17,7 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
-import { GraphUnderCursor, GraphWithCanvas } from './types.ts';
+import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
 export const CANVAS_EVENT_ID = 'canvas';
@@ -84,7 +83,7 @@ export const useCanvasPlugin = <
     graphAtMousePosition.coords = coords;
 
     aggregator.updateAggregator();
-    const newElements = aggregator.getSchemaItemsByCoordinates(coords);
+    const newElements = aggregator.getCanvasElementsAtCoordinate(coords);
     graphAtMousePosition.items = newElements;
 
     events.emit('onGraphUnderCursorChange', graphAtMousePosition);
@@ -107,7 +106,7 @@ export const useCanvasPlugin = <
   const shapes = useAnimatedShapes();
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
-    const edgeSchemaItems = graph.edges.value
+    const edgeCanvasElements = graph.edges.value
       .map((edge) => {
         const shape = graph.getTheme('edge.default.shape', edge, {
           ...graph,
@@ -124,7 +123,7 @@ export const useCanvasPlugin = <
       .filter(Boolean)
       .map((item, i) => ({ ...item!, priority: i * 10 }));
 
-    const nodeSchemaItems = graph.nodes.value
+    const nodeCanvasElements = graph.nodes.value
       .map((node) => {
         const shape = graph.getTheme('node.default.shape', node, {
           ...graph,
@@ -141,8 +140,8 @@ export const useCanvasPlugin = <
       .filter(Boolean)
       .map((item, i) => ({ ...item!, priority: i * 10 + 1000 }));
 
-    aggregator.push(...edgeSchemaItems);
-    aggregator.push(...nodeSchemaItems);
+    aggregator.push(...edgeCanvasElements);
+    aggregator.push(...nodeCanvasElements);
 
     return aggregator;
   };
