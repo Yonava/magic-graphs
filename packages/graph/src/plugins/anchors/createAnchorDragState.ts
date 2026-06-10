@@ -5,7 +5,7 @@ import { createDragState } from '../drag/createDragState.ts';
 import { NodeAnchor } from './types.ts';
 
 export const createAnchorDragState = () => {
-  const dragState = createDragState((data: NodeAnchor) => data);
+  const dragState = createDragState<NodeAnchor>();
   return {
     ...dragState,
     applyMove: (newCoords: Coordinate) => {

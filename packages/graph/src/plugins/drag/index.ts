@@ -6,7 +6,6 @@ import { BaseEventMap } from '../../base/events.ts';
 import type { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import { GNode } from '../../types.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
@@ -33,9 +32,7 @@ export const useNodeDragPlugin = <
     graph.events as EventHub<BaseEventMap & CanvasEventMap>,
   );
 
-  const dragState = createDragState((data: { nodeId: string }) =>
-    nullThrows(graph.getNode(data.nodeId), 'dragged node not found'),
-  );
+  const dragState = createDragState<{ nodeIds: string[] }>();
 
   const beginDrag = (
     { items, coords, event }: CanvasGraphMouseEvent,
@@ -71,8 +68,8 @@ export const useNodeDragPlugin = <
       ),
     );
 
-    dragState.startDrag(coords, { nodeId: node.id });
-    events.emit('onNodeDragStart', node);
+    dragState.startDrag(coords, { nodeIds: nodeIdsToDrag });
+    events.emit('onNodeDragStart', nodes);
   };
 
   const drop = () => {
@@ -80,7 +77,9 @@ export const useNodeDragPlugin = <
     if (!data) return;
     events.emit(
       'onNodeDrop',
-      nullThrows(graph.getNode(data.nodeId), 'dropped node not found'),
+      data.nodeIds.map((nodeId) =>
+        nullThrows(graph.getNode(nodeId), 'dropped node not found'),
+      ),
     );
   };
 
@@ -88,14 +87,30 @@ export const useNodeDragPlugin = <
     { coords: magicCoords }: DeepReadonly<GraphUnderCursor>,
     consume: () => void,
   ) => {
-    const newCoords = dragState.applyMove(magicCoords);
-    if (!newCoords) return;
+    const dragData = dragState.applyMove(magicCoords);
+    if (!dragData) return;
+
+    const {
+      data: { nodeIds },
+      deltas: { dx, dy },
+    } = dragData;
 
     consume();
 
-    graph.actions.updateNode({
-      id: newCoords.data.nodeId,
-      values: newCoords,
+    if (!dx && !dy) return;
+
+    const nodes = nodeIds.map((nodeId) =>
+      nullThrows(graph.getNode(nodeId), 'dragged node not found'),
+    );
+
+    graph.actions.updateElements({
+      nodes: nodes.map(({ id, x, y }) => ({
+        id,
+        values: {
+          x: x + dx,
+          y: y + dy,
+        },
+      })),
     });
   };
 
