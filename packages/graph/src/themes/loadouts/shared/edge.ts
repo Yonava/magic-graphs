@@ -9,7 +9,7 @@ import { textDefaults } from './text.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
-// forked from graph helpers because graph helpers require BaseGraph instance and
+// forked from graph helpers because graph helpers require CoreGraph instance and
 // schematics are being created from inside the base graph https://github.com/Yonava/magic-graphs/issues/577
 // TODO remove fork when PR for https://github.com/Yonava/magic-graphs/issues/574 lands
 const getEdgesBetweenConnectedNodes =
@@ -35,7 +35,7 @@ const getConnectedNodes = (graph: GraphInterface) => (edgeId: GEdge['id']) => {
   return { fromNode, toNode };
 };
 
-const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
+const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
   const styles = resolveThemeForEdge(graph.getTheme, edge);
   const { isGraphDirected, isGraphWeighted } = graph.settings.value;
 
@@ -48,11 +48,14 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
   const multipleEdgesInPath = edgesAlongPath.length > 1;
   const isSelfDirected = toNode.id === fromNode.id;
 
-  const fromNodeBorderWidth = graph.getTheme('node.base.borderWidth', fromNode);
-  const toNodeBorderWidth = graph.getTheme('node.base.borderWidth', toNode);
+  const fromNodeBorderWidth = graph.getTheme(
+    'node.default.borderWidth',
+    fromNode,
+  );
+  const toNodeBorderWidth = graph.getTheme('node.default.borderWidth', toNode);
 
-  const fromNodeSize = graph.getTheme('node.base.size', fromNode);
-  const toNodeSize = graph.getTheme('node.base.size', toNode);
+  const fromNodeSize = graph.getTheme('node.default.size', fromNode);
+  const toNodeSize = graph.getTheme('node.default.size', toNode);
 
   const angle = Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x);
 

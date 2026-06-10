@@ -1,8 +1,8 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { MarkovChain } from '../markov/useMarkovChain.ts';
 
 const USETHEME_ID = 'markov-invalid-state';
@@ -26,9 +26,9 @@ export const useInvalidStateColorizer = (graph: Graph, markov: MarkovChain) => {
   };
 
   const colorize = () => {
-    setTheme('node.base.borderColor', nodeBorderColor);
-    setTheme('nodeAnchor.base.color', nodeBorderColor);
-    setTheme('node.base.text', nodeText);
+    setTheme('node.default.borderColor', nodeBorderColor);
+    setTheme('nodeAnchor.default.color', nodeBorderColor);
+    setTheme('node.default.text', nodeText);
   };
 
   const decolorize = () => {

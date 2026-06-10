@@ -16,7 +16,7 @@ const edgeSharedLight = {
 
 export const LIGHT_THEME = {
   node: {
-    base: {
+    default: {
       color: colors.GRAY_50,
       borderColor: colors.GRAY_800,
       ...nodeSharedLight,
@@ -28,7 +28,7 @@ export const LIGHT_THEME = {
     },
   },
   edge: {
-    base: {
+    default: {
       color: colors.GRAY_800,
       ...edgeSharedLight,
     },
@@ -48,7 +48,7 @@ export const LIGHT_THEME = {
     encapsulatedNodeBoxColor: colors.BLUE_700 + '05',
   },
   nodeAnchor: {
-    base: {
+    default: {
       color: colors.BLACK,
       linkPreviewColor: colors.BLACK,
       ...nodeAnchorShared,

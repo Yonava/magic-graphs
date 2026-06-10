@@ -7,15 +7,15 @@ import { GraphThemeName, ThemeLoadouts } from '../themes/index.ts';
 import { FullThemeMap } from '../themes/types.ts';
 import type { GEdge, GNode } from '../types.ts';
 import {
-  BaseTransactionWrapperOptions,
+  CoreTransactionWrapperOptions,
   GraphActions,
-  MergeTransactionWrappersWithBase,
+  MergeTransactionWrappersWithCore,
 } from './actions/types.ts';
-import { BaseEventMap } from './events.ts';
+import { CoreEventMap } from './events.ts';
 
-export type BaseGraph<
+export type CoreGraph<
   TransactionWrapperOptions = {},
-  EventMap extends BaseEventMap = BaseEventMap,
+  EventMap extends CoreEventMap = CoreEventMap,
   Plugins = {},
 > = {
   /**
@@ -34,7 +34,7 @@ export type BaseGraph<
   getEdge: (edgeId: GEdge['id']) => GEdge | undefined;
 
   actions: GraphActions<
-    MergeTransactionWrappersWithBase<TransactionWrapperOptions>
+    MergeTransactionWrappersWithCore<TransactionWrapperOptions>
   >;
 
   events: EventHub<EventMap>;
@@ -47,7 +47,7 @@ export type BaseGraph<
 } & Plugins;
 
 export type InternalActions = {
-  [Action in keyof BaseTransactionWrapperOptions]: (
+  [Action in keyof CoreTransactionWrapperOptions]: (
     ...args: [
       ...Parameters<GraphActions[Action]>,
       transactionOptions: Record<string, any>,

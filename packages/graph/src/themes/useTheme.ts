@@ -1,6 +1,6 @@
 import { generateId } from '@magic/utils/id';
 
-import { BaseGraph } from '../base/types.ts';
+import { CoreGraph } from '../core/types.ts';
 import type { ValidGraphThemePath } from '../themes/types.ts';
 import { ResolveThemeMap, getDataFromNestedPath } from './getThemeResolver.ts';
 
@@ -11,7 +11,7 @@ import { ResolveThemeMap, getDataFromNestedPath } from './getThemeResolver.ts';
  * @param themeId - identifier for this useTheme instance, handy for debugging
  * @returns functions to set and remove themes
  */
-export const useTheme = <TGraph extends Pick<BaseGraph, 'themeMap'>>(
+export const useTheme = <TGraph extends Pick<CoreGraph, 'themeMap'>>(
   graph: TGraph,
   themeId = generateId(),
 ) => {

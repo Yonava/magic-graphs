@@ -1,7 +1,7 @@
 import { Ref } from 'vue';
 
-import { BaseEventMap } from '../../base/events.ts';
-import { BaseGraph } from '../../base/types.ts';
+import { CoreEventMap } from '../../core/events.ts';
+import { CoreGraph } from '../../core/types.ts';
 import { GNode, GraphPlugin } from '../../types.ts';
 import { NodeAnchorEventMap } from './events.ts';
 
@@ -49,9 +49,9 @@ export type NodeAnchorPlugin = {
 
 export type GraphWithNodeAnchor<
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap,
+  EventMap extends CoreEventMap,
   Plugins,
-> = BaseGraph<
+> = CoreGraph<
   TransactionWrapperOptions,
   EventMap & NodeAnchorEventMap,
   Plugins & NodeAnchorPlugin

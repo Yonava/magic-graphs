@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
 
-import { BaseEventMap } from '../../base/events.ts';
-import { BaseGraph } from '../../base/types.ts';
+import { CoreEventMap } from '../../core/events.ts';
+import { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { MAX_HISTORY } from './constants.ts';
@@ -12,10 +12,10 @@ export const HISTORY_EVENT_ID = 'history';
 
 export const useHistoryPlugin = <
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap,
+  EventMap extends CoreEventMap,
   Plugins,
 >(
-  graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
+  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithHistory<TransactionWrapperOptions, EventMap, Plugins> => {
   const historyRegistry = createHistoryEventRegistry();
   const historyHub: EventHub<HistoryEventMap> = createEventHub(historyRegistry);
@@ -23,7 +23,7 @@ export const useHistoryPlugin = <
     historyHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap>,
+    graph.events as EventHub<CoreEventMap>,
   );
 
   const undoStack = ref<any[]>([]);

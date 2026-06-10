@@ -4,7 +4,7 @@ import { GNode } from '../../../types.ts';
 import { GraphTheme, resolveThemeForNode } from '../../index.ts';
 import { textDefaults } from './text.ts';
 
-const nodeCircle: GraphTheme['node']['base']['shape'] = (node, graph) => {
+const nodeCircle: GraphTheme['node']['default']['shape'] = (node, graph) => {
   const styles = resolveThemeForNode(graph.getTheme, node);
 
   return graph.shapes.shapes.circle({

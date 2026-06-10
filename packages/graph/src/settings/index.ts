@@ -2,10 +2,7 @@ import { Fraction } from 'mathjs';
 
 import type { GEdge, GNode } from '../types.ts';
 
-/**
- * BASE GRAPH SETTINGS
- */
-export type BaseGraphSettings = {
+export type CoreGraphSettings = {
   /**
    * whether graph is weighted, if true, all individual {@link GEdge.weight | edge weights} are ignored and are treated as if they were `new Fraction(1)`
    * @default true
@@ -34,7 +31,7 @@ export type BaseGraphSettings = {
   newNodeLabelGetter: null | (() => string);
 };
 
-export const DEFAULT_BASE_SETTINGS: BaseGraphSettings = {
+export const DEFAULT_BASE_SETTINGS: CoreGraphSettings = {
   isGraphWeighted: true,
   edgeLabelsEditable: true,
   edgeInputToWeight: (input: string) => {
@@ -163,7 +160,7 @@ export const DEFAULT_SHORTCUT_SETTINGS: ShortcutGraphSettings = {
 /**
  * represents all settings on a graph instance
  */
-export type GraphSettings = BaseGraphSettings &
+export type GraphSettings = CoreGraphSettings &
   InteractiveGraphSettings &
   ShortcutGraphSettings;
 

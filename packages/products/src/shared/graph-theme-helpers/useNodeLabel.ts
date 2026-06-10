@@ -34,11 +34,11 @@ export const useNodeLabel = (
   };
 
   const label = () => {
-    setTheme('node.base.text', nodeText);
+    setTheme('node.default.text', nodeText);
   };
 
   const unlabel = () => {
-    removeTheme('node.base.text');
+    removeTheme('node.default.text');
   };
 
   return {

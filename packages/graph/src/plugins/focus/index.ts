@@ -4,9 +4,9 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { computed, readonly, ref } from 'vue';
 
-import { ElementRemovalPayload } from '../../base/actions/types.ts';
-import { BaseEventMap } from '../../base/events.ts';
-import type { BaseGraph, InternalActions } from '../../base/types.ts';
+import { ElementRemovalPayload } from '../../core/actions/types.ts';
+import { CoreEventMap } from '../../core/events.ts';
+import type { CoreGraph, InternalActions } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { useTheme } from '../../themes/useTheme.ts';
@@ -28,10 +28,10 @@ export const FOCUS_EVENT_ID = 'focus';
 
 export const useFocusPlugin = <
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap & CanvasEventMap,
+  EventMap extends CoreEventMap & CanvasEventMap,
   Plugins extends CanvasPlugin,
 >(
-  graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
+  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithFocus<TransactionWrapperOptions, EventMap, Plugins> => {
   const focusRegistry = createFocusEventRegistry();
   const focusHub: EventHub<FocusEventMap> = createEventHub(focusRegistry);
@@ -39,7 +39,7 @@ export const useFocusPlugin = <
     focusHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap & CanvasEventMap>,
+    graph.events as EventHub<CoreEventMap & CanvasEventMap>,
   );
 
   const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
@@ -169,25 +169,25 @@ export const useFocusPlugin = <
   const isFocused = (id: string) => focusedElementIds.value.has(id);
 
   const nodeBaseStylePathMapping: NodeBaseToNodeFocusTheme = {
-    'node.base.color': 'node.focus.color',
-    'node.base.borderColor': 'node.focus.borderColor',
-    'node.base.borderWidth': 'node.focus.borderWidth',
-    'node.base.size': 'node.focus.size',
-    'node.base.shape': 'node.focus.shape',
-    'node.base.textColor': 'node.focus.textColor',
-    'node.base.textSize': 'node.focus.textSize',
-    'node.base.textFontWeight': 'node.focus.textFontWeight',
-    'node.base.text': 'node.focus.text',
+    'node.default.color': 'node.focus.color',
+    'node.default.borderColor': 'node.focus.borderColor',
+    'node.default.borderWidth': 'node.focus.borderWidth',
+    'node.default.size': 'node.focus.size',
+    'node.default.shape': 'node.focus.shape',
+    'node.default.textColor': 'node.focus.textColor',
+    'node.default.textSize': 'node.focus.textSize',
+    'node.default.textFontWeight': 'node.focus.textFontWeight',
+    'node.default.text': 'node.focus.text',
   };
 
   const edgeBaseStylePathMapping: EdgeBaseToNodeFocusTheme = {
-    'edge.base.color': 'edge.focus.color',
-    'edge.base.width': 'edge.focus.width',
-    'edge.base.shape': 'edge.focus.shape',
-    'edge.base.textColor': 'edge.focus.textColor',
-    'edge.base.textSize': 'edge.focus.textSize',
-    'edge.base.textFontWeight': 'edge.focus.textFontWeight',
-    'edge.base.text': 'edge.focus.text',
+    'edge.default.color': 'edge.focus.color',
+    'edge.default.width': 'edge.focus.width',
+    'edge.default.shape': 'edge.focus.shape',
+    'edge.default.textColor': 'edge.focus.textColor',
+    'edge.default.textSize': 'edge.focus.textSize',
+    'edge.default.textFontWeight': 'edge.focus.textFontWeight',
+    'edge.default.text': 'edge.focus.text',
   };
 
   const nodeEntries = Object.entries(nodeBaseStylePathMapping);

@@ -6,7 +6,7 @@ import { DeepReadonly } from 'ts-essentials';
 import { ref } from 'vue';
 import { computed } from 'vue';
 
-import { BaseEventMap } from '../../base/events.ts';
+import { CoreEventMap } from '../../core/events.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { Aggregator } from '../../types.ts';
@@ -24,7 +24,7 @@ export const MARQUEE_EVENT_ID = 'marquee';
 
 export const useMarqueePlugin = <
   TransactionWrapperOptions,
-  GraphEventMap extends BaseEventMap & CanvasEventMap,
+  GraphEventMap extends CoreEventMap & CanvasEventMap,
   Plugins extends CanvasPlugin,
 >(
   graph: GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins>,
@@ -35,7 +35,7 @@ export const useMarqueePlugin = <
     marqueeHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap & CanvasEventMap & FocusEventMap>,
+    graph.events as EventHub<CoreEventMap & CanvasEventMap & FocusEventMap>,
   );
 
   const marqueeBox = ref<BoundingBox | undefined>();

@@ -1,6 +1,6 @@
 import type { AnyFunction } from 'ts-essentials';
 
-import { CORE_EVENT_ID } from '../base/index.ts';
+import { CORE_EVENT_ID } from '../core/index.ts';
 import { ANCHOR_EVENT_ID } from '../plugins/anchors/index.ts';
 import { CANVAS_EVENT_ID } from '../plugins/canvas/index.ts';
 import { DRAG_EVENT_ID } from '../plugins/drag/index.ts';

@@ -3,8 +3,8 @@ import { DARK_THEME } from '../themes/loadouts/dark.ts';
 import { LIGHT_THEME } from '../themes/loadouts/light.ts';
 import { PINK_THEME } from '../themes/loadouts/pink.ts';
 import type {
-  BaseGraphEdgeStyles,
-  BaseGraphNodeStyles,
+  CoreGraphEdgeStyles,
+  CoreGraphNodeStyles,
   GraphTheme as GraphThemeImport,
 } from '../themes/types.ts';
 import type { GEdge, GNode } from '../types.ts';
@@ -34,15 +34,15 @@ export const THEME_NAMES = Object.keys(THEME_LOADOUTS) as GraphThemeName[];
 export const resolveThemeForNode = (
   getTheme: ThemeGetter,
   node: GNode,
-): BaseGraphNodeStyles => ({
-  size: getTheme('node.base.size', node),
-  borderWidth: getTheme('node.base.borderWidth', node),
-  color: getTheme('node.base.color', node),
-  borderColor: getTheme('node.base.borderColor', node),
-  textSize: getTheme('node.base.textSize', node),
-  textColor: getTheme('node.base.textColor', node),
-  text: getTheme('node.base.text', node),
-  textFontWeight: getTheme('node.base.textFontWeight', node),
+): CoreGraphNodeStyles => ({
+  size: getTheme('node.default.size', node),
+  borderWidth: getTheme('node.default.borderWidth', node),
+  color: getTheme('node.default.color', node),
+  borderColor: getTheme('node.default.borderColor', node),
+  textSize: getTheme('node.default.textSize', node),
+  textColor: getTheme('node.default.textColor', node),
+  text: getTheme('node.default.text', node),
+  textFontWeight: getTheme('node.default.textFontWeight', node),
 });
 
 /**
@@ -55,11 +55,11 @@ export const resolveThemeForNode = (
 export const resolveThemeForEdge = (
   getTheme: ThemeGetter,
   edge: GEdge,
-): BaseGraphEdgeStyles => ({
-  width: getTheme('edge.base.width', edge),
-  color: getTheme('edge.base.color', edge),
-  text: getTheme('edge.base.text', edge),
-  textSize: getTheme('edge.base.textSize', edge),
-  textColor: getTheme('edge.base.textColor', edge),
-  textFontWeight: getTheme('edge.base.textFontWeight', edge),
+): CoreGraphEdgeStyles => ({
+  width: getTheme('edge.default.width', edge),
+  color: getTheme('edge.default.color', edge),
+  text: getTheme('edge.default.text', edge),
+  textSize: getTheme('edge.default.textSize', edge),
+  textColor: getTheme('edge.default.textColor', edge),
+  textFontWeight: getTheme('edge.default.textFontWeight', edge),
 });

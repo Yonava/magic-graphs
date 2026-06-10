@@ -4,8 +4,8 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { readonly, ref } from 'vue';
 
-import { BaseEventMap } from '../../base/events.ts';
-import type { BaseGraph } from '../../base/types.ts';
+import { CoreEventMap } from '../../core/events.ts';
+import type { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { prioritizeNode } from '../../helpers/prioritization.ts';
@@ -32,10 +32,10 @@ export const ANCHOR_EVENT_ID = 'anchors';
  */
 export const useNodeAnchorPlugin = <
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap & CanvasEventMap,
+  EventMap extends CoreEventMap & CanvasEventMap,
   Plugins extends CanvasPlugin,
 >(
-  graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
+  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeAnchor<TransactionWrapperOptions, EventMap, Plugins> => {
   const nodeAnchorRegistry = createNodeAnchorEventRegistry();
   const nodeAnchorHub: EventHub<NodeAnchorEventMap> =
@@ -44,7 +44,7 @@ export const useNodeAnchorPlugin = <
     nodeAnchorHub,
     // casting because graph.events could be arbitrarily due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap & CanvasEventMap>,
+    graph.events as EventHub<CoreEventMap & CanvasEventMap>,
   );
   /**
    * The node which anchors actively orbit around
@@ -61,7 +61,7 @@ export const useNodeAnchorPlugin = <
     hoveredNodeAnchorId.value = undefined;
   };
 
-  const clearAnchorStateOnNodeMove: BaseEventMap['onNodeUpdated'] = (
+  const clearAnchorStateOnNodeMove: CoreEventMap['onNodeUpdated'] = (
     _,
     previousValues,
   ) => {
@@ -87,9 +87,9 @@ export const useNodeAnchorPlugin = <
   const getAnchorSchemas = (node: GNode) => {
     const { getTheme } = graph;
 
-    const color = getTheme('nodeAnchor.base.color', node);
+    const color = getTheme('nodeAnchor.default.color', node);
     const focusColor = getTheme('nodeAnchor.focus.color', node);
-    const radius = getTheme('nodeAnchor.base.radius', node);
+    const radius = getTheme('nodeAnchor.default.radius', node);
     const focusRadius = getTheme('nodeAnchor.focus.radius', node);
 
     const anchorSchemas: SchemaItem[] = [];
@@ -149,17 +149,17 @@ export const useNodeAnchorPlugin = <
     // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
     const isNodeFocused = graph.focus.isFocused(node.id);
 
-    const anchorBaseRadius = getTheme('nodeAnchor.base.radius', node);
+    const anchorBaseRadius = getTheme('nodeAnchor.default.radius', node);
     const anchorFocusRadius = getTheme('nodeAnchor.focus.radius', node);
 
     const anchorRadius = isNodeFocused ? anchorFocusRadius : anchorBaseRadius;
 
-    const nodeBaseSize = getTheme('node.base.size', node);
+    const nodeBaseSize = getTheme('node.default.size', node);
     const nodeFocusSize = getTheme('node.focus.size', node);
 
     const nodeSize = isNodeFocused ? nodeBaseSize : nodeFocusSize;
 
-    const nodeBaseBorderWidth = getTheme('node.base.borderWidth', node);
+    const nodeBaseBorderWidth = getTheme('node.default.borderWidth', node);
     const nodeFocusBorderWidth = getTheme('node.focus.borderWidth', node);
 
     const nodeBorderWidth = isNodeFocused
@@ -218,7 +218,7 @@ export const useNodeAnchorPlugin = <
     const isFocused = graph.focus.isFocused(parentNode.value.id);
 
     const baseColor = getTheme(
-      'nodeAnchor.base.linkPreviewColor',
+      'nodeAnchor.default.linkPreviewColor',
       parentNode.value,
       draggedAnchor,
     );
@@ -232,7 +232,7 @@ export const useNodeAnchorPlugin = <
     const color = isFocused ? focusColor : baseColor;
 
     const baseWidth = getTheme(
-      'nodeAnchor.base.linkPreviewWidth',
+      'nodeAnchor.default.linkPreviewWidth',
       parentNode.value,
       draggedAnchor,
     );

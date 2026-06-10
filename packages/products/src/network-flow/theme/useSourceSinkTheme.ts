@@ -1,8 +1,8 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { FLOW_USETHEME_ID, SINK_LABEL, SOURCE_LABEL } from '../constants.ts';
 import state from '../state.ts';
 
@@ -36,15 +36,15 @@ export const useSourceSinkTheme = (
   };
 
   const stylize = () => {
-    setTheme('node.base.borderColor', colorSourceSink);
-    setTheme('nodeAnchor.base.color', colorSourceSink);
-    setTheme('node.base.text', labelSourceSink);
+    setTheme('node.default.borderColor', colorSourceSink);
+    setTheme('nodeAnchor.default.color', colorSourceSink);
+    setTheme('node.default.text', labelSourceSink);
   };
 
   const destylize = () => {
-    removeTheme('node.base.borderColor');
-    removeTheme('nodeAnchor.base.color');
-    removeTheme('node.base.text');
+    removeTheme('node.default.borderColor');
+    removeTheme('nodeAnchor.default.color');
+    removeTheme('node.default.text');
   };
 
   return {

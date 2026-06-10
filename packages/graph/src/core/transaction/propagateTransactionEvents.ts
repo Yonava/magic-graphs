@@ -1,10 +1,10 @@
-import { BaseEventMap } from '../events.ts';
-import { BaseGraph } from '../types.ts';
+import { CoreEventMap } from '../events.ts';
+import { CoreGraph } from '../types.ts';
 import { TransactionPayload } from './types.ts';
 
 type TransactionEventPayloadResolverMap = {
-  [EventName in keyof BaseEventMap]: (payload: TransactionPayload) => {
-    args: Parameters<BaseEventMap[EventName]>;
+  [EventName in keyof CoreEventMap]: (payload: TransactionPayload) => {
+    args: Parameters<CoreEventMap[EventName]>;
   } | void;
 };
 
@@ -78,9 +78,9 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
 
 export const propagateTransactionEvents = (
   payload: TransactionPayload,
-  emit: BaseGraph['events']['emit'],
+  emit: CoreGraph['events']['emit'],
 ) => {
-  (Object.keys(eventNameToPredicateMap) as (keyof BaseEventMap)[]).forEach(
+  (Object.keys(eventNameToPredicateMap) as (keyof CoreEventMap)[]).forEach(
     (event) => {
       const predicate = eventNameToPredicateMap[event];
       if (!predicate) return;

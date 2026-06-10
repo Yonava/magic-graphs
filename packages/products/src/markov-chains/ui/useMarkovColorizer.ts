@@ -1,8 +1,8 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 import { useSCCColorizer } from '../../sandbox/ui/GraphInfoMenu/useSCCColorizer.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { USETHEME_ID } from '../constants.ts';
 import type { MarkovChain } from '../markov/useMarkovChain.ts';
 
@@ -15,19 +15,19 @@ export const useMarkovColorizer = (graph: Graph, markov: MarkovChain) => {
     if (graph.focus.isFocused(node.id))
       return graph.baseTheme.value.node.focus.borderColor;
     if (markov.transientStates.value.has(node.id))
-      return graph.baseTheme.value.node.base.borderColor;
+      return graph.baseTheme.value.node.default.borderColor;
   };
 
   const colorize = () => {
     sccColorizer.color();
-    setTheme('node.base.borderColor', colorNodeBorder);
-    setTheme('nodeAnchor.base.color', colorNodeBorder);
+    setTheme('node.default.borderColor', colorNodeBorder);
+    setTheme('nodeAnchor.default.color', colorNodeBorder);
   };
 
   const decolorize = () => {
     sccColorizer.uncolor();
-    removeTheme('node.base.borderColor');
-    removeTheme('nodeAnchor.base.color');
+    removeTheme('node.default.borderColor');
+    removeTheme('nodeAnchor.default.color');
   };
 
   return {

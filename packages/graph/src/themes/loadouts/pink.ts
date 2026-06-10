@@ -16,7 +16,7 @@ const edgeSharedPink = {
 
 export const PINK_THEME = {
   node: {
-    base: {
+    default: {
       color: colors.PINK_100,
       borderColor: colors.PINK_400,
       ...nodeSharedPink,
@@ -29,7 +29,7 @@ export const PINK_THEME = {
     },
   },
   edge: {
-    base: {
+    default: {
       color: colors.PINK_600,
       ...edgeSharedPink,
     },
@@ -50,7 +50,7 @@ export const PINK_THEME = {
     encapsulatedNodeBoxColor: colors.PINK_700 + '05',
   },
   nodeAnchor: {
-    base: {
+    default: {
       color: colors.PINK_500,
       linkPreviewColor: colors.PINK_900,
       ...nodeAnchorShared,

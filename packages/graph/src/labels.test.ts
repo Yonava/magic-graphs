@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { useBaseGraph } from './base/index.ts';
+import { useCoreGraph } from './core/index.ts';
 import {
   useGraphLabelGetter,
   useNodeLetterLabelGetter,
@@ -9,7 +9,7 @@ import {
 
 describe('graph labels', () => {
   test('graphLabelGetter', () => {
-    const graph = useBaseGraph({});
+    const graph = useCoreGraph({});
     const getNewLabel = useGraphLabelGetter(graph.nodes, ['A', 'B', 'C']);
 
     const node1 = graph.actions.addNode({ label: getNewLabel() });
@@ -41,7 +41,7 @@ describe('graph labels', () => {
   });
 
   test('nodeLetterLabelGetter', () => {
-    const graph = useBaseGraph({});
+    const graph = useCoreGraph({});
     const getNewLabel = useNodeLetterLabelGetter(graph);
 
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -54,7 +54,7 @@ describe('graph labels', () => {
   });
 
   test('nodeNumberLabelGetter', () => {
-    const graph = useBaseGraph({});
+    const graph = useCoreGraph({});
     const getNewLabel = useNodeNumberLabelGetter(graph);
     for (let i = 0; i < 99; i++) {
       graph.actions.addNode({ label: getNewLabel() });

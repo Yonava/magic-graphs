@@ -1,4 +1,4 @@
-import { BaseGraph } from '../../base/types.ts';
+import { CoreGraph } from '../../core/types.ts';
 import { BASICS_STEPS } from '../../tutorials/sequences/basics.ts';
 import type { TutorialSequence } from '../../tutorials/types.ts';
 
@@ -6,8 +6,8 @@ import type { TutorialSequence } from '../../tutorials/types.ts';
  * pre-defined sequence for basic graph editing.
  * re-arrange the steps to change the order of the tutorial
  */
-const BASICS_SEQUENCE: (graph: BaseGraph) => TutorialSequence = (
-  graph: BaseGraph,
+const BASICS_SEQUENCE: (graph: CoreGraph) => TutorialSequence = (
+  graph: CoreGraph,
 ) => {
   const {
     greeting,
@@ -38,7 +38,7 @@ const BASICS_SEQUENCE: (graph: BaseGraph) => TutorialSequence = (
  * contains pre-defined sequences for common use cases
  */
 export const SEQUENCES: (
-  graph: BaseGraph,
-) => Record<string, TutorialSequence> = (graph: BaseGraph) => ({
+  graph: CoreGraph,
+) => Record<string, TutorialSequence> = (graph: CoreGraph) => ({
   basics: BASICS_SEQUENCE(graph),
 });

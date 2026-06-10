@@ -2,8 +2,8 @@ import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
-import { BaseEventMap } from '../../base/events.ts';
-import type { BaseGraph } from '../../base/types.ts';
+import { CoreEventMap } from '../../core/events.ts';
+import type { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { createDragState } from '../../shared/createDragState.ts';
@@ -17,10 +17,10 @@ export const DRAG_EVENT_ID = 'drag';
 
 export const useNodeDragPlugin = <
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap & CanvasEventMap,
+  EventMap extends CoreEventMap & CanvasEventMap,
   Plugins extends CanvasPlugin,
 >(
-  graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
+  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeDrag<TransactionWrapperOptions, EventMap, Plugins> => {
   const nodeDragRegistry = createNodeDragEventRegistry();
   const nodeDragHub: EventHub<NodeDragEventMap> =
@@ -29,7 +29,7 @@ export const useNodeDragPlugin = <
     nodeDragHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap & CanvasEventMap>,
+    graph.events as EventHub<CoreEventMap & CanvasEventMap>,
   );
 
   const dragState = createDragState<{ nodeIds: string[] }>();

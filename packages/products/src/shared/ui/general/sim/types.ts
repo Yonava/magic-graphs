@@ -1,4 +1,4 @@
-import type { BaseEventMap } from '@magic/graph/base/events';
+import type { CoreEventMap } from '@magic/graph/core/events';
 
 import type { ComputedRef, Ref } from 'vue';
 
@@ -102,7 +102,7 @@ export type SimulationControls<T = any> = {
   showPlaybackSpeedControls: boolean;
   /**
    * if true, the simulation will pause when
-   * the graph {@link BaseEventMap.onStructureChange | structure changes}
+   * the graph {@link CoreEventMap.onStructureChange | structure changes}
    * @default true
    */
   pauseOnStructureChange: boolean;

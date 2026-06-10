@@ -15,7 +15,7 @@ import {
   TransactionPayload,
 } from './transaction/types.ts';
 
-export type BaseEventMap = {
+export type CoreEventMap = {
   /**
    * fired once at the end of any atomic graph mutation batch.
    * downstream plugins (Animation, History, Broadcast) should hook into this.
@@ -90,9 +90,9 @@ export type BaseEventMap = {
   onSettingsChange: (diff: DeepPartial<GraphSettings>) => void;
 };
 
-export type BaseEventRegistry = EventMapToEventRegistry<BaseEventMap>;
+export type CoreEventRegistry = EventMapToEventRegistry<CoreEventMap>;
 
-export const createBaseEventRegistry = (): BaseEventRegistry => ({
+export const createCoreEventRegistry = (): CoreEventRegistry => ({
   onTransactionComplete: new Set(),
   onStructureChange: new Set(),
 

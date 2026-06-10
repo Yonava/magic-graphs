@@ -1,7 +1,7 @@
 import { computed, ref, toRef, watch } from 'vue';
 import type { MaybeRef } from 'vue';
 
-import { BaseGraph } from '../base/types.ts';
+import { CoreGraph } from '../core/types.ts';
 import {
   DEFAULT_HIGHLIGHT_CLASS_NAME,
   DEFAULT_INTERVAL,
@@ -22,7 +22,7 @@ import type { TutorialControls } from './types.ts';
  * @returns controls for the tutorial sequence
  */
 export const useGraphTutorial = (
-  graph: BaseGraph,
+  graph: CoreGraph,
   tutorialSequence: MaybeRef<TutorialSequence>,
 ): TutorialControls => {
   /**

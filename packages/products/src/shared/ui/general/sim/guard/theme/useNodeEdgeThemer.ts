@@ -1,9 +1,10 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GEdge, GNode } from '@magic/graph/types';
-import type { Graph } from '../../../../../useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 
 import { ref } from 'vue';
+
+import type { Graph } from '../../../../../useGraphWithCanvas.ts';
 
 const USETHEME_ID = 'sim-guard-node-edge-colorizer';
 
@@ -26,8 +27,8 @@ export const useNodeEdgeTheme = (graph: Graph) => {
   };
 
   const theme = () => {
-    setTheme('node.base.borderColor', colorItem);
-    setTheme('edge.base.color', colorItem);
+    setTheme('node.default.borderColor', colorItem);
+    setTheme('edge.default.color', colorItem);
   };
 
   const untheme = () => {

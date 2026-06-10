@@ -18,7 +18,7 @@ const edgeSharedDark = {
 
 export const DARK_THEME = {
   node: {
-    base: {
+    default: {
       color: colors.STONE_600,
       borderColor: colors.BLACK,
       ...nodeSharedDark,
@@ -30,7 +30,7 @@ export const DARK_THEME = {
     },
   },
   edge: {
-    base: {
+    default: {
       color: colors.STONE_900,
       ...edgeSharedDark,
     },
@@ -50,7 +50,7 @@ export const DARK_THEME = {
     encapsulatedNodeBoxColor: colors.RED_700 + '20',
   },
   nodeAnchor: {
-    base: {
+    default: {
       color: colors.GRAY_900,
       linkPreviewColor: colors.BLACK,
       ...nodeAnchorShared,

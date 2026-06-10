@@ -6,8 +6,8 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-import { BaseEventMap } from '../../base/events.ts';
-import { BaseGraph } from '../../base/types.ts';
+import { CoreEventMap } from '../../core/events.ts';
+import { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { Aggregator } from '../../types.ts';
@@ -25,10 +25,10 @@ export const CANVAS_EVENT_ID = 'canvas';
 
 export const useCanvasPlugin = <
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap,
+  EventMap extends CoreEventMap,
   Plugins,
 >(
-  graph: BaseGraph<TransactionWrapperOptions, EventMap, Plugins>,
+  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
   magicCanvas: MagicCanvasProps,
 ): GraphWithCanvas<TransactionWrapperOptions, EventMap, Plugins> => {
   const canvasRegistry = createCanvasEventRegistry();
@@ -37,7 +37,7 @@ export const useCanvasPlugin = <
     canvasHub,
     // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
     // from plugins upstream
-    graph.events as EventHub<BaseEventMap>,
+    graph.events as EventHub<CoreEventMap>,
   );
 
   const aggregator = useAggregator({ emit: events.emit });
@@ -109,7 +109,7 @@ export const useCanvasPlugin = <
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const edgeSchemaItems = graph.edges.value
       .map((edge) => {
-        const shape = graph.getTheme('edge.base.shape', edge, {
+        const shape = graph.getTheme('edge.default.shape', edge, {
           ...graph,
           shapes,
         });
@@ -126,7 +126,7 @@ export const useCanvasPlugin = <
 
     const nodeSchemaItems = graph.nodes.value
       .map((node) => {
-        const shape = graph.getTheme('node.base.shape', node, {
+        const shape = graph.getTheme('node.default.shape', node, {
           ...graph,
           shapes,
         });

@@ -1,7 +1,7 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 
-import { BaseEventMap } from './base/events.ts';
-import { useBaseGraph } from './base/index.ts';
+import { CoreEventMap } from './core/events.ts';
+import { useCoreGraph } from './core/index.ts';
 import { useGraphHelpers } from './helpers/index.ts';
 import { NodeAnchorEventMap } from './plugins/anchors/events.ts';
 import { useNodeAnchorPlugin } from './plugins/anchors/index.ts';
@@ -39,31 +39,31 @@ const useGraphWithPlugins = (
 ) => {
   // https://github.com/Yonava/magic-graphs/issues/606
   // TODO get inference to work without explicit type parameters
-  const base = useBaseGraph(settings);
+  const base = useCoreGraph(settings);
 
-  const baseCanvas = useCanvasPlugin<{}, BaseEventMap, {}>(base, canvas);
+  const baseCanvas = useCanvasPlugin<{}, CoreEventMap, {}>(base, canvas);
 
   const baseCanvasFocus = useFocusPlugin<
     {},
-    BaseEventMap & CanvasEventMap,
+    CoreEventMap & CanvasEventMap,
     CanvasPlugin
   >(baseCanvas);
 
   const baseCanvasFocusDrag = useNodeDragPlugin<
     FocusTransactionWrapperOptions,
-    BaseEventMap & CanvasEventMap & FocusEventMap,
+    CoreEventMap & CanvasEventMap & FocusEventMap,
     CanvasPlugin & FocusPlugin
   >(baseCanvasFocus);
 
   const baseCanvasFocusDragAnchor = useNodeAnchorPlugin<
     FocusTransactionWrapperOptions,
-    BaseEventMap & CanvasEventMap & FocusEventMap & NodeDragEventMap,
+    CoreEventMap & CanvasEventMap & FocusEventMap & NodeDragEventMap,
     CanvasPlugin & FocusPlugin & NodeDragPlugin
   >(baseCanvasFocusDrag);
 
   const baseCanvasFocusDragAnchorHistory = useHistoryPlugin<
     FocusTransactionWrapperOptions,
-    BaseEventMap &
+    CoreEventMap &
       CanvasEventMap &
       FocusEventMap &
       NodeDragEventMap &
@@ -73,7 +73,7 @@ const useGraphWithPlugins = (
 
   const baseCanvasFocusDragAnchorHistoryMarquee = useMarqueePlugin<
     FocusTransactionWrapperOptions & HistoryTransactionWrapperOptions,
-    BaseEventMap &
+    CoreEventMap &
       CanvasEventMap &
       FocusEventMap &
       NodeDragEventMap &

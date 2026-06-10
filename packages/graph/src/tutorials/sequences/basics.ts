@@ -1,6 +1,6 @@
 import { PURPLE_700, RED_700 } from '@magic/utils/colors';
 
-import { BaseGraph } from '../../base/types.ts';
+import { CoreGraph } from '../../core/types.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import { TUTORIAL_THEME_ID } from '../../tutorials/types.ts';
 import { type TutorialStep } from '../../tutorials/types.ts';
@@ -11,8 +11,8 @@ import { type TutorialStep } from '../../tutorials/types.ts';
 // @ts-expect-error migration: will complain that base graph events do not include
 // onNodeDrop
 export const BASICS_STEPS: (
-  graph: BaseGraph,
-) => Record<string, TutorialStep> = (graph: BaseGraph) => ({
+  graph: CoreGraph,
+) => Record<string, TutorialStep> = (graph: CoreGraph) => ({
   greeting: {
     hint: 'Welcome to the graph editor tutorial',
     dismiss: 'onClick',
@@ -51,7 +51,7 @@ export const BASICS_STEPS: (
   removeElement: getRemoveNodeOrEdgeStep(graph),
 });
 
-const getRemoveNodeOrEdgeStep = (graph: BaseGraph): TutorialStep => {
+const getRemoveNodeOrEdgeStep = (graph: CoreGraph): TutorialStep => {
   let stepPassed = false;
   const completeStep = () => (stepPassed = true);
   const { setTheme, removeAllThemes } = useTheme(graph, TUTORIAL_THEME_ID);
@@ -63,7 +63,7 @@ const getRemoveNodeOrEdgeStep = (graph: BaseGraph): TutorialStep => {
     },
     onInit: () => {
       stepPassed = false;
-      setTheme('nodeAnchor.base.color', (node) =>
+      setTheme('nodeAnchor.default.color', (node) =>
         node.label === '1' ? PURPLE_700 : RED_700,
       );
       graph.events.subscribe('onEdgeRemoved', completeStep);

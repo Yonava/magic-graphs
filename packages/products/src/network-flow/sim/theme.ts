@@ -1,11 +1,11 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GEdge } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { FlowTrace } from '../algo/fordFulkerson.ts';
 import { FLOW_USETHEME_ID } from '../constants.ts';
 import { isResidual } from '../misc/useResidualEdges.ts';
@@ -71,13 +71,13 @@ export const useSimulationTheme = (
   };
 
   const activate = () => {
-    setTheme('edge.base.color', colorActiveEdges);
-    setTheme('edge.base.text', labelEdges);
+    setTheme('edge.default.color', colorActiveEdges);
+    setTheme('edge.default.text', labelEdges);
   };
 
   const deactivate = () => {
-    removeTheme('edge.base.color');
-    removeTheme('edge.base.text');
+    removeTheme('edge.default.color');
+    removeTheme('edge.default.text');
   };
 
   return {

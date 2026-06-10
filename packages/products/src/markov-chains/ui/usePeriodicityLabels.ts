@@ -1,7 +1,7 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { USETHEME_ID } from '../constants.ts';
 import type { MarkovChain } from '../markov/useMarkovChain.ts';
 
@@ -17,11 +17,11 @@ export const usePeriodicityLabels = (graph: Graph, markov: MarkovChain) => {
   };
 
   const label = () => {
-    setTheme('node.base.text', nodeText);
+    setTheme('node.default.text', nodeText);
   };
 
   const unlabel = () => {
-    removeTheme('node.base.text');
+    removeTheme('node.default.text');
   };
 
   return {
