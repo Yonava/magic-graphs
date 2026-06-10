@@ -8,7 +8,6 @@ import { CoreEventMap } from '../../core/events.ts';
 import type { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import { prioritizeNode } from '../../helpers/prioritization.ts';
 import type {
   GraphWithNodeAnchor,
   NodeAnchor,
@@ -339,8 +338,6 @@ export const useNodeAnchorPlugin = <
     if (!parentNode.value || !draggedAnchor) return aggregator;
 
     const { id: parentNodeId } = parentNode.value;
-
-    prioritizeNode(parentNodeId, aggregator);
 
     const parentNodePriority = aggregator.find(
       (item) => item.id === parentNodeId,
