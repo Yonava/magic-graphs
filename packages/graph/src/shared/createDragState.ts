@@ -7,12 +7,8 @@ type ActiveDrag<TData extends object> = Coordinate & { data: TData };
 /**
  * tracks cursor delta and attached data for a drag interaction.
  * `stopDrag` and `applyMove` return undefined when no drag is active for use as a guard.
- *
- * @param getPosition returns the dragged item's current position given its data
  */
-export const createDragState = <TData extends object>(
-  getPosition: (data: TData) => Coordinate,
-) => {
+export const createDragState = <TData extends object>() => {
   let activeDrag: ActiveDrag<TData> | undefined;
 
   const startDrag = (coords: Coordinate, data: TData) => {
@@ -29,8 +25,6 @@ export const createDragState = <TData extends object>(
   const applyMove = (newCoords: Coordinate) => {
     if (!activeDrag) return;
 
-    const currentPos = getPosition(activeDrag.data);
-
     const dx = newCoords.x - activeDrag.x;
     const dy = newCoords.y - activeDrag.y;
 
@@ -38,8 +32,7 @@ export const createDragState = <TData extends object>(
     activeDrag.y = newCoords.y;
 
     return {
-      x: currentPos.x + dx,
-      y: currentPos.y + dy,
+      deltas: { dx, dy },
       data: activeDrag.data as DeepReadonly<TData>,
     } as const;
   };
@@ -59,7 +52,3 @@ export const createDragState = <TData extends object>(
     },
   };
 };
-
-export type DragStateControls<TData extends object = object> = ReturnType<
-  typeof createDragState<TData>
->;

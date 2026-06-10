@@ -97,6 +97,10 @@ export type SchemaItem = {
    * the {@link Shape | shape} instance that will be rendered on the canvas
    */
   shape: Shape;
+  /**
+   * attached metadata
+   */
+  data?: Record<string, unknown>;
 };
 
 export type GraphPlugin<PluginInterface extends Record<string, unknown>> =

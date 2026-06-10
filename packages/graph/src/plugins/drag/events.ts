@@ -1,15 +1,17 @@
+import { DeepReadonly } from 'ts-essentials';
+
 import { EventMapToEventRegistry } from '../../events/types.ts';
 import { GNode } from '../../types.ts';
 
 export type NodeDragEventMap = {
   /**
-   * when the user initiates a drag on a node
+   * when the user initiates a node drag
    */
-  onNodeDragStart: (node: GNode) => void;
+  onNodeDragStart: (nodes: DeepReadonly<GNode[]>) => void;
   /**
-   * when the user drops a node
+   * when the user drops nodes
    */
-  onNodeDrop: (node: GNode) => void;
+  onNodeDrop: (nodes: DeepReadonly<GNode[]>) => void;
 };
 
 type NodeDragEventRegistry = EventMapToEventRegistry<NodeDragEventMap>;

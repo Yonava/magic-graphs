@@ -4,23 +4,20 @@ import { createDragState } from './createDragState.ts';
 
 type Item = { x: number; y: number };
 
-const makeState = (item: Item) => createDragState<{ item: Item }>(() => item);
-
 describe(createDragState, () => {
   describe('startDrag', () => {
     it('records the starting cursor position', () => {
-      const item = { x: 10, y: 20 };
-      const state = makeState(item);
-      state.startDrag({ x: 5, y: 5 }, { item });
+      const state = createDragState<{ item: Item }>();
+      state.startDrag({ x: 5, y: 5 }, { item: { x: 10, y: 20 } });
       const result = state.applyMove({ x: 6, y: 7 });
-      expect(result).toMatchObject({ x: 11, y: 22 });
+      expect(result?.deltas).toEqual({ dx: 1, dy: 2 });
     });
   });
 
   describe('stopDrag', () => {
     it('returns the attached data and ends the drag', () => {
+      const state = createDragState<{ item: Item }>();
       const item = { x: 0, y: 0 };
-      const state = makeState(item);
       state.startDrag({ x: 0, y: 0 }, { item });
       const data = state.stopDrag();
       expect(data).toEqual({ item });
@@ -28,42 +25,36 @@ describe(createDragState, () => {
     });
 
     it('returns undefined when no drag is active', () => {
-      const state = makeState({ x: 0, y: 0 });
+      const state = createDragState<{ item: Item }>();
       expect(state.stopDrag()).toBeUndefined();
     });
   });
 
   describe('applyMove', () => {
     it('returns undefined when no drag is active', () => {
-      const state = makeState({ x: 0, y: 0 });
+      const state = createDragState<{ item: Item }>();
       expect(state.applyMove({ x: 5, y: 5 })).toBeUndefined();
     });
 
-    it('computes new position from cursor delta', () => {
-      const item = { x: 100, y: 200 };
-      const state = makeState(item);
-      state.startDrag({ x: 10, y: 10 }, { item });
+    it('computes deltas from cursor movement', () => {
+      const state = createDragState<{ item: Item }>();
+      state.startDrag({ x: 10, y: 10 }, { item: { x: 100, y: 200 } });
       const result = state.applyMove({ x: 13, y: 8 });
-      expect(result).toMatchObject({ x: 103, y: 198 });
+      expect(result?.deltas).toEqual({ dx: 3, dy: -2 });
     });
 
-    it('accumulates deltas across multiple moves', () => {
-      const item = { x: 0, y: 0 };
-      const state = createDragState<{ item: Item }>(() => item);
-      state.startDrag({ x: 0, y: 0 }, { item });
+    it('accumulates deltas correctly across multiple moves', () => {
+      const state = createDragState<{ item: Item }>();
+      state.startDrag({ x: 0, y: 0 }, { item: { x: 0, y: 0 } });
 
-      let result = state.applyMove({ x: 3, y: 4 });
-      item.x = result!.x;
-      item.y = result!.y;
-
-      result = state.applyMove({ x: 5, y: 6 });
-      expect(result).toMatchObject({ x: 5, y: 6 });
+      state.applyMove({ x: 3, y: 4 });
+      const result = state.applyMove({ x: 5, y: 6 });
+      expect(result?.deltas).toEqual({ dx: 2, dy: 2 });
     });
 
     it('includes the attached data in the return value', () => {
-      const item = { x: 0, y: 0 };
-      const data = { item };
-      const state = makeState(item);
+      const state = createDragState<{ item: Item }>();
+      const data = { item: { x: 0, y: 0 } };
       state.startDrag({ x: 0, y: 0 }, data);
       const result = state.applyMove({ x: 1, y: 1 });
       expect(result?.data).toBe(data);

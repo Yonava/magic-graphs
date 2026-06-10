@@ -41,8 +41,6 @@ export const useMarqueePlugin = <
   const marqueeBox = ref<BoundingBox | undefined>();
   const encapsulatedNodeBox = ref<BoundingBox | undefined>();
 
-  const groupDragCoordinates = ref<Coordinate | undefined>();
-
   /**
    * given a mouse event, engages or disengages the marquee box
    */
@@ -54,45 +52,6 @@ export const useMarqueePlugin = <
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem) engageMarqueeBox(coords);
-  };
-
-  const groupDrag = ({ coords }: CanvasGraphMouseEvent) => {
-    if (!groupDragCoordinates.value) return;
-
-    const dx = coords.x - groupDragCoordinates.value.x;
-    const dy = coords.y - groupDragCoordinates.value.y;
-    groupDragCoordinates.value = coords;
-    graph.actions.updateElements({
-      nodes: graph.focus.focusedNodes.value.map((node) => ({
-        id: node.id,
-        values: {
-          x: node.x + dx,
-          y: node.y + dy,
-        },
-      })),
-    });
-    updateEncapsulatedNodeBox();
-  };
-
-  const beginGroupDrag = ({ items, coords, event }: CanvasGraphMouseEvent) => {
-    if (event.button !== MOUSE_BUTTONS.left) return;
-    if (marqueeBox.value) return;
-
-    const topItem = items.at(-1);
-    if (topItem?.graphType !== 'encapsulated-node-box') return;
-
-    groupDragCoordinates.value = coords;
-    events.emit('onGroupDragStart', graph.focus.focusedNodes.value, coords);
-  };
-
-  const endGroupDrag = () => {
-    if (!groupDragCoordinates.value) return;
-    events.emit(
-      'onGroupDrop',
-      graph.focus.focusedNodes.value,
-      groupDragCoordinates.value,
-    );
-    groupDragCoordinates.value = undefined;
   };
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
@@ -193,6 +152,9 @@ export const useMarqueePlugin = <
       graphType: 'encapsulated-node-box',
       shape,
       priority: Infinity,
+      data: {
+        nodeIds: graph.focus.focusedNodes.value.map((n) => n.id),
+      },
     } as const;
   };
 
@@ -228,10 +190,6 @@ export const useMarqueePlugin = <
       { before: [ANCHOR_EVENT_ID] },
     );
 
-    events.handle('onMouseDown', beginGroupDrag, MARQUEE_EVENT_ID);
-    events.handle('onMouseUp', endGroupDrag, MARQUEE_EVENT_ID);
-    events.handle('onMouseMove', groupDrag, MARQUEE_EVENT_ID);
-
     events.subscribe('onTransactionComplete', updateEncapsulatedNodeBox);
   };
 
@@ -242,10 +200,6 @@ export const useMarqueePlugin = <
     events.unhandle('onMouseUp', disengageMarqueeBox);
     events.unhandle('onContextMenu', disengageMarqueeBox);
     events.unhandle('onMouseMove', setMarqueeBoxDimensions);
-
-    events.unhandle('onMouseDown', beginGroupDrag);
-    events.unhandle('onMouseUp', endGroupDrag);
-    events.unhandle('onMouseMove', groupDrag);
 
     events.unsubscribe('onTransactionComplete', updateEncapsulatedNodeBox);
 
