@@ -1,5 +1,6 @@
 import { onUnmounted, ref } from 'vue';
 
+import { CoreEventMap } from './core/events.ts';
 import type { CoreGraph } from './core/types.ts';
 import type { GEdge, GNode } from './types.ts';
 
@@ -117,10 +118,16 @@ export type WeightedAdjacencyList = Record<
   })[]
 >;
 
-type CoreGraphForAdjacencyList = Pick<
-  CoreGraph,
+type CoreGraphForAdjacencyListParam<
+  TransactionOptions = {},
+  EventMap extends CoreEventMap = CoreEventMap,
+  Plugins = {},
+> = Pick<
+  CoreGraph<TransactionOptions, EventMap, Plugins>,
   'settings' | 'getNode' | 'nodes' | 'edges' | 'helpers' | 'events'
 >;
+
+type CoreGraphForAdjacencyList = Omit<CoreGraphForAdjacencyListParam, 'events'>;
 
 /**
  * creates an adjacency list mapping node ids to nodes along with a added field `weight` that
@@ -167,7 +174,13 @@ export const getWeightedAdjacencyList = (graph: CoreGraphForAdjacencyList) => {
  *    'def456': [{ id: 'abc123', label: 'A', weight: 10, x: 100, y: 100 }]
  * }
  */
-export const useAdjacencyList = (graph: CoreGraphForAdjacencyList) => {
+export const useAdjacencyList = <
+  TransactionOptions,
+  EventMap extends CoreEventMap,
+  Plugins,
+>(
+  graph: CoreGraphForAdjacencyListParam<TransactionOptions, EventMap, Plugins>,
+) => {
   const adjacencyList = ref<AdjacencyList>({});
   const labelAdjacencyList = ref<AdjacencyList>({});
   const fullNodeAdjacencyList = ref<FullNodeAdjacencyList>({});
