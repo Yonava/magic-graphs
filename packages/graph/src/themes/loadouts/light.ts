@@ -37,7 +37,7 @@ export const LIGHT_THEME = {
       ...edgeSharedLight,
     },
   },
-  graph: {
+  canvas: {
     color: colors.GRAY_200,
     patternColor: colors.GRAY_500,
   },

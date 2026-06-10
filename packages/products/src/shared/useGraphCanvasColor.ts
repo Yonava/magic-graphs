@@ -5,12 +5,12 @@ import { Graph } from './useGraphWithCanvas.ts';
 export const useGraphCanvasColor = (graph: Graph) => {
   const { events, getTheme } = graph;
 
-  const patternColor = ref(getTheme('graph.patternColor'));
-  const bgColor = ref(getTheme('graph.color'));
+  const patternColor = ref(getTheme('canvas.patternColor'));
+  const bgColor = ref(getTheme('canvas.color'));
 
   const changeCanvasColor = async () => {
-    patternColor.value = getTheme('graph.patternColor');
-    bgColor.value = getTheme('graph.color');
+    patternColor.value = getTheme('canvas.patternColor');
+    bgColor.value = getTheme('canvas.color');
   };
 
   events.subscribe('onThemeChange', changeCanvasColor);

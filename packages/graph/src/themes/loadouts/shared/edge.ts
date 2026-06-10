@@ -107,11 +107,11 @@ const edgeShape: GraphTheme['edge']['base']['shape'] = (edge, graph) => {
       ),
   );
 
-  const graphColor = graph.getTheme('graph.color');
+  const canvasColor = graph.getTheme('canvas.color');
 
   const textAreaOnEdge: TextArea = {
-    color: graphColor,
-    activeColor: graphColor,
+    color: canvasColor,
+    activeColor: canvasColor,
     textBlock: {
       content: styles.text,
       color: styles.textColor,

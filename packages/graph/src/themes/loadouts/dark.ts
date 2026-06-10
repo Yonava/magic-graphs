@@ -39,7 +39,7 @@ export const DARK_THEME = {
       ...edgeSharedDark,
     },
   },
-  graph: {
+  canvas: {
     color: colors.GRAY_600,
     patternColor: colors.GRAY_500,
   },
