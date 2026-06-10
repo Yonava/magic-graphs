@@ -100,7 +100,7 @@ export type GraphTheme = {
     base: BaseGraphTheme['edge'];
     focus: FocusGraphTheme['edge'];
   };
-  graph: BaseGraphTheme['graph'];
+  canvas: BaseGraphTheme['graph'];
   nodeAnchor: NodeAnchorGraphTheme;
   marquee: MarqueeGraphTheme;
 };
@@ -191,7 +191,7 @@ export const getInitialThemeMap = (): FullThemeMap => ({
     base: edgeFields(),
     focus: edgeFields(),
   },
-  graph: {
+  canvas: {
     color: [],
     patternColor: [],
   },

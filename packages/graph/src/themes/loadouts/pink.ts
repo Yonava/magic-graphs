@@ -39,7 +39,7 @@ export const PINK_THEME = {
       textColor: colors.PURPLE_600,
     },
   },
-  graph: {
+  canvas: {
     color: colors.PINK_300,
     patternColor: colors.PURPLE_200,
   },
