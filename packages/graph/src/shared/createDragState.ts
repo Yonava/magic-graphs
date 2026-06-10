@@ -27,8 +27,6 @@ export const createDragState = <TData extends object>() => {
   const applyMove = (newCoords: Coordinate) => {
     if (!activeDrag) return;
 
-    const activeX = activeDrag.x;
-    const activeY = activeDrag.y;
     const dx = newCoords.x - activeDrag.x;
     const dy = newCoords.y - activeDrag.y;
 
@@ -36,8 +34,6 @@ export const createDragState = <TData extends object>() => {
     activeDrag.y = newCoords.y;
 
     return {
-      x: activeX + dx,
-      y: activeY + dy,
       deltas: { dx, dy },
       data: activeDrag.data as DeepReadonly<TData>,
     } as const;
@@ -58,7 +54,3 @@ export const createDragState = <TData extends object>() => {
     },
   };
 };
-
-export type DragStateControls<TData extends object = object> = ReturnType<
-  typeof createDragState<TData>
->;
