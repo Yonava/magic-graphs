@@ -1,8 +1,6 @@
 import { onUnmounted, ref } from 'vue';
 
-import { CoreEventMap } from './core/events.ts';
 import type { CoreGraph } from './core/types.ts';
-import { GraphHelpers } from './helpers/types.ts';
 import type { GEdge, GNode } from './types.ts';
 
 /**
@@ -12,7 +10,7 @@ import type { GEdge, GNode } from './types.ts';
 export type AdjacencyList = Record<string, string[]>;
 
 export const getDirectedGraphAdjacencyList = (
-  graph: Pick<CoreGraph, 'nodes' | 'edges'>,
+  graph: CoreGraphForAdjacencyList,
 ) => {
   return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
     acc[node.id] = graph.edges.value
@@ -23,7 +21,7 @@ export const getDirectedGraphAdjacencyList = (
 };
 
 export const getUndirectedGraphAdjacencyList = (
-  graph: Pick<CoreGraph, 'nodes' | 'edges'>,
+  graph: CoreGraphForAdjacencyList,
 ) => {
   return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
     acc[node.id] = graph.edges.value
@@ -43,9 +41,7 @@ export const getUndirectedGraphAdjacencyList = (
  * @example getAdjacencyList(graph)
  * // { 'abc123': ['def456'], 'def456': ['abc123'] }
  */
-export const getAdjacencyList = (
-  graph: Pick<CoreGraph, 'settings' | 'nodes' | 'edges'>,
-) => {
+export const getAdjacencyList = (graph: CoreGraphForAdjacencyList) => {
   const { isGraphDirected } = graph.settings.value;
   const fn = isGraphDirected
     ? getDirectedGraphAdjacencyList
@@ -60,9 +56,7 @@ export const getAdjacencyList = (
  * @example getLabelAdjacencyList(graph)
  * // { 'A': ['B'], 'B': ['A'] }
  */
-export const getLabelAdjacencyList = (
-  graph: Pick<CoreGraph, 'settings' | 'getNode' | 'nodes' | 'edges'>,
-) => {
+export const getLabelAdjacencyList = (graph: CoreGraphForAdjacencyList) => {
   const adjList = getAdjacencyList(graph);
   const adjListEntries = Object.entries(adjList);
 
@@ -96,9 +90,7 @@ export type FullNodeAdjacencyList = Record<GNode['id'], GNode[]>;
  * // 'def456': [{ id: 'abc123', label: 'A', x: 100, y: 100 }]
  * // }
  */
-export const getFullNodeAdjacencyList = (
-  graph: Pick<CoreGraph, 'settings' | 'getNode' | 'nodes' | 'edges'>,
-) => {
+export const getFullNodeAdjacencyList = (graph: CoreGraphForAdjacencyList) => {
   const adjList = getAdjacencyList(graph);
   const adjListEntries = Object.entries(adjList);
 
@@ -125,6 +117,11 @@ export type WeightedAdjacencyList = Record<
   })[]
 >;
 
+type CoreGraphForAdjacencyList = Pick<
+  CoreGraph,
+  'settings' | 'getNode' | 'nodes' | 'edges' | 'helpers' | 'events'
+>;
+
 /**
  * creates an adjacency list mapping node ids to nodes along with a added field `weight` that
  * represents the weight of the edge connecting them
@@ -137,10 +134,7 @@ export type WeightedAdjacencyList = Record<
  * //   'def456': [{ id: 'abc123', label: 'A', weight: 1, x: 100, y: 100 }]
  * // }
  */
-export const getWeightedAdjacencyList = (
-  graph: Pick<CoreGraph, 'settings' | 'getNode' | 'nodes' | 'edges'>,
-  helpers: Pick<GraphHelpers, 'nodes'>,
-) => {
+export const getWeightedAdjacencyList = (graph: CoreGraphForAdjacencyList) => {
   const adjList = getAdjacencyList(graph);
   const adjListEntries = Object.entries(adjList);
 
@@ -148,7 +142,7 @@ export const getWeightedAdjacencyList = (
     (acc, [keyNodeId, toNodeIds]) => {
       acc[keyNodeId] = toNodeIds.map((toNodeId) => ({
         ...graph.getNode(toNodeId)!,
-        weight: helpers.nodes.getEdgeBetween(keyNodeId, toNodeId)!.weight,
+        weight: graph.helpers.nodes.getEdgeBetween(keyNodeId, toNodeId)!.weight,
       }));
       return acc;
     },
@@ -173,13 +167,7 @@ export const getWeightedAdjacencyList = (
  *    'def456': [{ id: 'abc123', label: 'A', weight: 10, x: 100, y: 100 }]
  * }
  */
-export const useAdjacencyList = <A, B extends CoreEventMap, C>({
-  graph,
-  helpers,
-}: {
-  graph: CoreGraph<A, B, C>;
-  helpers: GraphHelpers;
-}) => {
+export const useAdjacencyList = (graph: CoreGraphForAdjacencyList) => {
   const adjacencyList = ref<AdjacencyList>({});
   const labelAdjacencyList = ref<AdjacencyList>({});
   const fullNodeAdjacencyList = ref<FullNodeAdjacencyList>({});
@@ -192,7 +180,7 @@ export const useAdjacencyList = <A, B extends CoreEventMap, C>({
     adjacencyList.value = getAdjacencyList(graph);
     labelAdjacencyList.value = getLabelAdjacencyList(graph);
     fullNodeAdjacencyList.value = getFullNodeAdjacencyList(graph);
-    weightedAdjacencyList.value = getWeightedAdjacencyList(graph, helpers);
+    weightedAdjacencyList.value = getWeightedAdjacencyList(graph);
 
     directedAdjacencyList.value = getDirectedGraphAdjacencyList(graph);
     undirectedAdjacencyList.value = getUndirectedGraphAdjacencyList(graph);

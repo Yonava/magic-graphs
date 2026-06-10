@@ -97,7 +97,7 @@ export type CurryWithCoreGraph<Helpers> = {
   [Key in keyof Helpers]: (graph: CoreGraphForHelpers) => Helpers[Key];
 };
 
-export type GraphHelpers = {
+export type CoreGraphHelpers = {
   edges: EdgeHelpers;
   nodes: NodeHelpers;
 };

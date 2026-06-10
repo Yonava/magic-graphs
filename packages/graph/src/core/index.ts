@@ -13,6 +13,7 @@ import { getInitialThemeMap } from '../themes/types.ts';
 import type { GEdge, GNode } from '../types.ts';
 import { useGraphActions } from './actions/useGraphActions.ts';
 import { createCoreEventRegistry } from './events.ts';
+import { useGraphHelpers } from './helpers/index.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
 import type { CoreGraph } from './types.ts';
@@ -97,6 +98,8 @@ export const useCoreGraph = (
 
     nodeIdToIndex,
     edgeIdToIndex,
+
+    helpers: useGraphHelpers({ edges, getEdge, getNode, settings }),
 
     getNode,
     getEdge,

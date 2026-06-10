@@ -12,6 +12,7 @@ import {
   MergeTransactionWrappersWithCore,
 } from './actions/types.ts';
 import { CoreEventMap } from './events.ts';
+import { CoreGraphHelpers } from './helpers/types.ts';
 
 export type CoreGraph<
   TransactionWrapperOptions = {},
@@ -44,6 +45,8 @@ export type CoreGraph<
   getTheme: ThemeGetter;
   themeMap: FullThemeMap;
   settings: Ref<GraphSettings>;
+
+  helpers: CoreGraphHelpers;
 } & Plugins;
 
 export type InternalActions = {
