@@ -1,8 +1,8 @@
 import { Fraction } from 'mathjs';
 
-import { CurryWithBaseGraph, EdgeHelpers } from './types.ts';
+import { CurryWithCoreGraph, EdgeHelpers } from './types.ts';
 
-type CurriedEdgeHelpers = CurryWithBaseGraph<EdgeHelpers>;
+type CurriedEdgeHelpers = CurryWithCoreGraph<EdgeHelpers>;
 
 const getWeight: CurriedEdgeHelpers['getWeight'] = (graph) => (edgeId) => {
   const { isGraphWeighted } = graph.settings.value;

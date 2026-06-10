@@ -40,9 +40,9 @@ export const useSimulationTheme = (
   };
 
   const activate = () => {
-    setTheme('node.base.borderColor', colorBorders);
-    setTheme('nodeAnchor.base.color', colorBorders);
-    setTheme('edge.base.color', colorEdge);
+    setTheme('node.default.borderColor', colorBorders);
+    setTheme('nodeAnchor.default.color', colorBorders);
+    setTheme('edge.default.color', colorEdge);
   };
 
   const deactivate = () => {

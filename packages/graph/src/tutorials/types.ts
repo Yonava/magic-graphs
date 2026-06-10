@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue';
 
-import { BaseEventMap } from '../base/events.ts';
-import { BaseGraph } from '../base/types.ts';
+import { CoreEventMap } from '../core/events.ts';
+import { CoreGraph } from '../core/types.ts';
 
 /**
  * css class defined in App.vue, should move later, used as default for ElementHighlightOptions -> highlightElement.className
@@ -11,7 +11,7 @@ export const DEFAULT_HIGHLIGHT_CLASS_NAME = 'element-highlight';
 /**
  * describes a step in a tutorial sequence for graph events defined in the useGraph event map
  */
-export type TutorialStepForEvent<EventName extends keyof BaseEventMap> = {
+export type TutorialStepForEvent<EventName extends keyof CoreEventMap> = {
   /**
    * the hint to display to the user in order to complete the step
    */
@@ -29,7 +29,7 @@ export type TutorialStepForEvent<EventName extends keyof BaseEventMap> = {
          * @param args the arguments passed to the event handler as defined in the event map
          * @returns true if the step should be dismissed
          */
-        predicate: (...args: Parameters<BaseEventMap[EventName]>) => boolean;
+        predicate: (...args: Parameters<CoreEventMap[EventName]>) => boolean;
       };
 };
 
@@ -57,7 +57,7 @@ type SharedStepProps = {
    * if the precondition returns true, its like the condition for going to the next step is
    * already met, so the step will be skipped.
    */
-  precondition?: (graph: BaseGraph) => boolean;
+  precondition?: (graph: CoreGraph) => boolean;
   /**
    * callback to run when the step is initialized.
    * runs before precondition
@@ -116,8 +116,8 @@ export const DEFAULT_INTERVAL = 1000;
  * describes a step in a tutorial sequence for a graph event
  */
 export type GraphEventStep = {
-  [EventName in keyof BaseEventMap]: TutorialStepForEvent<EventName>;
-}[keyof BaseEventMap];
+  [EventName in keyof CoreEventMap]: TutorialStepForEvent<EventName>;
+}[keyof CoreEventMap];
 
 /**
  * describes a step in a tutorial sequence

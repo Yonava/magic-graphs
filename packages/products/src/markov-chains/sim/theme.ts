@@ -1,8 +1,8 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { MarkovChainTrace } from './runner.ts';
 
 const USETHEME_ID = 'markov-chain-sim';
@@ -25,14 +25,14 @@ export const useSimulationTheme = (
   };
 
   const nodeTextSize = (node: GNode) => {
-    const defaultSize = graph.baseTheme.value.node.base.textSize;
+    const defaultSize = graph.baseTheme.value.node.default.textSize;
     if (graph.focus.isFocused(node.id)) return;
     return defaultSize - 5;
   };
 
   const theme = () => {
-    setTheme('node.base.text', nodeText);
-    setTheme('node.base.textSize', nodeTextSize);
+    setTheme('node.default.text', nodeText);
+    setTheme('node.default.textSize', nodeTextSize);
   };
 
   const untheme = () => {

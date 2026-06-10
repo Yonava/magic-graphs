@@ -66,7 +66,7 @@ export type Aggregator = SchemaItem[];
  * which will be invoked with a reducer each render cycle
  */
 export type AggregatorTransformer = (aggregator: Aggregator) => Aggregator;
-type BaseGraphTypes = 'node' | 'edge';
+type CoreGraphTypes = 'node' | 'edge';
 type MarqueeGraphTypes = 'marquee-box' | 'encapsulated-node-box';
 type NodeAnchorGraphTypes = 'node-anchor' | 'link-preview';
 type AnnotationGraphTypes = 'annotation' | 'annotation-eraser';
@@ -83,7 +83,7 @@ export type SchemaItem = {
    * the type of graph data this schema item represents (node, edge, etc.)
    */
   graphType:
-    | BaseGraphTypes
+    | CoreGraphTypes
     | NodeAnchorGraphTypes
     | MarqueeGraphTypes
     | AnnotationGraphTypes;

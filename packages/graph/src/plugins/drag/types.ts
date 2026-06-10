@@ -1,7 +1,7 @@
 import { Coordinate } from '@magic/canvas/types';
 
-import { BaseEventMap } from '../../base/events.ts';
-import { BaseGraph } from '../../base/types.ts';
+import { CoreEventMap } from '../../core/events.ts';
+import { CoreGraph } from '../../core/types.ts';
 import { GNode, GraphPlugin } from '../../types.ts';
 import { NodeDragEventMap } from './events.ts';
 
@@ -24,9 +24,9 @@ export type NodeDragPlugin = {
 
 export type GraphWithNodeDrag<
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap,
+  EventMap extends CoreEventMap,
   Plugins,
-> = BaseGraph<
+> = CoreGraph<
   TransactionWrapperOptions,
   EventMap & NodeDragEventMap,
   Plugins & NodeDragPlugin

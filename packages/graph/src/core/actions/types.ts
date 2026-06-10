@@ -22,7 +22,7 @@ export type ElementUpdatePayload = Pick<
   'updatedNodes' | 'updatedEdges'
 >;
 
-export type BaseTransactionWrapperOptions = {
+export type CoreTransactionWrapperOptions = {
   addNode: never;
   removeNode: never;
   updateNode: never;
@@ -36,8 +36,8 @@ export type BaseTransactionWrapperOptions = {
   updateElements: never;
 };
 
-export type MergeTransactionWrappersWithBase<TransactionWrapperOptions> = {
-  [Option in keyof BaseTransactionWrapperOptions]: Option extends keyof TransactionWrapperOptions
+export type MergeTransactionWrappersWithCore<TransactionWrapperOptions> = {
+  [Option in keyof CoreTransactionWrapperOptions]: Option extends keyof TransactionWrapperOptions
     ? TransactionWrapperOptions[Option]
     : never;
 };
@@ -47,8 +47,8 @@ type UpdateEdge = PartiallyPartial<GEdge, 'id' | 'weight'>;
 export type GraphActions<
   OptionsParam = {},
   Options extends Partial<
-    Record<keyof BaseTransactionWrapperOptions, unknown>
-  > = MergeTransactionWrappersWithBase<OptionsParam>,
+    Record<keyof CoreTransactionWrapperOptions, unknown>
+  > = MergeTransactionWrappersWithCore<OptionsParam>,
 > = {
   /**
    * Adds a single {@link GNode | node} to the graph. Missing properties get default values.

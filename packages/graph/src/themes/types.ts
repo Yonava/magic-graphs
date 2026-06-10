@@ -1,18 +1,13 @@
-import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types/index';
 import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
 import { Builtin, PathValue, Paths } from 'ts-essentials';
 
-import { Ref } from 'vue';
-
-import { BaseGraph } from '../base/types.ts';
+import { CoreGraph } from '../core/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import { CanvasGraph } from '../plugins/canvas/types.ts';
-import { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
-import { ThemeGetter } from './getThemeResolver.ts';
 
 export type TextStyles = {
   text: string;
@@ -21,7 +16,7 @@ export type TextStyles = {
   textFontWeight: FontWeight;
 };
 
-export type BaseGraphNodeStyles = TextStyles & {
+export type CoreGraphNodeStyles = TextStyles & {
   size: number;
   borderWidth: number;
   borderColor: string;
@@ -30,40 +25,40 @@ export type BaseGraphNodeStyles = TextStyles & {
 
 export type GraphInterface = {
   shapes: CanvasGraph['shapes'];
-  settings: BaseGraph['settings'];
-  getTheme: BaseGraph['getTheme'];
-  edges: BaseGraph['edges'];
-  getNode: BaseGraph['getNode'];
-  getEdge: BaseGraph['getEdge'];
+  settings: CoreGraph['settings'];
+  getTheme: CoreGraph['getTheme'];
+  edges: CoreGraph['edges'];
+  getNode: CoreGraph['getNode'];
+  getEdge: CoreGraph['getEdge'];
 };
 
-export type BaseGraphNodeTheme = WrapWithNodeGetter<BaseGraphNodeStyles> & {
+export type CoreGraphNodeTheme = WrapWithNodeGetter<CoreGraphNodeStyles> & {
   shape: (node: GNode, graph: GraphInterface) => Shape | void;
 };
 
-export type BaseGraphEdgeStyles = TextStyles & {
+export type CoreGraphEdgeStyles = TextStyles & {
   color: string;
   width: number;
 };
 
-export type BaseGraphEdgeTheme = WrapWithEdgeGetter<BaseGraphEdgeStyles> & {
+export type CoreGraphEdgeTheme = WrapWithEdgeGetter<CoreGraphEdgeStyles> & {
   shape: (edge: GEdge, graph: GraphInterface) => Shape | void;
 };
 
-type BaseGraphThemeGraphStyles = {
+type CoreGraphThemeGraphStyles = {
   color: string;
   patternColor: string;
 };
 
-export type BaseGraphTheme = {
-  node: BaseGraphNodeTheme;
-  edge: BaseGraphEdgeTheme;
-  graph: BaseGraphThemeGraphStyles;
+export type CoreGraphTheme = {
+  node: CoreGraphNodeTheme;
+  edge: CoreGraphEdgeTheme;
+  graph: CoreGraphThemeGraphStyles;
 };
 
 export type FocusGraphTheme = {
-  node: BaseGraphNodeTheme;
-  edge: BaseGraphEdgeTheme;
+  node: CoreGraphNodeTheme;
+  edge: CoreGraphEdgeTheme;
 };
 
 type NodeAnchorGraphStyles = {
@@ -80,7 +75,7 @@ type NodeAnchorGraphThemeRecord = WrapWithNodeGetter<NodeAnchorGraphStyles> &
   NodeAnchorLinkPreviewStyles;
 
 export type NodeAnchorGraphTheme = {
-  base: NodeAnchorGraphThemeRecord;
+  default: NodeAnchorGraphThemeRecord;
   focus: NodeAnchorGraphThemeRecord;
 };
 
@@ -93,14 +88,14 @@ export type MarqueeGraphTheme = {
 
 export type GraphTheme = {
   node: {
-    base: BaseGraphTheme['node'];
+    default: CoreGraphTheme['node'];
     focus: FocusGraphTheme['node'];
   };
   edge: {
-    base: BaseGraphTheme['edge'];
+    default: CoreGraphTheme['edge'];
     focus: FocusGraphTheme['edge'];
   };
-  canvas: BaseGraphTheme['graph'];
+  canvas: CoreGraphTheme['graph'];
   nodeAnchor: NodeAnchorGraphTheme;
   marquee: MarqueeGraphTheme;
 };
@@ -159,7 +154,7 @@ const textFields = (): ThemeMapEntries<TextStyles> => ({
   textSize: [],
 });
 
-const nodeFields = (): ThemeMapEntries<BaseGraphNodeTheme> => ({
+const nodeFields = (): ThemeMapEntries<CoreGraphNodeTheme> => ({
   ...textFields(),
   shape: [],
   borderColor: [],
@@ -168,7 +163,7 @@ const nodeFields = (): ThemeMapEntries<BaseGraphNodeTheme> => ({
   size: [],
 });
 
-const edgeFields = (): ThemeMapEntries<BaseGraphEdgeTheme> => ({
+const edgeFields = (): ThemeMapEntries<CoreGraphEdgeTheme> => ({
   ...textFields(),
   shape: [],
   color: [],
@@ -184,11 +179,11 @@ const nodeAnchorFields = (): ThemeMapEntries<NodeAnchorGraphThemeRecord> => ({
 
 export const getInitialThemeMap = (): FullThemeMap => ({
   node: {
-    base: nodeFields(),
+    default: nodeFields(),
     focus: nodeFields(),
   },
   edge: {
-    base: edgeFields(),
+    default: edgeFields(),
     focus: edgeFields(),
   },
   canvas: {
@@ -196,7 +191,7 @@ export const getInitialThemeMap = (): FullThemeMap => ({
     patternColor: [],
   },
   nodeAnchor: {
-    base: nodeAnchorFields(),
+    default: nodeAnchorFields(),
     focus: nodeAnchorFields(),
   },
   marquee: {

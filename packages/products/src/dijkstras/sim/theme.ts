@@ -1,9 +1,9 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { DijkstrasTraceStep } from '../algo/useDijkstra.ts';
 
 export const SIM_COLORS = {
@@ -38,9 +38,9 @@ export const useSimulationTheme = (
   };
 
   const activate = () => {
-    setTheme('node.base.borderColor', colorBorders);
-    setTheme('nodeAnchor.base.color', colorBorders);
-    setTheme('node.base.text', nodeDistanceText);
+    setTheme('node.default.borderColor', colorBorders);
+    setTheme('nodeAnchor.default.color', colorBorders);
+    setTheme('node.default.text', nodeDistanceText);
   };
 
   const deactivate = () => {

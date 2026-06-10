@@ -1,9 +1,10 @@
 import { useTheme } from '@magic/graph/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import colors from '@magic/utils/colors';
 
 import { ref } from 'vue';
+
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 const TARGET_COLOR = colors.AMBER_600;
 
@@ -21,8 +22,8 @@ export const useTargetNodeColor = (graph: Graph) => {
 
   const activate = (nodeId?: GNode['id']) => {
     if (nodeId) targetNodeId.value = nodeId;
-    setTheme('node.base.borderColor', colorNode);
-    setTheme('nodeAnchor.base.color', colorNode);
+    setTheme('node.default.borderColor', colorNode);
+    setTheme('nodeAnchor.default.color', colorNode);
   };
 
   const deactivate = () => {

@@ -12,17 +12,17 @@ import type { GraphThemeName } from '../themes/index.ts';
 import { getInitialThemeMap } from '../themes/types.ts';
 import type { GEdge, GNode } from '../types.ts';
 import { useGraphActions } from './actions/useGraphActions.ts';
-import { createBaseEventRegistry } from './events.ts';
+import { createCoreEventRegistry } from './events.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
-import type { BaseGraph } from './types.ts';
+import type { CoreGraph } from './types.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 
 export const CORE_EVENT_ID = 'core';
 
-export const useBaseGraph = (
+export const useCoreGraph = (
   startupSettings: Partial<GraphSettings> = {},
-): BaseGraph => {
+): CoreGraph => {
   const themeName = ref<GraphThemeName>('light');
 
   const themeMap = getInitialThemeMap();
@@ -33,7 +33,7 @@ export const useBaseGraph = (
     ...startupSettings,
   });
 
-  const eventRegistry = createBaseEventRegistry();
+  const eventRegistry = createCoreEventRegistry();
   const events = createEventHub(eventRegistry);
 
   const nodes = ref<GNode[]>([]);

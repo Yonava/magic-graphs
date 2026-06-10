@@ -1,6 +1,6 @@
 import type { Ref } from 'vue';
 
-import { BaseGraph } from './base/types.ts';
+import { CoreGraph } from './core/types.ts';
 
 export const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 export const NUMBERS = Array.from({ length: 999 }, (_, i) =>
@@ -60,7 +60,7 @@ export const useGraphLabelGetter =
  * @param graph - a graph instance
  * @returns a function that will return the next available letter label
  */
-export const useNodeLetterLabelGetter = (graph: Pick<BaseGraph, 'nodes'>) => {
+export const useNodeLetterLabelGetter = (graph: Pick<CoreGraph, 'nodes'>) => {
   return useGraphLabelGetter(graph.nodes, LETTERS);
 };
 
@@ -71,6 +71,6 @@ export const useNodeLetterLabelGetter = (graph: Pick<BaseGraph, 'nodes'>) => {
  * @param graph - a graph instance
  * @returns a function that will return the next available number label
  */
-export const useNodeNumberLabelGetter = (graph: Pick<BaseGraph, 'nodes'>) => {
+export const useNodeNumberLabelGetter = (graph: Pick<CoreGraph, 'nodes'>) => {
   return useGraphLabelGetter(graph.nodes, NUMBERS);
 };

@@ -1,7 +1,7 @@
 import { GEdge, GNode } from '../types.ts';
-import { CurryWithBaseGraph, NodeHelpers } from './types.ts';
+import { CurryWithCoreGraph, NodeHelpers } from './types.ts';
 
-type CurriedNodeHelpers = CurryWithBaseGraph<NodeHelpers>;
+type CurriedNodeHelpers = CurryWithCoreGraph<NodeHelpers>;
 
 const getOutboundEdges: CurriedNodeHelpers['getOutboundEdges'] =
   (graph) => (nodeId) => {

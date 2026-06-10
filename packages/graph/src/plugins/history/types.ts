@@ -1,8 +1,8 @@
 import { ComputedRef, Ref } from 'vue';
 
-import { BaseTransactionWrapperOptions } from '../../base/actions/types.ts';
-import { BaseEventMap } from '../../base/events.ts';
-import { BaseGraph } from '../../base/types.ts';
+import { CoreTransactionWrapperOptions } from '../../core/actions/types.ts';
+import { CoreEventMap } from '../../core/events.ts';
+import { CoreGraph } from '../../core/types.ts';
 import { HistoryEventMap } from './events.ts';
 
 type HistoryOption = {
@@ -11,7 +11,7 @@ type HistoryOption = {
 };
 
 export type HistoryTransactionWrapperOptions = {
-  [K in keyof BaseTransactionWrapperOptions]: HistoryOption;
+  [K in keyof CoreTransactionWrapperOptions]: HistoryOption;
 };
 
 export type HistoryPlugin = {
@@ -23,9 +23,9 @@ export type HistoryPlugin = {
 
 export type GraphWithHistory<
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap,
+  EventMap extends CoreEventMap,
   Plugins,
-> = BaseGraph<
+> = CoreGraph<
   TransactionWrapperOptions & HistoryTransactionWrapperOptions,
   EventMap & HistoryEventMap,
   Plugins & HistoryPlugin

@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import { BaseGraph } from '../../base/types.ts';
+import { CoreGraph } from '../../core/types.ts';
 import type { GEdge, GNode } from '../../types.ts';
 import type { AdjacencyLists } from '../../useAdjacencyList.ts';
 import TarjanGraph from './tarjans.ts';
@@ -36,7 +36,7 @@ export const getStronglyConnectedComponents: GetComponents = (nodes, edges) => {
 };
 
 export const useStronglyConnectedComponents = (
-  graph: Pick<BaseGraph, 'nodes' | 'edges'>,
+  graph: Pick<CoreGraph, 'nodes' | 'edges'>,
   adjacencyLists: Pick<AdjacencyLists, 'adjacencyList'>,
 ) => {
   const { nodes, edges } = graph;

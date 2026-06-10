@@ -1,12 +1,12 @@
 import { computed } from 'vue';
 
-import { BaseGraph } from '../../base/types.ts';
+import { CoreGraph } from '../../core/types.ts';
 
 /**
  * all edges that link two nodes in both directions
  * (i.e. edge A->B and B->A are a bidirectional pair of edges)
  */
-export const useBidirectionalEdges = (graph: Pick<BaseGraph, 'edges'>) => {
+export const useBidirectionalEdges = (graph: Pick<CoreGraph, 'edges'>) => {
   const bidirectionalEdges = computed(() => {
     const edges = graph.edges.value;
     return edges

@@ -4,8 +4,8 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { Ref, ShallowRef } from 'vue';
 
-import { BaseEventMap } from '../../base/events.ts';
-import { BaseGraph } from '../../base/types.ts';
+import { CoreEventMap } from '../../core/events.ts';
+import { CoreGraph } from '../../core/types.ts';
 import { SchemaItem } from '../../types.ts';
 import { GraphCursor } from './cursor/types.ts';
 import { CanvasEventMap } from './events.ts';
@@ -71,9 +71,9 @@ export type CanvasPlugin = {
 
 export type GraphWithCanvas<
   TransactionWrapperOptions,
-  EventMap extends BaseEventMap,
+  EventMap extends CoreEventMap,
   Plugins,
-> = BaseGraph<
+> = CoreGraph<
   TransactionWrapperOptions,
   EventMap & CanvasEventMap,
   Plugins & CanvasPlugin

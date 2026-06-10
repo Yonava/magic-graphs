@@ -1,6 +1,6 @@
 import type { Fraction } from 'mathjs';
 
-import { BaseGraph } from '../base/types.ts';
+import { CoreGraph } from '../core/types.ts';
 import type { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
 
@@ -89,8 +89,8 @@ export type NodeHelpers = {
   ) => GEdge | undefined;
 };
 
-export type CurryWithBaseGraph<Helpers> = {
-  [Key in keyof Helpers]: (graph: BaseGraph) => Helpers[Key];
+export type CurryWithCoreGraph<Helpers> = {
+  [Key in keyof Helpers]: (graph: CoreGraph) => Helpers[Key];
 };
 
 export type GraphHelpers = {
