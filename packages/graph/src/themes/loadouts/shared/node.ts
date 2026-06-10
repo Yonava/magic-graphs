@@ -23,7 +23,7 @@ const nodeCircle: GraphTheme['node']['default']['shape'] = (node, graph) => {
       textBlock: {
         content: styles.text,
         fontSize: styles.textSize,
-        fontWeight: 'bold',
+        fontWeight: styles.textFontWeight,
         color: styles.textColor,
       },
       color: colors.TRANSPARENT,

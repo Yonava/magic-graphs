@@ -30,6 +30,7 @@ export type GraphInterface = {
   edges: CoreGraph['edges'];
   getNode: CoreGraph['getNode'];
   getEdge: CoreGraph['getEdge'];
+  helpers: CoreGraph['helpers'];
 };
 
 export type CoreGraphNodeTheme = WrapWithNodeGetter<CoreGraphNodeStyles> & {

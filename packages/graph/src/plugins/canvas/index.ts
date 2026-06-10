@@ -116,7 +116,7 @@ export const useCanvasPlugin = <
         if (!shape) return;
 
         return {
-          shape: shape,
+          shape,
           id: edge.id,
           graphType: 'edge',
         } as const;
@@ -133,7 +133,7 @@ export const useCanvasPlugin = <
         if (!shape) return;
 
         return {
-          shape: shape,
+          shape,
           id: node.id,
           graphType: 'node',
         } as const;
