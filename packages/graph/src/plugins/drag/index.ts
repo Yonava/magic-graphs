@@ -6,12 +6,13 @@ import { BaseEventMap } from '../../base/events.ts';
 import type { BaseGraph } from '../../base/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
+import { GNode } from '../../types.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
+import { createDragState } from './createDragState.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
 import { GraphWithNodeDrag } from './types.ts';
-import { createDragState } from './createDragState.ts';
 
 export const DRAG_EVENT_ID = 'drag';
 
@@ -41,13 +42,34 @@ export const useNodeDragPlugin = <
     consume: () => void,
   ) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
-    const topItem = items.at(-1);
-    if (!topItem || topItem.graphType !== 'node') return;
 
-    const node = graph.getNode(topItem.id);
-    if (!node) return;
+    const topItem = items.at(-1);
+    if (!topItem) return;
+
+    const nodeIdsToDrag = [];
+
+    if (topItem.graphType === 'node') {
+      nodeIdsToDrag.push(topItem.id);
+    }
+
+    if (topItem.graphType === 'encapsulated-node-box') {
+      const nodeIdsInBox = nullThrows(
+        topItem.data?.nodeIds as string[],
+        'encapsulated node box must provide node ids in canvas element metadata',
+      );
+      nodeIdsToDrag.push(...nodeIdsInBox);
+    }
+
+    if (nodeIdsToDrag.length === 0) return;
 
     consume();
+
+    const nodes = nodeIdsToDrag.map((nodeId) =>
+      nullThrows(
+        graph.getNode(nodeId),
+        'canvas element of graph type node not resolvable as node',
+      ),
+    );
 
     dragState.startDrag(coords, { nodeId: node.id });
     events.emit('onNodeDragStart', node);

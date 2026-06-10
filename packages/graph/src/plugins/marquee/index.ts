@@ -152,6 +152,9 @@ export const useMarqueePlugin = <
       graphType: 'encapsulated-node-box',
       shape,
       priority: Infinity,
+      data: {
+        nodeIds: graph.focus.focusedNodes.value.map((n) => n.id),
+      },
     } as const;
   };
 
