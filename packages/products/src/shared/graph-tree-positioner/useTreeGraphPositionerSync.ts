@@ -1,9 +1,9 @@
 import { GNode } from '@magic/graph/types';
-import type { Graph } from '../useGraphWithCanvas.ts';
 import { debounce } from '@magic/utils/debounce';
 
 import { onUnmounted, ref, watch } from 'vue';
 
+import type { Graph } from '../useGraphWithCanvas.ts';
 import {
   UseTreeGraphPositionerOptions,
   useTreeGraphPositioner,
@@ -52,14 +52,12 @@ export const useTreeGraphPositionerSync = (
     updateShape();
     graph.events.subscribe('onStructureChange', debouncedUpdateShape);
     graph.events.subscribe('onNodeDrop', debouncedUpdateShape);
-    graph.events.subscribe('onGroupDrop', debouncedUpdateShape);
     isActive.value = true;
   };
 
   const deactivate = () => {
     graph.events.unsubscribe('onStructureChange', debouncedUpdateShape);
     graph.events.unsubscribe('onNodeDrop', debouncedUpdateShape);
-    graph.events.unsubscribe('onGroupDrop', debouncedUpdateShape);
     isActive.value = false;
   };
 

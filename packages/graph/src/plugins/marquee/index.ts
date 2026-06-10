@@ -82,16 +82,10 @@ export const useMarqueePlugin = <
     if (topItem?.graphType !== 'encapsulated-node-box') return;
 
     groupDragCoordinates.value = coords;
-    events.emit('onGroupDragStart', graph.focus.focusedNodes.value, coords);
   };
 
   const endGroupDrag = () => {
     if (!groupDragCoordinates.value) return;
-    events.emit(
-      'onGroupDrop',
-      graph.focus.focusedNodes.value,
-      groupDragCoordinates.value,
-    );
     groupDragCoordinates.value = undefined;
   };
 
