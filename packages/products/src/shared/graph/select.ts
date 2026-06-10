@@ -1,5 +1,5 @@
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
-import type { SchemaItem } from '@magic/graph/types';
+import type { CanvasElement } from '@magic/graph/types';
 import tinycolor from 'tinycolor2';
 
 import type { Graph } from '../useGraphWithCanvas.ts';
@@ -93,7 +93,7 @@ export type SelectFromGraphOptions = {
    * if left undefined, all items in the graph will be selectable
    * @default () => true
    */
-  predicate: (item: SchemaItem) => boolean;
+  predicate: (item: CanvasElement) => boolean;
 };
 
 /**
@@ -118,10 +118,10 @@ export const selectFromGraph = (
   { predicate = DEFAULT_PREDICATE }: Partial<SelectFromGraphOptions> = {},
 ) => {
   let resolver: (
-    value: SchemaItem | PromiseLike<SchemaItem> | undefined,
+    value: CanvasElement | PromiseLike<CanvasElement> | undefined,
   ) => void;
 
-  const selectedItemPromise = new Promise<SchemaItem | undefined>(
+  const selectedItemPromise = new Promise<CanvasElement | undefined>(
     (res) => (resolver = res),
   );
 
@@ -138,7 +138,7 @@ export const selectFromGraph = (
     graph.events.subscribe('onClick', onClick);
     const cursorPredicate =
       predicate === DEFAULT_PREDICATE
-        ? (item: SchemaItem) => !!item
+        ? (item: CanvasElement) => !!item
         : predicate;
     graph.canvas.cursor.activateCursorSelectMode(cursorPredicate);
   };
@@ -154,7 +154,7 @@ export const selectFromGraph = (
   /**
    * resolves the selection process and returns the selected item from the promise
    */
-  const resolve = (item: SchemaItem) => {
+  const resolve = (item: CanvasElement) => {
     cleanup();
     resolver(item);
   };

@@ -1,6 +1,6 @@
-import type { SchemaItem } from '../../types.ts';
+import type { CanvasElement } from '../../types.ts';
 
-export const FOCUSABLE_GRAPH_TYPES: SchemaItem['graphType'][] = [
+export const FOCUSABLE_GRAPH_TYPES: CanvasElement['graphType'][] = [
   'node',
   'edge',
 ];

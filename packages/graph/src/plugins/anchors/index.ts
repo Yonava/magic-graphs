@@ -12,7 +12,7 @@ import type {
   GraphWithNodeAnchor,
   NodeAnchor,
 } from '../../plugins/anchors/types.ts';
-import type { GNode, SchemaItem } from '../../types.ts';
+import type { CanvasElement, GNode } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';
@@ -91,7 +91,7 @@ export const useNodeAnchorPlugin = <
     const radius = getTheme('nodeAnchor.default.radius', node);
     const focusRadius = getTheme('nodeAnchor.focus.radius', node);
 
-    const anchorSchemas: SchemaItem[] = [];
+    const anchorSchemas: CanvasElement[] = [];
     for (const anchor of nodeAnchors.value) {
       const { x, y, id } = anchor;
 
@@ -252,7 +252,7 @@ export const useNodeAnchorPlugin = <
       lineWidth: width,
     });
 
-    const schema: Omit<SchemaItem, 'priority'> = {
+    const schema: Omit<CanvasElement, 'priority'> = {
       id: 'link-preview',
       graphType: 'link-preview',
       shape,
@@ -326,14 +326,14 @@ export const useNodeAnchorPlugin = <
     checkForParentNodeUpdate();
   };
 
-  const insertAnchorsIntoAggregator = (aggregator: SchemaItem[]) => {
+  const insertAnchorsIntoAggregator = (aggregator: CanvasElement[]) => {
     if (!parentNode.value) return aggregator;
     const anchors = getAnchorSchemas(parentNode.value);
     for (const anchor of anchors) aggregator.push(anchor);
     return aggregator;
   };
 
-  const insertLinkPreviewIntoAggregator = (aggregator: SchemaItem[]) => {
+  const insertLinkPreviewIntoAggregator = (aggregator: CanvasElement[]) => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (!parentNode.value || !draggedAnchor) return aggregator;
 

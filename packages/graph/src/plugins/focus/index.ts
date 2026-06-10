@@ -1,3 +1,4 @@
+import { nullThrows } from '@magic/utils/assert';
 import { getCtx } from '@magic/utils/ctx/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
@@ -10,7 +11,7 @@ import type { CoreGraph, InternalActions } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { useTheme } from '../../themes/useTheme.ts';
-import type { GEdge, GNode, SchemaItem } from '../../types.ts';
+import type { CanvasElement, GEdge, GNode } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { DRAG_EVENT_ID } from '../drag/index.ts';
@@ -92,12 +93,14 @@ export const useFocusPlugin = <
     );
   };
 
-  const handleTextArea = (schemaItem: SchemaItem) => {
+  const handleTextArea = (canvasElement: CanvasElement) => {
     const ctx = getCtx(graph.canvas.magicCanvas.canvas);
 
-    schemaItem.shape.startTextAreaEdit?.(ctx, (textAreaContent) => {
-      const edge = graph.getEdge(schemaItem.id);
-      if (!edge) throw new Error('textarea only implemented for edges');
+    canvasElement.shape.startTextAreaEdit?.(ctx, (textAreaContent) => {
+      const edge = nullThrows(
+        graph.getEdge(canvasElement.id),
+        `Only edges may include TextAreas: Got ${canvasElement.graphType}`,
+      );
 
       const newWeight = graph.settings.value.edgeInputToWeight(textAreaContent);
       if (

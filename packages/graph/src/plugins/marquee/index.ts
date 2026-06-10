@@ -9,7 +9,7 @@ import { computed } from 'vue';
 import { CoreEventMap } from '../../core/events.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import type { Aggregator } from '../../types.ts';
+import type { Aggregator, CanvasElement } from '../../types.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
@@ -105,7 +105,7 @@ export const useMarqueePlugin = <
     updateMarqueeSelectedItems(marqueeBox.value);
   };
 
-  const getMarqueeBoxSchema = (box: BoundingBox) => {
+  const getMarqueeBoxCanvasElement = (box: BoundingBox): CanvasElement => {
     const shape = graph.canvas.shapes.shapes.rect({
       id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
@@ -121,7 +121,7 @@ export const useMarqueePlugin = <
       graphType: 'marquee-box',
       shape,
       priority: Infinity,
-    } as const;
+    };
   };
 
   const addMarqueeBoxToAggregator = (aggregator: Aggregator) => {
@@ -130,8 +130,10 @@ export const useMarqueePlugin = <
     const { width, height } = marqueeBox.value;
     if (width === 0 || height === 0) return aggregator;
 
-    const selectionBoxSchemaItem = getMarqueeBoxSchema(marqueeBox.value);
-    aggregator.push(selectionBoxSchemaItem);
+    const selectionBoxCanvasElement = getMarqueeBoxCanvasElement(
+      marqueeBox.value,
+    );
+    aggregator.push(selectionBoxCanvasElement);
     return aggregator;
   };
 

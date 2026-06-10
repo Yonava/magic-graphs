@@ -3,7 +3,11 @@ import type { Coordinate } from '@magic/shapes/types/utility';
 import { ref } from 'vue';
 
 import { EventHub } from '../../events/createEventHub.ts';
-import type { Aggregator, AggregatorTransformer } from '../../types.ts';
+import type {
+  Aggregator,
+  AggregatorTransformer,
+  CanvasElement,
+} from '../../types.ts';
 import { CanvasEventMap } from './events.ts';
 
 export const useAggregator = ({
@@ -13,13 +17,13 @@ export const useAggregator = ({
   const transformers: AggregatorTransformer[] = [];
 
   const updateAggregator = () => {
-    const resolvedSchemaItems = transformers.reduce<Aggregator>(
+    const resolvedCanvasElements = transformers.reduce<Aggregator>(
       (acc, fn) => fn(acc),
       [],
     );
 
     aggregator.value = [
-      ...resolvedSchemaItems.sort((a, b) => a.priority - b.priority),
+      ...resolvedCanvasElements.sort((a, b) => a.priority - b.priority),
     ];
   };
 
@@ -53,13 +57,14 @@ export const useAggregator = ({
   };
 
   /**
-   * get all schema items at given coordinates
+   * Returns all canvas elements at given coordinate
    *
-   * @returns an array where the first item is the bottom most schema item and the last is the top most
-   * @example // returns [node, nodeAnchor] where a nodeAnchor is sitting on top of a node
-   * getSchemaItemsByCoordinates(200, 550)
+   * @param coords Point in canvas space to test against {@link CanvasElement.shape | element} hitboxes
+   * @returns All canvas elements whose hitbox contains coords, ordered back-to-front by z-priority
+   * @example const els = getCanvasElementsAtCoordinate({ x: 200, y: 550 })
+   * console.log(els) // [node, nodeAnchor] meaning nodeAnchor is above the node
    */
-  const getSchemaItemsByCoordinates = (coords: Coordinate) => {
+  const getCanvasElementsAtCoordinate = (coords: Coordinate) => {
     return aggregator.value
       .sort((a, b) => a.priority - b.priority)
       .filter(
@@ -72,7 +77,7 @@ export const useAggregator = ({
     aggregator,
     transformers,
     updateAggregator,
-    getSchemaItemsByCoordinates,
+    getCanvasElementsAtCoordinate,
     draw,
   };
 };

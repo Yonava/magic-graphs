@@ -84,7 +84,7 @@ export const useCanvasPlugin = <
     graphAtMousePosition.coords = coords;
 
     aggregator.updateAggregator();
-    const newElements = aggregator.getSchemaItemsByCoordinates(coords);
+    const newElements = aggregator.getCanvasElementsAtCoordinate(coords);
     graphAtMousePosition.items = newElements;
 
     events.emit('onGraphUnderCursorChange', graphAtMousePosition);
@@ -107,7 +107,7 @@ export const useCanvasPlugin = <
   const shapes = useAnimatedShapes();
 
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
-    const edgeSchemaItems = graph.edges.value
+    const edgeCanvasElements = graph.edges.value
       .map((edge) => {
         const shape = graph.getTheme('edge.default.shape', edge, {
           ...graph,
@@ -124,7 +124,7 @@ export const useCanvasPlugin = <
       .filter(Boolean)
       .map((item, i) => ({ ...item!, priority: i * 10 }));
 
-    const nodeSchemaItems = graph.nodes.value
+    const nodeCanvasElements = graph.nodes.value
       .map((node) => {
         const shape = graph.getTheme('node.default.shape', node, {
           ...graph,
@@ -141,8 +141,8 @@ export const useCanvasPlugin = <
       .filter(Boolean)
       .map((item, i) => ({ ...item!, priority: i * 10 + 1000 }));
 
-    aggregator.push(...edgeSchemaItems);
-    aggregator.push(...nodeSchemaItems);
+    aggregator.push(...edgeCanvasElements);
+    aggregator.push(...nodeCanvasElements);
 
     return aggregator;
   };

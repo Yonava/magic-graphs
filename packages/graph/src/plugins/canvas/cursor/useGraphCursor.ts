@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue';
 
 import { EventHub } from '../../../events/createEventHub.ts';
-import { SchemaItem } from '../../../types.ts';
+import { CanvasElement } from '../../../types.ts';
 import { CanvasEventMap } from '../events.ts';
 import { CanvasGraph } from '../types.ts';
 import { GraphCursor, GraphTypeToCursor } from './types.ts';
@@ -35,11 +35,11 @@ export const useGraphCursor = ({
     'encapsulated-node-box': 'move',
   });
 
-  const isItemSelectable = ref<(item: SchemaItem) => boolean>();
+  const isItemSelectable = ref<(item: CanvasElement) => boolean>();
   const inSelectMode = computed(() => !!isItemSelectable.value);
 
   const activateCursorSelectMode = (
-    predicate: (item: SchemaItem) => boolean,
+    predicate: (item: CanvasElement) => boolean,
   ) => {
     isItemSelectable.value = predicate;
   };
@@ -48,7 +48,7 @@ export const useGraphCursor = ({
     isItemSelectable.value = undefined;
   };
 
-  const getCursorType = (item: SchemaItem | undefined) => {
+  const getCursorType = (item: CanvasElement | undefined) => {
     if (!item) return 'default';
 
     if (inSelectMode.value) {
