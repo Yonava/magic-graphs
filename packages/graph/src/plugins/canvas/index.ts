@@ -4,12 +4,15 @@ import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 import { DeepReadonly } from 'ts-essentials';
 
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
+import { getThemeResolver } from '../../themes/getThemeResolver.ts';
+import { GraphThemeName, THEME_LOADOUTS } from '../../themes/index.ts';
+import { getInitialThemeMap } from '../../themes/types.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
   CanvasEventMap,
@@ -72,11 +75,19 @@ export const useCanvasPlugin = <
     forceUpdateGraphUnderCursor();
   });
 
+  const themeName = ref<GraphThemeName>('light');
+  const themeMap = getInitialThemeMap();
+  const getTheme = getThemeResolver(themeName, themeMap);
+
+  watch(themeName, async (newThemeName, oldThemeName) => {
+    events.emit('onThemeChange', newThemeName, oldThemeName);
+  });
+
   useGraphCursor({
     canvas: magicCanvas.canvas,
     subscribe: events.subscribe,
     getNode: graph.getNode,
-    getTheme: graph.getTheme,
+    getTheme,
     graphUnderCursor,
   });
 
@@ -110,8 +121,9 @@ export const useCanvasPlugin = <
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const edgeCanvasElements = graph.edges.value
       .map((edge) => {
-        const shape = graph.getTheme('edge.default.shape', edge, {
+        const shape = getTheme('edge.default.shape', edge, {
           ...graph,
+          getTheme,
           shapes,
         });
         if (!shape) return;
@@ -127,8 +139,9 @@ export const useCanvasPlugin = <
 
     const nodeCanvasElements = graph.nodes.value
       .map((node) => {
-        const shape = graph.getTheme('node.default.shape', node, {
+        const shape = getTheme('node.default.shape', node, {
           ...graph,
+          getTheme,
           shapes,
         });
         if (!shape) return;
@@ -200,6 +213,11 @@ export const useCanvasPlugin = <
 
       graphUnderCursor,
       forceUpdateGraphUnderCursor,
+
+      baseTheme: computed(() => THEME_LOADOUTS[themeName.value]),
+      themeName,
+      getTheme,
+      themeMap,
     },
   };
 };

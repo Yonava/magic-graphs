@@ -6,10 +6,6 @@ import { computed, ref, watch } from 'vue';
 import { createEventHub } from '../events/createEventHub.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
-import { getThemeResolver } from '../themes/getThemeResolver.ts';
-import { THEME_LOADOUTS } from '../themes/index.ts';
-import type { GraphThemeName } from '../themes/index.ts';
-import { getInitialThemeMap } from '../themes/types.ts';
 import type { GEdge, GNode } from '../types.ts';
 import { useGraphActions } from './actions/useGraphActions.ts';
 import { createCoreEventRegistry } from './events.ts';
@@ -24,11 +20,6 @@ export const CORE_EVENT_ID = 'core';
 export const useCoreGraph = (
   startupSettings: Partial<GraphSettings> = {},
 ): CoreGraph => {
-  const themeName = ref<GraphThemeName>('light');
-
-  const themeMap = getInitialThemeMap();
-  const getTheme = getThemeResolver(themeName, themeMap);
-
   const settings = ref<GraphSettings>({
     ...DEFAULT_GRAPH_SETTINGS,
     ...startupSettings,
@@ -75,10 +66,6 @@ export const useCoreGraph = (
     }, new Map()),
   );
 
-  watch(themeName, async (newThemeName, oldThemeName) => {
-    events.emit('onThemeChange', newThemeName, oldThemeName);
-  });
-
   const activeSettings = ref(clone(settings.value));
   watch(
     settings,
@@ -107,10 +94,6 @@ export const useCoreGraph = (
     actions,
     events,
 
-    baseTheme: computed(() => THEME_LOADOUTS[themeName.value]),
-    themeName,
-    getTheme,
-    themeMap,
     settings,
   };
 };

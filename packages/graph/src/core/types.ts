@@ -39,11 +39,6 @@ export type CoreGraph<
   >;
 
   events: EventHub<EventMap>;
-
-  baseTheme: ComputedRef<ThemeLoadouts[GraphThemeName]>;
-  themeName: Ref<GraphThemeName>;
-  getTheme: ThemeGetter;
-  themeMap: FullThemeMap;
   settings: Ref<GraphSettings>;
 
   helpers: CoreGraphHelpers;
