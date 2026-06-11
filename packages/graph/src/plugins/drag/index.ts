@@ -35,7 +35,7 @@ export const useNodeDragPlugin = <
   const dragState = createDragState<{ nodeIds: string[] }>();
 
   const beginDrag = (
-    { items, coords, event }: CanvasGraphMouseEvent,
+    { elements: items, coords, event }: CanvasGraphMouseEvent,
     consume: () => void,
   ) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
@@ -124,14 +124,14 @@ export const useNodeDragPlugin = <
     events.handle('onGraphUnderCursorChange', drag, DRAG_EVENT_ID, {
       before: [ANCHOR_EVENT_ID],
     });
-    graph.canvas.cursor.graphToCursorMap.value['node'] = 'grab';
+    // graph.canvas.cursor.graphToCursorMap.value['node'] = 'grab';
   };
 
   const deactivate = () => {
     events.unhandle('onMouseDown', beginDrag);
     events.unhandle('onMouseUp', drop);
     events.unhandle('onGraphUnderCursorChange', drag);
-    graph.canvas.cursor.graphToCursorMap.value['node'] = 'pointer';
+    // graph.canvas.cursor.graphToCursorMap.value['node'] = 'pointer';
     drop();
   };
 

@@ -19,7 +19,7 @@ export type GraphUnderCursor = {
   /**
    * the canvas elements under the cursor
    */
-  items: CanvasElement[];
+  elements: CanvasElement[];
 };
 
 export type CanvasGraph = {

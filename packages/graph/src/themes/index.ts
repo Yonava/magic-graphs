@@ -43,6 +43,7 @@ export const resolveThemeForNode = (
   textColor: getTheme('node.default.textColor', node),
   text: getTheme('node.default.text', node),
   textFontWeight: getTheme('node.default.textFontWeight', node),
+  cursor: getTheme('node.default.cursor', node),
 });
 
 /**

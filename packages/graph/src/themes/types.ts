@@ -9,6 +9,47 @@ import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import { CanvasGraph } from '../plugins/canvas/types.ts';
 import type { GEdge, GNode } from '../types.ts';
 
+/**
+ * cursor types supported by the browser
+ */
+export type Cursor =
+  | 'auto'
+  | 'default'
+  | 'none'
+  | 'context-menu'
+  | 'help'
+  | 'pointer'
+  | 'progress'
+  | 'wait'
+  | 'cell'
+  | 'crosshair'
+  | 'text'
+  | 'vertical-text'
+  | 'alias'
+  | 'copy'
+  | 'move'
+  | 'no-drop'
+  | 'not-allowed'
+  | 'grab'
+  | 'grabbing'
+  | 'e-resize'
+  | 'n-resize'
+  | 'ne-resize'
+  | 'nw-resize'
+  | 's-resize'
+  | 'se-resize'
+  | 'sw-resize'
+  | 'w-resize'
+  | 'ew-resize'
+  | 'ns-resize'
+  | 'nesw-resize'
+  | 'nwse-resize'
+  | 'col-resize'
+  | 'row-resize'
+  | 'all-scroll'
+  | 'zoom-in'
+  | 'zoom-out';
+
 export type TextStyles = {
   text: string;
   textSize: number;
@@ -21,6 +62,7 @@ export type CoreGraphNodeStyles = TextStyles & {
   borderWidth: number;
   borderColor: string;
   color: string;
+  cursor: Cursor;
 };
 
 export type GraphInterface = {
@@ -162,6 +204,7 @@ const nodeFields = (): ThemeMapEntries<CoreGraphNodeTheme> => ({
   borderWidth: [],
   color: [],
   size: [],
+  cursor: [],
 });
 
 const edgeFields = (): ThemeMapEntries<CoreGraphEdgeTheme> => ({

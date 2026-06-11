@@ -1,14 +1,16 @@
-import { computed, ref, watch } from 'vue';
+import { nullThrows } from '@magic/utils/assert';
 
+import { CoreGraph } from '../../../core/types.ts';
 import { EventHub } from '../../../events/createEventHub.ts';
 import { CanvasEventMap } from '../events.ts';
-import { CanvasElement, CanvasGraph } from '../types.ts';
-import { GraphCursor, GraphTypeToCursor } from './types.ts';
+import { CanvasGraph } from '../types.ts';
+import { GraphCursor } from './types.ts';
 
 type GraphCursorProps = {
   subscribe: EventHub<CanvasEventMap>['subscribe'];
   canvas: CanvasGraph['magicCanvas']['canvas'];
-  graphAtMousePosition: CanvasGraph['graphUnderCursor'];
+  getNode: CoreGraph['getNode'];
+  getTheme: CoreGraph['getTheme'];
 };
 
 /**
@@ -22,73 +24,21 @@ type GraphCursorProps = {
 export const useGraphCursor = ({
   subscribe,
   canvas,
-  graphAtMousePosition,
+  getNode,
+  getTheme,
 }: GraphCursorProps): GraphCursor => {
-  const isMouseDown = ref(false);
-  const disabled = ref(false);
-
-  const graphToCursorMap = ref<GraphTypeToCursor>({
-    node: 'grab',
-    edge: 'pointer',
-    'node-anchor': 'grab',
-    'encapsulated-node-box': 'move',
-  });
-
-  const isElementSelectable = ref<(element: CanvasElement) => boolean>();
-  const inSelectMode = computed(() => !!isElementSelectable.value);
-
-  const activateCursorSelectMode = (
-    predicate: (element: CanvasElement) => boolean,
-  ) => {
-    isElementSelectable.value = predicate;
-  };
-
-  const deactivateCursorSelectMode = () => {
-    isElementSelectable.value = undefined;
-  };
-
-  const getCursorType = (canvasElement: CanvasElement | undefined) => {
-    if (!canvasElement) return 'default';
-
-    if (inSelectMode.value) {
-      const isSelectable = isElementSelectable.value?.(canvasElement) ?? false;
-      return isSelectable ? 'pointer' : 'default';
+  subscribe('onGraphUnderCursorChange', (graphUnderCursor) => {
+    if (!canvas.value) return;
+    const topElement = graphUnderCursor.elements.at(-1);
+    canvas.value.style.cursor = 'pointer';
+    if (!topElement) return;
+    if (topElement.graphType === 'node') {
+      const node = nullThrows(getNode(topElement.id), 'node not found');
+      const cursor = getTheme('node.default.cursor', node);
+      if (!canvas.value) return;
+      canvas.value.style.cursor = cursor;
     }
-
-    const cursor = graphToCursorMap.value[canvasElement.graphType] ?? 'default';
-    if (cursor === 'grab' && isMouseDown.value) return 'grabbing';
-
-    return cursor;
-  };
-
-  const changeCursorType = () => {
-    if (!canvas.value || disabled.value) return;
-    const topItem = graphAtMousePosition.items.at(-1);
-    canvas.value.style.cursor = getCursorType(topItem);
-  };
-
-  subscribe('onMouseDown', () => {
-    isMouseDown.value = true;
-    changeCursorType();
   });
 
-  subscribe('onMouseUp', () => {
-    isMouseDown.value = false;
-    changeCursorType();
-  });
-
-  subscribe('onClick', changeCursorType);
-  subscribe('onDblClick', changeCursorType);
-  subscribe('onKeyUp', changeCursorType);
-  subscribe('onKeyDown', changeCursorType);
-  subscribe('onMouseMove', changeCursorType);
-
-  watch(graphToCursorMap, changeCursorType, { deep: true });
-
-  return {
-    graphToCursorMap,
-    activateCursorSelectMode,
-    deactivateCursorSelectMode,
-    disabled,
-  };
+  return {};
 };

@@ -125,7 +125,7 @@ export const selectFromGraph = (
     (res) => (resolver = res),
   );
 
-  const onClick = ({ items }: CanvasGraphMouseEvent) => {
+  const onClick = ({ elements: items }: CanvasGraphMouseEvent) => {
     const topItem = items.at(-1);
     if (!topItem || !predicate(topItem)) return;
     resolve(topItem);
@@ -140,7 +140,7 @@ export const selectFromGraph = (
       predicate === DEFAULT_PREDICATE
         ? (item: CanvasElement) => !!item
         : predicate;
-    graph.canvas.cursor.activateCursorSelectMode(cursorPredicate);
+    // graph.canvas.cursor.activateCursorSelectMode(cursorPredicate);
   };
 
   /**
@@ -148,7 +148,7 @@ export const selectFromGraph = (
    */
   const cleanup = () => {
     graph.events.unsubscribe('onClick', onClick);
-    graph.canvas.cursor.deactivateCursorSelectMode();
+    // graph.canvas.cursor.deactivateCursorSelectMode();
   };
 
   /**

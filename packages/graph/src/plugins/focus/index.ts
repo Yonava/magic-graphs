@@ -135,7 +135,11 @@ export const useFocusPlugin = <
     setFocus(newFocusedIds);
   };
 
-  const handleMouseDown = ({ items, coords, event }: CanvasGraphMouseEvent) => {
+  const handleMouseDown = ({
+    elements: items,
+    coords,
+    event,
+  }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem) {
@@ -172,6 +176,7 @@ export const useFocusPlugin = <
   const isFocused = (id: string) => focusedElementIds.value.has(id);
 
   const nodeBaseStylePathMapping: NodeBaseToNodeFocusTheme = {
+    'node.default.cursor': 'node.focus.cursor',
     'node.default.color': 'node.focus.color',
     'node.default.borderColor': 'node.focus.borderColor',
     'node.default.borderWidth': 'node.focus.borderWidth',

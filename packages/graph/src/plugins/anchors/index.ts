@@ -76,7 +76,9 @@ export const useNodeAnchorPlugin = <
     updateNodeAnchors(node);
   };
 
-  const updateHoveredNodeAnchorId = ({ items }: CanvasGraphMouseEvent) => {
+  const updateHoveredNodeAnchorId = ({
+    elements: items,
+  }: CanvasGraphMouseEvent) => {
     const topItem = items.at(-1);
     if (!topItem) return (hoveredNodeAnchorId.value = undefined);
 
@@ -197,7 +199,7 @@ export const useNodeAnchorPlugin = <
   /**
    * the anchor at the given event location
    */
-  const getAnchor = ({ items, event }: CanvasGraphMouseEvent) => {
+  const getAnchor = ({ elements: items, event }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
     const topItem = items.at(-1);
     if (!topItem || topItem.graphType !== 'node-anchor') return;
@@ -268,7 +270,7 @@ export const useNodeAnchorPlugin = <
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (draggedAnchor) return;
 
-    const { items } = graph.canvas.graphUnderCursor;
+    const { elements: items } = graph.canvas.graphUnderCursor;
     const topItem = items.at(-1);
     if (!topItem) return clearAnchorState();
     if (topItem.graphType === 'node-anchor') return;

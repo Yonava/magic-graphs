@@ -49,7 +49,7 @@ export const useMarqueePlugin = <
    * given a mouse event, engages or disengages the marquee box
    */
   const handleMarqueeEngagement = ({
-    items,
+    elements: items,
     coords,
     event,
   }: CanvasGraphMouseEvent) => {
@@ -59,7 +59,7 @@ export const useMarqueePlugin = <
   };
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
-    graph.canvas.cursor.disabled.value = true;
+    // graph.canvas.cursor.disabled.value = true;
     marqueeBox.value = {
       at: startingCoords,
       width: 0,
@@ -72,7 +72,7 @@ export const useMarqueePlugin = <
     if (!marqueeBox.value) return;
     const finalMarqueeBox = marqueeBox.value;
     marqueeBox.value = undefined;
-    graph.canvas.cursor.disabled.value = false;
+    // graph.canvas.cursor.disabled.value = false;
     events.emit('onMarqueeEndSelection', finalMarqueeBox);
   };
 

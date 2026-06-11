@@ -273,7 +273,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
 
     isActive.value = true;
 
-    graph.canvas.cursor.disabled.value = true;
+    // graph.canvas.cursor.disabled.value = true;
     canvas.style.cursor = 'crosshair';
 
     graph.events.handle(
@@ -303,7 +303,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
     isActive.value = false;
     isErasing.value = false;
 
-    graph.canvas.cursor.disabled.value = false;
+    // graph.canvas.cursor.disabled.value = false;
     canvas.style.cursor = 'default';
 
     graph.events.unhandle('onMouseDown', startDrawing);

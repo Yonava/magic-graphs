@@ -8,16 +8,16 @@
 
   const mouseData = ref<GraphUnderCursor>({
     coords: { x: 0, y: 0 },
-    items: [],
+    elements: [],
   });
 
   graph.value.events.subscribe('onGraphUnderCursorChange', (data) => {
     mouseData.value.coords = data.coords;
-    mouseData.value.items = [...data.items];
+    mouseData.value.elements = [...data.elements];
   });
 
   const hoveredItems = computed(() => {
-    return mouseData.value.items.map(
+    return mouseData.value.elements.map(
       (item) => `${item.graphType} - ${item.shape.name} (${item.id})`,
     );
   });
