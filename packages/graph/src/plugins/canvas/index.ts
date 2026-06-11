@@ -2,6 +2,7 @@ import { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
+import { subscribe } from 'diagnostics_channel';
 import { DeepReadonly } from 'ts-essentials';
 
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
@@ -193,6 +194,12 @@ export const useCanvasPlugin = <
     ) as KeyboardEventEntries) {
       document.removeEventListener(event, listeners);
     }
+  });
+
+  events.subscribe('onDraw', () => {
+    const canvas = magicCanvas.canvas.value;
+    if (!canvas) return;
+    canvas.style.backgroundColor = getTheme('canvas.color');
   });
 
   return {
