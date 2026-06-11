@@ -126,6 +126,9 @@ export const useNodeAnchorPlugin = <
         graphType: 'node-anchor',
         shape: nodeAnchorShape,
         priority: beingDragged ? Infinity : 99_999,
+        data: {
+          nodeId: node.id,
+        },
       });
     }
 
@@ -219,13 +222,13 @@ export const useNodeAnchorPlugin = <
     const isFocused = graph.focus.isFocused(parentNode.value.id);
 
     const baseColor = getTheme(
-      'nodeAnchor.default.linkPreviewColor',
+      'nodeAnchor.default.linkPreview.color',
       parentNode.value,
       draggedAnchor,
     );
 
     const focusColor = getTheme(
-      'nodeAnchor.focus.linkPreviewColor',
+      'nodeAnchor.focus.linkPreview.color',
       parentNode.value,
       draggedAnchor,
     );
@@ -233,13 +236,13 @@ export const useNodeAnchorPlugin = <
     const color = isFocused ? focusColor : baseColor;
 
     const baseWidth = getTheme(
-      'nodeAnchor.default.linkPreviewWidth',
+      'nodeAnchor.default.linkPreview.width',
       parentNode.value,
       draggedAnchor,
     );
 
     const focusWidth = getTheme(
-      'nodeAnchor.focus.linkPreviewWidth',
+      'nodeAnchor.focus.linkPreview.width',
       parentNode.value,
       draggedAnchor,
     );

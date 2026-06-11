@@ -1,6 +1,7 @@
 import colors from '@magic/utils/colors';
 
 import { GNode } from '../../../types.ts';
+import { CURSOR } from '../../cursor.ts';
 import { GraphTheme, resolveThemeForNode } from '../../index.ts';
 import { textDefaults } from './text.ts';
 
@@ -37,10 +38,14 @@ export const nodeShared = {
   borderWidth: 8,
   size: 35,
   shape: nodeCircle,
-  cursor: 'pointer',
+  cursor: CURSOR.POINTER,
 } as const;
 
 export const nodeAnchorShared = {
   radius: Math.ceil(Math.sqrt(nodeShared.size) * 2),
-  linkPreviewWidth: 10,
+  cursor: CURSOR.GRAB,
+} as const;
+
+export const nodeAnchorLinkPreviewShared = {
+  width: 10,
 } as const;

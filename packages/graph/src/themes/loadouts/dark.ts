@@ -3,7 +3,11 @@ import colors from '@magic/utils/colors';
 import { CURSOR_FALLBACK } from '../cursor.ts';
 import type { GraphTheme } from '../types.ts';
 import { edgeShared } from './shared/edge.ts';
-import { nodeAnchorShared, nodeShared } from './shared/node.ts';
+import {
+  nodeAnchorLinkPreviewShared,
+  nodeAnchorShared,
+  nodeShared,
+} from './shared/node.ts';
 
 const REDDISH_GRAY = 'rgb(100, 60, 70)';
 
@@ -57,12 +61,18 @@ export const DARK_THEME = {
   nodeAnchor: {
     default: {
       color: colors.GRAY_900,
-      linkPreviewColor: colors.BLACK,
+      linkPreview: {
+        color: colors.BLACK,
+        ...nodeAnchorLinkPreviewShared,
+      },
       ...nodeAnchorShared,
     },
     focus: {
       color: colors.RED_900,
-      linkPreviewColor: colors.BLACK,
+      linkPreview: {
+        color: colors.BLACK,
+        ...nodeAnchorLinkPreviewShared,
+      },
       ...nodeAnchorShared,
     },
   },

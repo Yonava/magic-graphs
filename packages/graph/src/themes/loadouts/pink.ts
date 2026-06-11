@@ -3,7 +3,11 @@ import colors from '@magic/utils/colors';
 import { CURSOR_FALLBACK } from '../cursor.ts';
 import type { GraphTheme } from '../types.ts';
 import { edgeShared } from './shared/edge.ts';
-import { nodeAnchorShared, nodeShared } from './shared/node.ts';
+import {
+  nodeAnchorLinkPreviewShared,
+  nodeAnchorShared,
+  nodeShared,
+} from './shared/node.ts';
 
 const nodeSharedPink = {
   textColor: colors.PINK_600,
@@ -57,12 +61,18 @@ export const PINK_THEME = {
   nodeAnchor: {
     default: {
       color: colors.PINK_500,
-      linkPreviewColor: colors.PINK_900,
+      linkPreview: {
+        color: colors.PINK_900,
+        ...nodeAnchorLinkPreviewShared,
+      },
       ...nodeAnchorShared,
     },
     focus: {
       color: colors.PURPLE_700,
-      linkPreviewColor: colors.PINK_900,
+      linkPreview: {
+        color: colors.PINK_900,
+        ...nodeAnchorLinkPreviewShared,
+      },
       ...nodeAnchorShared,
     },
   },

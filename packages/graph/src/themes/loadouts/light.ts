@@ -3,7 +3,11 @@ import colors from '@magic/utils/colors';
 import { CURSOR_FALLBACK } from '../cursor.ts';
 import { GraphTheme } from '../index.ts';
 import { edgeShared } from './shared/edge.ts';
-import { nodeAnchorShared, nodeShared } from './shared/node.ts';
+import {
+  nodeAnchorLinkPreviewShared,
+  nodeAnchorShared,
+  nodeShared,
+} from './shared/node.ts';
 
 const nodeSharedLight = {
   textColor: colors.GRAY_900,
@@ -55,12 +59,18 @@ export const LIGHT_THEME = {
   nodeAnchor: {
     default: {
       color: colors.BLACK,
-      linkPreviewColor: colors.BLACK,
+      linkPreview: {
+        color: colors.BLACK,
+        ...nodeAnchorLinkPreviewShared,
+      },
       ...nodeAnchorShared,
     },
     focus: {
       color: colors.BLUE_900,
-      linkPreviewColor: colors.BLACK,
+      linkPreview: {
+        color: colors.BLACK,
+        ...nodeAnchorLinkPreviewShared,
+      },
       ...nodeAnchorShared,
     },
   },

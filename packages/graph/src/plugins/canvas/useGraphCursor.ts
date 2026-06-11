@@ -40,6 +40,14 @@ export const useGraphCursor = ({
       return getTheme('marquee.encapsulatedNodeBox.cursor');
     }
 
+    if (topElement.graphType === 'node-anchor') {
+      const node = nullThrows(
+        getNode(topElement.data!.nodeId as string),
+        'cannot resolve node on node anchor data',
+      );
+      return getTheme('nodeAnchor.default.cursor', node);
+    }
+
     return CURSOR.DEFAULT;
   };
 
