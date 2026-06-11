@@ -53,7 +53,9 @@ export const useGraphCursor = ({
 
   const refreshCursor = () => {
     if (!canvas.value) return;
-    canvas.value.style.cursor = getCursor();
+    const currentCursor = canvas.value.style.cursor;
+    const newCursor = getCursor();
+    if (currentCursor !== newCursor) canvas.value.style.cursor = newCursor;
   };
 
   subscribe('onDraw', refreshCursor);
