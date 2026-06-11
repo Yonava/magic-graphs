@@ -44,13 +44,13 @@ export const ThemeToGraphColors: Record<GraphThemeName, GraphColors> = {
 export const useGraphColors = () =>
   computed(() => {
     if (!graph.value) return;
-    const theme = graph.value.themeName.value;
+    const theme = graph.value.canvas.themeName.value;
     return ThemeToGraphColors[theme];
   });
 
 export const useNonNullGraphColors = () =>
   computed(() => {
     if (!graph.value) throw 'global graph state not set';
-    const theme = graph.value.themeName.value;
+    const theme = graph.value.canvas.themeName.value;
     return ThemeToGraphColors[theme];
   });

@@ -111,9 +111,9 @@ export const useMarqueePlugin = <
     const shape = graph.canvas.shapes.shapes.rect({
       id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
-      fillColor: graph.getTheme('marquee.color'),
+      fillColor: graph.canvas.getTheme('marquee.color'),
       stroke: {
-        color: graph.getTheme('marquee.borderColor'),
+        color: graph.canvas.getTheme('marquee.borderColor'),
         lineWidth: 2,
       },
     });
@@ -144,9 +144,9 @@ export const useMarqueePlugin = <
     const shape = graph.canvas.shapes.shapes.rect({
       id,
       ...box,
-      fillColor: graph.getTheme('marquee.encapsulatedNodeBox.color'),
+      fillColor: graph.canvas.getTheme('marquee.encapsulatedNodeBox.color'),
       stroke: {
-        color: graph.getTheme('marquee.encapsulatedNodeBox.borderColor'),
+        color: graph.canvas.getTheme('marquee.encapsulatedNodeBox.borderColor'),
         lineWidth: 2,
       },
     });

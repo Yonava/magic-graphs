@@ -10,9 +10,9 @@ import { CoreEventMap } from '../../core/events.ts';
 import type { CoreGraph, InternalActions } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import { useTheme } from '../../themes/useTheme.ts';
 import type { GEdge, GNode } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { useTheme } from '../canvas/themes/useTheme.ts';
 import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
 import { DRAG_EVENT_ID } from '../drag/index.ts';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
@@ -206,9 +206,10 @@ export const useFocusPlugin = <
       if (!isFocused(node.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.getTheme(nodeFocusPath, node, {
+      return graph.canvas.getTheme(nodeFocusPath, node, {
         ...graph,
         shapes: graph.canvas.shapes,
+        getTheme: graph.canvas.getTheme,
       }) as any;
     });
   }
@@ -218,9 +219,10 @@ export const useFocusPlugin = <
       if (!isFocused(edge.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.getTheme(edgeFocusPath, edge, {
+      return graph.canvas.getTheme(edgeFocusPath, edge, {
         ...graph,
         shapes: graph.canvas.shapes,
+        getTheme: graph.canvas.getTheme,
       }) as any;
     });
   }

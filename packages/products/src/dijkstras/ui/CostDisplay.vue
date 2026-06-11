@@ -5,8 +5,10 @@
   import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import { INF_STR, SIM_COLORS } from '../sim/theme.ts';
 
-  const { getTheme, focus } = graph.value;
-  const { isFocused } = focus;
+  const {
+    canvas: { getTheme },
+    focus: { isFocused },
+  } = graph.value;
 
   const getNodeCosts = (node: GNode) => getTheme('node.default.text', node);
 

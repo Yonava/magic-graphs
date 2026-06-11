@@ -1,18 +1,21 @@
 import { PURPLE_700, RED_700 } from '@magic/utils/colors';
 
 import { CoreGraph } from '../../core/types.ts';
-import { useTheme } from '../../themes/useTheme.ts';
+import { useTheme } from '../../plugins/canvas/themes/useTheme.ts';
+import { CanvasPlugin } from '../../plugins/canvas/types.ts';
 import { TUTORIAL_THEME_ID } from '../../tutorials/types.ts';
 import { type TutorialStep } from '../../tutorials/types.ts';
 
 /**
  * pre-defined tutorial steps for basic graph editing
  */
+type BasicsGraph = CoreGraph & CanvasPlugin;
+
 // @ts-expect-error migration: will complain that base graph events do not include
 // onNodeDrop
 export const BASICS_STEPS: (
-  graph: CoreGraph,
-) => Record<string, TutorialStep> = (graph: CoreGraph) => ({
+  graph: BasicsGraph,
+) => Record<string, TutorialStep> = (graph: BasicsGraph) => ({
   greeting: {
     hint: 'Welcome to the graph editor tutorial',
     dismiss: 'onClick',
@@ -51,7 +54,7 @@ export const BASICS_STEPS: (
   removeElement: getRemoveNodeOrEdgeStep(graph),
 });
 
-const getRemoveNodeOrEdgeStep = (graph: CoreGraph): TutorialStep => {
+const getRemoveNodeOrEdgeStep = (graph: BasicsGraph): TutorialStep => {
   let stepPassed = false;
   const completeStep = () => (stepPassed = true);
   const { setTheme, removeAllThemes } = useTheme(graph, TUTORIAL_THEME_ID);

@@ -4,10 +4,10 @@ import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
 import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
-import { CoreGraph } from '../core/types.ts';
-import type { NodeAnchor } from '../plugins/anchors/types.ts';
-import { CanvasGraph } from '../plugins/canvas/types.ts';
-import type { GEdge, GNode } from '../types.ts';
+import { CoreGraph } from '../../../core/types.ts';
+import { GEdge, GNode } from '../../../types.ts';
+import { NodeAnchor } from '../../anchors/types.ts';
+import { CanvasGraph } from '../types.ts';
 import { Cursor, CursorFallback } from './cursor.ts';
 
 export type TextStyles = {
@@ -28,7 +28,7 @@ export type CoreGraphNodeStyles = TextStyles & {
 export type GraphInterface = {
   shapes: CanvasGraph['shapes'];
   settings: CoreGraph['settings'];
-  getTheme: CoreGraph['getTheme'];
+  getTheme: CanvasGraph['getTheme'];
   edges: CoreGraph['edges'];
   getNode: CoreGraph['getNode'];
   getEdge: CoreGraph['getEdge'];

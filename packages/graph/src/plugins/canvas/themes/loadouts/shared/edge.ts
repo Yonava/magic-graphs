@@ -2,7 +2,7 @@ import { getLargestAngularSpaceBisector } from '@magic/shapes/helpers';
 import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
 
-import { GEdge } from '../../../types.ts';
+import { GEdge } from '../../../../../types.ts';
 import { GraphTheme, resolveThemeForEdge } from '../../index.ts';
 import { GraphInterface } from '../../types.ts';
 import { textDefaults } from './text.ts';

@@ -3,11 +3,14 @@ import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import { Shape } from '@magic/shapes/types/index';
 import { DeepReadonly } from 'ts-essentials';
 
-import { Ref, ShallowRef } from 'vue';
+import { ComputedRef, Ref, ShallowRef } from 'vue';
 
 import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { CanvasEventMap } from './events.ts';
+import { ThemeGetter } from './themes/getThemeResolver.ts';
+import { GraphThemeName, ThemeLoadouts } from './themes/index.ts';
+import { FullThemeMap } from './themes/types.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
 export type GraphUnderCursor = {
@@ -55,6 +58,11 @@ export type CanvasGraph = {
    * hit-testing may have changed.
    */
   forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
+
+  baseTheme: ComputedRef<ThemeLoadouts[GraphThemeName]>;
+  themeName: Ref<GraphThemeName>;
+  getTheme: ThemeGetter;
+  themeMap: FullThemeMap;
 };
 
 /**

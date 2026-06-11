@@ -2,9 +2,10 @@ import { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
+import { subscribe } from 'diagnostics_channel';
 import { DeepReadonly } from 'ts-essentials';
 
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
@@ -16,6 +17,9 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
+import { getThemeResolver } from './themes/getThemeResolver.ts';
+import { GraphThemeName, THEME_LOADOUTS } from './themes/index.ts';
+import { getInitialThemeMap } from './themes/types.ts';
 import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 import { useGraphCursor } from './useGraphCursor.ts';
@@ -72,11 +76,15 @@ export const useCanvasPlugin = <
     forceUpdateGraphUnderCursor();
   });
 
+  const themeName = ref<GraphThemeName>('light');
+  const themeMap = getInitialThemeMap();
+  const getTheme = getThemeResolver(themeName, themeMap);
+
   useGraphCursor({
     canvas: magicCanvas.canvas,
     subscribe: events.subscribe,
     getNode: graph.getNode,
-    getTheme: graph.getTheme,
+    getTheme,
     graphUnderCursor,
   });
 
@@ -110,8 +118,9 @@ export const useCanvasPlugin = <
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const edgeCanvasElements = graph.edges.value
       .map((edge) => {
-        const shape = graph.getTheme('edge.default.shape', edge, {
+        const shape = getTheme('edge.default.shape', edge, {
           ...graph,
+          getTheme,
           shapes,
         });
         if (!shape) return;
@@ -127,8 +136,9 @@ export const useCanvasPlugin = <
 
     const nodeCanvasElements = graph.nodes.value
       .map((node) => {
-        const shape = graph.getTheme('node.default.shape', node, {
+        const shape = getTheme('node.default.shape', node, {
           ...graph,
+          getTheme,
           shapes,
         });
         if (!shape) return;
@@ -186,6 +196,12 @@ export const useCanvasPlugin = <
     }
   });
 
+  events.subscribe('onDraw', () => {
+    const canvas = magicCanvas.canvas.value;
+    if (!canvas) return;
+    canvas.style.backgroundColor = getTheme('canvas.color');
+  });
+
   return {
     ...graph,
     events,
@@ -200,6 +216,11 @@ export const useCanvasPlugin = <
 
       graphUnderCursor,
       forceUpdateGraphUnderCursor,
+
+      baseTheme: computed(() => THEME_LOADOUTS[themeName.value]),
+      themeName,
+      getTheme,
+      themeMap,
     },
   };
 };

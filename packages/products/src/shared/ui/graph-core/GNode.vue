@@ -15,7 +15,9 @@
     size: 60,
   });
 
-  const theme = ref(resolveThemeForNode(graph.value.getTheme, props.node));
+  const theme = ref(
+    resolveThemeForNode(graph.value.canvas.getTheme, props.node),
+  );
 
   const borderSize = computed(() =>
     Math.round(Math.max(1, Math.log(props.size))),
@@ -26,7 +28,7 @@
   };
 
   const updateTheme = setInterval(() => {
-    theme.value = resolveThemeForNode(graph.value.getTheme, props.node);
+    theme.value = resolveThemeForNode(graph.value.canvas.getTheme, props.node);
   }, 100);
 
   onUnmounted(() => {

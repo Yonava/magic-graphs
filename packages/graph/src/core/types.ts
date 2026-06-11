@@ -2,9 +2,6 @@ import type { ComputedRef, Ref } from 'vue';
 
 import { EventHub } from '../events/createEventHub.ts';
 import { GraphSettings } from '../settings/index.ts';
-import { ThemeGetter } from '../themes/getThemeResolver.ts';
-import { GraphThemeName, ThemeLoadouts } from '../themes/index.ts';
-import { FullThemeMap } from '../themes/types.ts';
 import type { GEdge, GNode } from '../types.ts';
 import {
   CoreTransactionWrapperOptions,
@@ -39,11 +36,6 @@ export type CoreGraph<
   >;
 
   events: EventHub<EventMap>;
-
-  baseTheme: ComputedRef<ThemeLoadouts[GraphThemeName]>;
-  themeName: Ref<GraphThemeName>;
-  getTheme: ThemeGetter;
-  themeMap: FullThemeMap;
   settings: Ref<GraphSettings>;
 
   helpers: CoreGraphHelpers;

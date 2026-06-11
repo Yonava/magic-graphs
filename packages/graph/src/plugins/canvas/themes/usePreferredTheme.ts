@@ -4,7 +4,7 @@ import { useLocalStorage } from '@vueuse/core';
 
 import { watch } from 'vue';
 
-import { GraphWithPlugins } from '../useGraph.ts';
+import { GraphWithPlugins } from '../../../useGraph.ts';
 import { type GraphThemeName, THEME_NAMES } from './index.ts';
 
 export type PreferredGraphTheme = GraphThemeName | 'auto';
@@ -30,7 +30,7 @@ export const usePreferredTheme = (graph: GraphWithPlugins) => {
     isDark,
     () => {
       if (preferredTheme.value !== 'auto') return;
-      graph.themeName.value = isDark.value ? 'dark' : 'light';
+      graph.canvas.themeName.value = isDark.value ? 'dark' : 'light';
     },
     { immediate: true },
   );
@@ -48,9 +48,9 @@ export const usePreferredTheme = (graph: GraphWithPlugins) => {
       }
 
       if (preferredTheme.value === 'auto') {
-        graph.themeName.value = isDark.value ? 'dark' : 'light';
+        graph.canvas.themeName.value = isDark.value ? 'dark' : 'light';
       } else {
-        graph.themeName.value = preferredTheme.value;
+        graph.canvas.themeName.value = preferredTheme.value;
       }
     },
     { immediate: true },

@@ -59,7 +59,7 @@ export const useSimulationTheme = (
 
   const colorActiveEdges = (edge: GEdge) => {
     const isActive = activeEdgeIdsAtStep.value.includes(edge.id);
-    const focusColor = graph.baseTheme.value.edge.focus.color;
+    const focusColor = graph.canvas.baseTheme.value.edge.focus.color;
     if (isActive) return focusColor;
     else if (isResidual(edge.id)) return colors.ORANGE_400;
   };

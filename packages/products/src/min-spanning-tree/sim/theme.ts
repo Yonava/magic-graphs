@@ -26,7 +26,7 @@ export const useSimulationTheme = (
   const colorEdge = (edge: GEdge) => {
     if (graph.focus.isFocused(edge.id)) return;
 
-    const color = graph.baseTheme.value.edge.default.color;
+    const color = graph.canvas.baseTheme.value.edge.default.color;
     const inMST = mstAtStep.value.some((e) => e.id === edge.id);
     if (inMST) return color;
     else return color + DIM_FACTOR;
@@ -35,7 +35,7 @@ export const useSimulationTheme = (
   const colorEdgeText = (edge: GEdge) => {
     if (graph.focus.isFocused(edge.id)) return;
 
-    const color = graph.baseTheme.value.edge.default.textColor;
+    const color = graph.canvas.baseTheme.value.edge.default.textColor;
     const inMST = mstAtStep.value.some((e) => e.id === edge.id);
     if (inMST) return color;
     else return color + DIM_FACTOR;

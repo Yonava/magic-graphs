@@ -88,7 +88,7 @@ export const useNodeAnchorPlugin = <
   };
 
   const getAnchorSchemas = (node: GNode) => {
-    const { getTheme } = graph;
+    const { getTheme } = graph.canvas;
 
     const color = getTheme('nodeAnchor.default.color', node);
     const focusColor = getTheme('nodeAnchor.focus.color', node);
@@ -150,7 +150,7 @@ export const useNodeAnchorPlugin = <
    */
   const updateNodeAnchors = (node: GNode | undefined) => {
     if (!node) return (nodeAnchors.value = []);
-    const { getTheme } = graph;
+    const { getTheme } = graph.canvas;
 
     // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
     const isNodeFocused = graph.focus.isFocused(node.id);
@@ -218,7 +218,7 @@ export const useNodeAnchorPlugin = <
     const { x, y } = draggedAnchor;
     const start = { x: parentNode.value.x, y: parentNode.value.y };
     const end = { x, y };
-    const { getTheme } = graph;
+    const { getTheme } = graph.canvas;
 
     // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
     const isFocused = graph.focus.isFocused(parentNode.value.id);
@@ -405,6 +405,8 @@ export const useNodeAnchorPlugin = <
     // drop the node anchor being dragged
     events.handle('onMouseUp', dropAnchor, ANCHOR_EVENT_ID);
 
+    // TODO this is triggered twice! https://github.com/Yonava/magic-graphs/issues/664
+    // console.log('activating');
     dragCursorTheme.activate();
   };
 
