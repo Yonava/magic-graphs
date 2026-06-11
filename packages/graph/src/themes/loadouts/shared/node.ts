@@ -40,12 +40,3 @@ export const nodeShared = {
   shape: nodeCircle,
   cursor: CURSOR.POINTER,
 } as const;
-
-export const nodeAnchorShared = {
-  radius: Math.ceil(Math.sqrt(nodeShared.size) * 2),
-  cursor: CURSOR.GRAB,
-} as const;
-
-export const nodeAnchorLinkPreviewShared = {
-  width: 10,
-} as const;

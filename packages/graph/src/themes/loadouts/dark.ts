@@ -2,12 +2,14 @@ import colors from '@magic/utils/colors';
 
 import { CURSOR_FALLBACK } from '../cursor.ts';
 import type { GraphTheme } from '../types.ts';
+import { canvasShared } from './shared/canvas.ts';
 import { edgeShared } from './shared/edge.ts';
+import { marqueeEncapsulatedNodeBoxShared } from './shared/marquee.ts';
+import { nodeShared } from './shared/node.ts';
 import {
   nodeAnchorLinkPreviewShared,
   nodeAnchorShared,
-  nodeShared,
-} from './shared/node.ts';
+} from './shared/nodeAnchor.ts';
 
 const REDDISH_GRAY = 'rgb(100, 60, 70)';
 
@@ -47,7 +49,7 @@ export const DARK_THEME = {
   canvas: {
     color: colors.GRAY_600,
     patternColor: colors.GRAY_500,
-    cursor: CURSOR_FALLBACK,
+    ...canvasShared,
   },
   marquee: {
     color: colors.WHITE + '15',
@@ -55,7 +57,7 @@ export const DARK_THEME = {
     encapsulatedNodeBox: {
       color: colors.RED_700 + '20',
       borderColor: colors.RED_700,
-      cursor: 'pointer',
+      ...marqueeEncapsulatedNodeBoxShared,
     },
   },
   nodeAnchor: {

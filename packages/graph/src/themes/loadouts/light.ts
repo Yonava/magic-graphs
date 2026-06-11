@@ -1,13 +1,15 @@
 import colors from '@magic/utils/colors';
 
-import { CURSOR_FALLBACK } from '../cursor.ts';
+import { CURSOR, CURSOR_FALLBACK } from '../cursor.ts';
 import { GraphTheme } from '../index.ts';
+import { canvasShared } from './shared/canvas.ts';
 import { edgeShared } from './shared/edge.ts';
+import { marqueeEncapsulatedNodeBoxShared } from './shared/marquee.ts';
+import { nodeShared } from './shared/node.ts';
 import {
   nodeAnchorLinkPreviewShared,
   nodeAnchorShared,
-  nodeShared,
-} from './shared/node.ts';
+} from './shared/nodeAnchor.ts';
 
 const nodeSharedLight = {
   textColor: colors.GRAY_900,
@@ -45,7 +47,7 @@ export const LIGHT_THEME = {
   canvas: {
     color: colors.GRAY_200,
     patternColor: colors.GRAY_500,
-    cursor: CURSOR_FALLBACK,
+    ...canvasShared,
   },
   marquee: {
     color: colors.BLUE_300 + '15',
@@ -53,7 +55,7 @@ export const LIGHT_THEME = {
     encapsulatedNodeBox: {
       color: colors.BLUE_700 + '05',
       borderColor: colors.BLUE_700,
-      cursor: 'pointer',
+      ...marqueeEncapsulatedNodeBoxShared,
     },
   },
   nodeAnchor: {

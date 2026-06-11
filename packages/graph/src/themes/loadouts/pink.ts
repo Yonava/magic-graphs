@@ -2,12 +2,14 @@ import colors from '@magic/utils/colors';
 
 import { CURSOR_FALLBACK } from '../cursor.ts';
 import type { GraphTheme } from '../types.ts';
+import { canvasShared } from './shared/canvas.ts';
 import { edgeShared } from './shared/edge.ts';
+import { marqueeEncapsulatedNodeBoxShared } from './shared/marquee.ts';
+import { nodeShared } from './shared/node.ts';
 import {
   nodeAnchorLinkPreviewShared,
   nodeAnchorShared,
-  nodeShared,
-} from './shared/node.ts';
+} from './shared/nodeAnchor.ts';
 
 const nodeSharedPink = {
   textColor: colors.PINK_600,
@@ -47,7 +49,7 @@ export const PINK_THEME = {
   canvas: {
     color: colors.PINK_300,
     patternColor: colors.PURPLE_200,
-    cursor: CURSOR_FALLBACK,
+    ...canvasShared,
   },
   marquee: {
     color: colors.PINK_300 + '15',
@@ -55,7 +57,7 @@ export const PINK_THEME = {
     encapsulatedNodeBox: {
       color: colors.PINK_700 + '05',
       borderColor: colors.PINK_700,
-      cursor: 'pointer',
+      ...marqueeEncapsulatedNodeBoxShared,
     },
   },
   nodeAnchor: {
