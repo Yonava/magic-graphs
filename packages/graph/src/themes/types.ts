@@ -75,23 +75,25 @@ export type GraphInterface = {
   helpers: CoreGraph['helpers'];
 };
 
-export type CoreGraphNodeTheme = WrapWithNodeGetter<CoreGraphNodeStyles> & {
-  shape: (node: GNode, graph: GraphInterface) => Shape | void;
-};
+export type CoreGraphNodeTheme =
+  WrapWithNodeThemeGetter<CoreGraphNodeStyles> & {
+    shape: (node: GNode, graph: GraphInterface) => Shape | void;
+  };
 
 export type CoreGraphEdgeStyles = TextStyles & {
   color: string;
   width: number;
 };
 
-export type CoreGraphEdgeTheme = WrapWithEdgeGetter<CoreGraphEdgeStyles> & {
-  shape: (edge: GEdge, graph: GraphInterface) => Shape | void;
-};
+export type CoreGraphEdgeTheme =
+  WrapWithEdgeThemeGetter<CoreGraphEdgeStyles> & {
+    shape: (edge: GEdge, graph: GraphInterface) => Shape | void;
+  };
 
 type CanvasGraphThemeStyles = {
   color: MaybeGetter<string>;
   patternColor: MaybeGetter<string>;
-  cursor: GetterOrValue<() => Cursor | null>;
+  cursor: ThemeGetterOrValue<() => Cursor | null>;
 };
 
 export type CoreGraphTheme = {
@@ -115,8 +117,8 @@ type NodeAnchorLinkPreviewStyles = {
   linkPreviewWidth: MaybeGetter<number, [GNode, NodeAnchor]>;
 };
 
-type NodeAnchorGraphThemeRecord = WrapWithNodeGetter<NodeAnchorGraphStyles> &
-  NodeAnchorLinkPreviewStyles;
+type NodeAnchorGraphThemeRecord =
+  WrapWithNodeThemeGetter<NodeAnchorGraphStyles> & NodeAnchorLinkPreviewStyles;
 
 export type NodeAnchorGraphTheme = {
   default: NodeAnchorGraphThemeRecord;
@@ -157,18 +159,23 @@ export type ValidGraphThemePath = PathsMappingToBuiltIn<
   GraphThemePaths
 >;
 
-type GetterOrValue<Fn extends AnyFunction> =
-  | ReturnType<Fn>
-  | ((...args: Parameters<Fn>) => ReturnType<Fn> | void);
-type NodeGetterOrValue<T> = GetterOrValue<(node: GNode) => T>;
-type EdgeGetterOrValue<T> = GetterOrValue<(edge: GEdge) => T>;
+type ThemeGetterOrValue<Getter extends AnyFunction> =
+  | ReturnType<Getter>
+  | ((...args: Parameters<Getter>) => ReturnType<Getter> | void);
 
-type WrapWithNodeGetter<T extends Record<string, any>> = {
-  [K in keyof T]: NodeGetterOrValue<T[K]>;
+type NodeThemeGetterOrValue<ThemeValue> = ThemeGetterOrValue<
+  (node: GNode) => ThemeValue
+>;
+type EdgeThemeGetterOrValue<ThemeValue> = ThemeGetterOrValue<
+  (edge: GEdge) => ThemeValue
+>;
+
+type WrapWithNodeThemeGetter<T extends Record<string, any>> = {
+  [K in keyof T]: NodeThemeGetterOrValue<T[K]>;
 };
 
-type WrapWithEdgeGetter<T extends Record<string, any>> = {
-  [K in keyof T]: EdgeGetterOrValue<T[K]>;
+type WrapWithEdgeThemeGetter<T extends Record<string, any>> = {
+  [K in keyof T]: EdgeThemeGetterOrValue<T[K]>;
 };
 
 export type ThemeMapEntry<StyleValue> = {
