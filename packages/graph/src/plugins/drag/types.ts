@@ -7,6 +7,8 @@ import { NodeDragEventMap } from './events.ts';
 
 type NodeDragGraph = {};
 
+export type NodeIdDragState = { nodeIds: string[] };
+
 /**
  * info for the node being dragged
  */

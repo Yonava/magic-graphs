@@ -8,7 +8,10 @@ import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 export const useInteractive = (graph: GraphWithPlugins) => {
   let lastClickTime = 0;
 
-  const handleNodeCreation = ({ coords, items }: CanvasGraphMouseEvent) => {
+  const handleNodeCreation = ({
+    coords,
+    elements: items,
+  }: CanvasGraphMouseEvent) => {
     const ABOUT_A_FEW_HUNDRED_MS = 350;
     const timeDiff = Date.now() - lastClickTime;
     const closeEnoughInTime = timeDiff < ABOUT_A_FEW_HUNDRED_MS;
@@ -43,7 +46,7 @@ export const useInteractive = (graph: GraphWithPlugins) => {
   };
 
   const handleEdgeCreation = (fromNode: GNode) => {
-    const { items } = graph.canvas.graphUnderCursor;
+    const { elements: items } = graph.canvas.graphUnderCursor;
 
     const nodeUnderneathAnchor = items.findLast((i) => i.graphType === 'node');
     if (!nodeUnderneathAnchor) return;

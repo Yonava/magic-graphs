@@ -2,12 +2,13 @@ import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types/index';
 import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
-import { Builtin, PathValue, Paths } from 'ts-essentials';
+import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
 import { CoreGraph } from '../core/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import { CanvasGraph } from '../plugins/canvas/types.ts';
 import type { GEdge, GNode } from '../types.ts';
+import { Cursor, CursorFallback } from './cursor.ts';
 
 export type TextStyles = {
   text: string;
@@ -21,6 +22,7 @@ export type CoreGraphNodeStyles = TextStyles & {
   borderWidth: number;
   borderColor: string;
   color: string;
+  cursor: Cursor;
 };
 
 export type GraphInterface = {
@@ -33,28 +35,31 @@ export type GraphInterface = {
   helpers: CoreGraph['helpers'];
 };
 
-export type CoreGraphNodeTheme = WrapWithNodeGetter<CoreGraphNodeStyles> & {
-  shape: (node: GNode, graph: GraphInterface) => Shape | void;
-};
+export type CoreGraphNodeTheme =
+  WrapWithNodeThemeGetter<CoreGraphNodeStyles> & {
+    shape: (node: GNode, graph: GraphInterface) => Shape | void;
+  };
 
 export type CoreGraphEdgeStyles = TextStyles & {
   color: string;
   width: number;
 };
 
-export type CoreGraphEdgeTheme = WrapWithEdgeGetter<CoreGraphEdgeStyles> & {
-  shape: (edge: GEdge, graph: GraphInterface) => Shape | void;
-};
+export type CoreGraphEdgeTheme =
+  WrapWithEdgeThemeGetter<CoreGraphEdgeStyles> & {
+    shape: (edge: GEdge, graph: GraphInterface) => Shape | void;
+  };
 
-type CoreGraphThemeGraphStyles = {
-  color: string;
-  patternColor: string;
+type CanvasGraphThemeStyles = {
+  color: MaybeGetter<string>;
+  patternColor: MaybeGetter<string>;
+  cursor: ThemeGetterOrValue<() => Cursor | CursorFallback>;
 };
 
 export type CoreGraphTheme = {
   node: CoreGraphNodeTheme;
   edge: CoreGraphEdgeTheme;
-  graph: CoreGraphThemeGraphStyles;
+  canvas: CanvasGraphThemeStyles;
 };
 
 export type FocusGraphTheme = {
@@ -72,8 +77,8 @@ type NodeAnchorLinkPreviewStyles = {
   linkPreviewWidth: MaybeGetter<number, [GNode, NodeAnchor]>;
 };
 
-type NodeAnchorGraphThemeRecord = WrapWithNodeGetter<NodeAnchorGraphStyles> &
-  NodeAnchorLinkPreviewStyles;
+type NodeAnchorGraphThemeRecord =
+  WrapWithNodeThemeGetter<NodeAnchorGraphStyles> & NodeAnchorLinkPreviewStyles;
 
 export type NodeAnchorGraphTheme = {
   default: NodeAnchorGraphThemeRecord;
@@ -83,8 +88,11 @@ export type NodeAnchorGraphTheme = {
 export type MarqueeGraphTheme = {
   color: string;
   borderColor: string;
-  encapsulatedNodeBoxColor: string;
-  encapsulatedNodeBoxBorderColor: string;
+  encapsulatedNodeBox: {
+    color: string;
+    borderColor: string;
+    cursor: Cursor;
+  };
 };
 
 export type GraphTheme = {
@@ -96,7 +104,7 @@ export type GraphTheme = {
     default: CoreGraphTheme['edge'];
     focus: FocusGraphTheme['edge'];
   };
-  canvas: CoreGraphTheme['graph'];
+  canvas: CoreGraphTheme['canvas'];
   nodeAnchor: NodeAnchorGraphTheme;
   marquee: MarqueeGraphTheme;
 };
@@ -114,15 +122,23 @@ export type ValidGraphThemePath = PathsMappingToBuiltIn<
   GraphThemePaths
 >;
 
-type NodeGetterOrValue<T> = T | ((node: GNode) => T | void);
-type EdgeGetterOrValue<T> = T | ((edge: GEdge) => T | void);
+type ThemeGetterOrValue<Getter extends AnyFunction> =
+  | ReturnType<Getter>
+  | ((...args: Parameters<Getter>) => ReturnType<Getter> | void);
 
-type WrapWithNodeGetter<T extends Record<string, any>> = {
-  [K in keyof T]: NodeGetterOrValue<T[K]>;
+type NodeThemeGetterOrValue<ThemeValue> = ThemeGetterOrValue<
+  (node: GNode) => ThemeValue
+>;
+type EdgeThemeGetterOrValue<ThemeValue> = ThemeGetterOrValue<
+  (edge: GEdge) => ThemeValue
+>;
+
+type WrapWithNodeThemeGetter<T extends Record<string, any>> = {
+  [K in keyof T]: NodeThemeGetterOrValue<T[K]>;
 };
 
-type WrapWithEdgeGetter<T extends Record<string, any>> = {
-  [K in keyof T]: EdgeGetterOrValue<T[K]>;
+type WrapWithEdgeThemeGetter<T extends Record<string, any>> = {
+  [K in keyof T]: EdgeThemeGetterOrValue<T[K]>;
 };
 
 export type ThemeMapEntry<StyleValue> = {
@@ -162,6 +178,7 @@ const nodeFields = (): ThemeMapEntries<CoreGraphNodeTheme> => ({
   borderWidth: [],
   color: [],
   size: [],
+  cursor: [],
 });
 
 const edgeFields = (): ThemeMapEntries<CoreGraphEdgeTheme> => ({
@@ -190,6 +207,7 @@ export const getInitialThemeMap = (): FullThemeMap => ({
   canvas: {
     color: [],
     patternColor: [],
+    cursor: [],
   },
   nodeAnchor: {
     default: nodeAnchorFields(),
@@ -198,7 +216,10 @@ export const getInitialThemeMap = (): FullThemeMap => ({
   marquee: {
     color: [],
     borderColor: [],
-    encapsulatedNodeBoxColor: [],
-    encapsulatedNodeBoxBorderColor: [],
+    encapsulatedNodeBox: {
+      color: [],
+      borderColor: [],
+      cursor: [],
+    },
   },
 });

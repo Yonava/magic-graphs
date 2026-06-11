@@ -3,6 +3,7 @@ import { CanvasElement } from '@magic/graph/plugins/canvas/types';
 import tinycolor from 'tinycolor2';
 
 import type { Graph } from '../useGraphWithCanvas.ts';
+import { useSelectCursor } from './useSelectCursor.ts';
 
 const animateNodePulse = (graph: Graph) =>
   graph.canvas.shapes.defineTimeline({
@@ -20,14 +21,14 @@ const animateNodePulse = (graph: Graph) =>
         progress: 0.5,
         properties: {
           radius: {
-            value: (r) => r + 2,
+            value: (r) => r + 5,
             easing: 'out',
           },
           fillColor: (c) => tinycolor(c).darken(5).toRgbString(),
         },
       },
       {
-        progress: 0.6,
+        progress: 0.8,
         properties: {
           radius: {
             value: (r) => r,
@@ -48,7 +49,7 @@ const animateNodePulse = (graph: Graph) =>
  */
 export const selectNode = (graph: Graph) => {
   const { selectedItemPromise, cancelSelection } = selectFromGraph(graph, {
-    predicate: (element) => element.graphType === 'node',
+    isCanvasElementSelectable: (element) => element.graphType === 'node',
   });
 
   const pulse = animateNodePulse(graph);
@@ -75,7 +76,7 @@ export const selectNode = (graph: Graph) => {
  */
 export const selectEdge = (graph: Graph) => {
   const { selectedItemPromise, cancelSelection } = selectFromGraph(graph, {
-    predicate: (element) => element.graphType === 'edge',
+    isCanvasElementSelectable: (element) => element.graphType === 'edge',
   });
 
   return {
@@ -93,13 +94,8 @@ export type SelectFromGraphOptions = {
    * if left undefined, all items in the graph will be selectable
    * @default () => true
    */
-  predicate: (item: CanvasElement) => boolean;
+  isCanvasElementSelectable: (item: CanvasElement) => boolean;
 };
-
-/**
- * default predicate for `selectFromGraph`
- */
-const DEFAULT_PREDICATE = () => true;
 
 /**
  * waits for the user to click on an item in the graph and resolves to the selected item
@@ -115,7 +111,9 @@ const DEFAULT_PREDICATE = () => true;
  */
 export const selectFromGraph = (
   graph: Graph,
-  { predicate = DEFAULT_PREDICATE }: Partial<SelectFromGraphOptions> = {},
+  {
+    isCanvasElementSelectable = () => true,
+  }: Partial<SelectFromGraphOptions> = {},
 ) => {
   let resolver: (
     value: CanvasElement | PromiseLike<CanvasElement> | undefined,
@@ -125,10 +123,12 @@ export const selectFromGraph = (
     (res) => (resolver = res),
   );
 
-  const onClick = ({ items }: CanvasGraphMouseEvent) => {
-    const topItem = items.at(-1);
-    if (!topItem || !predicate(topItem)) return;
-    resolve(topItem);
+  const cursorTheme = useSelectCursor(graph, isCanvasElementSelectable);
+
+  const onClick = ({ elements }: CanvasGraphMouseEvent) => {
+    const topElement = elements.at(-1);
+    if (!topElement || !isCanvasElementSelectable(topElement)) return;
+    resolve(topElement);
   };
 
   /**
@@ -136,11 +136,9 @@ export const selectFromGraph = (
    */
   const init = () => {
     graph.events.subscribe('onClick', onClick);
-    const cursorPredicate =
-      predicate === DEFAULT_PREDICATE
-        ? (item: CanvasElement) => !!item
-        : predicate;
-    graph.canvas.cursor.activateCursorSelectMode(cursorPredicate);
+    // TODO disable interactivity (node anchors, drag, marquee etc) when interactivity product-land plugin lands
+    // https://github.com/Yonava/magic-graphs/issues/659
+    cursorTheme.activate();
   };
 
   /**
@@ -148,7 +146,9 @@ export const selectFromGraph = (
    */
   const cleanup = () => {
     graph.events.unsubscribe('onClick', onClick);
-    graph.canvas.cursor.deactivateCursorSelectMode();
+    // TODO disable interactivity (node anchors, drag, marquee etc) when interactivity product-land plugin lands
+    // https://github.com/Yonava/magic-graphs/issues/659
+    cursorTheme.deactivate();
   };
 
   /**

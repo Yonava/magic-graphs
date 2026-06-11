@@ -10,7 +10,6 @@ import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import { useGraphCursor } from './cursor/useGraphCursor.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
   CanvasEventMap,
@@ -19,6 +18,7 @@ import {
 } from './events.ts';
 import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
+import { useGraphCursor } from './useGraphCursor.ts';
 
 export const CANVAS_EVENT_ID = 'canvas';
 
@@ -43,9 +43,9 @@ export const useCanvasPlugin = <
 
   const canvasFocused = ref(true);
 
-  const graphAtMousePosition: GraphUnderCursor = {
+  const graphUnderCursor: GraphUnderCursor = {
     coords: { x: 0, y: 0 },
-    items: [],
+    elements: [],
   };
 
   onClickOutside(magicCanvas.canvas, () => {
@@ -69,36 +69,38 @@ export const useCanvasPlugin = <
       return;
     }
 
-    refreshCursorState();
+    forceUpdateGraphUnderCursor();
   });
 
-  const cursor = useGraphCursor({
+  useGraphCursor({
     canvas: magicCanvas.canvas,
     subscribe: events.subscribe,
-    graphAtMousePosition,
+    getNode: graph.getNode,
+    getTheme: graph.getTheme,
+    graphUnderCursor,
   });
 
-  const refreshCursorState = (): DeepReadonly<GraphUnderCursor> => {
+  const forceUpdateGraphUnderCursor = (): DeepReadonly<GraphUnderCursor> => {
     const coords = magicCanvas.cursorCoordinates.value;
-    graphAtMousePosition.coords = coords;
+    graphUnderCursor.coords = coords;
 
     aggregator.updateAggregator();
     const newElements = aggregator.getCanvasElementsAtCoordinate(coords);
-    graphAtMousePosition.items = newElements;
+    graphUnderCursor.elements = newElements;
 
-    events.emit('onGraphUnderCursorChange', graphAtMousePosition);
-    return graphAtMousePosition;
+    events.emit('onGraphUnderCursorChange', graphUnderCursor);
+    return graphUnderCursor;
   };
 
   const graphMouseEvent = (event: MouseEvent): CanvasGraphMouseEvent => ({
-    ...graphAtMousePosition,
+    ...graphUnderCursor,
     event,
   });
 
   const mouseEvents = emitMouseEvents(
     graphMouseEvent,
     events.emit,
-    refreshCursorState,
+    forceUpdateGraphUnderCursor,
   );
 
   const keyboardEvents = emitKeyboardEvents(events.emit);
@@ -196,10 +198,8 @@ export const useCanvasPlugin = <
       focused: canvasFocused,
       hovered: useElementHover(magicCanvas.canvas),
 
-      graphUnderCursor: graphAtMousePosition,
-      forceUpdateGraphUnderCursor: refreshCursorState,
-
-      cursor,
+      graphUnderCursor,
+      forceUpdateGraphUnderCursor,
     },
   };
 };
