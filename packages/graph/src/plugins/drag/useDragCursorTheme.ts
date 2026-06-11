@@ -17,6 +17,7 @@ export const useDragCursorTheme = (
     setTheme('canvas.cursor', globalGrabbing);
     setTheme('node.default.cursor', CURSOR.GRAB);
     setTheme('node.focus.cursor', CURSOR.GRAB);
+    setTheme('marquee.encapsulatedNodeBox.cursor', CURSOR.GRAB);
   };
 
   const deactivate = () => {

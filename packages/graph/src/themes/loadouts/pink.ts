@@ -47,8 +47,11 @@ export const PINK_THEME = {
   marquee: {
     color: colors.PINK_300 + '15',
     borderColor: colors.PINK_500,
-    encapsulatedNodeBoxBorderColor: colors.PINK_700,
-    encapsulatedNodeBoxColor: colors.PINK_700 + '05',
+    encapsulatedNodeBox: {
+      color: colors.PINK_700 + '05',
+      borderColor: colors.PINK_700,
+      cursor: 'pointer',
+    },
   },
   nodeAnchor: {
     default: {

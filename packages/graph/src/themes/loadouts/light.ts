@@ -45,8 +45,11 @@ export const LIGHT_THEME = {
   marquee: {
     color: colors.BLUE_300 + '15',
     borderColor: colors.BLUE_500,
-    encapsulatedNodeBoxBorderColor: colors.BLUE_700,
-    encapsulatedNodeBoxColor: colors.BLUE_700 + '05',
+    encapsulatedNodeBox: {
+      color: colors.BLUE_700 + '05',
+      borderColor: colors.BLUE_700,
+      cursor: 'pointer',
+    },
   },
   nodeAnchor: {
     default: {

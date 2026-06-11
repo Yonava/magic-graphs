@@ -7,7 +7,6 @@ import { Ref, ShallowRef } from 'vue';
 
 import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
-import { GraphCursor } from './cursor/types.ts';
 import { CanvasEventMap } from './events.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
@@ -56,10 +55,6 @@ export type CanvasGraph = {
    * hit-testing may have changed.
    */
   forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
-  /**
-   * tools to customize the style of the cursor
-   */
-  cursor: GraphCursor;
 };
 
 /**

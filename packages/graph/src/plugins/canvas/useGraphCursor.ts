@@ -1,10 +1,10 @@
 import { nullThrows } from '@magic/utils/assert';
 
-import { CoreGraph } from '../../../core/types.ts';
-import { EventHub } from '../../../events/createEventHub.ts';
-import { CURSOR, Cursor } from '../../../themes/cursor.ts';
-import { CanvasEventMap } from '../events.ts';
-import { CanvasGraph } from '../types.ts';
+import { CoreGraph } from '../../core/types.ts';
+import { EventHub } from '../../events/createEventHub.ts';
+import { CURSOR, Cursor } from '../../themes/cursor.ts';
+import { CanvasEventMap } from './events.ts';
+import { CanvasGraph } from './types.ts';
 
 type GraphCursorProps = {
   subscribe: EventHub<CanvasEventMap>['subscribe'];
@@ -35,6 +35,10 @@ export const useGraphCursor = ({
     if (topElement.graphType === 'node') {
       const node = nullThrows(getNode(topElement.id), 'node not found');
       return getTheme('node.default.cursor', node);
+    }
+
+    if (topElement.graphType === 'encapsulated-node-box') {
+      return getTheme('marquee.encapsulatedNodeBox.cursor');
     }
 
     return CURSOR.DEFAULT;

@@ -91,8 +91,11 @@ export type NodeAnchorGraphTheme = {
 export type MarqueeGraphTheme = {
   color: string;
   borderColor: string;
-  encapsulatedNodeBoxColor: string;
-  encapsulatedNodeBoxBorderColor: string;
+  encapsulatedNodeBox: {
+    color: string;
+    borderColor: string;
+    cursor: Cursor;
+  };
 };
 
 export type GraphTheme = {
@@ -216,7 +219,10 @@ export const getInitialThemeMap = (): FullThemeMap => ({
   marquee: {
     color: [],
     borderColor: [],
-    encapsulatedNodeBoxColor: [],
-    encapsulatedNodeBoxBorderColor: [],
+    encapsulatedNodeBox: {
+      color: [],
+      borderColor: [],
+      cursor: [],
+    },
   },
 });

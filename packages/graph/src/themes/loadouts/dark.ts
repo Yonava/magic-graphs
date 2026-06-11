@@ -47,8 +47,11 @@ export const DARK_THEME = {
   marquee: {
     color: colors.WHITE + '15',
     borderColor: colors.WHITE,
-    encapsulatedNodeBoxBorderColor: colors.RED_700,
-    encapsulatedNodeBoxColor: colors.RED_700 + '20',
+    encapsulatedNodeBox: {
+      color: colors.RED_700,
+      borderColor: colors.RED_700 + '20',
+      cursor: 'pointer',
+    },
   },
   nodeAnchor: {
     default: {

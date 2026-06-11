@@ -59,7 +59,6 @@ export const useMarqueePlugin = <
   };
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
-    // graph.canvas.cursor.disabled.value = true;
     marqueeBox.value = {
       at: startingCoords,
       width: 0,
@@ -72,7 +71,6 @@ export const useMarqueePlugin = <
     if (!marqueeBox.value) return;
     const finalMarqueeBox = marqueeBox.value;
     marqueeBox.value = undefined;
-    // graph.canvas.cursor.disabled.value = false;
     events.emit('onMarqueeEndSelection', finalMarqueeBox);
   };
 
@@ -146,9 +144,9 @@ export const useMarqueePlugin = <
     const shape = graph.canvas.shapes.shapes.rect({
       id,
       ...box,
-      fillColor: graph.getTheme('marquee.encapsulatedNodeBoxColor'),
+      fillColor: graph.getTheme('marquee.encapsulatedNodeBox.color'),
       stroke: {
-        color: graph.getTheme('marquee.encapsulatedNodeBoxBorderColor'),
+        color: graph.getTheme('marquee.encapsulatedNodeBox.borderColor'),
         lineWidth: 2,
       },
     });
