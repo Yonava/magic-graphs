@@ -17,6 +17,7 @@ import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';
 import { NodeAnchorEventMap, createNodeAnchorEventRegistry } from './events.ts';
+import { useAnchorDragCursor } from './useAnchorDragCursor.ts';
 
 export const ANCHOR_EVENT_ID = 'anchors';
 
@@ -51,6 +52,7 @@ export const useNodeAnchorPlugin = <
   const parentNode = ref<GNode>();
 
   const anchorDragState = createAnchorDragState();
+  const dragCursorTheme = useAnchorDragCursor(graph, anchorDragState);
 
   const hoveredNodeAnchorId = ref<NodeAnchor['id']>();
 
@@ -126,6 +128,9 @@ export const useNodeAnchorPlugin = <
         graphType: 'node-anchor',
         shape: nodeAnchorShape,
         priority: beingDragged ? Infinity : 99_999,
+        data: {
+          nodeId: node.id,
+        },
       });
     }
 
@@ -219,13 +224,13 @@ export const useNodeAnchorPlugin = <
     const isFocused = graph.focus.isFocused(parentNode.value.id);
 
     const baseColor = getTheme(
-      'nodeAnchor.default.linkPreviewColor',
+      'nodeAnchor.default.linkPreview.color',
       parentNode.value,
       draggedAnchor,
     );
 
     const focusColor = getTheme(
-      'nodeAnchor.focus.linkPreviewColor',
+      'nodeAnchor.focus.linkPreview.color',
       parentNode.value,
       draggedAnchor,
     );
@@ -233,13 +238,13 @@ export const useNodeAnchorPlugin = <
     const color = isFocused ? focusColor : baseColor;
 
     const baseWidth = getTheme(
-      'nodeAnchor.default.linkPreviewWidth',
+      'nodeAnchor.default.linkPreview.width',
       parentNode.value,
       draggedAnchor,
     );
 
     const focusWidth = getTheme(
-      'nodeAnchor.focus.linkPreviewWidth',
+      'nodeAnchor.focus.linkPreview.width',
       parentNode.value,
       draggedAnchor,
     );
@@ -399,6 +404,8 @@ export const useNodeAnchorPlugin = <
 
     // drop the node anchor being dragged
     events.handle('onMouseUp', dropAnchor, ANCHOR_EVENT_ID);
+
+    dragCursorTheme.activate();
   };
 
   const deactivate = () => {
@@ -410,6 +417,7 @@ export const useNodeAnchorPlugin = <
     events.unhandle('onMouseDown', setCurrentlyDraggingAnchor);
     events.unhandle('onMouseUp', dropAnchor);
     clearAnchorState();
+    dragCursorTheme.deactivate();
   };
 
   activate();

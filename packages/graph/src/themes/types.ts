@@ -70,11 +70,14 @@ export type FocusGraphTheme = {
 type NodeAnchorGraphStyles = {
   radius: number;
   color: Color;
+  cursor: Cursor;
 };
 
 type NodeAnchorLinkPreviewStyles = {
-  linkPreviewColor: MaybeGetter<string, [GNode, NodeAnchor]>;
-  linkPreviewWidth: MaybeGetter<number, [GNode, NodeAnchor]>;
+  linkPreview: {
+    color: MaybeGetter<string, [GNode, NodeAnchor]>;
+    width: MaybeGetter<number, [GNode, NodeAnchor]>;
+  };
 };
 
 type NodeAnchorGraphThemeRecord =
@@ -146,10 +149,6 @@ export type ThemeMapEntry<StyleValue> = {
   useThemeId: string;
 };
 
-type ThemeMapEntries<Object extends Record<string, Builtin>> = {
-  [Key in keyof Object]: ThemeMapEntry<Object[Key]>[];
-};
-
 type DeepThemeMapEntry<T> = [T] extends [Builtin]
   ? ThemeMapEntry<T>[]
   : T extends Array<infer U>
@@ -164,14 +163,14 @@ type DeepThemeMapEntry<T> = [T] extends [Builtin]
 
 export type FullThemeMap = DeepThemeMapEntry<GraphTheme>;
 
-const textFields = (): ThemeMapEntries<TextStyles> => ({
+const textFields = (): DeepThemeMapEntry<TextStyles> => ({
   text: [],
   textColor: [],
   textFontWeight: [],
   textSize: [],
 });
 
-const nodeFields = (): ThemeMapEntries<CoreGraphNodeTheme> => ({
+const nodeFields = (): DeepThemeMapEntry<CoreGraphNodeTheme> => ({
   ...textFields(),
   shape: [],
   borderColor: [],
@@ -181,18 +180,21 @@ const nodeFields = (): ThemeMapEntries<CoreGraphNodeTheme> => ({
   cursor: [],
 });
 
-const edgeFields = (): ThemeMapEntries<CoreGraphEdgeTheme> => ({
+const edgeFields = (): DeepThemeMapEntry<CoreGraphEdgeTheme> => ({
   ...textFields(),
   shape: [],
   color: [],
   width: [],
 });
 
-const nodeAnchorFields = (): ThemeMapEntries<NodeAnchorGraphThemeRecord> => ({
+const nodeAnchorFields = (): DeepThemeMapEntry<NodeAnchorGraphThemeRecord> => ({
   color: [],
   radius: [],
-  linkPreviewColor: [],
-  linkPreviewWidth: [],
+  cursor: [],
+  linkPreview: {
+    color: [],
+    width: [],
+  },
 });
 
 export const getInitialThemeMap = (): FullThemeMap => ({

@@ -1,14 +1,14 @@
-import { Coordinate } from '@magic/canvas/types';
 import { nullThrows } from '@magic/utils/assert';
 
 import { createDragState } from '../../shared/drag/createDragState.ts';
+import { DragStateControls } from '../../shared/drag/types.ts';
 import { NodeAnchor } from './types.ts';
 
-export const createAnchorDragState = () => {
+export const createAnchorDragState = (): DragStateControls<NodeAnchor> => {
   const dragState = createDragState<NodeAnchor>();
   return {
     ...dragState,
-    applyMove: (newCoords: Coordinate) => {
+    applyMove: (newCoords) => {
       const data = dragState.applyMove(newCoords);
       if (!data) return;
       const nodeAnchor = nullThrows(

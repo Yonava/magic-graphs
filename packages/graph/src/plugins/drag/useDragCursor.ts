@@ -4,7 +4,7 @@ import { CURSOR } from '../../themes/cursor.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import { NodeIdDragState } from './types.ts';
 
-export const useDragCursorTheme = (
+export const useDragCursor = (
   graph: Pick<CoreGraph, 'themeMap'>,
   dragState: DragStateControls<NodeIdDragState>,
 ) => {
@@ -20,12 +20,8 @@ export const useDragCursorTheme = (
     setTheme('marquee.encapsulatedNodeBox.cursor', CURSOR.GRAB);
   };
 
-  const deactivate = () => {
-    removeAllThemes();
-  };
-
   return {
     activate,
-    deactivate,
+    deactivate: removeAllThemes,
   };
 };
