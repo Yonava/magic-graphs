@@ -16,6 +16,7 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { computed, ref, watch } from 'vue';
 
+import { Graph } from '../useGraphWithCanvas.ts';
 import {
   ANNOTATION_EVENT_ID,
   BRUSH_WEIGHTS,
@@ -26,8 +27,9 @@ import {
 } from './constants.ts';
 import { useAnnotationHistory } from './history.ts';
 import type { Annotation } from './types.ts';
+import { useAnnotationCursor } from './useAnnotationCursor.ts';
 
-export const useGraphAnnotations = (graph: GraphWithPlugins) => {
+export const useGraphAnnotations = (graph: Graph) => {
   const selectedColor = ref<Color>(COLORS[0]);
   const selectedBrushWeight = ref(BRUSH_WEIGHTS[1]);
   const isErasing = ref(false);
@@ -187,12 +189,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
   };
 
   const hideCursor = computed(() => isErasing.value || isLaserPointing.value);
-
-  watch(hideCursor, () => {
-    const canvas = graph.canvas.magicCanvas.canvas.value;
-    if (!canvas) return;
-    canvas.style.cursor = hideCursor.value ? 'none' : 'crosshair';
-  });
+  const cursorTheme = useAnnotationCursor(graph, hideCursor);
 
   const addScribblesToAggregator = (aggregator: Aggregator) => {
     if (!isActive.value) return aggregator;
@@ -268,13 +265,9 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
   graph.canvas.aggregator.transformers.push(addScribblesToAggregator);
 
   const activate = () => {
-    const canvas = graph.canvas.magicCanvas.canvas.value;
-    if (!canvas) return;
-
     isActive.value = true;
 
-    // graph.canvas.cursor.disabled.value = true;
-    canvas.style.cursor = 'crosshair';
+    cursorTheme.activate();
 
     graph.events.handle(
       'onMouseDown',
@@ -297,14 +290,10 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
   };
 
   const deactivate = () => {
-    const canvas = graph.canvas.magicCanvas.canvas.value;
-    if (!canvas) return;
-
     isActive.value = false;
     isErasing.value = false;
 
-    // graph.canvas.cursor.disabled.value = false;
-    canvas.style.cursor = 'default';
+    cursorTheme.deactivate();
 
     graph.events.unhandle('onMouseDown', startDrawing);
     graph.events.unhandle('onGraphUnderCursorChange', drawLine);

@@ -48,8 +48,8 @@ export const DARK_THEME = {
     color: colors.WHITE + '15',
     borderColor: colors.WHITE,
     encapsulatedNodeBox: {
-      color: colors.RED_700,
-      borderColor: colors.RED_700 + '20',
+      color: colors.RED_700 + '20',
+      borderColor: colors.RED_700,
       cursor: 'pointer',
     },
   },
