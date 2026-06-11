@@ -1,6 +1,5 @@
 import colors from '@magic/utils/colors';
 
-import { CURSOR_FALLBACK } from '../cursor.ts';
 import type { GraphTheme } from '../types.ts';
 import { canvasShared } from './shared/canvas.ts';
 import { edgeShared } from './shared/edge.ts';

@@ -7,13 +7,12 @@ import type { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { createDragState } from '../../shared/drag/createDragState.ts';
-import { useTheme } from '../../themes/useTheme.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
 import { GraphWithNodeDrag, NodeIdDragState } from './types.ts';
-import { useDragCursorTheme } from './useDragCursorTheme.ts';
+import { useDragCursor } from './useDragCursor.ts';
 
 export const DRAG_EVENT_ID = 'drag';
 
@@ -116,7 +115,7 @@ export const useNodeDragPlugin = <
     });
   };
 
-  const cursorTheme = useDragCursorTheme(graph, dragState);
+  const cursorTheme = useDragCursor(graph, dragState);
 
   const activate = () => {
     events.handle('onMouseDown', beginDrag, DRAG_EVENT_ID, {

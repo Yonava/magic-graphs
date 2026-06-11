@@ -17,6 +17,7 @@ import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';
 import { NodeAnchorEventMap, createNodeAnchorEventRegistry } from './events.ts';
+import { useAnchorDragCursor } from './useAnchorDragCursor.ts';
 
 export const ANCHOR_EVENT_ID = 'anchors';
 
@@ -51,6 +52,7 @@ export const useNodeAnchorPlugin = <
   const parentNode = ref<GNode>();
 
   const anchorDragState = createAnchorDragState();
+  const dragCursorTheme = useAnchorDragCursor(graph, anchorDragState);
 
   const hoveredNodeAnchorId = ref<NodeAnchor['id']>();
 
@@ -402,6 +404,8 @@ export const useNodeAnchorPlugin = <
 
     // drop the node anchor being dragged
     events.handle('onMouseUp', dropAnchor, ANCHOR_EVENT_ID);
+
+    dragCursorTheme.activate();
   };
 
   const deactivate = () => {
@@ -413,6 +417,7 @@ export const useNodeAnchorPlugin = <
     events.unhandle('onMouseDown', setCurrentlyDraggingAnchor);
     events.unhandle('onMouseUp', dropAnchor);
     clearAnchorState();
+    dragCursorTheme.deactivate();
   };
 
   activate();
