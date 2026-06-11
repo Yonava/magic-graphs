@@ -72,7 +72,7 @@ export const useCanvasPlugin = <
     forceUpdateGraphUnderCursor();
   });
 
-  const cursor = useGraphCursor({
+  useGraphCursor({
     canvas: magicCanvas.canvas,
     subscribe: events.subscribe,
     getNode: graph.getNode,
@@ -200,8 +200,6 @@ export const useCanvasPlugin = <
 
       graphUnderCursor,
       forceUpdateGraphUnderCursor,
-
-      cursor,
     },
   };
 };
