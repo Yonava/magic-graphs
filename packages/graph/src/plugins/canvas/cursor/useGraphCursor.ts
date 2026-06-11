@@ -2,7 +2,7 @@ import { nullThrows } from '@magic/utils/assert';
 
 import { CoreGraph } from '../../../core/types.ts';
 import { EventHub } from '../../../events/createEventHub.ts';
-import { Cursor } from '../../../themes/types.ts';
+import { CURSOR, Cursor } from '../../../themes/cursor.ts';
 import { CanvasEventMap } from '../events.ts';
 import { CanvasGraph } from '../types.ts';
 
@@ -30,7 +30,7 @@ export const useGraphCursor = ({
     if (canvasTheme !== null) return canvasTheme;
 
     const topElement = graphUnderCursor.elements.at(-1);
-    if (!topElement) return 'default';
+    if (!topElement) return CURSOR.DEFAULT;
 
     if (topElement.graphType === 'node') {
       const node = nullThrows(getNode(topElement.id), 'node not found');
@@ -38,7 +38,7 @@ export const useGraphCursor = ({
       return getTheme('node.default.cursor', node);
     }
 
-    return 'default';
+    return CURSOR.DEFAULT;
   };
 
   const refreshCursor = () => {
