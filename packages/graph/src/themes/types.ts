@@ -53,6 +53,9 @@ export type CoreGraphEdgeTheme =
 type CanvasGraphThemeStyles = {
   color: MaybeGetter<string>;
   patternColor: MaybeGetter<string>;
+  // null = explicity side-step canvas cursor and use element specific cursor styles instead (ie node.default.cursor)
+  // why not undefined? undefined is universally returned from a
+  // theme getter callback if it wants to pass control to the theme override getter underneath it
   cursor: ThemeGetterOrValue<() => Cursor | null>;
 };
 

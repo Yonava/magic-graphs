@@ -34,7 +34,6 @@ export const useGraphCursor = ({
 
     if (topElement.graphType === 'node') {
       const node = nullThrows(getNode(topElement.id), 'node not found');
-      console.log('hitting');
       return getTheme('node.default.cursor', node);
     }
 
