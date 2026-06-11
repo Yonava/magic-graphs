@@ -405,6 +405,8 @@ export const useNodeAnchorPlugin = <
     // drop the node anchor being dragged
     events.handle('onMouseUp', dropAnchor, ANCHOR_EVENT_ID);
 
+    // TODO this is triggered twice! https://github.com/Yonava/magic-graphs/issues/664
+    // console.log('activating');
     dragCursorTheme.activate();
   };
 
