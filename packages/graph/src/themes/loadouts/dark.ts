@@ -42,6 +42,7 @@ export const DARK_THEME = {
   canvas: {
     color: colors.GRAY_600,
     patternColor: colors.GRAY_500,
+    cursor: null,
   },
   marquee: {
     color: colors.WHITE + '15',

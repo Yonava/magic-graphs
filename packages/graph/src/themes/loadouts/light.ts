@@ -40,6 +40,7 @@ export const LIGHT_THEME = {
   canvas: {
     color: colors.GRAY_200,
     patternColor: colors.GRAY_500,
+    cursor: null,
   },
   marquee: {
     color: colors.BLUE_300 + '15',

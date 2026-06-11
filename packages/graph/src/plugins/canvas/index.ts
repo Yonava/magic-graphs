@@ -77,6 +77,7 @@ export const useCanvasPlugin = <
     subscribe: events.subscribe,
     getNode: graph.getNode,
     getTheme: graph.getTheme,
+    graphUnderCursor,
   });
 
   const forceUpdateGraphUnderCursor = (): DeepReadonly<GraphUnderCursor> => {

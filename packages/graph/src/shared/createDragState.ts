@@ -1,14 +1,15 @@
 import { Coordinate } from '@magic/canvas/types';
+import { DeepReadonly } from 'ts-essentials';
 
-import { DeepReadonly } from 'vue';
-
-type ActiveDrag<TData extends object> = Coordinate & { data: TData };
+import { ActiveDrag, DragStateControls } from './types.ts';
 
 /**
  * tracks cursor delta and attached data for a drag interaction.
  * `stopDrag` and `applyMove` return undefined when no drag is active for use as a guard.
  */
-export const createDragState = <TData extends object>() => {
+export const createDragState = <
+  TData extends object,
+>(): DragStateControls<TData> => {
   let activeDrag: ActiveDrag<TData> | undefined;
 
   const startDrag = (coords: Coordinate, data: TData) => {
@@ -42,6 +43,7 @@ export const createDragState = <TData extends object>() => {
     stopDrag,
     applyMove,
 
+    isDragging: () => !!activeDrag,
     getDragState: (): DeepReadonly<ActiveDrag<TData>> | undefined =>
       // cast as readonly so consumers cannot type-safely mutate
       activeDrag as DeepReadonly<ActiveDrag<TData>> | undefined,

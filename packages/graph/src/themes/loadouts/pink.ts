@@ -20,14 +20,12 @@ export const PINK_THEME = {
       color: colors.PINK_100,
       borderColor: colors.PINK_400,
       ...nodeSharedPink,
-      cursor: 'copy',
     },
     focus: {
       borderColor: colors.PURPLE_600,
       color: colors.PURPLE_200,
       ...nodeSharedPink,
       textColor: colors.PURPLE_900,
-      cursor: 'cell',
     },
   },
   edge: {
@@ -44,6 +42,7 @@ export const PINK_THEME = {
   canvas: {
     color: colors.PINK_300,
     patternColor: colors.PURPLE_200,
+    cursor: null,
   },
   marquee: {
     color: colors.PINK_300 + '15',

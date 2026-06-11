@@ -37,7 +37,7 @@ export const nodeShared = {
   borderWidth: 8,
   size: 35,
   shape: nodeCircle,
-  cursor: 'progress',
+  cursor: 'pointer',
 } as const;
 
 export const nodeAnchorShared = {

@@ -2,7 +2,7 @@ import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types/index';
 import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
-import { Builtin, PathValue, Paths } from 'ts-essentials';
+import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
 import { CoreGraph } from '../core/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
@@ -88,15 +88,16 @@ export type CoreGraphEdgeTheme = WrapWithEdgeGetter<CoreGraphEdgeStyles> & {
   shape: (edge: GEdge, graph: GraphInterface) => Shape | void;
 };
 
-type CoreGraphThemeGraphStyles = {
-  color: string;
-  patternColor: string;
+type CanvasGraphThemeStyles = {
+  color: MaybeGetter<string>;
+  patternColor: MaybeGetter<string>;
+  cursor: GetterOrValue<() => Cursor | null>;
 };
 
 export type CoreGraphTheme = {
   node: CoreGraphNodeTheme;
   edge: CoreGraphEdgeTheme;
-  graph: CoreGraphThemeGraphStyles;
+  canvas: CanvasGraphThemeStyles;
 };
 
 export type FocusGraphTheme = {
@@ -138,7 +139,7 @@ export type GraphTheme = {
     default: CoreGraphTheme['edge'];
     focus: FocusGraphTheme['edge'];
   };
-  canvas: CoreGraphTheme['graph'];
+  canvas: CoreGraphTheme['canvas'];
   nodeAnchor: NodeAnchorGraphTheme;
   marquee: MarqueeGraphTheme;
 };
@@ -156,8 +157,11 @@ export type ValidGraphThemePath = PathsMappingToBuiltIn<
   GraphThemePaths
 >;
 
-type NodeGetterOrValue<T> = T | ((node: GNode) => T | void);
-type EdgeGetterOrValue<T> = T | ((edge: GEdge) => T | void);
+type GetterOrValue<Fn extends AnyFunction> =
+  | ReturnType<Fn>
+  | ((...args: Parameters<Fn>) => ReturnType<Fn> | void);
+type NodeGetterOrValue<T> = GetterOrValue<(node: GNode) => T>;
+type EdgeGetterOrValue<T> = GetterOrValue<(edge: GEdge) => T>;
 
 type WrapWithNodeGetter<T extends Record<string, any>> = {
   [K in keyof T]: NodeGetterOrValue<T[K]>;
@@ -233,6 +237,7 @@ export const getInitialThemeMap = (): FullThemeMap => ({
   canvas: {
     color: [],
     patternColor: [],
+    cursor: [],
   },
   nodeAnchor: {
     default: nodeAnchorFields(),

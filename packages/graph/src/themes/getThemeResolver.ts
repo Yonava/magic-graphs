@@ -67,7 +67,7 @@ export function getThemeResolver(
 
     const getterOrValue = themeMapEntry?.value ?? defaultValue;
 
-    if (!getterOrValue) {
+    if (getterOrValue === undefined) {
       throw new Error(`Theme property "${themeMapPath}" not found`);
     }
 
