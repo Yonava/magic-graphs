@@ -1,6 +1,6 @@
 import { getValue } from '@magic/utils/maybeGetter/index';
 import type { UnwrapMaybeGetter } from '@magic/utils/maybeGetter/index';
-import { Builtin, PathValue, Paths } from 'ts-essentials';
+import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
 import type { Ref } from 'vue';
 
@@ -16,8 +16,6 @@ export type ResolveThemeMap<Path extends ValidGraphThemePath> = PathValue<
   FullThemeMap,
   Path
 >;
-
-type AnyFunction = (...args: never[]) => unknown;
 
 export type UnwrapThemeEntry<ThemeMapEntries> =
   ThemeMapEntries extends ThemeMapEntry<Builtin>[]
