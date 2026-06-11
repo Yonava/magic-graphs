@@ -1,5 +1,6 @@
 import colors from '@magic/utils/colors';
 
+import { CURSOR_FALLBACK } from '../cursor.ts';
 import { GraphTheme } from '../index.ts';
 import { edgeShared } from './shared/edge.ts';
 import { nodeAnchorShared, nodeShared } from './shared/node.ts';
@@ -40,7 +41,7 @@ export const LIGHT_THEME = {
   canvas: {
     color: colors.GRAY_200,
     patternColor: colors.GRAY_500,
-    cursor: null,
+    cursor: CURSOR_FALLBACK,
   },
   marquee: {
     color: colors.BLUE_300 + '15',

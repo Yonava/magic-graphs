@@ -8,7 +8,7 @@ import { CoreGraph } from '../core/types.ts';
 import type { NodeAnchor } from '../plugins/anchors/types.ts';
 import { CanvasGraph } from '../plugins/canvas/types.ts';
 import type { GEdge, GNode } from '../types.ts';
-import { Cursor } from './cursor.ts';
+import { Cursor, CursorFallback } from './cursor.ts';
 
 export type TextStyles = {
   text: string;
@@ -53,10 +53,7 @@ export type CoreGraphEdgeTheme =
 type CanvasGraphThemeStyles = {
   color: MaybeGetter<string>;
   patternColor: MaybeGetter<string>;
-  // null = explicity side-step canvas cursor and use element specific cursor styles instead (ie node.default.cursor)
-  // why not undefined? undefined is universally returned from a
-  // theme getter callback if it wants to pass control to the theme override getter underneath it
-  cursor: ThemeGetterOrValue<() => Cursor | null>;
+  cursor: ThemeGetterOrValue<() => Cursor | CursorFallback>;
 };
 
 export type CoreGraphTheme = {

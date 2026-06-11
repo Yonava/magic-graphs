@@ -2,7 +2,7 @@ import { nullThrows } from '@magic/utils/assert';
 
 import { CoreGraph } from '../../core/types.ts';
 import { EventHub } from '../../events/createEventHub.ts';
-import { CURSOR, Cursor } from '../../themes/cursor.ts';
+import { CURSOR, CURSOR_FALLBACK, Cursor } from '../../themes/cursor.ts';
 import { CanvasEventMap } from './events.ts';
 import { CanvasGraph } from './types.ts';
 
@@ -26,8 +26,7 @@ export const useGraphCursor = ({
 }: GraphCursorProps) => {
   const getCursor = (): Cursor => {
     const canvasTheme = getTheme('canvas.cursor');
-    // canvas theme has been deliberately set
-    if (canvasTheme !== null) return canvasTheme;
+    if (canvasTheme !== CURSOR_FALLBACK) return canvasTheme;
 
     const topElement = graphUnderCursor.elements.at(-1);
     if (!topElement) return CURSOR.DEFAULT;

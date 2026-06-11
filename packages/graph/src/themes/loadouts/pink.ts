@@ -1,5 +1,6 @@
 import colors from '@magic/utils/colors';
 
+import { CURSOR_FALLBACK } from '../cursor.ts';
 import type { GraphTheme } from '../types.ts';
 import { edgeShared } from './shared/edge.ts';
 import { nodeAnchorShared, nodeShared } from './shared/node.ts';
@@ -42,7 +43,7 @@ export const PINK_THEME = {
   canvas: {
     color: colors.PINK_300,
     patternColor: colors.PURPLE_200,
-    cursor: null,
+    cursor: CURSOR_FALLBACK,
   },
   marquee: {
     color: colors.PINK_300 + '15',
