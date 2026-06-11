@@ -28,7 +28,7 @@ export type CoreGraphNodeStyles = TextStyles & {
 export type GraphInterface = {
   shapes: CanvasGraph['shapes'];
   settings: CoreGraph['settings'];
-  getTheme: CoreGraph['getTheme'];
+  getTheme: CanvasGraph['getTheme'];
   edges: CoreGraph['edges'];
   getNode: CoreGraph['getNode'];
   getEdge: CoreGraph['getEdge'];

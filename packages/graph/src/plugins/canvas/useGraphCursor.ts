@@ -10,7 +10,7 @@ type GraphCursorProps = {
   subscribe: EventHub<CanvasEventMap>['subscribe'];
   canvas: CanvasGraph['magicCanvas']['canvas'];
   getNode: CoreGraph['getNode'];
-  getTheme: CoreGraph['getTheme'];
+  getTheme: CanvasGraph['getTheme'];
   graphUnderCursor: CanvasGraph['graphUnderCursor'];
 };
 

@@ -1,11 +1,11 @@
-import { CoreGraph } from '../../core/types.ts';
 import { DragStateControls } from '../../shared/drag/types.ts';
 import { CURSOR } from '../../themes/cursor.ts';
+import { FullThemeMap } from '../../themes/types.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import { NodeAnchor } from './types.ts';
 
 export const useAnchorDragCursor = (
-  graph: Pick<CoreGraph, 'themeMap'>,
+  graph: { canvas: { themeMap: FullThemeMap } },
   dragState: DragStateControls<NodeAnchor>,
 ) => {
   const { setTheme, removeAllThemes } = useTheme(graph, 'plugin/anchors/drag');

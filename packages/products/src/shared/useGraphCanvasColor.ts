@@ -3,7 +3,10 @@ import { readonly, ref } from 'vue';
 import { Graph } from './useGraphWithCanvas.ts';
 
 export const useGraphCanvasColor = (graph: Graph) => {
-  const { events, getTheme } = graph;
+  const {
+    events,
+    canvas: { getTheme },
+  } = graph;
 
   const patternColor = ref(getTheme('canvas.patternColor'));
   const bgColor = ref(getTheme('canvas.color'));

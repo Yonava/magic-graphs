@@ -1,6 +1,6 @@
 import type { BoundingBox } from '@magic/shapes/types/utility';
 
-import { CoreGraph } from '../../core/types.ts';
+import { CanvasGraph } from '../canvas/types.ts';
 import type { GNode } from '../../types.ts';
 
 export function getSurfaceArea(box: BoundingBox) {
@@ -10,7 +10,7 @@ export function getSurfaceArea(box: BoundingBox) {
 
 export const getEncapsulatedNodeBox = (
   nodes: GNode[],
-  graph: Pick<CoreGraph, 'getTheme'>,
+  graph: { canvas: Pick<CanvasGraph, 'getTheme'> },
 ): BoundingBox => {
   const encapsulatedNodeBox = {
     at: { x: Infinity, y: Infinity },
@@ -26,8 +26,8 @@ export const getEncapsulatedNodeBox = (
     maxY = -Infinity;
 
   for (const node of nodes) {
-    const nodeRadius = graph.getTheme('node.default.size', node);
-    const nodeBorderWidth = graph.getTheme('node.default.borderWidth', node);
+    const nodeRadius = graph.canvas.getTheme('node.default.size', node);
+    const nodeBorderWidth = graph.canvas.getTheme('node.default.borderWidth', node);
     const nodeArea = nodeRadius + nodeBorderWidth / 2;
     const { x, y } = node;
 
