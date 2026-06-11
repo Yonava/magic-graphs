@@ -6,13 +6,13 @@ import { CoreEventMap } from '../../core/events.ts';
 import type { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import { createDragState } from '../../shared/createDragState.ts';
+import { createDragState } from '../../shared/drag/createDragState.ts';
 import { useTheme } from '../../themes/useTheme.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
-import { GraphWithNodeDrag } from './types.ts';
+import { GraphWithNodeDrag, NodeIdDragState } from './types.ts';
 import { useDragCursorTheme } from './useDragCursorTheme.ts';
 
 export const DRAG_EVENT_ID = 'drag';
@@ -34,7 +34,7 @@ export const useNodeDragPlugin = <
     graph.events as EventHub<CoreEventMap & CanvasEventMap>,
   );
 
-  const dragState = createDragState<{ nodeIds: string[] }>();
+  const dragState = createDragState<NodeIdDragState>();
 
   const beginDrag = (
     { elements: items, coords, event }: CanvasGraphMouseEvent,

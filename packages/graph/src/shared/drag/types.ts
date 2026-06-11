@@ -1,5 +1,5 @@
-import { Coordinate } from '@magic/canvas/types';
-import { DeepReadonly } from 'ts-essentials';
+import type { Coordinate } from '@magic/canvas/types';
+import type { DeepReadonly } from 'ts-essentials';
 
 export type ActiveDrag<TData extends object> = Coordinate & { data: TData };
 

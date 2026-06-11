@@ -1,7 +1,7 @@
 import { Coordinate } from '@magic/canvas/types';
 import { nullThrows } from '@magic/utils/assert';
 
-import { createDragState } from '../../shared/createDragState.ts';
+import { createDragState } from '../../shared/drag/createDragState.ts';
 import { NodeAnchor } from './types.ts';
 
 export const createAnchorDragState = () => {

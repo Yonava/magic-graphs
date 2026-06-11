@@ -1,9 +1,11 @@
 import { CoreGraph } from '../../core/types.ts';
+import { DragStateControls } from '../../shared/drag/types.ts';
 import { useTheme } from '../../themes/useTheme.ts';
+import { NodeIdDragState } from './types.ts';
 
 export const useDragCursorTheme = (
   graph: Pick<CoreGraph, 'themeMap'>,
-  dragState: any,
+  dragState: DragStateControls<NodeIdDragState>,
 ) => {
   const { setTheme, removeAllThemes } = useTheme(graph, 'plugin/drag');
 
