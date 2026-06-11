@@ -7,10 +7,10 @@ import { ComputedRef, Ref, ShallowRef } from 'vue';
 
 import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
-import { ThemeGetter } from '../../themes/getThemeResolver.ts';
-import { GraphThemeName, ThemeLoadouts } from '../../themes/index.ts';
-import { FullThemeMap } from '../../themes/types.ts';
 import { CanvasEventMap } from './events.ts';
+import { ThemeGetter } from './themes/getThemeResolver.ts';
+import { GraphThemeName, ThemeLoadouts } from './themes/index.ts';
+import { FullThemeMap } from './themes/types.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
 export type GraphUnderCursor = {

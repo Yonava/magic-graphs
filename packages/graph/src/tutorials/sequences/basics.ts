@@ -1,8 +1,8 @@
 import { PURPLE_700, RED_700 } from '@magic/utils/colors';
 
 import { CoreGraph } from '../../core/types.ts';
+import { useTheme } from '../../plugins/canvas/themes/useTheme.ts';
 import { CanvasPlugin } from '../../plugins/canvas/types.ts';
-import { useTheme } from '../../themes/useTheme.ts';
 import { TUTORIAL_THEME_ID } from '../../tutorials/types.ts';
 import { type TutorialStep } from '../../tutorials/types.ts';
 

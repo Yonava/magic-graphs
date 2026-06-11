@@ -2,9 +2,9 @@ import { ComputedRef, Ref } from 'vue';
 
 import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
-import { ValidGraphThemePath } from '../../themes/types.ts';
 import { GEdge, GNode, GraphPlugin } from '../../types.ts';
 import { CanvasEventMap } from '../canvas/events.ts';
+import { ValidGraphThemePath } from '../canvas/themes/types.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';
 

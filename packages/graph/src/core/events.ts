@@ -2,7 +2,6 @@ import { DeepPartial, DeepReadonly } from 'ts-essentials';
 
 import { EventMapToEventRegistry } from '../events/types.ts';
 import { GraphSettings } from '../settings/index.ts';
-import { GraphThemeName } from '../themes/index.ts';
 import { GEdge, GNode } from '../types.ts';
 import {
   ElementAdditionPayload,
@@ -81,10 +80,6 @@ export type CoreEventMap = {
   onElementsUpdated: (updates: DeepReadonly<ElementUpdatePayload>) => void;
 
   /**
-   * when the {@link Graph.themeName | theme} of the graph has changed
-   */
-  onThemeChange: (newTheme: GraphThemeName, oldTheme: GraphThemeName) => void;
-  /**
    * when the {@link Graph.settings | settings} of the graph have changed
    */
   onSettingsChange: (diff: DeepPartial<GraphSettings>) => void;
@@ -108,6 +103,5 @@ export const createCoreEventRegistry = (): CoreEventRegistry => ({
   onElementsRemoved: new Set(),
   onElementsUpdated: new Set(),
 
-  onThemeChange: new Set(),
   onSettingsChange: new Set(),
 });

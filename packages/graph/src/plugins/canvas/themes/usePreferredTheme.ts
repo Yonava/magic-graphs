@@ -4,7 +4,7 @@ import { useLocalStorage } from '@vueuse/core';
 
 import { watch } from 'vue';
 
-import { GraphWithPlugins } from '../useGraph.ts';
+import { GraphWithPlugins } from '../../../useGraph.ts';
 import { type GraphThemeName, THEME_NAMES } from './index.ts';
 
 export type PreferredGraphTheme = GraphThemeName | 'auto';

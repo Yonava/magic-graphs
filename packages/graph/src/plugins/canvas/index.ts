@@ -10,15 +10,15 @@ import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import { getThemeResolver } from '../../themes/getThemeResolver.ts';
-import { GraphThemeName, THEME_LOADOUTS } from '../../themes/index.ts';
-import { getInitialThemeMap } from '../../themes/types.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
   CanvasEventMap,
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
+import { getThemeResolver } from './themes/getThemeResolver.ts';
+import { GraphThemeName, THEME_LOADOUTS } from './themes/index.ts';
+import { getInitialThemeMap } from './themes/types.ts';
 import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 import { useGraphCursor } from './useGraphCursor.ts';
@@ -78,10 +78,6 @@ export const useCanvasPlugin = <
   const themeName = ref<GraphThemeName>('light');
   const themeMap = getInitialThemeMap();
   const getTheme = getThemeResolver(themeName, themeMap);
-
-  watch(themeName, async (newThemeName, oldThemeName) => {
-    events.emit('onThemeChange', newThemeName, oldThemeName);
-  });
 
   useGraphCursor({
     canvas: magicCanvas.canvas,

@@ -230,5 +230,5 @@
     </div>
   </div>
 
-  <MagicCanvas v-bind="{ ...props.canvas.ref, ...props.css.value }" />
+  <MagicCanvas v-bind="props.canvas.ref" />
 </template>

@@ -7,6 +7,7 @@ import { useNodeAnchorPlugin } from './plugins/anchors/index.ts';
 import { NodeAnchorPlugin } from './plugins/anchors/types.ts';
 import { CanvasEventMap } from './plugins/canvas/events.ts';
 import { useCanvasPlugin } from './plugins/canvas/index.ts';
+import { usePreferredTheme } from './plugins/canvas/themes/usePreferredTheme.ts';
 import { CanvasPlugin } from './plugins/canvas/types.ts';
 import { useCharacteristics } from './plugins/characteristics/index.ts';
 import { NodeDragEventMap } from './plugins/drag/events.ts';
@@ -28,7 +29,6 @@ import { useInteractive } from './plugins/interactive/index.ts';
 import { useMarqueePlugin } from './plugins/marquee/index.ts';
 import { useShortcuts } from './plugins/shortcut/index.ts';
 import type { GraphSettings } from './settings/index.ts';
-import { usePreferredTheme } from './themes/usePreferredTheme.ts';
 import { useAdjacencyList } from './useAdjacencyList.ts';
 import { useTransitionMatrix } from './useTransitionMatrix.ts';
 

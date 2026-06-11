@@ -1,6 +1,6 @@
 import colors from '@magic/utils/colors';
 
-import { GNode } from '../../../types.ts';
+import { GNode } from '../../../../../types.ts';
 import { CURSOR } from '../../cursor.ts';
 import { GraphTheme, resolveThemeForNode } from '../../index.ts';
 import { textDefaults } from './text.ts';
