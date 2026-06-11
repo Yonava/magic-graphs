@@ -1,12 +1,11 @@
 import { CURSOR } from '@magic/graph/themes/cursor';
 import { useTheme } from '@magic/graph/themes/useTheme';
+import { GraphWithPlugins } from '@magic/graph/useGraph';
 
 import { ComputedRef } from 'vue';
 
-import { Graph } from '../useGraphWithCanvas.ts';
-
 export const useAnnotationCursor = (
-  graph: Graph,
+  graph: GraphWithPlugins,
   hideCursor: ComputedRef<boolean>,
 ) => {
   const { setTheme, removeAllThemes } = useTheme(graph, 'product/annotations');

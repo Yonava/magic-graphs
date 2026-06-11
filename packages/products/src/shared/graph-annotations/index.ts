@@ -29,7 +29,7 @@ import { useAnnotationHistory } from './history.ts';
 import type { Annotation } from './types.ts';
 import { useAnnotationCursor } from './useAnnotationCursor.ts';
 
-export const useGraphAnnotations = (graph: Graph) => {
+export const useGraphAnnotations = (graph: GraphWithPlugins) => {
   const selectedColor = ref<Color>(COLORS[0]);
   const selectedBrushWeight = ref(BRUSH_WEIGHTS[1]);
   const isErasing = ref(false);
