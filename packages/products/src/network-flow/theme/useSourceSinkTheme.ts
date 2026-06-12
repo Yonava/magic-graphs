@@ -18,7 +18,7 @@ export const useSourceSinkTheme = (
   graph: Graph,
   themeId = FLOW_USETHEME_ID,
 ) => {
-  const { setTheme, removeTheme } = useTheme(graph, themeId);
+  const { setTheme, removeTheme } = graph.canvas.useTheme(themeId);
 
   const isSource = (node: GNode) => sourceNode.get(graph)?.id === node.id;
   const isSink = (node: GNode) => sinkNode.get(graph)?.id === node.id;

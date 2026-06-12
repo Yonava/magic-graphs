@@ -16,7 +16,7 @@ export const useSimulationTheme = (
   graph: Graph,
   sim: SimulationControls<FlowTrace>,
 ) => {
-  const { setTheme, removeTheme } = useTheme(graph, FLOW_USETHEME_ID);
+  const { setTheme, removeTheme } = graph.canvas.useTheme(FLOW_USETHEME_ID);
 
   const getActiveEdgeIdsAtStep = (step: number) => {
     const trace = sim.trace.value;

@@ -19,7 +19,7 @@ export const useSimulationTheme = (
   sim: SimulationControls<MSTTrace>,
 ) => {
   const { traceArray: trace } = sim;
-  const { setTheme, removeAllThemes } = useTheme(graph, MST_USETHEME_ID);
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme(MST_USETHEME_ID);
 
   const mstAtStep = computed(() => trace.value.slice(0, sim.step.value));
 

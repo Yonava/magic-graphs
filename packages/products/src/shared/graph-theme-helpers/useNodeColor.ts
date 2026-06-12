@@ -20,7 +20,7 @@ export const useNodeColor = (
     return mapOrGetter.get(nodeId);
   };
 
-  const { setTheme, removeTheme } = useTheme(graph, themeId);
+  const { setTheme, removeTheme } = graph.canvas.useTheme(themeId);
 
   const nodeColor = (node: GNode) => {
     if (graph.focus.isFocused(node.id)) return;

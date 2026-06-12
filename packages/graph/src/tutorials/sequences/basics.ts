@@ -57,7 +57,8 @@ export const BASICS_STEPS: (
 const getRemoveNodeOrEdgeStep = (graph: BasicsGraph): TutorialStep => {
   let stepPassed = false;
   const completeStep = () => (stepPassed = true);
-  const { setTheme, removeAllThemes } = useTheme(graph, TUTORIAL_THEME_ID);
+  const { setTheme, removeAllThemes } =
+    graph.canvas.useTheme(TUTORIAL_THEME_ID);
   return {
     hint: 'Remove an edge or node by clicking on it and hitting backspace/delete',
     dismiss: {

@@ -8,7 +8,7 @@ export const useSelectCursor = (
   graph: Graph,
   predicate: (element: CanvasElement) => boolean,
 ) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, 'product/select');
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme('product/select');
 
   const activate = () => {
     setTheme('canvas.cursor', () => {

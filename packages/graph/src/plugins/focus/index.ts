@@ -43,7 +43,7 @@ export const useFocusPlugin = <
     graph.events as EventHub<CoreEventMap & CanvasEventMap>,
   );
 
-  const { setTheme } = useTheme(graph, FOCUS_THEME_ID);
+  const { setTheme } = graph.canvas.useTheme(FOCUS_THEME_ID);
   const focusedElementIds = ref(new Set<string>());
 
   const setFocus = (ids: string[]) => {

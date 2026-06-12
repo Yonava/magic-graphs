@@ -9,7 +9,7 @@ import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 const TARGET_COLOR = colors.AMBER_600;
 
 export const useTargetNodeColor = (graph: Graph) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, 'tree');
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme('tree');
 
   const targetNodeId = ref<GNode['id']>();
 

@@ -11,6 +11,7 @@ import { CanvasEventMap } from './events.ts';
 import { ThemeGetter } from './themes/getThemeResolver.ts';
 import { GraphThemeName, ThemeLoadouts } from './themes/index.ts';
 import { FullThemeMap } from './themes/types.ts';
+import { UseThemeControls } from './themes/useTheme.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
 export type GraphUnderCursor = {
@@ -63,6 +64,7 @@ export type CanvasGraph = {
   themeName: Ref<GraphThemeName>;
   getTheme: ThemeGetter;
   themeMap: FullThemeMap;
+  useTheme: (useThemeId?: string) => UseThemeControls;
 };
 
 /**

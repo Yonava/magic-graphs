@@ -1,8 +1,31 @@
 import { generateId } from '@magic/utils/id';
 
-import { FullThemeMap } from './types.ts';
 import type { ValidGraphThemePath } from '../themes/types.ts';
 import { ResolveThemeMap, getDataFromNestedPath } from './getThemeResolver.ts';
+import { FullThemeMap } from './types.ts';
+
+export type UseThemeControls = {
+  /**
+   * set a theme value for a specific theme property in your graph.
+   *
+   * @param prop - the theme property you want to set
+   * @param value - the value you want to set for the theme property
+   */
+  setTheme: <Path extends ValidGraphThemePath>(
+    themePath: Path,
+    value: ResolveThemeMap<Path>[number]['value'],
+  ) => void;
+  /**
+   * removes a theme value for a specific theme property attached to this useTheme instance
+   *
+   * @param themePath - the theme property you want to remove
+   */
+  removeTheme: (themePath: ValidGraphThemePath) => void;
+  /**
+   * removes all themes attached to this useTheme instance
+   */
+  removeAllThemes: () => void;
+};
 
 /**
  * set and remove themes for a graph instance
@@ -11,19 +34,13 @@ import { ResolveThemeMap, getDataFromNestedPath } from './getThemeResolver.ts';
  * @param themeId - identifier for this useTheme instance, handy for debugging
  * @returns functions to set and remove themes
  */
-export const useTheme = <TGraph extends { canvas: { themeMap: FullThemeMap } }>(
-  graph: TGraph,
+export const useTheme = (
+  themeMap: FullThemeMap,
   themeId = generateId(),
-) => {
+): UseThemeControls => {
   /** all theme paths that are themes assigned to them */
   const activeThemePaths = new Set<ValidGraphThemePath>();
 
-  /**
-   * set a theme value for a specific theme property in your graph.
-   *
-   * @param prop - the theme property you want to set
-   * @param value - the value you want to set for the theme property
-   */
   const setTheme = <Path extends ValidGraphThemePath>(
     themePath: Path,
     value: ResolveThemeMap<Path>[number]['value'],
@@ -35,7 +52,7 @@ export const useTheme = <TGraph extends { canvas: { themeMap: FullThemeMap } }>(
       return;
     }
 
-    const themeMapEntries = getDataFromNestedPath(graph.canvas.themeMap, themePath);
+    const themeMapEntries = getDataFromNestedPath(themeMap, themePath);
     if (!themeMapEntries) {
       console.warn(
         `Attempted to set theme ${value} to ${themePath} but property ${themePath} was not recognized`,
@@ -53,13 +70,8 @@ export const useTheme = <TGraph extends { canvas: { themeMap: FullThemeMap } }>(
     activeThemePaths.add(themePath);
   };
 
-  /**
-   * removes a theme value for a specific theme property attached to this useTheme instance
-   *
-   * @param themePath - the theme property you want to remove
-   */
   const removeTheme = (themePath: ValidGraphThemePath) => {
-    const themeMapEntries = getDataFromNestedPath(graph.canvas.themeMap, themePath);
+    const themeMapEntries = getDataFromNestedPath(themeMap, themePath);
     if (!themeMapEntries) {
       console.warn(
         `Attempted to remove theme from ${themePath} but property ${themePath} was not recognized`,
@@ -82,9 +94,6 @@ export const useTheme = <TGraph extends { canvas: { themeMap: FullThemeMap } }>(
     activeThemePaths.delete(themePath);
   };
 
-  /**
-   * removes all themes attached to this useTheme instance
-   */
   const removeAllThemes = () => {
     for (const prop of activeThemePaths) removeTheme(prop);
   };

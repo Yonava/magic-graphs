@@ -1,4 +1,3 @@
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
 
 import type { MaybeRef } from 'vue';
@@ -24,7 +23,7 @@ export const useNodeLabel = (
     return mapOrGetter.get(nodeId);
   };
 
-  const { setTheme, removeTheme } = useTheme(graph, themeId);
+  const { setTheme, removeTheme } = graph.canvas.useTheme(themeId);
 
   const nodeText = (node: GNode) => {
     if (graph.focus.isFocused(node.id)) return;

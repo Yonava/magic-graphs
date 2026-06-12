@@ -14,11 +14,11 @@ import type {
 } from '../../plugins/anchors/types.ts';
 import type { GNode } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
 import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';
 import { NodeAnchorEventMap, createNodeAnchorEventRegistry } from './events.ts';
 import { useAnchorDragCursor } from './useAnchorDragCursor.ts';
-import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
 
 export const ANCHOR_EVENT_ID = 'anchors';
 
@@ -53,7 +53,10 @@ export const useNodeAnchorPlugin = <
   const parentNode = ref<GNode>();
 
   const anchorDragState = createAnchorDragState();
-  const dragCursorTheme = useAnchorDragCursor(graph, anchorDragState);
+  const dragCursorTheme = useAnchorDragCursor(
+    graph.canvas.useTheme,
+    anchorDragState,
+  );
 
   const hoveredNodeAnchorId = ref<NodeAnchor['id']>();
 
@@ -130,7 +133,10 @@ export const useNodeAnchorPlugin = <
         shape: nodeAnchorShape,
         priority: beingDragged ? Infinity : 99_999,
         data: {
-          [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: getTheme('nodeAnchor.default.cursor', node),
+          [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: getTheme(
+            'nodeAnchor.default.cursor',
+            node,
+          ),
         },
       });
     }

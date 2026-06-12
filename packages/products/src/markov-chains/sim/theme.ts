@@ -11,7 +11,7 @@ export const useSimulationTheme = (
   graph: Graph,
   simControls: SimulationControls<ReturnType<MarkovChainTrace>>,
 ) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, USETHEME_ID);
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme(USETHEME_ID);
   const { traceAtStep } = simControls;
   const { nodeIdToIndex } = graph;
 
