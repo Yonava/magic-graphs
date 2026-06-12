@@ -3,14 +3,10 @@ import type { MagicCanvasProps } from '@magic/canvas/types';
 import type { GraphSettings } from '@magic/graph/settings/index';
 import { useGraph } from '@magic/graph/useGraph';
 
-import type { StyleValue } from 'vue';
-
 import {
   GraphAnnotationsControls,
   useGraphAnnotations,
 } from './graph-annotations/index.ts';
-
-type GraphCanvasCSS = { style: StyleValue };
 
 // TODO replace this return type with the final type contract of useGraph
 export type Graph = ReturnType<typeof useGraph> & {
