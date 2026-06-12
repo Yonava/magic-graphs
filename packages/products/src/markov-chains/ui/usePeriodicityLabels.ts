@@ -1,4 +1,3 @@
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
@@ -6,7 +5,7 @@ import { USETHEME_ID } from '../constants.ts';
 import type { MarkovChain } from '../markov/useMarkovChain.ts';
 
 export const usePeriodicityLabels = (graph: Graph, markov: MarkovChain) => {
-  const { setTheme, removeTheme } = useTheme(graph, USETHEME_ID);
+  const { setTheme, removeTheme } = graph.canvas.useTheme(USETHEME_ID);
   const { recurrentClassPeriods, nodeIdToRecurrentClassIndex } = markov;
 
   const nodeText = (node: GNode) => {

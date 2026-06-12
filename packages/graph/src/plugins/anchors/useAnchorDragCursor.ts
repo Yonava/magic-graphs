@@ -2,13 +2,14 @@ import { DragStateControls } from '../../shared/drag/types.ts';
 import { CURSOR } from '../canvas/themes/cursor.ts';
 import { FullThemeMap } from '../canvas/themes/types.ts';
 import { useTheme } from '../canvas/themes/useTheme.ts';
+import { CanvasGraph } from '../canvas/types.ts';
 import { NodeAnchor } from './types.ts';
 
 export const useAnchorDragCursor = (
-  graph: { canvas: { themeMap: FullThemeMap } },
+  useTheme: CanvasGraph['useTheme'],
   dragState: DragStateControls<NodeAnchor>,
 ) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, 'plugin/anchors/drag');
+  const { setTheme, removeAllThemes } = useTheme('plugin/anchors/drag');
 
   const globalGrabbing = () =>
     dragState.isDragging() ? CURSOR.GRABBING : undefined;

@@ -1,4 +1,3 @@
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
@@ -11,7 +10,7 @@ export const useSimulationTheme = (
   graph: Graph,
   simControls: SimulationControls<ReturnType<MarkovChainTrace>>,
 ) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, USETHEME_ID);
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme(USETHEME_ID);
   const { traceAtStep } = simControls;
   const { nodeIdToIndex } = graph;
 

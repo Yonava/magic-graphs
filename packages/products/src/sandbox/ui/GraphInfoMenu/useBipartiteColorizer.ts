@@ -1,4 +1,3 @@
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
@@ -7,7 +6,8 @@ import type { Graph } from '../../../shared/useGraphWithCanvas.ts';
 const BIPARTITE_THEME_ID = 'bipartite-colorizer';
 
 export const useBipartiteColorizer = (graph: Graph) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, BIPARTITE_THEME_ID);
+  const { setTheme, removeAllThemes } =
+    graph.canvas.useTheme(BIPARTITE_THEME_ID);
 
   const colorNodeBorders = (node: GNode) => {
     const isBipartite = graph.characteristics.isBipartite.value;

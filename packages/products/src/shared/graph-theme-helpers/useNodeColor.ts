@@ -1,4 +1,3 @@
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
 import type { Color } from '@magic/utils/colors';
 
@@ -20,7 +19,7 @@ export const useNodeColor = (
     return mapOrGetter.get(nodeId);
   };
 
-  const { setTheme, removeTheme } = useTheme(graph, themeId);
+  const { setTheme, removeTheme } = graph.canvas.useTheme(themeId);
 
   const nodeColor = (node: GNode) => {
     if (graph.focus.isFocused(node.id)) return;

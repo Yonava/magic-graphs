@@ -1,5 +1,4 @@
 import { CURSOR } from '@magic/graph/plugins/canvas/themes/cursor';
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import { GraphWithPlugins } from '@magic/graph/useGraph';
 
 import { ComputedRef } from 'vue';
@@ -8,7 +7,9 @@ export const useAnnotationCursor = (
   graph: GraphWithPlugins,
   hideCursor: ComputedRef<boolean>,
 ) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, 'product/annotations');
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme(
+    'product/annotations',
+  );
 
   const activate = () => {
     setTheme('canvas.cursor', () =>

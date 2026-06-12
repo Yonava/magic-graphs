@@ -1,4 +1,3 @@
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
@@ -16,7 +15,7 @@ const COLORS = [
 ];
 
 export const useCycleColorizer = (graph: Graph) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, CYCLE_THEME_ID);
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme(CYCLE_THEME_ID);
 
   const colorNodeBorders = (node: GNode) => {
     const isAcyclic = graph.characteristics.isAcyclic.value;

@@ -1,4 +1,3 @@
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
@@ -19,7 +18,7 @@ export const useSimulationTheme = (
   sim: SimulationControls<DijkstrasTraceStep>,
 ) => {
   const { traceAtStep } = sim;
-  const { setTheme, removeAllThemes } = useTheme(graph, 'dijkstra');
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme('dijkstra');
 
   const colorBorders = (node: GNode) => {
     if (graph.focus.isFocused(node.id)) return;

@@ -1,5 +1,4 @@
 import { CURSOR } from '@magic/graph/plugins/canvas/themes/cursor';
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import { CanvasElement } from '@magic/graph/plugins/canvas/types';
 
 import { Graph } from '../useGraphWithCanvas.ts';
@@ -8,7 +7,7 @@ export const useSelectCursor = (
   graph: Graph,
   predicate: (element: CanvasElement) => boolean,
 ) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, 'product/select');
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme('product/select');
 
   const activate = () => {
     setTheme('canvas.cursor', () => {

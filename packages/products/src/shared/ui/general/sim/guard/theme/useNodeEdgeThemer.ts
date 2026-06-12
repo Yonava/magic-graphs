@@ -1,4 +1,3 @@
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GEdge, GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
@@ -15,7 +14,7 @@ const TARGET_COLOR = colors.RED_600;
  * along with helper functions to target nodes and edges
  */
 export const useNodeEdgeTheme = (graph: Graph) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, USETHEME_ID);
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme(USETHEME_ID);
 
   /**
    * ids of nodes and edges to color with `TARGET_COLOR`

@@ -16,12 +16,16 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
+import {
+  CANVAS_ELEMENT_CURSOR_FIELD_KEY,
+  setupCanvasCursor,
+} from './setupCanvasCursor.ts';
 import { getThemeResolver } from './themes/getThemeResolver.ts';
 import { GraphThemeName, THEME_LOADOUTS } from './themes/index.ts';
 import { getInitialThemeMap } from './themes/types.ts';
+import { useTheme } from './themes/useTheme.ts';
 import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
-import { CANVAS_ELEMENT_CURSOR_FIELD_KEY, setupCanvasCursor } from './setupCanvasCursor.ts';
 
 export const CANVAS_EVENT_ID = 'canvas';
 
@@ -147,8 +151,11 @@ export const useCanvasPlugin = <
           id: node.id,
           graphType: 'node',
           data: {
-            [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: getTheme('node.default.cursor', node)
-           }
+            [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: getTheme(
+              'node.default.cursor',
+              node,
+            ),
+          },
         } as const;
       })
       .filter(Boolean)
@@ -223,6 +230,7 @@ export const useCanvasPlugin = <
       themeName,
       getTheme,
       themeMap,
+      useTheme: (useThemeId) => useTheme(themeMap, useThemeId),
     },
   };
 };

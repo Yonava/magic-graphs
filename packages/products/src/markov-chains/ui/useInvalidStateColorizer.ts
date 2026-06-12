@@ -1,4 +1,3 @@
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
@@ -8,7 +7,7 @@ import type { MarkovChain } from '../markov/useMarkovChain.ts';
 const USETHEME_ID = 'markov-invalid-state';
 
 export const useInvalidStateColorizer = (graph: Graph, markov: MarkovChain) => {
-  const { setTheme, removeAllThemes } = useTheme(graph, USETHEME_ID);
+  const { setTheme, removeAllThemes } = graph.canvas.useTheme(USETHEME_ID);
 
   const { invalidStates, nodeIdToOutgoingWeight } = markov;
 
