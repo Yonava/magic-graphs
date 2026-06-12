@@ -39,7 +39,7 @@ export const setupCanvasCursor = ({
 
     if (elementCursor === undefined) return CURSOR.DEFAULT;
     if (!isValidCursor(elementCursor)) {
-      console.warn(`expected valid cursor: got ${elementCursor}`);
+      console.warn(`expected valid cursor: got "${elementCursor}"`);
       return CURSOR.DEFAULT;
     }
 
