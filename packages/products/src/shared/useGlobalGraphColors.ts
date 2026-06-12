@@ -1,4 +1,4 @@
-import type { GraphThemeName } from '@magic/graph/themes/index';
+import { GraphThemeName } from '@magic/graph/plugins/canvas/themes/index';
 import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';

@@ -23,6 +23,7 @@ import { MARQUEE_SHAPE_ID } from './constants.ts';
 import { MarqueeEventMap, createMarqueeEventRegistry } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
 import { GraphWithMarquee } from './types.ts';
+import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
 
 export const MARQUEE_EVENT_ID = 'marquee';
 
@@ -158,6 +159,7 @@ export const useMarqueePlugin = <
       priority: Infinity,
       data: {
         nodeIds: graph.focus.focusedNodes.value.map((n) => n.id),
+        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: graph.canvas.getTheme('marquee.encapsulatedNodeBox.cursor'),
       },
     } as const;
   };

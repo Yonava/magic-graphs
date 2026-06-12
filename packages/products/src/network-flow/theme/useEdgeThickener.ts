@@ -1,4 +1,4 @@
-import { useTheme } from '@magic/graph/themes/useTheme';
+import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GEdge } from '@magic/graph/types';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';

@@ -18,6 +18,7 @@ import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';
 import { NodeAnchorEventMap, createNodeAnchorEventRegistry } from './events.ts';
 import { useAnchorDragCursor } from './useAnchorDragCursor.ts';
+import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
 
 export const ANCHOR_EVENT_ID = 'anchors';
 
@@ -129,7 +130,7 @@ export const useNodeAnchorPlugin = <
         shape: nodeAnchorShape,
         priority: beingDragged ? Infinity : 99_999,
         data: {
-          nodeId: node.id,
+          [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: getTheme('nodeAnchor.default.cursor', node),
         },
       });
     }

@@ -1,4 +1,4 @@
-import { useTheme } from '@magic/graph/themes/useTheme';
+import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 

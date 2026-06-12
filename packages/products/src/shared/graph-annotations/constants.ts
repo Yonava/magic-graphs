@@ -1,8 +1,8 @@
 import { ANCHOR_EVENT_ID } from '@magic/graph/plugins/anchors/index';
+import { GraphThemeName } from '@magic/graph/plugins/canvas/themes/index';
 import { DRAG_EVENT_ID } from '@magic/graph/plugins/drag/index';
 import { FOCUS_EVENT_ID } from '@magic/graph/plugins/focus/index';
 import { MARQUEE_EVENT_ID } from '@magic/graph/plugins/marquee/index';
-import { GraphThemeName } from '@magic/graph/themes/index';
 import colors, { Color } from '@magic/utils/colors';
 
 export const COLORS = [

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { PreferredGraphTheme } from '@magic/graph/themes/usePreferredTheme';
+  import { PreferredGraphTheme } from '@magic/graph/plugins/canvas/themes/usePreferredTheme';
   import ToolbarButtonGroup from '@magic/ui/core/toolbar/ToolbarButtonGroup.vue';
 
   import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';

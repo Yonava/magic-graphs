@@ -2,10 +2,9 @@ import { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
-import { subscribe } from 'diagnostics_channel';
 import { DeepReadonly } from 'ts-essentials';
 
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
@@ -22,7 +21,7 @@ import { GraphThemeName, THEME_LOADOUTS } from './themes/index.ts';
 import { getInitialThemeMap } from './themes/types.ts';
 import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
-import { useGraphCursor } from './useGraphCursor.ts';
+import { CANVAS_ELEMENT_CURSOR_FIELD_KEY, setupCanvasCursor } from './setupCanvasCursor.ts';
 
 export const CANVAS_EVENT_ID = 'canvas';
 
@@ -80,7 +79,7 @@ export const useCanvasPlugin = <
   const themeMap = getInitialThemeMap();
   const getTheme = getThemeResolver(themeName, themeMap);
 
-  useGraphCursor({
+  setupCanvasCursor({
     canvas: magicCanvas.canvas,
     subscribe: events.subscribe,
     getNode: graph.getNode,
@@ -147,6 +146,9 @@ export const useCanvasPlugin = <
           shape,
           id: node.id,
           graphType: 'node',
+          data: {
+            [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: getTheme('node.default.cursor', node)
+           }
         } as const;
       })
       .filter(Boolean)

@@ -1,5 +1,3 @@
-import { nullThrows } from '@magic/utils/assert';
-
 import { CoreGraph } from '../../core/types.ts';
 import { EventHub } from '../../events/createEventHub.ts';
 import { CanvasEventMap } from './events.ts';
@@ -14,13 +12,14 @@ type GraphCursorProps = {
   graphUnderCursor: CanvasGraph['graphUnderCursor'];
 };
 
+export const CANVAS_ELEMENT_CURSOR_FIELD_KEY = 'cursor';
+
 /**
  * manages the cursor type when hovering over the graph
  */
-export const useGraphCursor = ({
+export const setupCanvasCursor = ({
   subscribe,
   canvas,
-  getNode,
   getTheme,
   graphUnderCursor,
 }: GraphCursorProps) => {
@@ -31,24 +30,11 @@ export const useGraphCursor = ({
     const topElement = graphUnderCursor.elements.at(-1);
     if (!topElement) return CURSOR.DEFAULT;
 
-    if (topElement.graphType === 'node') {
-      const node = nullThrows(getNode(topElement.id), 'node not found');
-      return getTheme('node.default.cursor', node);
-    }
+    const elementCursor = topElement.data?.[CANVAS_ELEMENT_CURSOR_FIELD_KEY] as
+      | Cursor
+      | undefined;
 
-    if (topElement.graphType === 'encapsulated-node-box') {
-      return getTheme('marquee.encapsulatedNodeBox.cursor');
-    }
-
-    if (topElement.graphType === 'node-anchor') {
-      const node = nullThrows(
-        getNode(topElement.data!.nodeId as string),
-        'cannot resolve node on node anchor data',
-      );
-      return getTheme('nodeAnchor.default.cursor', node);
-    }
-
-    return CURSOR.DEFAULT;
+    return elementCursor ?? CURSOR.DEFAULT;
   };
 
   const refreshCursor = () => {
