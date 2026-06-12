@@ -6,7 +6,7 @@
   import GToolbar from '../../../shared/ui/graph-core/toolbar/GToolbarBase.vue';
   import GToolbarButton from '../../../shared/ui/graph-core/toolbar/GToolbarButton.vue';
 
-  const themeNameToIcon: Record<PreferredThemePresent, string> = {
+  const themePresetToIcon: Record<PreferredThemePresent, string> = {
     auto: 'cog-outline',
     light: 'weather-sunny',
     dark: 'weather-night',
@@ -18,7 +18,7 @@
   <GToolbar>
     <ToolbarButtonGroup>
       <GToolbarButton
-        v-for="(val, key) in themeNameToIcon"
+        v-for="(val, key) in themePresetToIcon"
         :key="key"
         @click="graph.preferredTheme.value = key"
         :icon="val"

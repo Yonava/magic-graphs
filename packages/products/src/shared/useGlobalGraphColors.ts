@@ -14,7 +14,7 @@ type GraphColors = {
   brand: string;
 };
 
-export const ThemeToGraphColors: Record<ThemePreset, GraphColors> = {
+export const ThemePresetToGraphColors: Record<ThemePreset, GraphColors> = {
   light: {
     primary: colors.GRAY_300,
     secondary: colors.GRAY_200,
@@ -45,12 +45,12 @@ export const useGraphColors = () =>
   computed(() => {
     if (!graph.value) return;
     const theme = graph.value.canvas.theme.activePreset.value;
-    return ThemeToGraphColors[theme];
+    return ThemePresetToGraphColors[theme];
   });
 
 export const useNonNullGraphColors = () =>
   computed(() => {
     if (!graph.value) throw 'global graph state not set';
     const theme = graph.value.canvas.theme.activePreset.value;
-    return ThemeToGraphColors[theme];
+    return ThemePresetToGraphColors[theme];
   });
