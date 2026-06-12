@@ -1,7 +1,7 @@
 import { generateId } from '@magic/utils/id';
 
 import type { ThemeToken } from '../themes/types.ts';
-import { TokenOverrides, getDataFromNestedPath } from './getThemeResolver.ts';
+import { TokenOverrides, getDataFromNestedPath } from './createTokenResolver.ts';
 import { ThemeOverrides } from './types.ts';
 
 export type UseThemeControls = {

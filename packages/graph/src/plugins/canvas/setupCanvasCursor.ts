@@ -8,7 +8,7 @@ type GraphCursorProps = {
   subscribe: EventHub<CanvasEventMap>['subscribe'];
   canvas: CanvasGraph['magicCanvas']['canvas'];
   getNode: CoreGraph['getNode'];
-  getTheme: CanvasGraph['getTheme'];
+  resolveToken: CanvasGraph['resolveToken'];
   graphUnderCursor: CanvasGraph['graphUnderCursor'];
 };
 
@@ -25,11 +25,11 @@ const isValidCursor = (cursorOrJunk: unknown): cursorOrJunk is Cursor =>
 export const setupCanvasCursor = ({
   subscribe,
   canvas,
-  getTheme,
+  resolveToken,
   graphUnderCursor,
 }: GraphCursorProps) => {
   const getCursor = (): Cursor => {
-    const canvasTheme = getTheme('canvas.cursor');
+    const canvasTheme = resolveToken('canvas.cursor');
     if (canvasTheme !== CURSOR_FALLBACK) return canvasTheme;
 
     const topElement = graphUnderCursor.elements.at(-1);

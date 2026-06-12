@@ -112,9 +112,9 @@ export const useMarqueePlugin = <
     const shape = graph.canvas.shapes.shapes.rect({
       id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
-      fillColor: graph.canvas.getTheme('marquee.color'),
+      fillColor: graph.canvas.resolveToken('marquee.color'),
       stroke: {
-        color: graph.canvas.getTheme('marquee.borderColor'),
+        color: graph.canvas.resolveToken('marquee.borderColor'),
         lineWidth: 2,
       },
     });
@@ -145,9 +145,9 @@ export const useMarqueePlugin = <
     const shape = graph.canvas.shapes.shapes.rect({
       id,
       ...box,
-      fillColor: graph.canvas.getTheme('marquee.encapsulatedNodeBox.color'),
+      fillColor: graph.canvas.resolveToken('marquee.encapsulatedNodeBox.color'),
       stroke: {
-        color: graph.canvas.getTheme('marquee.encapsulatedNodeBox.borderColor'),
+        color: graph.canvas.resolveToken('marquee.encapsulatedNodeBox.borderColor'),
         lineWidth: 2,
       },
     });
@@ -159,7 +159,7 @@ export const useMarqueePlugin = <
       priority: Infinity,
       data: {
         nodeIds: graph.focus.focusedNodes.value.map((n) => n.id),
-        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: graph.canvas.getTheme('marquee.encapsulatedNodeBox.cursor'),
+        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: graph.canvas.resolveToken('marquee.encapsulatedNodeBox.cursor'),
       },
     } as const;
   };

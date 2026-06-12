@@ -36,11 +36,11 @@ export const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
     .split('.')
     .reduce((acc: Record<string, any>, curr: string) => acc?.[curr], obj);
 
-export function getThemeResolver(
+export function createTokenResolver(
   themePreset: Ref<ThemePreset>,
   themeOverrides: ThemeOverrides,
 ) {
-  const getTheme = <
+  const resolveToken = <
     Token extends ThemeToken,
     Args extends ThemeArgs<TokenOverrides<Token>>,
   >(
@@ -74,8 +74,8 @@ export function getThemeResolver(
     return styleValue;
   };
 
-  return getTheme;
+  return resolveToken;
 }
 
 /** the function that resolves a theme token to its final StyleValue. */
-export type ThemeGetter = ReturnType<typeof getThemeResolver>;
+export type TokenResolver = ReturnType<typeof createTokenResolver>;

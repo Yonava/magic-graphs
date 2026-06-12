@@ -1,5 +1,5 @@
 import type { GEdge, GNode } from '../../../types.ts';
-import type { ThemeGetter } from '../themes/getThemeResolver.ts';
+import type { TokenResolver } from '../themes/createTokenResolver.ts';
 import type {
   CoreGraphEdgeStyles,
   CoreGraphNodeStyles,
@@ -38,40 +38,40 @@ export const THEME_PRESETS = Object.keys(ALL_THEME_PRESETS) as ThemePreset[];
 /**
  * resolves all StyleValues for a node by running each token through the override layers and preset fallback.
  *
- * @param getTheme - the ThemeGetter used to resolve each token to its final StyleValue
+ * @param resolveToken - the TokenResolver used to resolve each token to its final StyleValue
  * @param node - the node passed as the themeArg to node-scoped token getters
  * @returns the fully resolved StyleValues for the node
  */
 export const getNodeStyles = (
-  getTheme: ThemeGetter,
+  resolveToken: TokenResolver,
   node: GNode,
 ): CoreGraphNodeStyles => ({
-  size: getTheme('node.default.size', node),
-  borderWidth: getTheme('node.default.borderWidth', node),
-  color: getTheme('node.default.color', node),
-  borderColor: getTheme('node.default.borderColor', node),
-  textSize: getTheme('node.default.textSize', node),
-  textColor: getTheme('node.default.textColor', node),
-  text: getTheme('node.default.text', node),
-  textFontWeight: getTheme('node.default.textFontWeight', node),
-  cursor: getTheme('node.default.cursor', node),
+  size: resolveToken('node.default.size', node),
+  borderWidth: resolveToken('node.default.borderWidth', node),
+  color: resolveToken('node.default.color', node),
+  borderColor: resolveToken('node.default.borderColor', node),
+  textSize: resolveToken('node.default.textSize', node),
+  textColor: resolveToken('node.default.textColor', node),
+  text: resolveToken('node.default.text', node),
+  textFontWeight: resolveToken('node.default.textFontWeight', node),
+  cursor: resolveToken('node.default.cursor', node),
 });
 
 /**
  * resolves all StyleValues for an edge by running each token through the override layers and preset fallback.
  *
- * @param getTheme - the ThemeGetter used to resolve each token to its final StyleValue
+ * @param resolveToken - the TokenResolver used to resolve each token to its final StyleValue
  * @param edge - the edge passed as the themeArg to edge-scoped token getters
  * @returns the fully resolved StyleValues for the edge
  */
 export const getEdgeStyles = (
-  getTheme: ThemeGetter,
+  resolveToken: TokenResolver,
   edge: GEdge,
 ): CoreGraphEdgeStyles => ({
-  width: getTheme('edge.default.width', edge),
-  color: getTheme('edge.default.color', edge),
-  text: getTheme('edge.default.text', edge),
-  textSize: getTheme('edge.default.textSize', edge),
-  textColor: getTheme('edge.default.textColor', edge),
-  textFontWeight: getTheme('edge.default.textFontWeight', edge),
+  width: resolveToken('edge.default.width', edge),
+  color: resolveToken('edge.default.color', edge),
+  text: resolveToken('edge.default.text', edge),
+  textSize: resolveToken('edge.default.textSize', edge),
+  textColor: resolveToken('edge.default.textColor', edge),
+  textFontWeight: resolveToken('edge.default.textFontWeight', edge),
 });

@@ -6,7 +6,7 @@ import { GraphTheme, getNodeStyles } from '../../index.ts';
 import { textDefaults } from './text.ts';
 
 const nodeCircle: GraphTheme['node']['default']['shape'] = (node, graph) => {
-  const styles = getNodeStyles(graph.getTheme, node);
+  const styles = getNodeStyles(graph.resolveToken, node);
 
   return graph.shapes.shapes.circle({
     id: node.id,

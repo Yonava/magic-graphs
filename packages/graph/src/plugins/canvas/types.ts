@@ -8,7 +8,7 @@ import { ComputedRef, Ref, ShallowRef } from 'vue';
 import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { CanvasEventMap } from './events.ts';
-import { ThemeGetter } from './themes/getThemeResolver.ts';
+import { TokenResolver } from './themes/createTokenResolver.ts';
 import { AllThemePresets, ThemePreset } from './themes/index.ts';
 import { ThemeOverrides } from './themes/types.ts';
 import { UseThemeControls } from './themes/useTheme.ts';
@@ -62,7 +62,7 @@ export type CanvasGraph = {
 
   baseTheme: ComputedRef<AllThemePresets[ThemePreset]>;
   activeThemePreset: Ref<ThemePreset>;
-  getTheme: ThemeGetter;
+  resolveToken: TokenResolver;
   themeOverrides: ThemeOverrides;
   useTheme: (useThemeId?: string) => UseThemeControls;
 };

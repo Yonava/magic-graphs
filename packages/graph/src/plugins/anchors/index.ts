@@ -92,12 +92,12 @@ export const useNodeAnchorPlugin = <
   };
 
   const getAnchorSchemas = (node: GNode) => {
-    const { getTheme } = graph.canvas;
+    const { resolveToken } = graph.canvas;
 
-    const color = getTheme('nodeAnchor.default.color', node);
-    const focusColor = getTheme('nodeAnchor.focus.color', node);
-    const radius = getTheme('nodeAnchor.default.radius', node);
-    const focusRadius = getTheme('nodeAnchor.focus.radius', node);
+    const color = resolveToken('nodeAnchor.default.color', node);
+    const focusColor = resolveToken('nodeAnchor.focus.color', node);
+    const radius = resolveToken('nodeAnchor.default.radius', node);
+    const focusRadius = resolveToken('nodeAnchor.focus.radius', node);
 
     const anchorSchemas: CanvasElement[] = [];
     for (const anchor of nodeAnchors.value) {
@@ -133,7 +133,7 @@ export const useNodeAnchorPlugin = <
         shape: nodeAnchorShape,
         priority: beingDragged ? Infinity : 99_999,
         data: {
-          [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: getTheme(
+          [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: resolveToken(
             'nodeAnchor.default.cursor',
             node,
           ),
@@ -157,23 +157,23 @@ export const useNodeAnchorPlugin = <
    */
   const updateNodeAnchors = (node: GNode | undefined) => {
     if (!node) return (nodeAnchors.value = []);
-    const { getTheme } = graph.canvas;
+    const { resolveToken } = graph.canvas;
 
     // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
     const isNodeFocused = graph.focus.isFocused(node.id);
 
-    const anchorBaseRadius = getTheme('nodeAnchor.default.radius', node);
-    const anchorFocusRadius = getTheme('nodeAnchor.focus.radius', node);
+    const anchorBaseRadius = resolveToken('nodeAnchor.default.radius', node);
+    const anchorFocusRadius = resolveToken('nodeAnchor.focus.radius', node);
 
     const anchorRadius = isNodeFocused ? anchorFocusRadius : anchorBaseRadius;
 
-    const nodeBaseSize = getTheme('node.default.size', node);
-    const nodeFocusSize = getTheme('node.focus.size', node);
+    const nodeBaseSize = resolveToken('node.default.size', node);
+    const nodeFocusSize = resolveToken('node.focus.size', node);
 
     const nodeSize = isNodeFocused ? nodeBaseSize : nodeFocusSize;
 
-    const nodeBaseBorderWidth = getTheme('node.default.borderWidth', node);
-    const nodeFocusBorderWidth = getTheme('node.focus.borderWidth', node);
+    const nodeBaseBorderWidth = resolveToken('node.default.borderWidth', node);
+    const nodeFocusBorderWidth = resolveToken('node.focus.borderWidth', node);
 
     const nodeBorderWidth = isNodeFocused
       ? nodeFocusBorderWidth
@@ -225,18 +225,18 @@ export const useNodeAnchorPlugin = <
     const { x, y } = draggedAnchor;
     const start = { x: parentNode.value.x, y: parentNode.value.y };
     const end = { x, y };
-    const { getTheme } = graph.canvas;
+    const { resolveToken } = graph.canvas;
 
     // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
     const isFocused = graph.focus.isFocused(parentNode.value.id);
 
-    const baseColor = getTheme(
+    const baseColor = resolveToken(
       'nodeAnchor.default.linkPreview.color',
       parentNode.value,
       draggedAnchor,
     );
 
-    const focusColor = getTheme(
+    const focusColor = resolveToken(
       'nodeAnchor.focus.linkPreview.color',
       parentNode.value,
       draggedAnchor,
@@ -244,13 +244,13 @@ export const useNodeAnchorPlugin = <
 
     const color = isFocused ? focusColor : baseColor;
 
-    const baseWidth = getTheme(
+    const baseWidth = resolveToken(
       'nodeAnchor.default.linkPreview.width',
       parentNode.value,
       draggedAnchor,
     );
 
-    const focusWidth = getTheme(
+    const focusWidth = resolveToken(
       'nodeAnchor.focus.linkPreview.width',
       parentNode.value,
       draggedAnchor,
