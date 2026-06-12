@@ -65,10 +65,10 @@ export type CanvasGraph = {
     base: ComputedRef<AllThemePresets[ThemePreset]>;
     /** the currently active preset name. */
     activePreset: Ref<ThemePreset>;
-    /** resolves a ThemeToken through the override stack to its final StyleValue. */
-    resolveToken: TokenResolver;
-    /** the full override stack — all ThemeOverride arrays keyed by token. */
-    overrides: ThemeOverrides;
+    /** @internal resolves a ThemeToken through the override stack to its final StyleValue. */
+    _resolveToken: TokenResolver;
+    /** @internal the full override stack — all ThemeOverride arrays keyed by token. */
+    _overrides: ThemeOverrides;
     /** creates a scoped override layer for pushing ThemeValues into the stack. */
     createLayer: (layerId?: string) => ThemeLayer;
   };

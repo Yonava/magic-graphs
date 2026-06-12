@@ -233,8 +233,8 @@ export const useCanvasPlugin = <
       theme: {
         base: computed(() => ALL_THEME_PRESETS[activeThemePreset.value]),
         activePreset: activeThemePreset,
-        resolveToken,
-        overrides: themeOverrides,
+        _resolveToken: resolveToken,
+        _overrides: themeOverrides,
         createLayer: (layerId) => createLayer(themeOverrides, layerId),
       },
     },

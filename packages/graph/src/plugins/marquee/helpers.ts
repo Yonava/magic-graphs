@@ -10,7 +10,7 @@ export function getSurfaceArea(box: BoundingBox) {
 
 export const getEncapsulatedNodeBox = (
   nodes: GNode[],
-  graph: { canvas: { theme: Pick<CanvasGraph['theme'], 'resolveToken'> } },
+  graph: { canvas: { theme: Pick<CanvasGraph['theme'], '_resolveToken'> } },
 ): BoundingBox => {
   const encapsulatedNodeBox = {
     at: { x: Infinity, y: Infinity },
@@ -26,8 +26,8 @@ export const getEncapsulatedNodeBox = (
     maxY = -Infinity;
 
   for (const node of nodes) {
-    const nodeRadius = graph.canvas.theme.resolveToken('node.default.size', node);
-    const nodeBorderWidth = graph.canvas.theme.resolveToken('node.default.borderWidth', node);
+    const nodeRadius = graph.canvas.theme._resolveToken('node.default.size', node);
+    const nodeBorderWidth = graph.canvas.theme._resolveToken('node.default.borderWidth', node);
     const nodeArea = nodeRadius + nodeBorderWidth / 2;
     const { x, y } = node;
 

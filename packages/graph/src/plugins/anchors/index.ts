@@ -92,7 +92,7 @@ export const useNodeAnchorPlugin = <
   };
 
   const getAnchorSchemas = (node: GNode) => {
-    const { resolveToken } = graph.canvas.theme;
+    const { _resolveToken: resolveToken } = graph.canvas.theme;
 
     const color = resolveToken('nodeAnchor.default.color', node);
     const focusColor = resolveToken('nodeAnchor.focus.color', node);
@@ -157,7 +157,7 @@ export const useNodeAnchorPlugin = <
    */
   const updateNodeAnchors = (node: GNode | undefined) => {
     if (!node) return (nodeAnchors.value = []);
-    const { resolveToken } = graph.canvas.theme;
+    const { _resolveToken: resolveToken } = graph.canvas.theme;
 
     // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
     const isNodeFocused = graph.focus.isFocused(node.id);
@@ -225,7 +225,7 @@ export const useNodeAnchorPlugin = <
     const { x, y } = draggedAnchor;
     const start = { x: parentNode.value.x, y: parentNode.value.y };
     const end = { x, y };
-    const { resolveToken } = graph.canvas.theme;
+    const { _resolveToken: resolveToken } = graph.canvas.theme;
 
     // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
     const isFocused = graph.focus.isFocused(parentNode.value.id);

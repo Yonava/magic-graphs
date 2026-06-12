@@ -41,7 +41,7 @@ export type CoreGraphNodeStyles = TextStyles & {
 export type GraphInterface = {
   shapes: CanvasGraph['shapes'];
   settings: CoreGraph['settings'];
-  resolveToken: CanvasGraph['theme']['resolveToken'];
+  resolveToken: CanvasGraph['theme']['_resolveToken'];
   edges: CoreGraph['edges'];
   getNode: CoreGraph['getNode'];
   getEdge: CoreGraph['getEdge'];
