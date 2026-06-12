@@ -5,6 +5,7 @@ import { useLocalStorage } from '@vueuse/core';
 import { watch } from 'vue';
 
 import { GraphWithPlugins } from '../../../useGraph.ts';
+import { CanvasGraph } from '../types.ts';
 import { THEME_PRESETS, type ThemePreset } from './index.ts';
 
 export type PreferredThemePresent = ThemePreset | 'auto';
@@ -13,9 +14,9 @@ const DEFAULT_THEME_PRESET: PreferredThemePresent = 'auto';
 
 /**
  * creates a `ref` that when changed updates the
- * {@link GraphWithPlugins.themeName | graph theme} and saves the preference
+ * {@link CanvasGraph.activeThemePreset | theme preset} and saves the preference
  * to local storage for future sessions or when another graph is created that implements
- * `usePreferredTheme`
+ * `usePreferredThemePreset`
  *
  * @param graph the graph instance
  */
