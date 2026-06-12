@@ -8,7 +8,7 @@ import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 const TARGET_COLOR = colors.AMBER_600;
 
 export const useTargetNodeColor = (graph: Graph) => {
-  const { setTheme, removeAllThemes } = graph.canvas.useTheme('tree');
+  const { set, removeAll } = graph.canvas.theme.createLayer('tree');
 
   const targetNodeId = ref<GNode['id']>();
 
@@ -21,13 +21,13 @@ export const useTargetNodeColor = (graph: Graph) => {
 
   const activate = (nodeId?: GNode['id']) => {
     if (nodeId) targetNodeId.value = nodeId;
-    setTheme('node.default.borderColor', colorNode);
-    setTheme('nodeAnchor.default.color', colorNode);
+    set('node.default.borderColor', colorNode);
+    set('nodeAnchor.default.color', colorNode);
   };
 
   const deactivate = () => {
     targetNodeId.value = undefined;
-    removeAllThemes();
+    removeAll();
   };
 
   return {

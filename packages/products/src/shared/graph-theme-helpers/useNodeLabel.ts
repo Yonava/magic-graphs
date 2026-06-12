@@ -23,7 +23,7 @@ export const useNodeLabel = (
     return mapOrGetter.get(nodeId);
   };
 
-  const { setTheme, removeTheme } = graph.canvas.useTheme(themeId);
+  const { set, remove } = graph.canvas.theme.createLayer(themeId);
 
   const nodeText = (node: GNode) => {
     if (graph.focus.isFocused(node.id)) return;
@@ -33,11 +33,11 @@ export const useNodeLabel = (
   };
 
   const label = () => {
-    setTheme('node.default.text', nodeText);
+    set('node.default.text', nodeText);
   };
 
   const unlabel = () => {
-    removeTheme('node.default.text');
+    remove('node.default.text');
   };
 
   return {

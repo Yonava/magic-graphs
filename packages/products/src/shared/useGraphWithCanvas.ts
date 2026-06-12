@@ -42,7 +42,7 @@ export const useGraphWithCanvas: UseGraphWithCanvas = (
       at,
       size: 12,
       lineWidth: 1,
-      fillColor: graph.canvas.resolveToken('canvas.patternColor') + alpha,
+      fillColor: graph.canvas.theme.resolveToken('canvas.patternColor') + alpha,
     }).draw(ctx);
 
   return {

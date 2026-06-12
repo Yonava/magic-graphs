@@ -41,7 +41,7 @@ export type CoreGraphNodeStyles = TextStyles & {
 export type GraphInterface = {
   shapes: CanvasGraph['shapes'];
   settings: CoreGraph['settings'];
-  resolveToken: CanvasGraph['resolveToken'];
+  resolveToken: CanvasGraph['theme']['resolveToken'];
   edges: CoreGraph['edges'];
   getNode: CoreGraph['getNode'];
   getEdge: CoreGraph['getEdge'];
@@ -157,10 +157,10 @@ type EdgeThemeFields<T extends Record<string, any>> = {
   [K in keyof T]: EdgeFallthroughThemeValue<T[K]>;
 };
 
-/** a single consumer-defined override for one theme token, tagged with the id of the `useTheme` instance that registered it. */
+/** a single consumer-defined override for one theme token, tagged with the id of the `createLayer` instance that registered it. */
 export type ThemeOverride<ThemeValue> = {
   value: ThemeValue;
-  useThemeId: string;
+  layerId: string;
 };
 
 /** recursively transforms a theme shape so every leaf value becomes a `ThemeOverride` array. */

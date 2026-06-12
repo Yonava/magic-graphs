@@ -18,14 +18,14 @@ export const useSimulationTheme = (
   sim: SimulationControls<MSTTrace>,
 ) => {
   const { traceArray: trace } = sim;
-  const { setTheme, removeAllThemes } = graph.canvas.useTheme(MST_USETHEME_ID);
+  const { set, removeAll } = graph.canvas.theme.createLayer(MST_USETHEME_ID);
 
   const mstAtStep = computed(() => trace.value.slice(0, sim.step.value));
 
   const colorEdge = (edge: GEdge) => {
     if (graph.focus.isFocused(edge.id)) return;
 
-    const color = graph.canvas.baseTheme.value.edge.default.color;
+    const color = graph.canvas.theme.base.value.edge.default.color;
     const inMST = mstAtStep.value.some((e) => e.id === edge.id);
     if (inMST) return color;
     else return color + DIM_FACTOR;
@@ -34,19 +34,19 @@ export const useSimulationTheme = (
   const colorEdgeText = (edge: GEdge) => {
     if (graph.focus.isFocused(edge.id)) return;
 
-    const color = graph.canvas.baseTheme.value.edge.default.textColor;
+    const color = graph.canvas.theme.base.value.edge.default.textColor;
     const inMST = mstAtStep.value.some((e) => e.id === edge.id);
     if (inMST) return color;
     else return color + DIM_FACTOR;
   };
 
   const activate = () => {
-    setTheme('edge.default.color', colorEdge);
-    setTheme('edge.default.textColor', colorEdgeText);
+    set('edge.default.color', colorEdge);
+    set('edge.default.textColor', colorEdgeText);
   };
 
   const deactivate = () => {
-    removeAllThemes();
+    removeAll();
   };
 
   return {

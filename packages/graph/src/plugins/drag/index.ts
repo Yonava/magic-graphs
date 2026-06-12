@@ -115,7 +115,7 @@ export const useNodeDragPlugin = <
     });
   };
 
-  const cursorTheme = useDragCursor(graph.canvas.useTheme, dragState);
+  const cursorTheme = useDragCursor(graph.canvas.theme.createLayer, dragState);
 
   const activate = () => {
     events.handle('onMouseDown', beginDrag, DRAG_EVENT_ID, {

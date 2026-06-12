@@ -14,7 +14,7 @@
   };
 
   const textColor = computed(
-    () => THEME_TO_TEXT_COLOR[graph.value.canvas.activeThemePreset.value],
+    () => THEME_TO_TEXT_COLOR[graph.value.canvas.theme.activePreset.value],
   );
 
   const styles = computed((): StyleValue => ({ color: textColor.value }));

@@ -27,7 +27,7 @@ import {
   ThemePreset,
 } from './themes/index.ts';
 import { createThemeOverrides } from './themes/types.ts';
-import { useTheme } from './themes/useTheme.ts';
+import { createLayer } from './themes/createLayer.ts';
 import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
@@ -230,11 +230,13 @@ export const useCanvasPlugin = <
       graphUnderCursor,
       forceUpdateGraphUnderCursor,
 
-      baseTheme: computed(() => ALL_THEME_PRESETS[activeThemePreset.value]),
-      activeThemePreset,
-      resolveToken,
-      themeOverrides,
-      useTheme: (useThemeId) => useTheme(themeOverrides, useThemeId),
+      theme: {
+        base: computed(() => ALL_THEME_PRESETS[activeThemePreset.value]),
+        activePreset: activeThemePreset,
+        resolveToken,
+        overrides: themeOverrides,
+        createLayer: (layerId) => createLayer(themeOverrides, layerId),
+      },
     },
   };
 };

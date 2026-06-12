@@ -5,7 +5,7 @@ import { USETHEME_ID } from '../constants.ts';
 import type { MarkovChain } from '../markov/useMarkovChain.ts';
 
 export const usePeriodicityLabels = (graph: Graph, markov: MarkovChain) => {
-  const { setTheme, removeTheme } = graph.canvas.useTheme(USETHEME_ID);
+  const { set, remove } = graph.canvas.theme.createLayer(USETHEME_ID);
   const { recurrentClassPeriods, nodeIdToRecurrentClassIndex } = markov;
 
   const nodeText = (node: GNode) => {
@@ -16,11 +16,11 @@ export const usePeriodicityLabels = (graph: Graph, markov: MarkovChain) => {
   };
 
   const label = () => {
-    setTheme('node.default.text', nodeText);
+    set('node.default.text', nodeText);
   };
 
   const unlabel = () => {
-    removeTheme('node.default.text');
+    remove('node.default.text');
   };
 
   return {

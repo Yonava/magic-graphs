@@ -11,7 +11,7 @@ import { CanvasEventMap } from './events.ts';
 import { TokenResolver } from './themes/createTokenResolver.ts';
 import { AllThemePresets, ThemePreset } from './themes/index.ts';
 import { ThemeOverrides } from './themes/types.ts';
-import { UseThemeControls } from './themes/useTheme.ts';
+import { ThemeLayer } from './themes/createLayer.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
 export type GraphUnderCursor = {
@@ -60,11 +60,18 @@ export type CanvasGraph = {
    */
   forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
 
-  baseTheme: ComputedRef<AllThemePresets[ThemePreset]>;
-  activeThemePreset: Ref<ThemePreset>;
-  resolveToken: TokenResolver;
-  themeOverrides: ThemeOverrides;
-  useTheme: (useThemeId?: string) => UseThemeControls;
+  theme: {
+    /** the active preset providing StyleValue fallbacks when no override layer covers a token. */
+    base: ComputedRef<AllThemePresets[ThemePreset]>;
+    /** the currently active preset name. */
+    activePreset: Ref<ThemePreset>;
+    /** resolves a ThemeToken through the override stack to its final StyleValue. */
+    resolveToken: TokenResolver;
+    /** the full override stack — all ThemeOverride arrays keyed by token. */
+    overrides: ThemeOverrides;
+    /** creates a scoped override layer for pushing ThemeValues into the stack. */
+    createLayer: (layerId?: string) => ThemeLayer;
+  };
 };
 
 /**

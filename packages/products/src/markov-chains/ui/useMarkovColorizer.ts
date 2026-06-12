@@ -8,25 +8,25 @@ import type { MarkovChain } from '../markov/useMarkovChain.ts';
 export const useMarkovColorizer = (graph: Graph, markov: MarkovChain) => {
   const sccColorizer = useSCCColorizer(graph, 'default-markov-scc-colors');
 
-  const { setTheme, removeTheme } = graph.canvas.useTheme(USETHEME_ID);
+  const { set, remove } = graph.canvas.theme.createLayer(USETHEME_ID);
 
   const colorNodeBorder = (node: GNode) => {
     if (graph.focus.isFocused(node.id))
-      return graph.canvas.baseTheme.value.node.focus.borderColor;
+      return graph.canvas.theme.base.value.node.focus.borderColor;
     if (markov.transientStates.value.has(node.id))
-      return graph.canvas.baseTheme.value.node.default.borderColor;
+      return graph.canvas.theme.base.value.node.default.borderColor;
   };
 
   const colorize = () => {
     sccColorizer.color();
-    setTheme('node.default.borderColor', colorNodeBorder);
-    setTheme('nodeAnchor.default.color', colorNodeBorder);
+    set('node.default.borderColor', colorNodeBorder);
+    set('nodeAnchor.default.color', colorNodeBorder);
   };
 
   const decolorize = () => {
     sccColorizer.uncolor();
-    removeTheme('node.default.borderColor');
-    removeTheme('nodeAnchor.default.color');
+    remove('node.default.borderColor');
+    remove('nodeAnchor.default.color');
   };
 
   return {

@@ -16,7 +16,7 @@ const ZERO_THICKNESS = 1;
  * based on their weight
  */
 export const useEdgeThickener = (graph: Graph, themeId = FLOW_USETHEME_ID) => {
-  const { setTheme, removeTheme } = graph.canvas.useTheme(themeId);
+  const { set, remove } = graph.canvas.theme.createLayer(themeId);
 
   const thickener = (edge: GEdge) => {
     const edgeWeight = graph.helpers.edges.getWeight(edge.id).valueOf();
@@ -28,8 +28,8 @@ export const useEdgeThickener = (graph: Graph, themeId = FLOW_USETHEME_ID) => {
     return (MAX_THICKNESS - MIN_THICKNESS) * percentage + MIN_THICKNESS;
   };
 
-  const activate = () => setTheme('edge.default.width', thickener);
-  const deactivate = () => removeTheme('edge.default.width');
+  const activate = () => set('edge.default.width', thickener);
+  const deactivate = () => remove('edge.default.width');
 
   return {
     activate,

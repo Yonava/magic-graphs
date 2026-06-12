@@ -6,7 +6,7 @@
   import { INF_STR, SIM_COLORS } from '../sim/theme.ts';
 
   const {
-    canvas: { resolveToken },
+    canvas: { theme: { resolveToken } },
     focus: { isFocused },
   } = graph.value;
 
