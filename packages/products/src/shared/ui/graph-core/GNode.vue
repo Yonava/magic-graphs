@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { getNodeStyles } from '@magic/graph/plugins/canvas/themes/index';
+  import { resolveNodeStyles } from '@magic/graph/plugins/canvas/themes/index';
   import type { GNode } from '@magic/graph/types';
 
   import { computed, onUnmounted, ref } from 'vue';
@@ -16,7 +16,7 @@
   });
 
   const theme = ref(
-    getNodeStyles(graph.value.canvas.theme._resolveToken, props.node),
+    resolveNodeStyles(graph.value.canvas.theme._resolveToken, props.node),
   );
 
   const borderSize = computed(() =>
@@ -28,7 +28,10 @@
   };
 
   const updateTheme = setInterval(() => {
-    theme.value = getNodeStyles(graph.value.canvas.theme._resolveToken, props.node);
+    theme.value = resolveNodeStyles(
+      graph.value.canvas.theme._resolveToken,
+      props.node,
+    );
   }, 100);
 
   onUnmounted(() => {

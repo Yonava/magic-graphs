@@ -42,7 +42,7 @@ export const THEME_PRESETS = Object.keys(ALL_THEME_PRESETS) as ThemePreset[];
  * @param node - the node passed as the themeArg to node-scoped token getters
  * @returns the fully resolved StyleValues for the node
  */
-export const getNodeStyles = (
+export const resolveNodeStyles = (
   resolveToken: TokenResolver,
   node: GNode,
 ): CoreGraphNodeStyles => ({
@@ -64,7 +64,7 @@ export const getNodeStyles = (
  * @param edge - the edge passed as the themeArg to edge-scoped token getters
  * @returns the fully resolved StyleValues for the edge
  */
-export const getEdgeStyles = (
+export const resolveEdgeStyles = (
   resolveToken: TokenResolver,
   edge: GEdge,
 ): CoreGraphEdgeStyles => ({

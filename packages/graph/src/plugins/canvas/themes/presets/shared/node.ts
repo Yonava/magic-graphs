@@ -2,11 +2,11 @@ import colors from '@magic/utils/colors';
 
 import { GNode } from '../../../../../types.ts';
 import { CURSOR } from '../../cursor.ts';
-import { GraphTheme, getNodeStyles } from '../../index.ts';
+import { GraphTheme, resolveNodeStyles } from '../../index.ts';
 import { textDefaults } from './text.ts';
 
 const nodeCircle: GraphTheme['node']['default']['shape'] = (node, graph) => {
-  const styles = getNodeStyles(graph.resolveToken, node);
+  const styles = resolveNodeStyles(graph.resolveToken, node);
 
   return graph.shapes.shapes.circle({
     id: node.id,
