@@ -1,3 +1,4 @@
+import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
 import type { UnwrapMaybeGetter } from '@magic/utils/maybeGetter/index';
 import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
@@ -46,11 +47,10 @@ export function getThemeResolver(
     token: Token,
     ...args: Args
   ) => {
-    const overrides = getDataFromNestedPath(themeOverrides, token);
-
-    if (!overrides) {
-      throw new Error(`No theme map for ${token}`);
-    }
+    const overrides = nullThrows(
+      getDataFromNestedPath(themeOverrides, token),
+      `No theme overrides found for token "${token}"`,
+    );
 
     const override = overrides.findLast((overrideItem) => {
       const themeValue = overrideItem.value;
@@ -61,11 +61,10 @@ export function getThemeResolver(
     const preset = ALL_THEME_PRESETS[themePreset.value];
     const presetStyleValue = getDataFromNestedPath(preset, token);
 
-    const themeValue = override?.value ?? presetStyleValue;
-
-    if (themeValue === undefined) {
-      throw new Error(`Theme property "${token}" not found`);
-    }
+    const themeValue = nullThrows(
+      override?.value ?? presetStyleValue,
+      `Theme property "${token}" not found`,
+    );
 
     const styleValue = getValue<typeof themeValue, Args>(
       themeValue,
