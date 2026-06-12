@@ -1,5 +1,6 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
+import { cross } from '@magic/shapes/shapes/cross/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 import { DeepReadonly } from 'ts-essentials';
@@ -214,6 +215,14 @@ export const useCanvasPlugin = <
     if (!canvas) return;
     canvas.style.backgroundColor = resolveToken('canvas.color');
   });
+
+  magicCanvas.draw.backgroundPattern.value = (ctx, at, alpha) =>
+    cross({
+      at,
+      size: 12,
+      lineWidth: 1,
+      fillColor: resolveToken('canvas.patternColor') + alpha,
+    }).draw(ctx);
 
   return {
     ...graph,
