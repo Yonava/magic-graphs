@@ -10,7 +10,7 @@ import { CoreGraph } from '../../core/types.ts';
 import { CanvasEventMap } from './events.ts';
 import { ThemeGetter } from './themes/getThemeResolver.ts';
 import { AllThemePresets, ThemePreset } from './themes/index.ts';
-import { FullThemeMap } from './themes/types.ts';
+import { ThemeOverrides } from './themes/types.ts';
 import { UseThemeControls } from './themes/useTheme.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
@@ -63,7 +63,7 @@ export type CanvasGraph = {
   baseTheme: ComputedRef<AllThemePresets[ThemePreset]>;
   activeThemePreset: Ref<ThemePreset>;
   getTheme: ThemeGetter;
-  themeMap: FullThemeMap;
+  themeOverrides: ThemeOverrides;
   useTheme: (useThemeId?: string) => UseThemeControls;
 };
 

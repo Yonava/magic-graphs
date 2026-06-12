@@ -4,7 +4,7 @@ import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { GEdge, GNode, GraphPlugin } from '../../types.ts';
 import { CanvasEventMap } from '../canvas/events.ts';
-import { ValidGraphThemePath } from '../canvas/themes/types.ts';
+import { ThemeToken } from '../canvas/themes/types.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';
 
@@ -57,11 +57,11 @@ export type FocusOption = {
 };
 
 export type NodeBaseThemePath = Extract<
-  ValidGraphThemePath,
+  ThemeToken,
   `node.default.${string}`
 >;
 export type EdgeBaseThemePath = Extract<
-  ValidGraphThemePath,
+  ThemeToken,
   `edge.default.${string}`
 >;
 

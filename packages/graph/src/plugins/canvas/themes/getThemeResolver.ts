@@ -7,21 +7,23 @@ import type { Ref } from 'vue';
 import type { GraphTheme, ThemePreset } from '../themes/index.ts';
 import { ALL_THEME_PRESETS } from '../themes/index.ts';
 import {
-  type FullThemeMap,
-  type ThemeMapEntry,
-  type ValidGraphThemePath,
+  type ThemeOverrides,
+  type ThemeOverride,
+  type ThemeToken,
 } from '../themes/types.ts';
 
-export type ResolveThemeMap<Path extends ValidGraphThemePath> = PathValue<
-  FullThemeMap,
-  Path
+/** the override array stored at a given ThemeToken path in ThemeOverrides. */
+export type TokenOverrides<Token extends ThemeToken> = PathValue<
+  ThemeOverrides,
+  Token
 >;
 
-export type UnwrapThemeEntry<ThemeMapEntries> =
-  ThemeMapEntries extends ThemeMapEntry<Builtin>[]
-    ? Extract<ThemeMapEntries[number]['value'], AnyFunction> extends never
+/** extracts the getter arguments for a token's ThemeValue, or [] if the token takes a static StyleValue. */
+export type ThemeArgs<Overrides> =
+  Overrides extends ThemeOverride<Builtin>[]
+    ? Extract<Overrides[number]['value'], AnyFunction> extends never
       ? []
-      : Parameters<Extract<ThemeMapEntries[number]['value'], AnyFunction>>
+      : Parameters<Extract<Overrides[number]['value'], AnyFunction>>
     : [];
 
 // TODO remove as part of https://github.com/Yonava/magic-graphs/issues/584
@@ -35,52 +37,46 @@ export const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
 
 export function getThemeResolver(
   themePreset: Ref<ThemePreset>,
-  themeMap: FullThemeMap,
+  themeOverrides: ThemeOverrides,
 ) {
   const getTheme = <
-    ThemeMapPath extends ValidGraphThemePath,
-    ThemeArgs extends UnwrapThemeEntry<ResolveThemeMap<ThemeMapPath>>,
+    Token extends ThemeToken,
+    Args extends ThemeArgs<TokenOverrides<Token>>,
   >(
-    themeMapPath: ThemeMapPath,
-    ...themeArgs: ThemeArgs
+    token: Token,
+    ...args: Args
   ) => {
-    const themeMapEntries = getDataFromNestedPath(themeMap, themeMapPath);
+    const overrides = getDataFromNestedPath(themeOverrides, token);
 
-    if (!themeMapEntries) {
-      throw new Error(`No theme map for ${themeMapPath}`);
+    if (!overrides) {
+      throw new Error(`No theme map for ${token}`);
     }
 
-    const themeMapEntry = themeMapEntries.findLast((themeMapEntryItem) => {
-      const getterOrValue = themeMapEntryItem.value;
-      const themeValue = getValue<typeof getterOrValue, ThemeArgs>(
-        getterOrValue,
-        ...themeArgs,
-      );
-
-      return themeValue !== undefined;
+    const override = overrides.findLast((overrideItem) => {
+      const themeValue = overrideItem.value;
+      const styleValue = getValue<typeof themeValue, Args>(themeValue, ...args);
+      return styleValue !== undefined;
     });
 
-    const fallbackThemeMap = ALL_THEME_PRESETS[themePreset.value];
-    const defaultValue = getDataFromNestedPath(fallbackThemeMap, themeMapPath);
+    const preset = ALL_THEME_PRESETS[themePreset.value];
+    const presetStyleValue = getDataFromNestedPath(preset, token);
 
-    const getterOrValue = themeMapEntry?.value ?? defaultValue;
+    const themeValue = override?.value ?? presetStyleValue;
 
-    if (getterOrValue === undefined) {
-      throw new Error(`Theme property "${themeMapPath}" not found`);
+    if (themeValue === undefined) {
+      throw new Error(`Theme property "${token}" not found`);
     }
 
-    const value = getValue<typeof getterOrValue, ThemeArgs>(
-      getterOrValue,
-      ...themeArgs,
-    ) as Exclude<UnwrapMaybeGetter<PathValue<GraphTheme, ThemeMapPath>>, void>;
+    const styleValue = getValue<typeof themeValue, Args>(
+      themeValue,
+      ...args,
+    ) as Exclude<UnwrapMaybeGetter<PathValue<GraphTheme, Token>>, void>;
 
-    return value;
+    return styleValue;
   };
 
   return getTheme;
 }
 
-/**
- * the function that gets a value from a theme inquiry
- */
+/** the function that resolves a theme token to its final StyleValue. */
 export type ThemeGetter = ReturnType<typeof getThemeResolver>;

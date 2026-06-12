@@ -1,3 +1,16 @@
+/*
+ * Naming conventions used throughout this file:
+ *
+ * StyleValue  — the raw, resolved value that gets painted on the canvas (e.g. string, number, Cursor).
+ *               this is what a preset defines and what the renderer ultimately consumes.
+ *
+ * ThemeValue  — a StyleValue wrapped for the override system via FallthroughThemeValue.
+ *               consumers provide ThemeValues: either a static StyleValue or a getter that
+ *               may return void to defer ("fall through") to the next override layer or preset.
+ *
+ * ThemeToken  — a dot-notation path into GraphTheme that addresses a single StyleValue leaf
+ *               (e.g. "node.default.color"). used to identify which token an override targets.
+ */
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types/index';
 import { Color } from '@magic/utils/colors';
@@ -35,25 +48,23 @@ export type GraphInterface = {
   helpers: CoreGraph['helpers'];
 };
 
-export type CoreGraphNodeTheme =
-  WrapWithNodeThemeGetter<CoreGraphNodeStyles> & {
-    shape: (node: GNode, graph: GraphInterface) => Shape | void;
-  };
+export type CoreGraphNodeTheme = NodeThemeFields<CoreGraphNodeStyles> & {
+  shape: (node: GNode, graph: GraphInterface) => Shape | void;
+};
 
 export type CoreGraphEdgeStyles = TextStyles & {
   color: string;
   width: number;
 };
 
-export type CoreGraphEdgeTheme =
-  WrapWithEdgeThemeGetter<CoreGraphEdgeStyles> & {
-    shape: (edge: GEdge, graph: GraphInterface) => Shape | void;
-  };
+export type CoreGraphEdgeTheme = EdgeThemeFields<CoreGraphEdgeStyles> & {
+  shape: (edge: GEdge, graph: GraphInterface) => Shape | void;
+};
 
 type CanvasGraphThemeStyles = {
   color: MaybeGetter<string>;
   patternColor: MaybeGetter<string>;
-  cursor: ThemeGetterOrValue<() => Cursor | CursorFallback>;
+  cursor: FallthroughThemeValue<() => Cursor | CursorFallback>;
 };
 
 export type CoreGraphTheme = {
@@ -80,12 +91,12 @@ type NodeAnchorLinkPreviewStyles = {
   };
 };
 
-type NodeAnchorGraphThemeRecord =
-  WrapWithNodeThemeGetter<NodeAnchorGraphStyles> & NodeAnchorLinkPreviewStyles;
+type NodeAnchorTheme = NodeThemeFields<NodeAnchorGraphStyles> &
+  NodeAnchorLinkPreviewStyles;
 
 export type NodeAnchorGraphTheme = {
-  default: NodeAnchorGraphThemeRecord;
-  focus: NodeAnchorGraphThemeRecord;
+  default: NodeAnchorTheme;
+  focus: NodeAnchorTheme;
 };
 
 export type MarqueeGraphTheme = {
@@ -112,65 +123,70 @@ export type GraphTheme = {
   marquee: MarqueeGraphTheme;
 };
 
-type GraphThemePaths = Paths<GraphTheme>;
-
-type PathsMappingToBuiltIn<Object, T> = T extends T
-  ? PathValue<Object, T> extends Builtin
-    ? T
+type LeafPaths<Schema, Path> = Path extends Path
+  ? PathValue<Schema, Path> extends Builtin
+    ? Path
     : never
   : never;
 
-export type ValidGraphThemePath = PathsMappingToBuiltIn<
-  GraphTheme,
-  GraphThemePaths
+export type ThemeToken = LeafPaths<GraphTheme, Paths<GraphTheme>>;
+
+/**
+ * a theme token value that supports layered resolution. a static value is used as-is;
+ * a getter returning `void` signals "no opinion" and defers to the next override layer,
+ * eventually falling back to the active preset.
+ */
+type FallthroughThemeValue<StyleValueGetter extends AnyFunction> =
+  | ReturnType<StyleValueGetter>
+  | ((
+      ...args: Parameters<StyleValueGetter>
+    ) => ReturnType<StyleValueGetter> | void);
+
+type NodeFallthroughThemeValue<StyleValue> = FallthroughThemeValue<
+  (node: GNode) => StyleValue
+>;
+type EdgeFallthroughThemeValue<StyleValue> = FallthroughThemeValue<
+  (edge: GEdge) => StyleValue
 >;
 
-type ThemeGetterOrValue<Getter extends AnyFunction> =
-  | ReturnType<Getter>
-  | ((...args: Parameters<Getter>) => ReturnType<Getter> | void);
-
-type NodeThemeGetterOrValue<ThemeValue> = ThemeGetterOrValue<
-  (node: GNode) => ThemeValue
->;
-type EdgeThemeGetterOrValue<ThemeValue> = ThemeGetterOrValue<
-  (edge: GEdge) => ThemeValue
->;
-
-type WrapWithNodeThemeGetter<T extends Record<string, any>> = {
-  [K in keyof T]: NodeThemeGetterOrValue<T[K]>;
+type NodeThemeFields<T extends Record<string, any>> = {
+  [K in keyof T]: NodeFallthroughThemeValue<T[K]>;
 };
 
-type WrapWithEdgeThemeGetter<T extends Record<string, any>> = {
-  [K in keyof T]: EdgeThemeGetterOrValue<T[K]>;
+type EdgeThemeFields<T extends Record<string, any>> = {
+  [K in keyof T]: EdgeFallthroughThemeValue<T[K]>;
 };
 
-export type ThemeMapEntry<StyleValue> = {
-  value: StyleValue;
+/** a single consumer-defined override for one theme token, tagged with the id of the `useTheme` instance that registered it. */
+export type ThemeOverride<ThemeValue> = {
+  value: ThemeValue;
   useThemeId: string;
 };
 
-type DeepThemeMapEntry<T> = [T] extends [Builtin]
-  ? ThemeMapEntry<T>[]
+/** recursively transforms a theme shape so every leaf value becomes a `ThemeOverride` array. */
+type ToThemeOverrides<T> = [T] extends [Builtin]
+  ? ThemeOverride<T>[]
   : T extends Array<infer U>
     ? // handles nested arrays gracefully
-      Array<DeepThemeMapEntry<U>>
+      Array<ToThemeOverrides<U>>
     : T extends Function
       ? // leaves methods alone if your theme has helpers
         T
       : T extends object
-        ? { [K in keyof T]: DeepThemeMapEntry<T[K]> }
+        ? { [K in keyof T]: ToThemeOverrides<T[K]> }
         : T;
 
-export type FullThemeMap = DeepThemeMapEntry<GraphTheme>;
+/** the full set of consumer overrides layered on top of the active theme preset. last registered override wins at each token. */
+export type ThemeOverrides = ToThemeOverrides<GraphTheme>;
 
-const textFields = (): DeepThemeMapEntry<TextStyles> => ({
+const textFields = (): ToThemeOverrides<TextStyles> => ({
   text: [],
   textColor: [],
   textFontWeight: [],
   textSize: [],
 });
 
-const nodeFields = (): DeepThemeMapEntry<CoreGraphNodeTheme> => ({
+const nodeFields = (): ToThemeOverrides<CoreGraphNodeTheme> => ({
   ...textFields(),
   shape: [],
   borderColor: [],
@@ -180,14 +196,14 @@ const nodeFields = (): DeepThemeMapEntry<CoreGraphNodeTheme> => ({
   cursor: [],
 });
 
-const edgeFields = (): DeepThemeMapEntry<CoreGraphEdgeTheme> => ({
+const edgeFields = (): ToThemeOverrides<CoreGraphEdgeTheme> => ({
   ...textFields(),
   shape: [],
   color: [],
   width: [],
 });
 
-const nodeAnchorFields = (): DeepThemeMapEntry<NodeAnchorGraphThemeRecord> => ({
+const nodeAnchorFields = (): ToThemeOverrides<NodeAnchorTheme> => ({
   color: [],
   radius: [],
   cursor: [],
@@ -197,7 +213,7 @@ const nodeAnchorFields = (): DeepThemeMapEntry<NodeAnchorGraphThemeRecord> => ({
   },
 });
 
-export const getInitialThemeMap = (): FullThemeMap => ({
+export const createThemeOverrides = (): ThemeOverrides => ({
   node: {
     default: nodeFields(),
     focus: nodeFields(),

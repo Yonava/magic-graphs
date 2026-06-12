@@ -1,8 +1,8 @@
 import { generateId } from '@magic/utils/id';
 
-import type { ValidGraphThemePath } from '../themes/types.ts';
-import { ResolveThemeMap, getDataFromNestedPath } from './getThemeResolver.ts';
-import { FullThemeMap } from './types.ts';
+import type { ThemeToken } from '../themes/types.ts';
+import { TokenOverrides, getDataFromNestedPath } from './getThemeResolver.ts';
+import { ThemeOverrides } from './types.ts';
 
 export type UseThemeControls = {
   /**
@@ -11,16 +11,16 @@ export type UseThemeControls = {
    * @param prop - the theme property you want to set
    * @param value - the value you want to set for the theme property
    */
-  setTheme: <Path extends ValidGraphThemePath>(
+  setTheme: <Path extends ThemeToken>(
     themePath: Path,
-    value: ResolveThemeMap<Path>[number]['value'],
+    value: TokenOverrides<Path>[number]['value'],
   ) => void;
   /**
    * removes a theme value for a specific theme property attached to this useTheme instance
    *
    * @param themePath - the theme property you want to remove
    */
-  removeTheme: (themePath: ValidGraphThemePath) => void;
+  removeTheme: (themePath: ThemeToken) => void;
   /**
    * removes all themes attached to this useTheme instance
    */
@@ -35,15 +35,15 @@ export type UseThemeControls = {
  * @returns functions to set and remove themes
  */
 export const useTheme = (
-  themeMap: FullThemeMap,
+  themeOverrides: ThemeOverrides,
   themeId = generateId(),
 ): UseThemeControls => {
   /** all theme paths that are themes assigned to them */
-  const activeThemePaths = new Set<ValidGraphThemePath>();
+  const activeThemePaths = new Set<ThemeToken>();
 
-  const setTheme = <Path extends ValidGraphThemePath>(
+  const setTheme = <Path extends ThemeToken>(
     themePath: Path,
-    value: ResolveThemeMap<Path>[number]['value'],
+    value: TokenOverrides<Path>[number]['value'],
   ) => {
     if (activeThemePaths.has(themePath)) {
       console.warn(
@@ -52,15 +52,15 @@ export const useTheme = (
       return;
     }
 
-    const themeMapEntries = getDataFromNestedPath(themeMap, themePath);
-    if (!themeMapEntries) {
+    const overrides = getDataFromNestedPath(themeOverrides, themePath);
+    if (!overrides) {
       console.warn(
         `Attempted to set theme ${value} to ${themePath} but property ${themePath} was not recognized`,
       );
       return;
     }
 
-    themeMapEntries.push({
+    overrides.push({
       // @ts-expect-error Safe: The consumer arguments are strictly typed to match 'themePath',
       // but TS cannot internally correlate the dynamic lookup array with the resolved generic union.
       value,
@@ -70,16 +70,16 @@ export const useTheme = (
     activeThemePaths.add(themePath);
   };
 
-  const removeTheme = (themePath: ValidGraphThemePath) => {
-    const themeMapEntries = getDataFromNestedPath(themeMap, themePath);
-    if (!themeMapEntries) {
+  const removeTheme = (themePath: ThemeToken) => {
+    const overrides = getDataFromNestedPath(themeOverrides, themePath);
+    if (!overrides) {
       console.warn(
         `Attempted to remove theme from ${themePath} but property ${themePath} was not recognized`,
       );
       return;
     }
 
-    const index = themeMapEntries.findIndex(
+    const index = overrides.findIndex(
       (entry) => entry.useThemeId === themeId,
     );
 
@@ -90,7 +90,7 @@ export const useTheme = (
       return;
     }
 
-    themeMapEntries.splice(index, 1);
+    overrides.splice(index, 1);
     activeThemePaths.delete(themePath);
   };
 

@@ -1,6 +1,5 @@
 import { DragStateControls } from '../../shared/drag/types.ts';
 import { CURSOR } from '../canvas/themes/cursor.ts';
-import { FullThemeMap } from '../canvas/themes/types.ts';
 import { useTheme } from '../canvas/themes/useTheme.ts';
 import { CanvasGraph } from '../canvas/types.ts';
 import { NodeAnchor } from './types.ts';
