@@ -14,6 +14,11 @@ type GraphCursorProps = {
 
 export const CANVAS_ELEMENT_CURSOR_FIELD_KEY = 'cursor';
 
+const validCursors = new Set<string>(Object.values(CURSOR));
+
+const isValidCursor = (cursorOrJunk: unknown): cursorOrJunk is Cursor =>
+  typeof cursorOrJunk === 'string' && validCursors.has(cursorOrJunk);
+
 /**
  * manages the cursor type when hovering over the graph
  */
@@ -30,11 +35,15 @@ export const setupCanvasCursor = ({
     const topElement = graphUnderCursor.elements.at(-1);
     if (!topElement) return CURSOR.DEFAULT;
 
-    const elementCursor = topElement.data?.[CANVAS_ELEMENT_CURSOR_FIELD_KEY] as
-      | Cursor
-      | undefined;
+    const elementCursor = topElement.data?.[CANVAS_ELEMENT_CURSOR_FIELD_KEY];
 
-    return elementCursor ?? CURSOR.DEFAULT;
+    if (elementCursor === undefined) return CURSOR.DEFAULT;
+    if (!isValidCursor(elementCursor)) {
+      console.warn(`expected valid cursor: got ${elementCursor}`);
+      return CURSOR.DEFAULT;
+    }
+
+    return elementCursor;
   };
 
   const refreshCursor = () => {
