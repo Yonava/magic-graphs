@@ -3,14 +3,14 @@ import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
 
 import { GEdge } from '../../../../../types.ts';
-import { GraphTheme, resolveThemeForEdge } from '../../index.ts';
+import { GraphTheme, getEdgeStyles } from '../../index.ts';
 import { GraphInterface } from '../../types.ts';
 import { textDefaults } from './text.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
 const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
-  const styles = resolveThemeForEdge(graph.getTheme, edge);
+  const styles = getEdgeStyles(graph.getTheme, edge);
   const { isGraphDirected, isGraphWeighted } = graph.settings.value;
 
   const { sourceNode, targetNode } = graph.helpers.edges.getConnectedNodes(

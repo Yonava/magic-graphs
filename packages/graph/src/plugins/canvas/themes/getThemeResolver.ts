@@ -63,7 +63,7 @@ export function getThemeResolver(
 
     const themeValue = nullThrows(
       override?.value ?? presetStyleValue,
-      `Theme property "${token}" not found`,
+      `Theme token "${token}" not found`,
     );
 
     const styleValue = getValue<typeof themeValue, Args>(

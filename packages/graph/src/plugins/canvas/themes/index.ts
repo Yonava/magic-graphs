@@ -36,13 +36,13 @@ export type ThemePreset = keyof typeof ALL_THEME_PRESETS;
 export const THEME_PRESETS = Object.keys(ALL_THEME_PRESETS) as ThemePreset[];
 
 /**
- * gets the theme attributes for a GNode at the point in time the function is called
+ * resolves all StyleValues for a node by running each token through the override layers and preset fallback.
  *
- * @param getTheme - the theme getter function
- * @param node - the node to get the theme for
- * @returns the theme attributes for the node
+ * @param getTheme - the ThemeGetter used to resolve each token to its final StyleValue
+ * @param node - the node passed as the themeArg to node-scoped token getters
+ * @returns the fully resolved StyleValues for the node
  */
-export const resolveThemeForNode = (
+export const getNodeStyles = (
   getTheme: ThemeGetter,
   node: GNode,
 ): CoreGraphNodeStyles => ({
@@ -58,13 +58,13 @@ export const resolveThemeForNode = (
 });
 
 /**
- * gets the theme attributes for a GEdge at the point in time the function is called
+ * resolves all StyleValues for an edge by running each token through the override layers and preset fallback.
  *
- * @param getTheme - the theme getter function
- * @param edge - the edge to get the theme for
- * @returns the theme attributes for the edge
+ * @param getTheme - the ThemeGetter used to resolve each token to its final StyleValue
+ * @param edge - the edge passed as the themeArg to edge-scoped token getters
+ * @returns the fully resolved StyleValues for the edge
  */
-export const resolveThemeForEdge = (
+export const getEdgeStyles = (
   getTheme: ThemeGetter,
   edge: GEdge,
 ): CoreGraphEdgeStyles => ({
