@@ -202,7 +202,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
-          color: THEME_TO_ERASER_OUTLINE[graph.canvas.themeName.value],
+          color: THEME_TO_ERASER_OUTLINE[graph.canvas.activeThemePreset.value],
           lineWidth: 2,
         },
       });

@@ -30,7 +30,7 @@ export const usePreferredThemePreset = (graph: GraphWithPlugins) => {
     isDark,
     () => {
       if (preferredTheme.value !== 'auto') return;
-      graph.canvas.themeName.value = isDark.value ? 'dark' : 'light';
+      graph.canvas.activeThemePreset.value = isDark.value ? 'dark' : 'light';
     },
     { immediate: true },
   );
@@ -48,9 +48,9 @@ export const usePreferredThemePreset = (graph: GraphWithPlugins) => {
       }
 
       if (preferredTheme.value === 'auto') {
-        graph.canvas.themeName.value = isDark.value ? 'dark' : 'light';
+        graph.canvas.activeThemePreset.value = isDark.value ? 'dark' : 'light';
       } else {
-        graph.canvas.themeName.value = preferredTheme.value;
+        graph.canvas.activeThemePreset.value = preferredTheme.value;
       }
     },
     { immediate: true },

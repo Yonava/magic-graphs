@@ -11,7 +11,7 @@
 
   // special case!
   const activeColor = computed(() => {
-    if (graph.value.canvas.themeName.value === 'dark') {
+    if (graph.value.canvas.activeThemePreset.value === 'dark') {
       return colors.value.tertiary;
     }
     return colors.value.secondary;
