@@ -1,5 +1,4 @@
 import { CURSOR } from '@magic/graph/plugins/canvas/themes/cursor';
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import { CanvasElement } from '@magic/graph/plugins/canvas/types';
 
 import { Graph } from '../useGraphWithCanvas.ts';

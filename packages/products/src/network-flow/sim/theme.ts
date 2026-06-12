@@ -1,4 +1,3 @@
-import { useTheme } from '@magic/graph/plugins/canvas/themes/useTheme';
 import type { GEdge } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
