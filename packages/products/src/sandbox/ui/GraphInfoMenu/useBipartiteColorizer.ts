@@ -6,8 +6,8 @@ import type { Graph } from '../../../shared/useGraphWithCanvas.ts';
 const BIPARTITE_THEME_ID = 'bipartite-colorizer';
 
 export const useBipartiteColorizer = (graph: Graph) => {
-  const { setTheme, removeAllThemes } =
-    graph.canvas.useTheme(BIPARTITE_THEME_ID);
+  const { set, removeAll } =
+    graph.canvas.theme.createLayer(BIPARTITE_THEME_ID);
 
   const colorNodeBorders = (node: GNode) => {
     const isBipartite = graph.characteristics.isBipartite.value;
@@ -19,12 +19,12 @@ export const useBipartiteColorizer = (graph: Graph) => {
   };
 
   const colorize = () => {
-    setTheme('node.default.borderColor', colorNodeBorders);
-    setTheme('nodeAnchor.default.color', colorNodeBorders);
+    set('node.default.borderColor', colorNodeBorders);
+    set('nodeAnchor.default.color', colorNodeBorders);
   };
 
   const decolorize = () => {
-    removeAllThemes();
+    removeAll();
   };
 
   return {

@@ -15,7 +15,7 @@ export const useSimulationTheme = (
   graph: Graph,
   sim: SimulationControls<FlowTrace>,
 ) => {
-  const { setTheme, removeTheme } = graph.canvas.useTheme(FLOW_USETHEME_ID);
+  const { set, remove } = graph.canvas.theme.createLayer(FLOW_USETHEME_ID);
 
   const getActiveEdgeIdsAtStep = (step: number) => {
     const trace = sim.trace.value;
@@ -58,7 +58,7 @@ export const useSimulationTheme = (
 
   const colorActiveEdges = (edge: GEdge) => {
     const isActive = activeEdgeIdsAtStep.value.includes(edge.id);
-    const focusColor = graph.canvas.baseTheme.value.edge.focus.color;
+    const focusColor = graph.canvas.theme.base.value.edge.focus.color;
     if (isActive) return focusColor;
     else if (isResidual(edge.id)) return colors.ORANGE_400;
   };
@@ -70,13 +70,13 @@ export const useSimulationTheme = (
   };
 
   const activate = () => {
-    setTheme('edge.default.color', colorActiveEdges);
-    setTheme('edge.default.text', labelEdges);
+    set('edge.default.color', colorActiveEdges);
+    set('edge.default.text', labelEdges);
   };
 
   const deactivate = () => {
-    removeTheme('edge.default.color');
-    removeTheme('edge.default.text');
+    remove('edge.default.color');
+    remove('edge.default.text');
   };
 
   return {

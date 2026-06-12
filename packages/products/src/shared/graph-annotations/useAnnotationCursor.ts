@@ -7,18 +7,18 @@ export const useAnnotationCursor = (
   graph: GraphWithPlugins,
   hideCursor: ComputedRef<boolean>,
 ) => {
-  const { setTheme, removeAllThemes } = graph.canvas.useTheme(
+  const { set, removeAll } = graph.canvas.theme.createLayer(
     'product/annotations',
   );
 
   const activate = () => {
-    setTheme('canvas.cursor', () =>
+    set('canvas.cursor', () =>
       hideCursor.value ? CURSOR.NONE : CURSOR.CROSSHAIR,
     );
   };
 
   return {
     activate,
-    deactivate: removeAllThemes,
+    deactivate: removeAll,
   };
 };

@@ -17,7 +17,7 @@ export const useSourceSinkTheme = (
   graph: Graph,
   themeId = FLOW_USETHEME_ID,
 ) => {
-  const { setTheme, removeTheme } = graph.canvas.useTheme(themeId);
+  const { set, remove } = graph.canvas.theme.createLayer(themeId);
 
   const isSource = (node: GNode) => sourceNode.get(graph)?.id === node.id;
   const isSink = (node: GNode) => sinkNode.get(graph)?.id === node.id;
@@ -35,15 +35,15 @@ export const useSourceSinkTheme = (
   };
 
   const stylize = () => {
-    setTheme('node.default.borderColor', colorSourceSink);
-    setTheme('nodeAnchor.default.color', colorSourceSink);
-    setTheme('node.default.text', labelSourceSink);
+    set('node.default.borderColor', colorSourceSink);
+    set('nodeAnchor.default.color', colorSourceSink);
+    set('node.default.text', labelSourceSink);
   };
 
   const destylize = () => {
-    removeTheme('node.default.borderColor');
-    removeTheme('nodeAnchor.default.color');
-    removeTheme('node.default.text');
+    remove('node.default.borderColor');
+    remove('nodeAnchor.default.color');
+    remove('node.default.text');
   };
 
   return {

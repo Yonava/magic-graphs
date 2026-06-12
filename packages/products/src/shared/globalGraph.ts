@@ -1,3 +1,5 @@
+import { nullThrows } from '@magic/utils/assert';
+
 import { computed, shallowRef } from 'vue';
 
 import type { Graph } from './useGraphWithCanvas.ts';
@@ -10,9 +12,5 @@ export const devMode = shallowRef(false);
 export const graph = shallowRef<Graph>();
 
 export const nonNullGraph = computed(() => {
-  if (!graph.value) {
-    throw new Error('global graph state is undefined');
-  }
-
-  return graph.value;
+  return nullThrows(graph.value, 'global graph state is undefined');
 });

@@ -19,7 +19,7 @@ export const useNodeColor = (
     return mapOrGetter.get(nodeId);
   };
 
-  const { setTheme, removeTheme } = graph.canvas.useTheme(themeId);
+  const { set, remove } = graph.canvas.theme.createLayer(themeId);
 
   const nodeColor = (node: GNode) => {
     if (graph.focus.isFocused(node.id)) return;
@@ -27,13 +27,13 @@ export const useNodeColor = (
   };
 
   const color = () => {
-    setTheme('node.default.borderColor', nodeColor);
-    setTheme('nodeAnchor.default.color', nodeColor);
+    set('node.default.borderColor', nodeColor);
+    set('nodeAnchor.default.color', nodeColor);
   };
 
   const uncolor = () => {
-    removeTheme('node.default.borderColor');
-    removeTheme('nodeAnchor.default.color');
+    remove('node.default.borderColor');
+    remove('nodeAnchor.default.color');
   };
 
   return {

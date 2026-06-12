@@ -3,14 +3,14 @@ import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
 
 import { GEdge } from '../../../../../types.ts';
-import { GraphTheme, resolveThemeForEdge } from '../../index.ts';
+import { GraphTheme, getEdgeStyles } from '../../index.ts';
 import { GraphInterface } from '../../types.ts';
 import { textDefaults } from './text.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
 const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
-  const styles = resolveThemeForEdge(graph.getTheme, edge);
+  const styles = getEdgeStyles(graph.resolveToken, edge);
   const { isGraphDirected, isGraphWeighted } = graph.settings.value;
 
   const { sourceNode, targetNode } = graph.helpers.edges.getConnectedNodes(
@@ -24,17 +24,17 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
   const multipleEdgesInPath = edgesAlongPath.length > 1;
   const isSelfDirected = targetNode.id === sourceNode.id;
 
-  const fromNodeBorderWidth = graph.getTheme(
+  const fromNodeBorderWidth = graph.resolveToken(
     'node.default.borderWidth',
     sourceNode,
   );
-  const toNodeBorderWidth = graph.getTheme(
+  const toNodeBorderWidth = graph.resolveToken(
     'node.default.borderWidth',
     targetNode,
   );
 
-  const fromNodeSize = graph.getTheme('node.default.size', sourceNode);
-  const toNodeSize = graph.getTheme('node.default.size', targetNode);
+  const fromNodeSize = graph.resolveToken('node.default.size', sourceNode);
+  const toNodeSize = graph.resolveToken('node.default.size', targetNode);
 
   const angle = Math.atan2(
     targetNode.y - sourceNode.y,
@@ -94,7 +94,7 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
       ),
   );
 
-  const canvasColor = graph.getTheme('canvas.color');
+  const canvasColor = graph.resolveToken('canvas.color');
 
   const textAreaOnEdge: TextArea = {
     color: canvasColor,

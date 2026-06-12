@@ -7,10 +7,10 @@ export const useSelectCursor = (
   graph: Graph,
   predicate: (element: CanvasElement) => boolean,
 ) => {
-  const { setTheme, removeAllThemes } = graph.canvas.useTheme('product/select');
+  const { set, removeAll } = graph.canvas.theme.createLayer('product/select');
 
   const activate = () => {
-    setTheme('canvas.cursor', () => {
+    set('canvas.cursor', () => {
       const element = graph.canvas.graphUnderCursor.elements.at(-1);
       if (!element) return CURSOR.DEFAULT;
       const isSelectable = predicate(element);
@@ -20,6 +20,6 @@ export const useSelectCursor = (
 
   return {
     activate,
-    deactivate: removeAllThemes,
+    deactivate: removeAll,
   };
 };

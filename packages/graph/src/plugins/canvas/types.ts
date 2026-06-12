@@ -8,10 +8,10 @@ import { ComputedRef, Ref, ShallowRef } from 'vue';
 import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { CanvasEventMap } from './events.ts';
-import { ThemeGetter } from './themes/getThemeResolver.ts';
+import { TokenResolver } from './themes/createTokenResolver.ts';
 import { AllThemePresets, ThemePreset } from './themes/index.ts';
-import { FullThemeMap } from './themes/types.ts';
-import { UseThemeControls } from './themes/useTheme.ts';
+import { ThemeOverrides } from './themes/types.ts';
+import { ThemeLayer } from './themes/createLayer.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
 export type GraphUnderCursor = {
@@ -60,11 +60,18 @@ export type CanvasGraph = {
    */
   forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
 
-  baseTheme: ComputedRef<AllThemePresets[ThemePreset]>;
-  activeThemePreset: Ref<ThemePreset>;
-  getTheme: ThemeGetter;
-  themeMap: FullThemeMap;
-  useTheme: (useThemeId?: string) => UseThemeControls;
+  theme: {
+    /** the active preset providing StyleValue fallbacks when no override layer covers a token. */
+    base: ComputedRef<AllThemePresets[ThemePreset]>;
+    /** the currently active preset name. */
+    activePreset: Ref<ThemePreset>;
+    /** @internal resolves a ThemeToken through the override stack to its final StyleValue. */
+    _resolveToken: TokenResolver;
+    /** @internal the full override stack — all ThemeOverride arrays keyed by token. */
+    _overrides: ThemeOverrides;
+    /** creates a scoped override layer for pushing ThemeValues into the stack. */
+    createLayer: (layerId?: string) => ThemeLayer;
+  };
 };
 
 /**

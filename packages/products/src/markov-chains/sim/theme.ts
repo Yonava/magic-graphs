@@ -10,7 +10,7 @@ export const useSimulationTheme = (
   graph: Graph,
   simControls: SimulationControls<ReturnType<MarkovChainTrace>>,
 ) => {
-  const { setTheme, removeAllThemes } = graph.canvas.useTheme(USETHEME_ID);
+  const { set, removeAll } = graph.canvas.theme.createLayer(USETHEME_ID);
   const { traceAtStep } = simControls;
   const { nodeIdToIndex } = graph;
 
@@ -24,18 +24,18 @@ export const useSimulationTheme = (
   };
 
   const nodeTextSize = (node: GNode) => {
-    const defaultSize = graph.canvas.baseTheme.value.node.default.textSize;
+    const defaultSize = graph.canvas.theme.base.value.node.default.textSize;
     if (graph.focus.isFocused(node.id)) return;
     return defaultSize - 5;
   };
 
   const theme = () => {
-    setTheme('node.default.text', nodeText);
-    setTheme('node.default.textSize', nodeTextSize);
+    set('node.default.text', nodeText);
+    set('node.default.textSize', nodeTextSize);
   };
 
   const untheme = () => {
-    removeAllThemes();
+    removeAll();
   };
 
   return {

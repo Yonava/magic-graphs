@@ -14,7 +14,7 @@ const TARGET_COLOR = colors.RED_600;
  * along with helper functions to target nodes and edges
  */
 export const useNodeEdgeTheme = (graph: Graph) => {
-  const { setTheme, removeAllThemes } = graph.canvas.useTheme(USETHEME_ID);
+  const { set, removeAll } = graph.canvas.theme.createLayer(USETHEME_ID);
 
   /**
    * ids of nodes and edges to color with `TARGET_COLOR`
@@ -26,12 +26,12 @@ export const useNodeEdgeTheme = (graph: Graph) => {
   };
 
   const theme = () => {
-    setTheme('node.default.borderColor', colorItem);
-    setTheme('edge.default.color', colorItem);
+    set('node.default.borderColor', colorItem);
+    set('edge.default.color', colorItem);
   };
 
   const untheme = () => {
-    removeAllThemes();
+    removeAll();
   };
 
   const themer = {

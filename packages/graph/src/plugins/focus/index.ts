@@ -12,7 +12,7 @@ import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { GEdge, GNode } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { useTheme } from '../canvas/themes/useTheme.ts';
+import { createLayer } from '../canvas/themes/createLayer.ts';
 import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
 import { DRAG_EVENT_ID } from '../drag/index.ts';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
@@ -43,7 +43,7 @@ export const useFocusPlugin = <
     graph.events as EventHub<CoreEventMap & CanvasEventMap>,
   );
 
-  const { setTheme } = graph.canvas.useTheme(FOCUS_THEME_ID);
+  const { set } = graph.canvas.theme.createLayer(FOCUS_THEME_ID);
   const focusedElementIds = ref(new Set<string>());
 
   const setFocus = (ids: string[]) => {
@@ -202,27 +202,27 @@ export const useFocusPlugin = <
   const edgeEntries = Object.entries(edgeBaseStylePathMapping);
 
   for (const [nodeBasePath, nodeFocusPath] of nodeEntries) {
-    setTheme(nodeBasePath as NodeBaseThemePath, (node: GNode) => {
+    set(nodeBasePath as NodeBaseThemePath, (node: GNode) => {
       if (!isFocused(node.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.canvas.getTheme(nodeFocusPath, node, {
+      return graph.canvas.theme._resolveToken(nodeFocusPath, node, {
         ...graph,
         shapes: graph.canvas.shapes,
-        getTheme: graph.canvas.getTheme,
+        resolveToken: graph.canvas.theme._resolveToken,
       }) as any;
     });
   }
 
   for (const [edgeBasePath, edgeFocusPath] of edgeEntries) {
-    setTheme(edgeBasePath as EdgeBaseThemePath, (edge: GEdge) => {
+    set(edgeBasePath as EdgeBaseThemePath, (edge: GEdge) => {
       if (!isFocused(edge.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.canvas.getTheme(edgeFocusPath, edge, {
+      return graph.canvas.theme._resolveToken(edgeFocusPath, edge, {
         ...graph,
         shapes: graph.canvas.shapes,
-        getTheme: graph.canvas.getTheme,
+        resolveToken: graph.canvas.theme._resolveToken,
       }) as any;
     });
   }

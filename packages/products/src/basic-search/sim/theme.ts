@@ -18,7 +18,7 @@ export const useSimulationTheme = (
   sim: SimulationControls<BasicSearchTrace>,
 ) => {
   const { traceAtStep } = sim;
-  const { setTheme, removeAllThemes } = graph.canvas.useTheme(USETHEME_ID);
+  const { set, removeAll } = graph.canvas.theme.createLayer(USETHEME_ID);
 
   const colorBorders = (node: GNode) => {
     if (graph.focus.isFocused(node.id)) return;
@@ -39,13 +39,13 @@ export const useSimulationTheme = (
   };
 
   const activate = () => {
-    setTheme('node.default.borderColor', colorBorders);
-    setTheme('nodeAnchor.default.color', colorBorders);
-    setTheme('edge.default.color', colorEdge);
+    set('node.default.borderColor', colorBorders);
+    set('nodeAnchor.default.color', colorBorders);
+    set('edge.default.color', colorEdge);
   };
 
   const deactivate = () => {
-    removeAllThemes();
+    removeAll();
   };
 
   return {

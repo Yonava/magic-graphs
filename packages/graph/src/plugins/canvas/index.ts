@@ -1,5 +1,6 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
+import { cross } from '@magic/shapes/shapes/cross/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 import { DeepReadonly } from 'ts-essentials';
@@ -20,14 +21,14 @@ import {
   CANVAS_ELEMENT_CURSOR_FIELD_KEY,
   setupCanvasCursor,
 } from './setupCanvasCursor.ts';
-import { getThemeResolver } from './themes/getThemeResolver.ts';
+import { createTokenResolver } from './themes/createTokenResolver.ts';
 import {
   ALL_THEME_PRESETS,
   THEME_PRESETS,
   ThemePreset,
 } from './themes/index.ts';
-import { getInitialThemeMap } from './themes/types.ts';
-import { useTheme } from './themes/useTheme.ts';
+import { createThemeOverrides } from './themes/types.ts';
+import { createLayer } from './themes/createLayer.ts';
 import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
@@ -84,14 +85,14 @@ export const useCanvasPlugin = <
   });
 
   const activeThemePreset = ref<ThemePreset>('light');
-  const themeMap = getInitialThemeMap();
-  const getTheme = getThemeResolver(activeThemePreset, themeMap);
+  const themeOverrides = createThemeOverrides();
+  const resolveToken = createTokenResolver(activeThemePreset, themeOverrides);
 
   setupCanvasCursor({
     canvas: magicCanvas.canvas,
     subscribe: events.subscribe,
     getNode: graph.getNode,
-    getTheme,
+    resolveToken,
     graphUnderCursor,
   });
 
@@ -125,9 +126,9 @@ export const useCanvasPlugin = <
   const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
     const edgeCanvasElements = graph.edges.value
       .map((edge) => {
-        const shape = getTheme('edge.default.shape', edge, {
+        const shape = resolveToken('edge.default.shape', edge, {
           ...graph,
-          getTheme,
+          resolveToken,
           shapes,
         });
         if (!shape) return;
@@ -143,9 +144,9 @@ export const useCanvasPlugin = <
 
     const nodeCanvasElements = graph.nodes.value
       .map((node) => {
-        const shape = getTheme('node.default.shape', node, {
+        const shape = resolveToken('node.default.shape', node, {
           ...graph,
-          getTheme,
+          resolveToken,
           shapes,
         });
         if (!shape) return;
@@ -155,7 +156,7 @@ export const useCanvasPlugin = <
           id: node.id,
           graphType: 'node',
           data: {
-            [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: getTheme(
+            [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: resolveToken(
               'node.default.cursor',
               node,
             ),
@@ -212,8 +213,16 @@ export const useCanvasPlugin = <
   events.subscribe('onDraw', () => {
     const canvas = magicCanvas.canvas.value;
     if (!canvas) return;
-    canvas.style.backgroundColor = getTheme('canvas.color');
+    canvas.style.backgroundColor = resolveToken('canvas.color');
   });
+
+  magicCanvas.draw.backgroundPattern.value = (ctx, at, alpha) =>
+    cross({
+      at,
+      size: 12,
+      lineWidth: 1,
+      fillColor: resolveToken('canvas.patternColor') + alpha,
+    }).draw(ctx);
 
   return {
     ...graph,
@@ -230,11 +239,13 @@ export const useCanvasPlugin = <
       graphUnderCursor,
       forceUpdateGraphUnderCursor,
 
-      baseTheme: computed(() => ALL_THEME_PRESETS[activeThemePreset.value]),
-      activeThemePreset,
-      getTheme,
-      themeMap,
-      useTheme: (useThemeId) => useTheme(themeMap, useThemeId),
+      theme: {
+        base: computed(() => ALL_THEME_PRESETS[activeThemePreset.value]),
+        activePreset: activeThemePreset,
+        _resolveToken: resolveToken,
+        _overrides: themeOverrides,
+        createLayer: (layerId) => createLayer(themeOverrides, layerId),
+      },
     },
   };
 };
