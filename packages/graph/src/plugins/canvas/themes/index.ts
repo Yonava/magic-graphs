@@ -1,13 +1,13 @@
 import type { GEdge, GNode } from '../../../types.ts';
 import type { ThemeGetter } from '../themes/getThemeResolver.ts';
-import { DARK_THEME } from '../themes/loadouts/dark.ts';
-import { LIGHT_THEME } from '../themes/loadouts/light.ts';
-import { PINK_THEME } from '../themes/loadouts/pink.ts';
 import type {
   CoreGraphEdgeStyles,
   CoreGraphNodeStyles,
   GraphTheme as GraphThemeImport,
 } from '../themes/types.ts';
+import { DARK_THEME } from './presets/dark.ts';
+import { LIGHT_THEME } from './presets/light.ts';
+import { PINK_THEME } from './presets/pink.ts';
 
 /*
  * NOTE ON THEME TOKEN DESIGN:
@@ -23,17 +23,17 @@ import type {
 export type GraphTheme = GraphThemeImport;
 export type GraphThemeKey = keyof GraphTheme;
 
-export const THEME_LOADOUTS = {
+export const ALL_THEME_PRESETS = {
   light: LIGHT_THEME,
   dark: DARK_THEME,
   pink: PINK_THEME,
 } as const satisfies Record<string, GraphTheme>;
 
-export type ThemeLoadouts = typeof THEME_LOADOUTS;
+export type AllThemePresets = typeof ALL_THEME_PRESETS;
 
-export type GraphThemeName = keyof typeof THEME_LOADOUTS;
+export type ThemePreset = keyof typeof ALL_THEME_PRESETS;
 
-export const THEME_NAMES = Object.keys(THEME_LOADOUTS) as GraphThemeName[];
+export const THEME_PRESETS = Object.keys(ALL_THEME_PRESETS) as ThemePreset[];
 
 /**
  * gets the theme attributes for a GNode at the point in time the function is called

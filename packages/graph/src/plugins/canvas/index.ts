@@ -21,7 +21,11 @@ import {
   setupCanvasCursor,
 } from './setupCanvasCursor.ts';
 import { getThemeResolver } from './themes/getThemeResolver.ts';
-import { GraphThemeName, THEME_LOADOUTS } from './themes/index.ts';
+import {
+  ALL_THEME_PRESETS,
+  THEME_PRESETS,
+  ThemePreset,
+} from './themes/index.ts';
 import { getInitialThemeMap } from './themes/types.ts';
 import { useTheme } from './themes/useTheme.ts';
 import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
@@ -79,9 +83,9 @@ export const useCanvasPlugin = <
     forceUpdateGraphUnderCursor();
   });
 
-  const themeName = ref<GraphThemeName>('light');
+  const activeThemePreset = ref<ThemePreset>('light');
   const themeMap = getInitialThemeMap();
-  const getTheme = getThemeResolver(themeName, themeMap);
+  const getTheme = getThemeResolver(activeThemePreset, themeMap);
 
   setupCanvasCursor({
     canvas: magicCanvas.canvas,
@@ -226,8 +230,8 @@ export const useCanvasPlugin = <
       graphUnderCursor,
       forceUpdateGraphUnderCursor,
 
-      baseTheme: computed(() => THEME_LOADOUTS[themeName.value]),
-      themeName,
+      baseTheme: computed(() => ALL_THEME_PRESETS[activeThemePreset.value]),
+      activeThemePreset,
       getTheme,
       themeMap,
       useTheme: (useThemeId) => useTheme(themeMap, useThemeId),

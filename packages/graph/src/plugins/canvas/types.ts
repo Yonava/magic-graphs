@@ -9,7 +9,7 @@ import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { CanvasEventMap } from './events.ts';
 import { ThemeGetter } from './themes/getThemeResolver.ts';
-import { GraphThemeName, ThemeLoadouts } from './themes/index.ts';
+import { AllThemePresets, ThemePreset } from './themes/index.ts';
 import { FullThemeMap } from './themes/types.ts';
 import { UseThemeControls } from './themes/useTheme.ts';
 import { AggregatorProps } from './useAggregator.ts';
@@ -60,8 +60,8 @@ export type CanvasGraph = {
    */
   forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
 
-  baseTheme: ComputedRef<ThemeLoadouts[GraphThemeName]>;
-  themeName: Ref<GraphThemeName>;
+  baseTheme: ComputedRef<AllThemePresets[ThemePreset]>;
+  activeThemePreset: Ref<ThemePreset>;
   getTheme: ThemeGetter;
   themeMap: FullThemeMap;
   useTheme: (useThemeId?: string) => UseThemeControls;
