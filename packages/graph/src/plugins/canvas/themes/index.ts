@@ -1,13 +1,13 @@
 import type { GEdge, GNode } from '../../../types.ts';
 import type { ThemeGetter } from '../themes/getThemeResolver.ts';
-import { DARK_THEME } from '../themes/loadouts/dark.ts';
-import { LIGHT_THEME } from '../themes/loadouts/light.ts';
-import { PINK_THEME } from '../themes/loadouts/pink.ts';
 import type {
   CoreGraphEdgeStyles,
   CoreGraphNodeStyles,
   GraphTheme as GraphThemeImport,
 } from '../themes/types.ts';
+import { DARK_THEME } from './presets/dark.ts';
+import { LIGHT_THEME } from './presets/light.ts';
+import { PINK_THEME } from './presets/pink.ts';
 
 /*
  * NOTE ON THEME TOKEN DESIGN:
