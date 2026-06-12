@@ -4,8 +4,8 @@ import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
 import type { Ref } from 'vue';
 
-import type { GraphTheme, GraphThemeName } from '../themes/index.ts';
-import { THEME_LOADOUTS } from '../themes/index.ts';
+import type { GraphTheme, ThemePresetName } from '../themes/index.ts';
+import { THEME_PRESETS } from '../themes/index.ts';
 import {
   type FullThemeMap,
   type ThemeMapEntry,
@@ -34,7 +34,7 @@ export const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
     .reduce((acc: Record<string, any>, curr: string) => acc?.[curr], obj);
 
 export function getThemeResolver(
-  themeName: Ref<GraphThemeName>,
+  themeName: Ref<ThemePresetName>,
   themeMap: FullThemeMap,
 ) {
   const getTheme = <
@@ -60,7 +60,7 @@ export function getThemeResolver(
       return themeValue !== undefined;
     });
 
-    const fallbackThemeMap = THEME_LOADOUTS[themeName.value];
+    const fallbackThemeMap = THEME_PRESETS[themeName.value];
     const defaultValue = getDataFromNestedPath(fallbackThemeMap, themeMapPath);
 
     const getterOrValue = themeMapEntry?.value ?? defaultValue;

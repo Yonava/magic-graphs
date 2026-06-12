@@ -16,12 +16,15 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
+import {
+  CANVAS_ELEMENT_CURSOR_FIELD_KEY,
+  setupCanvasCursor,
+} from './setupCanvasCursor.ts';
 import { getThemeResolver } from './themes/getThemeResolver.ts';
-import { GraphThemeName, THEME_LOADOUTS } from './themes/index.ts';
+import { THEME_PRESETS, ThemePresetName } from './themes/index.ts';
 import { getInitialThemeMap } from './themes/types.ts';
 import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
-import { CANVAS_ELEMENT_CURSOR_FIELD_KEY, setupCanvasCursor } from './setupCanvasCursor.ts';
 
 export const CANVAS_EVENT_ID = 'canvas';
 
@@ -75,7 +78,7 @@ export const useCanvasPlugin = <
     forceUpdateGraphUnderCursor();
   });
 
-  const themeName = ref<GraphThemeName>('light');
+  const themeName = ref<ThemePresetName>('light');
   const themeMap = getInitialThemeMap();
   const getTheme = getThemeResolver(themeName, themeMap);
 
@@ -147,8 +150,11 @@ export const useCanvasPlugin = <
           id: node.id,
           graphType: 'node',
           data: {
-            [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: getTheme('node.default.cursor', node)
-           }
+            [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: getTheme(
+              'node.default.cursor',
+              node,
+            ),
+          },
         } as const;
       })
       .filter(Boolean)
@@ -219,7 +225,7 @@ export const useCanvasPlugin = <
       graphUnderCursor,
       forceUpdateGraphUnderCursor,
 
-      baseTheme: computed(() => THEME_LOADOUTS[themeName.value]),
+      baseTheme: computed(() => THEME_PRESETS[themeName.value]),
       themeName,
       getTheme,
       themeMap,

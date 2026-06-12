@@ -5,9 +5,9 @@ import { useLocalStorage } from '@vueuse/core';
 import { watch } from 'vue';
 
 import { GraphWithPlugins } from '../../../useGraph.ts';
-import { type GraphThemeName, THEME_NAMES } from './index.ts';
+import { THEME_PRESET_NAMES, type ThemePresetName } from './index.ts';
 
-export type PreferredGraphTheme = GraphThemeName | 'auto';
+export type PreferredGraphTheme = ThemePresetName | 'auto';
 
 const DEFAULT_THEME: PreferredGraphTheme = 'auto';
 
@@ -39,7 +39,7 @@ export const usePreferredTheme = (graph: GraphWithPlugins) => {
     preferredTheme,
     () => {
       // preferred theme comes from localStorage and can be tampered with, so the value cannot be trusted!
-      if (![...THEME_NAMES, 'auto'].includes(preferredTheme.value)) {
+      if (![...THEME_PRESET_NAMES, 'auto'].includes(preferredTheme.value)) {
         console.warn(
           'unrecognized preferred-theme in localStorage: falling back to',
           DEFAULT_THEME,

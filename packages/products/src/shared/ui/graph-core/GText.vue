@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { GraphThemeName } from '@magic/graph/plugins/canvas/themes/index';
+  import { ThemePresetName } from '@magic/graph/plugins/canvas/themes/index';
   import type { Color } from '@magic/utils/colors';
   import colors from '@magic/utils/colors';
 
@@ -7,7 +7,7 @@
 
   import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
 
-  const THEME_TO_TEXT_COLOR: Record<GraphThemeName, Color> = {
+  const THEME_TO_TEXT_COLOR: Record<ThemePresetName, Color> = {
     light: colors.GRAY_900,
     dark: colors.GRAY_100,
     pink: colors.PINK_800,

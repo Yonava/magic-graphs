@@ -1,5 +1,5 @@
 import { ANCHOR_EVENT_ID } from '@magic/graph/plugins/anchors/index';
-import { GraphThemeName } from '@magic/graph/plugins/canvas/themes/index';
+import { ThemePresetName } from '@magic/graph/plugins/canvas/themes/index';
 import { DRAG_EVENT_ID } from '@magic/graph/plugins/drag/index';
 import { FOCUS_EVENT_ID } from '@magic/graph/plugins/focus/index';
 import { MARQUEE_EVENT_ID } from '@magic/graph/plugins/marquee/index';
@@ -14,7 +14,7 @@ export const COLORS = [
 
 export const BRUSH_WEIGHTS = [3, 6, 9, 12];
 
-export const THEME_TO_ERASER_OUTLINE: Record<GraphThemeName, Color> = {
+export const THEME_TO_ERASER_OUTLINE: Record<ThemePresetName, Color> = {
   light: colors.GRAY_900,
   dark: colors.GRAY_100,
   pink: colors.PINK_800,
