@@ -21,14 +21,10 @@ import {
   CANVAS_ELEMENT_CURSOR_FIELD_KEY,
   setupCanvasCursor,
 } from './setupCanvasCursor.ts';
-import { createTokenResolver } from './themes/createTokenResolver.ts';
-import {
-  ALL_THEME_PRESETS,
-  THEME_PRESETS,
-  ThemePreset,
-} from './themes/index.ts';
-import { createThemeOverrides } from './themes/types.ts';
 import { createLayer } from './themes/createLayer.ts';
+import { createTokenResolver } from './themes/createTokenResolver.ts';
+import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
+import { createThemeOverrides } from './themes/types.ts';
 import { Aggregator, GraphUnderCursor, GraphWithCanvas } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
@@ -240,7 +236,9 @@ export const useCanvasPlugin = <
       forceUpdateGraphUnderCursor,
 
       theme: {
-        base: computed(() => ALL_THEME_PRESETS[activeThemePreset.value]),
+        resolvedPreset: computed(
+          () => ALL_THEME_PRESETS[activeThemePreset.value],
+        ),
         activePreset: activeThemePreset,
         _resolveToken: resolveToken,
         _overrides: themeOverrides,

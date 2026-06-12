@@ -24,7 +24,8 @@ export const useSimulationTheme = (
   };
 
   const nodeTextSize = (node: GNode) => {
-    const defaultSize = graph.canvas.theme.base.value.node.default.textSize;
+    const defaultSize =
+      graph.canvas.theme.resolvedPreset.value.node.default.textSize;
     if (graph.focus.isFocused(node.id)) return;
     return defaultSize - 5;
   };

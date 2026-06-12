@@ -8,10 +8,10 @@ import { ComputedRef, Ref, ShallowRef } from 'vue';
 import { CoreEventMap } from '../../core/events.ts';
 import { CoreGraph } from '../../core/types.ts';
 import { CanvasEventMap } from './events.ts';
+import { ThemeLayer } from './themes/createLayer.ts';
 import { TokenResolver } from './themes/createTokenResolver.ts';
 import { AllThemePresets, ThemePreset } from './themes/index.ts';
 import { ThemeOverrides } from './themes/types.ts';
-import { ThemeLayer } from './themes/createLayer.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
 export type GraphUnderCursor = {
@@ -62,7 +62,7 @@ export type CanvasGraph = {
 
   theme: {
     /** the active preset providing StyleValue fallbacks when no override layer covers a token. */
-    base: ComputedRef<AllThemePresets[ThemePreset]>;
+    resolvedPreset: ComputedRef<AllThemePresets[ThemePreset]>;
     /** the currently active preset name. */
     activePreset: Ref<ThemePreset>;
     /** @internal resolves a ThemeToken through the override stack to its final StyleValue. */
