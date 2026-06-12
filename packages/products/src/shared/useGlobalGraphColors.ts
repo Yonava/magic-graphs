@@ -1,4 +1,4 @@
-import { ThemePresetName } from '@magic/graph/plugins/canvas/themes/index';
+import { ThemePreset } from '@magic/graph/plugins/canvas/themes/index';
 import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';
@@ -14,7 +14,7 @@ type GraphColors = {
   brand: string;
 };
 
-export const ThemeToGraphColors: Record<ThemePresetName, GraphColors> = {
+export const ThemeToGraphColors: Record<ThemePreset, GraphColors> = {
   light: {
     primary: colors.GRAY_300,
     secondary: colors.GRAY_200,

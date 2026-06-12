@@ -23,19 +23,17 @@ import { PINK_THEME } from './presets/pink.ts';
 export type GraphTheme = GraphThemeImport;
 export type GraphThemeKey = keyof GraphTheme;
 
-export const THEME_PRESETS = {
+export const THEME_PRESETS_CONFIG = {
   light: LIGHT_THEME,
   dark: DARK_THEME,
   pink: PINK_THEME,
 } as const satisfies Record<string, GraphTheme>;
 
-export type ThemePresets = typeof THEME_PRESETS;
+export type ThemePresets = typeof THEME_PRESETS_CONFIG;
 
-export type ThemePresetName = keyof typeof THEME_PRESETS;
+export type ThemePreset = keyof typeof THEME_PRESETS_CONFIG;
 
-export const THEME_PRESET_NAMES = Object.keys(
-  THEME_PRESETS,
-) as ThemePresetName[];
+export const THEME_PRESETS = Object.keys(THEME_PRESETS_CONFIG) as ThemePreset[];
 
 /**
  * gets the theme attributes for a GNode at the point in time the function is called

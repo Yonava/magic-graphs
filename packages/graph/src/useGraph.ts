@@ -7,7 +7,7 @@ import { useNodeAnchorPlugin } from './plugins/anchors/index.ts';
 import { NodeAnchorPlugin } from './plugins/anchors/types.ts';
 import { CanvasEventMap } from './plugins/canvas/events.ts';
 import { useCanvasPlugin } from './plugins/canvas/index.ts';
-import { usePreferredTheme } from './plugins/canvas/themes/usePreferredTheme.ts';
+import { usePreferredThemePreset } from './plugins/canvas/themes/usePreferredTheme.ts';
 import { CanvasPlugin } from './plugins/canvas/types.ts';
 import { useCharacteristics } from './plugins/characteristics/index.ts';
 import { NodeDragEventMap } from './plugins/drag/events.ts';
@@ -104,7 +104,7 @@ export const useGraph = (
 ) => {
   const graph = useGraphWithPlugins(canvas, settings);
 
-  const preferredTheme = usePreferredTheme(graph);
+  const preferredTheme = usePreferredThemePreset(graph);
 
   const shortcut = useShortcuts(graph);
 
