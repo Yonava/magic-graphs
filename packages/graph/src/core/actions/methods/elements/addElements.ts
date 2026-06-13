@@ -15,12 +15,20 @@ export const createAddElementsHandler = ({
     const edgesWithDefaults = edges.map(resolveEdgeDefaults);
     const nodesWithDefaults = nodes.map(resolveNodeDefaults);
 
+    // must be before commitTransaction because
+    // onTransactionComplete is used to refresh the graphUnderCursor
+    // state, and to do that the schemas need to be resolved which requires
+    // a lookup to the node positioning system.
+    // I don't like putting this call before knowing if the transaction
+    // is successful because if the transaction fails, node
+    // positioning system will hold a reference to a node id that
+    // doesn't exist in the graph
+    graphState.nps._internal.add(nodesWithDefaults);
+
     const { addedEdges, addedNodes } = commitTransaction({
       addNodes: nodesWithDefaults,
       addEdges: edgesWithDefaults,
     });
-
-    graphState.nps._internal.add(nodesWithDefaults);
 
     return { addedEdges, addedNodes };
   };
