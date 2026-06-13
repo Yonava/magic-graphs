@@ -77,7 +77,7 @@ export const useCanvasPlugin = <
       return;
     }
 
-    forceUpdateGraphUnderCursor();
+    // forceUpdateGraphUnderCursor();
   });
 
   const activeThemePreset = ref<ThemePreset>('light');

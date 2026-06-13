@@ -19,7 +19,8 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
     if (addedNodes.length > 0) return { args: [addedNodes] };
   },
   onNodesRemoved: ({ removedNodeIds, removedEdgeIds }) => {
-    if (removedNodeIds.length > 0) return { args: [removedNodeIds, removedEdgeIds] };
+    if (removedNodeIds.length > 0)
+      return { args: [removedNodeIds, removedEdgeIds] };
   },
   onNodeUpdated: ({ updatedNodes }) => {
     const update = extractSingle(updatedNodes);

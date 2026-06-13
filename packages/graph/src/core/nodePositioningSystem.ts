@@ -11,6 +11,12 @@ export type Position = {
   z: number;
 };
 
+const DEFAULT_POSITION = {
+  x: 0,
+  y: 0,
+  z: 1,
+} as const satisfies Position;
+
 export type NodePositioningSystemControls = {
   get: (nodeId: string) => Position;
   set: (
@@ -53,8 +59,16 @@ export const createNodePositioningSystem = (
     set: setNodePosition,
     _internal: {
       nodeIdToNodePosition,
-      add: () => {},
-      remove: () => {},
+      add: (nodePositions) => {
+        for (const { id, ...position } of nodePositions) {
+          nodeIdToNodePosition.set(id, { ...DEFAULT_POSITION, ...position });
+        }
+      },
+      remove: (nodeIds) => {
+        for (const id of nodeIds) {
+          nodeIdToNodePosition.delete(id);
+        }
+      },
     },
   };
 };
