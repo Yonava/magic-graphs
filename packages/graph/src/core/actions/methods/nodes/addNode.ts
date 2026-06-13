@@ -1,15 +1,14 @@
+import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 
 import { useNodeLetterLabelGetter } from '../../../../labels.ts';
 import { GNode } from '../../../../types.ts';
+import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
-import { GraphActionsOptions } from '../../useGraphActions.ts';
 
 const getNodeDefaults = () =>
   ({
     id: generateId(),
-    x: 0,
-    y: 0,
   }) as const satisfies Partial<GNode>;
 
 export const useResolveNodeDefaults = (
@@ -28,25 +27,22 @@ export const createAddNodeHandler = ({
   commitTransaction,
 }: GraphActionsOptions): GraphActions['addNode'] => {
   const resolveNodeDefaults = useResolveNodeDefaults(graphState);
+
   const addNode: GraphActions['addNode'] = (node) => {
     const nodeWithDefaults = resolveNodeDefaults(node);
     const { addedNodes } = commitTransaction({ addNodes: [nodeWithDefaults] });
 
-    const telemetryNode = addedNodes[0];
-    if (!telemetryNode) {
-      throw new Error(
-        `[Graph Actions] Failed to append node. Transaction rejected.`,
-      );
-    }
-
-    const liveNode = graphState.nodes.value.find(
-      (n) => n.id === telemetryNode.id,
+    const telemetryNode = nullThrows(
+      addedNodes[0],
+      '[Graph Actions] Failed to append node. Transaction rejected.',
     );
-    if (!liveNode) {
-      throw new Error(
-        `[Graph Actions] Node creation succeeded but entity was not found in live state.`,
-      );
-    }
+
+    const liveNode = nullThrows(
+      graphState.nodes.value.find((n) => n.id === telemetryNode.id),
+      '[Graph Actions] Node creation succeeded but entity was not found in live state.',
+    );
+
+    graphState.nps._internal.add([nodeWithDefaults]);
 
     return liveNode;
   };

@@ -1,5 +1,5 @@
+import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
-import { GraphActionsOptions } from '../../useGraphActions.ts';
 
 export const createUpdateEdgeHandler = ({
   graphState,

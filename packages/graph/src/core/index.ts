@@ -7,7 +7,7 @@ import { createEventHub } from '../events/createEventHub.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
-import { useGraphActions } from './actions/useGraphActions.ts';
+import { createGraphActions } from './actions/createGraphActions.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { useGraphHelpers } from './helpers/index.ts';
 import { createNodePositioningSystem } from './nodePositioningSystem.ts';
@@ -49,11 +49,12 @@ export const useCoreGraph = (
     onTransactionSucceeded,
   });
 
-  const actions = useGraphActions({
+  const actions = createGraphActions({
     commitTransaction,
     graphState: {
       nodes,
       edges,
+      nps,
     },
   });
 

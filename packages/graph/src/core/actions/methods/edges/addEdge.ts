@@ -2,8 +2,8 @@ import { generateId } from '@magic/utils/id';
 import Fraction from 'fraction.js';
 
 import { GEdge } from '../../../../types.ts';
+import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
-import { GraphActionsOptions } from '../../useGraphActions.ts';
 
 const getEdgeDefaults = () =>
   ({

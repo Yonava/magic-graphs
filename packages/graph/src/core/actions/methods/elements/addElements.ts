@@ -1,5 +1,5 @@
+import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
-import { GraphActionsOptions } from '../../useGraphActions.ts';
 import { resolveEdgeDefaults } from '../edges/addEdge.ts';
 import { useResolveNodeDefaults } from '../nodes/addNode.ts';
 
@@ -19,6 +19,8 @@ export const createAddElementsHandler = ({
       addNodes: nodesWithDefaults,
       addEdges: edgesWithDefaults,
     });
+
+    graphState.nps._internal.add(nodesWithDefaults);
 
     return { addedEdges, addedNodes };
   };
