@@ -3,6 +3,7 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
 import { CoreEventMap } from '../../core/events.ts';
+import { NodePositionStreamControls } from '../../core/positions/types.ts';
 import type { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
@@ -34,6 +35,7 @@ export const useNodeDragPlugin = <
   );
 
   const dragState = createDragState<NodeIdDragState>();
+  let nodePositionStream: NodePositionStreamControls | undefined;
 
   const beginDrag = (
     { elements: items, coords, event }: CanvasGraphMouseEvent,
@@ -69,13 +71,25 @@ export const useNodeDragPlugin = <
       ),
     );
 
+    if (nodePositionStream) {
+      throw new Error(
+        'beginDrag called while a node position stream is already active',
+      );
+    }
     dragState.startDrag(coords, { nodeIds: nodeIdsToDrag });
+    nodePositionStream = graph.positions.createStream();
     events.emit('onNodeDragStart', nodes);
   };
 
   const drop = () => {
     const data = dragState.stopDrag();
     if (!data) return;
+    const stream = nullThrows(
+      nodePositionStream,
+      'node position stream controls undefined',
+    );
+    stream.stop();
+    nodePositionStream = undefined;
     events.emit(
       'onNodeDrop',
       data.nodeIds.map((nodeId) =>
@@ -104,9 +118,17 @@ export const useNodeDragPlugin = <
       nullThrows(graph.getNode(nodeId), 'dragged node not found'),
     );
 
-    for (const node of nodes) {
-      graph.positions.set(node.id, (pos) => ({ x: pos.x + dx, y: pos.y + dy }));
-    }
+    const stream = nullThrows(
+      nodePositionStream,
+      'node position stream controls undefined',
+    );
+
+    stream.setMany(
+      nodes.map((n) => ({
+        nodeId: n.id,
+        update: (pos) => ({ x: pos.x + dx, y: pos.y + dy }),
+      })),
+    );
   };
 
   const cursorTheme = useDragCursor(graph.canvas.theme.createLayer, dragState);

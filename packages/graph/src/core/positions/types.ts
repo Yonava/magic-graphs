@@ -13,15 +13,17 @@ export type NodePositionUpdate = {
   update: MaybeGetter<Partial<Position>, [Position]>;
 };
 
+export type NodePositionStreamControls = {
+  set: (position: NodePositionUpdate) => void;
+  setMany: (positions: NodePositionUpdate[]) => void;
+  stop: () => void;
+};
+
 export type NodePositionStoreControls = {
   get: (nodeId: string) => Position;
   set: (position: NodePositionUpdate) => void;
   setMany: (positions: NodePositionUpdate[]) => void;
-  createStream: () => {
-    set: (position: NodePositionUpdate) => void;
-    setMany: (positions: NodePositionUpdate[]) => void;
-    stop: () => void;
-  };
+  createStream: () => NodePositionStreamControls;
   /** @internal */
   _internal: {
     add: (positions: (Pick<GNode, 'id'> & Partial<Position>)[]) => void;

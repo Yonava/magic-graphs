@@ -6,6 +6,7 @@ import { CoreEventMap } from '../events.ts';
 import { DEFAULT_POSITION } from './constants.ts';
 import {
   NodePositionStoreControls,
+  NodePositionStreamControls,
   NodePositionUpdate,
   Position,
 } from './types.ts';
@@ -31,16 +32,14 @@ export const createNodePositionStore = (
     }
   };
 
-  const devStreamRegistry = (import.meta as { env?: { DEV?: boolean } }).env
-    ?.DEV
-    ? new FinalizationRegistry<void>(() => {
-        console.warn(
-          'A node position stream was garbage collected without stop() being called. Make sure to call stop() when the stream is done.',
-        );
-      })
-    : null;
-
   let activeStream = false;
+
+  const devStreamRegistry = new FinalizationRegistry<void>(() => {
+    console.warn(
+      'A node position stream was garbage collected without stop() being called. Make sure to call stop() when the stream is done.',
+    );
+    activeStream = false;
+  });
 
   const createStream: NodePositionStoreControls['createStream'] = () => {
     if (activeStream) {
@@ -50,16 +49,18 @@ export const createNodePositionStore = (
     }
     activeStream = true;
     events.emit('onNodeMoveStreamStart');
-    const stream = {
-      set: (pos: NodePositionUpdate) => setNodePositions([pos]),
+    const unregisterToken = {};
+    const stream: NodePositionStreamControls = {
+      set: (pos) => setNodePositions([pos]),
       setMany: setNodePositions,
       stop: () => {
         activeStream = false;
+        devStreamRegistry?.unregister(unregisterToken);
         events.emit('onNodesMoved');
         events.emit('onNodeMoveStreamEnd');
       },
     };
-    devStreamRegistry?.register(stream, undefined);
+    devStreamRegistry?.register(stream, undefined, unregisterToken);
     return stream;
   };
 
