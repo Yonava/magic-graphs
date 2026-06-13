@@ -91,7 +91,7 @@ const useGraphWithPlugins = (
 export type GraphWithPlugins = ReturnType<typeof useGraphWithPlugins>;
 
 /**
- * a package brimming with tools for creating and managing graphs bringing
+ * a hook brimming with tools for creating and managing graphs bringing
  * light and joy to the world
  *
  * @param canvas the HTML canvas element to render the graph onto
@@ -118,13 +118,9 @@ export const useGraph = (
   return {
     ...graph,
 
-    // TODO this belongs in products/shared
     shortcut,
-
-    // theme and style
     ...preferredTheme,
 
-    // reactive data structures and algorithms
     adjacencyList,
     transitionMatrix,
     characteristics,
