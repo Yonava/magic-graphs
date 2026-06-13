@@ -1,6 +1,7 @@
-import type { GNode } from '../../types.ts';
-import { GraphWithPlugins } from '../../useGraph.ts';
-import { CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
+import type { GNode } from '@magic/graph/types';
+
+import { GraphWithPlugins } from '../useGraph.ts';
 
 /**
  * interactive allows users to create, edit and delete nodes and edges

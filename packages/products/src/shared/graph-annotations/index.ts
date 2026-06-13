@@ -3,7 +3,6 @@ import {
   Aggregator,
   GraphUnderCursor,
 } from '@magic/graph/plugins/canvas/types';
-import { GraphWithPlugins } from '@magic/graph/useGraph';
 import { circle } from '@magic/shapes/shapes/circle/index';
 import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
 import type { WithId } from '@magic/shapes/types/index';
@@ -14,9 +13,9 @@ import { generateId } from '@magic/utils/id';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
-import { Graph } from '../useGraphWithCanvas.ts';
+import { GraphWithPlugins } from '../useGraph.ts';
 import {
   ANNOTATION_EVENT_ID,
   BRUSH_WEIGHTS,

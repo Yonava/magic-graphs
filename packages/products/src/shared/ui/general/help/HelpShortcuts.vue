@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import type { Shortcut } from '@magic/graph/plugins/shortcut/types';
-
   import { nonNullGraph as graph } from '../../../../shared/globalGraph.ts';
   import { PRODUCT_SHORTCUTS } from '../../../../shared/shortcuts.ts';
+  import type { Shortcut } from '../../../shortcut/types.ts';
   import HelpSection from './HelpSection.vue';
   import HelpShortcutKey from './HelpShortcutKey.vue';
 

@@ -1,12 +1,15 @@
+import {
+  THEME_PRESETS,
+  type ThemePreset,
+} from '@magic/graph/plugins/canvas/themes/index';
+import { CanvasGraph } from '@magic/graph/plugins/canvas/types';
 import { localKeys } from '@magic/utils/localStorage';
 import { useDark } from '@vueuse/core';
 import { useLocalStorage } from '@vueuse/core';
 
 import { watch } from 'vue';
 
-import { GraphWithPlugins } from '../../../useGraph.ts';
-import { CanvasGraph } from '../types.ts';
-import { THEME_PRESETS, type ThemePreset } from './index.ts';
+import { GraphWithPlugins } from './useGraph.ts';
 
 export type PreferredThemePresent = ThemePreset | 'auto';
 

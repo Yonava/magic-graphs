@@ -1,6 +1,6 @@
 import { keys } from 'ctrl-keys';
 
-import { GraphWithPlugins } from '../../useGraph.ts';
+import { GraphWithPlugins } from '../useGraph.ts';
 import type { PlatformShortcuts } from './types.ts';
 
 export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
