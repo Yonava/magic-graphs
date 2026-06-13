@@ -375,7 +375,7 @@ export const useNodeAnchorPlugin = <
       clearAnchorStateIfParentRemoved,
       ANCHOR_EVENT_ID,
     );
-    // events.handle('onNodeUpdated', clearAnchorStateOnNodeMove, ANCHOR_EVENT_ID);
+    events.handle('onNodeMoveStreamStart', clearAnchorState, ANCHOR_EVENT_ID);
 
     // for when the user is mousing over the canvas. checks if a node is under the cursor
     // to set the anchors on. onGraphUnderCursorChange because onMouseMove doesn't capture
@@ -413,7 +413,7 @@ export const useNodeAnchorPlugin = <
 
   const deactivate = () => {
     events.unhandle('onNodesRemoved', clearAnchorStateIfParentRemoved);
-    // events.unhandle('onNodeUpdated', clearAnchorStateOnNodeMove);
+    events.unhandle('onNodeMoveStreamStart', clearAnchorState);
     events.unhandle('onGraphUnderCursorChange', checkForParentNodeUpdate);
     events.unhandle('onMouseMove', updateCurrentlyDraggingAnchorPosition);
     events.unhandle('onMouseMove', updateHoveredNodeAnchorId);
