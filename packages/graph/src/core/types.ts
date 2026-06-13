@@ -10,7 +10,7 @@ import {
 } from './actions/types.ts';
 import { CoreEventMap } from './events.ts';
 import { CoreGraphHelpers } from './helpers/types.ts';
-import { NodePositionStoreControls } from './positions/createNodePositionStore.ts';
+import { NodePositionStoreControls } from './positions/types.ts';
 
 export type CoreGraph<
   TransactionWrapperOptions = {},

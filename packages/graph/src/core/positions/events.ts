@@ -6,11 +6,11 @@ export type NodePositionStoreEventMap = {
   onNodeMoveStreamEnd: () => void;
 };
 
-type NodePositionEventRegistry =
+type NodePositionStoreEventRegistry =
   EventMapToEventRegistry<NodePositionStoreEventMap>;
 
-export const createNodePositionEventRegistry =
-  (): NodePositionEventRegistry => ({
+export const createNodePositionStoreEventRegistry =
+  (): NodePositionStoreEventRegistry => ({
     onNodesMoved: new Set(),
     onNodeMoveStreamStart: new Set(),
     onNodeMoveStreamEnd: new Set(),

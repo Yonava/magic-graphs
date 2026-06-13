@@ -9,9 +9,9 @@ import {
   ElementUpdatePayload,
 } from './actions/types.ts';
 import {
-  NodePositioningSystemEventMap,
-  createNodePositioningSystemEventRegistry,
-} from './positions/createNodePositionStore.ts';
+  NodePositionStoreEventMap,
+  createNodePositionStoreEventRegistry,
+} from './positions/events.ts';
 import {
   ForbiddenEdgeKeyUpdates,
   ForbiddenNodeKeyUpdates,
@@ -87,7 +87,7 @@ export type CoreEventMap = {
    * when the {@link Graph.settings | settings} of the graph have changed
    */
   onSettingsChange: (diff: DeepPartial<GraphSettings>) => void;
-} & NodePositioningSystemEventMap;
+} & NodePositionStoreEventMap;
 
 type CoreEventRegistry = EventMapToEventRegistry<CoreEventMap>;
 
@@ -108,5 +108,5 @@ export const createCoreEventRegistry = (): CoreEventRegistry => ({
   onElementsUpdated: new Set(),
 
   onSettingsChange: new Set(),
-  ...createNodePositioningSystemEventRegistry(),
+  ...createNodePositionStoreEventRegistry(),
 });

@@ -1,9 +1,9 @@
+import { NodePositionUpdate } from '@magic/graph/core/positions/types';
 import type { GNode } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
-import { getValue } from '@magic/utils/maybeGetter/index';
 
 import type { Graph } from '../../useGraphWithCanvas.ts';
-import { NodePosition, TreeGraphPositioner } from './types.ts';
+import { TreeGraphPositioner } from './types.ts';
 
 /**
  * an array which maps a tree index (root = 0, left child = 1, right child = 2, etc)
@@ -102,7 +102,7 @@ export const binaryTreePositioner: TreeGraphPositioner = ({
   rootNode,
   treeFormationOptions,
 }) => {
-  const newNodePositions: NodePosition[] = [];
+  const newNodePositions: NodePositionUpdate[] = [];
 
   const { xOffset, yOffset, rootNodeCoordinates } = treeFormationOptions;
 
@@ -127,7 +127,7 @@ export const binaryTreePositioner: TreeGraphPositioner = ({
     const newPos = treeIndexToPosition[i];
     newNodePositions.push({
       nodeId,
-      coords: newPos,
+      update: newPos,
     });
   }
 

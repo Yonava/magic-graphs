@@ -1,16 +1,13 @@
+import { NodePositionUpdate } from '@magic/graph/core/positions/types';
 import type { GEdge, GNode } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
+import { nullThrows } from '@magic/utils/assert';
 import { Fraction } from 'mathjs';
 
 import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { TreeNodeKeyArray } from './avl.ts';
 import type { TreeNode } from './treeNode.ts';
-
-type GNodeMoveInstruction = {
-  nodeId: GNode['id'];
-  coords: Coordinate;
-};
 
 const newEdge = (source: number, target: number): GEdge => ({
   source: source.toString(),
@@ -98,21 +95,18 @@ export const treeArrayToGraph = (
     graph.actions.removeEdge(edge.id);
   }
 
-  const movementObj = treeArray
-    .map((treeNodeKey, i): GNodeMoveInstruction | void => {
+  const positionUpdates = treeArray
+    .map((treeNodeKey, i): NodePositionUpdate | void => {
       if (treeNodeKey === undefined) return;
-      const node = graph.getNode(treeNodeKey.toString());
-      if (!node)
-        return console.error(
-          'node in tree not found in graph. this should never happen!',
-        );
-      return { nodeId: node.id, coords: positions[i] };
+      const node = nullThrows(
+        graph.getNode(treeNodeKey.toString()),
+        'node in tree not found in graph. this should never happen!',
+      );
+      return { nodeId: node.id, update: positions[i] };
     })
-    .filter(Boolean) as GNodeMoveInstruction[];
+    .filter((x) => !!x);
 
-  for (const pos of movementObj) {
-    graph.positions.set(pos.nodeId, pos.coords);
-  }
+  graph.positions.setMany(positionUpdates);
 
   for (const edge of newTreeEdges) {
     graph.actions.addEdge(

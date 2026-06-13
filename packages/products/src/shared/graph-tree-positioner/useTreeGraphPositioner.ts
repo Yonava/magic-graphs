@@ -76,10 +76,7 @@ export const useTreeGraphPositioner = (
   const shapeGraph = async (rootNode: GNode) => {
     const newPositions = graphPositioner(rootNode);
     if (!newPositions) return;
-
-    for (const pos of newPositions) {
-      graph.positions.set(pos.nodeId, pos.coords);
-    }
+    graph.positions.setMany(newPositions);
   };
 
   return {
