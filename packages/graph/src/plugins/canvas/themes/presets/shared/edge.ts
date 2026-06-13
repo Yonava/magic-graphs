@@ -18,12 +18,12 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
 
   const sourceNode = {
     ...rawSourceNode,
-    ...graph.nps.get(rawSourceNode.id),
+    ...graph.positions.get(rawSourceNode.id),
   } as const;
 
   const targetNode = {
     ...rawTargetNode,
-    ...graph.nps.get(rawTargetNode.id),
+    ...graph.positions.get(rawTargetNode.id),
   } as const;
 
   const edgesAlongPath = graph.helpers.nodes.getEdgesBetweenConnectedNodes(
@@ -95,8 +95,8 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
       .map((e) => {
         const nodes = graph.helpers.edges.getConnectedNodes(e.id);
         return e.target === nodes.sourceNode.id
-          ? graph.nps.get(nodes.targetNode.id)
-          : graph.nps.get(nodes.sourceNode.id);
+          ? graph.positions.get(nodes.targetNode.id)
+          : graph.positions.get(nodes.sourceNode.id);
       })
       .filter(
         (point, index, self) =>

@@ -32,7 +32,7 @@ export const useCoreGraph = (
   const nodes = ref<GNode[]>([]);
   const edges = ref<GEdge[]>([]);
 
-  const nps = createNodePositionStore(events);
+  const nodePositionStore = createNodePositionStore(events);
 
   const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
   const getNode = (id: GNode['id']) => nodeIdToNodeMap.value.get(id);
@@ -54,7 +54,7 @@ export const useCoreGraph = (
     graph: {
       nodes,
       edges,
-      positions: nps,
+      positions: nodePositionStore,
     },
   });
 
@@ -101,6 +101,6 @@ export const useCoreGraph = (
     events,
 
     settings,
-    positions: nps,
+    positions: nodePositionStore,
   };
 };

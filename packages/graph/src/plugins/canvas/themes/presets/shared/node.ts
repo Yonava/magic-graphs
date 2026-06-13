@@ -9,7 +9,7 @@ import { textDefaults } from './text.ts';
 const nodeCircle: GraphTheme['node']['default']['shape'] = (node, graph) => {
   const styles = resolveNodeStyles(graph.resolveToken, node);
   const nodePosition = nullThrows(
-    graph.nps.get(node.id),
+    graph.positions.get(node.id),
     `node position system did not return a position for node with id ${node.id}`,
   );
 
