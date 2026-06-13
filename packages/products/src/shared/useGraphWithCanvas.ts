@@ -1,12 +1,12 @@
 import { useMagicCanvas } from '@magic/canvas/index';
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import type { GraphSettings } from '@magic/graph/settings/index';
-import { useGraph } from '@magic/graph/useGraph';
 
 import {
   GraphAnnotationsControls,
   useGraphAnnotations,
 } from './graph-annotations/index.ts';
+import { useGraph } from './useGraph.ts';
 
 // TODO replace this return type with the final type contract of useGraph
 export type Graph = ReturnType<typeof useGraph> & {

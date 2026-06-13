@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import type { Shortcut } from '@magic/graph/plugins/shortcut/types';
   import CIcon from '@magic/ui/core/Icon.vue';
 
   import { computed } from 'vue';
+
+  import { Shortcut } from '../../../shortcut/types.ts';
 
   const props = defineProps<{
     keyboardKey: Shortcut['binding'];

@@ -1,7 +1,8 @@
 import { CURSOR } from '@magic/graph/plugins/canvas/themes/cursor';
-import { GraphWithPlugins } from '@magic/graph/useGraph';
 
 import { ComputedRef } from 'vue';
+
+import { GraphWithPlugins } from '../useGraph.ts';
 
 export const useAnnotationCursor = (
   graph: GraphWithPlugins,

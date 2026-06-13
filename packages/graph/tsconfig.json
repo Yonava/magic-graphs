@@ -10,10 +10,5 @@
     { "path": "../shapes" },
     { "path": "../utils" }
   ],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "../products/src/shared/useGraph.ts",
-    "../products/src/shared/usePreferredThemePreset.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

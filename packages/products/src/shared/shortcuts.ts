@@ -1,4 +1,4 @@
-import type { Shortcut } from '@magic/graph/plugins/shortcut/types';
+import type { Shortcut } from './shortcut/types.ts';
 
 export const PRODUCT_SHORTCUTS = {
   Fullscreen: { binding: 'f' },
