@@ -12,7 +12,7 @@ const getNodeDefaults = () =>
   }) as const satisfies Partial<GNode>;
 
 export const useResolveNodeDefaults = (
-  graphState: GraphActionsOptions['graphState'],
+  graphState: GraphActionsOptions['graph'],
 ) => {
   const getLabel = useNodeLetterLabelGetter(graphState);
   return (node: Parameters<GraphActions['addNode']>[0]): GNode => ({
@@ -23,10 +23,10 @@ export const useResolveNodeDefaults = (
 };
 
 export const createAddNodeHandler = ({
-  graphState,
+  graph,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['addNode'] => {
-  const resolveNodeDefaults = useResolveNodeDefaults(graphState);
+  const resolveNodeDefaults = useResolveNodeDefaults(graph);
 
   const addNode: GraphActions['addNode'] = (node) => {
     const nodeWithDefaults = resolveNodeDefaults(node);
@@ -39,7 +39,7 @@ export const createAddNodeHandler = ({
     // is successful because if the transaction fails, node
     // positioning system will hold a reference to a node id that
     // doesn't exist in the graph
-    graphState.nps._internal.add([nodeWithDefaults]);
+    graph.positions._internal.add([nodeWithDefaults]);
 
     const { addedNodes } = commitTransaction({ addNodes: [nodeWithDefaults] });
 
@@ -49,7 +49,7 @@ export const createAddNodeHandler = ({
     );
 
     const liveNode = nullThrows(
-      graphState.nodes.value.find((n) => n.id === telemetryNode.id),
+      graph.nodes.value.find((n) => n.id === telemetryNode.id),
       '[Graph Actions] Node creation succeeded but entity was not found in live state.',
     );
 

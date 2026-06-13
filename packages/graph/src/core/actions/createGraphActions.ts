@@ -1,7 +1,7 @@
 import { Ref } from 'vue';
 
 import { GEdge, GNode } from '../../types.ts';
-import { NodePositionStoreControls } from '../positions/createNodePositionStore.ts';
+import { NodePositionStoreControls } from '../positions/types.ts';
 import { CommitTransaction } from '../transaction/types.ts';
 import {
   createAddEdgeHandler,
@@ -18,10 +18,10 @@ import { GraphActions } from './types.ts';
 
 export type GraphActionsOptions = {
   commitTransaction: CommitTransaction;
-  graphState: {
+  graph: {
     nodes: Ref<GNode[]>;
     edges: Ref<GEdge[]>;
-    nps: NodePositionStoreControls;
+    positions: NodePositionStoreControls;
   };
 };
 

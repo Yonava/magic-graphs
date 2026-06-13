@@ -2,7 +2,7 @@ import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
 
 export const createRemoveNodeHandler = ({
-  graphState,
+  graph,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['removeNode'] => {
   const removeNode: GraphActions['removeNode'] = (nodeId) => {
@@ -10,7 +10,7 @@ export const createRemoveNodeHandler = ({
       removeNodeIds: [nodeId],
     });
 
-    graphState.nps._internal.remove([nodeId]);
+    graph.positions._internal.remove([nodeId]);
 
     return { removedNodeIds, removedEdgeIds };
   };

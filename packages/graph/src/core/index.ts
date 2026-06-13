@@ -51,10 +51,10 @@ export const useCoreGraph = (
 
   const actions = createGraphActions({
     commitTransaction,
-    graphState: {
+    graph: {
       nodes,
       edges,
-      nps,
+      positions: nps,
     },
   });
 

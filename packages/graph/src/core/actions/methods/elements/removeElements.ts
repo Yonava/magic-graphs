@@ -2,7 +2,7 @@ import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
 
 export const createRemoveElementsHandler = ({
-  graphState,
+  graph,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['removeElements'] => {
   const removeElements: GraphActions['removeElements'] = ({
@@ -14,7 +14,7 @@ export const createRemoveElementsHandler = ({
       removeEdgeIds: edgeIds,
     });
 
-    graphState.nps._internal.remove(removedNodeIds);
+    graph.positions._internal.remove(removedNodeIds);
 
     return { removedNodeIds, removedEdgeIds };
   };

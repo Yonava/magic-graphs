@@ -19,7 +19,7 @@ export const resolveEdgeDefaults = (
 });
 
 export const createAddEdgeHandler = ({
-  graphState,
+  graph,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['addEdge'] => {
   const addEdge: GraphActions['addEdge'] = (edge) => {
@@ -34,9 +34,7 @@ export const createAddEdgeHandler = ({
       );
     }
 
-    const liveEdge = graphState.edges.value.find(
-      (e) => e.id === telemetryEdge.id,
-    );
+    const liveEdge = graph.edges.value.find((e) => e.id === telemetryEdge.id);
 
     if (!liveEdge) {
       throw new Error(

@@ -4,10 +4,10 @@ import { resolveEdgeDefaults } from '../edges/addEdge.ts';
 import { useResolveNodeDefaults } from '../nodes/addNode.ts';
 
 export const createAddElementsHandler = ({
-  graphState,
+  graph,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['addElements'] => {
-  const resolveNodeDefaults = useResolveNodeDefaults(graphState);
+  const resolveNodeDefaults = useResolveNodeDefaults(graph);
   const addElements: GraphActions['addElements'] = ({
     nodes = [],
     edges = [],
@@ -23,7 +23,7 @@ export const createAddElementsHandler = ({
     // is successful because if the transaction fails, node
     // positioning system will hold a reference to a node id that
     // doesn't exist in the graph
-    graphState.nps._internal.add(nodesWithDefaults);
+    graph.positions._internal.add(nodesWithDefaults);
 
     const { addedEdges, addedNodes } = commitTransaction({
       addNodes: nodesWithDefaults,
