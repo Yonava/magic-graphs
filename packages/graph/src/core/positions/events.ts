@@ -1,16 +1,16 @@
 import { EventMapToEventRegistry } from '../../events/types.ts';
 
-export type NodePositioningSystemEventMap = {
+export type NodePositionStoreEventMap = {
   onNodesMoved: () => void;
   onNodeMoveStreamStart: () => void;
   onNodeMoveStreamEnd: () => void;
 };
 
-type NodePositioningSystemEventRegistry =
-  EventMapToEventRegistry<NodePositioningSystemEventMap>;
+type NodePositionEventRegistry =
+  EventMapToEventRegistry<NodePositionStoreEventMap>;
 
-export const createNodePositioningSystemEventRegistry =
-  (): NodePositioningSystemEventRegistry => ({
+export const createNodePositionEventRegistry =
+  (): NodePositionEventRegistry => ({
     onNodesMoved: new Set(),
     onNodeMoveStreamStart: new Set(),
     onNodeMoveStreamEnd: new Set(),

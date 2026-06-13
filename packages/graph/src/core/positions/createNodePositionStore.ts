@@ -22,9 +22,9 @@ export const createNodePositionStore = (
     );
 
   const setNodePositions = (positions: NodePositionUpdate[]) => {
-    for (const { nodeId, update: positionValueOrGetter } of positions) {
+    for (const { nodeId, update } of positions) {
       const currentPosition = getNodePosition(nodeId);
-      const position = getValue(positionValueOrGetter, currentPosition);
+      const position = getValue(update, currentPosition);
       currentPosition.x = position.x ?? currentPosition.x;
       currentPosition.y = position.y ?? currentPosition.y;
       currentPosition.z = position.z ?? currentPosition.z;
@@ -35,19 +35,26 @@ export const createNodePositionStore = (
     ?.DEV
     ? new FinalizationRegistry<void>(() => {
         console.warn(
-          '[magic-graphs] A node position stream was garbage collected without stop() being called. Make sure to call stop() when the stream is done.',
+          'A node position stream was garbage collected without stop() being called. Make sure to call stop() when the stream is done.',
         );
       })
     : null;
 
+  let activeStream = false;
+
   const createStream: NodePositionStoreControls['createStream'] = () => {
+    if (activeStream) {
+      throw new Error(
+        'A node position stream is already active. Call stop() before creating a new stream.',
+      );
+    }
+    activeStream = true;
     events.emit('onNodeMoveStreamStart');
-    let stopped = false;
     const stream = {
       set: (pos: NodePositionUpdate) => setNodePositions([pos]),
       setMany: setNodePositions,
       stop: () => {
-        stopped = true;
+        activeStream = false;
         events.emit('onNodesMoved');
         events.emit('onNodeMoveStreamEnd');
       },
@@ -71,7 +78,10 @@ export const createNodePositionStore = (
       nodeIdToNodePosition,
       add: (nodePositions) => {
         for (const { id, ...position } of nodePositions) {
-          nodeIdToNodePosition.set(id, { ...DEFAULT_POSITION, ...position });
+          nodeIdToNodePosition.set(id, {
+            ...DEFAULT_POSITION,
+            ...position,
+          });
         }
       },
       remove: (nodeIds) => {
