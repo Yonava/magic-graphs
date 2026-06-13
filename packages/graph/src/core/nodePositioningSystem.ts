@@ -1,3 +1,5 @@
+import { MaybeGetter, getValue } from '@magic/utils/maybeGetter/index';
+
 import { EventHub } from '../events/createEventHub.ts';
 import { GNode } from '../types.ts';
 import { CoreEventMap } from './events.ts';
@@ -10,7 +12,10 @@ type Position = {
 
 export type NodePositioningSystemControls = {
   get: (nodeId: string) => Position | undefined;
-  set: (nodeId: string, position: Partial<Position>) => Position | undefined;
+  set: (
+    nodeId: string,
+    positionValueOrGetter: MaybeGetter<Partial<Position>, [Position]>,
+  ) => Position | undefined;
 };
 
 export const createNodePositioningSystem = (
@@ -34,7 +39,7 @@ export const createNodePositioningSystem = (
     }
   });
 
-  const getNodePosition = (nodeId: GNode['id']) => {
+  const getNodePosition: NodePositioningSystemControls['get'] = (nodeId) => {
     const position = nodeIdToNodePosition.get(nodeId);
     if (!position) {
       console.warn(`could not resolve position from node with id ${nodeId}`);
@@ -43,12 +48,13 @@ export const createNodePositioningSystem = (
     return position;
   };
 
-  const setNodePosition = (
-    nodeId: GNode['id'],
-    position: Partial<Position>,
+  const setNodePosition: NodePositioningSystemControls['set'] = (
+    nodeId,
+    positionValueOrGetter,
   ) => {
     const currentPosition = getNodePosition(nodeId);
     if (!currentPosition) return;
+    const position = getValue(positionValueOrGetter, currentPosition);
     currentPosition.x = position.x ?? currentPosition.x;
     currentPosition.y = position.y ?? currentPosition.y;
     currentPosition.z = position.z ?? currentPosition.z;

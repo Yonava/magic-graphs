@@ -104,15 +104,9 @@ export const useNodeDragPlugin = <
       nullThrows(graph.getNode(nodeId), 'dragged node not found'),
     );
 
-    graph.actions.updateElements({
-      nodes: nodes.map(({ id, x, y }) => ({
-        id,
-        values: {
-          x: x + dx,
-          y: y + dy,
-        },
-      })),
-    });
+    for (const node of nodes) {
+      graph.nps.set(node.id, (pos) => ({ x: pos.x + dx, y: pos.y + dy }));
+    }
   };
 
   const cursorTheme = useDragCursor(graph.canvas.theme.createLayer, dragState);
