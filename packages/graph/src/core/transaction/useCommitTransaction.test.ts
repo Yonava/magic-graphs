@@ -8,7 +8,7 @@ import { useCommitTransaction } from './useCommitTransaction.ts';
 
 describe('useCommitTransaction', () => {
   it('handles adding a node', () => {
-    const newNode: GNode = { id: 'new-node', label: '', x: 0, y: 0 };
+    const newNode: GNode = { id: 'new-node', label: '' };
     const commitTransaction = useCommitTransaction({
       getGraphState: () => ({ nodes: [], edges: [] }),
       onTransactionSucceeded: () => {},
@@ -22,8 +22,8 @@ describe('useCommitTransaction', () => {
   });
 
   it('scrapes and removes orphaned edges automatically when a node is removed', () => {
-    const node1: GNode = { id: 'node-1', label: 'A', x: 0, y: 0 };
-    const node2: GNode = { id: 'node-2', label: 'B', x: 10, y: 10 };
+    const node1: GNode = { id: 'node-1', label: 'A' };
+    const node2: GNode = { id: 'node-2', label: 'B' };
     const connectedEdge: GEdge = {
       id: 'edge-1',
       source: 'node-1',
@@ -54,8 +54,6 @@ describe('useCommitTransaction', () => {
     const existingNode: GNode = {
       id: 'node-1',
       label: 'Old Label',
-      x: 5,
-      y: 5,
     };
 
     const commitTransaction = useCommitTransaction({
@@ -67,21 +65,21 @@ describe('useCommitTransaction', () => {
       ...createEmptyPayload(),
       updatedNodes: [
         {
-          node: { id: 'node-1', label: 'New Label', x: 100, y: 5 },
-          previousValues: { label: 'Old Label', x: 5 },
+          node: { id: 'node-1', label: 'New Label' },
+          previousValues: { label: 'Old Label' },
         },
       ],
     };
 
     const payload = commitTransaction({
-      updatedNodes: [{ id: 'node-1', values: { label: 'New Label', x: 100 } }],
+      updatedNodes: [{ id: 'node-1', values: { label: 'New Label' } }],
     });
 
     expect(payload).toEqual(expectedPayload);
   });
 
   it('fires the onTransactionSuccess callback with the correct payload', () => {
-    const newNode: GNode = { id: 'node-z', label: 'Z', x: 0, y: 0 };
+    const newNode: GNode = { id: 'node-z', label: 'Z' };
 
     const successSpy = vi.fn();
 

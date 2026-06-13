@@ -66,7 +66,7 @@ export const treeArrayToGraph = (
   };
 
   const positions = getTreeIndexToPosition({
-    rootNodeCoordinate: rootPosition,
+    rootNodeCoordinates: rootPosition,
     xOffset: depthToXOffset[treeRoot.height] ?? 80,
     yOffset: 200,
     treeDepth: treeRoot.height,
@@ -110,16 +110,9 @@ export const treeArrayToGraph = (
     })
     .filter(Boolean) as GNodeMoveInstruction[];
 
-  graph.actions.updateElements(
-    {
-      nodes: movementObj.map((obj) => ({
-        id: obj.nodeId,
-        values: obj.coords,
-      })),
-    },
-    // @ts-expect-error migration
-    { animate: true },
-  );
+  for (const pos of movementObj) {
+    graph.nps.set(pos.nodeId, pos.coords);
+  }
 
   for (const edge of newTreeEdges) {
     graph.actions.addEdge(

@@ -1,10 +1,10 @@
 import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../useGraphWithCanvas.ts';
 import { Coordinate } from '@magic/shapes/types/utility';
 
 import { ref } from 'vue';
 
 import { getNodeDepths } from '../graph-use-node-depth/useNodeDepth.ts';
+import type { Graph } from '../useGraphWithCanvas.ts';
 import { binaryTreePositioner } from './positioners/binaryTreePositioner.ts';
 import { standardTreePositioner } from './positioners/standardTreePositioner.ts';
 import { TreeGraphPositionerOptions } from './positioners/types.ts';
@@ -29,9 +29,8 @@ export type UseTreeGraphPositionerOptions = {
   shape: TreeShape;
   /**
    * the new coordinates of the root node when the graph is being re-shaped.
-   * @default (rootNode) => ({ x: rootNode.x, y: rootNode.y })
    */
-  rootNodeCoordinates: Coordinate | ((rootNode: GNode) => Coordinate);
+  rootNodeCoordinates: Coordinate;
   /**
    * if `true`, nodes and edges animate into place
    * @default false
@@ -44,7 +43,7 @@ export const TREE_FORMATION_OPTIONS_DEFAULTS = {
   yOffset: 200,
   shape: 'standard',
   animate: false,
-  rootNodeCoordinates: (rootNode) => ({ x: rootNode.x, y: rootNode.y }),
+  rootNodeCoordinates: { x: 0, y: 0 },
 } as const satisfies UseTreeGraphPositionerOptions;
 
 export const useTreeGraphPositioner = (
@@ -78,16 +77,9 @@ export const useTreeGraphPositioner = (
     const newPositions = graphPositioner(rootNode);
     if (!newPositions) return;
 
-    graph.actions.updateElements(
-      {
-        nodes: newPositions.map(({ coords, nodeId }) => ({
-          id: nodeId,
-          values: coords,
-        })),
-      },
-      // @ts-expect-error migration
-      { animate: treeOptions.animate },
-    );
+    for (const pos of newPositions) {
+      graph.nps.set(pos.nodeId, pos.coords);
+    }
   };
 
   return {

@@ -1,3 +1,4 @@
+import { nullThrows } from '@magic/utils/assert';
 import { MaybeGetter, getValue } from '@magic/utils/maybeGetter/index';
 
 import { EventHub } from '../events/createEventHub.ts';
@@ -11,11 +12,11 @@ export type Position = {
 };
 
 export type NodePositioningSystemControls = {
-  get: (nodeId: string) => Position | undefined;
+  get: (nodeId: string) => Position;
   set: (
     nodeId: string,
     positionValueOrGetter: MaybeGetter<Partial<Position>, [Position]>,
-  ) => Position | undefined;
+  ) => Position;
   /** @internal */
   _internal: {
     add: (nodePositions: (Pick<GNode, 'id'> & Partial<Position>)[]) => void;
@@ -29,21 +30,17 @@ export const createNodePositioningSystem = (
 ): NodePositioningSystemControls => {
   const nodeIdToNodePosition = new Map<string, Position>();
 
-  const getNodePosition: NodePositioningSystemControls['get'] = (nodeId) => {
-    const position = nodeIdToNodePosition.get(nodeId);
-    if (!position) {
-      console.warn(`could not resolve position from node with id ${nodeId}`);
-      return;
-    }
-    return position;
-  };
+  const getNodePosition: NodePositioningSystemControls['get'] = (nodeId) =>
+    nullThrows(
+      nodeIdToNodePosition.get(nodeId),
+      `could not resolve position from node with id ${nodeId}`,
+    );
 
   const setNodePosition: NodePositioningSystemControls['set'] = (
     nodeId,
     positionValueOrGetter,
   ) => {
     const currentPosition = getNodePosition(nodeId);
-    if (!currentPosition) return;
     const position = getValue(positionValueOrGetter, currentPosition);
     currentPosition.x = position.x ?? currentPosition.x;
     currentPosition.y = position.y ?? currentPosition.y;

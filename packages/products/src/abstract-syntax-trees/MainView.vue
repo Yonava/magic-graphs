@@ -78,8 +78,6 @@
       (astNode): GNode => ({
         id: getASTNodeId(astNode),
         label: getASTNodeId(astNode),
-        x: 0,
-        y: 0,
       }),
     );
 
