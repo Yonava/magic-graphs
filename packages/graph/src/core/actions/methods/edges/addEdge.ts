@@ -1,3 +1,4 @@
+import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 import Fraction from 'fraction.js';
 
@@ -26,23 +27,16 @@ export const createAddEdgeHandler = ({
     const edgeWithDefaults = resolveEdgeDefaults(edge);
 
     const { addedEdges } = commitTransaction({ addEdges: [edgeWithDefaults] });
-    const telemetryEdge = addedEdges[0];
 
-    if (!telemetryEdge) {
-      throw new Error(
-        `[Graph Actions] Failed to append edge. Transaction rejected.`,
-      );
-    }
+    const telemetryEdge = nullThrows(
+      addedEdges[0],
+      'Failed to append edge. Transaction rejected.',
+    );
 
-    const liveEdge = graph.edges.value.find((e) => e.id === telemetryEdge.id);
-
-    if (!liveEdge) {
-      throw new Error(
-        `[Graph Actions] Edge creation succeeded but entity was not found in live state.`,
-      );
-    }
-
-    return liveEdge;
+    return nullThrows(
+      graph.edges.value.find((e) => e.id === telemetryEdge.id),
+      '[Graph Actions] Edge creation succeeded but entity was not found in live state.',
+    );
   };
 
   return addEdge;

@@ -1,3 +1,5 @@
+import { nullThrows } from '@magic/utils/assert';
+
 import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
 
@@ -9,13 +11,10 @@ export const createRemoveEdgeHandler = ({
       removeEdgeIds: [edgeId],
     });
 
-    const removedEdgeId = removedEdgeIds[0];
-    if (!removedEdgeId) {
-      throw new Error(
-        `[Graph Actions] Failed to remove edge. Transaction rejected.`,
-      );
-    }
-    return removedEdgeId;
+    return nullThrows(
+      removedEdgeIds[0],
+      'Failed to remove edge. Transaction rejected.',
+    );
   };
 
   return removeEdge;
