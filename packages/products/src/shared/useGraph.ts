@@ -24,12 +24,12 @@ import {
   HistoryTransactionWrapperOptions,
 } from '@magic/graph/plugins/history/types';
 import { useMarqueePlugin } from '@magic/graph/plugins/marquee/index';
-import { useShortcuts } from '@magic/graph/plugins/shortcut/index';
 import type { GraphSettings } from '@magic/graph/settings/index';
 import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
 import { useTransitionMatrix } from '@magic/graph/useTransitionMatrix';
 
 import { useInteractive } from './interactive/index.ts';
+import { useShortcuts } from './shortcut/index.ts';
 import { usePreferredThemePreset } from './usePreferredThemePreset.ts';
 
 const useGraphWithPlugins = (
