@@ -111,7 +111,7 @@ export const treeArrayToGraph = (
     .filter(Boolean) as GNodeMoveInstruction[];
 
   for (const pos of movementObj) {
-    graph.nps.set(pos.nodeId, pos.coords);
+    graph.positions.set(pos.nodeId, pos.coords);
   }
 
   for (const edge of newTreeEdges) {

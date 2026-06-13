@@ -173,7 +173,7 @@ export const useNodeAnchorPlugin = <
       : nodeBaseBorderWidth;
 
     const offset = nodeSize - anchorRadius / 3 + nodeBorderWidth / 2;
-    const nodePosition = graph.nps.get(node.id);
+    const nodePosition = graph.positions.get(node.id);
     nodeAnchors.value = [
       {
         id: 'n-anchor',
@@ -217,7 +217,7 @@ export const useNodeAnchorPlugin = <
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (!parentNode.value || !draggedAnchor) return;
     const { x, y } = draggedAnchor;
-    const start = graph.nps.get(parentNode.value.id);
+    const start = graph.positions.get(parentNode.value.id);
     const end = { x, y };
     const { _resolveToken: resolveToken } = graph.canvas.theme;
 

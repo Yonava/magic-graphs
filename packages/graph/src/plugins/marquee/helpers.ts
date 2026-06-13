@@ -42,7 +42,7 @@ export const getEncapsulatedNodeBox = <
       node,
     );
     const nodeArea = nodeRadius + nodeBorderWidth / 2;
-    const { x, y } = graph.nps.get(node.id);
+    const { x, y } = graph.positions.get(node.id);
 
     minX = Math.min(minX, x - nodeArea);
     minY = Math.min(minY, y - nodeArea);

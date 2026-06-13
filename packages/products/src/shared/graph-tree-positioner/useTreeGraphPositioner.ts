@@ -78,7 +78,7 @@ export const useTreeGraphPositioner = (
     if (!newPositions) return;
 
     for (const pos of newPositions) {
-      graph.nps.set(pos.nodeId, pos.coords);
+      graph.positions.set(pos.nodeId, pos.coords);
     }
   };
 

@@ -1,7 +1,7 @@
 import { PartiallyPartial } from '@magic/utils/types';
 
 import { GEdge, GNode } from '../../types.ts';
-import { Position } from '../nodePositioningSystem.ts';
+import { Position } from '../positions/createNodePositionStore.ts';
 import {
   GEdgeUpdateDraft,
   GNodeUpdateDraft,

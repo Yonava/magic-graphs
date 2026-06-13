@@ -10,7 +10,7 @@ import type { GEdge, GNode } from '../types.ts';
 import { createGraphActions } from './actions/createGraphActions.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { useGraphHelpers } from './helpers/index.ts';
-import { createNodePositioningSystem } from './nodePositioningSystem.ts';
+import { createNodePositionStore } from './positions/createNodePositionStore.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
 import type { CoreGraph } from './types.ts';
@@ -32,7 +32,7 @@ export const useCoreGraph = (
   const nodes = ref<GNode[]>([]);
   const edges = ref<GEdge[]>([]);
 
-  const nps = createNodePositioningSystem(events);
+  const nps = createNodePositionStore(events);
 
   const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
   const getNode = (id: GNode['id']) => nodeIdToNodeMap.value.get(id);
@@ -101,6 +101,6 @@ export const useCoreGraph = (
     events,
 
     settings,
-    nps,
+    positions: nps,
   };
 };

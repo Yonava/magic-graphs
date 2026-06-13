@@ -105,7 +105,7 @@ export const useNodeDragPlugin = <
     );
 
     for (const node of nodes) {
-      graph.nps.set(node.id, (pos) => ({ x: pos.x + dx, y: pos.y + dy }));
+      graph.positions.set(node.id, (pos) => ({ x: pos.x + dx, y: pos.y + dy }));
     }
   };
 
