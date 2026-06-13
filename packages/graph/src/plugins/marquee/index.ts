@@ -205,7 +205,7 @@ export const useMarqueePlugin = <
       { before: [ANCHOR_EVENT_ID] },
     );
 
-    events.subscribe('onNodePositionsCommitted', updateEncapsulatedNodeBox);
+    events.subscribe('onNodeMoveStream', updateEncapsulatedNodeBox);
   };
 
   const deactivate = () => {
@@ -216,7 +216,7 @@ export const useMarqueePlugin = <
     events.unhandle('onContextMenu', disengageMarqueeBox);
     events.unhandle('onMouseMove', setMarqueeBoxDimensions);
 
-    events.unsubscribe('onTransactionComplete', updateEncapsulatedNodeBox);
+    events.unsubscribe('onNodeMoveStream', updateEncapsulatedNodeBox);
 
     if (marqueeBox.value) disengageMarqueeBox();
   };
