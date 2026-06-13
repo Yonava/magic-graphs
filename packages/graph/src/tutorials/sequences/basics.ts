@@ -27,7 +27,7 @@ export const BASICS_STEPS: (
   },
   createNode: {
     hint: 'Double click anywhere to add a node',
-    dismiss: 'onNodeAdded',
+    dismiss: 'onNodesAdded',
   },
   moveNode: {
     hint: 'Drag a node to move it',
@@ -35,13 +35,13 @@ export const BASICS_STEPS: (
   },
   createEdge: {
     hint: 'Create an edge by dragging an anchor onto another node',
-    dismiss: 'onEdgeAdded',
+    dismiss: 'onEdgesAdded',
   },
   createSelfDirectedEdge: {
     hint: 'You can even create self directed edges! Make sure you are in "directed" mode and drag an anchor inwards',
     dismiss: {
-      event: 'onEdgeAdded',
-      predicate: (edge) => edge.target === edge.source,
+      event: 'onEdgesAdded',
+      predicate: (edges) => edges.some((edge) => edge.target === edge.source),
     },
   },
   editEdgeWeight: {
@@ -70,13 +70,13 @@ const getRemoveNodeOrEdgeStep = (graph: BasicsGraph): TutorialStep => {
       set('nodeAnchor.default.color', (node) =>
         node.label === '1' ? PURPLE_700 : RED_700,
       );
-      graph.events.subscribe('onEdgeRemoved', completeStep);
-      graph.events.subscribe('onNodeRemoved', completeStep);
+      graph.events.subscribe('onEdgesRemoved', completeStep);
+      graph.events.subscribe('onNodesRemoved', completeStep);
     },
     onDismiss: () => {
       removeAll();
-      graph.events.unsubscribe('onEdgeRemoved', completeStep);
-      graph.events.unsubscribe('onNodeRemoved', completeStep);
+      graph.events.unsubscribe('onEdgesRemoved', completeStep);
+      graph.events.unsubscribe('onNodesRemoved', completeStep);
     },
   };
 };

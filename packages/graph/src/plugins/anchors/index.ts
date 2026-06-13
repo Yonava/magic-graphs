@@ -297,8 +297,8 @@ export const useNodeAnchorPlugin = <
     setParentNode(newParentNode.id);
   };
 
-  const clearAnchorStateIfParentRemoved = (nodeId: GNode['id']) => {
-    if (parentNode.value?.id === nodeId) {
+  const clearAnchorStateIfParentRemoved = (nodeIds: readonly GNode['id'][]) => {
+    if (parentNode.value && nodeIds.includes(parentNode.value.id)) {
       clearAnchorState();
     }
   };
@@ -377,7 +377,7 @@ export const useNodeAnchorPlugin = <
 
   const activate = () => {
     events.handle(
-      'onNodeRemoved',
+      'onNodesRemoved',
       clearAnchorStateIfParentRemoved,
       ANCHOR_EVENT_ID,
     );
@@ -418,7 +418,7 @@ export const useNodeAnchorPlugin = <
   };
 
   const deactivate = () => {
-    events.unhandle('onNodeRemoved', clearAnchorStateIfParentRemoved);
+    events.unhandle('onNodesRemoved', clearAnchorStateIfParentRemoved);
     events.unhandle('onNodeUpdated', clearAnchorStateOnNodeMove);
     events.unhandle('onGraphUnderCursorChange', checkForParentNodeUpdate);
     events.unhandle('onMouseMove', updateCurrentlyDraggingAnchorPosition);

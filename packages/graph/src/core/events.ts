@@ -32,15 +32,15 @@ export type CoreEventMap = {
   onStructureChange: () => void;
 
   /**
-   * when a single node is {@link graph.actions.addNode | added} to the graph
+   * when nodes are added to the graph in a single transaction
    */
-  onNodeAdded: (node: Readonly<GNode>) => void;
+  onNodesAdded: (nodes: Readonly<GNode[]>) => void;
   /**
-   * when a single node is {@link graph.actions.removeNode | removed} from the graph
+   * when nodes are removed from the graph in a single transaction
    */
-  onNodeRemoved: (
-    removedNode: GNode['id'],
-    removedEdges: Readonly<GEdge['id'][]>,
+  onNodesRemoved: (
+    removedNodeIds: Readonly<GNode['id'][]>,
+    removedEdgeIds: Readonly<GEdge['id'][]>,
   ) => void;
   /**
    * when a single node is {@link Graph.actions.updateNode | updated}
@@ -51,13 +51,13 @@ export type CoreEventMap = {
   ) => void;
 
   /**
-   * when a single edge is {@link Graph.actions.addEdge | added} to the graph
+   * when one or more edges are {@link Graph.actions.addEdge | added} to the graph in a single transaction
    */
-  onEdgeAdded: (edge: Readonly<GEdge>) => void;
+  onEdgesAdded: (edges: Readonly<GEdge[]>) => void;
   /**
-   * when a single edge is {@link Graph.actions.removeEdge | removed} from the graph
+   * when one or more edges are {@link Graph.actions.removeEdge | removed} from the graph in a single transaction
    */
-  onEdgeRemoved: (edge: GEdge['id']) => void;
+  onEdgesRemoved: (edgeIds: Readonly<GEdge['id'][]>) => void;
   /**
    * when an edge is {@link Graph.actions.updateEdge | updated} from the graph
    */
@@ -91,12 +91,12 @@ export const createCoreEventRegistry = (): CoreEventRegistry => ({
   onTransactionComplete: new Set(),
   onStructureChange: new Set(),
 
-  onNodeAdded: new Set(),
-  onNodeRemoved: new Set(),
+  onNodesAdded: new Set(),
+  onNodesRemoved: new Set(),
   onNodeUpdated: new Set(),
 
-  onEdgeAdded: new Set(),
-  onEdgeRemoved: new Set(),
+  onEdgesAdded: new Set(),
+  onEdgesRemoved: new Set(),
   onEdgeUpdated: new Set(),
 
   onElementsAdded: new Set(),

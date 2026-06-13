@@ -21,7 +21,7 @@ export const useInteractive = (graph: GraphWithPlugins) => {
 
     if (items.at(-1)?.graphType === 'node') return;
 
-    graph.actions.addNode(coords);
+    graph.actions.addNode({ x: coords.x, y: coords.y });
   };
 
   const doesEdgeConformToRules = (fromNode: GNode, toNode: GNode) => {

@@ -15,27 +15,21 @@ const extractSingle = <T>(arr: T[]) => (arr.length === 1 ? arr[0] : undefined);
 const hasItems = (...arrays: any[][]) => arrays.some((arr) => arr.length > 0);
 
 const eventNameToPredicateMap: EventMapPropagationPredicates = {
-  onNodeAdded: ({ addedNodes }) => {
-    const node = extractSingle(addedNodes);
-    if (node) return { args: [node] };
+  onNodesAdded: ({ addedNodes }) => {
+    if (addedNodes.length > 0) return { args: [addedNodes] };
   },
-  onNodeRemoved: ({ removedNodeIds, removedEdgeIds }) => {
-    const nodeId = extractSingle(removedNodeIds);
-    if (nodeId) {
-      return { args: [nodeId, removedEdgeIds] };
-    }
+  onNodesRemoved: ({ removedNodeIds, removedEdgeIds }) => {
+    if (removedNodeIds.length > 0) return { args: [removedNodeIds, removedEdgeIds] };
   },
   onNodeUpdated: ({ updatedNodes }) => {
     const update = extractSingle(updatedNodes);
     if (update) return { args: [update.node, update.previousValues] };
   },
-  onEdgeAdded: ({ addedEdges }) => {
-    const edge = extractSingle(addedEdges);
-    if (edge) return { args: [edge] };
+  onEdgesAdded: ({ addedEdges }) => {
+    if (addedEdges.length > 0) return { args: [addedEdges] };
   },
-  onEdgeRemoved: ({ removedEdgeIds }) => {
-    const edgeId = extractSingle(removedEdgeIds);
-    if (edgeId) return { args: [edgeId] };
+  onEdgesRemoved: ({ removedEdgeIds }) => {
+    if (removedEdgeIds.length > 0) return { args: [removedEdgeIds] };
   },
   onEdgeUpdated: ({ updatedEdges }) => {
     const update = extractSingle(updatedEdges);
