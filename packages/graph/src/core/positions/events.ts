@@ -1,9 +1,13 @@
+import { DeepReadonly } from 'ts-essentials';
+
 import { EventMapToEventRegistry } from '../../events/types.ts';
+import { NodePositionEntry } from './types.ts';
 
 export type NodePositionStoreEventMap = {
-  onNodesMoved: () => void;
+  onNodePositionsCommitted: (positions: DeepReadonly<NodePositionEntry[]>) => void;
   onNodeMoveStreamStart: () => void;
   onNodeMoveStreamEnd: () => void;
+  onNodeMoveStream: (positions: DeepReadonly<NodePositionEntry[]>) => void;
 };
 
 type NodePositionStoreEventRegistry =
@@ -11,7 +15,8 @@ type NodePositionStoreEventRegistry =
 
 export const createNodePositionStoreEventRegistry =
   (): NodePositionStoreEventRegistry => ({
-    onNodesMoved: new Set(),
+    onNodePositionsCommitted: new Set(),
     onNodeMoveStreamStart: new Set(),
     onNodeMoveStreamEnd: new Set(),
+    onNodeMoveStream: new Set(),
   });

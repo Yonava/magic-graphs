@@ -5,6 +5,7 @@ import { EventHub } from '../../events/createEventHub.ts';
 import { CoreEventMap } from '../events.ts';
 import { DEFAULT_POSITION } from './constants.ts';
 import {
+  NodePositionEntry,
   NodePositionStoreControls,
   NodePositionStreamControls,
   NodePositionUpdate,
@@ -22,14 +23,17 @@ export const createNodePositionStore = (
       `could not resolve position from node with id ${nodeId}`,
     );
 
-  const setNodePositions = (positions: NodePositionUpdate[]) => {
-    for (const { nodeId, update } of positions) {
+  const setNodePositions = (
+    positions: NodePositionUpdate[],
+  ): NodePositionEntry[] => {
+    return positions.map(({ nodeId, update }) => {
       const currentPosition = getNodePosition(nodeId);
       const position = getValue(update, currentPosition);
       currentPosition.x = position.x ?? currentPosition.x;
       currentPosition.y = position.y ?? currentPosition.y;
       currentPosition.z = position.z ?? currentPosition.z;
-    }
+      return { nodeId, position: { ...currentPosition } };
+    });
   };
 
   let activeStream = false;
@@ -49,14 +53,28 @@ export const createNodePositionStore = (
     }
     activeStream = true;
     events.emit('onNodeMoveStreamStart');
+    const touchedNodeIds = new Set<string>();
     const unregisterToken = {};
     const stream: NodePositionStreamControls = {
-      set: (pos) => setNodePositions([pos]),
-      setMany: setNodePositions,
+      set: (pos) => {
+        const entries = setNodePositions([pos]);
+        for (const { nodeId } of entries) touchedNodeIds.add(nodeId);
+        events.emit('onNodeMoveStream', entries);
+      },
+      setMany: (positions) => {
+        const entries = setNodePositions(positions);
+        for (const { nodeId } of entries) touchedNodeIds.add(nodeId);
+        events.emit('onNodeMoveStream', entries);
+      },
       stop: () => {
+        if (!activeStream) return;
         activeStream = false;
         devStreamRegistry?.unregister(unregisterToken);
-        events.emit('onNodesMoved');
+        const committed = [...touchedNodeIds].map((nodeId) => ({
+          nodeId,
+          position: { ...getNodePosition(nodeId) },
+        }));
+        events.emit('onNodePositionsCommitted', committed);
         events.emit('onNodeMoveStreamEnd');
       },
     };
@@ -67,12 +85,12 @@ export const createNodePositionStore = (
   return {
     get: getNodePosition,
     set: (position) => {
-      setNodePositions([position]);
-      events.emit('onNodesMoved');
+      const entries = setNodePositions([position]);
+      events.emit('onNodePositionsCommitted', entries);
     },
     setMany: (positions) => {
-      setNodePositions(positions);
-      events.emit('onNodesMoved');
+      const entries = setNodePositions(positions);
+      events.emit('onNodePositionsCommitted', entries);
     },
     createStream,
     _internal: {

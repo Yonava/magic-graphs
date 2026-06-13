@@ -8,6 +8,11 @@ export type Position = {
   z: number;
 };
 
+export type NodePositionEntry = {
+  nodeId: GNode['id'];
+  position: Position;
+};
+
 export type NodePositionUpdate = {
   nodeId: GNode['id'];
   update: MaybeGetter<Partial<Position>, [Position]>;

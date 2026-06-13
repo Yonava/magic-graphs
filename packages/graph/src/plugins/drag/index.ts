@@ -16,6 +16,14 @@ import { GraphWithNodeDrag, NodeIdDragState } from './types.ts';
 import { useDragCursor } from './useDragCursor.ts';
 
 export const DRAG_EVENT_ID = 'drag';
+export const DRAG_CANVAS_ELEMENT_DATA_FIELD = 'dragNodeIds';
+
+const validateNodeIds = (nodeIdsOrJunk: unknown): nodeIdsOrJunk is string[] => {
+  if (!Array.isArray(nodeIdsOrJunk)) return false;
+  return nodeIdsOrJunk.every(
+    (nodeIdOrJunk) => typeof nodeIdOrJunk === 'string',
+  );
+};
 
 export const useNodeDragPlugin = <
   TransactionWrapperOptions,
@@ -38,26 +46,27 @@ export const useNodeDragPlugin = <
   let nodePositionStream: NodePositionStreamControls | undefined;
 
   const beginDrag = (
-    { elements: items, coords, event }: CanvasGraphMouseEvent,
+    { elements, coords, event }: CanvasGraphMouseEvent,
     consume: () => void,
   ) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
 
-    const topItem = items.at(-1);
-    if (!topItem) return;
+    const topElement = elements.at(-1);
+    if (!topElement) return;
 
     const nodeIdsToDrag = [];
 
-    if (topItem.graphType === 'node') {
-      nodeIdsToDrag.push(topItem.id);
+    if (topElement.graphType === 'node') {
+      nodeIdsToDrag.push(topElement.id);
     }
 
-    if (topItem.graphType === 'encapsulated-node-box') {
-      const nodeIdsInBox = nullThrows(
-        topItem.data?.nodeIds as string[],
-        'encapsulated node box must provide node ids in canvas element metadata',
-      );
-      nodeIdsToDrag.push(...nodeIdsInBox);
+    const nodeIds = topElement.data?.[DRAG_CANVAS_ELEMENT_DATA_FIELD];
+    if (nodeIds !== undefined) {
+      if (!validateNodeIds(nodeIds)) {
+        console.warn('node drag expected array of node ids: got', nodeIds);
+      } else {
+        nodeIdsToDrag.push(...nodeIds);
+      }
     }
 
     if (nodeIdsToDrag.length === 0) return;

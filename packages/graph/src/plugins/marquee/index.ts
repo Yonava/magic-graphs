@@ -18,6 +18,7 @@ import {
   CanvasPlugin,
   GraphUnderCursor,
 } from '../canvas/types.ts';
+import { DRAG_CANVAS_ELEMENT_DATA_FIELD } from '../drag/index.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
@@ -162,7 +163,9 @@ export const useMarqueePlugin = <
       shape,
       priority: Infinity,
       data: {
-        nodeIds: graph.focus.focusedNodes.value.map((n) => n.id),
+        [DRAG_CANVAS_ELEMENT_DATA_FIELD]: graph.focus.focusedNodes.value.map(
+          (n) => n.id,
+        ),
         [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: graph.canvas.theme._resolveToken(
           'marquee.encapsulatedNodeBox.cursor',
         ),
@@ -202,7 +205,7 @@ export const useMarqueePlugin = <
       { before: [ANCHOR_EVENT_ID] },
     );
 
-    events.subscribe('onTransactionComplete', updateEncapsulatedNodeBox);
+    events.subscribe('onNodePositionsCommitted', updateEncapsulatedNodeBox);
   };
 
   const deactivate = () => {
