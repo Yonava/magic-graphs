@@ -1,36 +1,36 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
-
-import { CoreEventMap } from './core/events.ts';
-import { useCoreGraph } from './core/index.ts';
-import { NodeAnchorEventMap } from './plugins/anchors/events.ts';
-import { useNodeAnchorPlugin } from './plugins/anchors/index.ts';
-import { NodeAnchorPlugin } from './plugins/anchors/types.ts';
-import { CanvasEventMap } from './plugins/canvas/events.ts';
-import { useCanvasPlugin } from './plugins/canvas/index.ts';
-import { usePreferredThemePreset } from './plugins/canvas/themes/usePreferredThemePreset.ts';
-import { CanvasPlugin } from './plugins/canvas/types.ts';
-import { useCharacteristics } from './plugins/characteristics/index.ts';
-import { NodeDragEventMap } from './plugins/drag/events.ts';
-import { useNodeDragPlugin } from './plugins/drag/index.ts';
-import { NodeDragPlugin } from './plugins/drag/types.ts';
-import { FocusEventMap } from './plugins/focus/events.ts';
-import { useFocusPlugin } from './plugins/focus/index.ts';
+import { CoreEventMap } from '@magic/graph/core/events';
+import { useCoreGraph } from '@magic/graph/core/index';
+import { NodeAnchorEventMap } from '@magic/graph/plugins/anchors/events';
+import { useNodeAnchorPlugin } from '@magic/graph/plugins/anchors/index';
+import { NodeAnchorPlugin } from '@magic/graph/plugins/anchors/types';
+import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
+import { useCanvasPlugin } from '@magic/graph/plugins/canvas/index';
+import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
+import { useCharacteristics } from '@magic/graph/plugins/characteristics/index';
+import { NodeDragEventMap } from '@magic/graph/plugins/drag/events';
+import { useNodeDragPlugin } from '@magic/graph/plugins/drag/index';
+import { NodeDragPlugin } from '@magic/graph/plugins/drag/types';
+import { FocusEventMap } from '@magic/graph/plugins/focus/events';
+import { useFocusPlugin } from '@magic/graph/plugins/focus/index';
 import {
   FocusPlugin,
   FocusTransactionWrapperOptions,
-} from './plugins/focus/types.ts';
-import { HistoryEventMap } from './plugins/history/events.ts';
-import { useHistoryPlugin } from './plugins/history/index.ts';
+} from '@magic/graph/plugins/focus/types';
+import { HistoryEventMap } from '@magic/graph/plugins/history/events';
+import { useHistoryPlugin } from '@magic/graph/plugins/history/index';
 import {
   HistoryPlugin,
   HistoryTransactionWrapperOptions,
-} from './plugins/history/types.ts';
-import { useInteractive } from './plugins/interactive/index.ts';
-import { useMarqueePlugin } from './plugins/marquee/index.ts';
-import { useShortcuts } from './plugins/shortcut/index.ts';
-import type { GraphSettings } from './settings/index.ts';
-import { useAdjacencyList } from './useAdjacencyList.ts';
-import { useTransitionMatrix } from './useTransitionMatrix.ts';
+} from '@magic/graph/plugins/history/types';
+import { useMarqueePlugin } from '@magic/graph/plugins/marquee/index';
+import { useShortcuts } from '@magic/graph/plugins/shortcut/index';
+import type { GraphSettings } from '@magic/graph/settings/index';
+import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
+import { useTransitionMatrix } from '@magic/graph/useTransitionMatrix';
+
+import { useInteractive } from './interactive/index.ts';
+import { usePreferredThemePreset } from './usePreferredThemePreset.ts';
 
 const useGraphWithPlugins = (
   canvas: MagicCanvasProps,
