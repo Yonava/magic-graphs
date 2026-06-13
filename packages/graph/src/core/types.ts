@@ -10,6 +10,7 @@ import {
 } from './actions/types.ts';
 import { CoreEventMap } from './events.ts';
 import { CoreGraphHelpers } from './helpers/types.ts';
+import { NodePositioningSystemControls } from './nodePositioningSystem.ts';
 
 export type CoreGraph<
   TransactionWrapperOptions = {},
@@ -39,6 +40,7 @@ export type CoreGraph<
   settings: Ref<GraphSettings>;
 
   helpers: CoreGraphHelpers;
+  nps: NodePositioningSystemControls;
 } & Plugins;
 
 export type InternalActions = {

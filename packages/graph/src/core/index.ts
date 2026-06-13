@@ -100,5 +100,6 @@ export const useCoreGraph = (
     events,
 
     settings,
+    nps,
   };
 };
