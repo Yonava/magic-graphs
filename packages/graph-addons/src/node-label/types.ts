@@ -1,0 +1,26 @@
+import { MaybeGetter } from '@magic/utils/maybeGetter/index';
+
+export type NodeLabelEntry = {
+  nodeId: string;
+  label: string;
+};
+
+export type NodeLabelUpdate = {
+  nodeId: string;
+  label: MaybeGetter<string, [string]>;
+};
+
+export type NodeLabelStoreControls = {
+  /** Returns the label of a node. */
+  get: (nodeId: string) => string;
+  /** Updates a single node's label. */
+  set: (label: NodeLabelUpdate) => void;
+  /** Updates multiple nodes' labels. */
+  setMany: (labels: NodeLabelUpdate[]) => NodeLabelEntry[];
+  /** @internal */
+  _internal: {
+    add: (label: NodeLabelUpdate[]) => void;
+    remove: (nodeIds: string[]) => void;
+    nodeIdToLabel: Map<string, string>;
+  };
+};

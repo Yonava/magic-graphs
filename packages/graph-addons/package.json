@@ -16,7 +16,8 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
-    "@magic/graph": "workspace:*"
+    "@magic/graph": "workspace:*",
+    "@magic/utils": "workspace:*"
   },
   "devDependencies": {
     "vue": "catalog:"
