@@ -30,13 +30,14 @@ export const createNodeLabel = <
     return labels.map(({ nodeId, label: labelOrLabelGetter }) => {
       const currentLabel = getNodeLabel(nodeId);
       const label = getValue(labelOrLabelGetter, currentLabel);
-
+      nodeIdToLabel.set(nodeId, label);
       return { nodeId, label };
     });
   };
 
   const getNewLabel = createLabelGenerator({
     getLabels: () =>
+      // TODO this breaks when multiple nodes are added in bulk and implicitly requires newly added not to be the last node in the nodes array. This needs to change
       graph.nodes.value.slice(0, -1).map((n) => getNodeLabel(n.id)),
     sequence: UPPERCASE_ALPHABET,
   });
