@@ -1,4 +1,4 @@
-import type { GNode } from '@magic/graph/types';
+
 import type { Graph } from '../useGraphWithCanvas.ts';
 import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
 
@@ -6,7 +6,7 @@ import { computed } from 'vue';
 import type { Ref } from 'vue';
 
 /** node id -> depth in a BFS tree */
-export type NodeIdToDepth = Map<GNode['id'], number>;
+export type NodeIdToDepth = Map<string, number>;
 
 /**
  * get the depth of each node in the tree rooted at startNode
@@ -18,11 +18,11 @@ export type NodeIdToDepth = Map<GNode['id'], number>;
  * and the depth of the tree itself
  * @example
  * const { nodeIdToDepth, depthToNodeIds, depth } = getNodeDepths(startNode, adjList)
- * // nodeIdToDepth: Map<GNode['id'], number>
- * // depthToNodeIds: GNode['id'][][] (array of node ids at each depth)
+ * // nodeIdToDepth: Map<string, number>
+ * // depthToNodeIds: string[][] (array of node ids at each depth)
  * // depth: number (with root node at depth 0)
  */
-export const getNodeDepths = (startNode: GNode, adjList: AdjacencyList) => {
+export const getNodeDepths = (startNode: { id: string }, adjList: AdjacencyList) => {
   const nodeIdToDepth: NodeIdToDepth = new Map();
   if (!adjList[startNode.id]) {
     throw new Error(
@@ -56,7 +56,7 @@ export const getNodeDepths = (startNode: GNode, adjList: AdjacencyList) => {
 
   return {
     nodeIdToDepth,
-    depthToNodeIds: Array.from(nodeIdToDepth).reduce<GNode['id'][][]>(
+    depthToNodeIds: Array.from(nodeIdToDepth).reduce<string[][]>(
       (acc, [nodeId, depth]) => {
         if (!acc[depth]) {
           acc[depth] = [];
@@ -80,7 +80,7 @@ export const getNodeDepths = (startNode: GNode, adjList: AdjacencyList) => {
  * @param startNode the root node of the tree
  * @returns reactive map of node id to depth and the depth of the tree
  */
-export const useNodeDepth = (graph: Graph, startNode: Ref<GNode>) => {
+export const useNodeDepth = (graph: Graph, startNode: Ref<{ id: string }>) => {
   return computed(() =>
     getNodeDepths(startNode.value, graph.adjacencyList.adjacencyList.value),
   );

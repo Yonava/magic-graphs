@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 import { computed } from 'vue';
@@ -8,12 +7,12 @@ import type { ComponentAdjacencyMap } from './useComponentAdjacencyMap.ts';
 /**
  * a set of states within a markov chain recurrent or transient class
  */
-export type MarkovClass = Set<GNode['id']>;
+export type MarkovClass = Set<string>;
 
 /**
  * a map of node ids to the index of the recurrent or transient class they belong to
  */
-export type MarkovStateToClassIndex = Map<GNode['id'], number>;
+export type MarkovStateToClassIndex = Map<string, number>;
 
 export const getMarkovClasses = (
   connectedComponents: Graph['characteristics']['stronglyConnectedComponents']['value'],

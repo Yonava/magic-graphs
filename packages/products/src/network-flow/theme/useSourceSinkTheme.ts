@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
@@ -19,19 +18,19 @@ export const useSourceSinkTheme = (
 ) => {
   const { set, remove } = graph.canvas.theme.createLayer(themeId);
 
-  const isSource = (node: GNode) => sourceNode.get(graph)?.id === node.id;
-  const isSink = (node: GNode) => sinkNode.get(graph)?.id === node.id;
+  const isSource = ({ id }: { id: string }) => sourceNode.get(graph)?.id === id;
+  const isSink = ({ id }: { id: string }) => sinkNode.get(graph)?.id === id;
 
-  const colorSourceSink = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
+  const colorSourceSink = ({ id }: { id: string }) => {
+    if (graph.focus.isFocused(id)) return;
 
-    if (isSource(node)) return SOURCE_COLOR;
-    else if (isSink(node)) return SINK_COLOR;
+    if (isSource({ id })) return SOURCE_COLOR;
+    else if (isSink({ id })) return SINK_COLOR;
   };
 
-  const labelSourceSink = (node: GNode) => {
-    if (isSource(node)) return SOURCE_LABEL;
-    else if (isSink(node)) return SINK_LABEL;
+  const labelSourceSink = ({ id }: { id: string }) => {
+    if (isSource({ id })) return SOURCE_LABEL;
+    else if (isSink({ id })) return SINK_LABEL;
   };
 
   const stylize = () => {

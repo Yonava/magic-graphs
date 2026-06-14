@@ -36,7 +36,7 @@ describe(createEventHub, () => {
     const subscriberB = vi.fn();
     hub.subscribe('onNodesAdded', subscriberA);
     hub.subscribe('onNodesAdded', subscriberB);
-    hub.emit('onNodesAdded', [{ id: '1', label: 'a' }]);
+    hub.emit('onNodesAdded', [{ id: '1' }]);
     expect(subscriberA).toHaveBeenCalledExactlyOnceWith([
       { id: '1', label: 'a' },
     ]);
@@ -53,9 +53,7 @@ describe(createEventHub, () => {
   });
 
   it('does not throw or fail when emitting an event with no subscribers', () => {
-    expect(() =>
-      hub.emit('onNodesAdded', [{ id: '1', label: 'a' }]),
-    ).not.toThrow();
+    expect(() => hub.emit('onNodesAdded', [{ id: '1' }])).not.toThrow();
   });
 
   it('exposes a Set containing all unique event names in the keys property', () => {

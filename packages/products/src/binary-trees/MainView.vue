@@ -22,7 +22,7 @@
     if (simRunner.value) return;
     const { focusedNodes } = graph.focus;
     if (focusedNodes.value.length === 1)
-      tree.removeNode(Number(focusedNodes.value[0].label));
+      tree.removeNode(Number(graph.labels.get(focusedNodes.value[0].id)));
     if (focusedNodes.value.length === graph.nodes.value.length)
       tree.resetTree();
     graph.focus.clear();

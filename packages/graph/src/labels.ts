@@ -23,8 +23,8 @@ export const NUMBERS = Array.from({ length: 999 }, (_, i) =>
  *  console.log(newLabel); // 'A'
  */
 export const useGraphLabelGetter =
-  (labelledItems: Ref<LabelledItem[]>, sequence: string[]) => () => {
-    let labels = labelledItems.value.map(({ label }) => label);
+  (labelledItems: { label: string }[], sequence: string[]) => () => {
+    let labels = labelledItems.map(({ label }) => label);
 
     let timesAround = 0;
     let index = 0;
@@ -50,25 +50,3 @@ export const useGraphLabelGetter =
 
     return newLabel;
   };
-
-/**
- * takes a graph and gives a function that will return the next available letter label (A-Z)
- * for a node in the graph
- *
- * @param graph - a graph instance
- * @returns a function that will return the next available letter label
- */
-export const useNodeLetterLabelGetter = (graph: Pick<CoreGraph, 'nodes'>) => {
-  return useGraphLabelGetter(graph.nodes, LETTERS);
-};
-
-/**
- * takes a graph and gives a function that will return the next available number label (1-99)
- * for a node in the graph
- *
- * @param graph - a graph instance
- * @returns a function that will return the next available number label
- */
-export const useNodeNumberLabelGetter = (graph: Pick<CoreGraph, 'nodes'>) => {
-  return useGraphLabelGetter(graph.nodes, NUMBERS);
-};

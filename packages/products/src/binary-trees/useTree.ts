@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import type { Graph } from '../shared/useGraphWithCanvas.ts';
 
 import { computed, ref } from 'vue';
@@ -16,7 +15,7 @@ export const useTree = (graph: Graph) => {
 
   const mapNodeIds = <T>(getter: (node: TreeNode) => T) => {
     const nodes = graph.nodes.value;
-    return nodes.reduce<Map<GNode['id'], T>>((acc, node) => {
+    return nodes.reduce<Map<string, T>>((acc, node) => {
       const tNode = tree.getNode(Number(node.id));
       if (!tNode) return acc;
       acc.set(node.id, getter(tNode));

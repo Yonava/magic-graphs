@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 
 import { useSCCColorizer } from '../../sandbox/ui/GraphInfoMenu/useSCCColorizer.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
@@ -10,10 +9,10 @@ export const useMarkovColorizer = (graph: Graph, markov: MarkovChain) => {
 
   const { set, remove } = graph.canvas.theme.createLayer(USETHEME_ID);
 
-  const colorNodeBorder = (node: GNode) => {
-    if (graph.focus.isFocused(node.id))
+  const colorNodeBorder = ({ id }: { id: string }) => {
+    if (graph.focus.isFocused(id))
       return graph.canvas.theme.resolvedPreset.value.node.focus.borderColor;
-    if (markov.transientStates.value.has(node.id))
+    if (markov.transientStates.value.has(id))
       return graph.canvas.theme.resolvedPreset.value.node.default.borderColor;
   };
 

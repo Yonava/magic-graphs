@@ -1,5 +1,5 @@
 import { NodePositionUpdate } from '@magic/graph/core/positions/types';
-import type { GEdge, GNode } from '@magic/graph/types';
+import type { GEdge } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { nullThrows } from '@magic/utils/assert';
 import { Fraction } from 'mathjs';
@@ -80,11 +80,11 @@ export const treeArrayToGraph = (
     graph.actions.addNode(
       {
         id: treeNodeKey.toString(),
+        // @ts-expect-error migration
         label: treeNodeKey.toString(),
         ...coordsOfNodeOnTree,
       },
       {
-        // @ts-expect-error migration
         animate: true,
         focus: false,
       },

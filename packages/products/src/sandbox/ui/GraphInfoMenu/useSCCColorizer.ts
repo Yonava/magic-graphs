@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import { useNodeColor } from '../../../shared/graph-theme-helpers/useNodeColor.ts';
@@ -18,7 +17,7 @@ const COLORS = [
 export const useSCCColorizer = (graph: Graph, themeId = SCC_THEME_ID) =>
   useNodeColor(
     graph,
-    (nodeId: GNode['id']) => {
+    (nodeId: string) => {
       const map = graph.characteristics.nodeIdToConnectedComponent.value;
       const scc = map.get(nodeId);
       if (scc === undefined) return;

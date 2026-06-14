@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 
 import { ref } from 'vue';
@@ -57,7 +56,7 @@ export const useTreeGraphPositioner = (
 
   const optionsRef = ref(treeOptions);
 
-  const graphPositioner = (rootNode: GNode) => {
+  const graphPositioner = (rootNode: { id: string }) => {
     const { adjacencyList } = graph.adjacencyList;
     const nodeDepths = getNodeDepths(rootNode, adjacencyList.value);
     const positionerOptions: TreeGraphPositionerOptions = {
@@ -78,7 +77,7 @@ export const useTreeGraphPositioner = (
     return positioner(positionerOptions);
   };
 
-  const shapeGraph = async (rootNode: GNode) => {
+  const shapeGraph = async (rootNode: { id: string }) => {
     const newPositions = graphPositioner(rootNode);
     if (!newPositions) return;
     graph.positions.setMany(newPositions);

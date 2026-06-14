@@ -20,7 +20,7 @@
   const SCCs = computed(() => {
     const components =
       graph.value.characteristics.stronglyConnectedComponents.value;
-    return components.map((nodes) => nodes.map((node) => node.label));
+    return components.map((nodes) => nodes.map((node) => graph.value.labels.get(node.id)));
   });
 
   const isBipartite = computed(

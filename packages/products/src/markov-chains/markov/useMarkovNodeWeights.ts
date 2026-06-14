@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { Fraction } from 'mathjs';
 
@@ -7,7 +6,7 @@ import { computed } from 'vue';
 /**
  * a map of node ids to the sum of their outgoing edge weights
  */
-export type NodeIdToOutgoingWeight = Map<GNode['id'], Fraction>;
+export type NodeIdToOutgoingWeight = Map<string, Fraction>;
 
 /**
  * maps node ids to the sum of their outgoing edge weights

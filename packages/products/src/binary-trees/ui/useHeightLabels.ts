@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import { useNodeColor } from '../../shared/graph-theme-helpers/useNodeColor.ts';
@@ -15,7 +14,7 @@ export const useHeightLabels = (graph: Graph, tree: TreeControls) => {
     color: [colors.GREEN_400, colors.GREEN_700],
   });
 
-  const colorGetter = (nodeId: GNode['id']) =>
+  const colorGetter = (nodeId: string) =>
     mapColor(nodeIdToHeight.value.get(nodeId) ?? 0);
 
   const { label, unlabel } = useNodeLabel(graph, nodeIdToHeight, 'height-text');

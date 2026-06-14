@@ -51,30 +51,6 @@ export const getAdjacencyList = (graph: CoreGraphForAdjacencyList) => {
 };
 
 /**
- * creates a human readable adjacency list mapping node labels to the labels of their neighbors
- *
- * @returns an adjacency list using labels of nodes as keys as opposed to ids
- * @example getLabelAdjacencyList(graph)
- * // { 'A': ['B'], 'B': ['A'] }
- */
-export const getLabelAdjacencyList = (graph: CoreGraphForAdjacencyList) => {
-  const adjList = getAdjacencyList(graph);
-  const adjListEntries = Object.entries(adjList);
-
-  return adjListEntries.reduce<AdjacencyList>((acc, [keyNodeId, toNodeIds]) => {
-    const keyNode = graph.getNode(keyNodeId);
-    const toNodes = toNodeIds.map((to) => graph.getNode(to));
-
-    if (!keyNode) throw new Error('the "key node" is missing from the graph');
-    if (toNodes.some((node) => !node))
-      throw new Error('a "to node" is missing from the graph');
-
-    acc[keyNode.label] = (toNodes as GNode[]).map((node) => node.label);
-    return acc;
-  }, {});
-};
-
-/**
  * a mapping of nodes to their neighbors where
  * neighbors are the full node objects instead of just their ids or labels
  */
@@ -191,7 +167,6 @@ export const useAdjacencyList = <
 
   const update = () => {
     adjacencyList.value = getAdjacencyList(graph);
-    labelAdjacencyList.value = getLabelAdjacencyList(graph);
     fullNodeAdjacencyList.value = getFullNodeAdjacencyList(graph);
     weightedAdjacencyList.value = getWeightedAdjacencyList(graph);
 

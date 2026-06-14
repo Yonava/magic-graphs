@@ -10,13 +10,6 @@ const ALPHABET_WITHOUT_SOURCE_SINK = LETTERS.filter(
 );
 
 /**
- * labeller network flow graph instances (nodes)
- */
-export const flowNodeLabelGetter = (graph: Pick<Graph, 'nodes'>) => {
-  return useGraphLabelGetter(graph.nodes, ALPHABET_WITHOUT_SOURCE_SINK);
-};
-
-/**
  * settings for the network flow useGraph instance
  */
 export const FLOW_GRAPH_SETTINGS: Partial<GraphSettings> = {

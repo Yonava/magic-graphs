@@ -94,7 +94,7 @@
               secondary
               class="rounded-md px-2 py-1 font-bold text-xs animate-pulse"
             >
-              <h2>Tracking Node {{ rootNode.label }}</h2>
+              <h2>Tracking Node {{ graph.labels.get(rootNode.id) }}</h2>
             </GWell>
           </div>
         </div>

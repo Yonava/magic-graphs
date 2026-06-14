@@ -30,9 +30,9 @@
           <GNode :node="getNode(key)" />
           <template #content>
             <GWell class="px-3 py-2 rounded-md">
-              <b>{{ getNode(key).label }}</b>
+              <b>{{ graph.labels.get(key) }}</b>
               links to
-              <b>{{ getCommaList(value.map((n) => n.label)) || 'nothing' }}</b>
+              <b>{{ getCommaList(value.map((n) => graph.labels.get(n.id))) || 'nothing' }}</b>
             </GWell>
           </template>
         </CPopoverTooltip>
@@ -55,7 +55,7 @@
                 class="relative flex flex-col"
               >
                 <span class="leading-[15px]">
-                  {{ node.label }}
+                  {{ graph.labels.get(node.id) }}
                 </span>
                 <span
                   v-if="isWeighted"
@@ -67,9 +67,9 @@
 
               <template #content>
                 <GWell class="p-2 rounded-md">
-                  <b>{{ node.label }}</b>
+                  <b>{{ graph.labels.get(node.id) }}</b>
                   links to
-                  <b>{{ getNode(key).label }}</b>
+                  <b>{{ graph.labels.get(key) }}</b>
                   <span v-if="isWeighted">
                     with a cost of
                     <b>{{ node.weight.toFraction() }}</b>

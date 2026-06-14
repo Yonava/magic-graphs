@@ -1,4 +1,4 @@
-import type { GEdge, GNode } from '@magic/graph/types';
+import type { GEdge } from '@magic/graph/types';
 import { getAdjacencyList } from '@magic/graph/useAdjacencyList';
 import { Fraction } from 'mathjs';
 
@@ -15,8 +15,8 @@ export const fordFulkerson = (
     sourceId,
     sinkId,
   }: {
-    sourceId: GNode['id'];
-    sinkId: GNode['id'];
+    sourceId: string;
+    sinkId: string;
   },
 ) => {
   const edgeIdToWeight = graph.edges.value.reduce<FlowTrace>((record, edge) => {
@@ -29,11 +29,11 @@ export const fordFulkerson = (
   const adjList = getAdjacencyList(graph);
 
   const dfs = (
-    s: GNode['id'],
-    t: GNode['id'],
+    s: string,
+    t: string,
     visited: Set<string> | undefined = undefined,
-    path: GNode['id'][] | undefined = undefined,
-  ): GNode['id'][] | undefined => {
+    path: string[] | undefined = undefined,
+  ): string[] | undefined => {
     if (path === undefined) path = [];
     if (visited === undefined) visited = new Set<string>();
 
