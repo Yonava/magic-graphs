@@ -2,10 +2,12 @@ import type { CoreEventMap } from '@magic/graph/core/events';
 import { CoreGraph } from '@magic/graph/core/types';
 import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
 import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
-import { GNode, GraphPlugin } from '@magic/graph/types';
+import { GNode } from '@magic/graph/types';
 import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
 
+import { UPPERCASE_ALPHABET } from './constants.ts';
+import { createLabelGetter } from './createLabelGetter.ts';
 import { createLabelThemer } from './createLabelThemer.ts';
 import { GraphWithNodeLabel, NodeLabelStoreControls } from './types.ts';
 
@@ -33,8 +35,14 @@ export const createNodeLabel = <
     });
   };
 
+  const getNewLabel = createLabelGetter({
+    getLabels: () =>
+      graph.nodes.value.slice(0, -1).map((n) => getNodeLabel(n.id)),
+    sequence: UPPERCASE_ALPHABET,
+  });
+
   const addNodesToLabelMap = (nodes: Readonly<GNode[]>) => {
-    for (const { id } of nodes) nodeIdToLabel.set(id, 'L');
+    for (const { id } of nodes) nodeIdToLabel.set(id, getNewLabel());
   };
 
   const removeNodesFromLabelMap = (nodeIds: Readonly<string[]>) => {

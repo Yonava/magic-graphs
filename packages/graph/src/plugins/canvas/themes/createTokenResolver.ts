@@ -8,8 +8,8 @@ import type { Ref } from 'vue';
 import type { GraphTheme, ThemePreset } from '../themes/index.ts';
 import { ALL_THEME_PRESETS } from '../themes/index.ts';
 import {
-  type ThemeOverrides,
   type ThemeOverride,
+  type ThemeOverrides,
   type ThemeToken,
 } from '../themes/types.ts';
 
@@ -20,12 +20,11 @@ export type TokenOverrides<Token extends ThemeToken> = PathValue<
 >;
 
 /** extracts the getter arguments for a token's ThemeValue, or [] if the token takes a static StyleValue. */
-export type ThemeArgs<Overrides> =
-  Overrides extends ThemeOverride<Builtin>[]
-    ? Extract<Overrides[number]['value'], AnyFunction> extends never
-      ? []
-      : Parameters<Extract<Overrides[number]['value'], AnyFunction>>
-    : [];
+export type ThemeArgs<Overrides> = Overrides extends ThemeOverride<Builtin>[]
+  ? Extract<Overrides[number]['value'], AnyFunction> extends never
+    ? []
+    : Parameters<Extract<Overrides[number]['value'], AnyFunction>>
+  : [];
 
 // TODO remove as part of https://github.com/Yonava/magic-graphs/issues/584
 export const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(

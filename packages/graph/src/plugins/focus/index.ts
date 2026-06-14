@@ -205,6 +205,9 @@ export const useFocusPlugin = <
   for (const [nodeBasePath, nodeFocusPath] of nodeEntries) {
     setThemeOverrideLayer(nodeBasePath as NodeBaseThemePath, (node: GNode) => {
       if (!isFocused(node.id)) return;
+      if (nodeFocusPath === 'node.focus.text') {
+        return console.log('focus text');
+      }
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
       return graph.canvas.theme._resolveToken(nodeFocusPath, node, {

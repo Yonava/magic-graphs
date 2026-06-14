@@ -10,6 +10,7 @@ export const createLabelThemer = (
 
   const activate = () => {
     layer.set('node.default.text', (n) => getLabel(n.id));
+    // TODO will work when focus tokens actually resolve properly
     layer.set('node.focus.text', (n) => getLabel(n.id));
   };
 
