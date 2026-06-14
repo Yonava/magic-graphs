@@ -21,7 +21,7 @@ export const useInteractive = (graph: GraphWithPlugins) => {
 
     if (items.at(-1)?.graphType === 'node') return;
 
-    graph.actions.addNode(coords);
+    graph.actions.addNode({ x: coords.x, y: coords.y });
   };
 
   const doesEdgeConformToRules = (fromNode: GNode, toNode: GNode) => {
@@ -68,14 +68,14 @@ export const useInteractive = (graph: GraphWithPlugins) => {
   const activate = () => {
     graph.events.subscribe('onClick', handleNodeCreation);
     graph.events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
-    graph.nodeAnchor.activate();
+    // graph.nodeAnchor.activate();
     graph.settings.value.edgeLabelsEditable = true;
   };
 
   const deactivate = () => {
     graph.events.unsubscribe('onClick', handleNodeCreation);
     graph.events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
-    graph.nodeAnchor.deactivate();
+    // graph.nodeAnchor.deactivate();
     graph.settings.value.edgeLabelsEditable = false;
   };
 

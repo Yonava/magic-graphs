@@ -13,9 +13,19 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
   const styles = resolveEdgeStyles(graph.resolveToken, edge);
   const { isGraphDirected, isGraphWeighted } = graph.settings.value;
 
-  const { sourceNode, targetNode } = graph.helpers.edges.getConnectedNodes(
-    edge.id,
-  );
+  const { sourceNode: rawSourceNode, targetNode: rawTargetNode } =
+    graph.helpers.edges.getConnectedNodes(edge.id);
+
+  const sourceNode = {
+    ...rawSourceNode,
+    ...graph.positions.get(rawSourceNode.id),
+  } as const;
+
+  const targetNode = {
+    ...rawTargetNode,
+    ...graph.positions.get(rawTargetNode.id),
+  } as const;
+
   const edgesAlongPath = graph.helpers.nodes.getEdgesBetweenConnectedNodes(
     sourceNode.id,
     targetNode.id,
@@ -85,8 +95,8 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
       .map((e) => {
         const nodes = graph.helpers.edges.getConnectedNodes(e.id);
         return e.target === nodes.sourceNode.id
-          ? nodes.targetNode
-          : nodes.sourceNode;
+          ? graph.positions.get(nodes.targetNode.id)
+          : graph.positions.get(nodes.sourceNode.id);
       })
       .filter(
         (point, index, self) =>

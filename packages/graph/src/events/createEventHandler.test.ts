@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { HandlerId, createEventHandler } from './createEventHandler.ts';
 
@@ -7,12 +7,21 @@ type TestEventMap = {
   onHover: () => void;
 };
 
+type TestEventHandler = ReturnType<typeof createEventHandler<TestEventMap>>;
+
 const TEST_HANDLER_ID = 'hub' as HandlerId;
 
 describe(createEventHandler, () => {
+  let handle: TestEventHandler['handle'];
+  let unhandle: TestEventHandler['unhandle'];
+  let fireHandlers: TestEventHandler['fireHandlers'];
+
+  beforeEach(() => {
+    ({ handle, unhandle, fireHandlers } = createEventHandler<TestEventMap>());
+  });
+
   describe('handle', () => {
     it('invokes a registered handler when fireHandlers is called', () => {
-      const { handle, fireHandlers } = createEventHandler<TestEventMap>();
       const cb = vi.fn();
       handle('onClick', cb, TEST_HANDLER_ID);
       fireHandlers('onClick', 42);
@@ -20,7 +29,6 @@ describe(createEventHandler, () => {
     });
 
     it('does not invoke handlers for other events', () => {
-      const { handle, fireHandlers } = createEventHandler<TestEventMap>();
       const cb = vi.fn();
       handle('onHover', cb, TEST_HANDLER_ID);
       fireHandlers('onClick', 1);
@@ -28,7 +36,6 @@ describe(createEventHandler, () => {
     });
 
     it('invokes multiple handlers in priority order', () => {
-      const { handle, fireHandlers } = createEventHandler<TestEventMap>();
       const order: string[] = [];
       handle('onClick', () => order.push('second'), 'second' as HandlerId, {
         before: [],
@@ -43,8 +50,6 @@ describe(createEventHandler, () => {
 
   describe('unhandle', () => {
     it('removes a handler so it is no longer invoked', () => {
-      const { handle, unhandle, fireHandlers } =
-        createEventHandler<TestEventMap>();
       const cb = vi.fn();
       handle('onClick', cb, TEST_HANDLER_ID);
       unhandle('onClick', cb);
@@ -53,8 +58,6 @@ describe(createEventHandler, () => {
     });
 
     it('only removes the specified handler', () => {
-      const { handle, unhandle, fireHandlers } =
-        createEventHandler<TestEventMap>();
       const cb1 = vi.fn();
       const cb2 = vi.fn();
       handle('onClick', cb1, TEST_HANDLER_ID);
@@ -66,14 +69,12 @@ describe(createEventHandler, () => {
     });
 
     it('is a no-op when the event has no handlers', () => {
-      const { unhandle } = createEventHandler<TestEventMap>();
       expect(() => unhandle('onClick', vi.fn())).not.toThrow();
     });
   });
 
   describe('fireHandlers', () => {
     it('stops calling handlers after consume is called', () => {
-      const { handle, fireHandlers } = createEventHandler<TestEventMap>();
       const a = vi.fn((_x: number, consume: () => void) => consume());
       const b = vi.fn();
       handle('onClick', b, 'second' as HandlerId);
@@ -86,7 +87,6 @@ describe(createEventHandler, () => {
     });
 
     it('is a no-op when no handlers are registered for the event', () => {
-      const { fireHandlers } = createEventHandler<TestEventMap>();
       expect(() => fireHandlers('onClick', 1)).not.toThrow();
     });
   });

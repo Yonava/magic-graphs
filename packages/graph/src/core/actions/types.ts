@@ -1,6 +1,7 @@
 import { PartiallyPartial } from '@magic/utils/types';
 
 import { GEdge, GNode } from '../../types.ts';
+import { Position } from '../positions/types.ts';
 import {
   GEdgeUpdateDraft,
   GNodeUpdateDraft,
@@ -56,8 +57,11 @@ export type GraphActions<
    * @returns The newly created node instance.
    */
   addNode: Options['addNode'] extends never
-    ? (node: Partial<GNode>) => GNode
-    : (node: Partial<GNode>, options?: Partial<Options['addNode']>) => GNode;
+    ? (node: Partial<GNode & Position>) => GNode
+    : (
+        node: Partial<GNode & Position>,
+        options?: Partial<Options['addNode']>,
+      ) => GNode;
 
   /**
    * Deletes a single {@link GNode | node} from the graph.
@@ -126,13 +130,13 @@ export type GraphActions<
   addElements: Options['addElements'] extends never
     ? (
         elements: Partial<{
-          nodes: Partial<GNode>[];
+          nodes: Partial<GNode & Position>[];
           edges: UpdateEdge[];
         }>,
       ) => ElementAdditionPayload
     : (
         elements: Partial<{
-          nodes: Partial<GNode>[];
+          nodes: Partial<GNode & Position>[];
           edges: UpdateEdge[];
         }>,
         options?: Options['addElements'],

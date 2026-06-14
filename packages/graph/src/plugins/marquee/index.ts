@@ -11,19 +11,20 @@ import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
 import {
   Aggregator,
   CanvasElement,
   CanvasPlugin,
   GraphUnderCursor,
 } from '../canvas/types.ts';
+import { DRAG_CANVAS_ELEMENT_DATA_FIELD } from '../drag/index.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { GraphWithFocus } from '../focus/types.ts';
 import { MARQUEE_SHAPE_ID } from './constants.ts';
 import { MarqueeEventMap, createMarqueeEventRegistry } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
 import { GraphWithMarquee } from './types.ts';
-import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
 
 export const MARQUEE_EVENT_ID = 'marquee';
 
@@ -145,9 +146,13 @@ export const useMarqueePlugin = <
     const shape = graph.canvas.shapes.shapes.rect({
       id,
       ...box,
-      fillColor: graph.canvas.theme._resolveToken('marquee.encapsulatedNodeBox.color'),
+      fillColor: graph.canvas.theme._resolveToken(
+        'marquee.encapsulatedNodeBox.color',
+      ),
       stroke: {
-        color: graph.canvas.theme._resolveToken('marquee.encapsulatedNodeBox.borderColor'),
+        color: graph.canvas.theme._resolveToken(
+          'marquee.encapsulatedNodeBox.borderColor',
+        ),
         lineWidth: 2,
       },
     });
@@ -158,8 +163,12 @@ export const useMarqueePlugin = <
       shape,
       priority: Infinity,
       data: {
-        nodeIds: graph.focus.focusedNodes.value.map((n) => n.id),
-        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: graph.canvas.theme._resolveToken('marquee.encapsulatedNodeBox.cursor'),
+        [DRAG_CANVAS_ELEMENT_DATA_FIELD]: graph.focus.focusedNodes.value.map(
+          (n) => n.id,
+        ),
+        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: graph.canvas.theme._resolveToken(
+          'marquee.encapsulatedNodeBox.cursor',
+        ),
       },
     } as const;
   };
@@ -196,7 +205,7 @@ export const useMarqueePlugin = <
       { before: [ANCHOR_EVENT_ID] },
     );
 
-    events.subscribe('onTransactionComplete', updateEncapsulatedNodeBox);
+    events.subscribe('onNodeMoveStream', updateEncapsulatedNodeBox);
   };
 
   const deactivate = () => {
@@ -207,7 +216,7 @@ export const useMarqueePlugin = <
     events.unhandle('onContextMenu', disengageMarqueeBox);
     events.unhandle('onMouseMove', setMarqueeBoxDimensions);
 
-    events.unsubscribe('onTransactionComplete', updateEncapsulatedNodeBox);
+    events.unsubscribe('onNodeMoveStream', updateEncapsulatedNodeBox);
 
     if (marqueeBox.value) disengageMarqueeBox();
   };

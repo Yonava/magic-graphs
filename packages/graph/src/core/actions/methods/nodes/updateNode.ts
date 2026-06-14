@@ -1,8 +1,8 @@
+import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
-import { GraphActionsOptions } from '../../useGraphActions.ts';
 
 export const createUpdateNodeHandler = ({
-  graphState,
+  graph,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['updateNode'] => {
   const updateNode: GraphActions['updateNode'] = (update) => {
@@ -10,7 +10,7 @@ export const createUpdateNodeHandler = ({
       updatedNodes: [update],
     });
 
-    const liveNode = graphState.nodes.value.find((n) => n.id === update.id);
+    const liveNode = graph.nodes.value.find((n) => n.id === update.id);
     if (!liveNode) {
       throw new Error(
         `[Graph Actions] Node update succeeded but entity was not found in live state.`,

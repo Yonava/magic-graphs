@@ -1,20 +1,22 @@
+import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
-import { GraphActionsOptions } from '../../useGraphActions.ts';
 
 export const createRemoveElementsHandler = ({
+  graph,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['removeElements'] => {
   const removeElements: GraphActions['removeElements'] = ({
-    nodeIds: removeNodeIds,
-    edgeIds: removeEdgeIds,
+    nodeIds,
+    edgeIds,
   }) => {
-    const { removedNodeIds: removedNodes, removedEdgeIds: removedEdges } =
-      commitTransaction({
-        removeNodeIds,
-        removeEdgeIds,
-      });
+    const { removedNodeIds, removedEdgeIds } = commitTransaction({
+      removeNodeIds: nodeIds,
+      removeEdgeIds: edgeIds,
+    });
 
-    return { removedNodeIds: removedNodes, removedEdgeIds: removedEdges };
+    graph.positions._internal.remove(removedNodeIds);
+
+    return { removedNodeIds, removedEdgeIds };
   };
 
   return removeElements;

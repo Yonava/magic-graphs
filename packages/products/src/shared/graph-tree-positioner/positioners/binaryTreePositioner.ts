@@ -1,9 +1,9 @@
+import { NodePositionUpdate } from '@magic/graph/core/positions/types';
 import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../../useGraphWithCanvas.ts';
 import { Coordinate } from '@magic/shapes/types/utility';
-import { getValue } from '@magic/utils/maybeGetter/index';
 
-import { NodePosition, TreeGraphPositioner } from './types.ts';
+import type { Graph } from '../../useGraphWithCanvas.ts';
+import { TreeGraphPositioner } from './types.ts';
 
 /**
  * an array which maps a tree index (root = 0, left child = 1, right child = 2, etc)
@@ -13,21 +13,21 @@ import { NodePosition, TreeGraphPositioner } from './types.ts';
  * console.log(getTreeIndexToPosition[0]) // { x: 0, y: 0 }
  */
 export const getTreeIndexToPosition = ({
-  rootNodeCoordinate,
+  rootNodeCoordinates,
   xOffset,
   yOffset,
   treeDepth,
 }: {
-  rootNodeCoordinate: Coordinate;
+  rootNodeCoordinates: Coordinate;
   xOffset: number;
   yOffset: number;
   treeDepth: number;
 }) => {
-  const treeIndexToPositionArr: Coordinate[] = [rootNodeCoordinate];
+  const treeIndexToPositionArr: Coordinate[] = [rootNodeCoordinates];
   const totalWidth = Math.pow(2, treeDepth) * xOffset;
 
   for (let i = 1; i <= treeDepth; i++) {
-    const y = rootNodeCoordinate.y + i * yOffset;
+    const y = rootNodeCoordinates.y + i * yOffset;
     const spotsOnThisLevel = Math.pow(2, i);
 
     const xOffset = totalWidth / spotsOnThisLevel;
@@ -39,7 +39,7 @@ export const getTreeIndexToPosition = ({
 
     for (let j = 0; j < spotsOnThisLevel; j++) {
       treeIndexToPositionArr.push({
-        x: rootNodeCoordinate.x + xOffsetPerNode[j],
+        x: rootNodeCoordinates.x + xOffsetPerNode[j],
         y,
       });
     }
@@ -102,15 +102,14 @@ export const binaryTreePositioner: TreeGraphPositioner = ({
   rootNode,
   treeFormationOptions,
 }) => {
-  const newNodePositions: NodePosition[] = [];
+  const newNodePositions: NodePositionUpdate[] = [];
 
   const { xOffset, yOffset, rootNodeCoordinates } = treeFormationOptions;
-  const newRootNodePosition = getValue(rootNodeCoordinates, rootNode);
 
   const { depth: treeDepth } = nodeDepths;
 
   const treeIndexToPosition = getTreeIndexToPosition({
-    rootNodeCoordinate: newRootNodePosition,
+    rootNodeCoordinates,
     xOffset,
     yOffset,
     treeDepth,
@@ -128,7 +127,7 @@ export const binaryTreePositioner: TreeGraphPositioner = ({
     const newPos = treeIndexToPosition[i];
     newNodePositions.push({
       nodeId,
-      coords: newPos,
+      update: newPos,
     });
   }
 

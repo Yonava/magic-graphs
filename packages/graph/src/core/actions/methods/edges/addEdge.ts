@@ -1,9 +1,10 @@
+import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 import Fraction from 'fraction.js';
 
 import { GEdge } from '../../../../types.ts';
+import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
-import { GraphActionsOptions } from '../../useGraphActions.ts';
 
 const getEdgeDefaults = () =>
   ({
@@ -19,32 +20,23 @@ export const resolveEdgeDefaults = (
 });
 
 export const createAddEdgeHandler = ({
-  graphState,
+  graph,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['addEdge'] => {
   const addEdge: GraphActions['addEdge'] = (edge) => {
     const edgeWithDefaults = resolveEdgeDefaults(edge);
 
     const { addedEdges } = commitTransaction({ addEdges: [edgeWithDefaults] });
-    const telemetryEdge = addedEdges[0];
 
-    if (!telemetryEdge) {
-      throw new Error(
-        `[Graph Actions] Failed to append edge. Transaction rejected.`,
-      );
-    }
-
-    const liveEdge = graphState.edges.value.find(
-      (e) => e.id === telemetryEdge.id,
+    const telemetryEdge = nullThrows(
+      addedEdges[0],
+      'Failed to append edge. Transaction rejected.',
     );
 
-    if (!liveEdge) {
-      throw new Error(
-        `[Graph Actions] Edge creation succeeded but entity was not found in live state.`,
-      );
-    }
-
-    return liveEdge;
+    return nullThrows(
+      graph.edges.value.find((e) => e.id === telemetryEdge.id),
+      '[Graph Actions] Edge creation succeeded but entity was not found in live state.',
+    );
   };
 
   return addEdge;

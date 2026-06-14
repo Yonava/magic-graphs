@@ -1,8 +1,7 @@
+import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
-import { GraphActionsOptions } from '../../useGraphActions.ts';
 
 export const createUpdateElementsHandler = ({
-  graphState,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['updateElements'] => {
   const updateElements: GraphActions['updateElements'] = ({

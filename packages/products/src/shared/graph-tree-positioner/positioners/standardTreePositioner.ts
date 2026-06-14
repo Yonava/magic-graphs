@@ -1,7 +1,8 @@
+import { NodePositionUpdate } from '@magic/graph/core/positions/types';
 import { roundToNearestN } from '@magic/utils/math';
 import { getValue } from '@magic/utils/maybeGetter/index';
 
-import { NodePosition, TreeGraphPositioner } from './types.ts';
+import { TreeGraphPositioner } from './types.ts';
 
 export const standardTreePositioner: TreeGraphPositioner = ({
   nodeDepths,
@@ -12,8 +13,8 @@ export const standardTreePositioner: TreeGraphPositioner = ({
   const { xOffset, yOffset, rootNodeCoordinates } = treeFormationOptions;
   const newRootNodePosition = getValue(rootNodeCoordinates, rootNode);
 
-  const newNodePositions: NodePosition[] = [
-    { nodeId: rootNode.id, coords: newRootNodePosition },
+  const newNodePositions: NodePositionUpdate[] = [
+    { nodeId: rootNode.id, update: newRootNodePosition },
   ];
 
   const { depthToNodeIds } = nodeDepths;
@@ -47,7 +48,7 @@ export const standardTreePositioner: TreeGraphPositioner = ({
 
       newNodePositions.push({
         nodeId: node.id,
-        coords: {
+        update: {
           x: roundToNearest10(x),
           y: roundToNearest10(y),
         },

@@ -19,14 +19,6 @@ export type GNode = {
    * the text that appears on the node
    */
   label: string;
-  /**
-   * the x position of the node on the canvas
-   */
-  x: number;
-  /**
-   * the y position of the node on the canvas
-   */
-  y: number;
 };
 
 /**

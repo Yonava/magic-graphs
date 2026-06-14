@@ -1,16 +1,23 @@
 import type { BoundingBox } from '@magic/shapes/types/utility';
 
-import { CanvasGraph } from '../canvas/types.ts';
+import { CoreEventMap } from '../../core/events.ts';
 import type { GNode } from '../../types.ts';
+import { CanvasEventMap } from '../canvas/events.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
+import { GraphWithFocus } from '../focus/types.ts';
 
 export function getSurfaceArea(box: BoundingBox) {
   const { width, height } = box;
   return Math.abs(width * height);
 }
 
-export const getEncapsulatedNodeBox = (
+export const getEncapsulatedNodeBox = <
+  TransactionWrapperOptions,
+  GraphEventMap extends CoreEventMap & CanvasEventMap,
+  Plugins extends CanvasPlugin,
+>(
   nodes: GNode[],
-  graph: { canvas: { theme: Pick<CanvasGraph['theme'], '_resolveToken'> } },
+  graph: GraphWithFocus<TransactionWrapperOptions, GraphEventMap, Plugins>,
 ): BoundingBox => {
   const encapsulatedNodeBox = {
     at: { x: Infinity, y: Infinity },
@@ -26,10 +33,16 @@ export const getEncapsulatedNodeBox = (
     maxY = -Infinity;
 
   for (const node of nodes) {
-    const nodeRadius = graph.canvas.theme._resolveToken('node.default.size', node);
-    const nodeBorderWidth = graph.canvas.theme._resolveToken('node.default.borderWidth', node);
+    const nodeRadius = graph.canvas.theme._resolveToken(
+      'node.default.size',
+      node,
+    );
+    const nodeBorderWidth = graph.canvas.theme._resolveToken(
+      'node.default.borderWidth',
+      node,
+    );
     const nodeArea = nodeRadius + nodeBorderWidth / 2;
-    const { x, y } = node;
+    const { x, y } = graph.positions.get(node.id);
 
     minX = Math.min(minX, x - nodeArea);
     minY = Math.min(minY, y - nodeArea);

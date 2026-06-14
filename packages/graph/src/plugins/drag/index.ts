@@ -3,6 +3,7 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
 import { CoreEventMap } from '../../core/events.ts';
+import { NodePositionStreamControls } from '../../core/positions/types.ts';
 import type { CoreGraph } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
@@ -15,6 +16,14 @@ import { GraphWithNodeDrag, NodeIdDragState } from './types.ts';
 import { useDragCursor } from './useDragCursor.ts';
 
 export const DRAG_EVENT_ID = 'drag';
+export const DRAG_CANVAS_ELEMENT_DATA_FIELD = 'dragNodeIds';
+
+const validateNodeIds = (nodeIdsOrJunk: unknown): nodeIdsOrJunk is string[] => {
+  if (!Array.isArray(nodeIdsOrJunk)) return false;
+  return nodeIdsOrJunk.every(
+    (nodeIdOrJunk) => typeof nodeIdOrJunk === 'string',
+  );
+};
 
 export const useNodeDragPlugin = <
   TransactionWrapperOptions,
@@ -34,28 +43,30 @@ export const useNodeDragPlugin = <
   );
 
   const dragState = createDragState<NodeIdDragState>();
+  let nodePositionStream: NodePositionStreamControls | undefined;
 
   const beginDrag = (
-    { elements: items, coords, event }: CanvasGraphMouseEvent,
+    { elements, coords, event }: CanvasGraphMouseEvent,
     consume: () => void,
   ) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
 
-    const topItem = items.at(-1);
-    if (!topItem) return;
+    const topElement = elements.at(-1);
+    if (!topElement) return;
 
     const nodeIdsToDrag = [];
 
-    if (topItem.graphType === 'node') {
-      nodeIdsToDrag.push(topItem.id);
+    if (topElement.graphType === 'node') {
+      nodeIdsToDrag.push(topElement.id);
     }
 
-    if (topItem.graphType === 'encapsulated-node-box') {
-      const nodeIdsInBox = nullThrows(
-        topItem.data?.nodeIds as string[],
-        'encapsulated node box must provide node ids in canvas element metadata',
-      );
-      nodeIdsToDrag.push(...nodeIdsInBox);
+    const nodeIds = topElement.data?.[DRAG_CANVAS_ELEMENT_DATA_FIELD];
+    if (nodeIds !== undefined) {
+      if (!validateNodeIds(nodeIds)) {
+        console.warn('node drag expected array of node ids: got', nodeIds);
+      } else {
+        nodeIdsToDrag.push(...nodeIds);
+      }
     }
 
     if (nodeIdsToDrag.length === 0) return;
@@ -69,13 +80,25 @@ export const useNodeDragPlugin = <
       ),
     );
 
+    if (nodePositionStream) {
+      throw new Error(
+        'beginDrag called while a node position stream is already active',
+      );
+    }
     dragState.startDrag(coords, { nodeIds: nodeIdsToDrag });
+    nodePositionStream = graph.positions.createStream();
     events.emit('onNodeDragStart', nodes);
   };
 
   const drop = () => {
     const data = dragState.stopDrag();
     if (!data) return;
+    const stream = nullThrows(
+      nodePositionStream,
+      'node position stream controls undefined',
+    );
+    stream.stop();
+    nodePositionStream = undefined;
     events.emit(
       'onNodeDrop',
       data.nodeIds.map((nodeId) =>
@@ -104,15 +127,17 @@ export const useNodeDragPlugin = <
       nullThrows(graph.getNode(nodeId), 'dragged node not found'),
     );
 
-    graph.actions.updateElements({
-      nodes: nodes.map(({ id, x, y }) => ({
-        id,
-        values: {
-          x: x + dx,
-          y: y + dy,
-        },
+    const stream = nullThrows(
+      nodePositionStream,
+      'node position stream controls undefined',
+    );
+
+    stream.setMany(
+      nodes.map((n) => ({
+        nodeId: n.id,
+        update: (pos) => ({ x: pos.x + dx, y: pos.y + dy }),
       })),
-    });
+    );
   };
 
   const cursorTheme = useDragCursor(graph.canvas.theme.createLayer, dragState);

@@ -1,3 +1,4 @@
+import { nullThrows } from '@magic/utils/assert';
 import colors from '@magic/utils/colors';
 
 import { GNode } from '../../../../../types.ts';
@@ -7,13 +8,14 @@ import { textDefaults } from './text.ts';
 
 const nodeCircle: GraphTheme['node']['default']['shape'] = (node, graph) => {
   const styles = resolveNodeStyles(graph.resolveToken, node);
+  const nodePosition = nullThrows(
+    graph.positions.get(node.id),
+    `node position system did not return a position for node with id ${node.id}`,
+  );
 
   return graph.shapes.shapes.circle({
     id: node.id,
-    at: {
-      x: node.x,
-      y: node.y,
-    },
+    at: nodePosition,
     radius: styles.size,
     fillColor: styles.color,
     stroke: {

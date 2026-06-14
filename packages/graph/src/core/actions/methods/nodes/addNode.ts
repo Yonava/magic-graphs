@@ -1,19 +1,18 @@
+import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 
 import { useNodeLetterLabelGetter } from '../../../../labels.ts';
 import { GNode } from '../../../../types.ts';
+import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
-import { GraphActionsOptions } from '../../useGraphActions.ts';
 
 const getNodeDefaults = () =>
   ({
     id: generateId(),
-    x: 0,
-    y: 0,
   }) as const satisfies Partial<GNode>;
 
 export const useResolveNodeDefaults = (
-  graphState: GraphActionsOptions['graphState'],
+  graphState: GraphActionsOptions['graph'],
 ) => {
   const getLabel = useNodeLetterLabelGetter(graphState);
   return (node: Parameters<GraphActions['addNode']>[0]): GNode => ({
@@ -24,29 +23,35 @@ export const useResolveNodeDefaults = (
 };
 
 export const createAddNodeHandler = ({
-  graphState,
+  graph,
   commitTransaction,
 }: GraphActionsOptions): GraphActions['addNode'] => {
-  const resolveNodeDefaults = useResolveNodeDefaults(graphState);
+  const resolveNodeDefaults = useResolveNodeDefaults(graph);
+
   const addNode: GraphActions['addNode'] = (node) => {
     const nodeWithDefaults = resolveNodeDefaults(node);
+
+    // must be before commitTransaction because
+    // onTransactionComplete is used to refresh the graphUnderCursor
+    // state, and to do that the schemas need to be resolved which requires
+    // a lookup to the node positioning system.
+    // I don't like putting this call before knowing if the transaction
+    // is successful because if the transaction fails, node
+    // positioning system will hold a reference to a node id that
+    // doesn't exist in the graph
+    graph.positions._internal.add([nodeWithDefaults]);
+
     const { addedNodes } = commitTransaction({ addNodes: [nodeWithDefaults] });
 
-    const telemetryNode = addedNodes[0];
-    if (!telemetryNode) {
-      throw new Error(
-        `[Graph Actions] Failed to append node. Transaction rejected.`,
-      );
-    }
-
-    const liveNode = graphState.nodes.value.find(
-      (n) => n.id === telemetryNode.id,
+    const telemetryNode = nullThrows(
+      addedNodes[0],
+      '[Graph Actions] Failed to append node. Transaction rejected.',
     );
-    if (!liveNode) {
-      throw new Error(
-        `[Graph Actions] Node creation succeeded but entity was not found in live state.`,
-      );
-    }
+
+    const liveNode = nullThrows(
+      graph.nodes.value.find((n) => n.id === telemetryNode.id),
+      '[Graph Actions] Node creation succeeded but entity was not found in live state.',
+    );
 
     return liveNode;
   };
