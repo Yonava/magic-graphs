@@ -38,6 +38,7 @@ export const createNodeLabel = <
   const getNewLabel = createLabelGenerator({
     getLabels: () =>
       // TODO this breaks when multiple nodes are added in bulk and implicitly requires newly added not to be the last node in the nodes array. This needs to change
+      // https://github.com/Yonava/magic-graphs/issues/700
       graph.nodes.value.slice(0, -1).map((n) => getNodeLabel(n.id)),
     sequence: UPPERCASE_ALPHABET,
   });
