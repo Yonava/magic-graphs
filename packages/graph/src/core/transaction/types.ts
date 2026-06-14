@@ -6,7 +6,7 @@ export type GraphState = {
 };
 
 export type TransactionOptions = {
-  getGraphState: () => GraphState;
+  getGraph: () => GraphState;
   onTransactionSucceeded: (payload: TransactionPayload) => void;
 };
 

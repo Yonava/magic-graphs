@@ -6,11 +6,11 @@ import { createEmptyPayload } from './createEmptyPayload.ts';
 import { TransactionPayload } from './types.ts';
 import { useCommitTransaction } from './useCommitTransaction.ts';
 
-describe('useCommitTransaction', () => {
+describe(useCommitTransaction, () => {
   it('handles adding a node', () => {
     const newNode: GNode = { id: 'new-node', label: '' };
     const commitTransaction = useCommitTransaction({
-      getGraphState: () => ({ nodes: [], edges: [] }),
+      getGraph: () => ({ nodes: [], edges: [] }),
       onTransactionSucceeded: () => {},
     });
     const expectedPayload: TransactionPayload = {
@@ -32,7 +32,7 @@ describe('useCommitTransaction', () => {
     };
 
     const commitTransaction = useCommitTransaction({
-      getGraphState: () => ({
+      getGraph: () => ({
         nodes: [node1, node2],
         edges: [connectedEdge],
       }),
@@ -57,7 +57,7 @@ describe('useCommitTransaction', () => {
     };
 
     const commitTransaction = useCommitTransaction({
-      getGraphState: () => ({ nodes: [existingNode], edges: [] }),
+      getGraph: () => ({ nodes: [existingNode], edges: [] }),
       onTransactionSucceeded: () => {},
     });
 
@@ -84,7 +84,7 @@ describe('useCommitTransaction', () => {
     const successSpy = vi.fn();
 
     const commitTransaction = useCommitTransaction({
-      getGraphState: () => ({ nodes: [], edges: [] }),
+      getGraph: () => ({ nodes: [], edges: [] }),
       onTransactionSucceeded: successSpy,
     });
 

@@ -8,15 +8,15 @@ import type {
   TransactionOptions,
 } from './types.ts';
 
-// 1. ❌ Validation
+// TODO 1. ❌ Validation https://github.com/Yonava/magic-graphs/issues/598
 // 2. ✅ Process Mutation State
 // 3. ✅ Commit Payload and Return Confirmation
 export function useCommitTransaction({
-  getGraphState,
+  getGraph,
   onTransactionSucceeded,
 }: TransactionOptions): CommitTransaction {
   return (draft) => {
-    const { nodes, edges } = getGraphState();
+    const { nodes, edges } = getGraph();
     const { getNode, getEdge } = quickGetters({ nodes, edges });
 
     const payload = createEmptyPayload();

@@ -15,6 +15,7 @@ export const createAddElementsHandler = ({
     const edgesWithDefaults = edges.map(resolveEdgeDefaults);
     const nodesWithDefaults = nodes.map(resolveNodeDefaults);
 
+    // https://github.com/Yonava/magic-graphs/issues/685
     // must be before commitTransaction because
     // onTransactionComplete is used to refresh the graphUnderCursor
     // state, and to do that the schemas need to be resolved which requires

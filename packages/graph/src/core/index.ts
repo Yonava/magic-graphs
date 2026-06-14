@@ -45,7 +45,7 @@ export const useCoreGraph = (
   });
 
   const commitTransaction = useCommitTransaction({
-    getGraphState: () => ({ nodes: nodes.value, edges: edges.value }),
+    getGraph: () => ({ nodes: nodes.value, edges: edges.value }),
     onTransactionSucceeded,
   });
 
