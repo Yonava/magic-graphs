@@ -19,8 +19,6 @@ export type NodeLabelStoreControls = {
   setMany: (labels: NodeLabelUpdate[]) => NodeLabelEntry[];
   /** @internal */
   _internal: {
-    add: (label: NodeLabelUpdate[]) => void;
-    remove: (nodeIds: string[]) => void;
     nodeIdToLabel: Map<string, string>;
   };
 };
