@@ -7,7 +7,7 @@ import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
 
 import { UPPERCASE_ALPHABET } from './constants.ts';
-import { createLabelGetter } from './createLabelGetter.ts';
+import { createLabelGenerator } from './createLabelGenerator.ts';
 import { createLabelThemer } from './createLabelThemer.ts';
 import { GraphWithNodeLabel, NodeLabelStoreControls } from './types.ts';
 
@@ -35,7 +35,7 @@ export const createNodeLabel = <
     });
   };
 
-  const getNewLabel = createLabelGetter({
+  const getNewLabel = createLabelGenerator({
     getLabels: () =>
       graph.nodes.value.slice(0, -1).map((n) => getNodeLabel(n.id)),
     sequence: UPPERCASE_ALPHABET,
