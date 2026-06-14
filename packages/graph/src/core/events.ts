@@ -89,7 +89,7 @@ export type CoreEventMap = {
   onSettingsChange: (diff: DeepPartial<GraphSettings>) => void;
 } & NodePositionStoreEventMap;
 
-type CoreEventRegistry = EventMapToEventRegistry<CoreEventMap>;
+export type CoreEventRegistry = EventMapToEventRegistry<CoreEventMap>;
 
 export const createCoreEventRegistry = (): CoreEventRegistry => ({
   onTransactionComplete: new Set(),
