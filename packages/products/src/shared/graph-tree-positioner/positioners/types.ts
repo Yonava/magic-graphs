@@ -9,7 +9,9 @@ export type TreeGraphPositionerOptions = {
   graph: Graph;
   rootNode: GNode;
   nodeDepths: NodeDepth;
-  treeFormationOptions: UseTreeGraphPositionerOptions;
+  treeFormationOptions: UseTreeGraphPositionerOptions & {
+    rootNodeCoordinates: NonNullable<UseTreeGraphPositionerOptions['rootNodeCoordinates']>;
+  };
 };
 
 export type TreeGraphPositioner = (

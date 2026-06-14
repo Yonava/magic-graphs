@@ -29,8 +29,9 @@ export type UseTreeGraphPositionerOptions = {
   shape: TreeShape;
   /**
    * the new coordinates of the root node when the graph is being re-shaped.
+   * @default the root node's current position
    */
-  rootNodeCoordinates: Coordinate;
+  rootNodeCoordinates?: Coordinate;
   /**
    * if `true`, nodes and edges animate into place
    * @default false
@@ -43,7 +44,6 @@ export const TREE_FORMATION_OPTIONS_DEFAULTS = {
   yOffset: 200,
   shape: 'standard',
   animate: false,
-  rootNodeCoordinates: { x: 0, y: 0 },
 } as const satisfies UseTreeGraphPositionerOptions;
 
 export const useTreeGraphPositioner = (
@@ -64,7 +64,12 @@ export const useTreeGraphPositioner = (
       graph,
       nodeDepths,
       rootNode,
-      treeFormationOptions: optionsRef.value,
+      treeFormationOptions: {
+        ...optionsRef.value,
+        rootNodeCoordinates:
+          optionsRef.value.rootNodeCoordinates ??
+          graph.positions.get(rootNode.id),
+      },
     };
     const positioner =
       optionsRef.value.shape === 'standard'
