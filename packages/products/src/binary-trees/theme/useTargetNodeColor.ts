@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import { ref } from 'vue';
@@ -10,16 +9,16 @@ const TARGET_COLOR = colors.AMBER_600;
 export const useTargetNodeColor = (graph: Graph) => {
   const { set, removeAll } = graph.canvas.theme.createLayer('tree');
 
-  const targetNodeId = ref<GNode['id']>();
+  const targetNodeId = ref<string>();
 
-  const colorNode = (node: GNode) => {
+  const colorNode = ({ id }: { id: string }) => {
     if (!targetNodeId.value) return;
 
-    if (graph.focus.isFocused(node.id)) return;
-    if (node.id === targetNodeId.value) return TARGET_COLOR;
+    if (graph.focus.isFocused(id)) return;
+    if (id === targetNodeId.value) return TARGET_COLOR;
   };
 
-  const activate = (nodeId?: GNode['id']) => {
+  const activate = (nodeId?: string) => {
     if (nodeId) targetNodeId.value = nodeId;
     set('node.default.borderColor', colorNode);
     set('nodeAnchor.default.color', colorNode);

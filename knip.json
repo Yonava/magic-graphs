@@ -1,7 +1,7 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "typescript": true,
-  "ignore": ["**/node_modules/**, **/dist/**"],
+  "ignore": ["**/node_modules/**, **/dist/**", "**/.storybook/**"],
   "entry": ["**/*.test.ts", "**/*.test.tsx"],
   "workspaces": {
     "packages/client": {
@@ -11,7 +11,7 @@
       "ignoreDependencies": ["fraction.js"]
     },
     "packages/graph": {
-      "ignoreDependencies": ["fraction.js"],
+      "ignoreDependencies": ["fraction.js"]
     }
   }
 }

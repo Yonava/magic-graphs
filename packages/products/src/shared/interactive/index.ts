@@ -1,5 +1,4 @@
 import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
-import type { GNode } from '@magic/graph/types';
 
 import { GraphWithPlugins } from '../useGraph.ts';
 
@@ -24,7 +23,7 @@ export const useInteractive = (graph: GraphWithPlugins) => {
     graph.actions.addNode({ x: coords.x, y: coords.y });
   };
 
-  const doesEdgeConformToRules = (fromNode: GNode, toNode: GNode) => {
+  const doesEdgeConformToRules = (fromNode: { id: string }, toNode: { id: string }) => {
     if (graph.settings.value.userAddedEdgeRuleNoSelfLoops) {
       const violatesRule = fromNode.id === toNode.id;
       if (violatesRule) return false;
@@ -46,7 +45,7 @@ export const useInteractive = (graph: GraphWithPlugins) => {
     return true;
   };
 
-  const handleEdgeCreation = (fromNode: GNode) => {
+  const handleEdgeCreation = (fromNode: { id: string }) => {
     const { elements: items } = graph.canvas.graphUnderCursor;
 
     const nodeUnderneathAnchor = items.findLast((i) => i.graphType === 'node');

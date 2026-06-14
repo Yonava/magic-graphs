@@ -3,10 +3,9 @@ import { nullThrows } from '@magic/utils/assert';
 import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
 
-export const createRemoveEdgeHandler = ({
-  commitTransaction,
-}: GraphActionsOptions): GraphActions['removeEdge'] => {
-  const removeEdge: GraphActions['removeEdge'] = (edgeId) => {
+export const createRemoveEdgeHandler =
+  ({ commitTransaction }: GraphActionsOptions): GraphActions['removeEdge'] =>
+  (edgeId) => {
     const { removedEdgeIds } = commitTransaction({
       removeEdgeIds: [edgeId],
     });
@@ -16,6 +15,3 @@ export const createRemoveEdgeHandler = ({
       'Failed to remove edge. Transaction rejected.',
     );
   };
-
-  return removeEdge;
-};

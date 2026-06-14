@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
@@ -14,19 +13,19 @@ export const useSimulationTheme = (
   const { traceAtStep } = simControls;
   const { nodeIdToIndex } = graph;
 
-  const nodeText = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
+  const nodeText = ({ id }: { id: string }) => {
+    if (graph.focus.isFocused(id)) return;
 
-    const index = nodeIdToIndex.value.get(node.id);
+    const index = nodeIdToIndex.value.get(id);
     if (index === undefined) return;
 
     return traceAtStep.value[index].simplify(0.001).toFraction();
   };
 
-  const nodeTextSize = (node: GNode) => {
+  const nodeTextSize = ({ id }: { id: string }) => {
     const defaultSize =
       graph.canvas.theme.resolvedPreset.value.node.default.textSize;
-    if (graph.focus.isFocused(node.id)) return;
+    if (graph.focus.isFocused(id)) return;
     return defaultSize - 5;
   };
 

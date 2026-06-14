@@ -1,7 +1,6 @@
 import { nullThrows } from '@magic/utils/assert';
 import colors from '@magic/utils/colors';
 
-import { GNode } from '../../../../../types.ts';
 import { CURSOR } from '../../cursor.ts';
 import { GraphTheme, resolveNodeStyles } from '../../index.ts';
 import { textDefaults } from './text.ts';
@@ -10,7 +9,7 @@ const nodeCircle: GraphTheme['node']['default']['shape'] = (node, graph) => {
   const styles = resolveNodeStyles(graph.resolveToken, node);
   const nodePosition = nullThrows(
     graph.positions.get(node.id),
-    `node position system did not return a position for node with id ${node.id}`,
+    `could not resolve position for node with id ${node.id}`,
   );
 
   return graph.shapes.shapes.circle({
@@ -36,7 +35,7 @@ const nodeCircle: GraphTheme['node']['default']['shape'] = (node, graph) => {
 
 export const nodeShared = {
   ...textDefaults,
-  text: ({ label }: GNode) => label,
+  text: '?',
   borderWidth: 8,
   size: 35,
   shape: nodeCircle,

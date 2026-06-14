@@ -1,8 +1,8 @@
-import type { GNode } from '@magic/graph/types';
 import type { Color } from '@magic/utils/colors';
 
 import type { MaybeRef } from 'vue';
 
+import type { GNode } from '../useGraph.ts';
 import { Graph } from '../useGraphWithCanvas.ts';
 
 type ColorMap = Map<GNode['id'], Color>;
@@ -21,14 +21,14 @@ export const useNodeColor = (
 
   const { set, remove } = graph.canvas.theme.createLayer(themeId);
 
-  const nodeColor = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
-    return get(node.id);
+  const nodeColor = (nodeId: GNode['id']) => {
+    if (graph.focus.isFocused(nodeId)) return;
+    return get(nodeId);
   };
 
   const color = () => {
-    set('node.default.borderColor', nodeColor);
-    set('nodeAnchor.default.color', nodeColor);
+    set('node.default.borderColor', ({ id }) => nodeColor(id));
+    set('nodeAnchor.default.color', ({ id }) => nodeColor(id));
   };
 
   const uncolor = () => {

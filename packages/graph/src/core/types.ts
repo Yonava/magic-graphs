@@ -16,6 +16,7 @@ export type CoreGraph<
   TransactionWrapperOptions = {},
   EventMap extends CoreEventMap = CoreEventMap,
   Plugins = {},
+  NodeGetterProps = {},
 > = {
   /**
    * all the nodes contained in the graph
@@ -29,8 +30,8 @@ export type CoreGraph<
   nodeIdToIndex: ComputedRef<Map<GNode['id'], number>>;
   edgeIdToIndex: ComputedRef<Map<GEdge['id'], number>>;
 
-  getNode: (nodeId: GNode['id']) => GNode | undefined;
-  getEdge: (edgeId: GEdge['id']) => GEdge | undefined;
+  getNode: (nodeId: GNode['id']) => Readonly<GNode & NodeGetterProps>;
+  getEdge: (edgeId: GEdge['id']) => Readonly<GEdge>;
 
   actions: GraphActions<
     MergeTransactionWrappersWithCore<TransactionWrapperOptions>

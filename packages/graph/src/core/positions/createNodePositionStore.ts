@@ -5,10 +5,8 @@ import { EventHub } from '../../events/createEventHub.ts';
 import { CoreEventMap } from '../events.ts';
 import { DEFAULT_POSITION } from './constants.ts';
 import {
-  NodePositionEntry,
   NodePositionStoreControls,
   NodePositionStreamControls,
-  NodePositionUpdate,
   Position,
 } from './types.ts';
 
@@ -23,9 +21,9 @@ export const createNodePositionStore = (
       `could not resolve position from node with id ${nodeId}`,
     );
 
-  const setNodePositions = (
-    positions: NodePositionUpdate[],
-  ): NodePositionEntry[] => {
+  const setNodePositions: NodePositionStoreControls['setMany'] = (
+    positions,
+  ) => {
     return positions.map(({ nodeId, update }) => {
       const currentPosition = getNodePosition(nodeId);
       const position = getValue(update, currentPosition);
@@ -56,15 +54,17 @@ export const createNodePositionStore = (
     const touchedNodeIds = new Set<string>();
     const unregisterToken = {};
     const stream: NodePositionStreamControls = {
-      set: (pos) => {
-        const entries = setNodePositions([pos]);
-        for (const { nodeId } of entries) touchedNodeIds.add(nodeId);
-        events.emit('onNodeMoveStream', entries);
+      set: (position) => {
+        const [entry] = setNodePositions([position]);
+        touchedNodeIds.add(entry.nodeId);
+        events.emit('onNodeMoveStream', [entry]);
+        return entry;
       },
       setMany: (positions) => {
         const entries = setNodePositions(positions);
         for (const { nodeId } of entries) touchedNodeIds.add(nodeId);
         events.emit('onNodeMoveStream', entries);
+        return entries;
       },
       stop: () => {
         if (!activeStream) return;
@@ -94,13 +94,15 @@ export const createNodePositionStore = (
     get: getNodePosition,
     set: (position) => {
       assertNoActiveStream();
-      const entries = setNodePositions([position]);
-      events.emit('onNodePositionsCommitted', entries);
+      const [entry] = setNodePositions([position]);
+      events.emit('onNodePositionsCommitted', [entry]);
+      return entry;
     },
     setMany: (positions) => {
       assertNoActiveStream();
       const entries = setNodePositions(positions);
       events.emit('onNodePositionsCommitted', entries);
+      return entries;
     },
     createStream,
     _internal: {

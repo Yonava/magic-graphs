@@ -3,7 +3,7 @@ import { CURSOR } from '../canvas/themes/cursor.ts';
 import { CanvasGraph } from '../canvas/types.ts';
 import { NodeIdDragState } from './types.ts';
 
-export const useDragCursor = (
+export const createDragThemer = (
   createLayer: CanvasGraph['theme']['createLayer'],
   dragState: DragStateControls<NodeIdDragState>,
 ) => {

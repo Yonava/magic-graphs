@@ -20,6 +20,7 @@
     "@magic/graph": "workspace:*",
     "@magic/shapes": "workspace:*",
     "@magic/ui": "workspace:*",
+    "@magic/graph-plugins": "workspace:*",
     "@magic/utils": "workspace:*",
     "@vueuse/core": "catalog:",
     "ctrl-keys": "catalog:",
@@ -35,7 +36,6 @@
     "@types/tinycolor2": "catalog:",
     "primevue": "catalog:",
     "ts-essentials": "^10.2.0",
-    "vitest": "^3.2.4",
     "vue": "catalog:"
   }
 }

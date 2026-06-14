@@ -1,4 +1,4 @@
-import type { GEdge, GNode } from '@magic/graph/types';
+import type { GEdge } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
@@ -20,12 +20,12 @@ export const useSimulationTheme = (
   const { traceAtStep } = sim;
   const { set, removeAll } = graph.canvas.theme.createLayer(USETHEME_ID);
 
-  const colorBorders = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
+  const colorBorders = ({ id }: { id: string }) => {
+    if (graph.focus.isFocused(id)) return;
 
-    if (traceAtStep.value?.currentNodeId === node.id) return SIM_COLORS.CURRENT;
-    if (traceAtStep.value.visited.has(node.id)) return SIM_COLORS.VISITED;
-    if (traceAtStep.value.queue?.includes(node.id)) return SIM_COLORS.QUEUED;
+    if (traceAtStep.value?.currentNodeId === id) return SIM_COLORS.CURRENT;
+    if (traceAtStep.value.visited.has(id)) return SIM_COLORS.VISITED;
+    if (traceAtStep.value.queue?.includes(id)) return SIM_COLORS.QUEUED;
   };
 
   const colorEdge = (edge: GEdge) => {

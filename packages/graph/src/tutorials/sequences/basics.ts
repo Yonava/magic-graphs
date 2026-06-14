@@ -1,7 +1,6 @@
 import { PURPLE_700, RED_700 } from '@magic/utils/colors';
 
 import { CoreGraph } from '../../core/types.ts';
-import { createLayer } from '../../plugins/canvas/themes/createLayer.ts';
 import { CanvasPlugin } from '../../plugins/canvas/types.ts';
 import { TUTORIAL_THEME_ID } from '../../tutorials/types.ts';
 import { type TutorialStep } from '../../tutorials/types.ts';
@@ -51,32 +50,4 @@ export const BASICS_STEPS: (
       predicate: (_, { weight }) => !!weight,
     },
   },
-  removeElement: getRemoveNodeOrEdgeStep(graph),
 });
-
-const getRemoveNodeOrEdgeStep = (graph: BasicsGraph): TutorialStep => {
-  let stepPassed = false;
-  const completeStep = () => (stepPassed = true);
-  const { set, removeAll } =
-    graph.canvas.theme.createLayer(TUTORIAL_THEME_ID);
-  return {
-    hint: 'Remove an edge or node by clicking on it and hitting backspace/delete',
-    dismiss: {
-      event: 'onInterval',
-      predicate: () => stepPassed,
-    },
-    onInit: () => {
-      stepPassed = false;
-      set('nodeAnchor.default.color', (node) =>
-        node.label === '1' ? PURPLE_700 : RED_700,
-      );
-      graph.events.subscribe('onEdgesRemoved', completeStep);
-      graph.events.subscribe('onNodesRemoved', completeStep);
-    },
-    onDismiss: () => {
-      removeAll();
-      graph.events.unsubscribe('onEdgesRemoved', completeStep);
-      graph.events.unsubscribe('onNodesRemoved', completeStep);
-    },
-  };
-};

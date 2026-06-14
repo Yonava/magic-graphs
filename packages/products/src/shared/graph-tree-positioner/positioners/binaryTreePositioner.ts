@@ -1,5 +1,4 @@
 import { NodePositionUpdate } from '@magic/graph/core/positions/types';
-import type { GNode } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 
 import type { Graph } from '../../useGraphWithCanvas.ts';
@@ -51,7 +50,7 @@ export const getTreeIndexToPosition = ({
   }));
 };
 
-type MaybeNodeId = GNode['id'] | undefined;
+type MaybeNodeId = string | undefined;
 
 /**
  * an array which contains at index i the node id that should be at tree index i
@@ -70,7 +69,7 @@ const getTreeIndexToNodeId = ({
   treeDepth,
 }: {
   graph: Graph;
-  rootNode: GNode;
+  rootNode: { id: string };
   treeDepth: number;
 }) => {
   const treeIndexToNodeId: MaybeNodeId[] = [];

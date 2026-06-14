@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
@@ -20,17 +19,17 @@ export const useSimulationTheme = (
   const { traceAtStep } = sim;
   const { set, removeAll } = graph.canvas.theme.createLayer('dijkstra');
 
-  const colorBorders = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
-    if (traceAtStep.value.currentNode?.id === node.id) return SIM_COLORS.SOURCE;
-    if (traceAtStep.value.queue.has(node.id)) return SIM_COLORS.QUEUED;
-    if (traceAtStep.value.distances[node.id] !== Infinity)
+  const colorBorders = ({ id }: { id: string }) => {
+    if (graph.focus.isFocused(id)) return;
+    if (traceAtStep.value.currentNode?.id === id) return SIM_COLORS.SOURCE;
+    if (traceAtStep.value.queue.has(id)) return SIM_COLORS.QUEUED;
+    if (traceAtStep.value.distances[id] !== Infinity)
       return SIM_COLORS.EXPLORED;
   };
 
-  const nodeDistanceText = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
-    const distance = traceAtStep.value.distances[node.id];
+  const nodeDistanceText = ({ id }: { id: string }) => {
+    if (graph.focus.isFocused(id)) return;
+    const distance = traceAtStep.value.distances[id];
     if (distance === Infinity || distance === undefined) return INF_STR;
     if (Number.isInteger(distance)) return distance.toString();
     return distance.toFixed(2);

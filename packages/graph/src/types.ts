@@ -15,10 +15,6 @@ export type GNode = {
    * unique identifier for the node
    */
   id: string;
-  /**
-   * the text that appears on the node
-   */
-  label: string;
 };
 
 /**

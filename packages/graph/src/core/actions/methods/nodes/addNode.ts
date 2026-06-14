@@ -1,7 +1,6 @@
 import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 
-import { useNodeLetterLabelGetter } from '../../../../labels.ts';
 import { GNode } from '../../../../types.ts';
 import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
@@ -11,24 +10,19 @@ const getNodeDefaults = () =>
     id: generateId(),
   }) as const satisfies Partial<GNode>;
 
-export const useResolveNodeDefaults = (
-  graphState: GraphActionsOptions['graph'],
-) => {
-  const getLabel = useNodeLetterLabelGetter(graphState);
-  return (node: Parameters<GraphActions['addNode']>[0]): GNode => ({
-    ...getNodeDefaults(),
-    label: getLabel(),
-    ...node,
-  });
-};
+export const resolveNodeDefaults = (
+  node: Parameters<GraphActions['addNode']>[0],
+): GNode => ({
+  ...getNodeDefaults(),
+  ...node,
+});
 
-export const createAddNodeHandler = ({
-  graph,
-  commitTransaction,
-}: GraphActionsOptions): GraphActions['addNode'] => {
-  const resolveNodeDefaults = useResolveNodeDefaults(graph);
-
-  const addNode: GraphActions['addNode'] = (node) => {
+export const createAddNodeHandler =
+  ({
+    graph,
+    commitTransaction,
+  }: GraphActionsOptions): GraphActions['addNode'] =>
+  (node) => {
     const nodeWithDefaults = resolveNodeDefaults(node);
 
     // https://github.com/Yonava/magic-graphs/issues/685
@@ -56,6 +50,3 @@ export const createAddNodeHandler = ({
 
     return liveNode;
   };
-
-  return addNode;
-};

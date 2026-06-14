@@ -1,13 +1,12 @@
-import type { GNode } from '@magic/graph/types';
 
 /**
  * trace for bfs/dfs search
  */
 export type BasicSearchTrace = {
-  currentNodeId?: GNode['id'];
+  currentNodeId?: string;
   /**
    * nodes that have already been explored
    */
-  visited: Set<GNode['id']>;
-  queue?: GNode['id'][];
+  visited: Set<string>;
+  queue?: string[];
 };

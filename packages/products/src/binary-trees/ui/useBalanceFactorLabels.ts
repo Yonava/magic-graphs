@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 import type { Color } from '@magic/utils/colors';
 
@@ -18,7 +17,7 @@ export const useBalanceFactorLabels = (graph: Graph, tree: TreeControls) => {
 
   const UNBALANCED_COLOR = colors.RED_600;
 
-  const colorGetter = (nodeId: GNode['id']) => {
+  const colorGetter = (nodeId: string) => {
     return MAP_COLOR[nodeToBf.value.get(nodeId) ?? 0] ?? UNBALANCED_COLOR;
   };
 

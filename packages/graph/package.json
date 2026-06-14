@@ -20,7 +20,6 @@
     "@magic/shapes": "workspace:*",
     "@magic/utils": "workspace:*",
     "@vueuse/core": "catalog:",
-    "ctrl-keys": "catalog:",
     "fraction.js": "^5.3.4",
     "graphlib": "^2.1.8",
     "mathjs": "catalog:",

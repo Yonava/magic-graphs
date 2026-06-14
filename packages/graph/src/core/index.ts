@@ -1,3 +1,4 @@
+import { nullThrows } from '@magic/utils/assert';
 import { clone } from '@magic/utils/clone';
 import { delta } from '@magic/utils/delta/index';
 
@@ -35,8 +36,10 @@ export const useCoreGraph = (
   const nodePositionStore = createNodePositionStore(events);
 
   const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
-  const getNode = (id: GNode['id']) => nodeIdToNodeMap.value.get(id);
-  const getEdge = (id: GEdge['id']) => edgeIdToEdgeMap.value.get(id);
+  const getNode = (id: GNode['id']) =>
+    nullThrows(nodeIdToNodeMap.value.get(id), `node with id ${id} not found`);
+  const getEdge = (id: GEdge['id']) =>
+    nullThrows(edgeIdToEdgeMap.value.get(id), `edge with id ${id} not found`);
 
   const onTransactionSucceeded = useTransactionSucceeded({
     edges,

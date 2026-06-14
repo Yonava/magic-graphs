@@ -1,11 +1,12 @@
 import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
 
-export const createUpdateNodeHandler = ({
-  graph,
-  commitTransaction,
-}: GraphActionsOptions): GraphActions['updateNode'] => {
-  const updateNode: GraphActions['updateNode'] = (update) => {
+export const createUpdateNodeHandler =
+  ({
+    graph,
+    commitTransaction,
+  }: GraphActionsOptions): GraphActions['updateNode'] =>
+  (update) => {
     commitTransaction({
       updatedNodes: [update],
     });
@@ -19,6 +20,3 @@ export const createUpdateNodeHandler = ({
 
     return liveNode;
   };
-
-  return updateNode;
-};

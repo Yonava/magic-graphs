@@ -1,4 +1,3 @@
-import { GNode } from '@magic/graph/types';
 import { debounce } from '@magic/utils/debounce';
 
 import { onUnmounted, ref, watch } from 'vue';
@@ -34,7 +33,7 @@ export const useTreeGraphPositionerSync = (
     ...options,
   };
 
-  const rootNodeId = ref<GNode['id']>();
+  const rootNodeId = ref<string>();
   const isActive = ref(false);
 
   const treeControls = useTreeGraphPositioner(graph, treeOptions);

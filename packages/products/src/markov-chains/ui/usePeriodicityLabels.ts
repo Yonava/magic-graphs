@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { USETHEME_ID } from '../constants.ts';
@@ -8,9 +7,9 @@ export const usePeriodicityLabels = (graph: Graph, markov: MarkovChain) => {
   const { set, remove } = graph.canvas.theme.createLayer(USETHEME_ID);
   const { recurrentClassPeriods, nodeIdToRecurrentClassIndex } = markov;
 
-  const nodeText = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
-    const recurrentClassIndex = nodeIdToRecurrentClassIndex.value.get(node.id);
+  const nodeText = ({ id }: { id: string }) => {
+    if (graph.focus.isFocused(id)) return;
+    const recurrentClassIndex = nodeIdToRecurrentClassIndex.value.get(id);
     if (recurrentClassIndex === undefined) return;
     return recurrentClassPeriods.value[recurrentClassIndex].toString();
   };

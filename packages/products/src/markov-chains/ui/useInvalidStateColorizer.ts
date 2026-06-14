@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
@@ -11,15 +10,15 @@ export const useInvalidStateColorizer = (graph: Graph, markov: MarkovChain) => {
 
   const { invalidStates, nodeIdToOutgoingWeight } = markov;
 
-  const nodeBorderColor = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
-    if (invalidStates.value.has(node.id)) return colors.RED_600;
+  const nodeBorderColor = ({ id }: { id: string }) => {
+    if (graph.focus.isFocused(id)) return;
+    if (invalidStates.value.has(id)) return colors.RED_600;
     return colors.GREEN_600;
   };
 
-  const nodeText = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
-    const sum = nodeIdToOutgoingWeight.value.get(node.id);
+  const nodeText = ({ id }: { id: string }) => {
+    if (graph.focus.isFocused(id)) return;
+    const sum = nodeIdToOutgoingWeight.value.get(id);
     if (sum === undefined) return '?';
     return sum.simplify(0.001).toFraction();
   };

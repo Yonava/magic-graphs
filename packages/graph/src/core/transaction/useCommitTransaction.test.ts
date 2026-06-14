@@ -8,7 +8,7 @@ import { useCommitTransaction } from './useCommitTransaction.ts';
 
 describe(useCommitTransaction, () => {
   it('handles adding a node', () => {
-    const newNode: GNode = { id: 'new-node', label: '' };
+    const newNode: GNode = { id: 'new-node' };
     const commitTransaction = useCommitTransaction({
       getGraph: () => ({ nodes: [], edges: [] }),
       onTransactionSucceeded: () => {},
@@ -22,8 +22,8 @@ describe(useCommitTransaction, () => {
   });
 
   it('scrapes and removes orphaned edges automatically when a node is removed', () => {
-    const node1: GNode = { id: 'node-1', label: 'A' };
-    const node2: GNode = { id: 'node-2', label: 'B' };
+    const node1: GNode = { id: 'node-1' };
+    const node2: GNode = { id: 'node-2' };
     const connectedEdge: GEdge = {
       id: 'edge-1',
       source: 'node-1',
@@ -50,36 +50,8 @@ describe(useCommitTransaction, () => {
     expect(payload).toEqual(expectedPayload);
   });
 
-  it('pulls updated metadata correctly and captures previous values', () => {
-    const existingNode: GNode = {
-      id: 'node-1',
-      label: 'Old Label',
-    };
-
-    const commitTransaction = useCommitTransaction({
-      getGraph: () => ({ nodes: [existingNode], edges: [] }),
-      onTransactionSucceeded: () => {},
-    });
-
-    const expectedPayload: TransactionPayload = {
-      ...createEmptyPayload(),
-      updatedNodes: [
-        {
-          node: { id: 'node-1', label: 'New Label' },
-          previousValues: { label: 'Old Label' },
-        },
-      ],
-    };
-
-    const payload = commitTransaction({
-      updatedNodes: [{ id: 'node-1', values: { label: 'New Label' } }],
-    });
-
-    expect(payload).toEqual(expectedPayload);
-  });
-
   it('fires the onTransactionSuccess callback with the correct payload', () => {
-    const newNode: GNode = { id: 'node-z', label: 'Z' };
+    const newNode: GNode = { id: 'node-z' };
 
     const successSpy = vi.fn();
 

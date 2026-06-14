@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
 import { gcd, lowestPrimeFactor } from '@magic/utils/math';
@@ -26,18 +25,18 @@ const MAX_VISITATIONS = 100;
  */
 const getStepsToStart = (
   adjacencyList: AdjacencyList,
-  startNodeId: GNode['id'],
+  startNodeId: string,
 ) => {
   /**
    * a queue of nodes to visit and the number of steps it took to get there
    */
-  const queue: [GNode['id'], number][] = [[startNodeId, 0]];
+  const queue: [string, number][] = [[startNodeId, 0]];
 
   /**
    * keeps tabs on the number of times a node has been visited
    * in order to terminate a path after `MAX_VISITATIONS` times
    */
-  const visited: Map<GNode['id'], number> = new Map();
+  const visited: Map<string, number> = new Map();
 
   /**
    * tabulates the number of steps it took for a discovered path
@@ -72,7 +71,7 @@ const getStepsToStart = (
 
 const getPeriod = (
   adjacencyList: AdjacencyList,
-  recurrentClass: Set<GNode['id']>,
+  recurrentClass: Set<string>,
 ) => {
   if (recurrentClass.size === 1) return 1;
 
@@ -97,7 +96,7 @@ const getPeriod = (
  */
 export const useMarkovPeriodicity = (
   graph: Graph,
-  recurrentClasses: Ref<Set<GNode['id']>[]>,
+  recurrentClasses: Ref<Set<string>[]>,
 ) => {
   const { adjacencyList } = graph.adjacencyList;
 

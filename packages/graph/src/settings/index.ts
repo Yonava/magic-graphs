@@ -1,6 +1,6 @@
 import { Fraction } from 'mathjs';
 
-import type { GEdge, GNode } from '../types.ts';
+import type { GEdge } from '../types.ts';
 
 export type CoreGraphSettings = {
   /**
@@ -23,12 +23,6 @@ export type CoreGraphSettings = {
    * be set as the edge weight or returns undefined if the edge label should not be set
    */
   edgeInputToWeight: (input: string) => Fraction | undefined;
-  /**
-   * a function that returns the {@link GNode.label | label} for a node when a new node is created.
-   * if null, new nodes will be generated alphabetically: A, B, C, ... Z, AA, AB, ...
-   * @default null
-   */
-  newNodeLabelGetter: null | (() => string);
 };
 
 export const DEFAULT_BASE_SETTINGS: CoreGraphSettings = {
@@ -41,7 +35,6 @@ export const DEFAULT_BASE_SETTINGS: CoreGraphSettings = {
       return new Fraction(input);
     } catch {}
   },
-  newNodeLabelGetter: null,
   isGraphDirected: true,
 };
 

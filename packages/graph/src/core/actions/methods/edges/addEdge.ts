@@ -19,11 +19,12 @@ export const resolveEdgeDefaults = (
   ...edge,
 });
 
-export const createAddEdgeHandler = ({
-  graph,
-  commitTransaction,
-}: GraphActionsOptions): GraphActions['addEdge'] => {
-  const addEdge: GraphActions['addEdge'] = (edge) => {
+export const createAddEdgeHandler =
+  ({
+    graph,
+    commitTransaction,
+  }: GraphActionsOptions): GraphActions['addEdge'] =>
+  (edge) => {
     const edgeWithDefaults = resolveEdgeDefaults(edge);
 
     const { addedEdges } = commitTransaction({ addEdges: [edgeWithDefaults] });
@@ -38,6 +39,3 @@ export const createAddEdgeHandler = ({
       '[Graph Actions] Edge creation succeeded but entity was not found in live state.',
     );
   };
-
-  return addEdge;
-};

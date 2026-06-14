@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import type { GNode } from '@magic/graph/types';
 
   import { computed } from 'vue';
 
@@ -15,7 +14,7 @@
   /**
    * goes through classes and replaces node ids with full nodes
    */
-  const populateClasses = (classes: Set<GNode['id']>[]) =>
+  const populateClasses = (classes: Set<string>[]) =>
     classes.map((nodeId) => {
       return Array.from(nodeId).map((nodeId) => {
         return graph.value.getNode(nodeId)!;

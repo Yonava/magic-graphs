@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import GraphProduct from '../shared/ui/general/GraphProduct.vue';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
-  import { FLOW_GRAPH_SETTINGS, flowNodeLabelGetter } from './settings.ts';
+  import { FLOW_GRAPH_SETTINGS } from './settings.ts';
   import { useEdgeThickener } from './theme/useEdgeThickener.ts';
   import { useSourceSinkTheme } from './theme/useSourceSinkTheme.ts';
   import FordFulkersonOutput from './ui/FordFulkersonOutput.vue';
@@ -9,8 +9,6 @@
 
   const graphWithCanvas = useGraphWithCanvas(FLOW_GRAPH_SETTINGS);
   const { graph } = graphWithCanvas;
-
-  graph.settings.value.newNodeLabelGetter = flowNodeLabelGetter(graph);
 
   const { activate: activateEdgeThickener } = useEdgeThickener(graph);
   const { stylize: activateFlowColorizer } = useSourceSinkTheme(graph);

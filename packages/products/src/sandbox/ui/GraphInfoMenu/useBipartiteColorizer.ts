@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import type { Graph } from '../../../shared/useGraphWithCanvas.ts';
@@ -9,11 +8,11 @@ export const useBipartiteColorizer = (graph: Graph) => {
   const { set, removeAll } =
     graph.canvas.theme.createLayer(BIPARTITE_THEME_ID);
 
-  const colorNodeBorders = (node: GNode) => {
+  const colorNodeBorders = ({ id }: { id: string }) => {
     const isBipartite = graph.characteristics.isBipartite.value;
     if (!isBipartite) return;
     const map = graph.characteristics.nodeIdToBipartitePartition.value;
-    const partition = map.get(node.id);
+    const partition = map.get(id);
     if (partition === undefined) return;
     return partition === 0 ? colors.RED_500 : colors.BLUE_500;
   };

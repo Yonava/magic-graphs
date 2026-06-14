@@ -1,4 +1,3 @@
-import type { GNode } from '@magic/graph/types';
 
 import type { MaybeRef } from 'vue';
 
@@ -9,15 +8,15 @@ import { Graph } from '../useGraphWithCanvas.ts';
  */
 type LabelLike = string | number | boolean;
 
-type LabelMap = Map<GNode['id'], LabelLike>;
-type LabelGetter = (nodeId: GNode['id']) => LabelLike | undefined;
+type LabelMap = Map<string, LabelLike>;
+type LabelGetter = (nodeId: string) => LabelLike | undefined;
 
 export const useNodeLabel = (
   graph: Graph,
   mapOrGetter: MaybeRef<LabelMap> | LabelGetter,
   themeId: string,
 ) => {
-  const get = (nodeId: GNode['id']) => {
+  const get = (nodeId: string) => {
     if (typeof mapOrGetter === 'function') return mapOrGetter(nodeId);
     if ('value' in mapOrGetter) return mapOrGetter.value.get(nodeId);
     return mapOrGetter.get(nodeId);
@@ -25,9 +24,9 @@ export const useNodeLabel = (
 
   const { set, remove } = graph.canvas.theme.createLayer(themeId);
 
-  const nodeText = (node: GNode) => {
-    if (graph.focus.isFocused(node.id)) return;
-    const label = get(node.id);
+  const nodeText = ({ id }: { id: string }) => {
+    if (graph.focus.isFocused(id)) return;
+    const label = get(id);
     if (label === undefined) return;
     return label.toString();
   };
