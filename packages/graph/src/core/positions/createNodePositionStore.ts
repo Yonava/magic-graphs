@@ -5,10 +5,8 @@ import { EventHub } from '../../events/createEventHub.ts';
 import { CoreEventMap } from '../events.ts';
 import { DEFAULT_POSITION } from './constants.ts';
 import {
-  NodePositionEntry,
   NodePositionStoreControls,
   NodePositionStreamControls,
-  NodePositionUpdate,
   Position,
 } from './types.ts';
 
@@ -56,15 +54,17 @@ export const createNodePositionStore = (
     const touchedNodeIds = new Set<string>();
     const unregisterToken = {};
     const stream: NodePositionStreamControls = {
-      set: (pos) => {
-        const entries = setNodePositions([pos]);
-        for (const { nodeId } of entries) touchedNodeIds.add(nodeId);
-        events.emit('onNodeMoveStream', entries);
+      set: (position) => {
+        const [entry] = setNodePositions([position]);
+        touchedNodeIds.add(entry.nodeId);
+        events.emit('onNodeMoveStream', [entry]);
+        return entry;
       },
       setMany: (positions) => {
         const entries = setNodePositions(positions);
         for (const { nodeId } of entries) touchedNodeIds.add(nodeId);
         events.emit('onNodeMoveStream', entries);
+        return entries;
       },
       stop: () => {
         if (!activeStream) return;

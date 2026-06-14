@@ -22,9 +22,9 @@ export type NodePositionUpdate = {
 /** Controls for a position update stream. */
 export type NodePositionStreamControls = {
   /** Updates a single node's position within this stream. */
-  set: (position: NodePositionUpdate) => void;
+  set: (position: NodePositionUpdate) => NodePositionEntry;
   /** Updates multiple nodes' positions within this stream. */
-  setMany: (positions: NodePositionUpdate[]) => void;
+  setMany: (positions: NodePositionUpdate[]) => NodePositionEntry[];
   /** Closes the stream, signaling that all updates have been dispatched. */
   stop: () => void;
 };
