@@ -1,17 +1,14 @@
 import { GraphActionsOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
 import { resolveEdgeDefaults } from '../edges/addEdge.ts';
-import { useResolveNodeDefaults } from '../nodes/addNode.ts';
+import { resolveNodeDefaults } from '../nodes/addNode.ts';
 
-export const createAddElementsHandler = ({
-  graph,
-  commitTransaction,
-}: GraphActionsOptions): GraphActions['addElements'] => {
-  const resolveNodeDefaults = useResolveNodeDefaults(graph);
-  const addElements: GraphActions['addElements'] = ({
-    nodes = [],
-    edges = [],
-  }) => {
+export const createAddElementsHandler =
+  ({
+    graph,
+    commitTransaction,
+  }: GraphActionsOptions): GraphActions['addElements'] =>
+  ({ nodes = [], edges = [] }) => {
     const edgesWithDefaults = edges.map(resolveEdgeDefaults);
     const nodesWithDefaults = nodes.map(resolveNodeDefaults);
 
@@ -33,6 +30,3 @@ export const createAddElementsHandler = ({
 
     return { addedEdges, addedNodes };
   };
-
-  return addElements;
-};
