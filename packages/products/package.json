@@ -35,7 +35,6 @@
     "@types/tinycolor2": "catalog:",
     "primevue": "catalog:",
     "ts-essentials": "^10.2.0",
-    "vitest": "^3.2.4",
     "vue": "catalog:"
   }
 }
