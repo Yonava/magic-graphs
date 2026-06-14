@@ -23,9 +23,9 @@ export const createNodePositionStore = (
       `could not resolve position from node with id ${nodeId}`,
     );
 
-  const setNodePositions = (
-    positions: NodePositionUpdate[],
-  ): NodePositionEntry[] => {
+  const setNodePositions: NodePositionStoreControls['setMany'] = (
+    positions,
+  ) => {
     return positions.map(({ nodeId, update }) => {
       const currentPosition = getNodePosition(nodeId);
       const position = getValue(update, currentPosition);
@@ -94,13 +94,15 @@ export const createNodePositionStore = (
     get: getNodePosition,
     set: (position) => {
       assertNoActiveStream();
-      const entries = setNodePositions([position]);
-      events.emit('onNodePositionsCommitted', entries);
+      const [entry] = setNodePositions([position]);
+      events.emit('onNodePositionsCommitted', [entry]);
+      return entry;
     },
     setMany: (positions) => {
       assertNoActiveStream();
       const entries = setNodePositions(positions);
       events.emit('onNodePositionsCommitted', entries);
+      return entries;
     },
     createStream,
     _internal: {

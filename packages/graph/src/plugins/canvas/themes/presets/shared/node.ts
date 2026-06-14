@@ -36,7 +36,7 @@ const nodeCircle: GraphTheme['node']['default']['shape'] = (node, graph) => {
 
 export const nodeShared = {
   ...textDefaults,
-  text: ({ label }: GNode) => label,
+  text: '?',
   borderWidth: 8,
   size: 35,
   shape: nodeCircle,

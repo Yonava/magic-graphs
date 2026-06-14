@@ -33,9 +33,9 @@ export type NodePositionStoreControls = {
   /** Returns the current position of a node. */
   get: (nodeId: string) => Position;
   /** Updates a single node's position and triggers {@link NodePositionStoreEventMap.onNodePositionsCommitted onNodePositionsCommitted}. */
-  set: (position: NodePositionUpdate) => void;
+  set: (position: NodePositionUpdate) => NodePositionEntry;
   /** Updates multiple nodes' positions and triggers {@link NodePositionStoreEventMap.onNodePositionsCommitted onNodePositionsCommitted}. */
-  setMany: (positions: NodePositionUpdate[]) => void;
+  setMany: (positions: NodePositionUpdate[]) => NodePositionEntry[];
   /**
    * Opens a {@link NodePositionStreamControls position update stream}. Use this when moving nodes
    * continuously (e.g. dragging). Intermediate positions are batched inside the stream and
