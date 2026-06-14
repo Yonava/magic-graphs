@@ -1,5 +1,5 @@
-/node_modules
-/dist
+node_modules
+packages/*/dist
+*.tsbuildinfo
 .env
 .DS_Store
-*.tsbuildinfo
