@@ -1,5 +1,5 @@
 {
-  "name": "@magic/graph-addons",
+  "name": "@magic/graph-plugins",
   "version": "1.0.0",
   "private": true,
   "type": "module",

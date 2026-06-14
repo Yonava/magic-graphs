@@ -2,12 +2,12 @@ import type { CoreEventMap } from '@magic/graph/core/events';
 import { CoreGraph } from '@magic/graph/core/types';
 import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
 import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
-import { GNode } from '@magic/graph/types';
+import { GNode, GraphPlugin } from '@magic/graph/types';
 import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
 
-import { GraphAddon } from '../../shared/types.ts';
-import { NodeLabelStoreControls } from './types.ts';
+import { createLabelThemer } from './createLabelThemer.ts';
+import { GraphWithNodeLabel, NodeLabelStoreControls } from './types.ts';
 
 export const createNodeLabel = <
   TransactionWrapperOptions,
@@ -15,7 +15,7 @@ export const createNodeLabel = <
   Plugins extends CanvasPlugin,
 >(
   graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
-): GraphAddon<NodeLabelStoreControls> => {
+): GraphWithNodeLabel<TransactionWrapperOptions, EventMap, Plugins> => {
   const nodeIdToLabel = new Map<string, string>();
 
   const getNodeLabel: NodeLabelStoreControls['get'] = (nodeId) =>
@@ -41,26 +41,31 @@ export const createNodeLabel = <
     for (const id of nodeIds) nodeIdToLabel.delete(id);
   };
 
+  const themer = createLabelThemer(graph.canvas.theme, getNodeLabel);
+
   const activate = () => {
     graph.events.subscribe('onNodesAdded', addNodesToLabelMap);
     graph.events.subscribe('onNodesRemoved', removeNodesFromLabelMap);
+    themer.activate();
   };
 
   const deactivate = () => {
-    graph.events.subscribe('onNodesAdded', addNodesToLabelMap);
-    graph.events.subscribe('onNodesRemoved', removeNodesFromLabelMap);
+    graph.events.unsubscribe('onNodesAdded', addNodesToLabelMap);
+    graph.events.unsubscribe('onNodesRemoved', removeNodesFromLabelMap);
+    themer.deactivate();
   };
 
   activate();
 
   return {
-    get: getNodeLabel,
-    set: (label) => setNodeLabels([label]),
-    setMany: setNodeLabels,
-    _internal: {
-      nodeIdToLabel,
-    },
-    addOnControls: {
+    ...graph,
+    labels: {
+      get: getNodeLabel,
+      set: (label) => setNodeLabels([label]),
+      setMany: setNodeLabels,
+      _internal: {
+        nodeIdToLabel,
+      },
       activate,
       deactivate,
     },

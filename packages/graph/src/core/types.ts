@@ -29,8 +29,8 @@ export type CoreGraph<
   nodeIdToIndex: ComputedRef<Map<GNode['id'], number>>;
   edgeIdToIndex: ComputedRef<Map<GEdge['id'], number>>;
 
-  getNode: (nodeId: GNode['id']) => GNode | undefined;
-  getEdge: (edgeId: GEdge['id']) => GEdge | undefined;
+  getNode: (nodeId: GNode['id']) => Readonly<GNode> | undefined;
+  getEdge: (edgeId: GEdge['id']) => Readonly<GEdge> | undefined;
 
   actions: GraphActions<
     MergeTransactionWrappersWithCore<TransactionWrapperOptions>

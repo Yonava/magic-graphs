@@ -213,7 +213,7 @@ importers:
         specifier: 'catalog:'
         version: 3.5.38(typescript@6.0.3)
 
-  packages/graph-addons:
+  packages/graph-plugins:
     dependencies:
       '@magic/graph':
         specifier: workspace:*
@@ -234,6 +234,9 @@ importers:
       '@magic/graph':
         specifier: workspace:*
         version: link:../graph
+      '@magic/graph-plugins':
+        specifier: workspace:*
+        version: link:../graph-plugins
       '@magic/shapes':
         specifier: workspace:*
         version: link:../shapes

@@ -1,4 +1,5 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
+import { createNodeLabel } from '@magic/graph-plugins/plugins/node-label/index';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { useCoreGraph } from '@magic/graph/core/index';
 import { NodeAnchorEventMap } from '@magic/graph/plugins/anchors/events';
@@ -85,7 +86,7 @@ const useGraphWithPlugins = (
       HistoryPlugin
   >(baseCanvasFocusDragAnchorHistory);
 
-  return baseCanvasFocusDragAnchorHistoryMarquee;
+  return createNodeLabel(baseCanvasFocusDragAnchorHistoryMarquee);
 };
 
 export type GraphWithPlugins = ReturnType<typeof useGraphWithPlugins>;
