@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/types",
+    "rootDir": "./src"
+  },
+  "references": [
+    { "path": "../graph" }
+  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
+}

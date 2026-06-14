@@ -4,6 +4,7 @@
     { "path": "./packages/canvas" },
     { "path": "./packages/client" },
     { "path": "./packages/graph" },
+    { "path": "./packages/graph-addons" },
     { "path": "./packages/products" },
     { "path": "./packages/server" },
     { "path": "./packages/shapes" },
