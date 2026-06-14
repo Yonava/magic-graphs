@@ -1,6 +1,7 @@
 import { MaybeGetter } from '@magic/utils/maybeGetter/index';
 
 import { GNode } from '../../types.ts';
+import type { NodePositionStoreEventMap } from './events.ts';
 
 export type Position = {
   x: number;
@@ -18,16 +19,29 @@ export type NodePositionUpdate = {
   update: MaybeGetter<Partial<Position>, [Position]>;
 };
 
+/** Controls for a position update stream. */
 export type NodePositionStreamControls = {
+  /** Updates a single node's position within this stream. */
   set: (position: NodePositionUpdate) => void;
+  /** Updates multiple nodes' positions within this stream. */
   setMany: (positions: NodePositionUpdate[]) => void;
+  /** Closes the stream, signaling that all updates have been dispatched. */
   stop: () => void;
 };
 
 export type NodePositionStoreControls = {
+  /** Returns the current position of a node. */
   get: (nodeId: string) => Position;
+  /** Updates a single node's position and triggers {@link NodePositionStoreEventMap.onNodePositionsCommitted onNodePositionsCommitted}. */
   set: (position: NodePositionUpdate) => void;
+  /** Updates multiple nodes' positions and triggers {@link NodePositionStoreEventMap.onNodePositionsCommitted onNodePositionsCommitted}. */
   setMany: (positions: NodePositionUpdate[]) => void;
+  /**
+   * Opens a {@link NodePositionStreamControls position update stream}. Use this when moving nodes
+   * continuously (e.g. dragging). Intermediate positions are batched inside the stream and
+   * {@link NodePositionStoreEventMap.onNodePositionsCommitted onNodePositionsCommitted} only triggers once on {@link NodePositionStreamControls.stop stop},
+   * so subscribers (e.g. plugins/history) see a single discrete move rather than every intermediate update.
+   */
   createStream: () => NodePositionStreamControls;
   /** @internal */
   _internal: {

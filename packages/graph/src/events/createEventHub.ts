@@ -11,7 +11,7 @@ export const createEventHub = <EventMap extends GenericEventMap>(
   const { handle, unhandle, fireHandlers } = createEventHandler<EventMap>();
   return {
     /**
-     * subscribe to an event to receive updates when it is emitted
+     * subscribe to an event to receive updates when it is triggered
      *
      * @param eventName the name of the event to subscribe to
      * @param eventCallback the callback function invoked when the event is emitted
@@ -37,7 +37,7 @@ export const createEventHub = <EventMap extends GenericEventMap>(
      */
     handle,
     /**
-     * unsubscribe from an event to stop receiving updates when it is emitted
+     * unsubscribe from an event to stop receiving updates when it is triggered
      *
      * @param eventName the name of the event to unsubscribe from
      * @param eventCallback the callback function to be removed from the event
@@ -50,7 +50,7 @@ export const createEventHub = <EventMap extends GenericEventMap>(
       eventRegistry[eventName].delete(eventCallback);
     },
     /**
-     * clear a handler callback to stop handling updates when emitted
+     * clear a handler callback to stop handling updates when triggered
      *
      * @param eventName the name of the event to clear the handler from
      * @param eventCallback the callback function to be removed from the event

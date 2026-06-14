@@ -20,7 +20,7 @@ import {
 
 export type CoreEventMap = {
   /**
-   * fired once at the end of any atomic graph mutation batch.
+   * triggered once at the end of any atomic graph mutation batch.
    * downstream plugins (Animation, History, Broadcast) should hook into this.
    */
   onTransactionComplete: (payload: DeepReadonly<TransactionPayload>) => void;
