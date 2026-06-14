@@ -57,12 +57,45 @@ describe(createNodePositionStore, () => {
     });
   });
 
+  describe('active stream guard', () => {
+    it('throws when set() is called while a stream is active', () => {
+      const { store } = makeStore();
+      store._internal.add([{ id: 'a' }]);
+      store.createStream();
+      expect(() => store.set({ nodeId: 'a', update: { x: 1 } })).toThrow();
+    });
+
+    it('throws when setMany() is called while a stream is active', () => {
+      const { store } = makeStore();
+      store._internal.add([{ id: 'a' }]);
+      store.createStream();
+      expect(() =>
+        store.setMany([{ nodeId: 'a', update: { x: 1 } }]),
+      ).toThrow();
+    });
+
+    it('allows set() again after the stream is stopped', () => {
+      const { store } = makeStore();
+      store._internal.add([{ id: 'a' }]);
+      const stream = store.createStream();
+      stream.stop();
+      expect(() => store.set({ nodeId: 'a', update: { x: 1 } })).not.toThrow();
+    });
+  });
+
   describe('set', () => {
     it('updates the position of a node', () => {
       const { store } = makeStore();
       store._internal.add([{ id: 'a' }]);
       store.set({ nodeId: 'a', update: { x: 99, y: 88 } });
       expect(store.get('a')).toMatchObject({ x: 99, y: 88 });
+    });
+
+    it('correctly sets x, y, and z to 0', () => {
+      const { store } = makeStore();
+      store._internal.add([{ id: 'a', x: 5, y: 5, z: 5 }]);
+      store.set({ nodeId: 'a', update: { x: 0, y: 0, z: 0 } });
+      expect(store.get('a')).toMatchObject({ x: 0, y: 0, z: 0 });
     });
 
     it('accepts a getter function for the update', () => {

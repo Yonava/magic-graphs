@@ -82,13 +82,23 @@ export const createNodePositionStore = (
     return stream;
   };
 
+  const assertNoActiveStream = () => {
+    if (activeStream) {
+      throw new Error(
+        'Cannot write to the position store while a stream is active. Call stop() on the active stream first.',
+      );
+    }
+  };
+
   return {
     get: getNodePosition,
     set: (position) => {
+      assertNoActiveStream();
       const entries = setNodePositions([position]);
       events.emit('onNodePositionsCommitted', entries);
     },
     setMany: (positions) => {
+      assertNoActiveStream();
       const entries = setNodePositions(positions);
       events.emit('onNodePositionsCommitted', entries);
     },
