@@ -24,7 +24,9 @@ import {
   HistoryPlugin,
   HistoryTransactionWrapperOptions,
 } from '@magic/graph/plugins/history/types';
+import { MarqueeEventMap } from '@magic/graph/plugins/marquee/events';
 import { useMarqueePlugin } from '@magic/graph/plugins/marquee/index';
+import { MarqueePlugin } from '@magic/graph/plugins/marquee/types';
 import type { GraphSettings } from '@magic/graph/settings/index';
 import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
 import { useTransitionMatrix } from '@magic/graph/useTransitionMatrix';
@@ -86,10 +88,26 @@ const useGraphWithPlugins = (
       HistoryPlugin
   >(baseCanvasFocusDragAnchorHistory);
 
-  return createNodeLabel(baseCanvasFocusDragAnchorHistoryMarquee);
+  return createNodeLabel<
+    FocusTransactionWrapperOptions & HistoryTransactionWrapperOptions,
+    CoreEventMap &
+      CanvasEventMap &
+      FocusEventMap &
+      NodeDragEventMap &
+      NodeAnchorEventMap &
+      HistoryEventMap &
+      MarqueeEventMap,
+    CanvasPlugin &
+      FocusPlugin &
+      NodeDragPlugin &
+      NodeAnchorPlugin &
+      HistoryPlugin &
+      MarqueePlugin
+  >(baseCanvasFocusDragAnchorHistoryMarquee);
 };
 
 export type GraphWithPlugins = ReturnType<typeof useGraphWithPlugins>;
+export type GNode = ReturnType<GraphWithPlugins['getNode']>;
 
 /**
  * a hook brimming with tools for creating and managing graphs bringing

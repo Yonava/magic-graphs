@@ -59,6 +59,11 @@ export const createNodeLabel = <
 
   return {
     ...graph,
+    getNode: (nodeId) => {
+      const node = graph.getNode(nodeId);
+      const label = getNodeLabel(node.id);
+      return { ...node, label };
+    },
     labels: {
       get: getNodeLabel,
       set: (label) => setNodeLabels([label]),

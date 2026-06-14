@@ -42,5 +42,6 @@ export type GraphWithNodeLabel<
 > = CoreGraph<
   TransactionWrapperOptions,
   EventMap & CanvasEventMap,
-  Plugins & CanvasPlugin & NodeLabelPlugin
+  Plugins & CanvasPlugin & NodeLabelPlugin,
+  { label: string }
 >;
