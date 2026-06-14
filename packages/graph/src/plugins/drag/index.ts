@@ -11,9 +11,9 @@ import { createDragState } from '../../shared/drag/createDragState.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
+import { createDragThemer } from './createDragThemer.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
 import { GraphWithNodeDrag, NodeIdDragState } from './types.ts';
-import { useDragCursor } from './useDragCursor.ts';
 
 export const DRAG_EVENT_ID = 'drag';
 export const DRAG_CANVAS_ELEMENT_DATA_FIELD = 'dragNodeIds';
@@ -140,7 +140,10 @@ export const useNodeDragPlugin = <
     );
   };
 
-  const cursorTheme = useDragCursor(graph.canvas.theme.createLayer, dragState);
+  const cursorTheme = createDragThemer(
+    graph.canvas.theme.createLayer,
+    dragState,
+  );
 
   const activate = () => {
     events.handle('onMouseDown', beginDrag, DRAG_EVENT_ID, {
