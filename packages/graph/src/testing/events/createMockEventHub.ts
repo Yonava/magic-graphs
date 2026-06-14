@@ -1,11 +1,15 @@
 import { MockInstance, vi } from 'vitest';
 
-import { createEventHub, EventHub } from '../../events/createEventHub.ts';
-import { GenericEventMap, EventMapToEventRegistry } from '../../events/types.ts';
+import { EventHub, createEventHub } from '../../events/createEventHub.ts';
+import {
+  EventMapToEventRegistry,
+  GenericEventMap,
+} from '../../events/types.ts';
 
-export type MockEventHub<EventMap extends GenericEventMap> = EventHub<EventMap> & {
-  emit: EventHub<EventMap>['emit'] & MockInstance;
-};
+export type MockEventHub<EventMap extends GenericEventMap> =
+  EventHub<EventMap> & {
+    emit: EventHub<EventMap>['emit'] & MockInstance;
+  };
 
 /**
  * Creates an EventHub with `emit` pre-spied so tests can assert on emitted events.
