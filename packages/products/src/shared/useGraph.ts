@@ -7,7 +7,7 @@ import { NodeAnchorEventMap } from '@magic/graph/plugins/anchors/events';
 import { useNodeAnchorPlugin } from '@magic/graph/plugins/anchors/index';
 import { NodeAnchorPlugin } from '@magic/graph/plugins/anchors/types';
 import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
-import { useCanvasPlugin } from '@magic/graph/plugins/canvas/index';
+import { canvas } from '@magic/graph/plugins/canvas/index';
 import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
 import { NodeDragEventMap } from '@magic/graph/plugins/drag/events';
 import { useNodeDragPlugin } from '@magic/graph/plugins/drag/index';
@@ -43,7 +43,7 @@ const useGraphWithPlugins = (
   // TODO get inference to work without explicit type parameters
   const base = useCoreGraph(settings);
 
-  const baseCanvas = useCanvasPlugin<{}, CoreEventMap, {}>(base, canvas);
+  const baseCanvas = canvas<{}, CoreEventMap, {}>(base, canvas);
 
   const baseCanvasFocus = useFocusPlugin<
     {},

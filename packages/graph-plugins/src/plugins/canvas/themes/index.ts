@@ -1,4 +1,5 @@
-import type { GEdge, GNode } from '../../../types.ts';
+import { GEdge, GNode } from '@magic/graph/types';
+
 import type { TokenResolver } from '../themes/createTokenResolver.ts';
 import type {
   CoreGraphEdgeStyles,

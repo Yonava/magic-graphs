@@ -29,7 +29,6 @@
     "@types/graphlib": "^2.1.12",
     "@types/tinycolor2": "catalog:",
     "ts-essentials": "^10.2.0",
-    "vitest": "^3.2.4",
     "vue": "catalog:"
   }
 }

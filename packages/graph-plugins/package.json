@@ -17,9 +17,13 @@
   },
   "dependencies": {
     "@magic/graph": "workspace:*",
-    "@magic/utils": "workspace:*"
+    "@magic/utils": "workspace:*",
+    "@magic/canvas": "workspace:*",
+    "@magic/shapes": "workspace:*",
+    "@vueuse/core": "catalog:"
   },
   "devDependencies": {
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "ts-essentials": "^10.2.0"
   }
 }

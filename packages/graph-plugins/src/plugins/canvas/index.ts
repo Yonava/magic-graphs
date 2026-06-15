@@ -1,4 +1,8 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
+import { CoreEventMap } from '@magic/graph/core/events';
+import { CoreGraph } from '@magic/graph/core/types';
+import { EventHub, createEventHub } from '@magic/graph/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { cross } from '@magic/shapes/shapes/cross/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
@@ -7,10 +11,6 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
-import { CoreEventMap } from '../../core/events.ts';
-import { CoreGraph } from '../../core/types.ts';
-import { EventHub, createEventHub } from '../../events/createEventHub.ts';
-import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
   CanvasEventMap,
@@ -30,7 +30,7 @@ import { useAggregator } from './useAggregator.ts';
 
 export const CANVAS_EVENT_ID = 'canvas';
 
-export const useCanvasPlugin = <
+export const canvas = <
   TransactionWrapperOptions,
   EventMap extends CoreEventMap,
   Plugins,

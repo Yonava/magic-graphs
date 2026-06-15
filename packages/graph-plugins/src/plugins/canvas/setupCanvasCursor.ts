@@ -1,5 +1,6 @@
-import { CoreGraph } from '../../core/types.ts';
-import { EventHub } from '../../events/createEventHub.ts';
+import { CoreGraph } from '@magic/graph/core/types';
+import { EventHub } from '@magic/graph/events/createEventHub';
+
 import { CanvasEventMap } from './events.ts';
 import { CURSOR, CURSOR_FALLBACK, Cursor } from './themes/cursor.ts';
 import { CanvasGraph } from './types.ts';

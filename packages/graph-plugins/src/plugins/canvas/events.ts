@@ -1,6 +1,6 @@
+import { EventMapToEventRegistry } from '@magic/graph/events/types';
 import { DeepReadonly } from 'ts-essentials';
 
-import { EventMapToEventRegistry } from '../../events/types.ts';
 import { GraphUnderCursor } from './types.ts';
 
 /**

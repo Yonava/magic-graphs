@@ -1,6 +1,6 @@
+import { EventHub } from '@magic/graph/events/createEventHub';
 import { KeyboardEventMap, MouseEventMap } from '@magic/utils/types';
 
-import { EventHub } from '../../events/createEventHub.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from './events.ts';
 
 export const emitMouseEvents: (

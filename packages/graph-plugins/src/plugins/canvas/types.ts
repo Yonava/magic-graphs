@@ -1,12 +1,12 @@
 import { Coordinate, MagicCanvasProps } from '@magic/canvas/types';
+import { CoreEventMap } from '@magic/graph/core/events';
+import { CoreGraph } from '@magic/graph/core/types';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import { Shape } from '@magic/shapes/types/index';
 import { DeepReadonly } from 'ts-essentials';
 
 import { ComputedRef, Ref, ShallowRef } from 'vue';
 
-import { CoreEventMap } from '../../core/events.ts';
-import { CoreGraph } from '../../core/types.ts';
 import { CanvasEventMap } from './events.ts';
 import { ThemeLayer } from './themes/createLayer.ts';
 import { TokenResolver } from './themes/createTokenResolver.ts';

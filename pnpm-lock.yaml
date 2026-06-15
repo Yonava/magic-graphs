@@ -215,13 +215,25 @@ importers:
 
   packages/graph-plugins:
     dependencies:
+      '@magic/canvas':
+        specifier: workspace:*
+        version: link:../canvas
       '@magic/graph':
         specifier: workspace:*
         version: link:../graph
+      '@magic/shapes':
+        specifier: workspace:*
+        version: link:../shapes
       '@magic/utils':
         specifier: workspace:*
         version: link:../utils
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 13.9.0(vue@3.5.38(typescript@6.0.3))
     devDependencies:
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.1(typescript@6.0.3)
       vue:
         specifier: 'catalog:'
         version: 3.5.38(typescript@6.0.3)

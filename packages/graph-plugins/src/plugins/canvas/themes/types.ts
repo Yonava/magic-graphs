@@ -11,15 +11,15 @@
  * ThemeToken  — a dot-notation path into GraphTheme that addresses a single StyleValue leaf
  *               (e.g. "node.default.color"). used to identify which token an override targets.
  */
+import { CoreGraph } from '@magic/graph/core/types';
+import { NodeAnchor } from '@magic/graph/plugins/anchors/types';
+import { GEdge, GNode } from '@magic/graph/types';
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types/index';
 import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
 import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
-import { CoreGraph } from '../../../core/types.ts';
-import { GEdge, GNode } from '../../../types.ts';
-import { NodeAnchor } from '../../anchors/types.ts';
 import { CanvasGraph } from '../types.ts';
 import { Cursor, CursorFallback } from './cursor.ts';
 
