@@ -1,11 +1,10 @@
-import { LETTERS, useGraphLabelGetter } from '@magic/graph/labels';
+import { UPPERCASE_ALPHABET } from '@magic/graph-plugins/plugins/node-label/constants';
 import type { GraphSettings } from '@magic/graph/settings/index';
 import { Fraction } from 'mathjs';
 
-import type { Graph } from '../shared/useGraphWithCanvas.ts';
 import { SINK_LABEL, SOURCE_LABEL } from './constants.ts';
 
-const ALPHABET_WITHOUT_SOURCE_SINK = LETTERS.filter(
+const ALPHABET_WITHOUT_SOURCE_SINK = UPPERCASE_ALPHABET.filter(
   (l) => l !== SOURCE_LABEL && l !== SINK_LABEL,
 );
 
