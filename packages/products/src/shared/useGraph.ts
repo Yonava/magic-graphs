@@ -1,5 +1,6 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import { createNodeLabel } from '@magic/graph-plugins/plugins/node-label/index';
+import { useCharacteristics } from '@magic/graph/characteristics/index';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { useCoreGraph } from '@magic/graph/core/index';
 import { NodeAnchorEventMap } from '@magic/graph/plugins/anchors/events';
@@ -8,7 +9,6 @@ import { NodeAnchorPlugin } from '@magic/graph/plugins/anchors/types';
 import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
 import { useCanvasPlugin } from '@magic/graph/plugins/canvas/index';
 import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
-import { useCharacteristics } from '@magic/graph/plugins/characteristics/index';
 import { NodeDragEventMap } from '@magic/graph/plugins/drag/events';
 import { useNodeDragPlugin } from '@magic/graph/plugins/drag/index';
 import { NodeDragPlugin } from '@magic/graph/plugins/drag/types';

@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import { CoreGraph } from '../../core/types.ts';
+import { CoreGraph } from '../core/types.ts';
 
 /**
  * all edges that link two nodes in both directions

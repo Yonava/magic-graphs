@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import { CoreGraph } from '../../core/types.ts';
+import { CoreGraph } from '../core/types.ts';
 
 export const useComplete = (
   graph: Pick<CoreGraph, 'settings' | 'nodes' | 'edges'>,

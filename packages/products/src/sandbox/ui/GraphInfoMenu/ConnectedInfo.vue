@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import definitions from '@magic/graph/plugins/characteristics/definitions';
+  import definitions from '@magic/graph/characteristics/definitions';
 
   import { computed } from 'vue';
 
@@ -20,7 +20,9 @@
   const SCCs = computed(() => {
     const components =
       graph.value.characteristics.stronglyConnectedComponents.value;
-    return components.map((nodes) => nodes.map((node) => graph.value.labels.get(node.id)));
+    return components.map((nodes) =>
+      nodes.map((node) => graph.value.labels.get(node.id)),
+    );
   });
 
   const isBipartite = computed(

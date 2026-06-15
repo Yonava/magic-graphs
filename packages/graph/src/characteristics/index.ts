@@ -1,6 +1,6 @@
-import { CoreEventMap } from '../../core/events.ts';
-import type { CoreGraph } from '../../core/types.ts';
-import type { AdjacencyLists } from '../../useAdjacencyList.ts';
+import { CoreEventMap } from '../core/events.ts';
+import type { CoreGraph } from '../core/types.ts';
+import type { AdjacencyLists } from '../useAdjacencyList.ts';
 import { useBidirectionalEdges } from './bidirectional.ts';
 import { useBipartite } from './bipartite.ts';
 import { useComplete } from './complete.ts';
