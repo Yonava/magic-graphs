@@ -1,16 +1,16 @@
-import { CoreGraph } from '@magic/graph/core/types';
+import { GraphCoreControls } from '@magic/graph/core/types';
 import { EventHub } from '@magic/graph/events/createEventHub';
 
 import { CanvasEventMap } from './events.ts';
 import { CURSOR, CURSOR_FALLBACK, Cursor } from './themes/cursor.ts';
-import { CanvasGraph } from './types.ts';
+import { CanvasGraphControls } from './types.ts';
 
 type GraphCursorProps = {
   subscribe: EventHub<CanvasEventMap>['subscribe'];
-  canvas: CanvasGraph['magicCanvas']['canvas'];
-  getNode: CoreGraph['getNode'];
-  resolveToken: CanvasGraph['theme']['_resolveToken'];
-  graphUnderCursor: CanvasGraph['graphUnderCursor'];
+  canvas: CanvasGraphControls['magicCanvas']['canvas'];
+  getNode: GraphCoreControls['getNode'];
+  resolveToken: CanvasGraphControls['theme']['_resolveToken'];
+  graphUnderCursor: CanvasGraphControls['graphUnderCursor'];
 };
 
 export const CANVAS_ELEMENT_CURSOR_FIELD_KEY = 'cursor';

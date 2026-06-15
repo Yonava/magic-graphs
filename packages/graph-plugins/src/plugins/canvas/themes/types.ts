@@ -11,7 +11,7 @@
  * ThemeToken  — a dot-notation path into GraphTheme that addresses a single StyleValue leaf
  *               (e.g. "node.default.color"). used to identify which token an override targets.
  */
-import { CoreGraph } from '@magic/graph/core/types';
+import { GraphCoreControls } from '@magic/graph/core/types';
 import { NodeAnchor } from '@magic/graph/plugins/anchors/types';
 import { GEdge, GNode } from '@magic/graph/types';
 import type { FontWeight } from '@magic/shapes/text/types';
@@ -20,7 +20,7 @@ import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
 import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
-import { CanvasGraph } from '../types.ts';
+import { CanvasGraphControls } from '../types.ts';
 import { Cursor, CursorFallback } from './cursor.ts';
 
 export type TextStyles = {
@@ -39,14 +39,14 @@ export type CoreGraphNodeStyles = TextStyles & {
 };
 
 export type GraphInterface = {
-  shapes: CanvasGraph['shapes'];
-  settings: CoreGraph['settings'];
-  positions: CoreGraph['positions'];
-  resolveToken: CanvasGraph['theme']['_resolveToken'];
-  edges: CoreGraph['edges'];
-  getNode: CoreGraph['getNode'];
-  getEdge: CoreGraph['getEdge'];
-  helpers: CoreGraph['helpers'];
+  shapes: CanvasGraphControls['shapes'];
+  settings: GraphCoreControls['settings'];
+  positions: GraphCoreControls['positions'];
+  resolveToken: CanvasGraphControls['theme']['_resolveToken'];
+  edges: GraphCoreControls['edges'];
+  getNode: GraphCoreControls['getNode'];
+  getEdge: GraphCoreControls['getEdge'];
+  helpers: GraphCoreControls['helpers'];
 };
 
 export type CoreGraphNodeTheme = NodeThemeFields<CoreGraphNodeStyles> & {

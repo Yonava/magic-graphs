@@ -4,7 +4,7 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { CoreEventMap } from '../../core/events.ts';
 import { NodePositionStreamControls } from '../../core/positions/types.ts';
-import type { CoreGraph } from '../../core/types.ts';
+import type { GraphCoreControls } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { createDragState } from '../../shared/drag/createDragState.ts';
@@ -30,7 +30,7 @@ export const useNodeDragPlugin = <
   EventMap extends CoreEventMap & CanvasEventMap,
   Plugins extends CanvasPlugin,
 >(
-  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
+  graph: GraphCoreControls<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeDrag<TransactionWrapperOptions, EventMap, Plugins> => {
   const nodeDragRegistry = createNodeDragEventRegistry();
   const nodeDragHub: EventHub<NodeDragEventMap> =

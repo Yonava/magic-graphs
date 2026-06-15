@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
 
 import { CoreEventMap } from '../../core/events.ts';
-import { CoreGraph } from '../../core/types.ts';
+import { GraphCoreControls } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { MAX_HISTORY } from './constants.ts';
@@ -15,7 +15,7 @@ export const useHistoryPlugin = <
   EventMap extends CoreEventMap,
   Plugins,
 >(
-  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
+  graph: GraphCoreControls<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithHistory<TransactionWrapperOptions, EventMap, Plugins> => {
   const historyRegistry = createHistoryEventRegistry();
   const historyHub: EventHub<HistoryEventMap> = createEventHub(historyRegistry);

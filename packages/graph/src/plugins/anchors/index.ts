@@ -5,7 +5,7 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { readonly, ref } from 'vue';
 
 import { CoreEventMap } from '../../core/events.ts';
-import type { CoreGraph } from '../../core/types.ts';
+import type { GraphCoreControls } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type {
@@ -36,7 +36,7 @@ export const useNodeAnchorPlugin = <
   EventMap extends CoreEventMap & CanvasEventMap,
   Plugins extends CanvasPlugin,
 >(
-  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
+  graph: GraphCoreControls<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeAnchor<TransactionWrapperOptions, EventMap, Plugins> => {
   const nodeAnchorRegistry = createNodeAnchorEventRegistry();
   const nodeAnchorHub: EventHub<NodeAnchorEventMap> =

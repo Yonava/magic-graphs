@@ -1,6 +1,6 @@
 import { PURPLE_700, RED_700 } from '@magic/utils/colors';
 
-import { CoreGraph } from '../../core/types.ts';
+import { GraphCoreControls } from '../../core/types.ts';
 import { CanvasPlugin } from '../../plugins/canvas/types.ts';
 import { TUTORIAL_THEME_ID } from '../../tutorials/types.ts';
 import { type TutorialStep } from '../../tutorials/types.ts';
@@ -8,7 +8,7 @@ import { type TutorialStep } from '../../tutorials/types.ts';
 /**
  * pre-defined tutorial steps for basic graph editing
  */
-type BasicsGraph = CoreGraph & CanvasPlugin;
+type BasicsGraph = GraphCoreControls & CanvasPlugin;
 
 // @ts-expect-error migration: will complain that base graph events do not include
 // onNodeDrop

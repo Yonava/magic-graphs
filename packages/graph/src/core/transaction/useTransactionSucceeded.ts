@@ -2,14 +2,14 @@ import { Ref } from 'vue';
 
 import { AggregatorProps } from '../../plugins/canvas/useAggregator.ts';
 import { GEdge, GNode } from '../../types.ts';
-import { CoreGraph } from '../types.ts';
+import { GraphCoreControls } from '../types.ts';
 import { propagateTransactionEvents } from './propagateTransactionEvents.ts';
 import { TransactionOptions } from './types.ts';
 
 type TransactionSucceededOptions = {
   nodes: Ref<GNode[]>;
   edges: Ref<GEdge[]>;
-  emit: CoreGraph['events']['emit'];
+  emit: GraphCoreControls['events']['emit'];
 };
 
 export const useTransactionSucceeded = ({

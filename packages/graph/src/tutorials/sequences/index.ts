@@ -1,9 +1,9 @@
-import { CoreGraph } from '../../core/types.ts';
+import { GraphCoreControls } from '../../core/types.ts';
 import { CanvasPlugin } from '../../plugins/canvas/types.ts';
 import { BASICS_STEPS } from '../../tutorials/sequences/basics.ts';
 import type { TutorialSequence } from '../../tutorials/types.ts';
 
-type TutorialGraph = CoreGraph & CanvasPlugin;
+type TutorialGraph = GraphCoreControls & CanvasPlugin;
 
 /**
  * pre-defined sequence for basic graph editing.

@@ -2,7 +2,7 @@ import { ComputedRef, Ref } from 'vue';
 
 import { CoreTransactionWrapperOptions } from '../../core/actions/types.ts';
 import { CoreEventMap } from '../../core/events.ts';
-import { CoreGraph } from '../../core/types.ts';
+import { GraphCoreControls } from '../../core/types.ts';
 import { HistoryEventMap } from './events.ts';
 
 type HistoryOption = {
@@ -25,7 +25,7 @@ export type GraphWithHistory<
   TransactionWrapperOptions,
   EventMap extends CoreEventMap,
   Plugins,
-> = CoreGraph<
+> = GraphCoreControls<
   TransactionWrapperOptions & HistoryTransactionWrapperOptions,
   EventMap & HistoryEventMap,
   Plugins & HistoryPlugin

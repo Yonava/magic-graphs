@@ -1,7 +1,7 @@
 import { Coordinate } from '@magic/canvas/types';
 
 import { CoreEventMap } from '../../core/events.ts';
-import { CoreGraph } from '../../core/types.ts';
+import { GraphCoreControls } from '../../core/types.ts';
 import { GNode, GraphPlugin } from '../../types.ts';
 import { NodeDragEventMap } from './events.ts';
 
@@ -28,7 +28,7 @@ export type GraphWithNodeDrag<
   TransactionWrapperOptions,
   EventMap extends CoreEventMap,
   Plugins,
-> = CoreGraph<
+> = GraphCoreControls<
   TransactionWrapperOptions,
   EventMap & NodeDragEventMap,
   Plugins & NodeDragPlugin

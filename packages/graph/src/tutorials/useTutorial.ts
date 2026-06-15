@@ -1,4 +1,4 @@
-import { CoreGraph } from '../core/types.ts';
+import { GraphCoreControls } from '../core/types.ts';
 import { CanvasPlugin } from '../plugins/canvas/types.ts';
 import { SEQUENCES } from '../tutorials/sequences/index.ts';
 import { useGraphTutorial } from '../tutorials/useGraphTutorial.ts';
@@ -10,5 +10,5 @@ import { useGraphTutorial } from '../tutorials/useGraphTutorial.ts';
  * @param graph the useGraph instance to apply the tutorial to
  * @returns an object containing controls for the tutorial
  */
-export const useBasicsTutorial = (graph: CoreGraph & CanvasPlugin) =>
+export const useBasicsTutorial = (graph: GraphCoreControls & CanvasPlugin) =>
   useGraphTutorial(graph, SEQUENCES(graph).basics);

@@ -1,7 +1,7 @@
 import { ComputedRef, Ref } from 'vue';
 
 import { CoreEventMap } from '../../core/events.ts';
-import { CoreGraph } from '../../core/types.ts';
+import { GraphCoreControls } from '../../core/types.ts';
 import { GEdge, GNode, GraphPlugin } from '../../types.ts';
 import { CanvasEventMap } from '../canvas/events.ts';
 import { ThemeToken } from '../canvas/themes/types.ts';
@@ -56,14 +56,8 @@ export type FocusOption = {
   focus: boolean;
 };
 
-export type NodeBaseThemePath = Extract<
-  ThemeToken,
-  `node.default.${string}`
->;
-export type EdgeBaseThemePath = Extract<
-  ThemeToken,
-  `edge.default.${string}`
->;
+export type NodeBaseThemePath = Extract<ThemeToken, `node.default.${string}`>;
+export type EdgeBaseThemePath = Extract<ThemeToken, `edge.default.${string}`>;
 
 export type NodeBaseToNodeFocusTheme = {
   [Path in NodeBaseThemePath]: Path extends `node.default.${infer Style}`
@@ -93,7 +87,7 @@ export type GraphWithFocus<
   TransactionWrapperOptions,
   EventMap extends CoreEventMap,
   Plugins,
-> = CoreGraph<
+> = GraphCoreControls<
   TransactionWrapperOptions & FocusTransactionWrapperOptions,
   EventMap & CanvasEventMap & FocusEventMap,
   Plugins & CanvasPlugin & FocusPlugin

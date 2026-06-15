@@ -1,6 +1,6 @@
 import { Coordinate, MagicCanvasProps } from '@magic/canvas/types';
 import { CoreEventMap } from '@magic/graph/core/events';
-import { CoreGraph } from '@magic/graph/core/types';
+import { GraphCoreControls } from '@magic/graph/core/types';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import { Shape } from '@magic/shapes/types/index';
 import { DeepReadonly } from 'ts-essentials';
@@ -25,7 +25,7 @@ export type GraphUnderCursor = {
   elements: CanvasElement[];
 };
 
-export type CanvasGraph = {
+export type CanvasGraphControls = {
   /** @internal */
   magicCanvas: MagicCanvasProps;
   /**
@@ -127,19 +127,9 @@ export type CanvasElement = {
   data?: Record<string, unknown>;
 };
 
-export type CanvasPlugin = {
+export type CanvasPluginControls = {
   /**
    * graph canvas plugin controls
    */
-  canvas: CanvasGraph;
+  canvas: CanvasGraphControls;
 };
-
-export type GraphWithCanvas<
-  TransactionWrapperOptions,
-  EventMap extends CoreEventMap,
-  Plugins,
-> = CoreGraph<
-  TransactionWrapperOptions,
-  EventMap & CanvasEventMap,
-  Plugins & CanvasPlugin
->;

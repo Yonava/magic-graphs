@@ -1,5 +1,5 @@
 import type { CoreEventMap } from '@magic/graph/core/events';
-import { CoreGraph } from '@magic/graph/core/types';
+import { GraphCoreControls } from '@magic/graph/core/types';
 import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
 import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
 import { GNode } from '@magic/graph/types';
@@ -16,7 +16,7 @@ export const createNodeLabel = <
   EventMap extends CoreEventMap & CanvasEventMap,
   Plugins extends CanvasPlugin,
 >(
-  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
+  graph: GraphCoreControls<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithNodeLabel<TransactionWrapperOptions, EventMap, Plugins> => {
   const nodeIdToLabel = new Map<string, string>();
 

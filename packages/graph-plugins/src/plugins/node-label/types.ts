@@ -1,5 +1,5 @@
 import { CoreEventMap } from '@magic/graph/core/events';
-import { CoreGraph } from '@magic/graph/core/types';
+import { GraphCoreControls } from '@magic/graph/core/types';
 import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
 import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
 import { GraphPlugin } from '@magic/graph/types';
@@ -39,7 +39,7 @@ export type GraphWithNodeLabel<
   TransactionWrapperOptions,
   EventMap extends CoreEventMap,
   Plugins,
-> = CoreGraph<
+> = GraphCoreControls<
   TransactionWrapperOptions,
   EventMap & CanvasEventMap,
   Plugins & CanvasPlugin & NodeLabelPlugin,

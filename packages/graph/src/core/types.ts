@@ -6,18 +6,12 @@ import type { GEdge, GNode } from '../types.ts';
 import {
   CoreTransactionWrapperOptions,
   GraphActions,
-  MergeTransactionWrappersWithCore,
 } from './actions/types.ts';
 import { CoreEventMap } from './events.ts';
 import { CoreGraphHelpers } from './helpers/types.ts';
 import { NodePositionStoreControls } from './positions/types.ts';
 
-export type CoreGraph<
-  TransactionWrapperOptions = {},
-  EventMap extends CoreEventMap = CoreEventMap,
-  Plugins = {},
-  NodeGetterProps = {},
-> = {
+export type GraphCoreControls = {
   /**
    * all the nodes contained in the graph
    */
@@ -30,19 +24,17 @@ export type CoreGraph<
   nodeIdToIndex: ComputedRef<Map<GNode['id'], number>>;
   edgeIdToIndex: ComputedRef<Map<GEdge['id'], number>>;
 
-  getNode: (nodeId: GNode['id']) => Readonly<GNode & NodeGetterProps>;
+  getNode: (nodeId: GNode['id']) => Readonly<GNode>;
   getEdge: (edgeId: GEdge['id']) => Readonly<GEdge>;
 
-  actions: GraphActions<
-    MergeTransactionWrappersWithCore<TransactionWrapperOptions>
-  >;
+  actions: GraphActions<CoreTransactionWrapperOptions>;
 
-  events: EventHub<EventMap>;
+  events: EventHub<CoreEventMap>;
   settings: Ref<GraphSettings>;
 
   helpers: CoreGraphHelpers;
   positions: NodePositionStoreControls;
-} & Plugins;
+};
 
 export type InternalActions = {
   [Action in keyof CoreTransactionWrapperOptions]: (

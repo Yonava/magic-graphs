@@ -5,6 +5,7 @@ import { delta } from '@magic/utils/delta/index';
 import { computed, ref, watch } from 'vue';
 
 import { createEventHub } from '../events/createEventHub.ts';
+import { LooseGraphPlugin } from '../plugins/types.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
@@ -14,14 +15,18 @@ import { useGraphHelpers } from './helpers/index.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
-import type { CoreGraph } from './types.ts';
+import type { GraphCoreControls } from './types.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 
 export const CORE_EVENT_ID = 'core';
 
-export const useCoreGraph = (
-  startupSettings: Partial<GraphSettings> = {},
-): CoreGraph => {
+export const createGraph = <T extends LooseGraphPlugin[]>({
+  plugins,
+  settings: startupSettings = {},
+}: {
+  plugins: T;
+  settings: Partial<GraphSettings>;
+}): GraphCoreControls => {
   const settings = ref<GraphSettings>({
     ...DEFAULT_GRAPH_SETTINGS,
     ...startupSettings,

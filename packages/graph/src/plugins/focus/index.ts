@@ -7,7 +7,7 @@ import { computed, readonly, ref } from 'vue';
 
 import { ElementRemovalPayload } from '../../core/actions/types.ts';
 import { CoreEventMap } from '../../core/events.ts';
-import type { CoreGraph, InternalActions } from '../../core/types.ts';
+import type { GraphCoreControls, InternalActions } from '../../core/types.ts';
 import { EventHub, createEventHub } from '../../events/createEventHub.ts';
 import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type { GEdge, GNode } from '../../types.ts';
@@ -31,7 +31,7 @@ export const useFocusPlugin = <
   EventMap extends CoreEventMap & CanvasEventMap,
   Plugins extends CanvasPlugin,
 >(
-  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
+  graph: GraphCoreControls<TransactionWrapperOptions, EventMap, Plugins>,
 ): GraphWithFocus<TransactionWrapperOptions, EventMap, Plugins> => {
   const focusRegistry = createFocusEventRegistry();
   const focusHub: EventHub<FocusEventMap> = createEventHub(focusRegistry);
