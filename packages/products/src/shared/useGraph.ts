@@ -20,6 +20,8 @@ const createGraphWithPlugins = (
     plugins: [canvas(magicCanvas)],
   });
 
+  graph.events.subscribe('onDraw', () => {});
+
   return graph;
 };
 

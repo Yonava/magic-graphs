@@ -5,10 +5,10 @@ import { delta } from '@magic/utils/delta/index';
 import { computed, ref, watch } from 'vue';
 
 import { createEventHub } from '../events/createEventHub.ts';
-import { LooseGraphPlugin } from '../plugins/types.ts';
+import { LooseGraphPlugin, RemoveArray } from '../plugins/types.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
-import type { GEdge, GNode } from '../types.ts';
+import type { GEdge, GNode, UnionToIntersection } from '../types.ts';
 import { createGraphActions } from './actions/createGraphActions.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { useGraphHelpers } from './helpers/index.ts';
@@ -26,7 +26,7 @@ export const createGraph = <T extends LooseGraphPlugin[]>({
 }: {
   plugins: T;
   settings: Partial<GraphSettings>;
-}): GraphCoreControls => {
+}) => {
   const settings = ref<GraphSettings>({
     ...DEFAULT_GRAPH_SETTINGS,
     ...startupSettings,
@@ -93,22 +93,20 @@ export const createGraph = <T extends LooseGraphPlugin[]>({
     { deep: true },
   );
 
-  return {
+  const controls: GraphCoreControls = {
     nodes,
     edges,
-
     nodeIdToIndex,
     edgeIdToIndex,
-
     helpers: useGraphHelpers({ edges, getEdge, getNode, settings }),
-
     getNode,
     getEdge,
-
     actions,
     events,
-
     settings,
     positions: nodePositionStore,
   };
+
+  return controls as GraphCoreControls &
+    UnionToIntersection<ReturnType<RemoveArray<NoInfer<T>>>>;
 };

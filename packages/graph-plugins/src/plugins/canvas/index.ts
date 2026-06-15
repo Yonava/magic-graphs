@@ -30,7 +30,10 @@ import { useAggregator } from './useAggregator.ts';
 
 export const CANVAS_EVENT_ID = 'canvas';
 
-type CanvasPlugin = GraphPlugin<CanvasPluginControls>;
+type CanvasPlugin = GraphPlugin<{
+  controls: CanvasPluginControls;
+  events: CanvasEventMap;
+}>;
 
 export const canvas =
   (magicCanvas: MagicCanvasProps): CanvasPlugin =>
