@@ -14,7 +14,11 @@ import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
 import { createGraphActions } from './actions/createGraphActions.ts';
-import { CoreEventMap, createCoreEventRegistry } from './events.ts';
+import {
+  CoreTransactionWrapperOptions,
+  GraphActions,
+} from './actions/types.ts';
+import { createCoreEventRegistry } from './events.ts';
 import { useGraphHelpers } from './helpers/index.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
@@ -61,7 +65,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     onTransactionSucceeded,
   });
 
-  const actions = createGraphActions({
+  const coreActions = createGraphActions({
     commitTransaction,
     graph: {
       nodes,
@@ -106,7 +110,6 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     helpers: useGraphHelpers({ edges, getEdge, getNode, settings }),
     getNode,
     getEdge,
-    actions,
     settings,
     positions: nodePositionStore,
   };
@@ -116,8 +119,12 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
   const controls = coreControls as GraphCoreControls &
     ExtractControls<TPlugins>;
 
+  // GraphActions<CoreTransactionWrapperOptions>
+  const actions = coreActions;
+
   return {
     ...controls,
+    actions,
     events,
   };
 };

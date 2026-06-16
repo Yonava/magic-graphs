@@ -7,6 +7,7 @@ import { GenericEventMap } from '../events/types.ts';
 
 type LoosePluginData = {
   controls: object;
+  // TODO this should really be CoreEventMap not GenericEventMap but its being a pain in the ass
   events: GenericEventMap;
 };
 

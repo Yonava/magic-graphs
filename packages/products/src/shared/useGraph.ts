@@ -25,6 +25,8 @@ const createGraphWithPlugins = (
   // graph.events.subscribe('random', () => {});
   graph.canvas;
 
+  graph.actions.addNode({}, { history: true });
+
   return graph;
 };
 
