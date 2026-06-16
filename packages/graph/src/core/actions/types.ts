@@ -2,6 +2,14 @@ import { GEdge, GNode, UnionToIntersection } from '../../types.ts';
 import { Position } from '../positions/types.ts';
 import { TransactionPayload } from '../transaction/types.ts';
 
+type BulkActionConfig = {
+  nodes: {};
+  edges: {};
+  // a special field for options like "add to focus" or "add to history stack" that would
+  // be super annoying for the consumer to apply to each node or edge inside the payload
+  shared: {};
+};
+
 export type BaseActions = {
   addNode: {};
   removeNode: {};
@@ -9,31 +17,58 @@ export type BaseActions = {
   addEdge: {};
   removeEdge: {};
 
-  addElements: {};
-  removeElements: {};
+  addElements: BulkActionConfig;
+  removeElements: BulkActionConfig;
 };
 
+type Id = { id: string };
+type SourceTarget = {
+  /** id of the source node */
+  source: string;
+  /** id of the target node */
+  target: string;
+};
+
+type AddNodeOptions = Partial<Id & Position>;
+type AddEdgeOptions = Partial<Id> & SourceTarget;
+
 export type CoreActions = {
-  addNode: Position;
+  addNode: AddNodeOptions;
+  removeNode: Partial<Id>;
+
+  addEdge: AddEdgeOptions;
+  removeEdge: Partial<Id>;
+
+  addElements: {
+    nodes: AddNodeOptions;
+    edges: AddEdgeOptions;
+    shared: {};
+  };
+  removeElements: {
+    nodes: Partial<Id>;
+    edges: Partial<Id>;
+    shared: {};
+  };
+};
+
+type MockActions = {
+  addNode: { mock: string };
   removeNode: {};
 
   addEdge: {};
-  removeEdge: {};
+  removeEdge: { mock?: string | number };
 
-  addElements: {};
-  removeElements: {};
+  addElements: {
+    nodes: AddNodeOptions;
+    edges: AddEdgeOptions;
+    shared: {};
+  };
+  removeElements: {
+    nodes: Partial<Id> & { yona: string };
+    edges: Partial<Id>;
+    shared: { dila: number };
+  };
 };
-
-// type MockActions = {
-//   addNode: { mock: string };
-//   removeNode: {};
-
-//   addEdge: {};
-//   removeEdge: { mock?: string | number };
-
-//   addElements: {};
-//   removeElements: {};
-// };
 
 // the secret sauce allowing plugin definitions to omit action fields
 // such as addNode or removeEdge if they do not care to extend those
@@ -51,19 +86,35 @@ type DistributeResolveActions<PartialActions extends Partial<BaseActions>> =
     ? ResolveActions<PartialActions>
     : never;
 
+type BulkActionsField = 'addElements' | 'removeElements';
+
 // takes an array of action shapes and combines them into a single
 // interface that is used to type the graph action methods to consumers
 export type MergeActions<Actions extends Partial<BaseActions>[]> = {
-  [ActionsField in keyof BaseActions]: UnionToIntersection<
-    DistributeResolveActions<Actions[number]>[ActionsField]
-  >;
+  [ActionsField in keyof BaseActions]: ActionsField extends BulkActionsField
+    ? {
+        [ActionsSubField in keyof BaseActions[ActionsField]]: UnionToIntersection<
+          // @ts-expect-error this works: will do some guards later when cleaning up the types
+          DistributeResolveActions<
+            Actions[number]
+          >[ActionsField][ActionsSubField]
+        >;
+      }
+    : UnionToIntersection<
+        DistributeResolveActions<Actions[number]>[ActionsField]
+      >;
 };
 
 // type test = MergeActions<[CoreActions, MockActions]>;
+// const testConst: test['removeElements']['shared'] = {};
 
-// const testConst: test['removeEdge'] = {
-//   mock: false
-// };
+type BulkHandler<Action extends BulkActionConfig, ReturnValue> = (
+  options: {
+    nodes: Action['nodes'][];
+    edges: Action['edges'][];
+  },
+  shared: Action['shared'],
+) => ReturnValue;
 
 export type GraphActions<Actions extends BaseActions> = {
   /**
@@ -96,7 +147,7 @@ export type GraphActions<Actions extends BaseActions> = {
    * Bulk adds multiple {@link GNode | nodes} and {@link GEdge | edges}.
    * @returns Lists of all nodes and/or edges that were successfully added.
    */
-  addElements: (options: Actions['addElements']) => ElementAdditionPayload;
+  addElements: BulkHandler<Actions['addElements'], ElementAdditionPayload>;
 
   /**
    * Bulk deletes multiple {@link GNode | nodes} and {@link GEdge | edges}.
@@ -104,7 +155,7 @@ export type GraphActions<Actions extends BaseActions> = {
    * ℹ️ **Note:** If a node is in this batch, all its attached edges get deleted too.
    * @returns Lists of everything that got deleted during the operation.
    */
-  removeElements: (options: Actions['removeElements']) => ElementRemovalPayload;
+  removeElements: BulkHandler<Actions['removeElements'], ElementRemovalPayload>;
 };
 
 export type ElementRemovalPayload = Pick<

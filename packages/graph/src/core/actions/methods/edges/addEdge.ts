@@ -12,13 +12,6 @@ const getEdgeDefaults = () =>
     weight: new Fraction(1),
   }) as const satisfies Partial<GEdge>;
 
-export const resolveEdgeDefaults = (
-  edge: Parameters<GraphActions['addEdge']>[0],
-): GEdge => ({
-  ...getEdgeDefaults(),
-  ...edge,
-});
-
 export const createAddEdgeHandler =
   ({
     graph,
