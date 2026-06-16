@@ -112,9 +112,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     positions: nodePositionStore,
   };
 
-  const events = coreEventHub as unknown as EventHub<
-    CoreEventMap & ExtractEventMap<TPlugins>
-  >;
+  const events = coreEventHub as unknown as EventHub<ExtractEventMap<TPlugins>>;
 
   const controls = coreControls as GraphCoreControls &
     ExtractControls<TPlugins>;
