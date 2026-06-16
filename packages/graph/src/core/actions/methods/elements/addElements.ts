@@ -1,16 +1,18 @@
-import { CreateCoreActionOptions } from '../../createGraphActions.ts';
-import { GraphActions } from '../../types.ts';
-import { resolveEdgeDefaults } from '../edges/addEdge.ts';
-import { resolveNodeDefaults } from '../nodes/addNode.ts';
+import { CreateCoreAction } from '../../types.ts';
+import { edgeDefaults } from '../edges/addEdge.ts';
+import { nodeDefaults } from '../nodes/addNode.ts';
 
-export const createAddElementsHandler =
-  ({
-    graph,
-    commitTransaction,
-  }: CreateCoreActionOptions): GraphActions['addElements'] =>
+export const createAddElementsHandler: CreateCoreAction<'addElements'> =
+  ({ graph, commitTransaction }) =>
   ({ nodes = [], edges = [] }) => {
-    const edgesWithDefaults = edges.map(resolveEdgeDefaults);
-    const nodesWithDefaults = nodes.map(resolveNodeDefaults);
+    const edgesWithDefaults = edges.map((edge) => ({
+      ...edgeDefaults(),
+      ...edge,
+    }));
+    const nodesWithDefaults = nodes.map((node) => ({
+      ...nodeDefaults(),
+      ...node,
+    }));
 
     // https://github.com/Yonava/magic-graphs/issues/685
     // must be before commitTransaction because

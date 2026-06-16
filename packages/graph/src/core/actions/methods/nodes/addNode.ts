@@ -2,28 +2,17 @@ import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 
 import { GNode } from '../../../../types.ts';
-import { CreateCoreActionOptions } from '../../createGraphActions.ts';
-import { GraphActions } from '../../types.ts';
+import { CreateCoreAction } from '../../types.ts';
 
-const getNodeDefaults = () =>
+export const nodeDefaults = () =>
   ({
     id: generateId(),
   }) as const satisfies Partial<GNode>;
 
-export const resolveNodeDefaults = (
-  node: Parameters<GraphActions['addNode']>[0],
-): GNode => ({
-  ...getNodeDefaults(),
-  ...node,
-});
-
-export const createAddNodeHandler =
-  ({
-    graph,
-    commitTransaction,
-  }: CreateCoreActionOptions): GraphActions['addNode'] =>
+export const createAddNodeHandler: CreateCoreAction<'addNode'> =
+  ({ graph, commitTransaction }) =>
   (node) => {
-    const nodeWithDefaults = resolveNodeDefaults(node);
+    const nodeWithDefaults = { ...nodeDefaults(), ...node };
 
     // https://github.com/Yonava/magic-graphs/issues/685
     // must be before commitTransaction because

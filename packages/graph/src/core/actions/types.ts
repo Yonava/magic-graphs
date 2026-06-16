@@ -33,12 +33,17 @@ type SourceTarget = {
 type AddNodeOptions = Partial<Id & Position>;
 type AddEdgeOptions = Partial<Id> & SourceTarget;
 
+// TODO remove handlers may need to be another "special" case!
+// Examine how annoying it is to call remove handlers like:
+// graph.actions.removeNode({ id: '123' })
+// vs.
+// graph.actions.removeNode('123')
 export type CoreActions = {
   addNode: AddNodeOptions;
-  removeNode: Partial<Id>;
+  removeNode: Id;
 
   addEdge: AddEdgeOptions;
-  removeEdge: Partial<Id>;
+  removeEdge: Id;
 
   addElements: {
     nodes: AddNodeOptions;
@@ -46,8 +51,8 @@ export type CoreActions = {
     shared: {};
   };
   removeElements: {
-    nodes: Partial<Id>;
-    edges: Partial<Id>;
+    nodes: Id;
+    edges: Id;
     shared: {};
   };
 };
