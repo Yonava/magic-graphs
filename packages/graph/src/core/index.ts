@@ -6,6 +6,7 @@ import { computed, ref, watch } from 'vue';
 
 import { EventHub, createEventHub } from '../events/createEventHub.ts';
 import {
+  ExtractActions,
   ExtractControls,
   ExtractEventMap,
   LooseGraphPlugin,
@@ -119,8 +120,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
   const controls = coreControls as GraphCoreControls &
     ExtractControls<TPlugins>;
 
-  // GraphActions<CoreTransactionWrapperOptions>
-  const actions = coreActions;
+  const actions = coreActions as GraphActions<ExtractActions<TPlugins>>;
 
   return {
     ...controls,

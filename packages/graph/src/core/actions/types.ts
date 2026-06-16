@@ -3,7 +3,7 @@ import { Position } from '../positions/types.ts';
 import { TransactionPayload } from '../transaction/types.ts';
 import { CreateCoreActionOptions } from './createGraphActions.ts';
 
-type BulkActionConfig = {
+export type BulkActionConfig = {
   nodes: {};
   edges: {};
   // a special field for options like "add to focus" or "add to history stack" that would
@@ -79,11 +79,22 @@ export type CoreActions = {
 // the secret sauce allowing plugin definitions to omit action fields
 // such as addNode or removeEdge if they do not care to extend those
 // respective definitions
-type ResolveActions<PartialActions extends Partial<BaseActions>> = {
+export type ResolveActions<PartialActions extends Partial<BaseActions>> = {
   [ActionsField in keyof BaseActions]: ActionsField extends keyof PartialActions
     ? PartialActions[ActionsField]
-    : {};
+    : ActionsField extends BulkActionsField
+      ? {
+          [BulkActionField in keyof BulkActionConfig]: BulkActionField extends keyof PartialActions[ActionsField]
+            ? PartialActions[ActionsField][BulkActionField]
+            : {};
+        }
+      : {};
 };
+
+type r = ResolveActions<{
+  addNode: { hello: 'world' };
+  addElements: { shared: {}; edges: {} };
+}>;
 
 // handles distributing union of actions so they can be resolved separately
 // before being merged together by UnionToIntersection in MergeActions

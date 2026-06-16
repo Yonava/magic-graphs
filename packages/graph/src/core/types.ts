@@ -2,10 +2,6 @@ import type { ComputedRef, Ref } from 'vue';
 
 import { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
-import {
-  CoreTransactionWrapperOptions,
-  GraphActions,
-} from './actions/types.ts';
 import { CoreGraphHelpers } from './helpers/types.ts';
 import { NodePositionStoreControls } from './positions/types.ts';
 
@@ -29,13 +25,4 @@ export type GraphCoreControls = {
 
   helpers: CoreGraphHelpers;
   positions: NodePositionStoreControls;
-};
-
-export type InternalActions = {
-  [Action in keyof CoreTransactionWrapperOptions]: (
-    ...args: [
-      ...Parameters<GraphActions[Action]>,
-      transactionOptions: Record<string, any>,
-    ]
-  ) => ReturnType<GraphActions[Action]>;
 };

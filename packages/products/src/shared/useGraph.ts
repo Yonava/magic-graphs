@@ -24,8 +24,9 @@ const createGraphWithPlugins = (
   graph.events.subscribe('onNodeMoveStream', (move) => {});
   // graph.events.subscribe('random', () => {});
   graph.canvas;
+  graph.history;
 
-  graph.actions.addNode({}, { history: true });
+  graph.actions.addNode({});
 
   return graph;
 };

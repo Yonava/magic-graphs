@@ -11,12 +11,22 @@ import { HistoryPluginControls } from './types.ts';
 
 export const HISTORY_EVENT_ID = 'history';
 
+type HistoryOption = {
+  /** Whether to add element(s) to history stack */
+  history?: boolean;
+};
+
+type HistoryActions = {
+  addNode: HistoryOption;
+};
+
 type HistoryPlugin = GraphPlugin<{
   controls: HistoryPluginControls;
   events: HistoryEventMap;
+  actions: HistoryActions;
 }>;
 
-export const history: HistoryPlugin = (graph, graphEventHub) => {
+export const history: HistoryPlugin = (graph, graphEventHub, actions) => {
   const historyRegistry = createHistoryEventRegistry();
   const historyEventHub = createEventHub(historyRegistry);
   const events = mergeEventHubs<HistoryEventMap, CoreEventMap>(
@@ -71,12 +81,10 @@ export const history: HistoryPlugin = (graph, graphEventHub) => {
     redoStack.value = [];
   };
 
+  const historyActions = {};
+
   return {
-    // actions: graph.actions as GraphWithHistory<
-    //   TransactionWrapperOptions,
-    //   EventMap,
-    //   Plugins
-    // >['actions'],
+    actions,
     events,
     controls: {
       history: {

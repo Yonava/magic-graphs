@@ -1,5 +1,11 @@
-import { UnionToIntersection } from 'ts-essentials';
+import { Prettify, UnionToIntersection } from 'ts-essentials';
 
+import {
+  BaseActions,
+  BulkActionConfig,
+  CoreActions,
+  MergeActions,
+} from '../core/actions/types.ts';
 import { CoreEventMap } from '../core/events.ts';
 import { GraphCoreControls } from '../core/types.ts';
 import { EventHub } from '../events/createEventHub.ts';
@@ -9,6 +15,7 @@ type LoosePluginData = {
   controls: object;
   // TODO this should really be CoreEventMap not GenericEventMap but its being a pain in the ass
   events: GenericEventMap;
+  actions: Partial<BaseActions>;
 };
 
 /**
@@ -26,13 +33,15 @@ type LoosePluginData = {
  */
 export type GraphPlugin<
   PluginData extends LoosePluginData,
-  DependentPluginData extends LooseGraphPlugin[] = [],
+  DependentPlugins extends LooseGraphPlugin[] = [],
 > = (
-  graph: GraphCoreControls & ExtractControls<DependentPluginData>,
-  events: EventHub<CoreEventMap & ExtractEventMap<DependentPluginData>>,
+  graph: GraphCoreControls & ExtractControls<DependentPlugins>,
+  events: EventHub<CoreEventMap & ExtractEventMap<DependentPlugins>>,
+  actions: CoreActions,
 ) => {
   controls: PluginData['controls'];
   events: EventHub<CoreEventMap & PluginData['events']>;
+  actions: MergeActions<[CoreActions, PluginData['actions']]>;
 };
 
 /**
@@ -48,26 +57,31 @@ export type GraphPlugin<
 export type LooseGraphPlugin = (
   graph: GraphCoreControls,
   events: EventHub<CoreEventMap>,
+  actions: CoreActions,
 ) => {
   controls: LoosePluginData['controls'];
   events: EventHub<CoreEventMap & LoosePluginData['events']>;
+  actions: MergeActions<[CoreActions, LoosePluginData['actions']]>;
 };
 
 export type RemoveArray<T> = T extends (infer F)[] ? F : T;
 
-type ExtractData<TPlugin extends LooseGraphPlugin[]> = UnionToIntersection<
-  ReturnType<RemoveArray<NoInfer<TPlugin>>>
+type ExtractData<TPlugins extends LooseGraphPlugin[]> = UnionToIntersection<
+  ReturnType<RemoveArray<NoInfer<TPlugins>>>
 >;
 
-export type ExtractControls<TPlugin extends LooseGraphPlugin[]> =
-  ExtractData<TPlugin> extends { controls: infer Controls } ? Controls : never;
+export type ExtractControls<TPlugins extends LooseGraphPlugin[]> =
+  ExtractData<TPlugins> extends { controls: infer Controls } ? Controls : never;
 
-export type ExtractEventMap<TPlugin extends LooseGraphPlugin[]> =
-  TPlugin extends never[]
+export type ExtractActions<TPlugins extends LooseGraphPlugin[]> =
+  ExtractData<TPlugins> extends { actions: infer Actions } ? Actions : never;
+
+export type ExtractEventMap<TPlugins extends LooseGraphPlugin[]> =
+  TPlugins extends never[]
     ? // all plugins come pre-baked with core events
       CoreEventMap
     : UnionToIntersection<
-        ReturnType<RemoveArray<NoInfer<TPlugin>>> extends {
+        ReturnType<RemoveArray<NoInfer<TPlugins>>> extends {
           events: EventHub<infer EventMap>;
         }
           ? EventMap
@@ -79,6 +93,11 @@ type MockPlugin = GraphPlugin<{
   events: {
     onMock: () => void;
   };
+  actions: {
+    addNode: { mock: string };
+    addElements: BulkActionConfig;
+    removeElements: BulkActionConfig;
+  };
 }>;
 
 type DilaPlugin = GraphPlugin<{
@@ -86,8 +105,23 @@ type DilaPlugin = GraphPlugin<{
   events: {
     onAnimeWatched: () => void;
   };
+  actions: {
+    addNode: {
+      iceCream: number;
+    };
+    addElements: {
+      edges: {};
+      nodes: { node: 'ez' };
+      shared: { ice: 'cream' };
+    };
+    removeElements: BulkActionConfig;
+  };
 }>;
 
-type e = ExtractEventMap<[]>;
+type e = Prettify<ExtractActions<[DilaPlugin, MockPlugin]>>;
+
+const t: e['addElements']['shared'] = {
+  ice: 'cream',
+};
 
 // const ev: e = {};

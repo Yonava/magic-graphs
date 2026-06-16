@@ -1,15 +1,4 @@
-import { CoreTransactionWrapperOptions } from '@magic/graph/core/actions/types';
-
 import { ComputedRef, Ref } from 'vue';
-
-type HistoryOption = {
-  /** Whether to add element(s) to history stack */
-  history?: boolean;
-};
-
-export type HistoryTransactionWrapperOptions = {
-  [K in keyof CoreTransactionWrapperOptions]: HistoryOption;
-};
 
 export type HistoryPluginControls = {
   /**
