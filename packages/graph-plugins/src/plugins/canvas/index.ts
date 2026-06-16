@@ -1,6 +1,7 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
+import { PartialBaseActions } from '@magic/graph/core/actions/types';
 import { CoreEventMap } from '@magic/graph/core/events';
-import { EventHub, createEventHub } from '@magic/graph/events/createEventHub';
+import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { GraphPlugin } from '@magic/graph/plugins/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
@@ -33,11 +34,12 @@ export const CANVAS_EVENT_ID = 'canvas';
 type CanvasPlugin = GraphPlugin<{
   controls: CanvasPluginControls;
   events: CanvasEventMap;
+  actions: PartialBaseActions;
 }>;
 
 export const canvas =
   (magicCanvas: MagicCanvasProps): CanvasPlugin =>
-  (graph, graphEventHub) => {
+  (graph, graphEventHub, actions) => {
     const canvasRegistry = createCanvasEventRegistry();
     const canvasEventHub = createEventHub(canvasRegistry);
     const events = mergeEventHubs<CanvasEventMap, CoreEventMap>(
@@ -243,6 +245,7 @@ export const canvas =
           },
         },
       },
+      actions,
       events,
     };
   };

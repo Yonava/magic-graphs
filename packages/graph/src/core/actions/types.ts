@@ -22,6 +22,17 @@ export type BaseActions = {
   removeElements: BulkActionConfig;
 };
 
+export type PartialBaseActions = Partial<{
+  addNode: {};
+  removeNode: {};
+
+  addEdge: {};
+  removeEdge: {};
+
+  addElements: Partial<BulkActionConfig>;
+  removeElements: Partial<BulkActionConfig>;
+}>;
+
 type Id = { id: string };
 type SourceTarget = {
   /** id of the source node */
@@ -57,48 +68,65 @@ export type CoreActions = {
   };
 };
 
-// type MockActions = {
-//   addNode: { mock: string };
-//   removeNode: {};
+type MockActions = {
+  addNode: { mock: string };
+  removeNode: {};
 
-//   addEdge: {};
-//   removeEdge: { mock?: string | number };
+  addEdge: {};
+  removeEdge: { mock?: string | number };
 
-//   addElements: {
-//     nodes: AddNodeOptions;
-//     edges: AddEdgeOptions;
-//     shared: {};
-//   };
-//   removeElements: {
-//     nodes: Partial<Id> & { yona: string };
-//     edges: Partial<Id>;
-//     shared: { dila: number };
-//   };
-// };
+  addElements: {
+    nodes: AddNodeOptions;
+    edges: AddEdgeOptions;
+    shared: {};
+  };
+  removeElements: {
+    nodes: Partial<Id> & { yona: string };
+    edges: Partial<Id>;
+    shared: { dila: number };
+  };
+};
 
 // the secret sauce allowing plugin definitions to omit action fields
 // such as addNode or removeEdge if they do not care to extend those
 // respective definitions
-export type ResolveActions<PartialActions extends Partial<BaseActions>> = {
-  [ActionsField in keyof BaseActions]: ActionsField extends keyof PartialActions
-    ? PartialActions[ActionsField]
-    : ActionsField extends BulkActionsField
-      ? {
-          [BulkActionField in keyof BulkActionConfig]: BulkActionField extends keyof PartialActions[ActionsField]
-            ? PartialActions[ActionsField][BulkActionField]
-            : {};
-        }
-      : {};
+export type ResolveActions<Actions extends PartialBaseActions> = {
+  addNode: 'addNode' extends keyof Actions
+    ? NonNullable<Actions['addNode']>
+    : {};
+  removeNode: 'removeNode' extends keyof Actions
+    ? NonNullable<Actions['removeNode']>
+    : {};
+  addEdge: 'addEdge' extends keyof Actions
+    ? NonNullable<Actions['addEdge']>
+    : {};
+  removeEdge: 'removeEdge' extends keyof Actions
+    ? NonNullable<Actions['removeEdge']>
+    : {};
+  addElements: 'addElements' extends keyof Actions
+    ? {
+        [K in keyof BulkActionConfig]: K extends keyof Actions['addElements']
+          ? Actions['addElements'][K]
+          : {};
+      }
+    : BulkActionConfig;
+  removeElements: 'removeElements' extends keyof Actions
+    ? {
+        [K in keyof BulkActionConfig]: K extends keyof Actions['removeElements']
+          ? Actions['removeElements'][K]
+          : {};
+      }
+    : BulkActionConfig;
 };
 
 type r = ResolveActions<{
   addNode: { hello: 'world' };
-  addElements: { shared: {}; edges: {} };
+  addElements: { shared: { history: 'id' }; edges: {} };
 }>;
 
 // handles distributing union of actions so they can be resolved separately
 // before being merged together by UnionToIntersection in MergeActions
-type DistributeResolveActions<PartialActions extends Partial<BaseActions>> =
+type DistributeResolveActions<PartialActions extends PartialBaseActions> =
   PartialActions extends PartialActions
     ? ResolveActions<PartialActions>
     : never;
@@ -107,22 +135,25 @@ type BulkActionsField = 'addElements' | 'removeElements';
 
 // takes an array of action shapes and combines them into a single
 // interface that is used to type the graph action methods to consumers
-export type MergeActions<Actions extends Partial<BaseActions>[]> = {
-  [ActionsField in keyof BaseActions]: ActionsField extends BulkActionsField
-    ? {
-        [ActionsSubField in keyof BaseActions[ActionsField]]: UnionToIntersection<
-          // @ts-expect-error this works: will do some guards later when cleaning up the types
-          DistributeResolveActions<
-            Actions[number]
-          >[ActionsField][ActionsSubField]
-        >;
-      }
-    : UnionToIntersection<
-        DistributeResolveActions<Actions[number]>[ActionsField]
-      >;
-};
+export type MergeActions<Actions extends PartialBaseActions[]> =
+  Actions extends []
+    ? BaseActions
+    : {
+        [ActionsField in keyof BaseActions]: ActionsField extends BulkActionsField
+          ? {
+              [ActionsSubField in keyof BaseActions[ActionsField]]: UnionToIntersection<
+                DistributeResolveActions<
+                  Actions[number]
+                >[ActionsField][ActionsSubField]
+              >;
+            }
+          : UnionToIntersection<
+              DistributeResolveActions<Actions[number]>[ActionsField]
+            >;
+      };
 
-// type test = MergeActions<[CoreActions, MockActions]>;
+type test = MergeActions<[PartialBaseActions]>;
+type anotherTest = ResolveActions<PartialBaseActions>;
 // const testConst: test['removeElements']['shared'] = {};
 
 type BulkHandler<Action extends BulkActionConfig, ReturnValue> = (

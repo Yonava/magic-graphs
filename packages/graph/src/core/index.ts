@@ -15,10 +15,7 @@ import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
 import { createCoreActions } from './actions/createGraphActions.ts';
-import {
-  CoreTransactionWrapperOptions,
-  GraphActions,
-} from './actions/types.ts';
+import { GraphActions } from './actions/types.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { useGraphHelpers } from './helpers/index.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
@@ -115,12 +112,16 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     positions: nodePositionStore,
   };
 
-  const events = coreEventHub as unknown as EventHub<ExtractEventMap<TPlugins>>;
+  const events = coreEventHub as unknown as EventHub<
+    ExtractEventMap<NoInfer<TPlugins>>
+  >;
 
   const controls = coreControls as GraphCoreControls &
-    ExtractControls<TPlugins>;
+    ExtractControls<NoInfer<TPlugins>>;
 
-  const actions = coreActions as GraphActions<ExtractActions<TPlugins>>;
+  const actions = coreActions as GraphActions<
+    ExtractActions<NoInfer<TPlugins>>
+  >;
 
   return {
     ...controls,

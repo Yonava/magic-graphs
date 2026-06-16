@@ -1,10 +1,12 @@
 import { Prettify, UnionToIntersection } from 'ts-essentials';
 
 import {
-  BaseActions,
   BulkActionConfig,
   CoreActions,
+  GraphActions,
   MergeActions,
+  PartialBaseActions,
+  ResolveActions,
 } from '../core/actions/types.ts';
 import { CoreEventMap } from '../core/events.ts';
 import { GraphCoreControls } from '../core/types.ts';
@@ -15,7 +17,7 @@ type LoosePluginData = {
   controls: object;
   // TODO this should really be CoreEventMap not GenericEventMap but its being a pain in the ass
   events: GenericEventMap;
-  actions: Partial<BaseActions>;
+  actions: PartialBaseActions;
 };
 
 /**
@@ -37,11 +39,11 @@ export type GraphPlugin<
 > = (
   graph: GraphCoreControls & ExtractControls<DependentPlugins>,
   events: EventHub<CoreEventMap & ExtractEventMap<DependentPlugins>>,
-  actions: CoreActions,
+  actions: GraphActions<CoreActions>,
 ) => {
   controls: PluginData['controls'];
   events: EventHub<CoreEventMap & PluginData['events']>;
-  actions: MergeActions<[CoreActions, PluginData['actions']]>;
+  actions: GraphActions<MergeActions<[PluginData['actions'], CoreActions]>>;
 };
 
 /**
@@ -57,11 +59,12 @@ export type GraphPlugin<
 export type LooseGraphPlugin = (
   graph: GraphCoreControls,
   events: EventHub<CoreEventMap>,
-  actions: CoreActions,
+  actions: GraphActions<CoreActions>,
 ) => {
   controls: LoosePluginData['controls'];
   events: EventHub<CoreEventMap & LoosePluginData['events']>;
-  actions: MergeActions<[CoreActions, LoosePluginData['actions']]>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  actions: GraphActions<any>;
 };
 
 export type RemoveArray<T> = T extends (infer F)[] ? F : T;
@@ -74,7 +77,16 @@ export type ExtractControls<TPlugins extends LooseGraphPlugin[]> =
   ExtractData<TPlugins> extends { controls: infer Controls } ? Controls : never;
 
 export type ExtractActions<TPlugins extends LooseGraphPlugin[]> =
-  ExtractData<TPlugins> extends { actions: infer Actions } ? Actions : never;
+  TPlugins extends never[]
+    ? // all plugins come pre-baked with core events
+      CoreActions
+    : UnionToIntersection<
+        ReturnType<RemoveArray<NoInfer<TPlugins>>> extends {
+          actions: GraphActions<infer Actions>;
+        }
+          ? Actions
+          : never
+      >;
 
 export type ExtractEventMap<TPlugins extends LooseGraphPlugin[]> =
   TPlugins extends never[]
@@ -95,8 +107,7 @@ type MockPlugin = GraphPlugin<{
   };
   actions: {
     addNode: { mock: string };
-    addElements: BulkActionConfig;
-    removeElements: BulkActionConfig;
+    addElements: { shared: { cream: 'ice' } };
   };
 }>;
 
@@ -115,13 +126,18 @@ type DilaPlugin = GraphPlugin<{
       shared: { ice: 'cream' };
     };
     removeElements: BulkActionConfig;
+    addEdge: {};
+    removeEdge: {};
   };
 }>;
+
+type t = ReturnType<DilaPlugin>['actions'];
 
 type e = Prettify<ExtractActions<[DilaPlugin, MockPlugin]>>;
 
 const t: e['addElements']['shared'] = {
   ice: 'cream',
+  cream: 'ice',
 };
 
 // const ev: e = {};

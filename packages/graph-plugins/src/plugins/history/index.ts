@@ -1,7 +1,11 @@
+import {
+  GraphActions,
+  PartialBaseActions,
+} from '@magic/graph/core/actions/types';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
-import { GraphPlugin } from '@magic/graph/plugins/types';
+import { ExtractActions, GraphPlugin } from '@magic/graph/plugins/types';
 
 import { computed, ref } from 'vue';
 
@@ -81,10 +85,19 @@ export const history: HistoryPlugin = (graph, graphEventHub, actions) => {
     redoStack.value = [];
   };
 
-  const historyActions = {};
+  // const historyActions = {
+  //   addNode: (node) => {
+  //     return node;
+  //   },
+  // };
 
   return {
-    actions,
+    actions: {
+      ...actions,
+      addNode: ({ history, x, id }) => {
+        return actions.addNode({ id });
+      },
+    },
     events,
     controls: {
       history: {
