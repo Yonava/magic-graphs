@@ -1,9 +1,6 @@
-import { ComputedRef, Ref } from 'vue';
+import { CoreTransactionWrapperOptions } from '@magic/graph/core/actions/types';
 
-import { CoreTransactionWrapperOptions } from '../../core/actions/types.ts';
-import { CoreEventMap } from '../../core/events.ts';
-import { GraphCoreControls } from '../../core/types.ts';
-import { HistoryEventMap } from './events.ts';
+import { ComputedRef, Ref } from 'vue';
 
 type HistoryOption = {
   /** Whether to add element(s) to history stack */
@@ -14,22 +11,12 @@ export type HistoryTransactionWrapperOptions = {
   [K in keyof CoreTransactionWrapperOptions]: HistoryOption;
 };
 
-export type HistoryPlugin = {
+export type HistoryPluginControls = {
   /**
    * history plugin controls
    */
   history: HistoryGraph;
 };
-
-export type GraphWithHistory<
-  TransactionWrapperOptions,
-  EventMap extends CoreEventMap,
-  Plugins,
-> = GraphCoreControls<
-  TransactionWrapperOptions & HistoryTransactionWrapperOptions,
-  EventMap & HistoryEventMap,
-  Plugins & HistoryPlugin
->;
 
 export type HistoryGraph = {
   /**

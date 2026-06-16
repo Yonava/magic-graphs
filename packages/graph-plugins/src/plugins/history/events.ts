@@ -1,4 +1,4 @@
-import { EventMapToEventRegistry } from '../../events/types.ts';
+import { EventMapToEventRegistry } from '@magic/graph/events/types';
 
 export type HistoryEventMap = {
   /**

@@ -72,3 +72,21 @@ export type ExtractEventMap<TPlugin extends LooseGraphPlugin[]> =
           ? EventMap
           : never
       >;
+
+type MockPlugin = GraphPlugin<{
+  controls: { mock: { setMock: () => void; getMock: () => void } };
+  events: {
+    onMock: () => void;
+  };
+}>;
+
+type DilaPlugin = GraphPlugin<{
+  controls: { dila: { watchAnime: () => void } };
+  events: {
+    onAnimeWatched: () => void;
+  };
+}>;
+
+type e = ExtractEventMap<[]>;
+
+// const ev: e = {};

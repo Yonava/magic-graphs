@@ -1,5 +1,6 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import { canvas } from '@magic/graph-plugins/plugins/canvas/index';
+import { history } from '@magic/graph-plugins/plugins/history/index';
 import { useCharacteristics } from '@magic/graph/characteristics/index';
 import { createGraph } from '@magic/graph/core/index';
 import type { GraphSettings } from '@magic/graph/settings/index';
@@ -16,12 +17,12 @@ const createGraphWithPlugins = (
 ) => {
   const graph = createGraph({
     settings,
-    plugins: [canvas(magicCanvas)],
+    plugins: [canvas(magicCanvas), history],
   });
 
   graph.events.subscribe('onDraw', (ctx) => {});
   graph.events.subscribe('onNodeMoveStream', (move) => {});
-  graph.events.subscribe('random', () => {});
+  // graph.events.subscribe('random', () => {});
   graph.canvas;
 
   return graph;

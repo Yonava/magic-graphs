@@ -37,12 +37,12 @@ type CanvasPlugin = GraphPlugin<{
 
 export const canvas =
   (magicCanvas: MagicCanvasProps): CanvasPlugin =>
-  (graph, eventHub) => {
+  (graph, graphEventHub) => {
     const canvasRegistry = createCanvasEventRegistry();
-    const canvasHub = createEventHub(canvasRegistry);
+    const canvasEventHub = createEventHub(canvasRegistry);
     const events = mergeEventHubs<CanvasEventMap, CoreEventMap>(
-      canvasHub,
-      eventHub,
+      canvasEventHub,
+      graphEventHub,
     );
 
     const aggregator = useAggregator({ emit: events.emit });

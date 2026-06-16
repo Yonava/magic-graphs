@@ -1,7 +1,6 @@
 import { nullThrows } from '@magic/utils/assert';
 import { clone } from '@magic/utils/clone';
 import { delta } from '@magic/utils/delta/index';
-import { IsNever } from 'ts-essentials';
 
 import { computed, ref, watch } from 'vue';
 
