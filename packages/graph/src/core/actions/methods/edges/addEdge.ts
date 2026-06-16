@@ -3,22 +3,21 @@ import { generateId } from '@magic/utils/id';
 import Fraction from 'fraction.js';
 
 import { GEdge } from '../../../../types.ts';
-import { GraphActionsOptions } from '../../createGraphActions.ts';
-import { GraphActions } from '../../types.ts';
+import { CreateCoreAction } from '../../types.ts';
 
-const getEdgeDefaults = () =>
+export const edgeDefaults = () =>
   ({
     id: generateId(),
     weight: new Fraction(1),
   }) as const satisfies Partial<GEdge>;
 
-export const createAddEdgeHandler =
-  ({
-    graph,
-    commitTransaction,
-  }: GraphActionsOptions): GraphActions['addEdge'] =>
+export const createAddEdgeHandler: CreateCoreAction<'addEdge'> =
+  ({ graph, commitTransaction }) =>
   (edge) => {
-    const edgeWithDefaults = resolveEdgeDefaults(edge);
+    const edgeWithDefaults = {
+      ...edgeDefaults(),
+      ...edge,
+    };
 
     const { addedEdges } = commitTransaction({ addEdges: [edgeWithDefaults] });
 

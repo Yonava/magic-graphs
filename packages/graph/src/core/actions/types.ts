@@ -1,6 +1,7 @@
 import { GEdge, GNode, UnionToIntersection } from '../../types.ts';
 import { Position } from '../positions/types.ts';
 import { TransactionPayload } from '../transaction/types.ts';
+import { CreateCoreActionOptions } from './createGraphActions.ts';
 
 type BulkActionConfig = {
   nodes: {};
@@ -51,24 +52,24 @@ export type CoreActions = {
   };
 };
 
-type MockActions = {
-  addNode: { mock: string };
-  removeNode: {};
+// type MockActions = {
+//   addNode: { mock: string };
+//   removeNode: {};
 
-  addEdge: {};
-  removeEdge: { mock?: string | number };
+//   addEdge: {};
+//   removeEdge: { mock?: string | number };
 
-  addElements: {
-    nodes: AddNodeOptions;
-    edges: AddEdgeOptions;
-    shared: {};
-  };
-  removeElements: {
-    nodes: Partial<Id> & { yona: string };
-    edges: Partial<Id>;
-    shared: { dila: number };
-  };
-};
+//   addElements: {
+//     nodes: AddNodeOptions;
+//     edges: AddEdgeOptions;
+//     shared: {};
+//   };
+//   removeElements: {
+//     nodes: Partial<Id> & { yona: string };
+//     edges: Partial<Id>;
+//     shared: { dila: number };
+//   };
+// };
 
 // the secret sauce allowing plugin definitions to omit action fields
 // such as addNode or removeEdge if they do not care to extend those
@@ -167,3 +168,7 @@ export type ElementAdditionPayload = Pick<
   TransactionPayload,
   'addedNodes' | 'addedEdges'
 >;
+
+export type CreateCoreAction<
+  ActionName extends keyof GraphActions<CoreActions>,
+> = (options: CreateCoreActionOptions) => GraphActions<CoreActions>[ActionName];

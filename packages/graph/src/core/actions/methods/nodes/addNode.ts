@@ -2,7 +2,7 @@ import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 
 import { GNode } from '../../../../types.ts';
-import { GraphActionsOptions } from '../../createGraphActions.ts';
+import { CreateCoreActionOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
 
 const getNodeDefaults = () =>
@@ -21,7 +21,7 @@ export const createAddNodeHandler =
   ({
     graph,
     commitTransaction,
-  }: GraphActionsOptions): GraphActions['addNode'] =>
+  }: CreateCoreActionOptions): GraphActions['addNode'] =>
   (node) => {
     const nodeWithDefaults = resolveNodeDefaults(node);
 

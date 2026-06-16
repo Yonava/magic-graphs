@@ -1,4 +1,4 @@
-import { GraphActionsOptions } from '../../createGraphActions.ts';
+import { CreateCoreActionOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
 import { resolveEdgeDefaults } from '../edges/addEdge.ts';
 import { resolveNodeDefaults } from '../nodes/addNode.ts';
@@ -7,7 +7,7 @@ export const createAddElementsHandler =
   ({
     graph,
     commitTransaction,
-  }: GraphActionsOptions): GraphActions['addElements'] =>
+  }: CreateCoreActionOptions): GraphActions['addElements'] =>
   ({ nodes = [], edges = [] }) => {
     const edgesWithDefaults = edges.map(resolveEdgeDefaults);
     const nodesWithDefaults = nodes.map(resolveNodeDefaults);

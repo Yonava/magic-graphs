@@ -13,7 +13,7 @@ import {
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
 import type { GEdge, GNode } from '../types.ts';
-import { createGraphActions } from './actions/createGraphActions.ts';
+import { createCoreActions } from './actions/createGraphActions.ts';
 import {
   CoreTransactionWrapperOptions,
   GraphActions,
@@ -65,7 +65,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     onTransactionSucceeded,
   });
 
-  const coreActions = createGraphActions({
+  const coreActions = createCoreActions({
     commitTransaction,
     graph: {
       nodes,

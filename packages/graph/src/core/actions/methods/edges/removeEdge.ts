@@ -1,10 +1,12 @@
 import { nullThrows } from '@magic/utils/assert';
 
-import { GraphActionsOptions } from '../../createGraphActions.ts';
+import { CreateCoreActionOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
 
 export const createRemoveEdgeHandler =
-  ({ commitTransaction }: GraphActionsOptions): GraphActions['removeEdge'] =>
+  ({
+    commitTransaction,
+  }: CreateCoreActionOptions): GraphActions['removeEdge'] =>
   (edgeId) => {
     const { removedEdgeIds } = commitTransaction({
       removeEdgeIds: [edgeId],

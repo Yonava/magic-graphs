@@ -1,11 +1,11 @@
-import { GraphActionsOptions } from '../../createGraphActions.ts';
+import { CreateCoreActionOptions } from '../../createGraphActions.ts';
 import { GraphActions } from '../../types.ts';
 
 export const createRemoveNodeHandler =
   ({
     graph,
     commitTransaction,
-  }: GraphActionsOptions): GraphActions['removeNode'] =>
+  }: CreateCoreActionOptions): GraphActions['removeNode'] =>
   (nodeId) => {
     const { removedNodeIds, removedEdgeIds } = commitTransaction({
       removeNodeIds: [nodeId],
