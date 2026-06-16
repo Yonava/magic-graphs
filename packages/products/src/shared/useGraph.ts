@@ -17,11 +17,11 @@ const createGraphWithPlugins = (
 ) => {
   const graph = createGraph({
     settings,
-    plugins: [canvas(magicCanvas)],
+    plugins: [],
   });
 
-  graph.events.subscribe('onDraw', () => {});
-  graph.canvas;
+  graph.events.subscribe('onDraw', (ctx) => {});
+  graph.events.subscribe('onNodeMoveStream', (move) => {});
 
   return graph;
 };

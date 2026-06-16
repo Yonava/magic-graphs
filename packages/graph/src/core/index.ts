@@ -1,6 +1,7 @@
 import { nullThrows } from '@magic/utils/assert';
 import { clone } from '@magic/utils/clone';
 import { delta } from '@magic/utils/delta/index';
+import { IsNever } from 'ts-essentials';
 
 import { computed, ref, watch } from 'vue';
 
@@ -24,11 +25,11 @@ import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 
 export const CORE_EVENT_ID = 'core';
 
-export const createGraph = <T extends LooseGraphPlugin[]>({
+export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
   plugins,
   settings: startupSettings = {},
 }: {
-  plugins: T;
+  plugins: TPlugins;
   settings: Partial<GraphSettings>;
 }) => {
   const settings = ref<GraphSettings>({
@@ -111,9 +112,12 @@ export const createGraph = <T extends LooseGraphPlugin[]>({
     positions: nodePositionStore,
   };
 
-  const events = coreEventHub as unknown as EventHub<ExtractEventMap<T>>;
+  const events = coreEventHub as unknown as EventHub<
+    CoreEventMap & ExtractEventMap<TPlugins>
+  >;
 
-  const controls = coreControls as GraphCoreControls & ExtractControls<T>;
+  const controls = coreControls as GraphCoreControls &
+    ExtractControls<TPlugins>;
 
   return {
     ...controls,

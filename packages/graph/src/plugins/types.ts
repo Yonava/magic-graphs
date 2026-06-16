@@ -36,16 +36,18 @@ type ExtractData<TPlugin extends LooseGraphPlugin[]> = UnionToIntersection<
 >;
 
 export type ExtractControls<TPlugin extends LooseGraphPlugin[]> =
-  ExtractData<TPlugin> extends { controls: infer C } ? C : never;
+  ExtractData<TPlugin> extends { controls: infer Controls } ? Controls : never;
 
 export type ExtractEventMap<TPlugin extends LooseGraphPlugin[]> =
-  UnionToIntersection<
-    ReturnType<RemoveArray<NoInfer<TPlugin>>> extends {
-      events: EventHub<infer E>;
-    }
-      ? E
-      : never
-  >;
+  TPlugin extends never[]
+    ? {}
+    : UnionToIntersection<
+        ReturnType<RemoveArray<NoInfer<TPlugin>>> extends {
+          events: EventHub<infer EventMap>;
+        }
+          ? EventMap
+          : never
+      >;
 
 type MockPlugin = GraphPlugin<{
   controls: { mock: { setMock: () => void; getMock: () => void } };
@@ -61,4 +63,6 @@ type DilaPlugin = GraphPlugin<{
   };
 }>;
 
-type e = ExtractEventMap<[MockPlugin, DilaPlugin]>;
+type e = ExtractEventMap<[]>;
+
+const ev: e = {};
