@@ -4,13 +4,17 @@ import { delta } from '@magic/utils/delta/index';
 
 import { computed, ref, watch } from 'vue';
 
-import { createEventHub } from '../events/createEventHub.ts';
-import { LooseGraphPlugin, RemoveArray } from '../plugins/types.ts';
+import { EventHub, createEventHub } from '../events/createEventHub.ts';
+import {
+  ExtractControls,
+  ExtractEventMap,
+  LooseGraphPlugin,
+} from '../plugins/types.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
-import type { GEdge, GNode, UnionToIntersection } from '../types.ts';
+import type { GEdge, GNode } from '../types.ts';
 import { createGraphActions } from './actions/createGraphActions.ts';
-import { createCoreEventRegistry } from './events.ts';
+import { CoreEventMap, createCoreEventRegistry } from './events.ts';
 import { useGraphHelpers } from './helpers/index.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
@@ -33,12 +37,12 @@ export const createGraph = <T extends LooseGraphPlugin[]>({
   });
 
   const eventRegistry = createCoreEventRegistry();
-  const events = createEventHub(eventRegistry);
+  const coreEventHub = createEventHub(eventRegistry);
 
   const nodes = ref<GNode[]>([]);
   const edges = ref<GEdge[]>([]);
 
-  const nodePositionStore = createNodePositionStore(events);
+  const nodePositionStore = createNodePositionStore(coreEventHub);
 
   const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
   const getNode = (id: GNode['id']) =>
@@ -49,7 +53,7 @@ export const createGraph = <T extends LooseGraphPlugin[]>({
   const onTransactionSucceeded = useTransactionSucceeded({
     edges,
     nodes,
-    emit: events.emit,
+    emit: coreEventHub.emit,
   });
 
   const commitTransaction = useCommitTransaction({
@@ -87,13 +91,14 @@ export const createGraph = <T extends LooseGraphPlugin[]>({
       const settingsDiff = delta(activeSettings.value, newSettings);
       if (!settingsDiff) return;
       activeSettings.value = clone(settings.value);
-      events.emit('onSettingsChange', settingsDiff);
-      if ('isGraphDirected' in settingsDiff) events.emit('onStructureChange');
+      coreEventHub.emit('onSettingsChange', settingsDiff);
+      if ('isGraphDirected' in settingsDiff)
+        coreEventHub.emit('onStructureChange');
     },
     { deep: true },
   );
 
-  const controls: GraphCoreControls = {
+  const coreControls: GraphCoreControls = {
     nodes,
     edges,
     nodeIdToIndex,
@@ -102,11 +107,16 @@ export const createGraph = <T extends LooseGraphPlugin[]>({
     getNode,
     getEdge,
     actions,
-    events,
     settings,
     positions: nodePositionStore,
   };
 
-  return controls as GraphCoreControls &
-    UnionToIntersection<ReturnType<RemoveArray<NoInfer<T>>>>;
+  const events = coreEventHub as unknown as EventHub<ExtractEventMap<T>>;
+
+  const controls = coreControls as GraphCoreControls & ExtractControls<T>;
+
+  return {
+    ...controls,
+    events,
+  };
 };

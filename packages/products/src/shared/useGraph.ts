@@ -21,6 +21,7 @@ const createGraphWithPlugins = (
   });
 
   graph.events.subscribe('onDraw', () => {});
+  graph.canvas;
 
   return graph;
 };

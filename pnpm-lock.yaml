@@ -206,9 +206,6 @@ importers:
       ts-essentials:
         specifier: ^10.2.0
         version: 10.2.1(typescript@6.0.3)
-      vitest:
-        specifier: ^3.2.4
-        version: 3.2.6(@types/node@24.13.2)(jiti@1.21.7)(jsdom@25.0.1)(msw@2.14.6(@types/node@24.13.2)(typescript@6.0.3))
       vue:
         specifier: 'catalog:'
         version: 3.5.38(typescript@6.0.3)

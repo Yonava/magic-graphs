@@ -29,7 +29,6 @@ export type GraphCoreControls = {
 
   actions: GraphActions<CoreTransactionWrapperOptions>;
 
-  events: EventHub<CoreEventMap>;
   settings: Ref<GraphSettings>;
 
   helpers: CoreGraphHelpers;

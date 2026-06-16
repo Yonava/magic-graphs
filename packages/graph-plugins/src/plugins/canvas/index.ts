@@ -37,14 +37,12 @@ type CanvasPlugin = GraphPlugin<{
 
 export const canvas =
   (magicCanvas: MagicCanvasProps): CanvasPlugin =>
-  (graph) => {
+  (graph, eventHub) => {
     const canvasRegistry = createCanvasEventRegistry();
-    const canvasHub: EventHub<CanvasEventMap> = createEventHub(canvasRegistry);
-    const events = mergeEventHubs(
+    const canvasHub = createEventHub(canvasRegistry);
+    const events = mergeEventHubs<CanvasEventMap, CoreEventMap>(
       canvasHub,
-      // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
-      // from plugins upstream
-      graph.events as EventHub<CoreEventMap>,
+      eventHub,
     );
 
     const aggregator = useAggregator({ emit: events.emit });
@@ -221,27 +219,30 @@ export const canvas =
       }).draw(ctx);
 
     return {
-      canvas: {
-        aggregator,
-        shapes,
+      controls: {
+        canvas: {
+          aggregator,
+          shapes,
 
-        magicCanvas,
+          magicCanvas,
 
-        focused: canvasFocused,
-        hovered: useElementHover(magicCanvas.canvas),
+          focused: canvasFocused,
+          hovered: useElementHover(magicCanvas.canvas),
 
-        graphUnderCursor,
-        forceUpdateGraphUnderCursor,
+          graphUnderCursor,
+          forceUpdateGraphUnderCursor,
 
-        theme: {
-          resolvedPreset: computed(
-            () => ALL_THEME_PRESETS[activeThemePreset.value],
-          ),
-          activePreset: activeThemePreset,
-          _resolveToken: resolveToken,
-          _overrides: themeOverrides,
-          createLayer: (layerId) => createLayer(themeOverrides, layerId),
+          theme: {
+            resolvedPreset: computed(
+              () => ALL_THEME_PRESETS[activeThemePreset.value],
+            ),
+            activePreset: activeThemePreset,
+            _resolveToken: resolveToken,
+            _overrides: themeOverrides,
+            createLayer: (layerId) => createLayer(themeOverrides, layerId),
+          },
         },
       },
+      events,
     };
   };
