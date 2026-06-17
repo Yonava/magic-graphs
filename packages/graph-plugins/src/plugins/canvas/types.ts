@@ -1,6 +1,7 @@
 import { Coordinate, MagicCanvasProps } from '@magic/canvas/types';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { GraphCoreControls } from '@magic/graph/core/types';
+import { GraphPlugin } from '@magic/graph/plugins/types';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import { Shape } from '@magic/shapes/types/index';
 import { DeepReadonly } from 'ts-essentials';
@@ -126,3 +127,9 @@ export type CanvasElement = {
    */
   data?: Record<string, unknown>;
 };
+
+export type CanvasPlugin = GraphPlugin<{
+  controls: { canvas: CanvasPluginControls };
+  events: CanvasEventMap;
+  actions: {};
+}>;

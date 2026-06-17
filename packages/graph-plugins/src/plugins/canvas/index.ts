@@ -1,9 +1,7 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
-import { PartialBaseActions } from '@magic/graph/core/actions/types';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
-import { GraphPlugin } from '@magic/graph/plugins/types';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { cross } from '@magic/shapes/shapes/cross/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
@@ -26,22 +24,16 @@ import { createLayer } from './themes/createLayer.ts';
 import { createTokenResolver } from './themes/createTokenResolver.ts';
 import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
 import { createThemeOverrides } from './themes/types.ts';
-import { Aggregator, CanvasPluginControls, GraphUnderCursor } from './types.ts';
+import { Aggregator, CanvasPlugin, GraphUnderCursor } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
 export const CANVAS_EVENT_ID = 'plugins/canvas';
 
-type CanvasPlugin = GraphPlugin<{
-  controls: { canvas: CanvasPluginControls };
-  events: CanvasEventMap;
-  actions: PartialBaseActions;
-}>;
-
 export const canvas =
   (magicCanvas: MagicCanvasProps): CanvasPlugin =>
   (graph, graphEventHub, actions) => {
-    const canvasRegistry = createCanvasEventRegistry();
-    const canvasEventHub = createEventHub(canvasRegistry);
+    const canvasEventRegistry = createCanvasEventRegistry();
+    const canvasEventHub = createEventHub(canvasEventRegistry);
     const events = mergeEventHubs<CanvasEventMap, CoreEventMap>(
       canvasEventHub,
       graphEventHub,

@@ -20,9 +20,9 @@ export type AnchorsEventMap = {
   ) => void;
 };
 
-type NodeAnchorEventRegistry = EventMapToEventRegistry<AnchorsEventMap>;
+type AnchorsEventRegistry = EventMapToEventRegistry<AnchorsEventMap>;
 
-export const createNodeAnchorEventRegistry = (): NodeAnchorEventRegistry => ({
+export const createAnchorsEventRegistry = (): AnchorsEventRegistry => ({
   onNodeAnchorDragStart: new Set(),
   onNodeAnchorDrop: new Set(),
 });

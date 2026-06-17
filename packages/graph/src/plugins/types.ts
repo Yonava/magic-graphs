@@ -40,7 +40,9 @@ export type GraphPlugin<
   actions: GraphActions<CoreActions>,
 ) => {
   controls: PluginData['controls'];
-  events: EventHub<CoreEventMap & PluginData['events']>;
+  events: EventHub<
+    CoreEventMap & ExtractEventMap<DependentPlugins> & PluginData['events']
+  >;
   actions: GraphActions<MergeActions<[PluginData['actions'], CoreActions]>>;
 };
 
