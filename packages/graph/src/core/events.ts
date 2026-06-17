@@ -6,7 +6,6 @@ import { GEdge, GNode } from '../types.ts';
 import {
   ElementAdditionPayload,
   ElementRemovalPayload,
-  ElementUpdatePayload,
 } from './actions/types.ts';
 import {
   NodePositionStoreEventMap,
@@ -46,13 +45,6 @@ export type CoreEventMap = {
     removedNodeIds: Readonly<GNode['id'][]>,
     removedEdgeIds: Readonly<GEdge['id'][]>,
   ) => void;
-  /**
-   * when a single node is {@link Graph.actions.updateNode | updated}
-   */
-  onNodeUpdated: (
-    node: Readonly<GNode>,
-    previousValues: Readonly<Partial<Omit<GNode, ForbiddenNodeKeyUpdates>>>,
-  ) => void;
 
   /**
    * when one or more edges are {@link Graph.actions.addEdge | added} to the graph in a single transaction
@@ -62,13 +54,6 @@ export type CoreEventMap = {
    * when one or more edges are {@link Graph.actions.removeEdge | removed} from the graph in a single transaction
    */
   onEdgesRemoved: (edgeIds: Readonly<GEdge['id'][]>) => void;
-  /**
-   * when an edge is {@link Graph.actions.updateEdge | updated} from the graph
-   */
-  onEdgeUpdated: (
-    edge: Readonly<GEdge>,
-    previousValues: Readonly<Partial<Omit<GEdge, ForbiddenEdgeKeyUpdates>>>,
-  ) => void;
 
   /**
    * when any nodes or edges are added
@@ -78,10 +63,6 @@ export type CoreEventMap = {
    * when any nodes or edges are deleted
    */
   onElementsRemoved: (removals: DeepReadonly<ElementRemovalPayload>) => void;
-  /**
-   * when any nodes or edges are updated
-   */
-  onElementsUpdated: (updates: DeepReadonly<ElementUpdatePayload>) => void;
 
   /**
    * when the {@link Graph.settings | settings} of the graph have changed
@@ -97,15 +78,12 @@ export const createCoreEventRegistry = (): CoreEventRegistry => ({
 
   onNodesAdded: new Set(),
   onNodesRemoved: new Set(),
-  onNodeUpdated: new Set(),
 
   onEdgesAdded: new Set(),
   onEdgesRemoved: new Set(),
-  onEdgeUpdated: new Set(),
 
   onElementsAdded: new Set(),
   onElementsRemoved: new Set(),
-  onElementsUpdated: new Set(),
 
   onSettingsChange: new Set(),
   ...createNodePositionStoreEventRegistry(),

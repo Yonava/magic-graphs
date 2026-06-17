@@ -16,7 +16,6 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
-    "@magic/canvas": "workspace:*",
     "@magic/shapes": "workspace:*",
     "@magic/utils": "workspace:*",
     "@vueuse/core": "catalog:",

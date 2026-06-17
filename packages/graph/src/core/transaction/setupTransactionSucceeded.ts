@@ -1,18 +1,13 @@
-import { Ref } from 'vue';
-
-import { AggregatorProps } from '../../plugins/canvas/useAggregator.ts';
-import { GEdge, GNode } from '../../types.ts';
+import { EventHub } from '../../events/createEventHub.ts';
+import { CoreEventMap } from '../events.ts';
 import { CoreControls } from '../types.ts';
 import { propagateTransactionEvents } from './propagateTransactionEvents.ts';
 import { TransactionOptions } from './types.ts';
 
-type TransactionSucceededOptions = {
-  nodes: Ref<GNode[]>;
-  edges: Ref<GEdge[]>;
-  emit: CoreControls['events']['emit'];
-};
+type TransactionSucceededOptions = Pick<EventHub<CoreEventMap>, 'emit'> &
+  Pick<CoreControls, 'nodes' | 'edges'>;
 
-export const useTransactionSucceeded = ({
+export const setupTransactionSucceeded = ({
   nodes,
   edges,
   emit,

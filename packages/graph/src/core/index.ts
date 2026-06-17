@@ -19,8 +19,8 @@ import { GraphActions } from './actions/types.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { useGraphHelpers } from './helpers/index.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
+import { setupTransactionSucceeded } from './transaction/setupTransactionSucceeded.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
-import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
 import type { CoreControls } from './types.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 
@@ -52,7 +52,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
   const getEdge = (id: GEdge['id']) =>
     nullThrows(edgeIdToEdgeMap.value.get(id), `edge with id ${id} not found`);
 
-  const onTransactionSucceeded = useTransactionSucceeded({
+  const onTransactionSucceeded = setupTransactionSucceeded({
     edges,
     nodes,
     emit: coreEventHub.emit,

@@ -1,5 +1,5 @@
+import { EventHub } from '../../events/createEventHub.ts';
 import { CoreEventMap } from '../events.ts';
-import { CoreControls } from '../types.ts';
 import { TransactionPayload } from './types.ts';
 
 type TransactionEventPayloadResolverMap = {
@@ -11,7 +11,6 @@ type TransactionEventPayloadResolverMap = {
 type EventMapPropagationPredicates =
   Partial<TransactionEventPayloadResolverMap>;
 
-const extractSingle = <T>(arr: T[]) => (arr.length === 1 ? arr[0] : undefined);
 const hasItems = (...arrays: any[][]) => arrays.some((arr) => arr.length > 0);
 
 const eventNameToPredicateMap: EventMapPropagationPredicates = {
@@ -22,19 +21,11 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
     if (removedNodeIds.length > 0)
       return { args: [removedNodeIds, removedEdgeIds] };
   },
-  onNodeUpdated: ({ updatedNodes }) => {
-    const update = extractSingle(updatedNodes);
-    if (update) return { args: [update.node, update.previousValues] };
-  },
   onEdgesAdded: ({ addedEdges }) => {
     if (addedEdges.length > 0) return { args: [addedEdges] };
   },
   onEdgesRemoved: ({ removedEdgeIds }) => {
     if (removedEdgeIds.length > 0) return { args: [removedEdgeIds] };
-  },
-  onEdgeUpdated: ({ updatedEdges }) => {
-    const update = extractSingle(updatedEdges);
-    if (update) return { args: [update.edge, update.previousValues] };
   },
   onElementsAdded: ({ addedEdges, addedNodes }) => {
     if (hasItems(addedNodes, addedEdges)) {
@@ -44,11 +35,6 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
   onElementsRemoved: ({ removedEdgeIds, removedNodeIds }) => {
     if (hasItems(removedNodeIds, removedEdgeIds)) {
       return { args: [{ removedEdgeIds, removedNodeIds }] };
-    }
-  },
-  onElementsUpdated: ({ updatedEdges, updatedNodes }) => {
-    if (hasItems(updatedNodes, updatedEdges)) {
-      return { args: [{ updatedEdges, updatedNodes }] };
     }
   },
   onStructureChange: (payload) => {
@@ -73,7 +59,7 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
 
 export const propagateTransactionEvents = (
   payload: TransactionPayload,
-  emit: CoreControls['events']['emit'],
+  emit: EventHub<CoreEventMap>['emit'],
 ) => {
   (Object.keys(eventNameToPredicateMap) as (keyof CoreEventMap)[]).forEach(
     (event) => {
