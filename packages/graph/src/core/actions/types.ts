@@ -68,25 +68,6 @@ export type CoreActions = {
   };
 };
 
-type MockActions = {
-  addNode: { mock: string };
-  removeNode: {};
-
-  addEdge: {};
-  removeEdge: { mock?: string | number };
-
-  addElements: {
-    nodes: AddNodeOptions;
-    edges: AddEdgeOptions;
-    shared: {};
-  };
-  removeElements: {
-    nodes: Partial<Id> & { yona: string };
-    edges: Partial<Id>;
-    shared: { dila: number };
-  };
-};
-
 // the secret sauce allowing plugin definitions to omit action fields
 // such as addNode or removeEdge if they do not care to extend those
 // respective definitions
@@ -119,11 +100,6 @@ export type ResolveActions<Actions extends PartialBaseActions> = {
     : BulkActionConfig;
 };
 
-type r = ResolveActions<{
-  addNode: { hello: 'world' };
-  addElements: { shared: { history: 'id' }; edges: {} };
-}>;
-
 // handles distributing union of actions so they can be resolved separately
 // before being merged together by UnionToIntersection in MergeActions
 type DistributeResolveActions<PartialActions extends PartialBaseActions> =
@@ -151,10 +127,6 @@ export type MergeActions<Actions extends PartialBaseActions[]> =
               DistributeResolveActions<Actions[number]>[ActionsField]
             >;
       };
-
-type test = MergeActions<[PartialBaseActions]>;
-type anotherTest = ResolveActions<PartialBaseActions>;
-// const testConst: test['removeElements']['shared'] = {};
 
 type BulkHandler<Action extends BulkActionConfig, ReturnValue> = (
   options: {

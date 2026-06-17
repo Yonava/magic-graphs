@@ -1,12 +1,10 @@
-import { Prettify, UnionToIntersection } from 'ts-essentials';
+import { UnionToIntersection } from 'ts-essentials';
 
 import {
-  BulkActionConfig,
   CoreActions,
   GraphActions,
   MergeActions,
   PartialBaseActions,
-  ResolveActions,
 } from '../core/actions/types.ts';
 import { CoreEventMap } from '../core/events.ts';
 import { GraphCoreControls } from '../core/types.ts';
@@ -99,45 +97,3 @@ export type ExtractEventMap<TPlugins extends LooseGraphPlugin[]> =
           ? EventMap
           : never
       >;
-
-type MockPlugin = GraphPlugin<{
-  controls: { mock: { setMock: () => void; getMock: () => void } };
-  events: {
-    onMock: () => void;
-  };
-  actions: {
-    addNode: { mock: string };
-    addElements: { shared: { cream: 'ice' } };
-  };
-}>;
-
-type DilaPlugin = GraphPlugin<{
-  controls: { dila: { watchAnime: () => void } };
-  events: {
-    onAnimeWatched: () => void;
-  };
-  actions: {
-    addNode: {
-      iceCream: number;
-    };
-    addElements: {
-      edges: {};
-      nodes: { node: 'ez' };
-      shared: { ice: 'cream' };
-    };
-    removeElements: BulkActionConfig;
-    addEdge: {};
-    removeEdge: {};
-  };
-}>;
-
-type t = ReturnType<DilaPlugin>['actions'];
-
-type e = Prettify<ExtractActions<[DilaPlugin, MockPlugin]>>;
-
-const t: e['addElements']['shared'] = {
-  ice: 'cream',
-  cream: 'ice',
-};
-
-// const ev: e = {};
