@@ -1,4 +1,3 @@
-import { GNode } from '@magic/graph/types';
 import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
 
@@ -35,13 +34,8 @@ export const nodeLabel: NodeLabelPlugin = (graph, events, actions) => {
 
   const themer = createLabelThemer(graph.canvas.theme, getNodeLabel);
 
-  const enable = () => {
-    themer.activate();
-  };
-
-  const disable = () => {
-    themer.deactivate();
-  };
+  const enable = themer.enable;
+  const disable = themer.disable;
 
   enable();
 
