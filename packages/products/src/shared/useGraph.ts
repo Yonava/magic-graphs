@@ -24,15 +24,6 @@ const createGraphWithPlugins = (
     plugins: [canvas(magicCanvas), history, anchors, focus, nodeDrag, marquee],
   });
 
-  graph.events.subscribe('onDraw', (ctx) => {});
-  graph.events.subscribe('onNodeMoveStream', (move) => {});
-  // graph.events.subscribe('random', () => {});
-  graph.canvas;
-  graph.history;
-  graph.focus;
-
-  graph.actions.addNode({});
-
   return graph;
 };
 
