@@ -3,14 +3,14 @@ import { EventHub } from '@magic/graph/events/createEventHub';
 
 import { CanvasEventMap } from './events.ts';
 import { CURSOR, CURSOR_FALLBACK, Cursor } from './themes/cursor.ts';
-import { CanvasGraphControls } from './types.ts';
+import { CanvasControls } from './types.ts';
 
 type GraphCursorProps = {
   subscribe: EventHub<CanvasEventMap>['subscribe'];
-  canvas: CanvasGraphControls['magicCanvas']['canvas'];
+  canvas: CanvasControls['magicCanvas']['canvas'];
   getNode: CoreControls['getNode'];
-  resolveToken: CanvasGraphControls['theme']['_resolveToken'];
-  graphUnderCursor: CanvasGraphControls['graphUnderCursor'];
+  resolveToken: CanvasControls['theme']['_resolveToken'];
+  graphUnderCursor: CanvasControls['graphUnderCursor'];
 };
 
 export const CANVAS_ELEMENT_CURSOR_FIELD_KEY = 'cursor';
