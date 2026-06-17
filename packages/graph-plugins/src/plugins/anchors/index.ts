@@ -31,14 +31,12 @@ type AnchorsControls = {
   clearAnchorState: () => void;
 };
 
-export type AnchorsPlugin = GraphPlugin<
-  {
-    controls: { anchors: AnchorsControls };
-    events: AnchorsEventMap;
-    actions: {};
-  },
-  [CanvasPlugin]
->;
+export type AnchorsPlugin = GraphPlugin<{
+  controls: { anchors: AnchorsControls };
+  events: AnchorsEventMap;
+  actions: {};
+  dependsOn: [CanvasPlugin];
+}>;
 
 /**
  * anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors

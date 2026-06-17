@@ -13,9 +13,9 @@ import { GenericEventMap } from '../events/types.ts';
 
 type LoosePluginData = {
   controls: object;
-  // TODO this should really be CoreEventMap not GenericEventMap but its being a pain in the ass
   events: GenericEventMap;
   actions: PartialBaseActions;
+  dependsOn: LooseGraphPlugin[];
 };
 
 /**
@@ -31,17 +31,16 @@ type LoosePluginData = {
  * would silently drop every event upstream plugins (and core) emit, since
  * downstream plugins and consumers only ever see what's returned here.
  */
-export type GraphPlugin<
-  PluginData extends LoosePluginData,
-  DependentPlugins extends LooseGraphPlugin[] = [],
-> = (
-  graph: GraphCoreControls & ExtractControls<DependentPlugins>,
-  events: EventHub<CoreEventMap & ExtractEventMap<DependentPlugins>>,
+export type GraphPlugin<PluginData extends LoosePluginData> = (
+  graph: GraphCoreControls & ExtractControls<PluginData['dependsOn']>,
+  events: EventHub<CoreEventMap & ExtractEventMap<PluginData['dependsOn']>>,
   actions: GraphActions<CoreActions>,
 ) => {
   controls: PluginData['controls'];
   events: EventHub<
-    CoreEventMap & ExtractEventMap<DependentPlugins> & PluginData['events']
+    CoreEventMap &
+      ExtractEventMap<PluginData['dependsOn']> &
+      PluginData['events']
   >;
   actions: GraphActions<MergeActions<[PluginData['actions'], CoreActions]>>;
 };
@@ -57,7 +56,7 @@ export type GraphPlugin<
  * on this type to rule out.
  */
 export type LooseGraphPlugin = (
-  graph: GraphCoreControls,
+  graph: any,
   events: EventHub<CoreEventMap>,
   actions: GraphActions<CoreActions>,
 ) => {

@@ -1,4 +1,5 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
+import { anchors } from '@magic/graph-plugins/plugins/anchors/index';
 import { canvas } from '@magic/graph-plugins/plugins/canvas/index';
 import { history } from '@magic/graph-plugins/plugins/history/index';
 import { useCharacteristics } from '@magic/graph/characteristics/index';
@@ -17,7 +18,7 @@ const createGraphWithPlugins = (
 ) => {
   const graph = createGraph({
     settings,
-    plugins: [canvas(magicCanvas), history],
+    plugins: [canvas(magicCanvas), history, anchors],
   });
 
   graph.events.subscribe('onDraw', (ctx) => {});
