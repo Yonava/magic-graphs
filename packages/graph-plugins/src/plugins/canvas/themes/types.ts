@@ -11,7 +11,7 @@
  * ThemeToken  — a dot-notation path into GraphTheme that addresses a single StyleValue leaf
  *               (e.g. "node.default.color"). used to identify which token an override targets.
  */
-import { GraphCoreControls } from '@magic/graph/core/types';
+import { CoreControls } from '@magic/graph/core/types';
 import { NodeAnchor } from '@magic/graph/plugins/anchors/types';
 import { GEdge, GNode } from '@magic/graph/types';
 import type { FontWeight } from '@magic/shapes/text/types';
@@ -40,13 +40,13 @@ export type CoreGraphNodeStyles = TextStyles & {
 
 export type GraphInterface = {
   shapes: CanvasGraphControls['shapes'];
-  settings: GraphCoreControls['settings'];
-  positions: GraphCoreControls['positions'];
+  settings: CoreControls['settings'];
+  positions: CoreControls['positions'];
   resolveToken: CanvasGraphControls['theme']['_resolveToken'];
-  edges: GraphCoreControls['edges'];
-  getNode: GraphCoreControls['getNode'];
-  getEdge: GraphCoreControls['getEdge'];
-  helpers: GraphCoreControls['helpers'];
+  edges: CoreControls['edges'];
+  getNode: CoreControls['getNode'];
+  getEdge: CoreControls['getEdge'];
+  helpers: CoreControls['helpers'];
 };
 
 export type CoreGraphNodeTheme = NodeThemeFields<CoreGraphNodeStyles> & {

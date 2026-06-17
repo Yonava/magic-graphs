@@ -5,7 +5,7 @@ import type { GEdge, GNode } from '../types.ts';
 import { CoreGraphHelpers } from './helpers/types.ts';
 import { NodePositionStoreControls } from './positions/types.ts';
 
-export type GraphCoreControls = {
+export type CoreControls = {
   /**
    * all the nodes contained in the graph
    */

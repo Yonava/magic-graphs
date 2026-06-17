@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import type { GraphCoreControls } from '../core/types.ts';
+import type { CoreControls } from '../core/types.ts';
 import type { GNode } from '../types.ts';
 import type { AdjacencyList, AdjacencyLists } from '../useAdjacencyList.ts';
 import type { CharacteristicSCC } from './scc.ts';
@@ -53,7 +53,7 @@ export const getCycles: GetCycles = (adjList) => {
 };
 
 export const useCycles = (
-  graph: Pick<GraphCoreControls, 'settings'>,
+  graph: Pick<CoreControls, 'settings'>,
   scc: Pick<CharacteristicSCC, 'stronglyConnectedComponents'>,
   adjacencyLists: Pick<AdjacencyLists, 'adjacencyList'>,
 ) => {

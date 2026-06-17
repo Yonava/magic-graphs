@@ -1,7 +1,7 @@
 import { onUnmounted, ref } from 'vue';
 
 import { CoreEventMap } from './core/events.ts';
-import type { GraphCoreControls } from './core/types.ts';
+import type { CoreControls } from './core/types.ts';
 import type { GEdge, GNode } from './types.ts';
 
 /**
@@ -68,7 +68,7 @@ type CoreGraphForAdjacencyListParam<
   EventMap extends CoreEventMap = CoreEventMap,
   Plugins = {},
 > = Pick<
-  GraphCoreControls<TransactionOptions, EventMap, Plugins>,
+  CoreControls<TransactionOptions, EventMap, Plugins>,
   'settings' | 'getNode' | 'nodes' | 'edges' | 'helpers' | 'events'
 >;
 

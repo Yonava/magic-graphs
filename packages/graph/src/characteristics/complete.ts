@@ -1,9 +1,9 @@
 import { computed } from 'vue';
 
-import { GraphCoreControls } from '../core/types.ts';
+import { CoreControls } from '../core/types.ts';
 
 export const useComplete = (
-  graph: Pick<GraphCoreControls, 'settings' | 'nodes' | 'edges'>,
+  graph: Pick<CoreControls, 'settings' | 'nodes' | 'edges'>,
 ) => {
   const isComplete = computed(() => {
     const isDirected = graph.settings.value.isGraphDirected;

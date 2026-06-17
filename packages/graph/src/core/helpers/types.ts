@@ -2,7 +2,7 @@ import type { Fraction } from 'mathjs';
 
 import type { GraphSettings } from '../../settings/index.ts';
 import type { GEdge, GNode } from '../../types.ts';
-import { GraphCoreControls } from '../types.ts';
+import { CoreControls } from '../types.ts';
 
 export type EdgeHelpers = {
   /**
@@ -91,10 +91,7 @@ export type NodeHelpers = {
 
 type FieldsNeededFromCoreGraph = 'getNode' | 'getEdge' | 'edges' | 'settings';
 
-export type CoreGraphForHelpers = Pick<
-  GraphCoreControls,
-  FieldsNeededFromCoreGraph
->;
+export type CoreGraphForHelpers = Pick<CoreControls, FieldsNeededFromCoreGraph>;
 
 export type CurryWithCoreGraph<Helpers> = {
   [Key in keyof Helpers]: (graph: CoreGraphForHelpers) => Helpers[Key];

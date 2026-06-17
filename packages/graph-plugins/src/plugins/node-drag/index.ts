@@ -8,7 +8,7 @@ import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
-import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
+import { ANCHOR_PLUGIN_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
 import {
@@ -145,13 +145,13 @@ export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
 
   const activate = () => {
     events.handle('onMouseDown', beginDrag, NODE_DRAG_PLUGIN_ID, {
-      before: [ANCHOR_EVENT_ID],
+      before: [ANCHOR_PLUGIN_ID],
     });
     events.handle('onMouseUp', drop, NODE_DRAG_PLUGIN_ID, {
-      before: [ANCHOR_EVENT_ID],
+      before: [ANCHOR_PLUGIN_ID],
     });
     events.handle('onGraphUnderCursorChange', drag, NODE_DRAG_PLUGIN_ID, {
-      before: [ANCHOR_EVENT_ID],
+      before: [ANCHOR_PLUGIN_ID],
     });
     cursorTheme.activate();
   };

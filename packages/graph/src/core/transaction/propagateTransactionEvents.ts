@@ -1,5 +1,5 @@
 import { CoreEventMap } from '../events.ts';
-import { GraphCoreControls } from '../types.ts';
+import { CoreControls } from '../types.ts';
 import { TransactionPayload } from './types.ts';
 
 type TransactionEventPayloadResolverMap = {
@@ -73,7 +73,7 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
 
 export const propagateTransactionEvents = (
   payload: TransactionPayload,
-  emit: GraphCoreControls['events']['emit'],
+  emit: CoreControls['events']['emit'],
 ) => {
   (Object.keys(eventNameToPredicateMap) as (keyof CoreEventMap)[]).forEach(
     (event) => {

@@ -13,11 +13,10 @@ import type { NodeAnchor } from '../../plugins/anchors/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
 import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
+import { ANCHOR_PLUGIN_ID } from './constants.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';
 import { createAnchorDragThemer } from './createAnchorDragThemer.ts';
 import { AnchorsEventMap, createAnchorsEventRegistry } from './events.ts';
-
-export const ANCHOR_EVENT_ID = 'plugins/anchors';
 
 type AnchorsControls = {
   /**
@@ -381,9 +380,9 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
     events.handle(
       'onNodesRemoved',
       clearAnchorStateIfParentRemoved,
-      ANCHOR_EVENT_ID,
+      ANCHOR_PLUGIN_ID,
     );
-    events.handle('onNodeMoveStreamStart', clearAnchorState, ANCHOR_EVENT_ID);
+    events.handle('onNodeMoveStreamStart', clearAnchorState, ANCHOR_PLUGIN_ID);
 
     // for when the user is mousing over the canvas. checks if a node is under the cursor
     // to set the anchors on. onGraphUnderCursorChange because onMouseMove doesn't capture
@@ -392,27 +391,27 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
     events.handle(
       'onGraphUnderCursorChange',
       checkForParentNodeUpdate,
-      ANCHOR_EVENT_ID,
+      ANCHOR_PLUGIN_ID,
     );
 
     // for when a node is finished dragging, set the dropped node as anchor parent
-    events.handle('onMouseUp', checkForParentNodeUpdate, ANCHOR_EVENT_ID);
+    events.handle('onMouseUp', checkForParentNodeUpdate, ANCHOR_PLUGIN_ID);
 
     // if an anchor is being dragged, update its position
     events.handle(
       'onMouseMove',
       updateCurrentlyDraggingAnchorPosition,
-      ANCHOR_EVENT_ID,
+      ANCHOR_PLUGIN_ID,
     );
 
     // scans the canvas when the cursor is moving and sets the hovered node anchor state
-    events.handle('onMouseMove', updateHoveredNodeAnchorId, ANCHOR_EVENT_ID);
+    events.handle('onMouseMove', updateHoveredNodeAnchorId, ANCHOR_PLUGIN_ID);
 
     // picks up the node anchor to begin drag
-    events.handle('onMouseDown', setCurrentlyDraggingAnchor, ANCHOR_EVENT_ID);
+    events.handle('onMouseDown', setCurrentlyDraggingAnchor, ANCHOR_PLUGIN_ID);
 
     // drop the node anchor being dragged
-    events.handle('onMouseUp', dropAnchor, ANCHOR_EVENT_ID);
+    events.handle('onMouseUp', dropAnchor, ANCHOR_PLUGIN_ID);
 
     // TODO this is triggered twice! https://github.com/Yonava/magic-graphs/issues/664
     // console.log('activating');

@@ -7,7 +7,7 @@ import {
   PartialBaseActions,
 } from '../core/actions/types.ts';
 import { CoreEventMap } from '../core/events.ts';
-import { GraphCoreControls } from '../core/types.ts';
+import { CoreControls } from '../core/types.ts';
 import { EventHub } from '../events/createEventHub.ts';
 import { GenericEventMap } from '../events/types.ts';
 
@@ -32,7 +32,7 @@ type LoosePluginData = {
  * downstream plugins and consumers only ever see what's returned here.
  */
 export type GraphPlugin<PluginData extends LoosePluginData> = (
-  graph: GraphCoreControls & ExtractControls<PluginData['dependsOn']>,
+  graph: CoreControls & ExtractControls<PluginData['dependsOn']>,
   events: EventHub<CoreEventMap & ExtractEventMap<PluginData['dependsOn']>>,
   actions: GraphActions<CoreActions>,
 ) => {
@@ -98,3 +98,19 @@ export type ExtractEventMap<TPlugins extends LooseGraphPlugin[]> =
           ? EventMap
           : never
       >;
+
+type PluginLifecycleControls = {
+  /** Lifecycle management and runtime status */
+  lifecycle: {
+    /** Activates the plugin. */
+    enable: () => void;
+    /** Deactivates the plugin. */
+    disable: () => void;
+    // TODO implement: https://github.com/Yonava/magic-graphs/issues/702
+    /** @returns true if the plugin is currently active */
+    // isEnabled: () => boolean;
+  };
+};
+
+export type WithLifecycle<PluginControls> = PluginControls &
+  PluginLifecycleControls;

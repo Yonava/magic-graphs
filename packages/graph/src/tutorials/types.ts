@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue';
 
 import { CoreEventMap } from '../core/events.ts';
-import { GraphCoreControls } from '../core/types.ts';
+import { CoreControls } from '../core/types.ts';
 
 /**
  * css class defined in App.vue, should move later, used as default for ElementHighlightOptions -> highlightElement.className
@@ -57,7 +57,7 @@ type SharedStepProps = {
    * if the precondition returns true, its like the condition for going to the next step is
    * already met, so the step will be skipped.
    */
-  precondition?: (graph: GraphCoreControls) => boolean;
+  precondition?: (graph: CoreControls) => boolean;
   /**
    * callback to run when the step is initialized.
    * runs before precondition

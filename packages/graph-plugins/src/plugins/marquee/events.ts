@@ -1,7 +1,6 @@
 import { Coordinate } from '@magic/canvas/types';
+import { EventMapToEventRegistry } from '@magic/graph/events/types';
 import { BoundingBox } from '@magic/shapes/types/utility';
-
-import { EventMapToEventRegistry } from '../../events/types.ts';
 
 export type MarqueeEventMap = {
   /**

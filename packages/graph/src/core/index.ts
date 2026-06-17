@@ -21,7 +21,7 @@ import { useGraphHelpers } from './helpers/index.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import { useTransactionSucceeded } from './transaction/useTransactionSucceeded.ts';
-import type { GraphCoreControls } from './types.ts';
+import type { CoreControls } from './types.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 
 export const CORE_EVENT_ID = 'core';
@@ -100,7 +100,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     { deep: true },
   );
 
-  const coreControls: GraphCoreControls = {
+  const coreControls: CoreControls = {
     nodes,
     edges,
     nodeIdToIndex,
@@ -116,7 +116,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     ExtractEventMap<NoInfer<TPlugins>>
   >;
 
-  const controls = coreControls as GraphCoreControls &
+  const controls = coreControls as CoreControls &
     ExtractControls<NoInfer<TPlugins>>;
 
   const actions = coreActions as GraphActions<

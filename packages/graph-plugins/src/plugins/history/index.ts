@@ -73,34 +73,21 @@ export const history: HistoryPlugin = (graph, graphEventHub, actions) => {
     events,
     controls: {
       history: {
-        /**
-         * undoes the last action and moves it to the redo stack
-         */
         undo,
-        /**
-         * redoes the last undone action and moves it to the undo stack
-         */
         redo,
-        /**
-         * true if there are actions to undo
-         */
         canUndo: computed(() => undoStack.value.length > 0),
-        /**
-         * true if there are actions to redo
-         */
         canRedo: computed(() => redoStack.value.length > 0),
-        /**
-         * stores past actions to revert
-         */
         undoStack,
-        /**
-         * stores undone actions to reapply
-         */
         redoStack,
-        /**
-         * clears the undo and redo stacks
-         */
         clearHistory,
+        lifecycle: {
+          enable: () => {
+            console.warn('not implemented');
+          },
+          disable: () => {
+            console.warn('not implemented');
+          },
+        },
       },
     },
   };
