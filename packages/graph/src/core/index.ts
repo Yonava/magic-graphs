@@ -59,7 +59,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
   });
 
   const commitTransaction = useCommitTransaction({
-    getGraph: () => ({ nodes: nodes.value, edges: edges.value }),
+    getGraph: () => ({ nodes, edges }),
     onTransactionSucceeded,
   });
 

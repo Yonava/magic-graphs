@@ -1,5 +1,3 @@
-import { shallowDelta } from '@magic/utils/delta/index';
-
 import type { GEdge, GNode } from '../../types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import type {
@@ -35,7 +33,7 @@ export function useCommitTransaction({
         const node = getNode(nodeId);
         if (!node) continue;
         payload.removedNodeIds.push(node.id);
-        const orphanedEdgeIds = edges
+        const orphanedEdgeIds = edges.value
           .filter((edge) => edge.source === nodeId || edge.target === nodeId)
           .filter(
             (edge) => !payload.removedEdgeIds.some((id) => id === edge.id),
@@ -54,43 +52,14 @@ export function useCommitTransaction({
       payload.addedEdges.push(...draft.addEdges);
     }
 
-    // 5. PROCESS UPDATES
-    if (draft.updatedEdges) {
-      for (const draftEdgeUpdate of draft.updatedEdges) {
-        const edge = getEdge(draftEdgeUpdate.id);
-        if (!edge) continue;
-        const updatedEdgeValues = shallowDelta(edge, draftEdgeUpdate.values);
-        if (Object.keys(updatedEdgeValues).length === 0) continue;
-        const updatedEdge = { ...edge, ...updatedEdgeValues };
-        payload.updatedEdges.push({
-          edge: updatedEdge,
-          previousValues: shallowDelta(updatedEdge, edge),
-        });
-      }
-    }
-
-    if (draft.updatedNodes) {
-      for (const draftNodeUpdate of draft.updatedNodes) {
-        const node = getNode(draftNodeUpdate.id);
-        if (!node) continue;
-        const updatedNodeValues = shallowDelta(node, draftNodeUpdate.values);
-        if (Object.keys(updatedNodeValues).length === 0) continue;
-        const updatedNode = { ...node, ...updatedNodeValues };
-        payload.updatedNodes.push({
-          node: updatedNode,
-          previousValues: shallowDelta(updatedNode, node),
-        });
-      }
-    }
-
     onTransactionSucceeded(payload);
     return payload;
   };
 }
 
 function quickGetters({ nodes, edges }: GraphState) {
-  const nodeMap = new Map(nodes.map((node) => [node.id, node]));
-  const edgeMap = new Map(edges.map((edge) => [edge.id, edge]));
+  const nodeMap = new Map(nodes.value.map((node) => [node.id, node]));
+  const edgeMap = new Map(edges.value.map((edge) => [edge.id, edge]));
   const getNode = (id: GNode['id']) => nodeMap.get(id);
   const getEdge = (id: GEdge['id']) => edgeMap.get(id);
   return { getNode, getEdge };

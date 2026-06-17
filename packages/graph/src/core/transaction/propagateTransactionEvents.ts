@@ -38,18 +38,12 @@ const eventNameToPredicateMap: EventMapPropagationPredicates = {
     }
   },
   onStructureChange: (payload) => {
-    const edgeWeightChanged = payload.updatedEdges.some(
-      (e) => e.previousValues.weight?.valueOf() !== e.edge.weight.valueOf(),
+    const hasStructuralChanges = hasItems(
+      payload.addedNodes,
+      payload.addedEdges,
+      payload.removedNodeIds,
+      payload.removedEdgeIds,
     );
-
-    const hasStructuralChanges =
-      edgeWeightChanged ||
-      hasItems(
-        payload.addedNodes,
-        payload.addedEdges,
-        payload.removedNodeIds,
-        payload.removedEdgeIds,
-      );
 
     if (hasStructuralChanges) {
       return { args: [] };

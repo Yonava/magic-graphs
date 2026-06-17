@@ -1,45 +1,11 @@
 import { GEdge, GNode } from '../../types.ts';
+import { CoreControls } from '../types.ts';
 
-export type GraphState = {
-  nodes: GNode[];
-  edges: GEdge[];
-};
+export type GraphState = Pick<CoreControls, 'nodes' | 'edges'>;
 
 export type TransactionOptions = {
   getGraph: () => GraphState;
   onTransactionSucceeded: (payload: TransactionPayload) => void;
-};
-
-type GNodeUpdatePayload = {
-  node: GNode;
-  previousValues: Partial<GNode>;
-};
-
-type GEdgeUpdatePayload = {
-  edge: GEdge;
-  previousValues: Partial<GEdge>;
-};
-
-// these are all reference based so we forbid them from being updated
-const forbiddenNodeKeyUpdates = ['id'] as const satisfies (keyof GNode)[];
-export type ForbiddenNodeKeyUpdates = (typeof forbiddenNodeKeyUpdates)[number];
-
-export type GNodeUpdateDraft = {
-  id: GNode['id'];
-  values: Partial<Omit<GNode, ForbiddenNodeKeyUpdates>>;
-};
-
-// these are all reference based so we forbid them from being updated
-const forbiddenEdgeKeyUpdates = [
-  'id',
-  'source',
-  'target',
-] as const satisfies (keyof GEdge)[];
-export type ForbiddenEdgeKeyUpdates = (typeof forbiddenEdgeKeyUpdates)[number];
-
-export type GEdgeUpdateDraft = {
-  id: GEdge['id'];
-  values: Partial<Omit<GEdge, ForbiddenEdgeKeyUpdates>>;
 };
 
 export type TransactionPayload = {
@@ -48,9 +14,6 @@ export type TransactionPayload = {
 
   removedNodeIds: GNode['id'][];
   removedEdgeIds: GEdge['id'][];
-
-  updatedNodes: GNodeUpdatePayload[];
-  updatedEdges: GEdgeUpdatePayload[];
 };
 
 export type TransactionDraft = {
@@ -59,9 +22,6 @@ export type TransactionDraft = {
 
   removeNodeIds: GNode['id'][];
   removeEdgeIds: GEdge['id'][];
-
-  updatedNodes: GNodeUpdateDraft[];
-  updatedEdges: GEdgeUpdateDraft[];
 };
 
 export type CommitTransaction = (

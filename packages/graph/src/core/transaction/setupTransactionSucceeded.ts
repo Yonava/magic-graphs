@@ -24,16 +24,6 @@ export const setupTransactionSucceeded = ({
     nodes.value.push(...payload.addedNodes);
     edges.value.push(...payload.addedEdges);
 
-    payload.updatedNodes.forEach((update) => {
-      const target = nodes.value.find((n) => n.id === update.node.id);
-      if (target) Object.assign(target, update.node);
-    });
-
-    payload.updatedEdges.forEach((update) => {
-      const target = edges.value.find((e) => e.id === update.edge.id);
-      if (target) Object.assign(target, update.edge);
-    });
-
     propagateTransactionEvents(payload, emit);
   };
 };

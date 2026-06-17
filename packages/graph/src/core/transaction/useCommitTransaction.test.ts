@@ -1,6 +1,8 @@
 import { Fraction } from 'mathjs';
 import { describe, expect, it, vi } from 'vitest';
 
+import { ref } from 'vue';
+
 import { GEdge, GNode } from '../../types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import { TransactionPayload } from './types.ts';
@@ -10,7 +12,7 @@ describe(useCommitTransaction, () => {
   it('handles adding a node', () => {
     const newNode: GNode = { id: 'new-node' };
     const commitTransaction = useCommitTransaction({
-      getGraph: () => ({ nodes: [], edges: [] }),
+      getGraph: () => ({ nodes: ref([]), edges: ref([]) }),
       onTransactionSucceeded: () => {},
     });
     const expectedPayload: TransactionPayload = {
@@ -33,8 +35,8 @@ describe(useCommitTransaction, () => {
 
     const commitTransaction = useCommitTransaction({
       getGraph: () => ({
-        nodes: [node1, node2],
-        edges: [connectedEdge],
+        nodes: ref([node1, node2]),
+        edges: ref([connectedEdge]),
       }),
       onTransactionSucceeded: () => {},
     });
@@ -56,7 +58,7 @@ describe(useCommitTransaction, () => {
     const successSpy = vi.fn();
 
     const commitTransaction = useCommitTransaction({
-      getGraph: () => ({ nodes: [], edges: [] }),
+      getGraph: () => ({ nodes: ref([]), edges: ref([]) }),
       onTransactionSucceeded: successSpy,
     });
 

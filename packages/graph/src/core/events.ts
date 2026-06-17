@@ -11,11 +11,7 @@ import {
   NodePositionStoreEventMap,
   createNodePositionStoreEventRegistry,
 } from './positions/events.ts';
-import {
-  ForbiddenEdgeKeyUpdates,
-  ForbiddenNodeKeyUpdates,
-  TransactionPayload,
-} from './transaction/types.ts';
+import { TransactionPayload } from './transaction/types.ts';
 
 export type CoreEventMap = {
   /**

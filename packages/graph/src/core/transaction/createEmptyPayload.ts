@@ -7,9 +7,6 @@ export function createEmptyPayload() {
 
     removedNodeIds: [],
     removedEdgeIds: [],
-
-    updatedNodes: [],
-    updatedEdges: [],
   };
   return payload;
 }
