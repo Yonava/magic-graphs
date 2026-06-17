@@ -29,10 +29,10 @@ import { createThemeOverrides } from './themes/types.ts';
 import { Aggregator, CanvasPluginControls, GraphUnderCursor } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
-export const CANVAS_EVENT_ID = 'canvas';
+export const CANVAS_EVENT_ID = 'plugins/canvas';
 
 type CanvasPlugin = GraphPlugin<{
-  controls: CanvasPluginControls;
+  controls: { canvas: CanvasPluginControls };
   events: CanvasEventMap;
   actions: PartialBaseActions;
 }>;

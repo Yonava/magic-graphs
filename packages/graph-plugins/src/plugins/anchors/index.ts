@@ -2,25 +2,39 @@ import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
 import type { WithId } from '@magic/shapes/types/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
-import { readonly, ref } from 'vue';
+import { readonly, Ref, ref } from 'vue';
 
-import { CoreEventMap } from '../../core/events.ts';
-import type { GraphCoreControls } from '../../core/types.ts';
-import { EventHub, createEventHub } from '../../events/createEventHub.ts';
-import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import type {
-  GraphWithNodeAnchor,
   NodeAnchor,
 } from '../../plugins/anchors/types.ts';
-import type { GNode } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
-import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
+import { CanvasElement } from '../canvas/types.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';
-import { NodeAnchorEventMap, createNodeAnchorEventRegistry } from './events.ts';
+import { AnchorsEventMap, createNodeAnchorEventRegistry } from './events.ts';
 import { useAnchorDragCursor } from './useAnchorDragCursor.ts';
+import { GraphPlugin } from '@magic/graph/plugins/types';
+import { GNode } from '@magic/graph/types';
 
-export const ANCHOR_EVENT_ID = 'anchors';
+export const ANCHOR_EVENT_ID = 'plugins/anchors';
+
+type AnchorsControls = {
+  /**
+   * the parent node of the active anchor
+   */
+  parentNode: Readonly<Ref<GNode | undefined>>;
+  /**
+   * set the parent node and spawn anchors around it
+   */
+  setParentNode: (nodeId: GNode['id']) => void;
+  clearAnchorState: () => void;
+};
+
+export type AnchorsPlugin = GraphPlugin<{
+  controls: { anchors: AnchorsControls },
+  events: AnchorsEventMap,
+  actions: {},
+}>
 
 /**
  * node anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
@@ -31,13 +45,9 @@ export const ANCHOR_EVENT_ID = 'anchors';
  * - Parent Node: The node which anchors actively orbit around.
  * - Link Preview: The line that appears between the parent node and the anchor when the anchor is being dragged.
  */
-export const useNodeAnchorPlugin = <
-  TransactionWrapperOptions,
-  EventMap extends CoreEventMap & CanvasEventMap,
-  Plugins extends CanvasPlugin,
->(
-  graph: GraphCoreControls<TransactionWrapperOptions, EventMap, Plugins>,
-): GraphWithNodeAnchor<TransactionWrapperOptions, EventMap, Plugins> => {
+export const anchors: AnchorsPlugin = (
+  graph, events
+) => {
   const nodeAnchorRegistry = createNodeAnchorEventRegistry();
   const nodeAnchorHub: EventHub<NodeAnchorEventMap> =
     createEventHub(nodeAnchorRegistry);

@@ -25,7 +25,7 @@ export type GraphUnderCursor = {
   elements: CanvasElement[];
 };
 
-export type CanvasGraphControls = {
+export type CanvasPluginControls = {
   /** @internal */
   magicCanvas: MagicCanvasProps;
   /**
@@ -125,11 +125,4 @@ export type CanvasElement = {
    * attached metadata
    */
   data?: Record<string, unknown>;
-};
-
-export type CanvasPluginControls = {
-  /**
-   * graph canvas plugin controls
-   */
-  canvas: CanvasGraphControls;
 };

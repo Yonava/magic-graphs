@@ -1,11 +1,10 @@
 import { DragStateControls } from '../../shared/drag/types.ts';
 import { CURSOR } from '../canvas/themes/cursor.ts';
-import { createLayer } from '../canvas/themes/createLayer.ts';
-import { CanvasGraph } from '../canvas/types.ts';
+import { CanvasPluginControls } from '../canvas/types.ts';
 import { NodeAnchor } from './types.ts';
 
 export const useAnchorDragCursor = (
-  createLayer: CanvasGraph['theme']['createLayer'],
+  createLayer: CanvasPluginControls['theme']['createLayer'],
   dragState: DragStateControls<NodeAnchor>,
 ) => {
   const { set, removeAll } = createLayer('plugin/anchors/drag');

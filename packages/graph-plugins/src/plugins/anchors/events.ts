@@ -1,8 +1,9 @@
-import { EventMapToEventRegistry } from '../../events/types.ts';
-import { GNode } from '../../types.ts';
+import { EventMapToEventRegistry } from '@magic/graph/events/types';
+import { GNode } from '@magic/graph/types';
+
 import { NodeAnchor } from './types.ts';
 
-export type NodeAnchorEventMap = {
+export type AnchorsEventMap = {
   /**
    * when the user initiates a drag on a node anchor
    */
@@ -19,7 +20,7 @@ export type NodeAnchorEventMap = {
   ) => void;
 };
 
-type NodeAnchorEventRegistry = EventMapToEventRegistry<NodeAnchorEventMap>;
+type NodeAnchorEventRegistry = EventMapToEventRegistry<AnchorsEventMap>;
 
 export const createNodeAnchorEventRegistry = (): NodeAnchorEventRegistry => ({
   onNodeAnchorDragStart: new Set(),

@@ -1,12 +1,5 @@
 import type { AnyFunction } from 'ts-essentials';
 
-import { CORE_EVENT_ID } from '../core/index.ts';
-import { ANCHOR_EVENT_ID } from '../plugins/anchors/index.ts';
-import { CANVAS_EVENT_ID } from '../plugins/canvas/index.ts';
-import { DRAG_EVENT_ID } from '../plugins/drag/index.ts';
-import { FOCUS_EVENT_ID } from '../plugins/focus/index.ts';
-import { HISTORY_EVENT_ID } from '../plugins/history/index.ts';
-import { MARQUEE_EVENT_ID } from '../plugins/marquee/index.ts';
 import { getSortedByPriority } from './getSortedByPriority.ts';
 import { GenericEventMap } from './types.ts';
 
@@ -16,16 +9,14 @@ export type HandlerPriority = {
 };
 
 export type HandlerId =
-  | typeof CANVAS_EVENT_ID
-  | typeof ANCHOR_EVENT_ID
-  | typeof DRAG_EVENT_ID
-  | typeof HISTORY_EVENT_ID
-  | typeof MARQUEE_EVENT_ID
-  | typeof FOCUS_EVENT_ID
-  | typeof CORE_EVENT_ID
-  // annotation add-on in @magic/products: @magic/graph can't import product deps and this
-  // type is only temporary for type safety while building Magic Graphs experiences
-  | 'product/annotation';
+  | 'core'
+  | 'plugins/canvas'
+  | 'plugins/anchors'
+  | 'plugins/drag'
+  | 'plugins/history'
+  | 'plugins/marquee'
+  | 'plugins/focus'
+  | 'plugins/annotations';
 
 type WithConsume<Callback extends AnyFunction> = (
   ...args: [...Parameters<Callback>, consume: () => void]

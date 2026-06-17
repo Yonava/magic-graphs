@@ -1,13 +1,19 @@
+import { GraphPlugin } from '@magic/graph/plugins/types';
+
 import { ComputedRef, Ref } from 'vue';
 
-export type HistoryPluginControls = {
-  /**
-   * history plugin controls
-   */
-  history: HistoryGraph;
+import { HistoryEventMap } from './events.ts';
+
+type HistoryOption = {
+  /** Whether to add element(s) to history stack */
+  history?: boolean;
 };
 
-export type HistoryGraph = {
+type HistoryActions = {
+  addNode: HistoryOption;
+};
+
+type HistoryControls = {
   /**
    * undoes the last action and moves it to the redo stack
    */
@@ -37,3 +43,9 @@ export type HistoryGraph = {
    */
   clearHistory: () => void;
 };
+
+export type HistoryPlugin = GraphPlugin<{
+  controls: { history: HistoryControls };
+  events: HistoryEventMap;
+  actions: HistoryActions;
+}>;

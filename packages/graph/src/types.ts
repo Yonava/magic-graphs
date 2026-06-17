@@ -39,15 +39,3 @@ export type GEdge = {
    */
   weight: Fraction;
 };
-
-export type GraphPlugin<PluginInterface extends Record<string, unknown>> =
-  PluginInterface & {
-    /**
-     * enable plugin
-     */
-    activate: () => void;
-    /**
-     * disable plugin
-     */
-    deactivate: () => void;
-  };

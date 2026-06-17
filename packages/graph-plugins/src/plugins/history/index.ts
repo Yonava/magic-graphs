@@ -1,34 +1,12 @@
-import {
-  GraphActions,
-  PartialBaseActions,
-} from '@magic/graph/core/actions/types';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
-import { ExtractActions, GraphPlugin } from '@magic/graph/plugins/types';
 
 import { computed, ref } from 'vue';
 
 import { MAX_HISTORY } from './constants.ts';
 import { HistoryEventMap, createHistoryEventRegistry } from './events.ts';
-import { HistoryPluginControls } from './types.ts';
-
-export const HISTORY_EVENT_ID = 'history';
-
-type HistoryOption = {
-  /** Whether to add element(s) to history stack */
-  history?: boolean;
-};
-
-type HistoryActions = {
-  addNode: HistoryOption;
-};
-
-type HistoryPlugin = GraphPlugin<{
-  controls: HistoryPluginControls;
-  events: HistoryEventMap;
-  actions: HistoryActions;
-}>;
+import { HistoryPlugin } from './types.ts';
 
 export const history: HistoryPlugin = (graph, graphEventHub, actions) => {
   const historyRegistry = createHistoryEventRegistry();
@@ -84,12 +62,6 @@ export const history: HistoryPlugin = (graph, graphEventHub, actions) => {
     undoStack.value = [];
     redoStack.value = [];
   };
-
-  // const historyActions = {
-  //   addNode: (node) => {
-  //     return node;
-  //   },
-  // };
 
   return {
     actions: {
