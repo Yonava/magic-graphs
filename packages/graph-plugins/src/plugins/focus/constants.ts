@@ -5,5 +5,5 @@ export const FOCUSABLE_GRAPH_TYPES: CanvasElement['graphType'][] = [
   'edge',
 ];
 
-export const FOCUS_THEME_ID = 'plugins/focus/theme';
-export const FOCUS_EVENT_ID = 'plugins/focus';
+export const FOCUS_PLUGIN_ID = 'plugins/focus';
+export const FOCUS_THEME_ID = FOCUS_PLUGIN_ID + '/theme';

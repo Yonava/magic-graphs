@@ -3,34 +3,21 @@ import { CoreEventMap } from '@magic/graph/core/events';
 import { NodePositionStreamControls } from '@magic/graph/core/positions/types';
 import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
-import { GraphPlugin } from '@magic/graph/plugins/types';
 import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
-import { ANCHOR_PLUGIN_ID } from '../anchors/index.ts';
+import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
+import { GraphUnderCursor } from '../canvas/types.ts';
 import {
   NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD,
   NODE_DRAG_PLUGIN_ID,
 } from './constants.ts';
 import { createDragThemer } from './createDragThemer.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
-import { NodeIdDragState } from './types.ts';
+import { NodeDragPlugin, NodeIdDragState } from './types.ts';
 import { validateNodeIds } from './validateNodeIds.ts';
-
-export type NodeDragControls = {
-  activate: () => void;
-  deactivate: () => void;
-};
-
-export type NodeDragPlugin = GraphPlugin<{
-  events: NodeDragEventMap;
-  controls: { nodeDrag: NodeDragControls };
-  actions: {};
-  dependsOn: [CanvasPlugin];
-}>;
 
 export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
   const nodeDragEventRegistry = createNodeDragEventRegistry();
@@ -143,7 +130,7 @@ export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
     dragState,
   );
 
-  const activate = () => {
+  const enable = () => {
     events.handle('onMouseDown', beginDrag, NODE_DRAG_PLUGIN_ID, {
       before: [ANCHOR_PLUGIN_ID],
     });
@@ -156,7 +143,7 @@ export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
     cursorTheme.activate();
   };
 
-  const deactivate = () => {
+  const disable = () => {
     events.unhandle('onMouseDown', beginDrag);
     events.unhandle('onMouseUp', drop);
     events.unhandle('onGraphUnderCursorChange', drag);
@@ -164,15 +151,17 @@ export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
     drop();
   };
 
-  activate();
+  enable();
 
   return {
     events,
     actions,
     controls: {
       nodeDrag: {
-        activate,
-        deactivate,
+        lifecycle: {
+          enable,
+          disable,
+        },
       },
     },
   };

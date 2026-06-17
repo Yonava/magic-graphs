@@ -1,5 +1,9 @@
 import { Coordinate } from '@magic/canvas/types';
+import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
 import { GNode } from '@magic/graph/types';
+
+import { CanvasPlugin } from '../canvas/types.ts';
+import { NodeDragEventMap } from './events.ts';
 
 export type NodeIdDragState = { nodeIds: string[] };
 
@@ -10,3 +14,10 @@ export type ActiveDragNode = {
   nodeId: GNode['id'];
   coords: Coordinate;
 };
+
+export type NodeDragPlugin = GraphPlugin<{
+  controls: { nodeDrag: WithLifecycle<{}> };
+  events: NodeDragEventMap;
+  actions: {};
+  dependsOn: [CanvasPlugin];
+}>;

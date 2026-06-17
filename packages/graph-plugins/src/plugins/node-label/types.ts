@@ -1,9 +1,7 @@
-import { CoreEventMap } from '@magic/graph/core/events';
-import { CoreControls } from '@magic/graph/core/types';
-import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
-import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
-import { GraphPlugin } from '@magic/graph/types';
+import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
 import { MaybeGetter } from '@magic/utils/maybeGetter/index';
+
+import { CanvasPlugin } from '../canvas/types.ts';
 
 export type NodeLabelEntry = {
   nodeId: string;
@@ -15,7 +13,7 @@ export type NodeLabelUpdate = {
   label: MaybeGetter<string, [string]>;
 };
 
-export type NodeLabelStoreControls = {
+export type NodeLabelControls = {
   /** Returns the label of a node. */
   get: (nodeId: string) => string;
   /** Updates a single node's label. */
@@ -28,20 +26,14 @@ export type NodeLabelStoreControls = {
   };
 };
 
-type NodeLabelPlugin = {
-  /**
-   * node label plugin controls
-   */
-  labels: GraphPlugin<NodeLabelStoreControls>;
+type NodeLabelActions = {
+  /** add a label to this node */
+  addNode: { label?: string };
 };
 
-export type GraphWithNodeLabel<
-  TransactionWrapperOptions,
-  EventMap extends CoreEventMap,
-  Plugins,
-> = CoreControls<
-  TransactionWrapperOptions,
-  EventMap & CanvasEventMap,
-  Plugins & CanvasPlugin & NodeLabelPlugin,
-  { label: string }
->;
+export type NodeLabelPlugin = GraphPlugin<{
+  controls: { nodeLabel: WithLifecycle<NodeLabelControls> };
+  events: {};
+  actions: NodeLabelActions;
+  dependsOn: [CanvasPlugin];
+}>;

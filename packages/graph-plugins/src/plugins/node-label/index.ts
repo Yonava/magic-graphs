@@ -1,7 +1,3 @@
-import type { CoreEventMap } from '@magic/graph/core/events';
-import { CoreControls } from '@magic/graph/core/types';
-import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
-import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
 import { GNode } from '@magic/graph/types';
 import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
@@ -9,24 +5,18 @@ import { getValue } from '@magic/utils/maybeGetter/index';
 import { UPPERCASE_ALPHABET } from './constants.ts';
 import { createLabelGenerator } from './createLabelGenerator.ts';
 import { createLabelThemer } from './createLabelThemer.ts';
-import { GraphWithNodeLabel, NodeLabelStoreControls } from './types.ts';
+import { NodeLabelControls, NodeLabelPlugin } from './types.ts';
 
-export const createNodeLabel = <
-  TransactionWrapperOptions,
-  EventMap extends CoreEventMap & CanvasEventMap,
-  Plugins extends CanvasPlugin,
->(
-  graph: CoreControls<TransactionWrapperOptions, EventMap, Plugins>,
-): GraphWithNodeLabel<TransactionWrapperOptions, EventMap, Plugins> => {
+export const nodeLabel: NodeLabelPlugin = (graph, events, actions) => {
   const nodeIdToLabel = new Map<string, string>();
 
-  const getNodeLabel: NodeLabelStoreControls['get'] = (nodeId) =>
+  const getNodeLabel: NodeLabelControls['get'] = (nodeId) =>
     nullThrows(
       nodeIdToLabel.get(nodeId),
       `could not resolve label from node with id ${nodeId}`,
     );
 
-  const setNodeLabels: NodeLabelStoreControls['setMany'] = (labels) => {
+  const setNodeLabels: NodeLabelControls['setMany'] = (labels) => {
     return labels.map(({ nodeId, label: labelOrLabelGetter }) => {
       const currentLabel = getNodeLabel(nodeId);
       const label = getValue(labelOrLabelGetter, currentLabel);
@@ -35,7 +25,7 @@ export const createNodeLabel = <
     });
   };
 
-  const getNewLabel = createLabelGenerator({
+  const generateLabel = createLabelGenerator({
     getLabels: () =>
       // TODO this breaks when multiple nodes are added in bulk and implicitly requires newly added not to be the last node in the nodes array. This needs to change
       // https://github.com/Yonava/magic-graphs/issues/700
@@ -43,46 +33,48 @@ export const createNodeLabel = <
     sequence: UPPERCASE_ALPHABET,
   });
 
-  const addNodesToLabelMap = (nodes: Readonly<GNode[]>) => {
-    for (const { id } of nodes) nodeIdToLabel.set(id, getNewLabel());
-  };
-
-  const removeNodesFromLabelMap = (nodeIds: Readonly<string[]>) => {
-    for (const id of nodeIds) nodeIdToLabel.delete(id);
-  };
-
   const themer = createLabelThemer(graph.canvas.theme, getNodeLabel);
 
-  const activate = () => {
-    graph.events.subscribe('onNodesAdded', addNodesToLabelMap);
-    graph.events.subscribe('onNodesRemoved', removeNodesFromLabelMap);
+  const enable = () => {
     themer.activate();
   };
 
-  const deactivate = () => {
-    graph.events.unsubscribe('onNodesAdded', addNodesToLabelMap);
-    graph.events.unsubscribe('onNodesRemoved', removeNodesFromLabelMap);
+  const disable = () => {
     themer.deactivate();
   };
 
-  activate();
+  enable();
 
   return {
-    ...graph,
-    getNode: (nodeId) => {
-      const node = graph.getNode(nodeId);
-      const label = getNodeLabel(node.id);
-      return { ...node, label };
-    },
-    labels: {
-      get: getNodeLabel,
-      set: (label) => setNodeLabels([label]),
-      setMany: setNodeLabels,
-      _internal: {
-        nodeIdToLabel,
+    events,
+    actions: {
+      ...actions,
+      addNode: (options) => {
+        const node = actions.addNode(options);
+        setNodeLabels([
+          { label: options.label ?? generateLabel(), nodeId: node.id },
+        ]);
+        return node;
       },
-      activate,
-      deactivate,
+      removeNode: (options) => {
+        nodeIdToLabel.delete(options.id);
+        return actions.removeNode(options);
+      },
+      // TODO add bulk additions and removals!
+    },
+    controls: {
+      nodeLabel: {
+        get: getNodeLabel,
+        set: (label) => setNodeLabels([label]),
+        setMany: setNodeLabels,
+        lifecycle: {
+          enable,
+          disable,
+        },
+        _internal: {
+          nodeIdToLabel,
+        },
+      },
     },
   };
 };

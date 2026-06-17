@@ -1,7 +1,6 @@
 import { CoreEventMap } from '@magic/graph/core/events';
 import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
-import { GraphPlugin } from '@magic/graph/plugins/types';
 import { normalizeBoundingBox } from '@magic/shapes/helpers';
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -16,23 +15,14 @@ import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts'
 import {
   Aggregator,
   CanvasElement,
-  CanvasPlugin,
   GraphUnderCursor,
 } from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
-import { FocusPlugin } from '../focus/types.ts';
 import { NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD } from '../node-drag/constants.ts';
 import { MARQUEE_PLUGIN_ID, MARQUEE_SHAPE_ID } from './constants.ts';
 import { MarqueeEventMap, createMarqueeEventRegistry } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
-import { MarqueeControls } from './types.ts';
-
-export type MarqueePlugin = GraphPlugin<{
-  actions: {};
-  controls: { marquee: MarqueeControls };
-  events: MarqueeEventMap;
-  dependsOn: [CanvasPlugin, FocusPlugin];
-}>;
+import { MarqueePlugin } from './types.ts';
 
 export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
   const marqueeEventRegistry = createMarqueeEventRegistry();
@@ -184,7 +174,7 @@ export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
   graph.canvas.aggregator.transformers.push(addEncapsulatedNodeBoxToAggregator);
   graph.canvas.aggregator.transformers.push(addMarqueeBoxToAggregator);
 
-  const activate = () => {
+  const enable = () => {
     events.subscribe('onFocusChange', updateEncapsulatedNodeBox);
 
     events.handle('onMouseDown', handleMarqueeEngagement, MARQUEE_PLUGIN_ID);
@@ -202,7 +192,7 @@ export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
     events.subscribe('onNodeMoveStream', updateEncapsulatedNodeBox);
   };
 
-  const deactivate = () => {
+  const disable = () => {
     events.unsubscribe('onFocusChange', updateEncapsulatedNodeBox);
 
     events.unhandle('onMouseDown', handleMarqueeEngagement);
@@ -215,24 +205,19 @@ export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
     if (marqueeBox.value) disengageMarqueeBox();
   };
 
-  activate();
+  enable();
 
   return {
     events,
     actions,
     controls: {
       marquee: {
-        activate,
-        deactivate,
-        /**
-         * updates the bounding box around the nodes that are currently focused.
-         * use this when you are changing theme or position outside of the standard supported use cases
-         */
         updateEncapsulatedNodeBox,
-        /**
-         * true when the marquee box is being actively sized by user
-         */
         activelySelecting: computed(() => !!marqueeBox.value),
+        lifecycle: {
+          enable,
+          disable,
+        },
       },
     },
   };

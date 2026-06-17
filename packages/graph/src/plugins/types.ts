@@ -11,6 +11,8 @@ import { CoreControls } from '../core/types.ts';
 import { EventHub } from '../events/createEventHub.ts';
 import { GenericEventMap } from '../events/types.ts';
 
+// TODO add generic overrides system for getNode/getEdge just like graph actions!
+
 type LoosePluginData = {
   controls: object;
   events: GenericEventMap;

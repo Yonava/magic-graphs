@@ -1,12 +1,12 @@
-import { CanvasGraph } from '@magic/graph/plugins/canvas/types';
-
-import { NodeLabelStoreControls } from './types.ts';
+import { CanvasControls } from '../canvas/types.ts';
+import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
+import { NodeLabelControls } from './types.ts';
 
 export const createLabelThemer = (
-  theme: CanvasGraph['theme'],
-  getLabel: NodeLabelStoreControls['get'],
+  theme: CanvasControls['theme'],
+  getLabel: NodeLabelControls['get'],
 ) => {
-  const layer = theme.createLayer('add-on/node-label');
+  const layer = theme.createLayer(NODE_DRAG_PLUGIN_ID);
 
   const activate = () => {
     layer.set('node.default.text', (n) => getLabel(n.id));

@@ -12,9 +12,10 @@ import { computed, readonly, ref } from 'vue';
 
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasElement } from '../canvas/types.ts';
+import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
 import {
   FOCUSABLE_GRAPH_TYPES,
-  FOCUS_EVENT_ID,
+  FOCUS_PLUGIN_ID,
   FOCUS_THEME_ID,
 } from './constants.ts';
 import { FocusEventMap, createFocusEventRegistry } from './events.ts';
@@ -220,24 +221,24 @@ export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
     });
   }
 
-  const activate = () => {
+  const enable = () => {
     // focus a node when clicked, or clear focus if background is clicked
-    events.handle('onMouseDown', handleMouseDown, FOCUS_EVENT_ID, {
-      before: ['plugins/drag'],
+    events.handle('onMouseDown', handleMouseDown, FOCUS_PLUGIN_ID, {
+      before: [NODE_DRAG_PLUGIN_ID],
     });
 
     // clean up the focus so removed elements aren't in the state
     events.subscribe('onElementsRemoved', clearRemovedElementsFromFocus);
   };
 
-  const deactivate = () => {
+  const disable = () => {
     events.unhandle('onMouseDown', handleMouseDown);
 
     events.unsubscribe('onElementsRemoved', clearRemovedElementsFromFocus);
     clearFocus();
   };
 
-  activate();
+  enable();
 
   const extendedActions: ReturnType<FocusPlugin>['actions'] = {
     ...actions,
@@ -271,8 +272,6 @@ export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
     actions: extendedActions,
     controls: {
       focus: {
-        activate,
-        deactivate,
         set: setFocus,
         clear: clearFocus,
         add: addToFocus,
@@ -285,6 +284,10 @@ export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
         focusedEdges: computed(() =>
           graph.edges.value.filter((edge) => isFocused(edge.id)),
         ),
+        lifecycle: {
+          enable,
+          disable,
+        },
       },
     },
   };

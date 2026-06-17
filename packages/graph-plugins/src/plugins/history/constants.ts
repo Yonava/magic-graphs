@@ -3,4 +3,4 @@
  */
 export const MAX_HISTORY = 100;
 
-export const HISTORY_EVENT_ID = 'plugins/history';
+export const HISTORY_PLUGIN_ID = 'plugins/history';

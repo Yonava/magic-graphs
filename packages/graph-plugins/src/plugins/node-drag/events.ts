@@ -4,11 +4,11 @@ import { DeepReadonly } from 'ts-essentials';
 
 export type NodeDragEventMap = {
   /**
-   * when the user initiates a node drag
+   * when a node drag is initiated
    */
   onNodeDragStart: (nodes: DeepReadonly<GNode[]>) => void;
   /**
-   * when the user drops nodes
+   * when a node drag is ended
    */
   onNodeDrop: (nodes: DeepReadonly<GNode[]>) => void;
 };

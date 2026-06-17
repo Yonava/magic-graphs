@@ -1,4 +1,10 @@
+import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
+
 import { ComputedRef } from 'vue';
+
+import { CanvasPlugin } from '../canvas/types.ts';
+import { FocusPlugin } from '../focus/types.ts';
+import { MarqueeEventMap } from './events.ts';
 
 export type MarqueeControls = {
   /**
@@ -11,3 +17,10 @@ export type MarqueeControls = {
    */
   activelySelecting: ComputedRef<boolean>;
 };
+
+export type MarqueePlugin = GraphPlugin<{
+  controls: { marquee: WithLifecycle<MarqueeControls> };
+  events: MarqueeEventMap;
+  actions: {};
+  dependsOn: [CanvasPlugin, FocusPlugin];
+}>;

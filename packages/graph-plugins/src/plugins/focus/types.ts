@@ -1,4 +1,4 @@
-import { GraphPlugin } from '@magic/graph/plugins/types';
+import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
 import { GEdge, GNode } from '@magic/graph/types';
 
 import { ComputedRef, Ref } from 'vue';
@@ -80,7 +80,7 @@ export type FocusActions = {
 };
 
 export type FocusPlugin = GraphPlugin<{
-  controls: { focus: FocusControls };
+  controls: { focus: WithLifecycle<FocusControls> };
   events: FocusEventMap;
   actions: FocusActions;
   dependsOn: [CanvasPlugin];
