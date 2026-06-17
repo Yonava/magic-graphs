@@ -1,46 +1,44 @@
 import { createDragState } from '@magic/graph-plugins/shared/drag/createDragState';
+import { CoreEventMap } from '@magic/graph/core/events';
+import { NodePositionStreamControls } from '@magic/graph/core/positions/types';
+import { createEventHub } from '@magic/graph/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
+import { GraphPlugin } from '@magic/graph/plugins/types';
 import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
-import { CoreEventMap } from '../../core/events.ts';
-import { NodePositionStreamControls } from '../../core/positions/types.ts';
-import type { GraphCoreControls } from '../../core/types.ts';
-import { EventHub, createEventHub } from '../../events/createEventHub.ts';
-import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
 import { ANCHOR_EVENT_ID } from '../anchors/index.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CanvasPlugin, GraphUnderCursor } from '../canvas/types.ts';
+import {
+  NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD,
+  NODE_DRAG_PLUGIN_ID,
+} from './constants.ts';
 import { createDragThemer } from './createDragThemer.ts';
 import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
-import { GraphWithNodeDrag, NodeIdDragState } from './types.ts';
+import { NodeIdDragState } from './types.ts';
+import { validateNodeIds } from './validateNodeIds.ts';
 
-export const DRAG_EVENT_ID = 'drag';
-export const DRAG_CANVAS_ELEMENT_DATA_FIELD = 'dragNodeIds';
-
-const validateNodeIds = (nodeIdsOrJunk: unknown): nodeIdsOrJunk is string[] => {
-  if (!Array.isArray(nodeIdsOrJunk)) return false;
-  return nodeIdsOrJunk.every(
-    (nodeIdOrJunk) => typeof nodeIdOrJunk === 'string',
-  );
+export type NodeDragControls = {
+  activate: () => void;
+  deactivate: () => void;
 };
 
-export const useNodeDragPlugin = <
-  TransactionWrapperOptions,
-  EventMap extends CoreEventMap & CanvasEventMap,
-  Plugins extends CanvasPlugin,
->(
-  graph: GraphCoreControls<TransactionWrapperOptions, EventMap, Plugins>,
-): GraphWithNodeDrag<TransactionWrapperOptions, EventMap, Plugins> => {
-  const nodeDragRegistry = createNodeDragEventRegistry();
-  const nodeDragHub: EventHub<NodeDragEventMap> =
-    createEventHub(nodeDragRegistry);
-  const events = mergeEventHubs(
-    nodeDragHub,
-    // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
-    // from plugins upstream
-    graph.events as EventHub<CoreEventMap & CanvasEventMap>,
-  );
+export type NodeDragPlugin = GraphPlugin<{
+  events: NodeDragEventMap;
+  controls: { nodeDrag: NodeDragControls };
+  actions: {};
+  dependsOn: [CanvasPlugin];
+}>;
+
+export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
+  const nodeDragEventRegistry = createNodeDragEventRegistry();
+  const nodeDragEventHub = createEventHub(nodeDragEventRegistry);
+  const events = mergeEventHubs<
+    NodeDragEventMap,
+    CoreEventMap & CanvasEventMap
+  >(nodeDragEventHub, graphEventMap);
 
   const dragState = createDragState<NodeIdDragState>();
   let nodePositionStream: NodePositionStreamControls | undefined;
@@ -60,7 +58,7 @@ export const useNodeDragPlugin = <
       nodeIdsToDrag.push(topElement.id);
     }
 
-    const nodeIds = topElement.data?.[DRAG_CANVAS_ELEMENT_DATA_FIELD];
+    const nodeIds = topElement.data?.[NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD];
     if (nodeIds !== undefined) {
       if (!validateNodeIds(nodeIds)) {
         console.warn('node drag expected array of node ids: got', nodeIds);
@@ -146,13 +144,13 @@ export const useNodeDragPlugin = <
   );
 
   const activate = () => {
-    events.handle('onMouseDown', beginDrag, DRAG_EVENT_ID, {
+    events.handle('onMouseDown', beginDrag, NODE_DRAG_PLUGIN_ID, {
       before: [ANCHOR_EVENT_ID],
     });
-    events.handle('onMouseUp', drop, DRAG_EVENT_ID, {
+    events.handle('onMouseUp', drop, NODE_DRAG_PLUGIN_ID, {
       before: [ANCHOR_EVENT_ID],
     });
-    events.handle('onGraphUnderCursorChange', drag, DRAG_EVENT_ID, {
+    events.handle('onGraphUnderCursorChange', drag, NODE_DRAG_PLUGIN_ID, {
       before: [ANCHOR_EVENT_ID],
     });
     cursorTheme.activate();
@@ -169,11 +167,13 @@ export const useNodeDragPlugin = <
   activate();
 
   return {
-    ...graph,
     events,
-    nodeDrag: {
-      activate,
-      deactivate,
+    actions,
+    controls: {
+      nodeDrag: {
+        activate,
+        deactivate,
+      },
     },
   };
 };

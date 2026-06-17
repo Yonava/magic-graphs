@@ -48,4 +48,5 @@ export type HistoryPlugin = GraphPlugin<{
   controls: { history: HistoryControls };
   events: HistoryEventMap;
   actions: HistoryActions;
+  dependsOn: [];
 }>;

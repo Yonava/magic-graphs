@@ -1,12 +1,12 @@
-import { EventMapToEventRegistry } from '../../events/types.ts';
+import { EventMapToEventRegistry } from '@magic/graph/events/types';
 
 export type FocusEventMap = {
   /**
-   * when the set of focused items changes
+   * when focused elements change
    */
   onFocusChange: (
-    newItemIds: ReadonlySet<string>,
-    oldItemIds: ReadonlySet<string>,
+    newElementIds: ReadonlySet<string>,
+    oldElementIds: ReadonlySet<string>,
   ) => void;
 };
 

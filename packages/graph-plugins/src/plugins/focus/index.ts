@@ -1,3 +1,8 @@
+import { ElementRemovalPayload } from '@magic/graph/core/actions/types';
+import { CoreEventMap } from '@magic/graph/core/events';
+import { createEventHub } from '@magic/graph/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
+import { GEdge, GNode } from '@magic/graph/types';
 import { nullThrows } from '@magic/utils/assert';
 import { getCtx } from '@magic/utils/ctx/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -5,41 +10,28 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { computed, readonly, ref } from 'vue';
 
-import { ElementRemovalPayload } from '../../core/actions/types.ts';
-import { CoreEventMap } from '../../core/events.ts';
-import type { GraphCoreControls, InternalActions } from '../../core/types.ts';
-import { EventHub, createEventHub } from '../../events/createEventHub.ts';
-import { mergeEventHubs } from '../../events/mergeEventHubs.ts';
-import type { GEdge, GNode } from '../../types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
-import { DRAG_EVENT_ID } from '../drag/index.ts';
-import { FOCUSABLE_GRAPH_TYPES, FOCUS_THEME_ID } from './constants.ts';
+import { CanvasElement } from '../canvas/types.ts';
+import {
+  FOCUSABLE_GRAPH_TYPES,
+  FOCUS_EVENT_ID,
+  FOCUS_THEME_ID,
+} from './constants.ts';
 import { FocusEventMap, createFocusEventRegistry } from './events.ts';
 import {
   EdgeBaseThemePath,
   EdgeBaseToNodeFocusTheme,
-  GraphWithFocus,
+  FocusPlugin,
   NodeBaseThemePath,
   NodeBaseToNodeFocusTheme,
 } from './types.ts';
 
-export const FOCUS_EVENT_ID = 'focus';
-
-export const useFocusPlugin = <
-  TransactionWrapperOptions,
-  EventMap extends CoreEventMap & CanvasEventMap,
-  Plugins extends CanvasPlugin,
->(
-  graph: GraphCoreControls<TransactionWrapperOptions, EventMap, Plugins>,
-): GraphWithFocus<TransactionWrapperOptions, EventMap, Plugins> => {
-  const focusRegistry = createFocusEventRegistry();
-  const focusHub: EventHub<FocusEventMap> = createEventHub(focusRegistry);
-  const events = mergeEventHubs(
-    focusHub,
-    // casting because graph.events could be arbitrarily broad due to it being stuffed with other events
-    // from plugins upstream
-    graph.events as EventHub<CoreEventMap & CanvasEventMap>,
+export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
+  const focusEventRegistry = createFocusEventRegistry();
+  const focusEventHub = createEventHub(focusEventRegistry);
+  const events = mergeEventHubs<FocusEventMap, CoreEventMap & CanvasEventMap>(
+    focusEventHub,
+    graphEventHub,
   );
 
   const focusedElementIds = ref(new Set<string>());
@@ -108,7 +100,7 @@ export const useFocusPlugin = <
         return;
       }
 
-      graph.actions.updateEdge({
+      actions.updateEdge({
         id: edge.id,
         values: { weight: newWeight },
       });
@@ -231,7 +223,7 @@ export const useFocusPlugin = <
   const activate = () => {
     // focus a node when clicked, or clear focus if background is clicked
     events.handle('onMouseDown', handleMouseDown, FOCUS_EVENT_ID, {
-      before: [DRAG_EVENT_ID],
+      before: ['plugins/drag'],
     });
 
     // clean up the focus so removed elements aren't in the state
@@ -247,24 +239,23 @@ export const useFocusPlugin = <
 
   activate();
 
-  const upstreamActions = graph.actions as InternalActions;
-  const extendedActions: Partial<InternalActions> = {
-    ...upstreamActions,
-    addNode: (node, options) => {
-      const addedNode = upstreamActions.addNode(node, options);
+  const extendedActions: ReturnType<FocusPlugin>['actions'] = {
+    ...actions,
+    addNode: (options) => {
+      const addedNode = actions.addNode(options);
       const focusOnAdded = options?.focus ?? true;
       if (focusOnAdded) setFocus([addedNode.id]);
       return addedNode;
     },
-    addEdge: (edge, options) => {
-      const addedEdge = upstreamActions.addEdge(edge, options);
+    addEdge: (options) => {
+      const addedEdge = actions.addEdge(options);
       const focusOnAdded = options?.focus ?? true;
       if (focusOnAdded) setFocus([addedEdge.id]);
       return addedEdge;
     },
-    addElements: (elements, options) => {
-      const updatedElements = upstreamActions.addElements(elements, options);
-      const focusOnAdded = options?.focus ?? true;
+    addElements: (options, shared) => {
+      const updatedElements = actions.addElements(options, shared);
+      const focusOnAdded = shared?.focus ?? true;
       if (focusOnAdded) {
         setFocus([
           ...updatedElements.addedNodes.map((n) => n.id),
@@ -276,29 +267,25 @@ export const useFocusPlugin = <
   };
 
   return {
-    ...graph,
-    // TODO ensure tests are added to guarantee the correct event systems are being propagated!
     events,
-    actions: extendedActions as GraphWithFocus<
-      TransactionWrapperOptions,
-      EventMap,
-      Plugins
-    >['actions'],
-    focus: {
-      activate,
-      deactivate,
-      set: setFocus,
-      clear: clearFocus,
-      add: addToFocus,
-      all: focusAll,
-      isFocused,
-      focusedItemIds: readonly(focusedElementIds),
-      focusedNodes: computed(() =>
-        graph.nodes.value.filter((node) => isFocused(node.id)),
-      ),
-      focusedEdges: computed(() =>
-        graph.edges.value.filter((edge) => isFocused(edge.id)),
-      ),
+    actions: extendedActions,
+    controls: {
+      focus: {
+        activate,
+        deactivate,
+        set: setFocus,
+        clear: clearFocus,
+        add: addToFocus,
+        all: focusAll,
+        isFocused,
+        focusedItemIds: readonly(focusedElementIds),
+        focusedNodes: computed(() =>
+          graph.nodes.value.filter((node) => isFocused(node.id)),
+        ),
+        focusedEdges: computed(() =>
+          graph.edges.value.filter((edge) => isFocused(edge.id)),
+        ),
+      },
     },
   };
 };

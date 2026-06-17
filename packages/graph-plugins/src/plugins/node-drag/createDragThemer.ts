@@ -1,14 +1,15 @@
 import { DragStateControls } from '@magic/graph-plugins/shared/drag/types';
 
 import { CURSOR } from '../canvas/themes/cursor.ts';
-import { CanvasGraph } from '../canvas/types.ts';
+import { CanvasControls } from '../canvas/types.ts';
+import { NODE_DRAG_PLUGIN_ID } from './constants.ts';
 import { NodeIdDragState } from './types.ts';
 
 export const createDragThemer = (
-  createLayer: CanvasGraph['theme']['createLayer'],
+  createLayer: CanvasControls['theme']['createLayer'],
   dragState: DragStateControls<NodeIdDragState>,
 ) => {
-  const { set, removeAll } = createLayer('plugin/drag');
+  const { set, removeAll } = createLayer(`${NODE_DRAG_PLUGIN_ID}/theme`);
 
   const globalGrabbing = () =>
     dragState.isDragging() ? CURSOR.GRABBING : undefined;

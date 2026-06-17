@@ -12,7 +12,7 @@ export type HandlerId =
   | 'core'
   | 'plugins/canvas'
   | 'plugins/anchors'
-  | 'plugins/drag'
+  | 'plugins/node-drag'
   | 'plugins/history'
   | 'plugins/marquee'
   | 'plugins/focus'

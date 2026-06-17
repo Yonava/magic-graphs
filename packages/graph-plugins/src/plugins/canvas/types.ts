@@ -26,7 +26,7 @@ export type GraphUnderCursor = {
   elements: CanvasElement[];
 };
 
-export type CanvasPluginControls = {
+export type CanvasControls = {
   /** @internal */
   magicCanvas: MagicCanvasProps;
   /**
@@ -101,10 +101,11 @@ export type CanvasElement = {
   id: string;
   /**
    * 🚨
-   * TODO explore deprecating: https://github.com/Yonava/magic-graphs/issues/652
+   * TODO remove this field: https://github.com/Yonava/magic-graphs/issues/652
    * 🚨
    *
    * the type of graph data this element represents (node, edge, etc.)
+   * @deprecated
    */
   graphType:
     | CoreGraphTypes
@@ -129,7 +130,8 @@ export type CanvasElement = {
 };
 
 export type CanvasPlugin = GraphPlugin<{
-  controls: { canvas: CanvasPluginControls };
+  controls: { canvas: CanvasControls };
   events: CanvasEventMap;
   actions: {};
+  dependsOn: [];
 }>;

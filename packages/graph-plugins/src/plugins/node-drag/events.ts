@@ -1,7 +1,6 @@
+import { EventMapToEventRegistry } from '@magic/graph/events/types';
+import { GNode } from '@magic/graph/types';
 import { DeepReadonly } from 'ts-essentials';
-
-import { EventMapToEventRegistry } from '../../events/types.ts';
-import { GNode } from '../../types.ts';
 
 export type NodeDragEventMap = {
   /**
