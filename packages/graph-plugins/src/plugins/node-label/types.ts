@@ -26,13 +26,21 @@ export type NodeLabelControls = {
   };
 };
 
+type LabelOption = {
+  label: string;
+};
+
 type NodeLabelActions = {
-  /** add a label to this node */
-  addNode: { label?: string };
+  addNode: Partial<LabelOption>;
+};
+
+type NodeLabelGetters = {
+  getNode: LabelOption;
 };
 
 export type NodeLabelPlugin = GraphPlugin<{
   controls: { nodeLabel: WithLifecycle<NodeLabelControls> };
   actions: NodeLabelActions;
+  getters: NodeLabelGetters;
   dependsOn: [CanvasPlugin];
 }>;

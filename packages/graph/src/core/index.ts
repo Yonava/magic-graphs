@@ -1,6 +1,7 @@
 import { nullThrows } from '@magic/utils/assert';
 import { clone } from '@magic/utils/clone';
 import { delta } from '@magic/utils/delta/index';
+import { DeepReadonly } from 'ts-essentials';
 
 import { computed, ref, watch } from 'vue';
 
@@ -9,6 +10,8 @@ import {
   ExtractActions,
   ExtractControls,
   ExtractEventMap,
+  ExtractGetters,
+  GraphGetters,
   LooseGraphPlugin,
 } from '../plugins/types.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
@@ -47,10 +50,16 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
   const nodePositionStore = createNodePositionStore(coreEventHub);
 
   const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
+
   const getNode = (id: GNode['id']) =>
     nullThrows(nodeIdToNodeMap.value.get(id), `node with id ${id} not found`);
   const getEdge = (id: GEdge['id']) =>
     nullThrows(edgeIdToEdgeMap.value.get(id), `edge with id ${id} not found`);
+
+  const coreGetters = {
+    getNode,
+    getEdge,
+  };
 
   const onTransactionSucceeded = setupTransactionSucceeded({
     edges,
@@ -106,8 +115,6 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     nodeIdToIndex,
     edgeIdToIndex,
     helpers: useGraphHelpers({ edges, getEdge, getNode, settings }),
-    getNode,
-    getEdge,
     settings,
     positions: nodePositionStore,
   };
@@ -123,8 +130,13 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     ExtractActions<NoInfer<TPlugins>>
   >;
 
+  const getters = coreGetters as GraphGetters<
+    ExtractGetters<NoInfer<TPlugins>>
+  >;
+
   return {
     ...controls,
+    ...getters,
     actions,
     events,
   };

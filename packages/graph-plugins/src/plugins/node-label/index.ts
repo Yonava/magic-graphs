@@ -41,7 +41,14 @@ export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
 
   return {
     events,
-    getters,
+    getters: {
+      ...getters,
+      getNode: (id) => {
+        const node = getters.getNode(id);
+        const label = getNodeLabel(node.id);
+        return { ...node, label };
+      },
+    },
     actions: {
       ...actions,
       addNode: (options) => {

@@ -1,4 +1,4 @@
-import { DeepReadonly, UnionToIntersection } from 'ts-essentials';
+import { UnionToIntersection } from 'ts-essentials';
 
 import {
   CoreActions,
@@ -31,23 +31,23 @@ export type ResolveGetters<Getters extends Partial<BaseGetters>> = {
     : {};
 };
 
-type DistributeResolveGetters<PartialActions extends Partial<BaseGetters>> =
-  PartialActions extends PartialActions
-    ? ResolveGetters<PartialActions>
+type DistributeResolveGetters<PartialGetters extends Partial<BaseGetters>> =
+  PartialGetters extends PartialGetters
+    ? ResolveGetters<PartialGetters>
     : never;
 
 export type MergeGetters<Getters extends Partial<BaseGetters>[]> =
   Getters extends []
     ? BaseGetters
     : {
-        [ActionsField in keyof BaseGetters]: UnionToIntersection<
-          DistributeResolveGetters<Getters[number]>[ActionsField]
+        [GettersField in keyof BaseGetters]: UnionToIntersection<
+          DistributeResolveGetters<Getters[number]>[GettersField]
         >;
       };
 
 export type GraphGetters<Getters extends BaseGetters> = {
-  getNode: (nodeId: string) => DeepReadonly<Getters['getNode']>;
-  getEdge: (edgeId: string) => DeepReadonly<Getters['getEdge']>;
+  getNode: (nodeId: string) => Getters['getNode'];
+  getEdge: (edgeId: string) => Getters['getEdge'];
 };
 
 type LoosePluginData = {
@@ -122,22 +122,21 @@ export type LooseGraphPlugin = (
 ) => {
   controls: LoosePluginData['controls'];
   events: EventHub<CoreEventMap & LoosePluginData['events']>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actions: GraphActions<any>;
+  getters: GraphGetters<any>;
 };
 
 export type RemoveArray<T> = T extends (infer F)[] ? F : T;
 
-type ExtractData<TPlugins extends LooseGraphPlugin[]> = UnionToIntersection<
-  ReturnType<RemoveArray<NoInfer<TPlugins>>>
->;
+export type ExtractData<TPlugins extends LooseGraphPlugin[]> =
+  UnionToIntersection<ReturnType<RemoveArray<NoInfer<TPlugins>>>>;
 
 export type ExtractControls<TPlugins extends LooseGraphPlugin[]> =
   ExtractData<TPlugins> extends { controls: infer Controls } ? Controls : never;
 
 export type ExtractActions<TPlugins extends LooseGraphPlugin[]> =
   TPlugins extends never[]
-    ? // all plugins come pre-baked with core events
+    ? // all plugins come pre-baked with core actions
       CoreActions
     : UnionToIntersection<
         ReturnType<RemoveArray<NoInfer<TPlugins>>> extends {
@@ -146,6 +145,34 @@ export type ExtractActions<TPlugins extends LooseGraphPlugin[]> =
           ? Actions
           : never
       >;
+
+type GettersFromPlugin<P extends LooseGraphPlugin> = P extends LooseGraphPlugin
+  ? ReturnType<P>['getters'] extends GraphGetters<infer G>
+    ? G
+    : never
+  : never;
+
+type DistributeGetNode<T> = T extends BaseGetters ? T['getNode'] : never;
+type DistributeGetEdge<T> = T extends BaseGetters ? T['getEdge'] : never;
+
+export type ExtractGetters<TPlugins extends LooseGraphPlugin[]> = {
+  getNode: UnionToIntersection<
+    DistributeGetNode<
+      TPlugins extends never[]
+        ? // all plugins come pre-baked with core getters
+          CoreGetters
+        : GettersFromPlugin<RemoveArray<NoInfer<TPlugins>>>
+    >
+  >;
+  getEdge: UnionToIntersection<
+    DistributeGetEdge<
+      TPlugins extends never[]
+        ? // all plugins come pre-baked with core getters
+          CoreGetters
+        : GettersFromPlugin<RemoveArray<NoInfer<TPlugins>>>
+    >
+  >;
+};
 
 export type ExtractEventMap<TPlugins extends LooseGraphPlugin[]> =
   TPlugins extends never[]
