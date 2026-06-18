@@ -12,7 +12,6 @@
  *               (e.g. "node.default.color"). used to identify which token an override targets.
  */
 import { CoreControls } from '@magic/graph/core/types';
-import { NodeAnchor } from '@magic/graph/plugins/anchors/types';
 import { CoreGetters, GraphGetters } from '@magic/graph/plugins/types';
 import { CoreEdge, CoreNode } from '@magic/graph/types';
 import type { FontWeight } from '@magic/shapes/text/types';
@@ -21,6 +20,7 @@ import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
 import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
+import { NodeAnchor } from '../../anchors/types.ts';
 import { CanvasControls } from '../types.ts';
 import { Cursor, CursorFallback } from './cursor.ts';
 

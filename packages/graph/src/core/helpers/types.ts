@@ -1,5 +1,6 @@
 import type { Fraction } from 'mathjs';
 
+import { CoreGetters, GraphGetters } from '../../plugins/types.ts';
 import type { GraphSettings } from '../../settings/index.ts';
 import type { CoreEdge, CoreNode } from '../../types.ts';
 import { CoreControls } from '../types.ts';
@@ -95,9 +96,13 @@ export type NodeHelpers = {
   ) => CoreEdge | undefined;
 };
 
-type FieldsNeededFromCoreGraph = 'getNode' | 'getEdge' | 'edges' | 'settings';
+type FieldsNeededFromCoreGraph = 'edges' | 'settings';
 
-export type CoreGraphForHelpers = Pick<CoreControls, FieldsNeededFromCoreGraph>;
+export type CoreGraphForHelpers = Pick<
+  CoreControls,
+  FieldsNeededFromCoreGraph
+> &
+  GraphGetters<CoreGetters>;
 
 export type CurryWithCoreGraph<Helpers> = {
   [Key in keyof Helpers]: (graph: CoreGraphForHelpers) => Helpers[Key];
