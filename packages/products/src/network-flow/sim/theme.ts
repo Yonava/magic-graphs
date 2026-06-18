@@ -1,4 +1,4 @@
-import type { CodeEdge } from '@magic/graph/types';
+import type { CoreEdge } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';
@@ -9,7 +9,7 @@ import type { FlowTrace } from '../algo/fordFulkerson.ts';
 import { FLOW_USETHEME_ID } from '../constants.ts';
 import { isResidual } from '../misc/useResidualEdges.ts';
 
-type WeightMap = Map<CodeEdge['id'], CodeEdge['weight']>;
+type WeightMap = Map<CoreEdge['id'], CoreEdge['weight']>;
 
 export const useSimulationTheme = (
   graph: Graph,
@@ -56,14 +56,14 @@ export const useSimulationTheme = (
     () => edgeWeightMapAtStep.value[sim.step.value],
   );
 
-  const colorActiveEdges = (edge: CodeEdge) => {
+  const colorActiveEdges = (edge: CoreEdge) => {
     const isActive = activeEdgeIdsAtStep.value.includes(edge.id);
     const focusColor = graph.canvas.theme.resolvedPreset.value.edge.focus.color;
     if (isActive) return focusColor;
     else if (isResidual(edge.id)) return colors.ORANGE_400;
   };
 
-  const labelEdges = (edge: CodeEdge) => {
+  const labelEdges = (edge: CoreEdge) => {
     const weight = weightMapAtStep.value.get(edge.id);
     if (weight === undefined) return edge.weight.toString();
     return weight.toString();

@@ -1,4 +1,4 @@
-import { CodeEdge, CoreNode, UnionToIntersection } from '../../types.ts';
+import { CoreEdge, CoreNode, UnionToIntersection } from '../../types.ts';
 import { Position } from '../positions/types.ts';
 import { TransactionPayload } from '../transaction/types.ts';
 import { CreateCoreActionOptions } from './createGraphActions.ts';
@@ -146,31 +146,31 @@ export type GraphActions<Actions extends BaseActions> = {
   /**
    * Deletes a single {@link CoreNode | node} from the graph.
    *
-   * ℹ️ **Note:** This action implicitly deletes any connected {@link CodeEdge | edges}.
+   * ℹ️ **Note:** This action implicitly deletes any connected {@link CoreEdge | edges}.
    * @returns A list of all nodes and edges that were deleted.
    */
   removeNode: (options: Actions['removeNode']) => ElementRemovalPayload;
 
   /**
-   * Adds a single {@link CodeEdge | edge} connecting two existing {@link CoreNode | nodes}.
+   * Adds a single {@link CoreEdge | edge} connecting two existing {@link CoreNode | nodes}.
    * @returns The newly created edge instance.
    */
-  addEdge: (options: Actions['addEdge']) => CodeEdge;
+  addEdge: (options: Actions['addEdge']) => CoreEdge;
 
   /**
-   * Deletes a single {@link CodeEdge | edge} from the graph.
+   * Deletes a single {@link CoreEdge | edge} from the graph.
    * @returns The edge instance that was deleted.
    */
-  removeEdge: (options: Actions['removeEdge']) => CodeEdge['id'];
+  removeEdge: (options: Actions['removeEdge']) => CoreEdge['id'];
 
   /**
-   * Bulk adds multiple {@link CoreNode | nodes} and {@link CodeEdge | edges}.
+   * Bulk adds multiple {@link CoreNode | nodes} and {@link CoreEdge | edges}.
    * @returns Lists of all nodes and/or edges that were successfully added.
    */
   addElements: BulkHandler<Actions['addElements'], ElementAdditionPayload>;
 
   /**
-   * Bulk deletes multiple {@link CoreNode | nodes} and {@link CodeEdge | edges}.
+   * Bulk deletes multiple {@link CoreNode | nodes} and {@link CoreEdge | edges}.
    *
    * ℹ️ **Note:** If a node is in this batch, all its attached edges get deleted too.
    * @returns Lists of everything that got deleted during the operation.

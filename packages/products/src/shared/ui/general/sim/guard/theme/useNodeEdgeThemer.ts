@@ -1,4 +1,4 @@
-import type { CodeEdge } from '@magic/graph/types';
+import type { CoreEdge } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import { ref } from 'vue';
@@ -20,9 +20,9 @@ export const useNodeEdgeTheme = (graph: Graph) => {
   /**
    * ids of nodes and edges to color with `TARGET_COLOR`
    */
-  const ids = ref(new Set<GNode['id'] | CodeEdge['id']>());
+  const ids = ref(new Set<GNode['id'] | CoreEdge['id']>());
 
-  const colorElement = (elementId: GNode['id'] | CodeEdge['id']) => {
+  const colorElement = (elementId: GNode['id'] | CoreEdge['id']) => {
     if (ids.value.has(elementId)) return TARGET_COLOR;
   };
 

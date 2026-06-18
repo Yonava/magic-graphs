@@ -1,35 +1,35 @@
 import type { Fraction } from 'mathjs';
 
 import type { GraphSettings } from '../../settings/index.ts';
-import type { CodeEdge, CoreNode } from '../../types.ts';
+import type { CoreEdge, CoreNode } from '../../types.ts';
 import { CoreControls } from '../types.ts';
 
 export type EdgeHelpers = {
   /**
-   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware getter for an {@link CodeEdge.weight | edge weight}
+   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware getter for an {@link CoreEdge.weight | edge weight}
    *
-   * ✅ recommended over using {@link CodeEdge.weight | edge weight} directly, as {@link CodeEdge.weight | edge weight} won't dynamically adjust to {@link GraphSettings.isGraphDirected | settings.isGraphDirected}
+   * ✅ recommended over using {@link CoreEdge.weight | edge weight} directly, as {@link CoreEdge.weight | edge weight} won't dynamically adjust to {@link GraphSettings.isGraphDirected | settings.isGraphDirected}
    */
-  getWeight: (edgeId: CodeEdge['id']) => Fraction;
+  getWeight: (edgeId: CoreEdge['id']) => Fraction;
   /**
-   * resolves {@link CodeEdge.source | edge.from} and {@link CodeEdge.target | edge.to} fields into an their referenced {@link CoreNode | nodes}
+   * resolves {@link CoreEdge.source | edge.from} and {@link CoreEdge.target | edge.to} fields into an their referenced {@link CoreNode | nodes}
    */
-  getConnectedNodes: (edgeId: CodeEdge['id']) => {
+  getConnectedNodes: (edgeId: CoreEdge['id']) => {
     sourceNode: CoreNode;
     targetNode: CoreNode;
   };
   /**
-   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware predicate returning `true` if provided {@link CodeEdge | edge} directs into provided {@link CoreNode | node}
+   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware predicate returning `true` if provided {@link CoreEdge | edge} directs into provided {@link CoreNode | node}
    */
   isPointingTowardNode: (
-    edgeId: CodeEdge['id'],
+    edgeId: CoreEdge['id'],
     nodeId: CoreNode['id'],
   ) => boolean;
   /**
-   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware predicate returning `true` if provided {@link CodeEdge | edge} directs from provided {@link CoreNode | node} to any other {@link CoreNode | node}
+   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware predicate returning `true` if provided {@link CoreEdge | edge} directs from provided {@link CoreNode | node} to any other {@link CoreNode | node}
    */
   isPointingAwayFromNode: (
-    edgeId: CodeEdge['id'],
+    edgeId: CoreEdge['id'],
     nodeId: CoreNode['id'],
   ) => boolean;
 };
@@ -60,19 +60,19 @@ export type NodeHelpers = {
    */
   getDescendants: (nodeId: CoreNode['id']) => CoreNode[];
   /**
-   * gets all {@link CodeEdge | edges} that are attached to the provided {@link CoreNode | node}, regardless of {@link CodeEdge | edge} direction
+   * gets all {@link CoreEdge | edges} that are attached to the provided {@link CoreNode | node}, regardless of {@link CoreEdge | edge} direction
    *
    * ⚠️ not {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware
    */
-  getConnectedEdges: (nodeId: CoreNode['id']) => CodeEdge[];
+  getConnectedEdges: (nodeId: CoreNode['id']) => CoreEdge[];
   /**
-   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware getter returning all {@link CodeEdge | edges} connecting into provided {@link CoreNode | node}
+   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware getter returning all {@link CoreEdge | edges} connecting into provided {@link CoreNode | node}
    */
-  getInboundEdges: (nodeId: CoreNode['id']) => CodeEdge[];
+  getInboundEdges: (nodeId: CoreNode['id']) => CoreEdge[];
   /**
-   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware getter returning all {@link CodeEdge | edges} provided {@link CoreNode | node} connects to
+   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware getter returning all {@link CoreEdge | edges} provided {@link CoreNode | node} connects to
    */
-  getOutboundEdges: (nodeId: CoreNode['id']) => CodeEdge[];
+  getOutboundEdges: (nodeId: CoreNode['id']) => CoreEdge[];
   /**
    * gets the edges connecting two nodes
    *
@@ -83,7 +83,7 @@ export type NodeHelpers = {
   getEdgesBetweenConnectedNodes: (
     node1Id: CoreNode['id'],
     node2Id: CoreNode['id'],
-  ) => CodeEdge[];
+  ) => CoreEdge[];
   /**
    * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware getter that returns the edge linking a source node to a target node
    *
@@ -92,7 +92,7 @@ export type NodeHelpers = {
   getEdgeBetween: (
     sourceNodeId: CoreNode['id'],
     targetNodeId: CoreNode['id'],
-  ) => CodeEdge | undefined;
+  ) => CoreEdge | undefined;
 };
 
 type FieldsNeededFromCoreGraph = 'getNode' | 'getEdge' | 'edges' | 'settings';

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { ref } from 'vue';
 
-import { CodeEdge, CoreNode } from '../../types.ts';
+import { CoreEdge, CoreNode } from '../../types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import { TransactionPayload } from './types.ts';
 import { useCommitTransaction } from './useCommitTransaction.ts';
@@ -26,7 +26,7 @@ describe(useCommitTransaction, () => {
   it('scrapes and removes orphaned edges automatically when a node is removed', () => {
     const node1: CoreNode = { id: 'node-1' };
     const node2: CoreNode = { id: 'node-2' };
-    const connectedEdge: CodeEdge = {
+    const connectedEdge: CoreEdge = {
       id: 'edge-1',
       source: 'node-1',
       target: 'node-2',

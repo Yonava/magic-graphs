@@ -1,4 +1,4 @@
-import type { CodeEdge } from '@magic/graph/types';
+import type { CoreEdge } from '@magic/graph/types';
 
 import { computed } from 'vue';
 
@@ -22,7 +22,7 @@ export const useSimulationTheme = (
 
   const mstAtStep = computed(() => trace.value.slice(0, sim.step.value));
 
-  const colorEdge = (edge: CodeEdge) => {
+  const colorEdge = (edge: CoreEdge) => {
     if (graph.focus.isFocused(edge.id)) return;
 
     const color = graph.canvas.theme.resolvedPreset.value.edge.default.color;
@@ -31,7 +31,7 @@ export const useSimulationTheme = (
     else return color + DIM_FACTOR;
   };
 
-  const colorEdgeText = (edge: CodeEdge) => {
+  const colorEdgeText = (edge: CoreEdge) => {
     if (graph.focus.isFocused(edge.id)) return;
 
     const color =

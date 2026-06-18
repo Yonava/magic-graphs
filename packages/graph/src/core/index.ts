@@ -16,7 +16,7 @@ import {
 } from '../plugins/types.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
-import type { CodeEdge, CoreNode } from '../types.ts';
+import type { CoreEdge, CoreNode } from '../types.ts';
 import { createCoreActions } from './actions/createGraphActions.ts';
 import { GraphActions } from './actions/types.ts';
 import { createCoreEventRegistry } from './events.ts';
@@ -45,7 +45,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
   const coreEventHub = createEventHub(eventRegistry);
 
   const nodes = ref<CoreNode[]>([]);
-  const edges = ref<CodeEdge[]>([]);
+  const edges = ref<CoreEdge[]>([]);
 
   const nodePositionStore = createNodePositionStore(coreEventHub);
 
@@ -53,7 +53,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
 
   const getNode = (id: CoreNode['id']) =>
     nullThrows(nodeIdToNodeMap.value.get(id), `node with id ${id} not found`);
-  const getEdge = (id: CodeEdge['id']) =>
+  const getEdge = (id: CoreEdge['id']) =>
     nullThrows(edgeIdToEdgeMap.value.get(id), `edge with id ${id} not found`);
 
   const coreGetters = {
@@ -89,7 +89,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
   );
 
   const edgeIdToIndex = computed(() =>
-    edges.value.reduce<Map<CodeEdge['id'], number>>((map, edge, i) => {
+    edges.value.reduce<Map<CoreEdge['id'], number>>((map, edge, i) => {
       map.set(edge.id, i);
       return map;
     }, new Map()),

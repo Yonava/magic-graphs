@@ -14,7 +14,7 @@ export type CoreNode = {
   id: string;
 };
 
-export type CodeEdge = {
+export type CoreEdge = {
   /**
    * unique identifier for the edge
    */

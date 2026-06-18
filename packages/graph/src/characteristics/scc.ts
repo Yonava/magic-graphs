@@ -3,10 +3,10 @@ import type { AdjacencyLists } from '@magic/graph-plugins/plugins/useAdjacencyLi
 import { computed } from 'vue';
 
 import { CoreControls } from '../core/types.ts';
-import type { CodeEdge, CoreNode } from '../types.ts';
+import type { CoreEdge, CoreNode } from '../types.ts';
 import TarjanGraph from './tarjans.ts';
 
-type GetComponents = (nodes: CoreNode[], edges: CodeEdge[]) => CoreNode[][];
+type GetComponents = (nodes: CoreNode[], edges: CoreEdge[]) => CoreNode[][];
 
 /**
  * maps a node id to the index of the strongly connected component it belongs to

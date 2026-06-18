@@ -1,18 +1,9 @@
-import { GraphPlugin } from '@magic/graph/plugins/types';
-import type { CodeEdge, CoreNode } from '@magic/graph/types';
+import type { CoreNode } from '@magic/graph/types';
 
-import { ComputedRef, computed } from 'vue';
+import { computed } from 'vue';
 
-import type {
-  AdjacencyListsPlugin,
-  WeightedAdjacencyList,
-} from './adjacencyLists.ts';
-
-/**
- * a 2D array (matrix) where matrix[i][j] represents the weight of
- * transitioning from node i to node j
- */
-export type TransitionMatrix = CodeEdge['weight'][][];
+import { WeightedAdjacencyList } from '../adjacency-lists/types.ts';
+import { TransitionMatrix, TransitionMatrixPlugin } from './types.ts';
 
 /**
  * generates a transition matrix for a directed or undirected graph
@@ -24,13 +15,14 @@ export const getTransitionMatrix = (
   adjList: Readonly<WeightedAdjacencyList>,
   nodeToIndex: Map<CoreNode['id'], number>,
 ) => {
-  const nodeCount = Object.keys(adjList).length;
+  const adjListEntries = Object.entries(adjList);
+  const nodeCount = adjListEntries.length;
 
   const matrix: TransitionMatrix = Array.from({ length: nodeCount }, () =>
     Array(nodeCount).fill(0),
   );
 
-  for (const [nodeId, neighbors] of Object.entries(adjList)) {
+  for (const [nodeId, neighbors] of adjListEntries) {
     const fromIndex = nodeToIndex.get(nodeId)!;
 
     for (const neighbor of neighbors) {
@@ -41,11 +33,6 @@ export const getTransitionMatrix = (
 
   return matrix;
 };
-
-export type TransitionMatrixPlugin = GraphPlugin<{
-  controls: { transitionMatrix: ComputedRef<TransitionMatrix> };
-  dependsOn: [AdjacencyListsPlugin];
-}>;
 
 export const transitionMatrix: TransitionMatrixPlugin = (
   controls,

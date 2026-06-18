@@ -2,7 +2,7 @@ import { ElementRemovalPayload } from '@magic/graph/core/actions/types';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
-import { CodeEdge, CoreNode } from '@magic/graph/types';
+import { CoreEdge, CoreNode } from '@magic/graph/types';
 import { nullThrows } from '@magic/utils/assert';
 import { getCtx } from '@magic/utils/ctx/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -221,7 +221,7 @@ export const focus: FocusPlugin = (
   for (const [edgeBasePath, edgeFocusPath] of edgeEntries) {
     setThemeOverrideLayer(
       edgeBasePath as EdgeBaseThemePath,
-      (edge: CodeEdge) => {
+      (edge: CoreEdge) => {
         if (!isFocused(edge.id)) return;
         // typescript generics to differentiate each callbacks individual
         // return type is juice not worth the squeeze

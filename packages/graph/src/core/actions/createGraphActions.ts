@@ -1,6 +1,6 @@
 import { Ref } from 'vue';
 
-import { CodeEdge, CoreNode } from '../../types.ts';
+import { CoreEdge, CoreNode } from '../../types.ts';
 import { NodePositionStoreControls } from '../positions/types.ts';
 import { CommitTransaction } from '../transaction/types.ts';
 import {
@@ -16,7 +16,7 @@ export type CreateCoreActionOptions = {
   commitTransaction: CommitTransaction;
   graph: {
     nodes: Ref<CoreNode[]>;
-    edges: Ref<CodeEdge[]>;
+    edges: Ref<CoreEdge[]>;
     positions: NodePositionStoreControls;
   };
 };

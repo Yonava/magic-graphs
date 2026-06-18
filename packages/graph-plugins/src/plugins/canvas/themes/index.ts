@@ -1,4 +1,4 @@
-import { CodeEdge, CoreNode } from '@magic/graph/types';
+import { CoreEdge, CoreNode } from '@magic/graph/types';
 
 import type { TokenResolver } from '../themes/createTokenResolver.ts';
 import type {
@@ -67,7 +67,7 @@ export const resolveNodeStyles = (
  */
 export const resolveEdgeStyles = (
   resolveToken: TokenResolver,
-  edge: CodeEdge,
+  edge: CoreEdge,
 ): CoreGraphEdgeStyles => ({
   width: resolveToken('edge.default.width', edge),
   color: resolveToken('edge.default.color', edge),

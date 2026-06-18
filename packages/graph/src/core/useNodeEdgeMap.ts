@@ -1,11 +1,11 @@
 import { computed } from 'vue';
 import type { Ref } from 'vue';
 
-import type { CodeEdge, CoreNode } from '../types.ts';
+import type { CoreEdge, CoreNode } from '../types.ts';
 
 export const useNodeEdgeMap = (
   nodes: Ref<CoreNode[]>,
-  edges: Ref<CodeEdge[]>,
+  edges: Ref<CoreEdge[]>,
 ) => {
   const nodeIdToNodeMap = computed(() => {
     const map = new Map<CoreNode['id'], CoreNode>();
@@ -16,7 +16,7 @@ export const useNodeEdgeMap = (
   });
 
   const edgeIdToEdgeMap = computed(() => {
-    const map = new Map<CodeEdge['id'], CodeEdge>();
+    const map = new Map<CoreEdge['id'], CoreEdge>();
     for (const edge of edges.value) {
       map.set(edge.id, edge);
     }

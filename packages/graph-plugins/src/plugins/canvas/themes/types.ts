@@ -14,7 +14,7 @@
 import { CoreControls } from '@magic/graph/core/types';
 import { NodeAnchor } from '@magic/graph/plugins/anchors/types';
 import { CoreGetters, GraphGetters } from '@magic/graph/plugins/types';
-import { CodeEdge, CoreNode } from '@magic/graph/types';
+import { CoreEdge, CoreNode } from '@magic/graph/types';
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types/index';
 import { Color } from '@magic/utils/colors';
@@ -58,7 +58,7 @@ export type CoreGraphEdgeStyles = TextStyles & {
 };
 
 export type CoreGraphEdgeTheme = EdgeThemeFields<CoreGraphEdgeStyles> & {
-  shape: (edge: CodeEdge, graph: GraphInterface) => Shape | void;
+  shape: (edge: CoreEdge, graph: GraphInterface) => Shape | void;
 };
 
 type CanvasGraphThemeStyles = {
@@ -146,7 +146,7 @@ type NodeFallthroughThemeValue<StyleValue> = FallthroughThemeValue<
   (node: CoreNode) => StyleValue
 >;
 type EdgeFallthroughThemeValue<StyleValue> = FallthroughThemeValue<
-  (edge: CodeEdge) => StyleValue
+  (edge: CoreEdge) => StyleValue
 >;
 
 type NodeThemeFields<T extends Record<string, any>> = {

@@ -2,7 +2,7 @@ import { DeepPartial, DeepReadonly } from 'ts-essentials';
 
 import { EventMapToEventRegistry } from '../events/types.ts';
 import { GraphSettings } from '../settings/index.ts';
-import { CodeEdge, CoreNode } from '../types.ts';
+import { CoreEdge, CoreNode } from '../types.ts';
 import {
   ElementAdditionPayload,
   ElementRemovalPayload,
@@ -39,17 +39,17 @@ export type CoreEventMap = {
    */
   onNodesRemoved: (
     removedNodeIds: Readonly<CoreNode['id'][]>,
-    removedEdgeIds: Readonly<CodeEdge['id'][]>,
+    removedEdgeIds: Readonly<CoreEdge['id'][]>,
   ) => void;
 
   /**
    * when one or more edges are {@link Graph.actions.addEdge | added} to the graph in a single transaction
    */
-  onEdgesAdded: (edges: Readonly<CodeEdge[]>) => void;
+  onEdgesAdded: (edges: Readonly<CoreEdge[]>) => void;
   /**
    * when one or more edges are {@link Graph.actions.removeEdge | removed} from the graph in a single transaction
    */
-  onEdgesRemoved: (edgeIds: Readonly<CodeEdge['id'][]>) => void;
+  onEdgesRemoved: (edgeIds: Readonly<CoreEdge['id'][]>) => void;
 
   /**
    * when any nodes or edges are added

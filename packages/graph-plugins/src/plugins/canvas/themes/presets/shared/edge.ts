@@ -1,4 +1,4 @@
-import { CodeEdge } from '@magic/graph/types';
+import { CoreEdge } from '@magic/graph/types';
 import { getLargestAngularSpaceBisector } from '@magic/shapes/helpers';
 import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
@@ -179,7 +179,7 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
 
 export const edgeShared = {
   ...textDefaults,
-  text: ({ weight }: CodeEdge) => {
+  text: ({ weight }: CoreEdge) => {
     return weight.toFraction();
   },
   width: 10,

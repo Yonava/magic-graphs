@@ -1,5 +1,5 @@
 import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
-import { CodeEdge, CoreNode } from '@magic/graph/types';
+import { CoreEdge, CoreNode } from '@magic/graph/types';
 
 import { ComputedRef, Ref } from 'vue';
 
@@ -58,7 +58,7 @@ export type FocusControls = {
   /**
    * All the edges that are focused
    */
-  focusedEdges: ComputedRef<CodeEdge[]>;
+  focusedEdges: ComputedRef<CoreEdge[]>;
 };
 
 export type FocusOption = {

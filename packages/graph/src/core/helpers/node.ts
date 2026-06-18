@@ -1,4 +1,4 @@
-import { CodeEdge, CoreNode } from '../../types.ts';
+import { CoreEdge, CoreNode } from '../../types.ts';
 import { CurryWithCoreGraph, NodeHelpers } from './types.ts';
 
 type CurriedNodeHelpers = CurryWithCoreGraph<NodeHelpers>;
@@ -7,10 +7,10 @@ const getOutboundEdges: CurriedNodeHelpers['getOutboundEdges'] =
   (graph) => (nodeId) => {
     const { isGraphDirected } = graph.settings.value;
 
-    const isUndirectedEdgeOutbound = (edge: CodeEdge) => {
+    const isUndirectedEdgeOutbound = (edge: CoreEdge) => {
       return edge.source === nodeId || edge.target === nodeId;
     };
-    const isDirectedEdgeOutbound = (edge: CodeEdge) => {
+    const isDirectedEdgeOutbound = (edge: CoreEdge) => {
       return edge.source === nodeId;
     };
 
@@ -24,10 +24,10 @@ const getInboundEdges: CurriedNodeHelpers['getInboundEdges'] =
   (graph) => (nodeId) => {
     const { isGraphDirected } = graph.settings.value;
 
-    const isUndirectedEdgeInbound = (edge: CodeEdge) => {
+    const isUndirectedEdgeInbound = (edge: CoreEdge) => {
       return edge.source === nodeId || edge.target === nodeId;
     };
-    const isDirectedEdgeInbound = (edge: CodeEdge) => {
+    const isDirectedEdgeInbound = (edge: CoreEdge) => {
       return edge.target === nodeId;
     };
 
@@ -106,7 +106,7 @@ export const nodeHelpers: CurriedNodeHelpers = {
   getDescendants,
   getEdgeBetween,
   getEdgesBetweenConnectedNodes: (graph) => (nodeId1, nodeId2) => {
-    const isConnecting = (edge: CodeEdge) => {
+    const isConnecting = (edge: CoreEdge) => {
       const fromNode1ToNode2 =
         edge.source === nodeId1 && edge.target === nodeId2;
       const fromNode2ToNode1 =

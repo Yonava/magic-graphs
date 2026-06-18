@@ -1,21 +1,13 @@
-import { CoreEventMap } from '@magic/graph/core/events';
-import type { CoreControls } from '@magic/graph/core/types';
-import { EventHub } from '@magic/graph/events/createEventHub';
+import { ref } from 'vue';
+
 import {
-  CoreGetters,
-  GraphGetters,
-  GraphPlugin,
-} from '@magic/graph/plugins/types';
-import type { CodeEdge, CoreNode } from '@magic/graph/types';
+  AdjacencyList,
+  AdjacencyListsPlugin,
+  Graph,
+  WeightedAdjacencyList,
+} from './types.ts';
 
-import { Ref, ref } from 'vue';
-
-/**
- * a mapping of nodes to their neighbors
- */
-export type AdjacencyList = Record<string, string[]>;
-
-export const getDirectedGraphAdjacencyList = (graph: Graph) => {
+const getDirectedGraphAdjacencyList = (graph: Graph) => {
   return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
     acc[node.id] = graph.edges.value
       .filter((edge) => edge.source === node.id)
@@ -24,7 +16,7 @@ export const getDirectedGraphAdjacencyList = (graph: Graph) => {
   }, {});
 };
 
-export const getUndirectedGraphAdjacencyList = (graph: Graph) => {
+const getUndirectedGraphAdjacencyList = (graph: Graph) => {
   return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
     acc[node.id] = graph.edges.value
       .filter((edge) => edge.source === node.id || edge.target === node.id)
@@ -43,31 +35,13 @@ export const getUndirectedGraphAdjacencyList = (graph: Graph) => {
  * @example getAdjacencyList(graph)
  * // { 'abc123': ['def456'], 'def456': ['abc123'] }
  */
-export const getAdjacencyList = (graph: Graph) => {
+const getAdjacencyList = (graph: Graph) => {
   const { isGraphDirected } = graph.settings.value;
   const fn = isGraphDirected
     ? getDirectedGraphAdjacencyList
     : getUndirectedGraphAdjacencyList;
   return fn(graph);
 };
-
-/**
- * a mapping of nodes to their neighbors where neighbors are the full node objects
- * along with the weight of the edge connecting them to the key node
- */
-export type WeightedAdjacencyList = Record<
-  CoreNode['id'],
-  (CoreNode & {
-    /**
-     * the weight of the edge that connects the key node to the neighbor node
-     */
-    weight: CodeEdge['weight'];
-  })[]
->;
-
-type Graph = Pick<CoreControls, 'settings' | 'nodes' | 'edges' | 'helpers'> & {
-  events: EventHub<CoreEventMap>;
-} & GraphGetters<CoreGetters>;
 
 /**
  * creates an adjacency list mapping node ids to nodes along with a added field `weight` that
@@ -81,7 +55,7 @@ type Graph = Pick<CoreControls, 'settings' | 'nodes' | 'edges' | 'helpers'> & {
  * //   'def456': [{ id: 'abc123', weight: 1 }]
  * // }
  */
-export const getWeightedAdjacencyList = (graph: Graph) => {
+const getWeightedAdjacencyList = (graph: Graph) => {
   const adjList = getAdjacencyList(graph);
   const adjListEntries = Object.entries(adjList);
 
@@ -97,29 +71,6 @@ export const getWeightedAdjacencyList = (graph: Graph) => {
   );
 };
 
-type AdjacencyListsControls = {
-  /**
-   * the adjacency list using node ids as keys
-   */
-  standard: Ref<AdjacencyList>;
-  /**
-   * the adjacency list using node ids as keys and full node objects along with weights as values
-   */
-  weighted: Ref<WeightedAdjacencyList>;
-  /**
-   * the directed adjacency list using node ids as keys
-   */
-  directed: Ref<AdjacencyList>;
-  /**
-   * the undirected adjacency list using node ids as keys
-   */
-  undirected: Ref<AdjacencyList>;
-};
-
-export type AdjacencyListsPlugin = GraphPlugin<{
-  controls: { adjacencyLists: AdjacencyListsControls };
-}>;
-
 export const adjacencyLists: AdjacencyListsPlugin = (
   controls,
   events,
@@ -133,7 +84,7 @@ export const adjacencyLists: AdjacencyListsPlugin = (
   const undirected = ref<AdjacencyList>({});
 
   const update = () => {
-    const graph = {
+    const graph: Graph = {
       ...controls,
       ...getters,
       events,

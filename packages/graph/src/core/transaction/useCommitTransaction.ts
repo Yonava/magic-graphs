@@ -1,4 +1,4 @@
-import type { CodeEdge, CoreNode } from '../../types.ts';
+import type { CoreEdge, CoreNode } from '../../types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import type {
   CommitTransaction,
@@ -61,6 +61,6 @@ function quickGetters({ nodes, edges }: GraphState) {
   const nodeMap = new Map(nodes.value.map((node) => [node.id, node]));
   const edgeMap = new Map(edges.value.map((edge) => [edge.id, edge]));
   const getNode = (id: CoreNode['id']) => nodeMap.get(id);
-  const getEdge = (id: CodeEdge['id']) => edgeMap.get(id);
+  const getEdge = (id: CoreEdge['id']) => edgeMap.get(id);
   return { getNode, getEdge };
 }
