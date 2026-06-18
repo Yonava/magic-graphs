@@ -1,10 +1,10 @@
-import type { GEdge } from '@magic/graph/types';
+import type { CodeEdge } from '@magic/graph/types';
 import { getAdjacencyList } from '@magic/graph/useAdjacencyList';
 import { Fraction } from 'mathjs';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
-export type FlowTrace = Record<GEdge['id'], GEdge['weight']>;
+export type FlowTrace = Record<CodeEdge['id'], CodeEdge['weight']>;
 
 /**
  * implementation of the Ford-Fulkerson algorithm

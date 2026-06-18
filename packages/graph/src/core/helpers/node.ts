@@ -1,4 +1,4 @@
-import { GEdge, GNode } from '../../types.ts';
+import { CodeEdge, CoreNode } from '../../types.ts';
 import { CurryWithCoreGraph, NodeHelpers } from './types.ts';
 
 type CurriedNodeHelpers = CurryWithCoreGraph<NodeHelpers>;
@@ -7,10 +7,10 @@ const getOutboundEdges: CurriedNodeHelpers['getOutboundEdges'] =
   (graph) => (nodeId) => {
     const { isGraphDirected } = graph.settings.value;
 
-    const isUndirectedEdgeOutbound = (edge: GEdge) => {
+    const isUndirectedEdgeOutbound = (edge: CodeEdge) => {
       return edge.source === nodeId || edge.target === nodeId;
     };
-    const isDirectedEdgeOutbound = (edge: GEdge) => {
+    const isDirectedEdgeOutbound = (edge: CodeEdge) => {
       return edge.source === nodeId;
     };
 
@@ -24,10 +24,10 @@ const getInboundEdges: CurriedNodeHelpers['getInboundEdges'] =
   (graph) => (nodeId) => {
     const { isGraphDirected } = graph.settings.value;
 
-    const isUndirectedEdgeInbound = (edge: GEdge) => {
+    const isUndirectedEdgeInbound = (edge: CodeEdge) => {
       return edge.source === nodeId || edge.target === nodeId;
     };
-    const isDirectedEdgeInbound = (edge: GEdge) => {
+    const isDirectedEdgeInbound = (edge: CodeEdge) => {
       return edge.target === nodeId;
     };
 
@@ -62,7 +62,7 @@ const getConnectedEdges: CurriedNodeHelpers['getConnectedEdges'] =
 // see https://github.com/Yonava/magic-graphs/issues/575
 const getAncestors: CurriedNodeHelpers['getAncestors'] =
   (graph) =>
-  (nodeId): GNode[] => {
+  (nodeId): CoreNode[] => {
     const parents = getParents(graph)(nodeId);
     const ancestors = parents.flatMap((parent) => {
       return [parent, ...getAncestors(graph)(parent.id)];
@@ -75,7 +75,7 @@ const getAncestors: CurriedNodeHelpers['getAncestors'] =
 // see https://github.com/Yonava/magic-graphs/issues/575
 const getDescendants: CurriedNodeHelpers['getDescendants'] =
   (graph) =>
-  (nodeId): GNode[] => {
+  (nodeId): CoreNode[] => {
     const children = getChildren(graph)(nodeId);
     const descendants = children.flatMap((child) => {
       return [child, ...getDescendants(graph)(child.id)];
@@ -106,7 +106,7 @@ export const nodeHelpers: CurriedNodeHelpers = {
   getDescendants,
   getEdgeBetween,
   getEdgesBetweenConnectedNodes: (graph) => (nodeId1, nodeId2) => {
-    const isConnecting = (edge: GEdge) => {
+    const isConnecting = (edge: CodeEdge) => {
       const fromNode1ToNode2 =
         edge.source === nodeId1 && edge.target === nodeId2;
       const fromNode2ToNode1 =

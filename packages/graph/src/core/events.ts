@@ -2,7 +2,7 @@ import { DeepPartial, DeepReadonly } from 'ts-essentials';
 
 import { EventMapToEventRegistry } from '../events/types.ts';
 import { GraphSettings } from '../settings/index.ts';
-import { GEdge, GNode } from '../types.ts';
+import { CodeEdge, CoreNode } from '../types.ts';
 import {
   ElementAdditionPayload,
   ElementRemovalPayload,
@@ -33,23 +33,23 @@ export type CoreEventMap = {
   /**
    * when nodes are added to the graph in a single transaction
    */
-  onNodesAdded: (nodes: Readonly<GNode[]>) => void;
+  onNodesAdded: (nodes: Readonly<CoreNode[]>) => void;
   /**
    * when nodes are removed from the graph in a single transaction
    */
   onNodesRemoved: (
-    removedNodeIds: Readonly<GNode['id'][]>,
-    removedEdgeIds: Readonly<GEdge['id'][]>,
+    removedNodeIds: Readonly<CoreNode['id'][]>,
+    removedEdgeIds: Readonly<CodeEdge['id'][]>,
   ) => void;
 
   /**
    * when one or more edges are {@link Graph.actions.addEdge | added} to the graph in a single transaction
    */
-  onEdgesAdded: (edges: Readonly<GEdge[]>) => void;
+  onEdgesAdded: (edges: Readonly<CodeEdge[]>) => void;
   /**
    * when one or more edges are {@link Graph.actions.removeEdge | removed} from the graph in a single transaction
    */
-  onEdgesRemoved: (edgeIds: Readonly<GEdge['id'][]>) => void;
+  onEdgesRemoved: (edgeIds: Readonly<CodeEdge['id'][]>) => void;
 
   /**
    * when any nodes or edges are added

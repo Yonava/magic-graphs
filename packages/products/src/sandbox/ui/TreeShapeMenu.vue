@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { GNode } from '@magic/graph/types';
+  import type { CoreNode } from '@magic/graph/types';
   import CPopover from '@magic/ui/core/Popover.vue';
   import CButton from '@magic/ui/core/button/Button.vue';
   import colors from '@magic/utils/colors';
@@ -22,7 +22,7 @@
   const { isActive, activate, deactivate, updateShape, rootNodeId } =
     treeControls.value;
 
-  const nodeSelected = (node: GNode) => {
+  const nodeSelected = (node: CoreNode) => {
     rootNodeId.value = node.id;
     if (!isActive.value) updateShape();
   };

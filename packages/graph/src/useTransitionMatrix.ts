@@ -2,7 +2,7 @@ import { computed } from 'vue';
 
 import { CoreEventMap } from './core/events.ts';
 import type { CoreControls } from './core/types.ts';
-import type { GEdge, GNode } from './types.ts';
+import type { CodeEdge, CoreNode } from './types.ts';
 import type {
   AdjacencyLists,
   WeightedAdjacencyList,
@@ -12,7 +12,7 @@ import type {
  * a 2D array (matrix) where matrix[i][j] represents the weight of
  * transitioning from node i to node j
  */
-export type TransitionMatrix = GEdge['weight'][][];
+export type TransitionMatrix = CodeEdge['weight'][][];
 
 /**
  * generates a transition matrix for a directed or undirected graph
@@ -22,7 +22,7 @@ export type TransitionMatrix = GEdge['weight'][][];
  */
 export const getTransitionMatrix = (
   adjList: Readonly<WeightedAdjacencyList>,
-  nodeToIndex: Map<GNode['id'], number>,
+  nodeToIndex: Map<CoreNode['id'], number>,
 ) => {
   const nodeCount = Object.keys(adjList).length;
 

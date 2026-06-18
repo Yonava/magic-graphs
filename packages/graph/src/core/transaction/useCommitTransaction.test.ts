@@ -3,14 +3,14 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { ref } from 'vue';
 
-import { GEdge, GNode } from '../../types.ts';
+import { CodeEdge, CoreNode } from '../../types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import { TransactionPayload } from './types.ts';
 import { useCommitTransaction } from './useCommitTransaction.ts';
 
 describe(useCommitTransaction, () => {
   it('handles adding a node', () => {
-    const newNode: GNode = { id: 'new-node' };
+    const newNode: CoreNode = { id: 'new-node' };
     const commitTransaction = useCommitTransaction({
       getGraph: () => ({ nodes: ref([]), edges: ref([]) }),
       onTransactionSucceeded: () => {},
@@ -24,9 +24,9 @@ describe(useCommitTransaction, () => {
   });
 
   it('scrapes and removes orphaned edges automatically when a node is removed', () => {
-    const node1: GNode = { id: 'node-1' };
-    const node2: GNode = { id: 'node-2' };
-    const connectedEdge: GEdge = {
+    const node1: CoreNode = { id: 'node-1' };
+    const node2: CoreNode = { id: 'node-2' };
+    const connectedEdge: CodeEdge = {
       id: 'edge-1',
       source: 'node-1',
       target: 'node-2',
@@ -53,7 +53,7 @@ describe(useCommitTransaction, () => {
   });
 
   it('fires the onTransactionSuccess callback with the correct payload', () => {
-    const newNode: GNode = { id: 'node-z' };
+    const newNode: CoreNode = { id: 'node-z' };
 
     const successSpy = vi.fn();
 

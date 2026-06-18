@@ -1,4 +1,4 @@
-import type { GEdge } from '@magic/graph/types';
+import type { CodeEdge } from '@magic/graph/types';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
@@ -49,7 +49,7 @@ export const kruskal = (graph: Graph) => {
       rank.set(node.id, 0);
     });
 
-    const mst: GEdge[] = [];
+    const mst: CodeEdge[] = [];
     for (const edge of sortedEdges) {
       const sourceRoot = find(parent, edge.source);
       const targetRoot = find(parent, edge.target);

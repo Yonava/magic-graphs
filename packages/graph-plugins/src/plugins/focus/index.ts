@@ -2,7 +2,7 @@ import { ElementRemovalPayload } from '@magic/graph/core/actions/types';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
-import { GEdge, GNode } from '@magic/graph/types';
+import { CodeEdge, CoreNode } from '@magic/graph/types';
 import { nullThrows } from '@magic/utils/assert';
 import { getCtx } from '@magic/utils/ctx/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -202,31 +202,37 @@ export const focus: FocusPlugin = (
     controls.canvas.theme.createLayer(FOCUS_THEME_ID);
 
   for (const [nodeBasePath, nodeFocusPath] of nodeEntries) {
-    setThemeOverrideLayer(nodeBasePath as NodeBaseThemePath, (node: GNode) => {
-      if (!isFocused(node.id)) return;
-      // typescript generics to differentiate each callbacks individual
-      // return type is juice not worth the squeeze
-      return controls.canvas.theme._resolveToken(nodeFocusPath, node, {
-        ...controls,
-        ...getters,
-        shapes: controls.canvas.shapes,
-        resolveToken: controls.canvas.theme._resolveToken,
-      }) as any;
-    });
+    setThemeOverrideLayer(
+      nodeBasePath as NodeBaseThemePath,
+      (node: CoreNode) => {
+        if (!isFocused(node.id)) return;
+        // typescript generics to differentiate each callbacks individual
+        // return type is juice not worth the squeeze
+        return controls.canvas.theme._resolveToken(nodeFocusPath, node, {
+          ...controls,
+          ...getters,
+          shapes: controls.canvas.shapes,
+          resolveToken: controls.canvas.theme._resolveToken,
+        }) as any;
+      },
+    );
   }
 
   for (const [edgeBasePath, edgeFocusPath] of edgeEntries) {
-    setThemeOverrideLayer(edgeBasePath as EdgeBaseThemePath, (edge: GEdge) => {
-      if (!isFocused(edge.id)) return;
-      // typescript generics to differentiate each callbacks individual
-      // return type is juice not worth the squeeze
-      return controls.canvas.theme._resolveToken(edgeFocusPath, edge, {
-        ...controls,
-        ...getters,
-        shapes: controls.canvas.shapes,
-        resolveToken: controls.canvas.theme._resolveToken,
-      }) as any;
-    });
+    setThemeOverrideLayer(
+      edgeBasePath as EdgeBaseThemePath,
+      (edge: CodeEdge) => {
+        if (!isFocused(edge.id)) return;
+        // typescript generics to differentiate each callbacks individual
+        // return type is juice not worth the squeeze
+        return controls.canvas.theme._resolveToken(edgeFocusPath, edge, {
+          ...controls,
+          ...getters,
+          shapes: controls.canvas.shapes,
+          resolveToken: controls.canvas.theme._resolveToken,
+        }) as any;
+      },
+    );
   }
 
   const enable = () => {

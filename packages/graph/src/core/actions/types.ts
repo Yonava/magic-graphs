@@ -1,4 +1,4 @@
-import { GEdge, GNode, UnionToIntersection } from '../../types.ts';
+import { CodeEdge, CoreNode, UnionToIntersection } from '../../types.ts';
 import { Position } from '../positions/types.ts';
 import { TransactionPayload } from '../transaction/types.ts';
 import { CreateCoreActionOptions } from './createGraphActions.ts';
@@ -138,39 +138,39 @@ type BulkHandler<Action extends BulkActionConfig, ReturnValue> = (
 
 export type GraphActions<Actions extends BaseActions> = {
   /**
-   * Adds a single {@link GNode | node} to the graph. Missing properties get default values.
+   * Adds a single {@link CoreNode | node} to the graph. Missing properties get default values.
    * @returns The newly created node instance.
    */
-  addNode: (options: Actions['addNode']) => GNode;
+  addNode: (options: Actions['addNode']) => CoreNode;
 
   /**
-   * Deletes a single {@link GNode | node} from the graph.
+   * Deletes a single {@link CoreNode | node} from the graph.
    *
-   * ℹ️ **Note:** This action implicitly deletes any connected {@link GEdge | edges}.
+   * ℹ️ **Note:** This action implicitly deletes any connected {@link CodeEdge | edges}.
    * @returns A list of all nodes and edges that were deleted.
    */
   removeNode: (options: Actions['removeNode']) => ElementRemovalPayload;
 
   /**
-   * Adds a single {@link GEdge | edge} connecting two existing {@link GNode | nodes}.
+   * Adds a single {@link CodeEdge | edge} connecting two existing {@link CoreNode | nodes}.
    * @returns The newly created edge instance.
    */
-  addEdge: (options: Actions['addEdge']) => GEdge;
+  addEdge: (options: Actions['addEdge']) => CodeEdge;
 
   /**
-   * Deletes a single {@link GEdge | edge} from the graph.
+   * Deletes a single {@link CodeEdge | edge} from the graph.
    * @returns The edge instance that was deleted.
    */
-  removeEdge: (options: Actions['removeEdge']) => GEdge['id'];
+  removeEdge: (options: Actions['removeEdge']) => CodeEdge['id'];
 
   /**
-   * Bulk adds multiple {@link GNode | nodes} and {@link GEdge | edges}.
+   * Bulk adds multiple {@link CoreNode | nodes} and {@link CodeEdge | edges}.
    * @returns Lists of all nodes and/or edges that were successfully added.
    */
   addElements: BulkHandler<Actions['addElements'], ElementAdditionPayload>;
 
   /**
-   * Bulk deletes multiple {@link GNode | nodes} and {@link GEdge | edges}.
+   * Bulk deletes multiple {@link CoreNode | nodes} and {@link CodeEdge | edges}.
    *
    * ℹ️ **Note:** If a node is in this batch, all its attached edges get deleted too.
    * @returns Lists of everything that got deleted during the operation.

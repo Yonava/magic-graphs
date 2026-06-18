@@ -2,7 +2,7 @@ import { CoreEventMap } from '@magic/graph/core/events';
 import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { GraphPlugin } from '@magic/graph/plugins/types';
-import { GNode } from '@magic/graph/types';
+import { CoreNode } from '@magic/graph/types';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
 import type { WithId } from '@magic/shapes/types/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -22,11 +22,11 @@ type AnchorsControls = {
   /**
    * the parent node of the active anchor
    */
-  parentNode: Readonly<Ref<GNode | undefined>>;
+  parentNode: Readonly<Ref<CoreNode | undefined>>;
   /**
    * set the parent node and spawn anchors around it
    */
-  setParentNode: (nodeId: GNode['id']) => void;
+  setParentNode: (nodeId: CoreNode['id']) => void;
   clearAnchorState: () => void;
 };
 
@@ -62,7 +62,7 @@ export const anchors: AnchorsPlugin = (
   /**
    * The node which anchors actively orbit around
    */
-  const parentNode = ref<GNode>();
+  const parentNode = ref<CoreNode>();
 
   const anchorDragState = createAnchorDragState();
   const dragCursorTheme = createAnchorDragThemer(
@@ -78,7 +78,7 @@ export const anchors: AnchorsPlugin = (
     hoveredNodeAnchorId.value = undefined;
   };
 
-  const setParentNode = (nodeId: GNode['id']) => {
+  const setParentNode = (nodeId: CoreNode['id']) => {
     const node = getters.getNode(nodeId);
 
     if (!node) throw new Error('node not found');
@@ -96,7 +96,7 @@ export const anchors: AnchorsPlugin = (
     hoveredNodeAnchorId.value = topItem.id;
   };
 
-  const getAnchorSchemas = (node: GNode) => {
+  const getAnchorSchemas = (node: CoreNode) => {
     const { _resolveToken: resolveToken } = controls.canvas.theme;
 
     const color = resolveToken('nodeAnchor.default.color', node);
@@ -157,10 +157,10 @@ export const anchors: AnchorsPlugin = (
   /**
    * updates the node anchor ref with the new node anchors
    *
-   * @param {GNode} node - the parent node of the anchor
+   * @param {CoreNode} node - the parent node of the anchor
    * @returns {void}
    */
-  const updateNodeAnchors = (node: GNode | undefined) => {
+  const updateNodeAnchors = (node: CoreNode | undefined) => {
     if (!node) return (nodeAnchors.value = []);
     const { _resolveToken: resolveToken } = controls.canvas.theme;
 
@@ -303,7 +303,9 @@ export const anchors: AnchorsPlugin = (
     setParentNode(newParentNode.id);
   };
 
-  const clearAnchorStateIfParentRemoved = (nodeIds: readonly GNode['id'][]) => {
+  const clearAnchorStateIfParentRemoved = (
+    nodeIds: readonly CoreNode['id'][],
+  ) => {
     if (parentNode.value && nodeIds.includes(parentNode.value.id)) {
       clearAnchorState();
     }

@@ -1,4 +1,4 @@
-import type { GEdge } from '@magic/graph/types';
+import type { CodeEdge } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
@@ -28,7 +28,7 @@ export const useSimulationTheme = (
     if (traceAtStep.value.queue?.includes(id)) return SIM_COLORS.QUEUED;
   };
 
-  const colorEdge = (edge: GEdge) => {
+  const colorEdge = (edge: CodeEdge) => {
     if (
       traceAtStep.value.currentNodeId === edge.source &&
       !traceAtStep.value.visited.has(edge.target) &&

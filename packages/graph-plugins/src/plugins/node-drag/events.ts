@@ -1,16 +1,16 @@
 import { EventMapToEventRegistry } from '@magic/graph/events/types';
-import { GNode } from '@magic/graph/types';
+import { CoreNode } from '@magic/graph/types';
 import { DeepReadonly } from 'ts-essentials';
 
 export type NodeDragEventMap = {
   /**
    * when a node drag is initiated
    */
-  onNodeDragStart: (nodes: DeepReadonly<GNode[]>) => void;
+  onNodeDragStart: (nodes: DeepReadonly<CoreNode[]>) => void;
   /**
    * when a node drag is ended
    */
-  onNodeDrop: (nodes: DeepReadonly<GNode[]>) => void;
+  onNodeDrop: (nodes: DeepReadonly<CoreNode[]>) => void;
 };
 
 type NodeDragEventRegistry = EventMapToEventRegistry<NodeDragEventMap>;

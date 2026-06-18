@@ -2,14 +2,14 @@ import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 import Fraction from 'fraction.js';
 
-import { GEdge } from '../../../../types.ts';
+import { CodeEdge } from '../../../../types.ts';
 import { CreateCoreAction } from '../../types.ts';
 
 export const edgeDefaults = () =>
   ({
     id: generateId(),
     weight: new Fraction(1),
-  }) as const satisfies Partial<GEdge>;
+  }) as const satisfies Partial<CodeEdge>;
 
 export const createAddEdgeHandler: CreateCoreAction<'addEdge'> =
   ({ graph, commitTransaction }) =>

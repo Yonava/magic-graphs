@@ -10,7 +10,7 @@ import { CoreEventMap } from '../core/events.ts';
 import { CoreControls } from '../core/types.ts';
 import { EventHub } from '../events/createEventHub.ts';
 import { GenericEventMap } from '../events/types.ts';
-import { GEdge, GNode } from '../types.ts';
+import { CodeEdge, CoreNode } from '../types.ts';
 
 type BaseGetters = {
   getNode: {};
@@ -18,8 +18,8 @@ type BaseGetters = {
 };
 
 export type CoreGetters = {
-  getNode: GNode;
-  getEdge: GEdge;
+  getNode: CoreNode;
+  getEdge: CodeEdge;
 };
 
 export type ResolveGetters<Getters extends Partial<BaseGetters>> = {

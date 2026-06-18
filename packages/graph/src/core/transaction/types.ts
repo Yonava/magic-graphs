@@ -1,4 +1,4 @@
-import { GEdge, GNode } from '../../types.ts';
+import { CodeEdge, CoreNode } from '../../types.ts';
 import { CoreControls } from '../types.ts';
 
 export type GraphState = Pick<CoreControls, 'nodes' | 'edges'>;
@@ -9,19 +9,19 @@ export type TransactionOptions = {
 };
 
 export type TransactionPayload = {
-  addedNodes: GNode[];
-  addedEdges: GEdge[];
+  addedNodes: CoreNode[];
+  addedEdges: CodeEdge[];
 
-  removedNodeIds: GNode['id'][];
-  removedEdgeIds: GEdge['id'][];
+  removedNodeIds: CoreNode['id'][];
+  removedEdgeIds: CodeEdge['id'][];
 };
 
 export type TransactionDraft = {
-  addNodes: GNode[];
-  addEdges: GEdge[];
+  addNodes: CoreNode[];
+  addEdges: CodeEdge[];
 
-  removeNodeIds: GNode['id'][];
-  removeEdgeIds: GEdge['id'][];
+  removeNodeIds: CoreNode['id'][];
+  removeEdgeIds: CodeEdge['id'][];
 };
 
 export type CommitTransaction = (

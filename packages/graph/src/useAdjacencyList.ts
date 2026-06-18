@@ -2,7 +2,7 @@ import { onUnmounted, ref } from 'vue';
 
 import { CoreEventMap } from './core/events.ts';
 import type { CoreControls } from './core/types.ts';
-import type { GEdge, GNode } from './types.ts';
+import type { CodeEdge, CoreNode } from './types.ts';
 
 /**
  * a mapping of nodes to their neighbors
@@ -54,12 +54,12 @@ export const getAdjacencyList = (graph: CoreGraphForAdjacencyList) => {
  * along with the weight of the edge connecting them to the key node
  */
 export type WeightedAdjacencyList = Record<
-  GNode['id'],
-  (GNode & {
+  CoreNode['id'],
+  (CoreNode & {
     /**
      * the weight of the edge that connects the key node to the neighbor node
      */
-    weight: GEdge['weight'];
+    weight: CodeEdge['weight'];
   })[]
 >;
 

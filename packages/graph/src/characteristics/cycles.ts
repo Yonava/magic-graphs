@@ -1,11 +1,11 @@
 import { computed } from 'vue';
 
 import type { CoreControls } from '../core/types.ts';
-import type { GNode } from '../types.ts';
+import type { CoreNode } from '../types.ts';
 import type { AdjacencyList, AdjacencyLists } from '../useAdjacencyList.ts';
 import type { CharacteristicSCC } from './scc.ts';
 
-type GetCycles = (adjList: AdjacencyList) => GNode['id'][][];
+type GetCycles = (adjList: AdjacencyList) => CoreNode['id'][][];
 
 export const getCycles: GetCycles = (adjList) => {
   const visited = new Set<string>();
@@ -77,7 +77,7 @@ export const useCycles = (
     return cycles.value.reduce((acc, cycle, i) => {
       for (const nodeId of cycle) acc.set(nodeId, i);
       return acc;
-    }, new Map<GNode['id'], number>());
+    }, new Map<CoreNode['id'], number>());
   });
 
   const isAcyclic = computed(() => cycles.value.length === 0);

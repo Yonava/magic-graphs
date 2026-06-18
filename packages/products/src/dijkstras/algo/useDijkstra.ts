@@ -1,14 +1,14 @@
-import type { GNode } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
+import type { CoreNode } from '@magic/graph/types';
 
 import { computed, ref, watch } from 'vue';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import state from '../state.ts';
 import { dijkstras } from './dijkstra.ts';
 
 export type DijkstrasOutput = {
-  startNode: GNode;
-  distances: Record<GNode['id'], number>;
+  startNode: CoreNode;
+  distances: Record<CoreNode['id'], number>;
 };
 
 export type DijkstrasTraceStep = {
@@ -16,16 +16,16 @@ export type DijkstrasTraceStep = {
    * the node the algorithm is currently at. `undefined` if the algorithm
    * is in its initial step, or has finished
    */
-  currentNode?: GNode;
+  currentNode?: CoreNode;
   /**
    * a map of the distances from the start node to each node in the graph
    * at this step
    */
-  distances: Record<GNode['id'], number>;
+  distances: Record<CoreNode['id'], number>;
   /**
    * the nodes that are currently in the queue
    */
-  queue: Set<GNode['id']>;
+  queue: Set<CoreNode['id']>;
 };
 
 export const useDijkstra = (graph: Graph) => {

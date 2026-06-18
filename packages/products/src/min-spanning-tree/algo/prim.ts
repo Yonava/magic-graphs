@@ -1,12 +1,12 @@
-import type { GEdge } from '@magic/graph/types';
+import type { CodeEdge } from '@magic/graph/types';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 export const prim = (graph: Graph) => {
   const { nodes, edges } = graph;
 
-  const getMinEdge = (edges: GEdge[], inMST: Set<string>) => {
-    let minEdge: GEdge | null = null;
+  const getMinEdge = (edges: CodeEdge[], inMST: Set<string>) => {
+    let minEdge: CodeEdge | null = null;
 
     for (const edge of edges) {
       if (
@@ -26,7 +26,7 @@ export const prim = (graph: Graph) => {
   const run = () => {
     if (nodes.value.length === 0) return [];
 
-    const mst: GEdge[] = [];
+    const mst: CodeEdge[] = [];
     const inMST = new Set<string>();
 
     const startNode = nodes.value[0].id;

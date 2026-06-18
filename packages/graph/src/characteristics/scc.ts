@@ -1,16 +1,16 @@
 import { computed } from 'vue';
 
 import { CoreControls } from '../core/types.ts';
-import type { GEdge, GNode } from '../types.ts';
+import type { CodeEdge, CoreNode } from '../types.ts';
 import type { AdjacencyLists } from '../useAdjacencyList.ts';
 import TarjanGraph from './tarjans.ts';
 
-type GetComponents = (nodes: GNode[], edges: GEdge[]) => GNode[][];
+type GetComponents = (nodes: CoreNode[], edges: CodeEdge[]) => CoreNode[][];
 
 /**
  * maps a node id to the index of the strongly connected component it belongs to
  */
-export type NodeIdToComponent = Map<GNode['id'], number>;
+export type NodeIdToComponent = Map<CoreNode['id'], number>;
 
 /**
  * maps the index of a strongly connected component to a set of indices of

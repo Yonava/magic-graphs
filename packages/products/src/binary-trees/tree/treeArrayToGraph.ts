@@ -1,5 +1,5 @@
 import { NodePositionUpdate } from '@magic/graph/core/positions/types';
-import type { GEdge } from '@magic/graph/types';
+import type { CodeEdge } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { nullThrows } from '@magic/utils/assert';
 import { Fraction } from 'mathjs';
@@ -9,7 +9,7 @@ import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { TreeNodeKeyArray } from './avl.ts';
 import type { TreeNode } from './treeNode.ts';
 
-const newEdge = (source: number, target: number): GEdge => ({
+const newEdge = (source: number, target: number): CodeEdge => ({
   source: source.toString(),
   target: target.toString(),
   id: `${source}-${target}`,
@@ -17,7 +17,7 @@ const newEdge = (source: number, target: number): GEdge => ({
 });
 
 const edgesInTree = (treeArray: TreeNodeKeyArray) => {
-  const edges: GEdge[] = [];
+  const edges: CodeEdge[] = [];
 
   for (let i = 0; i < treeArray.length; i++) {
     const node = treeArray[i];

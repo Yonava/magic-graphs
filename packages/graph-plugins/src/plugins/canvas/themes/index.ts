@@ -1,4 +1,4 @@
-import { GEdge, GNode } from '@magic/graph/types';
+import { CodeEdge, CoreNode } from '@magic/graph/types';
 
 import type { TokenResolver } from '../themes/createTokenResolver.ts';
 import type {
@@ -45,7 +45,7 @@ export const THEME_PRESETS = Object.keys(ALL_THEME_PRESETS) as ThemePreset[];
  */
 export const resolveNodeStyles = (
   resolveToken: TokenResolver,
-  node: GNode,
+  node: CoreNode,
 ): CoreGraphNodeStyles => ({
   size: resolveToken('node.default.size', node),
   borderWidth: resolveToken('node.default.borderWidth', node),
@@ -67,7 +67,7 @@ export const resolveNodeStyles = (
  */
 export const resolveEdgeStyles = (
   resolveToken: TokenResolver,
-  edge: GEdge,
+  edge: CodeEdge,
 ): CoreGraphEdgeStyles => ({
   width: resolveToken('edge.default.width', edge),
   color: resolveToken('edge.default.color', edge),

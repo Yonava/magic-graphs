@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { GEdge } from '@magic/graph/types';
+  import { CodeEdge } from '@magic/graph/types';
   import { getCtx } from '@magic/utils/ctx/index';
   import { debounce } from '@magic/utils/debounce';
   import { Fraction } from 'mathjs';
@@ -83,7 +83,7 @@
     );
 
     const graphEdges = edges.map(
-      (astEdge): GEdge => ({
+      (astEdge): CodeEdge => ({
         target: getASTNodeId(astEdge.toNode),
         source: getASTNodeId(astEdge.fromNode),
         id: getASTEdgeId(astEdge),

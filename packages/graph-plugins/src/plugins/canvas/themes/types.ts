@@ -14,7 +14,7 @@
 import { CoreControls } from '@magic/graph/core/types';
 import { NodeAnchor } from '@magic/graph/plugins/anchors/types';
 import { CoreGetters, GraphGetters } from '@magic/graph/plugins/types';
-import { GEdge, GNode } from '@magic/graph/types';
+import { CodeEdge, CoreNode } from '@magic/graph/types';
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types/index';
 import { Color } from '@magic/utils/colors';
@@ -49,7 +49,7 @@ export type GraphInterface = {
 } & GraphGetters<CoreGetters>;
 
 export type CoreGraphNodeTheme = NodeThemeFields<CoreGraphNodeStyles> & {
-  shape: (node: GNode, graph: GraphInterface) => Shape | void;
+  shape: (node: CoreNode, graph: GraphInterface) => Shape | void;
 };
 
 export type CoreGraphEdgeStyles = TextStyles & {
@@ -58,7 +58,7 @@ export type CoreGraphEdgeStyles = TextStyles & {
 };
 
 export type CoreGraphEdgeTheme = EdgeThemeFields<CoreGraphEdgeStyles> & {
-  shape: (edge: GEdge, graph: GraphInterface) => Shape | void;
+  shape: (edge: CodeEdge, graph: GraphInterface) => Shape | void;
 };
 
 type CanvasGraphThemeStyles = {
@@ -86,8 +86,8 @@ type NodeAnchorGraphStyles = {
 
 type NodeAnchorLinkPreviewStyles = {
   linkPreview: {
-    color: MaybeGetter<string, [GNode, NodeAnchor]>;
-    width: MaybeGetter<number, [GNode, NodeAnchor]>;
+    color: MaybeGetter<string, [CoreNode, NodeAnchor]>;
+    width: MaybeGetter<number, [CoreNode, NodeAnchor]>;
   };
 };
 
@@ -143,10 +143,10 @@ type FallthroughThemeValue<StyleValueGetter extends AnyFunction> =
     ) => ReturnType<StyleValueGetter> | void);
 
 type NodeFallthroughThemeValue<StyleValue> = FallthroughThemeValue<
-  (node: GNode) => StyleValue
+  (node: CoreNode) => StyleValue
 >;
 type EdgeFallthroughThemeValue<StyleValue> = FallthroughThemeValue<
-  (edge: GEdge) => StyleValue
+  (edge: CodeEdge) => StyleValue
 >;
 
 type NodeThemeFields<T extends Record<string, any>> = {
