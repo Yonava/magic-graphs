@@ -17,13 +17,13 @@ export const cross: ShapeFactory<CrossSchema> = (options) => {
   }
 
   const schema = resolveCrossDefaults(options);
-  const text = getShapeTextProps(schema.at, schema.textArea);
-
   const drawShape = drawCrossWithCtx(schema);
-  const draw = (ctx: CanvasRenderingContext2D) => {
+  const text = getShapeTextProps(schema.at, schema.textArea, drawShape);
+  const { drawOverride, ...textProps } = text ?? {};
+  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
     text?.drawTextArea(ctx);
-  };
+  });
 
   const shapeHitbox = crossHitbox(schema);
   const efficientHitbox = crossEfficientHitbox(schema);
@@ -44,6 +44,6 @@ export const cross: ShapeFactory<CrossSchema> = (options) => {
     efficientHitbox,
     getBoundingBox,
 
-    ...text,
+    ...textProps,
   });
 };

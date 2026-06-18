@@ -27,17 +27,18 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
   const getBoundingBox = getScribbleBoundingBox(schema);
 
   const anchorPt = getCenterPoint(getBoundingBox());
-  const text = getShapeTextProps(anchorPt, schema.textArea);
+  const drawShape = drawScribbleWithCtx(schema);
+  const text = getShapeTextProps(anchorPt, schema.textArea, drawShape);
+  const { drawOverride, ...textProps } = text ?? {};
 
   const shapeHitbox = scribbleHitbox(schema);
   const efficientHitbox = scribbleEfficientHitbox(schema);
   const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);
 
-  const drawShape = drawScribbleWithCtx(schema);
-  const draw = (ctx: CanvasRenderingContext2D) => {
+  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
     text?.drawTextArea(ctx);
-  };
+  });
 
   return shapeFactoryWrapper({
     name: 'scribble',
@@ -51,6 +52,6 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
 
     getBoundingBox,
 
-    ...text,
+    ...textProps,
   });
 };

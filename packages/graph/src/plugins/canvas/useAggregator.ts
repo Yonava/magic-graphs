@@ -30,26 +30,7 @@ export const useAggregator = ({
   const draw = (ctx: CanvasRenderingContext2D) => {
     updateAggregator();
 
-    const indexOfLastEdge = aggregator.value.findLastIndex(
-      (item) => item.graphType === 'edge',
-    );
-
-    const beforeLastEdge = aggregator.value.slice(0, indexOfLastEdge + 1);
-    const afterLastEdge = aggregator.value.slice(indexOfLastEdge + 1);
-
-    for (const item of beforeLastEdge) {
-      item.shape.drawShape(ctx);
-    }
-
-    for (const item of beforeLastEdge) {
-      item.shape.drawTextAreaMatte?.(ctx);
-    }
-
-    for (const item of beforeLastEdge) {
-      item.shape.drawText?.(ctx);
-    }
-
-    for (const item of afterLastEdge) {
+    for (const item of aggregator.value) {
       item.shape.draw(ctx);
     }
 

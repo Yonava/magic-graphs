@@ -17,9 +17,9 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   }
 
   const schema = resolveEllipseDefaults(options);
-  const text = getShapeTextProps(schema.at, schema.textArea);
-
   const drawShape = drawEllipseWithCtx(schema);
+  const text = getShapeTextProps(schema.at, schema.textArea, drawShape);
+  const { drawOverride, ...textProps } = text ?? {};
   const shapeHitbox = ellipseHitbox(schema);
 
   const efficientHitbox = ellipseEfficientHitbox(schema);
@@ -28,10 +28,10 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
 
   const getBoundingBox = getEllipseBoundingBox(schema);
 
-  const draw = (ctx: CanvasRenderingContext2D) => {
+  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
     text?.drawTextArea(ctx);
-  };
+  });
 
   return shapeFactoryWrapper({
     name: 'ellipse',
@@ -46,6 +46,6 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     efficientHitbox,
     getBoundingBox,
 
-    ...text,
+    ...textProps,
   });
 };
