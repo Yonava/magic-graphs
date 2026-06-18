@@ -20,7 +20,7 @@ import type { CoreEdge, CoreNode, Prettify } from '../types.ts';
 import { createCoreActions } from './actions/createGraphActions.ts';
 import { GraphActions } from './actions/types.ts';
 import { createCoreEventRegistry } from './events.ts';
-import { useGraphHelpers } from './helpers/index.ts';
+import { createHelpers } from './helpers/index.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
 import { setupTransactionSucceeded } from './transaction/setupTransactionSucceeded.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
@@ -114,7 +114,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     edges,
     nodeIdToIndex,
     edgeIdToIndex,
-    helpers: useGraphHelpers({ edges, getEdge, getNode, settings }),
+    helpers: createHelpers({ edges, getEdge, getNode, settings }),
     settings,
     positions: nodePositionStore,
   };

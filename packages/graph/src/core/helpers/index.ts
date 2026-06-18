@@ -7,7 +7,7 @@ import {
   NodeHelpers,
 } from './types.ts';
 
-export const useGraphHelpers = (
+export const createHelpers = (
   graph: CoreGraphForHelpers,
 ): CoreGraphHelpers => ({
   nodes: Object.keys(nodeHelpers).reduce(
