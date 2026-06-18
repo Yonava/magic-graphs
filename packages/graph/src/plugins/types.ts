@@ -147,32 +147,21 @@ export type ExtractActions<TPlugins extends LooseGraphPlugin[]> =
       >;
 
 type GettersFromPlugin<P extends LooseGraphPlugin> = P extends LooseGraphPlugin
-  ? ReturnType<P>['getters'] extends GraphGetters<infer G>
-    ? G
-    : never
+  ? {
+      getNode: ReturnType<ReturnType<P>['getters']['getNode']>;
+      getEdge: ReturnType<ReturnType<P>['getters']['getEdge']>;
+    }
   : never;
 
-type DistributeGetNode<T> = T extends BaseGetters ? T['getNode'] : never;
-type DistributeGetEdge<T> = T extends BaseGetters ? T['getEdge'] : never;
-
-export type ExtractGetters<TPlugins extends LooseGraphPlugin[]> = {
-  getNode: UnionToIntersection<
-    DistributeGetNode<
-      TPlugins extends never[]
-        ? // all plugins come pre-baked with core getters
-          CoreGetters
-        : GettersFromPlugin<RemoveArray<NoInfer<TPlugins>>>
-    >
-  >;
-  getEdge: UnionToIntersection<
-    DistributeGetEdge<
-      TPlugins extends never[]
-        ? // all plugins come pre-baked with core getters
-          CoreGetters
-        : GettersFromPlugin<RemoveArray<NoInfer<TPlugins>>>
-    >
-  >;
-};
+export type ExtractGetters<TPlugins extends LooseGraphPlugin[]> =
+  TPlugins extends never[]
+    ? // all plugins come pre-baked with core getters
+      CoreGetters
+    : {
+        [K in keyof BaseGetters]: UnionToIntersection<
+          GettersFromPlugin<RemoveArray<NoInfer<TPlugins>>>[K]
+        >;
+      };
 
 export type ExtractEventMap<TPlugins extends LooseGraphPlugin[]> =
   TPlugins extends never[]

@@ -2,20 +2,12 @@ import type { MagicCanvasProps } from '@magic/canvas/types';
 import { anchors } from '@magic/graph-plugins/plugins/anchors/index';
 import { canvas } from '@magic/graph-plugins/plugins/canvas/index';
 import { focus } from '@magic/graph-plugins/plugins/focus/index';
-import { FocusPlugin } from '@magic/graph-plugins/plugins/focus/types';
 import { history } from '@magic/graph-plugins/plugins/history/index';
 import { marquee } from '@magic/graph-plugins/plugins/marquee/index';
 import { nodeDrag } from '@magic/graph-plugins/plugins/node-drag/index';
 import { nodeLabel } from '@magic/graph-plugins/plugins/node-label/index';
-import { NodeLabelPlugin } from '@magic/graph-plugins/plugins/node-label/types';
 import { useCharacteristics } from '@magic/graph/characteristics/index';
 import { createGraph } from '@magic/graph/core/index';
-import {
-  CoreGetters,
-  ExtractData,
-  ExtractGetters,
-  GraphGetters,
-} from '@magic/graph/plugins/types';
 import type { GraphSettings } from '@magic/graph/settings/index';
 import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
 import { useTransitionMatrix } from '@magic/graph/useTransitionMatrix';
@@ -41,9 +33,7 @@ const createGraphWithPlugins = (
     ],
   });
 
-  type t = ExtractGetters<[NodeLabelPlugin, FocusPlugin]>;
-
-  (graph as t).getNode('123').label;
+  graph.getNode('123').label;
 
   return graph;
 };
