@@ -47,7 +47,7 @@ const compositeToMain = (ctx: CanvasRenderingContext2D, offCtx: CanvasRenderingC
 };
 
 /**
- * Draws a shape with a transparent text area using offscreen canvas compositing.
+ * Draws a shape with a no-matte text area using offscreen canvas compositing.
  *
  * Instead of painting a solid matte behind the text, the shape is rendered to an
  * offscreen canvas where the text area is punched transparent with destination-out
@@ -56,9 +56,9 @@ const compositeToMain = (ctx: CanvasRenderingContext2D, offCtx: CanvasRenderingC
  * text area. Text is then drawn directly on the main canvas on top.
  *
  * This keeps all compositing complexity isolated to the shapes layer — callers
- * simply pass `color: 'transparent'` on the text area schema.
+ * simply pass `color: 'none'` on the text area schema.
  */
-export const drawWithTransparentTextArea = (
+export const drawWithNoMatte = (
   ctx: CanvasRenderingContext2D,
   drawShape: DrawFn,
   textArea: DeepRequired<TextAreaWithAnchorPoint>,

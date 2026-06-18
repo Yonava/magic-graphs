@@ -5,7 +5,7 @@ import type { ShapeTextProps } from '../types/index.ts';
 import type { Coordinate } from '../types/utility.ts';
 import { createTextarea } from './createTextarea.ts';
 import type { TextAreaWithDefaults } from './defaults.ts';
-import { drawWithTransparentTextArea } from './drawWithTransparentTextArea.ts';
+import { drawWithNoMatte } from './drawWithNoMatte.ts';
 import { getTextDimensions } from './getTextDimensions.ts';
 import type {
   StartTextAreaEdit,
@@ -20,7 +20,7 @@ type DrawFn = (ctx: CanvasRenderingContext2D) => void;
 /**
  * Returned by {@link getShapeTextProps}. Extends {@link ShapeTextProps} with an
  * optional `drawOverride` that replaces the shape factory's default draw function
- * when the text area color is `'transparent'`. Shape factories should use this
+ * when the text area color is `'none'`. Shape factories should use this
  * instead of their own draw when it is defined.
  */
 export type ShapeTextPropsResult = ShapeTextProps & {
@@ -62,17 +62,30 @@ export const getShapeTextProps = (
     createTextarea(ctx, onTextAreaBlur, placedTextArea);
   };
 
-  const isTransparent = placedTextArea.color === 'transparent';
+  const isNoMatte = placedTextArea.color === 'none';
 
   const drawOverride =
-    isTransparent && drawShape
+    isNoMatte && drawShape
       ? (ctx: CanvasRenderingContext2D) =>
-          drawWithTransparentTextArea(ctx, drawShape, placedTextArea, dimensions, drawText)
+          drawWithNoMatte(ctx, drawShape, placedTextArea, dimensions, drawText)
       : undefined;
+
+  const drawTextAreaHole = isNoMatte
+    ? (ctx: CanvasRenderingContext2D) => {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(
+          placedTextArea.at.x,
+          placedTextArea.at.y,
+          dimensions.width,
+          dimensions.height,
+        );
+      }
+    : undefined;
 
   return {
     textHitbox: textAreaMatte.hitbox,
     drawTextAreaMatte: textAreaMatte.draw,
+    drawTextAreaHole,
     drawText,
     drawTextArea,
     startTextAreaEdit,

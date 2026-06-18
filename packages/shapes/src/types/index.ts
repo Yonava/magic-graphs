@@ -45,6 +45,12 @@ export type ShapeTextProps = {
    */
   drawTextAreaMatte: (ctx: CanvasRenderingContext2D) => void;
   /**
+   * fills the text area bounds with an opaque rect, for use with destination-out
+   * compositing to punch a transparent hole. unlike `drawTextAreaMatte`, this
+   * always draws opaquely regardless of the text area's color setting.
+   */
+  drawTextAreaHole?: (ctx: CanvasRenderingContext2D) => void;
+  /**
    * only draws the text content of the text area
    */
   drawText: (ctx: CanvasRenderingContext2D) => void;
@@ -145,6 +151,7 @@ export type EverySchemaPropName = keyof UnionToIntersection<EverySchemaProp>;
  */
 export const shapeProps: Set<keyof Shape> = new Set([
   'drawTextAreaMatte',
+  'drawTextAreaHole',
   'drawText',
   'drawTextArea',
   'textHitbox',

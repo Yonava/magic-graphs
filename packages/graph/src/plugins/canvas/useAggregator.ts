@@ -1,3 +1,4 @@
+import { drawGroup } from '@magic/shapes/drawGroup';
 import type { Coordinate } from '@magic/shapes/types/utility';
 
 import { ref } from 'vue';
@@ -27,11 +28,24 @@ export const useAggregator = ({
     ];
   };
 
+  const groupByPriority = (elements: Aggregator): Map<number, Aggregator> => {
+    const groups = new Map<number, Aggregator>();
+    for (const item of elements) {
+      const group = groups.get(item.priority) ?? [];
+      group.push(item);
+      groups.set(item.priority, group);
+    }
+    return groups;
+  };
+
   const draw = (ctx: CanvasRenderingContext2D) => {
     updateAggregator();
 
-    for (const item of aggregator.value) {
-      item.shape.draw(ctx);
+    for (const group of groupByPriority(aggregator.value).values()) {
+      drawGroup(
+        ctx,
+        group.map((item) => item.shape),
+      );
     }
 
     emit('onDraw', ctx);
