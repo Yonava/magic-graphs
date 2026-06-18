@@ -1,9 +1,8 @@
-import type { AdjacencyLists } from '@magic/graph-plugins/plugins/useAdjacencyList';
+import { CoreEdge, CoreNode } from '@magic/graph/types';
 
-import { computed } from 'vue';
+import { ComputedRef, computed } from 'vue';
 
-import { CoreControls } from '../core/types.ts';
-import type { CoreEdge, CoreNode } from '../types.ts';
+import { Controls } from './index.ts';
 import TarjanGraph from './tarjans.ts';
 
 type GetComponents = (nodes: CoreNode[], edges: CoreEdge[]) => CoreNode[][];
@@ -36,12 +35,16 @@ export const getStronglyConnectedComponents: GetComponents = (nodes, edges) => {
   );
 };
 
+export type SCCControls = {
+  stronglyConnectedComponents: ComputedRef<CoreNode[][]>;
+  nodeIdToConnectedComponent: ComputedRef<NodeIdToComponent>;
+  componentAdjacencyMap: ComputedRef<ComponentAdjacencyMap>;
+};
+
 export const useStronglyConnectedComponents = (
-  graph: Pick<CoreControls, 'nodes' | 'edges'>,
-  adjacencyLists: Pick<AdjacencyLists, 'adjacencyList'>,
-) => {
-  const { nodes, edges } = graph;
-  const { adjacencyList } = adjacencyLists;
+  controls: Controls,
+): SCCControls => {
+  const { nodes, edges, adjacencyLists } = controls;
 
   const stronglyConnectedComponents = computed(() => {
     return getStronglyConnectedComponents(nodes.value, edges.value);
@@ -69,7 +72,7 @@ export const useStronglyConnectedComponents = (
 
     return sccs.reduce<ComponentAdjacencyMap>((acc, comp, compIndex) => {
       const componentChildren = comp
-        .flatMap((node) => adjacencyList.value[node.id] ?? [])
+        .flatMap((node) => adjacencyLists.standard.value[node.id] ?? [])
         .filter((nodeId) => nodeToScc.get(nodeId) !== compIndex)
         .map((nodeId) => nodeToScc.get(nodeId)!);
 
@@ -84,7 +87,3 @@ export const useStronglyConnectedComponents = (
     componentAdjacencyMap,
   };
 };
-
-export type CharacteristicSCC = ReturnType<
-  typeof useStronglyConnectedComponents
->;

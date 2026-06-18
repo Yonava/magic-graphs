@@ -1,14 +1,23 @@
-import { computed } from 'vue';
+import { CoreEdge } from '@magic/graph/types';
 
-import { CoreControls } from '../core/types.ts';
+import { ComputedRef, computed } from 'vue';
+
+import { Controls } from './index.ts';
+
+export type BidirectionalEdgesControls = {
+  bidirectionalEdges: ComputedRef<CoreEdge[]>;
+  hasBidirectionalEdges: ComputedRef<boolean>;
+};
 
 /**
  * all edges that link two nodes in both directions
  * (i.e. edge A->B and B->A are a bidirectional pair of edges)
  */
-export const useBidirectionalEdges = (graph: Pick<CoreControls, 'edges'>) => {
+export const useBidirectionalEdges = (
+  controls: Controls,
+): BidirectionalEdgesControls => {
   const bidirectionalEdges = computed(() => {
-    const edges = graph.edges.value;
+    const edges = controls.edges.value;
     return edges
       .filter((edge) => edge.source !== edge.target)
       .filter((edge) => {
@@ -29,7 +38,3 @@ export const useBidirectionalEdges = (graph: Pick<CoreControls, 'edges'>) => {
     hasBidirectionalEdges,
   };
 };
-
-export type CharacteristicBidirectional = ReturnType<
-  typeof useBidirectionalEdges
->;

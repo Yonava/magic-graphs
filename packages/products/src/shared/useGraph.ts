@@ -1,4 +1,5 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
+import { adjacencyLists } from '@magic/graph-plugins/plugins/adjacency-lists/index';
 import { anchors } from '@magic/graph-plugins/plugins/anchors/index';
 import { canvas } from '@magic/graph-plugins/plugins/canvas/index';
 import { focus } from '@magic/graph-plugins/plugins/focus/index';
@@ -6,12 +7,10 @@ import { history } from '@magic/graph-plugins/plugins/history/index';
 import { marquee } from '@magic/graph-plugins/plugins/marquee/index';
 import { nodeDrag } from '@magic/graph-plugins/plugins/node-drag/index';
 import { nodeLabel } from '@magic/graph-plugins/plugins/node-label/index';
-import { useCharacteristics } from '@magic/graph/characteristics/index';
+import { transitionMatrix } from '@magic/graph-plugins/plugins/transition-matrix/index';
 import { createGraph } from '@magic/graph/core/index';
 import type { GraphSettings } from '@magic/graph/settings/index';
-import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
 
-import { useTransitionMatrix } from '../../../graph/graph-plugins/src/plugins/useTransitionMatrix.ts';
 import { useInteractive } from './interactive/index.ts';
 import { useShortcuts } from './shortcut/index.ts';
 import { usePreferredThemePreset } from './usePreferredThemePreset.ts';
@@ -30,10 +29,10 @@ const createGraphWithPlugins = (
       nodeDrag,
       marquee,
       nodeLabel,
+      adjacencyLists,
+      transitionMatrix,
     ],
   });
-
-  graph.getNode('123').label;
 
   return graph;
 };
@@ -59,11 +58,6 @@ export const useGraph = (
 
   const shortcut = useShortcuts(graph);
 
-  const adjacencyList = useAdjacencyList(graph);
-  const transitionMatrix = useTransitionMatrix({ graph, adjacencyList });
-
-  const characteristics = useCharacteristics({ graph, adjacencyList });
-
   useInteractive(graph);
 
   return {
@@ -71,9 +65,5 @@ export const useGraph = (
 
     shortcut,
     ...preferredTheme,
-
-    adjacencyList,
-    transitionMatrix,
-    characteristics,
   };
 };

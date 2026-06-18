@@ -1,14 +1,16 @@
-import type {
-  AdjacencyList,
-  AdjacencyLists,
-} from '@magic/graph-plugins/plugins/useAdjacencyList';
+import { ComputedRef, computed } from 'vue';
 
-import { computed } from 'vue';
+import { AdjacencyList } from '../adjacency-lists/types.ts';
+import { Controls } from './index.ts';
 
-export const useConnected = ({
-  adjacencyList: adjList,
-  undirectedAdjacencyList: undirectedAdjList,
-}: Pick<AdjacencyLists, 'adjacencyList' | 'undirectedAdjacencyList'>) => {
+export type ConnectedControls = {
+  isConnected: ComputedRef<boolean>;
+  isWeaklyConnected: ComputedRef<boolean>;
+};
+
+export const useConnected = (controls: Controls): ConnectedControls => {
+  const { adjacencyLists } = controls;
+
   const runBFS = (adjList: AdjacencyList, startNode: string) => {
     const visited = new Set<string>();
     const q = [];
@@ -37,11 +39,11 @@ export const useConnected = ({
     });
 
   const isConnected = computed(() => {
-    return getIsConnectedWithAdjList(adjList.value);
+    return getIsConnectedWithAdjList(adjacencyLists.standard.value);
   });
 
   const isWeaklyConnected = computed(() => {
-    return getIsConnectedWithAdjList(undirectedAdjList.value);
+    return getIsConnectedWithAdjList(adjacencyLists.undirected.value);
   });
 
   return {
@@ -49,5 +51,3 @@ export const useConnected = ({
     isWeaklyConnected,
   };
 };
-
-export type CharacteristicConnected = ReturnType<typeof useConnected>;

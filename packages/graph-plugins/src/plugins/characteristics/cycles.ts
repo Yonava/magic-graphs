@@ -1,13 +1,10 @@
-import type {
-  AdjacencyList,
-  AdjacencyLists,
-} from '@magic/graph-plugins/plugins/useAdjacencyList';
+import { CoreNode } from '@magic/graph/types';
 
-import { computed } from 'vue';
+import { ComputedRef, computed } from 'vue';
 
-import type { CoreControls } from '../core/types.ts';
-import type { CoreNode } from '../types.ts';
-import type { CharacteristicSCC } from './scc.ts';
+import { AdjacencyList } from '../adjacency-lists/types.ts';
+import { Controls } from './index.ts';
+import type { SCCControls } from './scc.ts';
 
 type GetCycles = (adjList: AdjacencyList) => CoreNode['id'][][];
 
@@ -56,19 +53,23 @@ export const getCycles: GetCycles = (adjList) => {
   return cycles;
 };
 
+export type CyclesControls = {
+  cycles: ComputedRef<string[][]>;
+  nodeIdToCycle: ComputedRef<Map<string, number>>;
+  isAcyclic: ComputedRef<boolean>;
+};
+
 export const useCycles = (
-  graph: Pick<CoreControls, 'settings'>,
-  scc: Pick<CharacteristicSCC, 'stronglyConnectedComponents'>,
-  adjacencyLists: Pick<AdjacencyLists, 'adjacencyList'>,
-) => {
-  const { settings } = graph;
+  controls: Controls,
+  scc: Pick<SCCControls, 'stronglyConnectedComponents'>,
+): CyclesControls => {
+  const { settings, adjacencyLists } = controls;
   const { stronglyConnectedComponents } = scc;
-  const { adjacencyList } = adjacencyLists;
 
   const cycles = computed(() => {
     const { isGraphDirected } = settings.value;
     if (!isGraphDirected) {
-      const res = getCycles(adjacencyList.value);
+      const res = getCycles(adjacencyLists.standard.value);
       return res.sort((a, b) => a.length - b.length);
     }
 
@@ -92,5 +93,3 @@ export const useCycles = (
     isAcyclic,
   };
 };
-
-export type CharacteristicCycles = ReturnType<typeof useCycles>;

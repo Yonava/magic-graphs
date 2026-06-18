@@ -31,7 +31,7 @@ export type Graph = Pick<
  */
 export type AdjacencyList = Record<string, string[]>;
 
-type AdjacencyListsControls = {
+export type AdjacencyListsControls = {
   /**
    * the adjacency list using node ids as keys
    */

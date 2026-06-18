@@ -89,7 +89,7 @@ export type GraphPlugin<PluginData extends Partial<LoosePluginData>> =
  * downstream plugins and consumers only ever see what's returned here.
  */
 type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
-  graph: CoreControls & ExtractControls<PluginData['dependsOn']>,
+  controls: CoreControls & ExtractControls<PluginData['dependsOn']>,
   events: EventHub<CoreEventMap & ExtractEventMap<PluginData['dependsOn']>>,
   actions: GraphActions<CoreActions>,
   getters: GraphGetters<CoreGetters>,
@@ -115,7 +115,7 @@ type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
  * on this type to rule out.
  */
 export type LooseGraphPlugin = (
-  graph: any,
+  controls: any,
   events: EventHub<CoreEventMap>,
   actions: GraphActions<CoreActions>,
   getters: GraphGetters<CoreGetters>,

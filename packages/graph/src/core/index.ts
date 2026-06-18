@@ -16,7 +16,7 @@ import {
 } from '../plugins/types.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
-import type { CoreEdge, CoreNode } from '../types.ts';
+import type { CoreEdge, CoreNode, Prettify } from '../types.ts';
 import { createCoreActions } from './actions/createGraphActions.ts';
 import { GraphActions } from './actions/types.ts';
 import { createCoreEventRegistry } from './events.ts';
@@ -123,8 +123,9 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     ExtractEventMap<NoInfer<TPlugins>>
   >;
 
-  const controls = coreControls as CoreControls &
-    ExtractControls<NoInfer<TPlugins>>;
+  const controls = coreControls as Prettify<
+    CoreControls & ExtractControls<NoInfer<TPlugins>>
+  >;
 
   const actions = coreActions as GraphActions<
     ExtractActions<NoInfer<TPlugins>>

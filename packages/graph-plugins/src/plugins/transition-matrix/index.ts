@@ -5,12 +5,6 @@ import { computed } from 'vue';
 import { WeightedAdjacencyList } from '../adjacency-lists/types.ts';
 import { TransitionMatrix, TransitionMatrixPlugin } from './types.ts';
 
-/**
- * generates a transition matrix for a directed or undirected graph
- *
- * @param graph the graph instance
- * @returns a {@link TransitionMatrix}
- */
 export const getTransitionMatrix = (
   adjList: Readonly<WeightedAdjacencyList>,
   nodeToIndex: Map<CoreNode['id'], number>,

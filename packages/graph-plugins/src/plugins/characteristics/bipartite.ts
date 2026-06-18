@@ -1,9 +1,7 @@
-import type {
-  AdjacencyList,
-  AdjacencyLists,
-} from '@magic/graph-plugins/plugins/useAdjacencyList';
+import { ComputedRef, computed } from 'vue';
 
-import { computed } from 'vue';
+import { AdjacencyList } from '../adjacency-lists/types.ts';
+import { Controls } from './index.ts';
 
 type BipartitePartition = [string[], string[]];
 type GetBipartitePartition = (
@@ -82,11 +80,15 @@ export const getBipartitePartition: GetBipartitePartition = (adjList) => {
   return groups;
 };
 
-export const useBipartite = (
-  adjacencyLists: Pick<AdjacencyLists, 'adjacencyList'>,
-) => {
+export type BipartiteControls = {
+  bipartitePartition: ComputedRef<BipartitePartition | undefined>;
+  nodeIdToBipartitePartition: ComputedRef<NodeIdToBipartiteSet>;
+  isBipartite: ComputedRef<boolean>;
+};
+
+export const useBipartite = (controls: Controls): BipartiteControls => {
   const bipartitePartition = computed(() =>
-    getBipartitePartition(adjacencyLists.adjacencyList.value),
+    getBipartitePartition(controls.adjacencyLists.standard.value),
   );
 
   const nodeIdToBipartitePartition = computed(() => {
@@ -107,5 +109,3 @@ export const useBipartite = (
     isBipartite,
   };
 };
-
-export type CharacteristicBipartite = ReturnType<typeof useBipartite>;
