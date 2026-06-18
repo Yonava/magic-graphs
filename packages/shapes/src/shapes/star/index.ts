@@ -24,13 +24,13 @@ export const star: ShapeFactory<StarSchema> = (options) => {
     console.warn('radius values must be positive');
   }
 
-  const text = getShapeTextProps(schema.at, schema.textArea);
-
   const drawShape = drawStarWithCtx(schema);
-  const draw = (ctx: CanvasRenderingContext2D) => {
+  const text = getShapeTextProps(schema.at, schema.textArea, drawShape);
+  const { drawOverride, ...textProps } = text ?? {};
+  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
     text?.drawTextArea(ctx);
-  };
+  });
 
   const shapeHitbox = starHitbox(schema);
   const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);
@@ -48,6 +48,6 @@ export const star: ShapeFactory<StarSchema> = (options) => {
     efficientHitbox,
     getBoundingBox,
 
-    ...text,
+    ...textProps,
   });
 };

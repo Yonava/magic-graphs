@@ -107,7 +107,7 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
   const canvasColor = graph.resolveToken('canvas.color');
 
   const textAreaOnEdge: TextArea = {
-    color: canvasColor,
+    color: 'none',
     activeColor: canvasColor,
     textBlock: {
       content: styles.text,

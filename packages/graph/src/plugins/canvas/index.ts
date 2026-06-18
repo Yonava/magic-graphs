@@ -133,10 +133,10 @@ export const useCanvasPlugin = <
           shape,
           id: edge.id,
           graphType: 'edge',
+          priority: 1,
         } as const;
       })
-      .filter(Boolean)
-      .map((item, i) => ({ ...item!, priority: i * 10 }));
+      .filter((el) => !!el);
 
     const nodeCanvasElements = graph.nodes.value
       .map((node) => {
@@ -151,6 +151,7 @@ export const useCanvasPlugin = <
           shape,
           id: node.id,
           graphType: 'node',
+          priority: 2,
           data: {
             [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: resolveToken(
               'node.default.cursor',
@@ -159,8 +160,7 @@ export const useCanvasPlugin = <
           },
         } as const;
       })
-      .filter(Boolean)
-      .map((item, i) => ({ ...item!, priority: i * 10 + 1000 }));
+      .filter((el) => !!el);
 
     aggregator.push(...edgeCanvasElements);
     aggregator.push(...nodeCanvasElements);

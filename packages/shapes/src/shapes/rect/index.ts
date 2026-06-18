@@ -17,7 +17,9 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
   validateBorderRadius(options);
 
   const schema = resolveRectDefaults(options);
-  const text = getShapeTextProps(getCenterPoint(schema), schema.textArea);
+  const drawShape = drawRectWithCtx(schema);
+  const text = getShapeTextProps(getCenterPoint(schema), schema.textArea, drawShape);
+  const { drawOverride, ...textProps } = text ?? {};
 
   const shapeHitbox = rectHitbox(schema);
   const efficientHitbox = rectEfficientHitbox(schema);
@@ -26,11 +28,10 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
 
   const getBoundingBox = getRectBoundingBox(schema);
 
-  const drawShape = drawRectWithCtx(schema);
-  const draw = (ctx: CanvasRenderingContext2D) => {
+  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
     text?.drawTextArea(ctx);
-  };
+  });
 
   return shapeFactoryWrapper({
     name: 'rect',
@@ -44,6 +45,6 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
 
     getBoundingBox,
 
-    ...text,
+    ...textProps,
   });
 };

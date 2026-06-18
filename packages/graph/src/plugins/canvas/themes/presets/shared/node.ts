@@ -22,13 +22,13 @@ const nodeCircle: GraphTheme['node']['default']['shape'] = (node, graph) => {
       lineWidth: styles.borderWidth,
     },
     textArea: {
+      color: colors.TRANSPARENT,
       textBlock: {
         content: styles.text,
         fontSize: styles.textSize,
         fontWeight: styles.textFontWeight,
         color: styles.textColor,
       },
-      color: colors.TRANSPARENT,
     },
   });
 };
