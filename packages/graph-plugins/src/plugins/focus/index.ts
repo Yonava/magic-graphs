@@ -27,7 +27,12 @@ import {
   NodeBaseToNodeFocusTheme,
 } from './types.ts';
 
-export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
+export const focus: FocusPlugin = (
+  controls,
+  graphEventHub,
+  actions,
+  getters,
+) => {
   const focusEventRegistry = createFocusEventRegistry();
   const focusEventHub = createEventHub(focusEventRegistry);
   const events = mergeEventHubs<FocusEventMap, CoreEventMap & CanvasEventMap>(
@@ -55,7 +60,7 @@ export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
     const elementsAddedToFocus = typeof id === 'object' ? id : [id];
     const nonExistingElementIds = new Set(
       elementsAddedToFocus.filter(
-        (newId) => !graph.getNode(newId) && !graph.getEdge(newId),
+        (newId) => !getters.getNode(newId) && !getters.getEdge(newId),
       ),
     );
     if (nonExistingElementIds.size) {
@@ -85,15 +90,16 @@ export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
   };
 
   const handleTextArea = (canvasElement: CanvasElement) => {
-    const ctx = getCtx(graph.canvas.magicCanvas.canvas);
+    const ctx = getCtx(controls.canvas.magicCanvas.canvas);
 
     canvasElement.shape.startTextAreaEdit?.(ctx, (textAreaContent) => {
       const edge = nullThrows(
-        graph.getEdge(canvasElement.id),
+        getters.getEdge(canvasElement.id),
         `Only edges may include TextAreas: Got ${canvasElement.graphType}`,
       );
 
-      const newWeight = graph.settings.value.edgeInputToWeight(textAreaContent);
+      const newWeight =
+        controls.settings.value.edgeInputToWeight(textAreaContent);
       if (
         newWeight === undefined ||
         edge.weight.valueOf() === newWeight.valueOf()
@@ -141,7 +147,7 @@ export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
     const inATextArea = topItem.shape.textHitbox?.(coords);
     const canEdit =
       inATextArea &&
-      graph.settings.value.edgeLabelsEditable &&
+      controls.settings.value.edgeLabelsEditable &&
       topItem.graphType === 'edge';
 
     if (canEdit) {
@@ -159,8 +165,8 @@ export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
   };
 
   const focusAll = () => {
-    const nodeIds = graph.nodes.value.map((node) => node.id);
-    const edgeIds = graph.edges.value.map((edge) => edge.id);
+    const nodeIds = controls.nodes.value.map((node) => node.id);
+    const edgeIds = controls.edges.value.map((edge) => edge.id);
     setFocus([...nodeIds, ...edgeIds]);
   };
 
@@ -193,17 +199,18 @@ export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
   const edgeEntries = Object.entries(edgeBaseStylePathMapping);
 
   const { set: setThemeOverrideLayer } =
-    graph.canvas.theme.createLayer(FOCUS_THEME_ID);
+    controls.canvas.theme.createLayer(FOCUS_THEME_ID);
 
   for (const [nodeBasePath, nodeFocusPath] of nodeEntries) {
     setThemeOverrideLayer(nodeBasePath as NodeBaseThemePath, (node: GNode) => {
       if (!isFocused(node.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.canvas.theme._resolveToken(nodeFocusPath, node, {
-        ...graph,
-        shapes: graph.canvas.shapes,
-        resolveToken: graph.canvas.theme._resolveToken,
+      return controls.canvas.theme._resolveToken(nodeFocusPath, node, {
+        ...controls,
+        ...getters,
+        shapes: controls.canvas.shapes,
+        resolveToken: controls.canvas.theme._resolveToken,
       }) as any;
     });
   }
@@ -213,10 +220,11 @@ export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
       if (!isFocused(edge.id)) return;
       // typescript generics to differentiate each callbacks individual
       // return type is juice not worth the squeeze
-      return graph.canvas.theme._resolveToken(edgeFocusPath, edge, {
-        ...graph,
-        shapes: graph.canvas.shapes,
-        resolveToken: graph.canvas.theme._resolveToken,
+      return controls.canvas.theme._resolveToken(edgeFocusPath, edge, {
+        ...controls,
+        ...getters,
+        shapes: controls.canvas.shapes,
+        resolveToken: controls.canvas.theme._resolveToken,
       }) as any;
     });
   }
@@ -279,10 +287,10 @@ export const focus: FocusPlugin = (graph, graphEventHub, actions) => {
         isFocused,
         focusedItemIds: readonly(focusedElementIds),
         focusedNodes: computed(() =>
-          graph.nodes.value.filter((node) => isFocused(node.id)),
+          controls.nodes.value.filter((node) => isFocused(node.id)),
         ),
         focusedEdges: computed(() =>
-          graph.edges.value.filter((edge) => isFocused(edge.id)),
+          controls.edges.value.filter((edge) => isFocused(edge.id)),
         ),
         lifecycle: {
           enable,

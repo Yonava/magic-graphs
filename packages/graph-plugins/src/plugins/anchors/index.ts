@@ -46,7 +46,12 @@ export type AnchorsPlugin = GraphPlugin<{
  * - Parent Node: The node which anchors actively orbit around.
  * - Link Preview: The line that appears between the parent node and the anchor when the anchor is being dragged.
  */
-export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
+export const anchors: AnchorsPlugin = (
+  controls,
+  graphEventHub,
+  actions,
+  getters,
+) => {
   const anchorsEventRegistry = createAnchorsEventRegistry();
   const anchorsEventHub = createEventHub(anchorsEventRegistry);
   const events = mergeEventHubs<AnchorsEventMap, CoreEventMap & CanvasEventMap>(
@@ -61,7 +66,7 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
 
   const anchorDragState = createAnchorDragState();
   const dragCursorTheme = createAnchorDragThemer(
-    graph.canvas.theme.createLayer,
+    controls.canvas.theme.createLayer,
     anchorDragState,
   );
 
@@ -74,7 +79,7 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
   };
 
   const setParentNode = (nodeId: GNode['id']) => {
-    const node = graph.getNode(nodeId);
+    const node = getters.getNode(nodeId);
 
     if (!node) throw new Error('node not found');
 
@@ -92,7 +97,7 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
   };
 
   const getAnchorSchemas = (node: GNode) => {
-    const { _resolveToken: resolveToken } = graph.canvas.theme;
+    const { _resolveToken: resolveToken } = controls.canvas.theme;
 
     const color = resolveToken('nodeAnchor.default.color', node);
     const focusColor = resolveToken('nodeAnchor.focus.color', node);
@@ -108,7 +113,7 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
       const isAnchorDragged = id === draggedAnchor?.id;
 
       // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
-      const isNodeFocused = graph.focus.isFocused(node.id);
+      const isNodeFocused = controls.focus.isFocused(node.id);
       const isFocused = isNodeFocused || isAnchorHovered || isAnchorDragged;
 
       const nodeAnchorSchema: WithId<CircleSchema> = {
@@ -124,7 +129,7 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
       }
 
       const nodeAnchorShape =
-        graph.canvas.shapes.shapes.circle(nodeAnchorSchema);
+        controls.canvas.shapes.shapes.circle(nodeAnchorSchema);
 
       const beingDragged = anchor.id === draggedAnchor?.id;
       anchorSchemas.push({
@@ -157,10 +162,10 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
    */
   const updateNodeAnchors = (node: GNode | undefined) => {
     if (!node) return (nodeAnchors.value = []);
-    const { _resolveToken: resolveToken } = graph.canvas.theme;
+    const { _resolveToken: resolveToken } = controls.canvas.theme;
 
     // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
-    const isNodeFocused = graph.focus.isFocused(node.id);
+    const isNodeFocused = controls.focus.isFocused(node.id);
 
     const anchorBaseRadius = resolveToken('nodeAnchor.default.radius', node);
     const anchorFocusRadius = resolveToken('nodeAnchor.focus.radius', node);
@@ -180,7 +185,7 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
       : nodeBaseBorderWidth;
 
     const offset = nodeSize - anchorRadius / 3 + nodeBorderWidth / 2;
-    const nodePosition = graph.positions.get(node.id);
+    const nodePosition = controls.positions.get(node.id);
     nodeAnchors.value = [
       {
         id: 'n-anchor',
@@ -224,12 +229,12 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (!parentNode.value || !draggedAnchor) return;
     const { x, y } = draggedAnchor;
-    const start = graph.positions.get(parentNode.value.id);
+    const start = controls.positions.get(parentNode.value.id);
     const end = { x, y };
-    const { _resolveToken: resolveToken } = graph.canvas.theme;
+    const { _resolveToken: resolveToken } = controls.canvas.theme;
 
     // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
-    const isFocused = graph.focus.isFocused(parentNode.value.id);
+    const isFocused = controls.focus.isFocused(parentNode.value.id);
 
     const baseColor = resolveToken(
       'nodeAnchor.default.linkPreview.color',
@@ -259,7 +264,7 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
 
     const width = isFocused ? focusWidth : baseWidth;
 
-    const shape = graph.canvas.shapes.shapes.line({
+    const shape = controls.canvas.shapes.shapes.line({
       id: 'link-preview',
       start,
       end,
@@ -283,13 +288,13 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (draggedAnchor) return;
 
-    const { elements: items } = graph.canvas.graphUnderCursor;
+    const { elements: items } = controls.canvas.graphUnderCursor;
     const topItem = items.at(-1);
     if (!topItem) return clearAnchorState();
     if (topItem.graphType === 'node-anchor') return;
     if (topItem.graphType !== 'node') return clearAnchorState();
 
-    const newParentNode = graph.getNode(topItem.id);
+    const newParentNode = getters.getNode(topItem.id);
     if (!newParentNode) {
       throw new Error('anchors: node shown on screen not in graph state');
     }
@@ -334,8 +339,8 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
     // when we clear the node anchors, we must ensure that the
     // aggregator updates so that it knows the node anchors
     // and link preview are no longer on the canvas
-    graph.canvas.aggregator.updateAggregator();
-    graph.canvas.forceUpdateGraphUnderCursor();
+    controls.canvas.aggregator.updateAggregator();
+    controls.canvas.forceUpdateGraphUnderCursor();
 
     // in case anchor was dropped a different node, set that new node as the parent node
     checkForParentNodeUpdate();
@@ -373,8 +378,8 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
     return aggregator;
   };
 
-  graph.canvas.aggregator.transformers.push(insertAnchorsIntoAggregator);
-  graph.canvas.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
+  controls.canvas.aggregator.transformers.push(insertAnchorsIntoAggregator);
+  controls.canvas.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
 
   const activate = () => {
     events.handle(
@@ -435,6 +440,7 @@ export const anchors: AnchorsPlugin = (graph, graphEventHub, actions) => {
   return {
     events,
     actions,
+    getters,
     controls: {
       anchors: {
         activate,

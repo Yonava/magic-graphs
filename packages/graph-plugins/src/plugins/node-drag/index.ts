@@ -19,7 +19,12 @@ import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
 import { NodeDragPlugin, NodeIdDragState } from './types.ts';
 import { validateNodeIds } from './validateNodeIds.ts';
 
-export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
+export const nodeDrag: NodeDragPlugin = (
+  graph,
+  graphEventMap,
+  actions,
+  getters,
+) => {
   const nodeDragEventRegistry = createNodeDragEventRegistry();
   const nodeDragEventHub = createEventHub(nodeDragEventRegistry);
   const events = mergeEventHubs<
@@ -60,7 +65,7 @@ export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
 
     const nodes = nodeIdsToDrag.map((nodeId) =>
       nullThrows(
-        graph.getNode(nodeId),
+        getters.getNode(nodeId),
         'canvas element of graph type node not resolvable as node',
       ),
     );
@@ -87,7 +92,7 @@ export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
     events.emit(
       'onNodeDrop',
       data.nodeIds.map((nodeId) =>
-        nullThrows(graph.getNode(nodeId), 'dropped node not found'),
+        nullThrows(getters.getNode(nodeId), 'dropped node not found'),
       ),
     );
   };
@@ -109,7 +114,7 @@ export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
     if (!dx && !dy) return;
 
     const nodes = nodeIds.map((nodeId) =>
-      nullThrows(graph.getNode(nodeId), 'dragged node not found'),
+      nullThrows(getters.getNode(nodeId), 'dragged node not found'),
     );
 
     const stream = nullThrows(
@@ -155,6 +160,7 @@ export const nodeDrag: NodeDragPlugin = (graph, graphEventMap, actions) => {
 
   return {
     events,
+    getters,
     actions,
     controls: {
       nodeDrag: {

@@ -132,6 +132,4 @@ export type CanvasElement = {
 export type CanvasPlugin = GraphPlugin<{
   controls: { canvas: CanvasControls };
   events: CanvasEventMap;
-  actions: {};
-  dependsOn: [];
 }>;

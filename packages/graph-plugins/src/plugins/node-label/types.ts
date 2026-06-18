@@ -33,7 +33,6 @@ type NodeLabelActions = {
 
 export type NodeLabelPlugin = GraphPlugin<{
   controls: { nodeLabel: WithLifecycle<NodeLabelControls> };
-  events: {};
   actions: NodeLabelActions;
   dependsOn: [CanvasPlugin];
 }>;

@@ -13,6 +13,7 @@
  */
 import { CoreControls } from '@magic/graph/core/types';
 import { NodeAnchor } from '@magic/graph/plugins/anchors/types';
+import { CoreGetters, GraphGetters } from '@magic/graph/plugins/types';
 import { GEdge, GNode } from '@magic/graph/types';
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types/index';
@@ -20,7 +21,7 @@ import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
 import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
-import { CanvasGraphControls } from '../types.ts';
+import { CanvasControls } from '../types.ts';
 import { Cursor, CursorFallback } from './cursor.ts';
 
 export type TextStyles = {
@@ -39,15 +40,13 @@ export type CoreGraphNodeStyles = TextStyles & {
 };
 
 export type GraphInterface = {
-  shapes: CanvasGraphControls['shapes'];
+  shapes: CanvasControls['shapes'];
   settings: CoreControls['settings'];
   positions: CoreControls['positions'];
-  resolveToken: CanvasGraphControls['theme']['_resolveToken'];
+  resolveToken: CanvasControls['theme']['_resolveToken'];
   edges: CoreControls['edges'];
-  getNode: CoreControls['getNode'];
-  getEdge: CoreControls['getEdge'];
   helpers: CoreControls['helpers'];
-};
+} & GraphGetters<CoreGetters>;
 
 export type CoreGraphNodeTheme = NodeThemeFields<CoreGraphNodeStyles> & {
   shape: (node: GNode, graph: GraphInterface) => Shape | void;

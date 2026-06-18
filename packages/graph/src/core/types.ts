@@ -18,9 +18,6 @@ export type CoreControls = {
   nodeIdToIndex: ComputedRef<Map<GNode['id'], number>>;
   edgeIdToIndex: ComputedRef<Map<GEdge['id'], number>>;
 
-  getNode: (nodeId: GNode['id']) => Readonly<GNode>;
-  getEdge: (edgeId: GEdge['id']) => Readonly<GEdge>;
-
   settings: Ref<GraphSettings>;
 
   helpers: CoreGraphHelpers;

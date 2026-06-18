@@ -31,7 +31,7 @@ export const CANVAS_EVENT_ID = 'plugins/canvas';
 
 export const canvas =
   (magicCanvas: MagicCanvasProps): CanvasPlugin =>
-  (graph, graphEventHub, actions) => {
+  (controls, graphEventHub, actions, getters) => {
     const canvasEventRegistry = createCanvasEventRegistry();
     const canvasEventHub = createEventHub(canvasEventRegistry);
     const events = mergeEventHubs<CanvasEventMap, CoreEventMap>(
@@ -58,17 +58,7 @@ export const canvas =
       canvasFocused.value = true;
     });
 
-    events.subscribe('onTransactionComplete', (transaction) => {
-      if (transaction.updatedEdges.length || transaction.updatedNodes.length) {
-        // TODO remove when updates/mutations are removed transactions system
-        // prevents onGraphUnderCursorChange spam when handlers subscribe to the
-        // onGraphUnderCursorChange event. If this wasn't there, mouse move dom events
-        // would fire off an event, which would trigger the handlers in drag (for example)
-        // to fire off a update for the node, then that would land here retriggering the
-        // updateGraphAtMousePosition call resulting in duplicate event spam
-        return;
-      }
-
+    events.subscribe('onTransactionComplete', () => {
       forceUpdateGraphUnderCursor();
     });
 
@@ -79,7 +69,7 @@ export const canvas =
     setupCanvasCursor({
       canvas: magicCanvas.canvas,
       subscribe: events.subscribe,
-      getNode: graph.getNode,
+      getNode: getters.getNode,
       resolveToken,
       graphUnderCursor,
     });
@@ -112,10 +102,11 @@ export const canvas =
     const shapes = useAnimatedShapes();
 
     const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
-      const edgeCanvasElements = graph.edges.value
+      const edgeCanvasElements = controls.edges.value
         .map((edge) => {
           const shape = resolveToken('edge.default.shape', edge, {
-            ...graph,
+            ...controls,
+            ...getters,
             resolveToken,
             shapes,
           });
@@ -130,10 +121,11 @@ export const canvas =
         .filter(Boolean)
         .map((item, i) => ({ ...item!, priority: i * 10 }));
 
-      const nodeCanvasElements = graph.nodes.value
+      const nodeCanvasElements = controls.nodes.value
         .map((node) => {
           const shape = resolveToken('node.default.shape', node, {
-            ...graph,
+            ...controls,
+            ...getters,
             resolveToken,
             shapes,
           });
@@ -213,6 +205,7 @@ export const canvas =
       }).draw(ctx);
 
     return {
+      getters,
       controls: {
         canvas: {
           aggregator,

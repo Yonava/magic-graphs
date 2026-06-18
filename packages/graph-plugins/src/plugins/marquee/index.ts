@@ -24,7 +24,12 @@ import { MarqueeEventMap, createMarqueeEventRegistry } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
 import { MarqueePlugin } from './types.ts';
 
-export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
+export const marquee: MarqueePlugin = (
+  controls,
+  graphEventMap,
+  actions,
+  getters,
+) => {
   const marqueeEventRegistry = createMarqueeEventRegistry();
   const marqueeEventHub = createEventHub(marqueeEventRegistry);
   const events = mergeEventHubs<
@@ -39,12 +44,12 @@ export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
    * given a mouse event, engages or disengages the marquee box
    */
   const handleMarqueeEngagement = ({
-    elements: items,
+    elements,
     coords,
     event,
   }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
-    const topItem = items.at(-1);
+    const topItem = elements.at(-1);
     if (!topItem) engageMarqueeBox(coords);
   };
 
@@ -69,16 +74,16 @@ export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
     if (surfaceArea < 100) return;
     const targetedItems: string[] = [];
 
-    for (const { id, shape } of graph.canvas.aggregator.aggregator.value) {
+    for (const { id, shape } of controls.canvas.aggregator.aggregator.value) {
       const inSelectionBox = shape.efficientHitbox(box);
       if (inSelectionBox) targetedItems.push(id);
     }
 
-    graph.focus.set(targetedItems);
+    controls.focus.set(targetedItems);
   };
 
   const updateEncapsulatedNodeBox = () => {
-    encapsulatedNodeBox.value = getEncapsulatedNodeBox(graph);
+    encapsulatedNodeBox.value = getEncapsulatedNodeBox(controls);
   };
 
   const setMarqueeBoxDimensions = (
@@ -95,12 +100,12 @@ export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
   };
 
   const getMarqueeBoxCanvasElement = (box: BoundingBox): CanvasElement => {
-    const shape = graph.canvas.shapes.shapes.rect({
+    const shape = controls.canvas.shapes.shapes.rect({
       id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
-      fillColor: graph.canvas.theme._resolveToken('marquee.color'),
+      fillColor: controls.canvas.theme._resolveToken('marquee.color'),
       stroke: {
-        color: graph.canvas.theme._resolveToken('marquee.borderColor'),
+        color: controls.canvas.theme._resolveToken('marquee.borderColor'),
         lineWidth: 2,
       },
     });
@@ -128,14 +133,14 @@ export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
 
   const getEncapsulatedNodeBoxSchema = (box: BoundingBox) => {
     const id = 'encapsulated-node-box';
-    const shape = graph.canvas.shapes.shapes.rect({
+    const shape = controls.canvas.shapes.shapes.rect({
       id,
       ...box,
-      fillColor: graph.canvas.theme._resolveToken(
+      fillColor: controls.canvas.theme._resolveToken(
         'marquee.encapsulatedNodeBox.color',
       ),
       stroke: {
-        color: graph.canvas.theme._resolveToken(
+        color: controls.canvas.theme._resolveToken(
           'marquee.encapsulatedNodeBox.borderColor',
         ),
         lineWidth: 2,
@@ -146,11 +151,11 @@ export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
       id,
       graphType: 'encapsulated-node-box',
       shape,
-      priority: Infinity,
+      priority: 3,
       data: {
         [NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD]:
-          graph.focus.focusedNodes.value.map((n) => n.id),
-        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: graph.canvas.theme._resolveToken(
+          controls.focus.focusedNodes.value.map((n) => n.id),
+        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: controls.canvas.theme._resolveToken(
           'marquee.encapsulatedNodeBox.cursor',
         ),
       },
@@ -171,8 +176,10 @@ export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
     return aggregator;
   };
 
-  graph.canvas.aggregator.transformers.push(addEncapsulatedNodeBoxToAggregator);
-  graph.canvas.aggregator.transformers.push(addMarqueeBoxToAggregator);
+  controls.canvas.aggregator.transformers.push(
+    addEncapsulatedNodeBoxToAggregator,
+  );
+  controls.canvas.aggregator.transformers.push(addMarqueeBoxToAggregator);
 
   const enable = () => {
     events.subscribe('onFocusChange', updateEncapsulatedNodeBox);
@@ -210,6 +217,7 @@ export const marquee: MarqueePlugin = (graph, graphEventMap, actions) => {
   return {
     events,
     actions,
+    getters,
     controls: {
       marquee: {
         updateEncapsulatedNodeBox,

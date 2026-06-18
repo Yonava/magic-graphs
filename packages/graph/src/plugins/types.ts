@@ -1,4 +1,4 @@
-import { UnionToIntersection } from 'ts-essentials';
+import { DeepReadonly, UnionToIntersection } from 'ts-essentials';
 
 import {
   CoreActions,
@@ -17,7 +17,7 @@ type BaseGetters = {
   getEdge: {};
 };
 
-type CoreGetters = {
+export type CoreGetters = {
   getNode: GNode;
   getEdge: GEdge;
 };
@@ -46,8 +46,8 @@ export type MergeGetters<Getters extends Partial<BaseGetters>[]> =
       };
 
 export type GraphGetters<Getters extends BaseGetters> = {
-  getNode: (nodeId: string) => Getters['getNode'];
-  getEdge: (edgeId: string) => Getters['getEdge'];
+  getNode: (nodeId: string) => DeepReadonly<Getters['getNode']>;
+  getEdge: (edgeId: string) => DeepReadonly<Getters['getEdge']>;
 };
 
 type LoosePluginData = {
