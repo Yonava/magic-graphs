@@ -17,9 +17,9 @@ export const useCycleColorizer = (graph: Graph) => {
   const { set, removeAll } = graph.canvas.theme.createLayer(CYCLE_THEME_ID);
 
   const colorNodeBorders = ({ id }: { id: string }) => {
-    const isAcyclic = graph.characteristics.isAcyclic.value;
+    const isAcyclic = graph.characteristics.cycles.isAcyclic.value;
     if (isAcyclic) return;
-    const map = graph.characteristics.nodeIdToCycle.value;
+    const map = graph.characteristics.cycles.nodeIdToCycle.value;
     const cycle = map.get(id);
     if (cycle === undefined) return;
     return COLORS[cycle % COLORS.length];

@@ -20,10 +20,10 @@ export type ComponentAdjacencyMap = Map<number, Set<number>>;
  */
 export const getComponentAdjMap = (graph: Graph) => {
   const nodeToComponentMap =
-    graph.characteristics.nodeIdToConnectedComponent.value;
+    graph.characteristics.sccs.nodeIdToConnectedComponent.value;
   const connectedComponents =
-    graph.characteristics.stronglyConnectedComponents.value;
-  const graphAdjMap = graph.adjacencyList.adjacencyList.value;
+    graph.characteristics.sccs.stronglyConnectedComponents.value;
+  const graphAdjMap = graph.adjacencyLists.standard.value;
 
   /**
    * index of graph connected component -> indices of connected components adjacent to it

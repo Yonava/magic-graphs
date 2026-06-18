@@ -1,8 +1,7 @@
 import {
   THEME_PRESETS,
-  type ThemePreset,
-} from '@magic/graph/plugins/canvas/themes/index';
-import { CanvasGraph } from '@magic/graph/plugins/canvas/types';
+  ThemePreset,
+} from '@magic/graph-plugins/plugins/canvas/themes/index';
 import { localKeys } from '@magic/utils/localStorage';
 import { useDark } from '@vueuse/core';
 import { useLocalStorage } from '@vueuse/core';

@@ -284,6 +284,7 @@ export const focus: FocusPlugin = (
   return {
     events,
     actions: extendedActions,
+    getters,
     controls: {
       focus: {
         set: setFocus,

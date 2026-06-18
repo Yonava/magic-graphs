@@ -11,7 +11,7 @@ const { startNode } = state;
 export const useDFS = (graph: Graph) => {
   const trace = ref<BasicSearchTrace[]>([]);
 
-  const { adjacencyList } = graph.adjacencyList;
+  const { standard: adjacencyList } = graph.adjacencyLists;
 
   const update = () => {
     const node = startNode.get(graph);

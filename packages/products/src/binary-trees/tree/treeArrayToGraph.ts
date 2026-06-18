@@ -50,7 +50,7 @@ export const treeArrayToGraph = (
   );
 
   for (const node of nodesNotInNewTree) {
-    graph.actions.removeNode(node.id);
+    graph.actions.removeNode({ id: node.id });
   }
 
   // the tree is empty and all the nodes have been removed
@@ -77,22 +77,14 @@ export const treeArrayToGraph = (
 
     const coordsOfNodeOnTree = positions[i];
 
-    graph.actions.addNode(
-      {
-        id: treeNodeKey.toString(),
-        // @ts-expect-error migration
-        label: treeNodeKey.toString(),
-        ...coordsOfNodeOnTree,
-      },
-      {
-        animate: true,
-        focus: false,
-      },
-    );
+    graph.actions.addNode({
+      id: treeNodeKey.toString(),
+      ...coordsOfNodeOnTree,
+    });
   });
 
   for (const edge of edgesNotInNewTree) {
-    graph.actions.removeEdge(edge.id);
+    graph.actions.removeEdge({ id: edge.id });
   }
 
   const positionUpdates = treeArray

@@ -1,5 +1,5 @@
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
+import type { AdjacencyList } from '@magic/graph-plugins/plugins/adjacency-lists/types';
 import { gcd, lowestPrimeFactor } from '@magic/utils/math';
 
 import { computed } from 'vue';
@@ -98,7 +98,7 @@ export const useMarkovPeriodicity = (
   graph: Graph,
   recurrentClasses: Ref<Set<string>[]>,
 ) => {
-  const { adjacencyList } = graph.adjacencyList;
+  const { standard: adjacencyList } = graph.adjacencyLists;
 
   const recurrentClassPeriods = computed(() => {
     const res = recurrentClasses.value.map((recurrentClass) =>

@@ -9,9 +9,9 @@ export const useBipartiteColorizer = (graph: Graph) => {
     graph.canvas.theme.createLayer(BIPARTITE_THEME_ID);
 
   const colorNodeBorders = ({ id }: { id: string }) => {
-    const isBipartite = graph.characteristics.isBipartite.value;
+    const isBipartite = graph.characteristics.bipartite.isBipartite.value;
     if (!isBipartite) return;
-    const map = graph.characteristics.nodeIdToBipartitePartition.value;
+    const map = graph.characteristics.bipartite.nodeIdToBipartitePartition.value;
     const partition = map.get(id);
     if (partition === undefined) return;
     return partition === 0 ? colors.RED_500 : colors.BLUE_500;

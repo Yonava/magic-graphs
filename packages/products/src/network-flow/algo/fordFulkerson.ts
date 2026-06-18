@@ -1,5 +1,4 @@
 import type { CoreEdge } from '@magic/graph/types';
-import { getAdjacencyList } from '@magic/graph/useAdjacencyList';
 import { Fraction } from 'mathjs';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
@@ -26,7 +25,7 @@ export const fordFulkerson = (
 
   const trace: FlowTrace[] = [];
 
-  const adjList = getAdjacencyList(graph);
+  const adjList = graph.adjacencyLists.standard.value;
 
   const dfs = (
     s: string,

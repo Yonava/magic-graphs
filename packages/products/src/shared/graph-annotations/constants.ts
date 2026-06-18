@@ -1,8 +1,8 @@
-import { ANCHOR_EVENT_ID } from '@magic/graph/plugins/anchors/index';
-import { ThemePreset } from '@magic/graph/plugins/canvas/themes/index';
-import { DRAG_EVENT_ID } from '@magic/graph/plugins/drag/index';
-import { FOCUS_EVENT_ID } from '@magic/graph/plugins/focus/index';
-import { MARQUEE_EVENT_ID } from '@magic/graph/plugins/marquee/index';
+import { ANCHOR_PLUGIN_ID } from '@magic/graph-plugins/plugins/anchors/constants';
+import { ThemePreset } from '@magic/graph-plugins/plugins/canvas/themes/index';
+import { FOCUS_PLUGIN_ID } from '@magic/graph-plugins/plugins/focus/constants';
+import { MARQUEE_PLUGIN_ID } from '@magic/graph-plugins/plugins/marquee/constants';
+import { NODE_DRAG_PLUGIN_ID } from '@magic/graph-plugins/plugins/node-drag/constants';
 import colors, { Color } from '@magic/utils/colors';
 
 export const COLORS = [
@@ -22,8 +22,8 @@ export const THEME_TO_ERASER_OUTLINE: Record<ThemePreset, Color> = {
 
 export const ERASER_BRUSH_RADIUS = 10;
 
-export const ANNOTATION_EVENT_ID = 'product/annotation';
+export const ANNOTATION_PLUGIN_ID = 'plugins/annotations';
 
 export const PRIORITY = {
-  before: [MARQUEE_EVENT_ID, DRAG_EVENT_ID, ANCHOR_EVENT_ID, FOCUS_EVENT_ID],
+  before: [MARQUEE_PLUGIN_ID, NODE_DRAG_PLUGIN_ID, ANCHOR_PLUGIN_ID, FOCUS_PLUGIN_ID],
 } as const;

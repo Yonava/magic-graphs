@@ -1,6 +1,6 @@
 
 import type { Graph } from '../useGraphWithCanvas.ts';
-import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
+import type { AdjacencyList } from '@magic/graph-plugins/plugins/adjacency-lists/types';
 
 import { computed } from 'vue';
 import type { Ref } from 'vue';
@@ -82,7 +82,7 @@ export const getNodeDepths = (startNode: { id: string }, adjList: AdjacencyList)
  */
 export const useNodeDepth = (graph: Graph, startNode: Ref<{ id: string }>) => {
   return computed(() =>
-    getNodeDepths(startNode.value, graph.adjacencyList.adjacencyList.value),
+    getNodeDepths(startNode.value, graph.adjacencyLists.standard.value),
   );
 };
 

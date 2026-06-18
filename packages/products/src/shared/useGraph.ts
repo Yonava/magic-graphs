@@ -2,6 +2,7 @@ import type { MagicCanvasProps } from '@magic/canvas/types';
 import { adjacencyLists } from '@magic/graph-plugins/plugins/adjacency-lists/index';
 import { anchors } from '@magic/graph-plugins/plugins/anchors/index';
 import { canvas } from '@magic/graph-plugins/plugins/canvas/index';
+import { characteristics } from '@magic/graph-plugins/plugins/characteristics/index';
 import { focus } from '@magic/graph-plugins/plugins/focus/index';
 import { history } from '@magic/graph-plugins/plugins/history/index';
 import { marquee } from '@magic/graph-plugins/plugins/marquee/index';
@@ -31,6 +32,7 @@ const createGraphWithPlugins = (
       nodeLabel,
       adjacencyLists,
       transitionMatrix,
+      characteristics,
     ],
   });
 

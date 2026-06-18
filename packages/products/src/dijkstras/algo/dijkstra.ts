@@ -1,4 +1,4 @@
-import type { TransitionMatrix } from '../../../../graph/graph-plugins/src/plugins/useTransitionMatrix.ts';
+import type { TransitionMatrix } from '@magic/graph-plugins/plugins/transition-matrix/types';
 
 export type DijkstrasResult = number[];
 

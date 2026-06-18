@@ -3,7 +3,7 @@ import { Fraction, matrix, multiply } from 'mathjs';
 import { computed, watch } from 'vue';
 import type { ComputedRef, Ref } from 'vue';
 
-import type { TransitionMatrix } from '../../../../graph/graph-plugins/src/plugins/useTransitionMatrix.ts';
+import type { TransitionMatrix } from '@magic/graph-plugins/plugins/transition-matrix/types';
 import type { MarkovChainTrace } from '../sim/runner.ts';
 
 const memo = new Map<number, ReturnType<typeof getStateAfterNSteps>>();

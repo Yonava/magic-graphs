@@ -57,7 +57,7 @@ export const useTreeGraphPositioner = (
   const optionsRef = ref(treeOptions);
 
   const graphPositioner = (rootNode: { id: string }) => {
-    const { adjacencyList } = graph.adjacencyList;
+    const { standard: adjacencyList } = graph.adjacencyLists;
     const nodeDepths = getNodeDepths(rootNode, adjacencyList.value);
     const positionerOptions: TreeGraphPositionerOptions = {
       graph,

@@ -1,4 +1,4 @@
-import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
+import { CanvasGraphMouseEvent } from '@magic/graph-plugins/plugins/canvas/events';
 
 import { GraphWithPlugins } from '../useGraph.ts';
 
@@ -60,7 +60,6 @@ export const useInteractive = (graph: GraphWithPlugins) => {
     graph.actions.addEdge({
       source: fromNode.id,
       target: toNode.id,
-      weight: graph.settings.value.userAddedDefaultEdgeWeight(),
     });
   };
 

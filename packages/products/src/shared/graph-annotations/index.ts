@@ -1,8 +1,8 @@
-import { CanvasGraphMouseEvent } from '@magic/graph/plugins/canvas/events';
+import { CanvasGraphMouseEvent } from '@magic/graph-plugins/plugins/canvas/events';
 import {
   Aggregator,
   GraphUnderCursor,
-} from '@magic/graph/plugins/canvas/types';
+} from '@magic/graph-plugins/plugins/canvas/types';
 import { circle } from '@magic/shapes/shapes/circle/index';
 import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
 import type { WithId } from '@magic/shapes/types/index';
@@ -17,7 +17,7 @@ import { computed, ref } from 'vue';
 
 import { GraphWithPlugins } from '../useGraph.ts';
 import {
-  ANNOTATION_EVENT_ID,
+  ANNOTATION_PLUGIN_ID,
   BRUSH_WEIGHTS,
   COLORS,
   ERASER_BRUSH_RADIUS,
@@ -271,19 +271,19 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
     graph.events.handle(
       'onMouseDown',
       startDrawing,
-      ANNOTATION_EVENT_ID,
+      ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
     graph.events.handle(
       'onGraphUnderCursorChange',
       drawLine,
-      ANNOTATION_EVENT_ID,
+      ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
     graph.events.handle(
       'onMouseUp',
       stopDrawing,
-      ANNOTATION_EVENT_ID,
+      ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
   };
