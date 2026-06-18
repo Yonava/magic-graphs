@@ -21,7 +21,7 @@
 <template>
   <div class="flex flex-col gap-4">
     <div
-      v-for="(value, key) in graph.adjacencyList.weightedAdjacencyList.value"
+      v-for="(value, key) in graph.adjacencyLists.weighted.value"
       :key="key"
       class="flex items-center"
     >
@@ -30,9 +30,9 @@
           <GNode :node="getNode(key)" />
           <template #content>
             <GWell class="px-3 py-2 rounded-md">
-              <b>{{ graph.labels.get(key) }}</b>
+              <b>{{ graph.nodeLabel.get(key) }}</b>
               links to
-              <b>{{ getCommaList(value.map((n) => graph.labels.get(n.id))) || 'nothing' }}</b>
+              <b>{{ getCommaList(value.map((n) => graph.nodeLabel.get(n.id))) || 'nothing' }}</b>
             </GWell>
           </template>
         </CPopoverTooltip>
@@ -55,7 +55,7 @@
                 class="relative flex flex-col"
               >
                 <span class="leading-[15px]">
-                  {{ graph.labels.get(node.id) }}
+                  {{ graph.nodeLabel.get(node.id) }}
                 </span>
                 <span
                   v-if="isWeighted"
@@ -67,9 +67,9 @@
 
               <template #content>
                 <GWell class="p-2 rounded-md">
-                  <b>{{ graph.labels.get(node.id) }}</b>
+                  <b>{{ graph.nodeLabel.get(node.id) }}</b>
                   links to
-                  <b>{{ graph.labels.get(key) }}</b>
+                  <b>{{ graph.nodeLabel.get(key) }}</b>
                   <span v-if="isWeighted">
                     with a cost of
                     <b>{{ node.weight.toFraction() }}</b>

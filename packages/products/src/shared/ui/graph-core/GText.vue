@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ThemePreset } from '@magic/graph/plugins/canvas/themes/index';
+  import { ThemePreset } from '@magic/graph-plugins/plugins/canvas/themes/index';
   import type { Color } from '@magic/utils/colors';
   import colors from '@magic/utils/colors';
 

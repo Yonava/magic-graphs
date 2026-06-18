@@ -60,7 +60,7 @@
     class="text-white flex items-center gap-3 p-2 hover:bg-gray-900 cursor-pointer rounded-lg"
   >
     <span class="text-2xl w-6 text-center font-bold">
-      {{ graph.labels.get(node.id) }}
+      {{ graph.nodeLabel.get(node.id) }}
     </span>
     <span class="font-bold">→</span>
     <div

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { resolveNodeStyles } from '@magic/graph/plugins/canvas/themes/index';
+  import { resolveNodeStyles } from '@magic/graph-plugins/plugins/canvas/themes/index';
   import type { CoreNode } from '@magic/graph/types';
 
   import { computed, onUnmounted, ref } from 'vue';
