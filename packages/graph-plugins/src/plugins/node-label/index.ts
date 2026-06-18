@@ -6,7 +6,7 @@ import { createLabelGenerator } from './createLabelGenerator.ts';
 import { createLabelThemer } from './createLabelThemer.ts';
 import { NodeLabelControls, NodeLabelPlugin } from './types.ts';
 
-export const nodeLabel: NodeLabelPlugin = (graph, events, actions) => {
+export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
   const nodeIdToLabel = new Map<string, string>();
 
   const getNodeLabel: NodeLabelControls['get'] = (nodeId) =>
@@ -41,6 +41,7 @@ export const nodeLabel: NodeLabelPlugin = (graph, events, actions) => {
 
   return {
     events,
+    getters,
     actions: {
       ...actions,
       addNode: (options) => {

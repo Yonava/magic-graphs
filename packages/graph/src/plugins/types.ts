@@ -10,15 +10,70 @@ import { CoreEventMap } from '../core/events.ts';
 import { CoreControls } from '../core/types.ts';
 import { EventHub } from '../events/createEventHub.ts';
 import { GenericEventMap } from '../events/types.ts';
+import { GEdge, GNode } from '../types.ts';
 
-// TODO add generic overrides system for getNode/getEdge just like graph actions!
+type BaseGetters = {
+  getNode: {};
+  getEdge: {};
+};
+
+type CoreGetters = {
+  getNode: GNode;
+  getEdge: GEdge;
+};
+
+export type ResolveGetters<Getters extends Partial<BaseGetters>> = {
+  getNode: 'getNode' extends keyof Getters
+    ? NonNullable<Getters['getNode']>
+    : {};
+  getEdge: 'getEdge' extends keyof Getters
+    ? NonNullable<Getters['getEdge']>
+    : {};
+};
+
+type DistributeResolveGetters<PartialActions extends Partial<BaseGetters>> =
+  PartialActions extends PartialActions
+    ? ResolveGetters<PartialActions>
+    : never;
+
+export type MergeGetters<Getters extends Partial<BaseGetters>[]> =
+  Getters extends []
+    ? BaseGetters
+    : {
+        [ActionsField in keyof BaseGetters]: UnionToIntersection<
+          DistributeResolveGetters<Getters[number]>[ActionsField]
+        >;
+      };
+
+export type GraphGetters<Getters extends BaseGetters> = {
+  getNode: (nodeId: string) => Getters['getNode'];
+  getEdge: (edgeId: string) => Getters['getEdge'];
+};
 
 type LoosePluginData = {
   controls: object;
   events: GenericEventMap;
+  getters: Partial<BaseGetters>;
   actions: PartialBaseActions;
   dependsOn: LooseGraphPlugin[];
 };
+
+type DefaultPluginData = {
+  controls: {};
+  events: {};
+  getters: {};
+  actions: {};
+  dependsOn: [];
+};
+
+type ResolvePluginData<PartialPluginData> = {
+  [K in keyof LoosePluginData]: K extends keyof PartialPluginData
+    ? NonNullable<PartialPluginData[K]>
+    : DefaultPluginData[K];
+};
+
+export type GraphPlugin<PluginData extends Partial<LoosePluginData>> =
+  ResolvedGraphPlugin<ResolvePluginData<PluginData>>;
 
 /**
  * a plugin receives the upstream event hub (core's events plus everything
@@ -33,10 +88,11 @@ type LoosePluginData = {
  * would silently drop every event upstream plugins (and core) emit, since
  * downstream plugins and consumers only ever see what's returned here.
  */
-export type GraphPlugin<PluginData extends LoosePluginData> = (
+type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
   graph: CoreControls & ExtractControls<PluginData['dependsOn']>,
   events: EventHub<CoreEventMap & ExtractEventMap<PluginData['dependsOn']>>,
   actions: GraphActions<CoreActions>,
+  getters: GraphGetters<CoreGetters>,
 ) => {
   controls: PluginData['controls'];
   events: EventHub<
@@ -44,6 +100,7 @@ export type GraphPlugin<PluginData extends LoosePluginData> = (
       ExtractEventMap<PluginData['dependsOn']> &
       PluginData['events']
   >;
+  getters: GraphGetters<MergeGetters<[PluginData['getters'], CoreGetters]>>;
   actions: GraphActions<MergeActions<[PluginData['actions'], CoreActions]>>;
 };
 
@@ -61,6 +118,7 @@ export type LooseGraphPlugin = (
   graph: any,
   events: EventHub<CoreEventMap>,
   actions: GraphActions<CoreActions>,
+  getters: GraphGetters<CoreGetters>,
 ) => {
   controls: LoosePluginData['controls'];
   events: EventHub<CoreEventMap & LoosePluginData['events']>;
