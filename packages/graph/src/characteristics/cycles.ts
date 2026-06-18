@@ -1,8 +1,12 @@
+import type {
+  AdjacencyList,
+  AdjacencyLists,
+} from '@magic/graph-plugins/plugins/useAdjacencyList';
+
 import { computed } from 'vue';
 
 import type { CoreControls } from '../core/types.ts';
 import type { CoreNode } from '../types.ts';
-import type { AdjacencyList, AdjacencyLists } from '../useAdjacencyList.ts';
 import type { CharacteristicSCC } from './scc.ts';
 
 type GetCycles = (adjList: AdjacencyList) => CoreNode['id'][][];

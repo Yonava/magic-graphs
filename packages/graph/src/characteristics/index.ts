@@ -1,6 +1,7 @@
+import type { AdjacencyLists } from '@magic/graph-plugins/plugins/useAdjacencyList';
+
 import { CoreEventMap } from '../core/events.ts';
 import type { CoreControls } from '../core/types.ts';
-import type { AdjacencyLists } from '../useAdjacencyList.ts';
 import { useBidirectionalEdges } from './bidirectional.ts';
 import { useBipartite } from './bipartite.ts';
 import { useComplete } from './complete.ts';

@@ -1,5 +1,3 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-import type { TransitionMatrix } from '@magic/graph/useTransitionMatrix';
 import {
   Fraction,
   Matrix,
@@ -13,6 +11,9 @@ import {
 } from 'mathjs';
 
 import { computed } from 'vue';
+
+import type { TransitionMatrix } from '../../../../graph/graph-plugins/src/plugins/useTransitionMatrix.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 // TODO add tests!!! rref function is untrusted AI output :(
 const rref = (matrix: TransitionMatrix) => {

@@ -1,8 +1,9 @@
+import type { AdjacencyLists } from '@magic/graph-plugins/plugins/useAdjacencyList';
+
 import { computed } from 'vue';
 
 import { CoreControls } from '../core/types.ts';
 import type { CodeEdge, CoreNode } from '../types.ts';
-import type { AdjacencyLists } from '../useAdjacencyList.ts';
 import TarjanGraph from './tarjans.ts';
 
 type GetComponents = (nodes: CoreNode[], edges: CodeEdge[]) => CoreNode[][];

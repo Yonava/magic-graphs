@@ -10,8 +10,8 @@ import { useCharacteristics } from '@magic/graph/characteristics/index';
 import { createGraph } from '@magic/graph/core/index';
 import type { GraphSettings } from '@magic/graph/settings/index';
 import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
-import { useTransitionMatrix } from '@magic/graph/useTransitionMatrix';
 
+import { useTransitionMatrix } from '../../../graph/graph-plugins/src/plugins/useTransitionMatrix.ts';
 import { useInteractive } from './interactive/index.ts';
 import { useShortcuts } from './shortcut/index.ts';
 import { usePreferredThemePreset } from './usePreferredThemePreset.ts';

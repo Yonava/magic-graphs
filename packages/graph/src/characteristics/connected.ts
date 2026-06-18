@@ -1,6 +1,9 @@
-import { computed } from 'vue';
+import type {
+  AdjacencyList,
+  AdjacencyLists,
+} from '@magic/graph-plugins/plugins/useAdjacencyList';
 
-import type { AdjacencyList, AdjacencyLists } from '../useAdjacencyList.ts';
+import { computed } from 'vue';
 
 export const useConnected = ({
   adjacencyList: adjList,

@@ -1,12 +1,12 @@
-import { computed } from 'vue';
+import { GraphPlugin } from '@magic/graph/plugins/types';
+import type { CodeEdge, CoreNode } from '@magic/graph/types';
 
-import { CoreEventMap } from './core/events.ts';
-import type { CoreControls } from './core/types.ts';
-import type { CodeEdge, CoreNode } from './types.ts';
+import { ComputedRef, computed } from 'vue';
+
 import type {
-  AdjacencyLists,
+  AdjacencyListsPlugin,
   WeightedAdjacencyList,
-} from './useAdjacencyList.ts';
+} from './adjacencyLists.ts';
 
 /**
  * a 2D array (matrix) where matrix[i][j] represents the weight of
@@ -42,21 +42,26 @@ export const getTransitionMatrix = (
   return matrix;
 };
 
-export const useTransitionMatrix = <A, B extends CoreEventMap, C>({
-  graph,
-  adjacencyList,
-}: {
-  graph: CoreControls<A, B, C>;
-  adjacencyList: Pick<AdjacencyLists, 'weightedAdjacencyList'>;
-}) => {
-  const { weightedAdjacencyList } = adjacencyList;
+export type TransitionMatrixPlugin = GraphPlugin<{
+  controls: { transitionMatrix: ComputedRef<TransitionMatrix> };
+  dependsOn: [AdjacencyListsPlugin];
+}>;
 
-  const transitionMatrix = computed(() => {
-    return getTransitionMatrix(
-      weightedAdjacencyList.value,
-      graph.nodeIdToIndex.value,
-    );
-  });
-
-  return transitionMatrix;
-};
+export const transitionMatrix: TransitionMatrixPlugin = (
+  controls,
+  events,
+  actions,
+  getters,
+) => ({
+  events,
+  actions,
+  getters,
+  controls: {
+    transitionMatrix: computed(() =>
+      getTransitionMatrix(
+        controls.adjacencyLists.weighted.value,
+        controls.nodeIdToIndex.value,
+      ),
+    ),
+  },
+});
