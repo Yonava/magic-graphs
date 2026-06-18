@@ -1,5 +1,5 @@
-import { CoreControls } from '@magic/graph/core/types';
 import { EventHub } from '@magic/graph/events/createEventHub';
+import { CoreGetters, GraphGetters } from '@magic/graph/plugins/types';
 
 import { CanvasEventMap } from './events.ts';
 import { CURSOR, CURSOR_FALLBACK, Cursor } from './themes/cursor.ts';
@@ -8,7 +8,7 @@ import { CanvasControls } from './types.ts';
 type GraphCursorProps = {
   subscribe: EventHub<CanvasEventMap>['subscribe'];
   canvas: CanvasControls['magicCanvas']['canvas'];
-  getNode: CoreControls['getNode'];
+  getNode: GraphGetters<CoreGetters>['getNode'];
   resolveToken: CanvasControls['theme']['_resolveToken'];
   graphUnderCursor: CanvasControls['graphUnderCursor'];
 };
