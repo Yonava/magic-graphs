@@ -127,19 +127,35 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     weights: edgeWeightStore,
   };
 
-  const events = coreEventHub as unknown as EventHub<
-    ExtractEventMap<NoInfer<TPlugins>>
-  >;
+  let evolvingControls = coreControls;
+  let evolvingEvents: any = coreEventHub;
+  let evolvingActions = coreActions;
+  let evolvingGetters = coreGetters;
 
-  const controls = coreControls as Prettify<
+  for (const plugin of plugins) {
+    const pluginResult = plugin(
+      evolvingControls,
+      evolvingEvents,
+      evolvingActions,
+      evolvingGetters,
+    );
+    evolvingControls = { ...evolvingControls, ...pluginResult.controls };
+    evolvingEvents = pluginResult.events;
+    evolvingActions = { ...evolvingActions, ...pluginResult.actions };
+    evolvingGetters = { ...evolvingGetters, ...pluginResult.getters };
+  }
+
+  const events = evolvingEvents as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
+
+  const controls = evolvingControls as Prettify<
     CoreControls & ExtractControls<NoInfer<TPlugins>>
   >;
 
-  const actions = coreActions as GraphActions<
+  const actions = evolvingActions as GraphActions<
     ExtractActions<NoInfer<TPlugins>>
   >;
 
-  const getters = coreGetters as GraphGetters<
+  const getters = evolvingGetters as GraphGetters<
     ExtractGetters<NoInfer<TPlugins>>
   >;
 

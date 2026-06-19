@@ -10,7 +10,7 @@ export type NodeLabelEntry = {
 
 export type NodeLabelUpdate = {
   nodeId: string;
-  label: MaybeGetter<string, [string]>;
+  label: MaybeGetter<string, [string | undefined]>;
 };
 
 export type NodeLabelControls = {

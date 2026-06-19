@@ -1,4 +1,5 @@
 import { nullThrows } from '@magic/utils/assert';
+import { generateId } from '@magic/utils/id';
 import { getValue } from '@magic/utils/maybeGetter/index';
 
 import { UPPERCASE_ALPHABET } from './constants.ts';
@@ -9,15 +10,17 @@ import { NodeLabelControls, NodeLabelPlugin } from './types.ts';
 export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
   const nodeIdToLabel = new Map<string, string>();
 
-  const getNodeLabel: NodeLabelControls['get'] = (nodeId) =>
+  const getNodeLabel = (nodeId: string) => nodeIdToLabel.get(nodeId);
+  const getNodeLabelWithAssert: NodeLabelControls['get'] = (nodeId) =>
     nullThrows(
-      nodeIdToLabel.get(nodeId),
-      `could not resolve label from node with id ${nodeId}`,
+      getNodeLabel(nodeId),
+      'could not find label on node with id:' + nodeId,
     );
 
   const setNodeLabels: NodeLabelControls['setMany'] = (labels) => {
     return labels.map(({ nodeId, label: labelOrLabelGetter }) => {
-      const currentLabel = getNodeLabel(nodeId);
+      const currentLabel = getNodeLabel(nodeId) ?? undefined;
+
       const label = getValue(labelOrLabelGetter, currentLabel);
       nodeIdToLabel.set(nodeId, label);
       return { nodeId, label };
@@ -28,11 +31,11 @@ export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
     getLabels: () =>
       // TODO this breaks when multiple nodes are added in bulk and implicitly requires newly added not to be the last node in the nodes array. This needs to change
       // https://github.com/Yonava/magic-graphs/issues/700
-      graph.nodes.value.slice(0, -1).map((n) => getNodeLabel(n.id)),
+      graph.nodes.value.slice(0, -1).map((n) => getNodeLabelWithAssert(n.id)),
     sequence: UPPERCASE_ALPHABET,
   });
 
-  const themer = createLabelThemer(graph.canvas.theme, getNodeLabel);
+  const themer = createLabelThemer(graph.canvas.theme, getNodeLabelWithAssert);
 
   const enable = themer.enable;
   const disable = themer.disable;
@@ -45,18 +48,18 @@ export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
       ...getters,
       getNode: (id) => {
         const node = getters.getNode(id);
-        const label = getNodeLabel(node.id);
+        const label = getNodeLabelWithAssert(node.id);
         return { ...node, label };
       },
     },
     actions: {
       ...actions,
       addNode: (options) => {
-        const node = actions.addNode(options);
+        const id = options?.id ?? generateId();
         setNodeLabels([
-          { label: options.label ?? generateLabel(), nodeId: node.id },
+          { label: options.label ?? generateLabel(), nodeId: id },
         ]);
-        return node;
+        return actions.addNode({ ...options, id });
       },
       removeNode: (options) => {
         nodeIdToLabel.delete(options.id);
@@ -66,7 +69,7 @@ export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
     },
     controls: {
       nodeLabel: {
-        get: getNodeLabel,
+        get: getNodeLabelWithAssert,
         set: (label) => setNodeLabels([label]),
         setMany: setNodeLabels,
         lifecycle: {
