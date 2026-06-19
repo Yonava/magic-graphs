@@ -14,7 +14,10 @@ export const getNodeZScores = ({
   const increment = 1 / nodes.length;
 
   const nodesSortedByZ = nodes.toSorted((a, b) => {
-    return positions.get(a.id).z - positions.get(b.id).z;
+    const zA = positions.get(a.id).z;
+    const zB = positions.get(b.id).z;
+    if (zA !== zB) return zB - zA;
+    return nodes.indexOf(b) - nodes.indexOf(a);
   });
 
   for (let i = 0; i < nodesSortedByZ.length; i++) {
