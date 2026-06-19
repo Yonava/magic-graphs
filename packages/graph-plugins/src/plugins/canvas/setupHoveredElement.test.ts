@@ -2,7 +2,7 @@ import { createMockEventHub } from '@magic/graph/testing/events/createMockEventH
 import { describe, expect, it, vi } from 'vitest';
 
 import { createCanvasEventRegistry } from './events.ts';
-import { setupHoveredElement } from './setupHoveredElement.ts';
+import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
 import { CanvasElement } from './types.ts';
 
 const makeElement = (id: string): CanvasElement => ({ id }) as CanvasElement;
@@ -19,16 +19,16 @@ const triggerCursorChange = (
   } as any);
 };
 
-describe(setupHoveredElement, () => {
+describe(setupOnHoveredElementChangeEvent, () => {
   it('starts as undefined', () => {
     const events = makeEvents();
-    const { value } = setupHoveredElement(events);
+    const { value } = setupOnHoveredElementChangeEvent(events);
     expect(value).toBeUndefined();
   });
 
   it('sets the hovered element to the topmost element', () => {
     const events = makeEvents();
-    const state = setupHoveredElement(events);
+    const state = setupOnHoveredElementChangeEvent(events);
     const el = makeElement('a');
 
     triggerCursorChange(events, [el]);
@@ -37,7 +37,7 @@ describe(setupHoveredElement, () => {
 
   it('updates when the hovered element changes', () => {
     const events = makeEvents();
-    const state = setupHoveredElement(events);
+    const state = setupOnHoveredElementChangeEvent(events);
 
     triggerCursorChange(events, [makeElement('a')]);
     triggerCursorChange(events, [makeElement('b')]);
@@ -46,7 +46,7 @@ describe(setupHoveredElement, () => {
 
   it('clears to undefined when no elements are under the cursor', () => {
     const events = makeEvents();
-    const state = setupHoveredElement(events);
+    const state = setupOnHoveredElementChangeEvent(events);
 
     triggerCursorChange(events, [makeElement('a')]);
     triggerCursorChange(events, []);
@@ -56,54 +56,74 @@ describe(setupHoveredElement, () => {
   describe('onHoveredElementChange', () => {
     it('is triggered when moving from undefined to an element', () => {
       const events = makeEvents();
-      setupHoveredElement(events);
+      setupOnHoveredElementChangeEvent(events);
       const el = makeElement('a');
 
       triggerCursorChange(events, [el]);
-      expect(events.emit).toHaveBeenCalledWith('onHoveredElementChange', el, undefined);
+      expect(events.emit).toHaveBeenCalledWith(
+        'onHoveredElementChange',
+        el,
+        undefined,
+      );
     });
 
     it('is triggered when moving from one element to another', () => {
       const events = makeEvents();
-      setupHoveredElement(events);
+      setupOnHoveredElementChangeEvent(events);
       const a = makeElement('a');
       const b = makeElement('b');
 
       triggerCursorChange(events, [a]);
       triggerCursorChange(events, [b]);
-      expect(events.emit).toHaveBeenLastCalledWith('onHoveredElementChange', b, a);
+      expect(events.emit).toHaveBeenLastCalledWith(
+        'onHoveredElementChange',
+        b,
+        a,
+      );
     });
 
     it('is triggered when the cursor leaves all elements', () => {
       const events = makeEvents();
-      setupHoveredElement(events);
+      setupOnHoveredElementChangeEvent(events);
       const el = makeElement('a');
 
       triggerCursorChange(events, [el]);
       triggerCursorChange(events, []);
-      expect(events.emit).toHaveBeenLastCalledWith('onHoveredElementChange', undefined, el);
+      expect(events.emit).toHaveBeenLastCalledWith(
+        'onHoveredElementChange',
+        undefined,
+        el,
+      );
     });
 
     it('is not triggered when the same element remains on top', () => {
       const events = makeEvents();
-      setupHoveredElement(events);
+      setupOnHoveredElementChangeEvent(events);
       const el = makeElement('a');
 
       triggerCursorChange(events, [el]);
       vi.clearAllMocks();
       triggerCursorChange(events, [el]);
 
-      expect(events.emit).not.toHaveBeenCalledWith('onHoveredElementChange', expect.anything(), expect.anything());
+      expect(events.emit).not.toHaveBeenCalledWith(
+        'onHoveredElementChange',
+        expect.anything(),
+        expect.anything(),
+      );
     });
 
     it('is not triggered when cursor stays empty', () => {
       const events = makeEvents();
-      setupHoveredElement(events);
+      setupOnHoveredElementChangeEvent(events);
 
       triggerCursorChange(events, []);
       triggerCursorChange(events, []);
 
-      expect(events.emit).not.toHaveBeenCalledWith('onHoveredElementChange', expect.anything(), expect.anything());
+      expect(events.emit).not.toHaveBeenCalledWith(
+        'onHoveredElementChange',
+        expect.anything(),
+        expect.anything(),
+      );
     });
   });
 });

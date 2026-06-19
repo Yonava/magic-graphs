@@ -1,6 +1,7 @@
 import { EventMapToEventRegistry } from '@magic/graph/events/types';
 import { DeepReadonly } from 'ts-essentials';
 
+import { HoveredElement } from './setupHoveredElement.ts';
 import { CanvasElement, GraphUnderCursor } from './types.ts';
 
 /**
@@ -59,8 +60,8 @@ export type CanvasEventMap = {
 
   onGraphUnderCursorChange: (data: DeepReadonly<GraphUnderCursor>) => void;
   onHoveredElementChange: (
-    newElement: CanvasElement | undefined,
-    oldElement: CanvasElement | undefined,
+    newElement: HoveredElement['value'],
+    oldElement: HoveredElement['value'],
   ) => void;
 };
 

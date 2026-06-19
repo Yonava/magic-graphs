@@ -4,12 +4,16 @@ import { DeepReadonly } from 'ts-essentials';
 import { CanvasEventMap } from './events.ts';
 import { CanvasElement } from './types.ts';
 
+export type HoveredElement = { value: DeepReadonly<CanvasElement> | undefined };
+
 type SetupHoveredElement = (
   events: Pick<EventHub<CanvasEventMap>, 'subscribe' | 'emit'>,
-) => { value: DeepReadonly<CanvasElement> | undefined };
+) => HoveredElement;
 
-export const setupHoveredElement: SetupHoveredElement = (events) => {
-  let hoveredElement: { value: CanvasElement | undefined } = {
+export const setupOnHoveredElementChangeEvent: SetupHoveredElement = (
+  events,
+) => {
+  let hoveredElement: HoveredElement = {
     value: undefined,
   };
 
