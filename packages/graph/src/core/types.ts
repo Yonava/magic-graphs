@@ -7,14 +7,11 @@ import { NodePositionStoreControls } from './positions/types.ts';
 import { EdgeWeightStoreControls } from './weights/types.ts';
 
 export type CoreControls = {
-  /**
-   * all the nodes contained in the graph
-   */
   nodes: Ref<CoreNode[]>;
-  /**
-   * all the edges contained in the graph
-   */
   edges: Ref<CoreEdge[]>;
+
+  isNode: (id: string) => boolean;
+  isEdge: (id: string) => boolean;
 
   nodeIdToIndex: ComputedRef<Map<CoreNode['id'], number>>;
   edgeIdToIndex: ComputedRef<Map<CoreEdge['id'], number>>;

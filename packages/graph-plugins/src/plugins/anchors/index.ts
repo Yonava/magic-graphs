@@ -4,13 +4,15 @@ import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { CoreNode } from '@magic/graph/types';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
 import type { WithId } from '@magic/shapes/types/index';
+import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
-import { readonly, ref } from 'vue';
+import { DeepReadonly, readonly, ref } from 'vue';
 
 import type { AnchorsPlugin, NodeAnchor } from '../../plugins/anchors/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
+import { HoveredElement } from '../canvas/setupHoveredElement.ts';
 import { CanvasElement } from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { ANCHOR_PLUGIN_ID } from './constants.ts';
@@ -116,7 +118,7 @@ export const anchors: AnchorsPlugin = (
         id: anchor.id,
         graphType: 'node-anchor',
         shape: nodeAnchorShape,
-        priority: 3,
+        priority: 4,
         data: {
           [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: resolveToken(
             'nodeAnchor.default.cursor',
@@ -205,26 +207,27 @@ export const anchors: AnchorsPlugin = (
     return nodeAnchors.value.find((anchor) => anchor.id === anchorId);
   };
 
-  const resolveLinkPreviewCanvasElement = () => {
+  const resolveLinkPreviewCanvasElement = (elements: CanvasElement[]) => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
-    if (!parentNode.value || !draggedAnchor) return;
+    const currentParentNode = parentNode.value;
+    if (!currentParentNode || !draggedAnchor) return;
     const { x, y } = draggedAnchor;
-    const start = controls.positions.get(parentNode.value.id);
+    const start = controls.positions.get(currentParentNode.id);
     const end = { x, y };
     const { _resolveToken: resolveToken } = controls.canvas.theme;
 
     // TODO https://github.com/Yonava/magic-graphs/issues/707
-    const isFocused = controls.focus.isFocused(parentNode.value.id);
+    const isFocused = controls.focus.isFocused(currentParentNode.id);
 
     const baseColor = resolveToken(
       'nodeAnchor.default.linkPreview.color',
-      parentNode.value,
+      currentParentNode,
       draggedAnchor,
     );
 
     const focusColor = resolveToken(
       'nodeAnchor.focus.linkPreview.color',
-      parentNode.value,
+      currentParentNode,
       draggedAnchor,
     );
 
@@ -232,13 +235,13 @@ export const anchors: AnchorsPlugin = (
 
     const baseWidth = resolveToken(
       'nodeAnchor.default.linkPreview.width',
-      parentNode.value,
+      currentParentNode,
       draggedAnchor,
     );
 
     const focusWidth = resolveToken(
       'nodeAnchor.focus.linkPreview.width',
-      parentNode.value,
+      currentParentNode,
       draggedAnchor,
     );
 
@@ -252,10 +255,15 @@ export const anchors: AnchorsPlugin = (
       lineWidth: width,
     });
 
+    const parentNodePriority = nullThrows(
+      elements.find((e) => e.id === currentParentNode.id),
+      'could not find parent node in aggregator pipeline',
+    ).priority;
+
     const element: CanvasElement = {
       id: 'link-preview',
       graphType: 'link-preview',
-      priority: 1,
+      priority: parentNodePriority - 0.001,
       shape,
     };
 
@@ -340,7 +348,8 @@ export const anchors: AnchorsPlugin = (
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (!parentNode.value || !draggedAnchor) return aggregator;
 
-    const linkPreviewCanvasElement = resolveLinkPreviewCanvasElement();
+    const linkPreviewCanvasElement =
+      resolveLinkPreviewCanvasElement(aggregator);
     if (!linkPreviewCanvasElement) return aggregator;
 
     aggregator.push(linkPreviewCanvasElement);
@@ -350,7 +359,15 @@ export const anchors: AnchorsPlugin = (
   controls.canvas.aggregator.transformers.push(insertAnchorsIntoAggregator);
   controls.canvas.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
 
-  const activate = () => {
+  const consumeOnElementHoverEvent = (
+    _: HoveredElement['value'] | undefined,
+    __: HoveredElement['value'] | undefined,
+    consume: () => void,
+  ) => {
+    if (anchorDragState.isDragging()) consume();
+  };
+
+  const enable = () => {
     events.handle(
       'onNodesRemoved',
       clearAnchorStateIfParentRemoved,
@@ -358,7 +375,7 @@ export const anchors: AnchorsPlugin = (
     );
     events.handle('onNodeMoveStreamStart', clearAnchorState, ANCHOR_PLUGIN_ID);
 
-    // for when the user is mousing over the canvas. checks if a node is under the cursor
+    // when the user is mousing over the canvas. checks if a node is under the cursor
     // to set the anchors on. onGraphUnderCursorChange because onMouseMove doesn't capture
     // the cases where the canvas state changes under the cursor while the cursor is
     // stationary, ie node being added via double click
@@ -368,7 +385,7 @@ export const anchors: AnchorsPlugin = (
       ANCHOR_PLUGIN_ID,
     );
 
-    // for when a node is finished dragging, set the dropped node as anchor parent
+    // when a node is finished dragging, set the dropped node as anchor parent
     events.handle('onMouseUp', checkForParentNodeUpdate, ANCHOR_PLUGIN_ID);
 
     // if an anchor is being dragged, update its position
@@ -387,12 +404,20 @@ export const anchors: AnchorsPlugin = (
     // drop the node anchor being dragged
     events.handle('onMouseUp', dropAnchor, ANCHOR_PLUGIN_ID);
 
-    // TODO this is triggered twice! https://github.com/Yonava/magic-graphs/issues/664
-    // console.log('activating');
-    dragCursorTheme.activate();
+    // prevents fast mouse movement from updating the hovered element to the destination node mid-drag
+    events.handle(
+      'onHoveredElementChange',
+      consumeOnElementHoverEvent,
+      ANCHOR_PLUGIN_ID,
+      {
+        before: ['plugins/canvas'],
+      },
+    );
+
+    dragCursorTheme.enable();
   };
 
-  const deactivate = () => {
+  const disable = () => {
     events.unhandle('onNodesRemoved', clearAnchorStateIfParentRemoved);
     events.unhandle('onNodeMoveStreamStart', clearAnchorState);
     events.unhandle('onGraphUnderCursorChange', checkForParentNodeUpdate);
@@ -400,11 +425,12 @@ export const anchors: AnchorsPlugin = (
     events.unhandle('onMouseMove', updateHoveredNodeAnchorId);
     events.unhandle('onMouseDown', setCurrentlyDraggingAnchor);
     events.unhandle('onMouseUp', dropAnchor);
+    events.unhandle('onHoveredElementChange', consumeOnElementHoverEvent);
     clearAnchorState();
-    dragCursorTheme.deactivate();
+    dragCursorTheme.disable();
   };
 
-  activate();
+  enable();
 
   return {
     events,
@@ -412,8 +438,10 @@ export const anchors: AnchorsPlugin = (
     getters,
     controls: {
       anchors: {
-        activate,
-        deactivate,
+        lifecycle: {
+          enable,
+          disable,
+        },
         parentNode: readonly(parentNode),
         setParentNode,
         clearAnchorState,

@@ -108,6 +108,16 @@ describe(createEdgeWeightStore, () => {
       expect(entry.edgeId).toBe('e1');
       expect(entry.weight.equals(new Fraction(6))).toBe(true);
     });
+
+    it('triggers onStructureChange', () => {
+      const { store, hub } = makeStore();
+      store._internal.add([{ id: 'e1' }]);
+      store.set({ edgeId: 'e1', update: new Fraction(6) });
+      const calls = hub.emit.mock.calls.filter(
+        (args: unknown[]) => args[0] === 'onStructureChange',
+      );
+      expect(calls).toHaveLength(1);
+    });
   });
 
   describe('setMany', () => {
@@ -134,6 +144,19 @@ describe(createEdgeWeightStore, () => {
       );
       expect(committed).toHaveLength(1);
       expect(committed[0][1]).toHaveLength(2);
+    });
+
+    it('triggers onStructureChange', () => {
+      const { store, hub } = makeStore();
+      store._internal.add([{ id: 'e1' }, { id: 'e2' }]);
+      store.setMany([
+        { edgeId: 'e1', update: new Fraction(2) },
+        { edgeId: 'e2', update: new Fraction(3) },
+      ]);
+      const calls = hub.emit.mock.calls.filter(
+        (args: unknown[]) => args[0] === 'onStructureChange',
+      );
+      expect(calls).toHaveLength(1);
     });
   });
 });

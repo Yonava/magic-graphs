@@ -1,7 +1,8 @@
 import { EventMapToEventRegistry } from '@magic/graph/events/types';
 import { DeepReadonly } from 'ts-essentials';
 
-import { GraphUnderCursor } from './types.ts';
+import { HoveredElement } from './setupHoveredElement.ts';
+import { CanvasElement, GraphUnderCursor } from './types.ts';
 
 /**
  * a standard mouse event along with extra graph related info
@@ -58,6 +59,10 @@ export type CanvasEventMap = {
   onDraw: (ctx: CanvasRenderingContext2D) => void;
 
   onGraphUnderCursorChange: (data: DeepReadonly<GraphUnderCursor>) => void;
+  onHoveredElementChange: (
+    newElement: HoveredElement['value'],
+    oldElement: HoveredElement['value'],
+  ) => void;
 };
 
 type CanvasEventRegistry = EventMapToEventRegistry<CanvasEventMap>;
@@ -75,4 +80,5 @@ export const createCanvasEventRegistry = (): CanvasEventRegistry => ({
 
   onDraw: new Set(),
   onGraphUnderCursorChange: new Set(),
+  onHoveredElementChange: new Set(),
 });

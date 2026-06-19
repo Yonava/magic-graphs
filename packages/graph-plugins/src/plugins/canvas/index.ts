@@ -4,6 +4,7 @@ import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { cross } from '@magic/shapes/shapes/cross/index';
+import { nullThrows } from '@magic/utils/assert';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 import { DeepReadonly } from 'ts-essentials';
@@ -17,10 +18,12 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
+import { getNodeZScores } from './nodeZScores.ts';
 import {
   CANVAS_ELEMENT_CURSOR_FIELD_KEY,
   setupCanvasCursor,
 } from './setupCanvasCursor.ts';
+import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
 import { createLayer } from './themes/createLayer.ts';
 import { createTokenResolver } from './themes/createTokenResolver.ts';
 import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
@@ -84,6 +87,30 @@ export const canvas =
       graphUnderCursor,
     });
 
+    setupOnHoveredElementChangeEvent(events);
+
+    // went with max+1 instead of closed rotation for node hovers since rotation requires
+    // redistributing z values across all nodes, which breaks when new nodes arrive with a default z that
+    // collides with the existing distribution. max+1 gives permanent promotion
+    // without touching other nodes and works fine since node z-scored get normalized for rendering anyway.
+    const setHoveredNode = (nodeId: string) => {
+      const maxZ = controls.nodes.value.reduce(
+        (max, n) => Math.max(max, controls.positions.get(n.id).z),
+        -Infinity,
+      );
+      controls.positions.set({ nodeId, update: { z: maxZ + 1 } });
+    };
+
+    events.handle(
+      'onHoveredElementChange',
+      (hoveredEl) => {
+        if (!hoveredEl) return;
+        const { id } = hoveredEl;
+        if (controls.isNode(id)) setHoveredNode(id);
+      },
+      CANVAS_PLUGIN_ID,
+    );
+
     const forceUpdateGraphUnderCursor = (): DeepReadonly<GraphUnderCursor> => {
       const coords = magicCanvas.cursorCoordinates.value;
       graphUnderCursor.coords = coords;
@@ -131,6 +158,11 @@ export const canvas =
         })
         .filter((el) => !!el);
 
+      const nodeZScores = getNodeZScores({
+        nodes: controls.nodes.value,
+        positions: controls.positions,
+      });
+
       const nodeCanvasElements = controls.nodes.value
         .map((node) => {
           const shape = resolveToken('node.default.shape', node, {
@@ -145,7 +177,9 @@ export const canvas =
             shape,
             id: node.id,
             graphType: 'node',
-            priority: 2,
+            priority:
+              2 +
+              nullThrows(nodeZScores.get(node.id), 'node z score not found'),
             data: {
               [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: resolveToken(
                 'node.default.cursor',

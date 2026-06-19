@@ -12,14 +12,14 @@ export const createAnchorDragThemer = (
   const globalGrabbing = () =>
     dragState.isDragging() ? CURSOR.GRABBING : undefined;
 
-  const activate = () => {
+  const enable = () => {
     set('canvas.cursor', globalGrabbing);
     set('nodeAnchor.default.cursor', CURSOR.GRAB);
     set('nodeAnchor.focus.cursor', CURSOR.GRAB);
   };
 
   return {
-    activate,
-    deactivate: removeAll,
+    enable,
+    disable: removeAll,
   };
 };

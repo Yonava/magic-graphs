@@ -119,6 +119,8 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
   const coreControls: CoreControls = {
     nodes,
     edges,
+    isNode: (id: string) => nodeIdToIndex.value.has(id),
+    isEdge: (id: string) => edgeIdToIndex.value.has(id),
     nodeIdToIndex,
     edgeIdToIndex,
     helpers: createHelpers({ edges, getEdge, getNode, settings }),
@@ -126,6 +128,8 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     positions: nodePositionStore,
     weights: edgeWeightStore,
   };
+
+  // TODO add topo sort and explicit error handling for missing plugin dependencies
 
   let evolvingControls = coreControls;
   let evolvingEvents: any = coreEventHub;
