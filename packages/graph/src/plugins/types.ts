@@ -1,4 +1,4 @@
-import { Fraction } from 'mathjs';
+import type { Fraction } from 'mathjs';
 import { UnionToIntersection } from 'ts-essentials';
 
 import {

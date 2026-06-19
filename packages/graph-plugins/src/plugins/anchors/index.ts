@@ -1,41 +1,22 @@
 import { CoreEventMap } from '@magic/graph/core/events';
 import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
-import { GraphPlugin } from '@magic/graph/plugins/types';
 import { CoreNode } from '@magic/graph/types';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
 import type { WithId } from '@magic/shapes/types/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
-import { Ref, readonly, ref } from 'vue';
+import { readonly, ref } from 'vue';
 
-import type { NodeAnchor } from '../../plugins/anchors/types.ts';
+import type { AnchorsPlugin, NodeAnchor } from '../../plugins/anchors/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
-import { CanvasElement, CanvasPlugin } from '../canvas/types.ts';
+import { CanvasElement } from '../canvas/types.ts';
+import { FocusEventMap } from '../focus/events.ts';
 import { ANCHOR_PLUGIN_ID } from './constants.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';
 import { createAnchorDragThemer } from './createAnchorDragThemer.ts';
 import { AnchorsEventMap, createAnchorsEventRegistry } from './events.ts';
-
-type AnchorsControls = {
-  /**
-   * the parent node of the active anchor
-   */
-  parentNode: Readonly<Ref<CoreNode | undefined>>;
-  /**
-   * set the parent node and spawn anchors around it
-   */
-  setParentNode: (nodeId: CoreNode['id']) => void;
-  clearAnchorState: () => void;
-};
-
-export type AnchorsPlugin = GraphPlugin<{
-  controls: { anchors: AnchorsControls };
-  events: AnchorsEventMap;
-  actions: {};
-  dependsOn: [CanvasPlugin];
-}>;
 
 /**
  * anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
@@ -54,10 +35,10 @@ export const anchors: AnchorsPlugin = (
 ) => {
   const anchorsEventRegistry = createAnchorsEventRegistry();
   const anchorsEventHub = createEventHub(anchorsEventRegistry);
-  const events = mergeEventHubs<AnchorsEventMap, CoreEventMap & CanvasEventMap>(
-    anchorsEventHub,
-    graphEventHub,
-  );
+  const events = mergeEventHubs<
+    AnchorsEventMap,
+    CoreEventMap & CanvasEventMap & FocusEventMap
+  >(anchorsEventHub, graphEventHub);
 
   /**
    * The node which anchors actively orbit around
@@ -112,7 +93,7 @@ export const anchors: AnchorsPlugin = (
       const isAnchorHovered = id === hoveredNodeAnchorId.value;
       const isAnchorDragged = id === draggedAnchor?.id;
 
-      // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
+      // TODO https://github.com/Yonava/magic-graphs/issues/707
       const isNodeFocused = controls.focus.isFocused(node.id);
       const isFocused = isNodeFocused || isAnchorHovered || isAnchorDragged;
 
@@ -131,12 +112,11 @@ export const anchors: AnchorsPlugin = (
       const nodeAnchorShape =
         controls.canvas.shapes.shapes.circle(nodeAnchorSchema);
 
-      const beingDragged = anchor.id === draggedAnchor?.id;
       anchorSchemas.push({
         id: anchor.id,
         graphType: 'node-anchor',
         shape: nodeAnchorShape,
-        priority: beingDragged ? Infinity : 99_999,
+        priority: 3,
         data: {
           [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: resolveToken(
             'nodeAnchor.default.cursor',
@@ -164,7 +144,7 @@ export const anchors: AnchorsPlugin = (
     if (!node) return (nodeAnchors.value = []);
     const { _resolveToken: resolveToken } = controls.canvas.theme;
 
-    // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
+    // TODO https://github.com/Yonava/magic-graphs/issues/707
     const isNodeFocused = controls.focus.isFocused(node.id);
 
     const anchorBaseRadius = resolveToken('nodeAnchor.default.radius', node);
@@ -225,7 +205,7 @@ export const anchors: AnchorsPlugin = (
     return nodeAnchors.value.find((anchor) => anchor.id === anchorId);
   };
 
-  const getUnprioritizedLinkPreviewSchema = () => {
+  const resolveLinkPreviewCanvasElement = () => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (!parentNode.value || !draggedAnchor) return;
     const { x, y } = draggedAnchor;
@@ -233,7 +213,7 @@ export const anchors: AnchorsPlugin = (
     const end = { x, y };
     const { _resolveToken: resolveToken } = controls.canvas.theme;
 
-    // @ts-expect-error https://github.com/Yonava/magic-graphs/issues/574
+    // TODO https://github.com/Yonava/magic-graphs/issues/707
     const isFocused = controls.focus.isFocused(parentNode.value.id);
 
     const baseColor = resolveToken(
@@ -272,13 +252,14 @@ export const anchors: AnchorsPlugin = (
       lineWidth: width,
     });
 
-    const schema: Omit<CanvasElement, 'priority'> = {
+    const element: CanvasElement = {
       id: 'link-preview',
       graphType: 'link-preview',
+      priority: 1,
       shape,
     };
 
-    return schema;
+    return element;
   };
 
   /**
@@ -359,24 +340,10 @@ export const anchors: AnchorsPlugin = (
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (!parentNode.value || !draggedAnchor) return aggregator;
 
-    const { id: parentNodeId } = parentNode.value;
+    const linkPreviewCanvasElement = resolveLinkPreviewCanvasElement();
+    if (!linkPreviewCanvasElement) return aggregator;
 
-    const parentNodePriority = aggregator.find(
-      (item) => item.id === parentNodeId,
-    )?.priority;
-
-    if (!parentNodePriority) return aggregator;
-
-    const unprioritizedPreviewSchema = getUnprioritizedLinkPreviewSchema();
-
-    if (!unprioritizedPreviewSchema) return aggregator;
-
-    const linkPreviewSchema = {
-      ...unprioritizedPreviewSchema,
-      priority: parentNodePriority - 0.1,
-    };
-
-    aggregator.push(linkPreviewSchema);
+    aggregator.push(linkPreviewCanvasElement);
     return aggregator;
   };
 

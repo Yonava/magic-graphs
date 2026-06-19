@@ -10,6 +10,7 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
+import { CANVAS_PLUGIN_ID } from './constants.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
   CanvasEventMap,
@@ -26,8 +27,6 @@ import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
 import { createThemeOverrides } from './themes/types.ts';
 import { Aggregator, CanvasPlugin, GraphUnderCursor } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
-
-export const CANVAS_EVENT_ID = 'plugins/canvas';
 
 export const canvas =
   (magicCanvas: MagicCanvasProps): CanvasPlugin =>
@@ -66,8 +65,14 @@ export const canvas =
     const themeOverrides = createThemeOverrides();
     const resolveToken = createTokenResolver(activeThemePreset, themeOverrides);
 
-    const weightLayer = createLayer(themeOverrides, 'canvas/weight');
+    const weightLayer = createLayer(
+      themeOverrides,
+      CANVAS_PLUGIN_ID + '/theme/edge-weight',
+    );
     weightLayer.set('edge.default.text', (edge) =>
+      getters.getEdge(edge.id).weight.toFraction(),
+    );
+    weightLayer.set('edge.focus.text', (edge) =>
       getters.getEdge(edge.id).weight.toFraction(),
     );
 
