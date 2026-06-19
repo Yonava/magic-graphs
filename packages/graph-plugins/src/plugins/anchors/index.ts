@@ -4,6 +4,7 @@ import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { CoreNode } from '@magic/graph/types';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
 import type { WithId } from '@magic/shapes/types/index';
+import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { readonly, ref } from 'vue';
@@ -205,7 +206,7 @@ export const anchors: AnchorsPlugin = (
     return nodeAnchors.value.find((anchor) => anchor.id === anchorId);
   };
 
-  const resolveLinkPreviewCanvasElement = () => {
+  const resolveLinkPreviewCanvasElement = (elements: CanvasElement[]) => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (!parentNode.value || !draggedAnchor) return;
     const { x, y } = draggedAnchor;
@@ -252,10 +253,18 @@ export const anchors: AnchorsPlugin = (
       lineWidth: width,
     });
 
+    // TODO works like a charm as long as the parent node is the last node hovered, but thats
+    // not the case if the user moves their mouse so fast that the system accidentally thinks
+    // that the hovered node is the destination node
+    const parentNodePriority = nullThrows(
+      elements.find((e) => e.id === parentNode.value?.id),
+      'could not find parent node in aggregator pipeline',
+    ).priority;
+
     const element: CanvasElement = {
       id: 'link-preview',
       graphType: 'link-preview',
-      priority: 1,
+      priority: parentNodePriority - 0.001,
       shape,
     };
 
@@ -340,7 +349,8 @@ export const anchors: AnchorsPlugin = (
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (!parentNode.value || !draggedAnchor) return aggregator;
 
-    const linkPreviewCanvasElement = resolveLinkPreviewCanvasElement();
+    const linkPreviewCanvasElement =
+      resolveLinkPreviewCanvasElement(aggregator);
     if (!linkPreviewCanvasElement) return aggregator;
 
     aggregator.push(linkPreviewCanvasElement);

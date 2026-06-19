@@ -129,6 +129,8 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     weights: edgeWeightStore,
   };
 
+  // TODO add topo sort and explicit error handling for missing plugin dependencies
+
   let evolvingControls = coreControls;
   let evolvingEvents: any = coreEventHub;
   let evolvingActions = coreActions;

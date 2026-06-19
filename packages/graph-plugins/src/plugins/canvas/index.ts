@@ -93,7 +93,7 @@ export const canvas =
     // redistributing z values across all nodes, which breaks when new nodes arrive with a default z that
     // collides with the existing distribution. max+1 gives permanent promotion
     // without touching other nodes and works fine since node z-scored get normalized for rendering anyway.
-    const updateHoveredNode = (nodeId: string) => {
+    const setHoveredNode = (nodeId: string) => {
       const maxZ = Math.max(
         ...controls.nodes.value.map((n) => controls.positions.get(n.id).z),
       );
@@ -103,7 +103,7 @@ export const canvas =
     events.subscribe('onHoveredElementChange', (hoveredEl) => {
       if (!hoveredEl) return;
       const { id } = hoveredEl;
-      if (controls.isNode(id)) updateHoveredNode(id);
+      if (controls.isNode(id)) setHoveredNode(id);
     });
 
     const forceUpdateGraphUnderCursor = (): DeepReadonly<GraphUnderCursor> => {
