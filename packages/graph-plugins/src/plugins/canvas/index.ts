@@ -100,10 +100,10 @@ export const canvas =
       controls.positions.set({ nodeId, update: { z: maxZ + 1 } });
     };
 
-    events.subscribe('onHoveredElementChange', (ev) => {
-      if (ev?.graphType === 'node') {
-        updateHoveredNode(ev.id);
-      }
+    events.subscribe('onHoveredElementChange', (hoveredEl) => {
+      if (!hoveredEl) return;
+      const { id } = hoveredEl;
+      if (controls.isNode(id)) updateHoveredNode(id);
     });
 
     const forceUpdateGraphUnderCursor = (): DeepReadonly<GraphUnderCursor> => {
