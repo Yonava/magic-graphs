@@ -6,7 +6,6 @@ import { EdgeWeightEntry } from './types.ts';
 export type EdgeWeightStoreEventMap = {
   /** Triggers when a set of edge weights is committed. */
   onEdgeWeightsCommitted: (weights: DeepReadonly<EdgeWeightEntry[]>) => void;
-  onStructureChange: () => void;
 };
 
 type EdgeWeightStoreEventRegistry =
@@ -15,5 +14,4 @@ type EdgeWeightStoreEventRegistry =
 export const createEdgeWeightStoreEventRegistry =
   (): EdgeWeightStoreEventRegistry => ({
     onEdgeWeightsCommitted: new Set(),
-    onStructureChange: new Set(),
   });
