@@ -1,12 +1,13 @@
-import { Fraction } from 'mathjs';
 import { describe, expect, it, vi } from 'vitest';
 
-import { ref } from 'vue';
+import type { Ref } from 'vue';
 
 import { CoreEdge, CoreNode } from '../../types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import { TransactionPayload } from './types.ts';
 import { useCommitTransaction } from './useCommitTransaction.ts';
+
+const ref = <T>(value: T) => ({ value }) as unknown as Ref<T>;
 
 describe(useCommitTransaction, () => {
   it('handles adding a node', () => {
