@@ -1,9 +1,10 @@
-import type { GEdge } from '@magic/graph/types';
+import type { CoreEdge } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
+import { GEdge } from '../../shared/useGraph.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { FlowTrace } from '../algo/fordFulkerson.ts';
 import { FLOW_USETHEME_ID } from '../constants.ts';
@@ -56,16 +57,16 @@ export const useSimulationTheme = (
     () => edgeWeightMapAtStep.value[sim.step.value],
   );
 
-  const colorActiveEdges = (edge: GEdge) => {
+  const colorActiveEdges = (edge: CoreEdge) => {
     const isActive = activeEdgeIdsAtStep.value.includes(edge.id);
     const focusColor = graph.canvas.theme.resolvedPreset.value.edge.focus.color;
     if (isActive) return focusColor;
     else if (isResidual(edge.id)) return colors.ORANGE_400;
   };
 
-  const labelEdges = (edge: GEdge) => {
+  const labelEdges = (edge: CoreEdge) => {
     const weight = weightMapAtStep.value.get(edge.id);
-    if (weight === undefined) return edge.weight.toString();
+    if (weight === undefined) return graph.getEdge(edge.id).weight.toString();
     return weight.toString();
   };
 

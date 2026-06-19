@@ -1,4 +1,3 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { Fraction } from 'mathjs';
 
 import { computed } from 'vue';
@@ -8,6 +7,7 @@ import type {
   TraceFunction,
 } from '../../shared/ui/general/sim/types.ts';
 import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { useStateAfterNSteps } from '../markov/useStateAfterNSteps.ts';
 import state from '../state.ts';
 import { useSimulationTheme } from './theme.ts';

@@ -45,7 +45,10 @@ describe(getSortedByPriority, () => {
   });
 
   it('matches a hub-level id prefix (e.g. "drag" matches "drag:mousedown")', () => {
-    const input = [item('drag:mousedown'), item('focus', ['drag'])];
+    const input = [
+      item('drag:mousedown'),
+      item('focus', ['drag' as HandlerId]),
+    ];
     expect(getSortedByPriority(input).map((i) => i.id)).toEqual([
       'focus',
       'drag:mousedown',
@@ -53,7 +56,7 @@ describe(getSortedByPriority, () => {
   });
 
   it('does not match a partial prefix that is not a segment boundary', () => {
-    const input = [item('dragging'), item('focus', ['drag'])];
+    const input = [item('dragging'), item('focus', ['drag' as HandlerId])];
     expect(getSortedByPriority(input).map((i) => i.id)).toEqual([
       'dragging',
       'focus',

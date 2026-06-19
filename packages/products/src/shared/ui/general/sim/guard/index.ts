@@ -133,7 +133,7 @@ export class SimulationGuard {
    */
   connected() {
     const isConnected = () => {
-      if (this.graph.characteristics.isConnected.value) return;
+      if (this.graph.characteristics.connected.isConnected.value) return;
       return CANT_RUN_REASONS.NOT_CONNECTED;
     };
 
@@ -146,7 +146,7 @@ export class SimulationGuard {
    */
   acyclic() {
     const isAcyclic = () => {
-      if (this.graph.characteristics.isAcyclic.value) return;
+      if (this.graph.characteristics.cycles.isAcyclic.value) return;
       return {
         themer: {
           theme: this.cycle.colorize,
@@ -165,7 +165,7 @@ export class SimulationGuard {
    */
   bipartite() {
     const isBipartite = () => {
-      if (this.graph.characteristics.isBipartite.value) return;
+      if (this.graph.characteristics.bipartite.isBipartite.value) return;
       return CANT_RUN_REASONS.NOT_BIPARTITE;
     };
 
@@ -179,7 +179,10 @@ export class SimulationGuard {
   nonNegativeEdgeWeights() {
     const nonNegativeWeights = () => {
       const negativeEdgeIds = this.graph.edges.value
-        .filter((e) => e.weight.valueOf() < 0)
+        .filter((e) => {
+          const { weight } = this.graph.getEdge(e.id);
+          return weight.valueOf() < 0;
+        })
         .map((e) => e.id);
 
       if (negativeEdgeIds.length === 0) return;
@@ -199,7 +202,10 @@ export class SimulationGuard {
   positiveEdgeWeights() {
     const positiveWeights = () => {
       const negativeOrZeroEdgeIds = this.graph.edges.value
-        .filter((edge) => edge.weight.valueOf() <= 0)
+        .filter((edge) => {
+          const { weight } = this.graph.getEdge(edge.id);
+          return weight.valueOf() <= 0;
+        })
         .map((edge) => edge.id);
 
       if (negativeOrZeroEdgeIds.length === 0) return;
@@ -239,8 +245,9 @@ export class SimulationGuard {
    */
   noBidirectionalEdges() {
     const noBidirectional = () => {
-      const { bidirectionalEdges } = this.graph.characteristics;
-      const edgeIds = bidirectionalEdges.value.map((e) => e.id);
+      const { bidirectionalEdges } =
+        this.graph.characteristics.bidirectionalEdges;
+      const edgeIds = bidirectionalEdges.value.map((e: { id: string }) => e.id);
       if (edgeIds.length === 0) return;
       return {
         themer: this.color.edges(edgeIds),

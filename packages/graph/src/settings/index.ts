@@ -1,25 +1,25 @@
 import { Fraction } from 'mathjs';
 
-import type { GEdge } from '../types.ts';
+import type { CoreEdge } from '../types.ts';
 
 export type CoreGraphSettings = {
   /**
-   * whether graph is weighted, if true, all individual {@link GEdge.weight | edge weights} are ignored and are treated as if they were `new Fraction(1)`
+   * whether graph is weighted, if true, all individual {@link CoreEdge.weight | edge weights} are ignored and are treated as if they were `new Fraction(1)`
    * @default true
    */
   isGraphWeighted: boolean;
   /**
-   * whether graph is directed, if true, all {@link GEdge | edges} are directed, else all {@link GEdge | edges} are undirected
+   * whether graph is directed, if true, all {@link CoreEdge | edges} are directed, else all {@link CoreEdge | edges} are undirected
    * @default true
    */
   isGraphDirected: boolean;
   /**
-   * whether {@link GEdge.label | edge labels} should be editable
+   * whether {@link CoreEdge.label | edge labels} should be editable
    * @default true
    */
   edgeLabelsEditable: boolean;
   /**
-   * a setter for {@link GEdge.weight | edge weight} - takes the user inputted string and returns a fraction that will
+   * a setter for {@link CoreEdge.weight | edge weight} - takes the user inputted string and returns a fraction that will
    * be set as the edge weight or returns undefined if the edge label should not be set
    */
   edgeInputToWeight: (input: string) => Fraction | undefined;
@@ -49,7 +49,7 @@ export type InteractiveGraphSettings = {
    */
   interactive: boolean;
   /**
-   * the default {@link GEdge.weight | weight} assigned to edges when created using the UI
+   * the default {@link CoreEdge.weight | weight} assigned to edges when created using the UI
    * @default new Fraction(1)
    */
   userAddedDefaultEdgeWeight: () => Fraction;

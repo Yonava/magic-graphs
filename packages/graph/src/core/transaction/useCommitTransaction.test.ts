@@ -1,16 +1,19 @@
-import { Fraction } from 'mathjs';
 import { describe, expect, it, vi } from 'vitest';
 
-import { GEdge, GNode } from '../../types.ts';
+import type { Ref } from 'vue';
+
+import { CoreEdge, CoreNode } from '../../types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import { TransactionPayload } from './types.ts';
 import { useCommitTransaction } from './useCommitTransaction.ts';
 
+const ref = <T>(value: T) => ({ value }) as unknown as Ref<T>;
+
 describe(useCommitTransaction, () => {
   it('handles adding a node', () => {
-    const newNode: GNode = { id: 'new-node' };
+    const newNode: CoreNode = { id: 'new-node' };
     const commitTransaction = useCommitTransaction({
-      getGraph: () => ({ nodes: [], edges: [] }),
+      getGraph: () => ({ nodes: ref([]), edges: ref([]) }),
       onTransactionSucceeded: () => {},
     });
     const expectedPayload: TransactionPayload = {
@@ -22,19 +25,18 @@ describe(useCommitTransaction, () => {
   });
 
   it('scrapes and removes orphaned edges automatically when a node is removed', () => {
-    const node1: GNode = { id: 'node-1' };
-    const node2: GNode = { id: 'node-2' };
-    const connectedEdge: GEdge = {
+    const node1: CoreNode = { id: 'node-1' };
+    const node2: CoreNode = { id: 'node-2' };
+    const connectedEdge: CoreEdge = {
       id: 'edge-1',
       source: 'node-1',
       target: 'node-2',
-      weight: new Fraction(1),
     };
 
     const commitTransaction = useCommitTransaction({
       getGraph: () => ({
-        nodes: [node1, node2],
-        edges: [connectedEdge],
+        nodes: ref([node1, node2]),
+        edges: ref([connectedEdge]),
       }),
       onTransactionSucceeded: () => {},
     });
@@ -51,12 +53,12 @@ describe(useCommitTransaction, () => {
   });
 
   it('fires the onTransactionSuccess callback with the correct payload', () => {
-    const newNode: GNode = { id: 'node-z' };
+    const newNode: CoreNode = { id: 'node-z' };
 
     const successSpy = vi.fn();
 
     const commitTransaction = useCommitTransaction({
-      getGraph: () => ({ nodes: [], edges: [] }),
+      getGraph: () => ({ nodes: ref([]), edges: ref([]) }),
       onTransactionSucceeded: successSpy,
     });
 

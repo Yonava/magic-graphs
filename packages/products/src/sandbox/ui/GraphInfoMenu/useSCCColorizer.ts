@@ -18,7 +18,7 @@ export const useSCCColorizer = (graph: Graph, themeId = SCC_THEME_ID) =>
   useNodeColor(
     graph,
     (nodeId: string) => {
-      const map = graph.characteristics.nodeIdToConnectedComponent.value;
+      const map = graph.characteristics.sccs.nodeIdToConnectedComponent.value;
       const scc = map.get(nodeId);
       if (scc === undefined) return;
       return COLORS[scc % COLORS.length];

@@ -1,7 +1,6 @@
-import type { Graph } from '../shared/useGraphWithCanvas.ts';
-
 import { computed, ref } from 'vue';
 
+import type { Graph } from '../shared/useGraphWithCanvas.ts';
 import { AVLTree, getBalance, getHeight } from './tree/avl.ts';
 import { syncGraphWithTree } from './tree/graphToAVL.ts';
 import { TreeNode } from './tree/treeNode.ts';

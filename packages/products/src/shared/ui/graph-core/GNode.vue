@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { resolveNodeStyles } from '@magic/graph/plugins/canvas/themes/index';
-  import type { GNode } from '@magic/graph/types';
+  import { resolveNodeStyles } from '@magic/graph-plugins/plugins/canvas/themes/index';
+  import type { CoreNode } from '@magic/graph/types';
 
   import { computed, onUnmounted, ref } from 'vue';
 
@@ -8,7 +8,7 @@
 
   type NodeProps = {
     size?: number;
-    node: GNode;
+    node: CoreNode;
   };
 
   const props = withDefaults(defineProps<NodeProps>(), {

@@ -1,10 +1,9 @@
-import type { GEdge } from '@magic/graph/types';
-import { getAdjacencyList } from '@magic/graph/useAdjacencyList';
+import type { CoreEdge } from '@magic/graph/types';
 import { Fraction } from 'mathjs';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
-export type FlowTrace = Record<GEdge['id'], GEdge['weight']>;
+export type FlowTrace = Record<CoreEdge['id'], Fraction>;
 
 /**
  * implementation of the Ford-Fulkerson algorithm
@@ -20,13 +19,13 @@ export const fordFulkerson = (
   },
 ) => {
   const edgeIdToWeight = graph.edges.value.reduce<FlowTrace>((record, edge) => {
-    record[edge.id] = graph.helpers.edges.getWeight(edge.id);
+    record[edge.id] = graph.getEdge(edge.id).weight;
     return record;
   }, {});
 
   const trace: FlowTrace[] = [];
 
-  const adjList = getAdjacencyList(graph);
+  const adjList = graph.adjacencyLists.standard.value;
 
   const dfs = (
     s: string,

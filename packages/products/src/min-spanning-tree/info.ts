@@ -1,5 +1,4 @@
 import type { Graph } from '../shared/useGraphWithCanvas.ts';
-
 import type { ProductInfo } from '../types.ts';
 import { canRunMST } from './sim/guard.ts';
 import {

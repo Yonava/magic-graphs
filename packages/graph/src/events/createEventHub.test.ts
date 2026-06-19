@@ -37,12 +37,8 @@ describe(createEventHub, () => {
     hub.subscribe('onNodesAdded', subscriberA);
     hub.subscribe('onNodesAdded', subscriberB);
     hub.emit('onNodesAdded', [{ id: '1' }]);
-    expect(subscriberA).toHaveBeenCalledExactlyOnceWith([
-      { id: '1', label: 'a' },
-    ]);
-    expect(subscriberB).toHaveBeenCalledExactlyOnceWith([
-      { id: '1', label: 'a' },
-    ]);
+    expect(subscriberA).toHaveBeenCalledExactlyOnceWith([{ id: '1' }]);
+    expect(subscriberB).toHaveBeenCalledExactlyOnceWith([{ id: '1' }]);
   });
 
   it('handles zero-argument event emissions cleanly', () => {

@@ -1,7 +1,6 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import { computed, ref } from 'vue';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { prim } from './prim.ts';
 
 export const usePrim = (graph: Graph) => {

@@ -1,7 +1,6 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import { computed, ref, watch } from 'vue';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import state from '../state.ts';
 import { dfs } from './dfs.ts';
 import type { BasicSearchTrace } from './types.ts';
@@ -11,7 +10,7 @@ const { startNode } = state;
 export const useDFS = (graph: Graph) => {
   const trace = ref<BasicSearchTrace[]>([]);
 
-  const { adjacencyList } = graph.adjacencyList;
+  const { standard: adjacencyList } = graph.adjacencyLists;
 
   const update = () => {
     const node = startNode.get(graph);

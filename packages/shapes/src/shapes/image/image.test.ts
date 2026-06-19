@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { IMAGE_SCHEMA_DEFAULTS } from './defaults.ts';
+import { image } from './index.ts';
+
 vi.mock('@magic/canvas/coordinates/index', () => ({
   getClientCoordinates: vi.fn(),
 }));
@@ -19,13 +22,15 @@ vi.mock('@magic/utils/ctx/index', () => ({
   })),
 }));
 
-import { IMAGE_SCHEMA_DEFAULTS } from './defaults.ts';
-import { image } from './index.ts';
-
 describe('image', () => {
   describe('defaults', () => {
     it('has name "image"', () => {
-      const img = image({ at: { x: 0, y: 0 }, width: 100, height: 50, src: 'test.png' });
+      const img = image({
+        at: { x: 0, y: 0 },
+        width: 100,
+        height: 50,
+        src: 'test.png',
+      });
       expect(img.name).toBe('image');
     });
 
@@ -46,14 +51,24 @@ describe('image', () => {
     });
 
     it('returns the correct bounding box size', () => {
-      const img = image({ at: { x: 0, y: 0 }, width: 100, height: 50, src: 'test.png' });
+      const img = image({
+        at: { x: 0, y: 0 },
+        width: 100,
+        height: 50,
+        src: 'test.png',
+      });
       const bbox = img.getBoundingBox();
       expect(bbox.width).toBe(100);
       expect(bbox.height).toBe(50);
     });
 
     it('preserves the anchor point in the bounding box', () => {
-      const img = image({ at: { x: 30, y: 40 }, width: 100, height: 50, src: 'test.png' });
+      const img = image({
+        at: { x: 30, y: 40 },
+        width: 100,
+        height: 50,
+        src: 'test.png',
+      });
       const bbox = img.getBoundingBox();
       expect(bbox.at.x).toBe(30);
       expect(bbox.at.y).toBe(40);
@@ -62,7 +77,12 @@ describe('image', () => {
 
   describe('hitbox', () => {
     // image hitbox delegates to rect — same axis-aligned rectangle logic
-    const img = image({ at: { x: 0, y: 0 }, width: 100, height: 50, src: 'test.png' });
+    const img = image({
+      at: { x: 0, y: 0 },
+      width: 100,
+      height: 50,
+      src: 'test.png',
+    });
 
     describe('points inside', () => {
       it('hits the center', () => {
@@ -98,7 +118,12 @@ describe('image', () => {
     });
 
     describe('with offset position', () => {
-      const img2 = image({ at: { x: 200, y: 100 }, width: 80, height: 40, src: 'test.png' });
+      const img2 = image({
+        at: { x: 200, y: 100 },
+        width: 80,
+        height: 40,
+        src: 'test.png',
+      });
 
       it('hits the center of the offset image', () => {
         expect(img2.hitbox({ x: 240, y: 120 })).toBe(true);

@@ -1,16 +1,19 @@
 <script setup lang="ts">
-  import type { GNode } from '@magic/graph/types';
+  import type { CoreNode } from '@magic/graph/types';
   import colors from '@magic/utils/colors';
 
   import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import { INF_STR, SIM_COLORS } from '../sim/theme.ts';
 
   const {
-    canvas: { theme: { _resolveToken: resolveToken } },
+    canvas: {
+      theme: { _resolveToken: resolveToken },
+    },
     focus: { isFocused },
   } = graph.value;
 
-  const getNodeCosts = (node: GNode) => resolveToken('node.default.text', node);
+  const getNodeCosts = (node: CoreNode) =>
+    resolveToken('node.default.text', node);
 
   const costToColor = (strCost: string) => {
     if (strCost === INF_STR) return colors.RED_800;
@@ -24,22 +27,23 @@
     return colors.RED_600;
   };
 
-  const isExplored = (node: GNode) =>
+  const isExplored = (node: CoreNode) =>
     resolveToken('node.default.borderColor', node) === SIM_COLORS.EXPLORED;
-  const isQueued = (node: GNode) =>
+  const isQueued = (node: CoreNode) =>
     resolveToken('node.default.borderColor', node) === SIM_COLORS.QUEUED;
-  const isSource = (node: GNode) =>
+  const isSource = (node: CoreNode) =>
     resolveToken('node.default.borderColor', node) === SIM_COLORS.SOURCE;
 
-  const exploreStateColor = (node: GNode) => {
+  const exploreStateColor = (node: CoreNode) => {
     if (isExplored(node)) return SIM_COLORS.EXPLORED;
     if (isQueued(node)) return SIM_COLORS.QUEUED;
     if (isSource(node)) return SIM_COLORS.SOURCE;
-    if (isFocused(node.id)) return resolveToken('node.default.borderColor', node);
+    if (isFocused(node.id))
+      return resolveToken('node.default.borderColor', node);
     return colors.GRAY_600;
   };
 
-  const exploreStateText = (node: GNode) => {
+  const exploreStateText = (node: CoreNode) => {
     if (isExplored(node)) return 'Explored';
     if (isQueued(node)) return 'Queued';
     if (isSource(node)) return 'Source';
@@ -56,7 +60,7 @@
     class="text-white flex items-center gap-3 p-2 hover:bg-gray-900 cursor-pointer rounded-lg"
   >
     <span class="text-2xl w-6 text-center font-bold">
-      {{ graph.labels.get(node.id) }}
+      {{ graph.nodeLabel.get(node.id) }}
     </span>
     <span class="font-bold">→</span>
     <div

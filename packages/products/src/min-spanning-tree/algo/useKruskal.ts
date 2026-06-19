@@ -1,7 +1,6 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import { computed, ref } from 'vue';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { kruskal } from './kruskal.ts';
 
 export const useKruskal = (graph: Graph) => {

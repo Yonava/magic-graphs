@@ -1,9 +1,8 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import { ref } from 'vue';
 
 import type { SimulationRunner } from '../../shared/ui/general/sim/types.ts';
 import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { useDijkstra } from '../algo/useDijkstra.ts';
 import type { DijkstrasTraceStep } from '../algo/useDijkstra.ts';
 import state from '../state.ts';

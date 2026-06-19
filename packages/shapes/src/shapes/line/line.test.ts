@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { LINE_SCHEMA_DEFAULTS } from './defaults.ts';
+import { line } from './index.ts';
+
 vi.mock('@magic/canvas/coordinates/index', () => ({
   getClientCoordinates: vi.fn(),
 }));
@@ -18,9 +21,6 @@ vi.mock('@magic/utils/ctx/index', () => ({
     fillText: vi.fn(),
   })),
 }));
-
-import { LINE_SCHEMA_DEFAULTS } from './defaults.ts';
-import { line } from './index.ts';
 
 describe('line', () => {
   describe('defaults', () => {
@@ -48,7 +48,11 @@ describe('line', () => {
     });
 
     it('returns the correct bounding box for a horizontal line', () => {
-      const l = line({ start: { x: 0, y: 0 }, end: { x: 100, y: 0 }, lineWidth: 10 });
+      const l = line({
+        start: { x: 0, y: 0 },
+        end: { x: 100, y: 0 },
+        lineWidth: 10,
+      });
       const bbox = l.getBoundingBox();
       expect(bbox.at.x).toBe(-5);
       expect(bbox.at.y).toBe(-5);
@@ -57,7 +61,11 @@ describe('line', () => {
     });
 
     it('returns the correct bounding box for a vertical line', () => {
-      const l = line({ start: { x: 0, y: 0 }, end: { x: 0, y: 80 }, lineWidth: 10 });
+      const l = line({
+        start: { x: 0, y: 0 },
+        end: { x: 0, y: 80 },
+        lineWidth: 10,
+      });
       const bbox = l.getBoundingBox();
       expect(bbox.at.x).toBe(-5);
       expect(bbox.at.y).toBe(-5);
@@ -129,7 +137,11 @@ describe('line', () => {
     });
 
     describe('diagonal line', () => {
-      const l = line({ start: { x: 0, y: 0 }, end: { x: 100, y: 100 }, lineWidth: 10 });
+      const l = line({
+        start: { x: 0, y: 0 },
+        end: { x: 100, y: 100 },
+        lineWidth: 10,
+      });
 
       it('hits the midpoint of the diagonal', () => {
         expect(l.hitbox({ x: 50, y: 50 })).toBe(true);

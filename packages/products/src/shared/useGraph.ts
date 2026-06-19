@@ -1,113 +1,47 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
-import { createNodeLabel } from '@magic/graph-plugins/plugins/node-label/index';
-import { CoreEventMap } from '@magic/graph/core/events';
-import { useCoreGraph } from '@magic/graph/core/index';
-import { NodeAnchorEventMap } from '@magic/graph/plugins/anchors/events';
-import { useNodeAnchorPlugin } from '@magic/graph/plugins/anchors/index';
-import { NodeAnchorPlugin } from '@magic/graph/plugins/anchors/types';
-import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
-import { useCanvasPlugin } from '@magic/graph/plugins/canvas/index';
-import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
-import { useCharacteristics } from '@magic/graph/plugins/characteristics/index';
-import { NodeDragEventMap } from '@magic/graph/plugins/drag/events';
-import { useNodeDragPlugin } from '@magic/graph/plugins/drag/index';
-import { NodeDragPlugin } from '@magic/graph/plugins/drag/types';
-import { FocusEventMap } from '@magic/graph/plugins/focus/events';
-import { useFocusPlugin } from '@magic/graph/plugins/focus/index';
-import {
-  FocusPlugin,
-  FocusTransactionWrapperOptions,
-} from '@magic/graph/plugins/focus/types';
-import { HistoryEventMap } from '@magic/graph/plugins/history/events';
-import { useHistoryPlugin } from '@magic/graph/plugins/history/index';
-import {
-  HistoryPlugin,
-  HistoryTransactionWrapperOptions,
-} from '@magic/graph/plugins/history/types';
-import { MarqueeEventMap } from '@magic/graph/plugins/marquee/events';
-import { useMarqueePlugin } from '@magic/graph/plugins/marquee/index';
-import { MarqueePlugin } from '@magic/graph/plugins/marquee/types';
+import { adjacencyLists } from '@magic/graph-plugins/plugins/adjacency-lists/index';
+import { anchors } from '@magic/graph-plugins/plugins/anchors/index';
+import { canvas } from '@magic/graph-plugins/plugins/canvas/index';
+import { characteristics } from '@magic/graph-plugins/plugins/characteristics/index';
+import { focus } from '@magic/graph-plugins/plugins/focus/index';
+import { history } from '@magic/graph-plugins/plugins/history/index';
+import { marquee } from '@magic/graph-plugins/plugins/marquee/index';
+import { nodeDrag } from '@magic/graph-plugins/plugins/node-drag/index';
+import { nodeLabel } from '@magic/graph-plugins/plugins/node-label/index';
+import { transitionMatrix } from '@magic/graph-plugins/plugins/transition-matrix/index';
+import { createGraph } from '@magic/graph/core/index';
 import type { GraphSettings } from '@magic/graph/settings/index';
-import { useAdjacencyList } from '@magic/graph/useAdjacencyList';
-import { useTransitionMatrix } from '@magic/graph/useTransitionMatrix';
 
 import { useInteractive } from './interactive/index.ts';
 import { useShortcuts } from './shortcut/index.ts';
 import { usePreferredThemePreset } from './usePreferredThemePreset.ts';
 
-const useGraphWithPlugins = (
-  canvas: MagicCanvasProps,
+const createGraphWithPlugins = (
+  magicCanvas: MagicCanvasProps,
   settings: Partial<GraphSettings> = {},
 ) => {
-  // https://github.com/Yonava/magic-graphs/issues/606
-  // TODO get inference to work without explicit type parameters
-  const base = useCoreGraph(settings);
+  const graph = createGraph({
+    settings,
+    plugins: [
+      canvas(magicCanvas),
+      history,
+      anchors,
+      focus,
+      nodeDrag,
+      marquee,
+      nodeLabel,
+      adjacencyLists,
+      transitionMatrix,
+      characteristics,
+    ],
+  });
 
-  const baseCanvas = useCanvasPlugin<{}, CoreEventMap, {}>(base, canvas);
-
-  const baseCanvasFocus = useFocusPlugin<
-    {},
-    CoreEventMap & CanvasEventMap,
-    CanvasPlugin
-  >(baseCanvas);
-
-  const baseCanvasFocusDrag = useNodeDragPlugin<
-    FocusTransactionWrapperOptions,
-    CoreEventMap & CanvasEventMap & FocusEventMap,
-    CanvasPlugin & FocusPlugin
-  >(baseCanvasFocus);
-
-  const baseCanvasFocusDragAnchor = useNodeAnchorPlugin<
-    FocusTransactionWrapperOptions,
-    CoreEventMap & CanvasEventMap & FocusEventMap & NodeDragEventMap,
-    CanvasPlugin & FocusPlugin & NodeDragPlugin
-  >(baseCanvasFocusDrag);
-
-  const baseCanvasFocusDragAnchorHistory = useHistoryPlugin<
-    FocusTransactionWrapperOptions,
-    CoreEventMap &
-      CanvasEventMap &
-      FocusEventMap &
-      NodeDragEventMap &
-      NodeAnchorEventMap,
-    CanvasPlugin & FocusPlugin & NodeDragPlugin & NodeAnchorPlugin
-  >(baseCanvasFocusDragAnchor);
-
-  const baseCanvasFocusDragAnchorHistoryMarquee = useMarqueePlugin<
-    FocusTransactionWrapperOptions & HistoryTransactionWrapperOptions,
-    CoreEventMap &
-      CanvasEventMap &
-      FocusEventMap &
-      NodeDragEventMap &
-      NodeAnchorEventMap &
-      HistoryEventMap,
-    CanvasPlugin &
-      FocusPlugin &
-      NodeDragPlugin &
-      NodeAnchorPlugin &
-      HistoryPlugin
-  >(baseCanvasFocusDragAnchorHistory);
-
-  return createNodeLabel<
-    FocusTransactionWrapperOptions & HistoryTransactionWrapperOptions,
-    CoreEventMap &
-      CanvasEventMap &
-      FocusEventMap &
-      NodeDragEventMap &
-      NodeAnchorEventMap &
-      HistoryEventMap &
-      MarqueeEventMap,
-    CanvasPlugin &
-      FocusPlugin &
-      NodeDragPlugin &
-      NodeAnchorPlugin &
-      HistoryPlugin &
-      MarqueePlugin
-  >(baseCanvasFocusDragAnchorHistoryMarquee);
+  return graph;
 };
 
-export type GraphWithPlugins = ReturnType<typeof useGraphWithPlugins>;
+export type GraphWithPlugins = ReturnType<typeof createGraphWithPlugins>;
 export type GNode = ReturnType<GraphWithPlugins['getNode']>;
+export type GEdge = ReturnType<GraphWithPlugins['getEdge']>;
 
 /**
  * a hook brimming with tools for creating and managing graphs bringing
@@ -121,16 +55,11 @@ export const useGraph = (
   canvas: MagicCanvasProps,
   settings: Partial<GraphSettings> = {},
 ) => {
-  const graph = useGraphWithPlugins(canvas, settings);
+  const graph = createGraphWithPlugins(canvas, settings);
 
   const preferredTheme = usePreferredThemePreset(graph);
 
   const shortcut = useShortcuts(graph);
-
-  const adjacencyList = useAdjacencyList(graph);
-  const transitionMatrix = useTransitionMatrix({ graph, adjacencyList });
-
-  const characteristics = useCharacteristics({ graph, adjacencyList });
 
   useInteractive(graph);
 
@@ -139,9 +68,5 @@ export const useGraph = (
 
     shortcut,
     ...preferredTheme,
-
-    adjacencyList,
-    transitionMatrix,
-    characteristics,
   };
 };

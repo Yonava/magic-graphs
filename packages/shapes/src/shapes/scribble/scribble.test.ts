@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { SCRIBBLE_SCHEMA_DEFAULTS } from './defaults.ts';
+import { scribble } from './index.ts';
+
 vi.mock('@magic/canvas/coordinates/index', () => ({
   getClientCoordinates: vi.fn(),
 }));
@@ -19,13 +22,16 @@ vi.mock('@magic/utils/ctx/index', () => ({
   })),
 }));
 
-import { SCRIBBLE_SCHEMA_DEFAULTS } from './defaults.ts';
-import { scribble } from './index.ts';
-
 describe('scribble', () => {
   describe('defaults', () => {
     it('has name "scribble"', () => {
-      const s = scribble({ type: 'draw', points: [{ x: 0, y: 0 }, { x: 100, y: 0 }] });
+      const s = scribble({
+        type: 'draw',
+        points: [
+          { x: 0, y: 0 },
+          { x: 100, y: 0 },
+        ],
+      });
       expect(s.name).toBe('scribble');
     });
 
@@ -51,7 +57,10 @@ describe('scribble', () => {
       // brushWeight=10: at expanded by -5 on each side, width/height expanded by 10
       const s = scribble({
         type: 'draw',
-        points: [{ x: 0, y: 0 }, { x: 100, y: 0 }],
+        points: [
+          { x: 0, y: 0 },
+          { x: 100, y: 0 },
+        ],
         brushWeight: 10,
       });
       const bbox = s.getBoundingBox();
@@ -66,7 +75,10 @@ describe('scribble', () => {
     describe('erase type always misses', () => {
       const eraser = scribble({
         type: 'erase',
-        points: [{ x: 0, y: 0 }, { x: 100, y: 0 }],
+        points: [
+          { x: 0, y: 0 },
+          { x: 100, y: 0 },
+        ],
       });
 
       it('misses the center of an erase scribble', () => {
@@ -107,7 +119,10 @@ describe('scribble', () => {
       // horizontal path from (0,0) to (100,0) with brushWeight=10
       const path = scribble({
         type: 'draw',
-        points: [{ x: 0, y: 0 }, { x: 100, y: 0 }],
+        points: [
+          { x: 0, y: 0 },
+          { x: 100, y: 0 },
+        ],
         brushWeight: 10,
       });
 

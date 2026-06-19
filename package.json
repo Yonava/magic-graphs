@@ -11,6 +11,7 @@
     "dev-server": "pnpm --filter server dev",
     "build:types": "vue-tsc -b tsconfig.json",
     "clean:nuke": "rm -rf node_modules pnpm-lock.yaml packages/*/dist && pnpm i && pnpm build:types",
+    "try": "rm -rf node_modules pnpm-lock.yaml packages/*/dist && pnpm build:types",
     "build:types:force": "vue-tsc -b tsconfig.json --clean && vue-tsc -b tsconfig.json",
     "simulate:prod": "rimraf node_modules packages/*/dist && pnpm install && pnpm build:types && pnpm --filter client build-only && pnpm --filter server start"
   },

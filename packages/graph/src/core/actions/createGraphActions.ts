@@ -1,8 +1,9 @@
 import { Ref } from 'vue';
 
-import { GEdge, GNode } from '../../types.ts';
+import { CoreEdge, CoreNode } from '../../types.ts';
 import { NodePositionStoreControls } from '../positions/types.ts';
 import { CommitTransaction } from '../transaction/types.ts';
+import type { EdgeWeightStoreControls } from '../weights/types.ts';
 import {
   createAddEdgeHandler,
   createAddElementsHandler,
@@ -10,33 +11,25 @@ import {
   createRemoveEdgeHandler,
   createRemoveElementsHandler,
   createRemoveNodeHandler,
-  createUpdateEdgeHandler,
-  createUpdateElementsHandler,
-  createUpdateNodeHandler,
 } from './methods/index.ts';
-import { GraphActions } from './types.ts';
 
-export type GraphActionsOptions = {
+export type CreateCoreActionOptions = {
   commitTransaction: CommitTransaction;
   graph: {
-    nodes: Ref<GNode[]>;
-    edges: Ref<GEdge[]>;
+    nodes: Ref<CoreNode[]>;
+    edges: Ref<CoreEdge[]>;
     positions: NodePositionStoreControls;
+    weights: EdgeWeightStoreControls;
   };
 };
 
-export const createGraphActions = (
-  options: GraphActionsOptions,
-): GraphActions => ({
+export const createCoreActions = (options: CreateCoreActionOptions) => ({
   addNode: createAddNodeHandler(options),
   removeNode: createRemoveNodeHandler(options),
-  updateNode: createUpdateNodeHandler(options),
 
   addEdge: createAddEdgeHandler(options),
   removeEdge: createRemoveEdgeHandler(options),
-  updateEdge: createUpdateEdgeHandler(options),
 
   addElements: createAddElementsHandler(options),
   removeElements: createRemoveElementsHandler(options),
-  updateElements: createUpdateElementsHandler(options),
 });

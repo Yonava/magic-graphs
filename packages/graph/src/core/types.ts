@@ -1,54 +1,27 @@
 import type { ComputedRef, Ref } from 'vue';
 
-import { EventHub } from '../events/createEventHub.ts';
 import { GraphSettings } from '../settings/index.ts';
-import type { GEdge, GNode } from '../types.ts';
-import {
-  CoreTransactionWrapperOptions,
-  GraphActions,
-  MergeTransactionWrappersWithCore,
-} from './actions/types.ts';
-import { CoreEventMap } from './events.ts';
+import type { CoreEdge, CoreNode } from '../types.ts';
 import { CoreGraphHelpers } from './helpers/types.ts';
 import { NodePositionStoreControls } from './positions/types.ts';
+import { EdgeWeightStoreControls } from './weights/types.ts';
 
-export type CoreGraph<
-  TransactionWrapperOptions = {},
-  EventMap extends CoreEventMap = CoreEventMap,
-  Plugins = {},
-  NodeGetterProps = {},
-> = {
+export type CoreControls = {
   /**
    * all the nodes contained in the graph
    */
-  nodes: Ref<GNode[]>;
+  nodes: Ref<CoreNode[]>;
   /**
    * all the edges contained in the graph
    */
-  edges: Ref<GEdge[]>;
+  edges: Ref<CoreEdge[]>;
 
-  nodeIdToIndex: ComputedRef<Map<GNode['id'], number>>;
-  edgeIdToIndex: ComputedRef<Map<GEdge['id'], number>>;
+  nodeIdToIndex: ComputedRef<Map<CoreNode['id'], number>>;
+  edgeIdToIndex: ComputedRef<Map<CoreEdge['id'], number>>;
 
-  getNode: (nodeId: GNode['id']) => Readonly<GNode & NodeGetterProps>;
-  getEdge: (edgeId: GEdge['id']) => Readonly<GEdge>;
-
-  actions: GraphActions<
-    MergeTransactionWrappersWithCore<TransactionWrapperOptions>
-  >;
-
-  events: EventHub<EventMap>;
   settings: Ref<GraphSettings>;
 
   helpers: CoreGraphHelpers;
   positions: NodePositionStoreControls;
-} & Plugins;
-
-export type InternalActions = {
-  [Action in keyof CoreTransactionWrapperOptions]: (
-    ...args: [
-      ...Parameters<GraphActions[Action]>,
-      transactionOptions: Record<string, any>,
-    ]
-  ) => ReturnType<GraphActions[Action]>;
+  weights: EdgeWeightStoreControls;
 };

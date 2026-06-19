@@ -1,4 +1,4 @@
-import type { TransitionMatrix } from '@magic/graph/useTransitionMatrix';
+import type { TransitionMatrix } from '@magic/graph-plugins/plugins/transition-matrix/types';
 import { Fraction, matrix, multiply } from 'mathjs';
 
 import { computed, watch } from 'vue';

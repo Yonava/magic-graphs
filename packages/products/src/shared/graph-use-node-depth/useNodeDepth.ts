@@ -1,9 +1,9 @@
-
-import type { Graph } from '../useGraphWithCanvas.ts';
-import type { AdjacencyList } from '@magic/graph/useAdjacencyList';
+import type { AdjacencyList } from '@magic/graph-plugins/plugins/adjacency-lists/types';
 
 import { computed } from 'vue';
 import type { Ref } from 'vue';
+
+import type { Graph } from '../useGraphWithCanvas.ts';
 
 /** node id -> depth in a BFS tree */
 export type NodeIdToDepth = Map<string, number>;
@@ -22,7 +22,10 @@ export type NodeIdToDepth = Map<string, number>;
  * // depthToNodeIds: string[][] (array of node ids at each depth)
  * // depth: number (with root node at depth 0)
  */
-export const getNodeDepths = (startNode: { id: string }, adjList: AdjacencyList) => {
+export const getNodeDepths = (
+  startNode: { id: string },
+  adjList: AdjacencyList,
+) => {
   const nodeIdToDepth: NodeIdToDepth = new Map();
   if (!adjList[startNode.id]) {
     throw new Error(
@@ -82,7 +85,7 @@ export const getNodeDepths = (startNode: { id: string }, adjList: AdjacencyList)
  */
 export const useNodeDepth = (graph: Graph, startNode: Ref<{ id: string }>) => {
   return computed(() =>
-    getNodeDepths(startNode.value, graph.adjacencyList.adjacencyList.value),
+    getNodeDepths(startNode.value, graph.adjacencyLists.standard.value),
   );
 };
 

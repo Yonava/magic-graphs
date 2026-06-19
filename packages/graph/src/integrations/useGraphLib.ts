@@ -2,13 +2,13 @@ import graphlib from 'graphlib';
 
 import { computed } from 'vue';
 
-import { CoreGraph } from '../core/types.ts';
+import { CoreControls } from '../core/types.ts';
 
 /**
  * a magic graphs integration with the `graphlib` library.
  * ..lib api reference: https://github.com/dagrejs/graphlib/wiki/API-Reference
  */
-export const useGraphLib = (graph: CoreGraph) =>
+export const useGraphLib = (graph: CoreControls) =>
   computed(() => {
     const directed = graph.settings.value.isGraphDirected;
     const graphLibInstance = new graphlib.Graph({

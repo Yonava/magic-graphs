@@ -1,5 +1,5 @@
 import { NodePositionUpdate } from '@magic/graph/core/positions/types';
-import type { GEdge } from '@magic/graph/types';
+import type { CoreEdge } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { nullThrows } from '@magic/utils/assert';
 import { Fraction } from 'mathjs';
@@ -9,15 +9,14 @@ import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { TreeNodeKeyArray } from './avl.ts';
 import type { TreeNode } from './treeNode.ts';
 
-const newEdge = (source: number, target: number): GEdge => ({
+const newEdge = (source: number, target: number): CoreEdge => ({
   source: source.toString(),
   target: target.toString(),
   id: `${source}-${target}`,
-  weight: new Fraction(1),
 });
 
 const edgesInTree = (treeArray: TreeNodeKeyArray) => {
-  const edges: GEdge[] = [];
+  const edges: CoreEdge[] = [];
 
   for (let i = 0; i < treeArray.length; i++) {
     const node = treeArray[i];
@@ -50,7 +49,7 @@ export const treeArrayToGraph = (
   );
 
   for (const node of nodesNotInNewTree) {
-    graph.actions.removeNode(node.id);
+    graph.actions.removeNode({ id: node.id });
   }
 
   // the tree is empty and all the nodes have been removed
@@ -77,22 +76,14 @@ export const treeArrayToGraph = (
 
     const coordsOfNodeOnTree = positions[i];
 
-    graph.actions.addNode(
-      {
-        id: treeNodeKey.toString(),
-        // @ts-expect-error migration
-        label: treeNodeKey.toString(),
-        ...coordsOfNodeOnTree,
-      },
-      {
-        animate: true,
-        focus: false,
-      },
-    );
+    graph.actions.addNode({
+      id: treeNodeKey.toString(),
+      ...coordsOfNodeOnTree,
+    });
   });
 
   for (const edge of edgesNotInNewTree) {
-    graph.actions.removeEdge(edge.id);
+    graph.actions.removeEdge({ id: edge.id });
   }
 
   const positionUpdates = treeArray

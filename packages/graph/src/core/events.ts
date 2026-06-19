@@ -2,21 +2,20 @@ import { DeepPartial, DeepReadonly } from 'ts-essentials';
 
 import { EventMapToEventRegistry } from '../events/types.ts';
 import { GraphSettings } from '../settings/index.ts';
-import { GEdge, GNode } from '../types.ts';
+import { CoreEdge, CoreNode } from '../types.ts';
 import {
   ElementAdditionPayload,
   ElementRemovalPayload,
-  ElementUpdatePayload,
 } from './actions/types.ts';
 import {
   NodePositionStoreEventMap,
   createNodePositionStoreEventRegistry,
 } from './positions/events.ts';
+import { TransactionPayload } from './transaction/types.ts';
 import {
-  ForbiddenEdgeKeyUpdates,
-  ForbiddenNodeKeyUpdates,
-  TransactionPayload,
-} from './transaction/types.ts';
+  EdgeWeightStoreEventMap,
+  createEdgeWeightStoreEventRegistry,
+} from './weights/events.ts';
 
 export type CoreEventMap = {
   /**
@@ -38,37 +37,23 @@ export type CoreEventMap = {
   /**
    * when nodes are added to the graph in a single transaction
    */
-  onNodesAdded: (nodes: Readonly<GNode[]>) => void;
+  onNodesAdded: (nodes: Readonly<CoreNode[]>) => void;
   /**
    * when nodes are removed from the graph in a single transaction
    */
   onNodesRemoved: (
-    removedNodeIds: Readonly<GNode['id'][]>,
-    removedEdgeIds: Readonly<GEdge['id'][]>,
-  ) => void;
-  /**
-   * when a single node is {@link Graph.actions.updateNode | updated}
-   */
-  onNodeUpdated: (
-    node: Readonly<GNode>,
-    previousValues: Readonly<Partial<Omit<GNode, ForbiddenNodeKeyUpdates>>>,
+    removedNodeIds: Readonly<CoreNode['id'][]>,
+    removedEdgeIds: Readonly<CoreEdge['id'][]>,
   ) => void;
 
   /**
    * when one or more edges are {@link Graph.actions.addEdge | added} to the graph in a single transaction
    */
-  onEdgesAdded: (edges: Readonly<GEdge[]>) => void;
+  onEdgesAdded: (edges: Readonly<CoreEdge[]>) => void;
   /**
    * when one or more edges are {@link Graph.actions.removeEdge | removed} from the graph in a single transaction
    */
-  onEdgesRemoved: (edgeIds: Readonly<GEdge['id'][]>) => void;
-  /**
-   * when an edge is {@link Graph.actions.updateEdge | updated} from the graph
-   */
-  onEdgeUpdated: (
-    edge: Readonly<GEdge>,
-    previousValues: Readonly<Partial<Omit<GEdge, ForbiddenEdgeKeyUpdates>>>,
-  ) => void;
+  onEdgesRemoved: (edgeIds: Readonly<CoreEdge['id'][]>) => void;
 
   /**
    * when any nodes or edges are added
@@ -78,16 +63,13 @@ export type CoreEventMap = {
    * when any nodes or edges are deleted
    */
   onElementsRemoved: (removals: DeepReadonly<ElementRemovalPayload>) => void;
-  /**
-   * when any nodes or edges are updated
-   */
-  onElementsUpdated: (updates: DeepReadonly<ElementUpdatePayload>) => void;
 
   /**
    * when the {@link Graph.settings | settings} of the graph have changed
    */
   onSettingsChange: (diff: DeepPartial<GraphSettings>) => void;
-} & NodePositionStoreEventMap;
+} & NodePositionStoreEventMap &
+  EdgeWeightStoreEventMap;
 
 export type CoreEventRegistry = EventMapToEventRegistry<CoreEventMap>;
 
@@ -97,16 +79,14 @@ export const createCoreEventRegistry = (): CoreEventRegistry => ({
 
   onNodesAdded: new Set(),
   onNodesRemoved: new Set(),
-  onNodeUpdated: new Set(),
 
   onEdgesAdded: new Set(),
   onEdgesRemoved: new Set(),
-  onEdgeUpdated: new Set(),
 
   onElementsAdded: new Set(),
   onElementsRemoved: new Set(),
-  onElementsUpdated: new Set(),
 
   onSettingsChange: new Set(),
   ...createNodePositionStoreEventRegistry(),
+  ...createEdgeWeightStoreEventRegistry(),
 });

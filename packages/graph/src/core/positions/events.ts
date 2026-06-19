@@ -5,7 +5,9 @@ import { NodePositionEntry } from './types.ts';
 
 export type NodePositionStoreEventMap = {
   /** Triggers when a set of node positions is committed. For streamed moves, fires once on stream close. */
-  onNodePositionsCommitted: (positions: DeepReadonly<NodePositionEntry[]>) => void;
+  onNodePositionsCommitted: (
+    positions: DeepReadonly<NodePositionEntry[]>,
+  ) => void;
   /** Triggers when a position update stream opens. */
   onNodeMoveStreamStart: () => void;
   /** Triggers when a position update stream closes. */

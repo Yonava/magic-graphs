@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import definitions from '@magic/graph/plugins/characteristics/definitions';
+  import definitions from '@magic/graph-plugins/plugins/characteristics/definitions';
 
   import { computed } from 'vue';
 
@@ -10,27 +10,31 @@
   import { useSCCColorizer } from './useSCCColorizer.ts';
 
   const isConnected = computed(
-    () => graph.value.characteristics.isConnected.value,
+    () => graph.value.characteristics.connected.isConnected.value,
   );
   const isWeaklyConnected = computed(
-    () => graph.value.characteristics.isWeaklyConnected.value,
+    () => graph.value.characteristics.connected.isWeaklyConnected.value,
   );
   const isDirected = computed(() => graph.value.settings.value.isGraphDirected);
 
   const SCCs = computed(() => {
     const components =
-      graph.value.characteristics.stronglyConnectedComponents.value;
-    return components.map((nodes) => nodes.map((node) => graph.value.labels.get(node.id)));
+      graph.value.characteristics.sccs.stronglyConnectedComponents.value;
+    return components.map((nodes: { id: string }[]) =>
+      nodes.map((node) => graph.value.nodeLabel.get(node.id)),
+    );
   });
 
   const isBipartite = computed(
-    () => graph.value.characteristics.isBipartite.value,
+    () => graph.value.characteristics.bipartite.isBipartite.value,
   );
 
-  const isAcyclic = computed(() => graph.value.characteristics.isAcyclic.value);
+  const isAcyclic = computed(
+    () => graph.value.characteristics.cycles.isAcyclic.value,
+  );
 
   const isComplete = computed(
-    () => graph.value.characteristics.isComplete.value,
+    () => graph.value.characteristics.complete.isComplete.value,
   );
 
   const { color: colorizeSCCs, uncolor: decolorizeSCCs } = useSCCColorizer(

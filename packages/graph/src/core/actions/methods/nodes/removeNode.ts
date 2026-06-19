@@ -1,17 +1,14 @@
-import { GraphActionsOptions } from '../../createGraphActions.ts';
-import { GraphActions } from '../../types.ts';
+import { CreateCoreAction } from '../../types.ts';
 
-export const createRemoveNodeHandler =
-  ({
-    graph,
-    commitTransaction,
-  }: GraphActionsOptions): GraphActions['removeNode'] =>
-  (nodeId) => {
+export const createRemoveNodeHandler: CreateCoreAction<'removeNode'> =
+  ({ graph, commitTransaction }) =>
+  ({ id }) => {
     const { removedNodeIds, removedEdgeIds } = commitTransaction({
-      removeNodeIds: [nodeId],
+      removeNodeIds: [id],
     });
 
-    graph.positions._internal.remove([nodeId]);
+    graph.positions._internal.remove([id]);
+    graph.weights._internal.remove(removedEdgeIds);
 
     return { removedNodeIds, removedEdgeIds };
   };

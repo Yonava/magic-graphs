@@ -1,4 +1,3 @@
-
 /**
  * trace for bfs/dfs search
  */

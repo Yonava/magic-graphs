@@ -54,7 +54,7 @@ export const delta = (
  */
 export const shallowDelta = <T extends Record<string, any>>(
   obj1: T,
-  obj2: T
+  obj2: T,
 ): Partial<T> => {
   const difference: Partial<T> = {};
 

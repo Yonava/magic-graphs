@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { GNode } from '@magic/graph/types';
+  import type { CoreNode } from '@magic/graph/types';
   import CPopover from '@magic/ui/core/Popover.vue';
   import CButton from '@magic/ui/core/button/Button.vue';
   import colors from '@magic/utils/colors';
@@ -22,7 +22,7 @@
   const { isActive, activate, deactivate, updateShape, rootNodeId } =
     treeControls.value;
 
-  const nodeSelected = (node: GNode) => {
+  const nodeSelected = (node: CoreNode) => {
     rootNodeId.value = node.id;
     if (!isActive.value) updateShape();
   };
@@ -94,7 +94,7 @@
               secondary
               class="rounded-md px-2 py-1 font-bold text-xs animate-pulse"
             >
-              <h2>Tracking Node {{ graph.labels.get(rootNode.id) }}</h2>
+              <h2>Tracking Node {{ graph.nodeLabel.get(rootNode.id) }}</h2>
             </GWell>
           </div>
         </div>

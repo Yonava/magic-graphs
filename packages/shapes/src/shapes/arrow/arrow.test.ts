@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { ARROW_SCHEMA_DEFAULTS } from './defaults.ts';
+import { arrow } from './index.ts';
+
 vi.mock('@magic/canvas/coordinates/index', () => ({
   getClientCoordinates: vi.fn(),
 }));
@@ -18,9 +21,6 @@ vi.mock('@magic/utils/ctx/index', () => ({
     fillText: vi.fn(),
   })),
 }));
-
-import { ARROW_SCHEMA_DEFAULTS } from './defaults.ts';
-import { arrow } from './index.ts';
 
 describe('arrow', () => {
   describe('defaults', () => {

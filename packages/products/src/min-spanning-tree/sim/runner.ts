@@ -1,5 +1,4 @@
-import type { GEdge } from '@magic/graph/types';
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
+import type { CoreEdge } from '@magic/graph/types';
 
 import { computed } from 'vue';
 
@@ -8,11 +7,12 @@ import type {
   SimulationRunner,
 } from '../../shared/ui/general/sim/types.ts';
 import { useSimulationControls } from '../../shared/ui/general/sim/useSimulationControls.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { useKruskal } from '../algo/useKruskal.ts';
 import { usePrim } from '../algo/usePrim.ts';
 import { useSimulationTheme } from './theme.ts';
 
-export type MSTTrace = GEdge;
+export type MSTTrace = CoreEdge;
 export type MSTSimulationControls = SimulationControls<MSTTrace>;
 export type MSTSimulationRunner = SimulationRunner<MSTTrace>;
 

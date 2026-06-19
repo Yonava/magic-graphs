@@ -1,6 +1,6 @@
 import { MaybeGetter } from '@magic/utils/maybeGetter/index';
 
-import { GNode } from '../../types.ts';
+import { CoreNode } from '../../types.ts';
 import type { NodePositionStoreEventMap } from './events.ts';
 
 export type Position = {
@@ -10,12 +10,12 @@ export type Position = {
 };
 
 export type NodePositionEntry = {
-  nodeId: GNode['id'];
+  nodeId: CoreNode['id'];
   position: Position;
 };
 
 export type NodePositionUpdate = {
-  nodeId: GNode['id'];
+  nodeId: CoreNode['id'];
   update: MaybeGetter<Partial<Position>, [Position]>;
 };
 
@@ -45,8 +45,8 @@ export type NodePositionStoreControls = {
   createStream: () => NodePositionStreamControls;
   /** @internal */
   _internal: {
-    add: (positions: (Pick<GNode, 'id'> & Partial<Position>)[]) => void;
-    remove: (nodeIds: GNode['id'][]) => void;
+    add: (positions: (Pick<CoreNode, 'id'> & Partial<Position>)[]) => void;
+    remove: (nodeIds: CoreNode['id'][]) => void;
     nodeIdToNodePosition: Map<string, Position>;
   };
 };

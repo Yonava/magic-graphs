@@ -1,7 +1,6 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import { computed } from 'vue';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { ComponentAdjacencyMap } from './useComponentAdjacencyMap.ts';
 
 /**
@@ -15,7 +14,7 @@ export type MarkovClass = Set<string>;
 export type MarkovStateToClassIndex = Map<string, number>;
 
 export const getMarkovClasses = (
-  connectedComponents: Graph['characteristics']['stronglyConnectedComponents']['value'],
+  connectedComponents: Graph['characteristics']['sccs']['stronglyConnectedComponents']['value'],
   componentMap: ComponentAdjacencyMap,
 ) => {
   const recurrent: MarkovClass[] = [];
@@ -42,7 +41,7 @@ export const useMarkovClasses = (graph: Graph) => {
   const {
     stronglyConnectedComponents: sccs,
     componentAdjacencyMap: componentMap,
-  } = graph.characteristics;
+  } = graph.characteristics.sccs;
 
   const transientClasses = computed(() => {
     const { transient } = getMarkovClasses(sccs.value, componentMap.value);

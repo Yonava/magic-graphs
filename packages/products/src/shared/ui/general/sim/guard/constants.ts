@@ -1,4 +1,4 @@
-import definitions from '@magic/graph/plugins/characteristics/definitions';
+import definitions from '@magic/graph-plugins/plugins/characteristics/definitions';
 
 import type { ReasonText, ReasonTextGetter } from './types.ts';
 

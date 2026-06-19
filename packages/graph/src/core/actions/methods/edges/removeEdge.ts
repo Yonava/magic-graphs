@@ -1,14 +1,15 @@
 import { nullThrows } from '@magic/utils/assert';
 
-import { GraphActionsOptions } from '../../createGraphActions.ts';
-import { GraphActions } from '../../types.ts';
+import { CreateCoreAction } from '../../types.ts';
 
-export const createRemoveEdgeHandler =
-  ({ commitTransaction }: GraphActionsOptions): GraphActions['removeEdge'] =>
-  (edgeId) => {
+export const createRemoveEdgeHandler: CreateCoreAction<'removeEdge'> =
+  ({ graph, commitTransaction }) =>
+  ({ id }) => {
     const { removedEdgeIds } = commitTransaction({
-      removeEdgeIds: [edgeId],
+      removeEdgeIds: [id],
     });
+
+    graph.weights._internal.remove([id]);
 
     return nullThrows(
       removedEdgeIds[0],

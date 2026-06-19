@@ -1,88 +1,85 @@
-import type { CoreEventMap } from '@magic/graph/core/events';
-import { CoreGraph } from '@magic/graph/core/types';
-import { CanvasEventMap } from '@magic/graph/plugins/canvas/events';
-import { CanvasPlugin } from '@magic/graph/plugins/canvas/types';
-import { GNode } from '@magic/graph/types';
 import { nullThrows } from '@magic/utils/assert';
+import { generateId } from '@magic/utils/id';
 import { getValue } from '@magic/utils/maybeGetter/index';
 
 import { UPPERCASE_ALPHABET } from './constants.ts';
 import { createLabelGenerator } from './createLabelGenerator.ts';
 import { createLabelThemer } from './createLabelThemer.ts';
-import { GraphWithNodeLabel, NodeLabelStoreControls } from './types.ts';
+import { NodeLabelControls, NodeLabelPlugin } from './types.ts';
 
-export const createNodeLabel = <
-  TransactionWrapperOptions,
-  EventMap extends CoreEventMap & CanvasEventMap,
-  Plugins extends CanvasPlugin,
->(
-  graph: CoreGraph<TransactionWrapperOptions, EventMap, Plugins>,
-): GraphWithNodeLabel<TransactionWrapperOptions, EventMap, Plugins> => {
+export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
   const nodeIdToLabel = new Map<string, string>();
 
-  const getNodeLabel: NodeLabelStoreControls['get'] = (nodeId) =>
+  const getNodeLabel = (nodeId: string) => nodeIdToLabel.get(nodeId);
+  const getNodeLabelWithAssert: NodeLabelControls['get'] = (nodeId) =>
     nullThrows(
-      nodeIdToLabel.get(nodeId),
-      `could not resolve label from node with id ${nodeId}`,
+      getNodeLabel(nodeId),
+      'could not find label on node with id:' + nodeId,
     );
 
-  const setNodeLabels: NodeLabelStoreControls['setMany'] = (labels) => {
+  const setNodeLabels: NodeLabelControls['setMany'] = (labels) => {
     return labels.map(({ nodeId, label: labelOrLabelGetter }) => {
-      const currentLabel = getNodeLabel(nodeId);
+      const currentLabel = getNodeLabel(nodeId) ?? undefined;
+
       const label = getValue(labelOrLabelGetter, currentLabel);
       nodeIdToLabel.set(nodeId, label);
       return { nodeId, label };
     });
   };
 
-  const getNewLabel = createLabelGenerator({
+  const generateLabel = createLabelGenerator({
     getLabels: () =>
       // TODO this breaks when multiple nodes are added in bulk and implicitly requires newly added not to be the last node in the nodes array. This needs to change
       // https://github.com/Yonava/magic-graphs/issues/700
-      graph.nodes.value.slice(0, -1).map((n) => getNodeLabel(n.id)),
+      graph.nodes.value.slice(0, -1).map((n) => getNodeLabelWithAssert(n.id)),
     sequence: UPPERCASE_ALPHABET,
   });
 
-  const addNodesToLabelMap = (nodes: Readonly<GNode[]>) => {
-    for (const { id } of nodes) nodeIdToLabel.set(id, getNewLabel());
-  };
+  const themer = createLabelThemer(graph.canvas.theme, getNodeLabelWithAssert);
 
-  const removeNodesFromLabelMap = (nodeIds: Readonly<string[]>) => {
-    for (const id of nodeIds) nodeIdToLabel.delete(id);
-  };
+  const enable = themer.enable;
+  const disable = themer.disable;
 
-  const themer = createLabelThemer(graph.canvas.theme, getNodeLabel);
-
-  const activate = () => {
-    graph.events.subscribe('onNodesAdded', addNodesToLabelMap);
-    graph.events.subscribe('onNodesRemoved', removeNodesFromLabelMap);
-    themer.activate();
-  };
-
-  const deactivate = () => {
-    graph.events.unsubscribe('onNodesAdded', addNodesToLabelMap);
-    graph.events.unsubscribe('onNodesRemoved', removeNodesFromLabelMap);
-    themer.deactivate();
-  };
-
-  activate();
+  enable();
 
   return {
-    ...graph,
-    getNode: (nodeId) => {
-      const node = graph.getNode(nodeId);
-      const label = getNodeLabel(node.id);
-      return { ...node, label };
-    },
-    labels: {
-      get: getNodeLabel,
-      set: (label) => setNodeLabels([label]),
-      setMany: setNodeLabels,
-      _internal: {
-        nodeIdToLabel,
+    events,
+    getters: {
+      ...getters,
+      getNode: (id) => {
+        const node = getters.getNode(id);
+        const label = getNodeLabelWithAssert(node.id);
+        return { ...node, label };
       },
-      activate,
-      deactivate,
+    },
+    actions: {
+      ...actions,
+      addNode: (options) => {
+        const id = options?.id ?? generateId();
+        setNodeLabels([
+          { label: options.label ?? generateLabel(), nodeId: id },
+        ]);
+        return actions.addNode({ ...options, id });
+      },
+      removeNode: (options) => {
+        nodeIdToLabel.delete(options.id);
+        return actions.removeNode(options);
+      },
+      // TODO add bulk additions and removals!
+    },
+    controls: {
+      nodeLabel: {
+        get: getNodeLabelWithAssert,
+        set: (label) => setNodeLabels([label]),
+        setMany: setNodeLabels,
+        lifecycle: {
+          enable,
+          disable,
+        },
+        _internal: {
+          nodeIdToLabel,
+        },
+      },
     },
   };
 };

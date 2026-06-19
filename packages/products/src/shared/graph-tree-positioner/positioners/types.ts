@@ -9,7 +9,9 @@ export type TreeGraphPositionerOptions = {
   rootNode: { id: string };
   nodeDepths: NodeDepth;
   treeFormationOptions: UseTreeGraphPositionerOptions & {
-    rootNodeCoordinates: NonNullable<UseTreeGraphPositionerOptions['rootNodeCoordinates']>;
+    rootNodeCoordinates: NonNullable<
+      UseTreeGraphPositionerOptions['rootNodeCoordinates']
+    >;
   };
 };
 

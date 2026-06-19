@@ -1,7 +1,6 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import { computed, readonly, ref, watch } from 'vue';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { useResidualEdges } from '../misc/useResidualEdges.ts';
 import state from '../state.ts';
 import { fordFulkerson } from './fordFulkerson.ts';

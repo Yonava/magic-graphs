@@ -1,4 +1,4 @@
-import type { GEdge } from '@magic/graph/types';
+import type { CoreEdge } from '@magic/graph/types';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
@@ -36,8 +36,8 @@ export const kruskal = (graph: Graph) => {
 
   const run = () => {
     const sortedEdges = edges.value.toSorted((edgeA, edgeB) => {
-      const weightA = graph.helpers.edges.getWeight(edgeA.id);
-      const weightB = graph.helpers.edges.getWeight(edgeB.id);
+      const weightA = graph.getEdge(edgeA.id).weight;
+      const weightB = graph.getEdge(edgeB.id).weight;
       return weightA.valueOf() - weightB.valueOf();
     });
 
@@ -49,7 +49,7 @@ export const kruskal = (graph: Graph) => {
       rank.set(node.id, 0);
     });
 
-    const mst: GEdge[] = [];
+    const mst: CoreEdge[] = [];
     for (const edge of sortedEdges) {
       const sourceRoot = find(parent, edge.source);
       const targetRoot = find(parent, edge.target);

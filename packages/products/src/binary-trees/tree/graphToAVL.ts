@@ -1,5 +1,4 @@
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import type { AVLTree } from './avl.ts';
 
 /**
@@ -29,7 +28,7 @@ export const syncGraphWithTree = (graph: Graph, tree: AVLTree) => {
   while (q.length > 0) {
     const node = q.shift();
     if (!node) continue;
-    tree.insert(Number(graph.labels.get(node.id)), false);
+    tree.insert(Number(graph.nodeLabel.get(node.id)), false);
     q.push(...getChildren(node.id));
   }
 };
