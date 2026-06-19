@@ -87,7 +87,6 @@
         target: getASTNodeId(astEdge.toNode),
         source: getASTNodeId(astEdge.fromNode),
         id: getASTEdgeId(astEdge),
-        weight: new Fraction(1),
       }),
     );
 

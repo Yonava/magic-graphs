@@ -20,8 +20,9 @@ import type { CoreEdge, CoreNode, Prettify } from '../types.ts';
 import { createCoreActions } from './actions/createGraphActions.ts';
 import { GraphActions } from './actions/types.ts';
 import { createCoreEventRegistry } from './events.ts';
-import { createHelpers } from './helpers/index.ts';
+import { createHelpers } from './helpers/createHelpers.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
+import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
 import { setupTransactionSucceeded } from './transaction/setupTransactionSucceeded.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import type { CoreControls } from './types.ts';
@@ -48,13 +49,16 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
   const edges = ref<CoreEdge[]>([]);
 
   const nodePositionStore = createNodePositionStore(coreEventHub);
+  const edgeWeightStore = createEdgeWeightStore(coreEventHub, settings);
 
   const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
 
   const getNode = (id: CoreNode['id']) =>
     nullThrows(nodeIdToNodeMap.value.get(id), `node with id ${id} not found`);
-  const getEdge = (id: CoreEdge['id']) =>
-    nullThrows(edgeIdToEdgeMap.value.get(id), `edge with id ${id} not found`);
+  const getEdge = (id: CoreEdge['id']) => {
+    const edge = nullThrows(edgeIdToEdgeMap.value.get(id), `edge with id ${id} not found`);
+    return { ...edge, weight: edgeWeightStore.get(id) };
+  };
 
   const coreGetters = {
     getNode,
@@ -78,6 +82,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
       nodes,
       edges,
       positions: nodePositionStore,
+      weights: edgeWeightStore,
     },
   });
 
@@ -117,6 +122,7 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     helpers: createHelpers({ edges, getEdge, getNode, settings }),
     settings,
     positions: nodePositionStore,
+    weights: edgeWeightStore,
   };
 
   const events = coreEventHub as unknown as EventHub<

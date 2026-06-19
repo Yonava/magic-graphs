@@ -4,12 +4,13 @@ import colors from '@magic/utils/colors';
 import { computed } from 'vue';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
+import { GEdge } from '../../shared/useGraph.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { FlowTrace } from '../algo/fordFulkerson.ts';
 import { FLOW_USETHEME_ID } from '../constants.ts';
 import { isResidual } from '../misc/useResidualEdges.ts';
 
-type WeightMap = Map<CoreEdge['id'], CoreEdge['weight']>;
+type WeightMap = Map<GEdge['id'], GEdge['weight']>;
 
 export const useSimulationTheme = (
   graph: Graph,
@@ -65,7 +66,7 @@ export const useSimulationTheme = (
 
   const labelEdges = (edge: CoreEdge) => {
     const weight = weightMapAtStep.value.get(edge.id);
-    if (weight === undefined) return edge.weight.toString();
+    if (weight === undefined) return graph.getEdge(edge.id).weight.toString();
     return weight.toString();
   };
 

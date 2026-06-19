@@ -1,6 +1,5 @@
 import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
-import Fraction from 'fraction.js';
 
 import { CoreEdge } from '../../../../types.ts';
 import { CreateCoreAction } from '../../types.ts';
@@ -8,7 +7,6 @@ import { CreateCoreAction } from '../../types.ts';
 export const edgeDefaults = () =>
   ({
     id: generateId(),
-    weight: new Fraction(1),
   }) as const satisfies Partial<CoreEdge>;
 
 export const createAddEdgeHandler: CreateCoreAction<'addEdge'> =
@@ -18,6 +16,8 @@ export const createAddEdgeHandler: CreateCoreAction<'addEdge'> =
       ...edgeDefaults(),
       ...edge,
     };
+
+    graph.weights._internal.add([edgeWithDefaults]);
 
     const { addedEdges } = commitTransaction({ addEdges: [edgeWithDefaults] });
 

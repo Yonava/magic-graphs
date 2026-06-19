@@ -3,11 +3,13 @@ import { nullThrows } from '@magic/utils/assert';
 import { CreateCoreAction } from '../../types.ts';
 
 export const createRemoveEdgeHandler: CreateCoreAction<'removeEdge'> =
-  ({ commitTransaction }) =>
+  ({ graph, commitTransaction }) =>
   ({ id }) => {
     const { removedEdgeIds } = commitTransaction({
       removeEdgeIds: [id],
     });
+
+    graph.weights._internal.remove([id]);
 
     return nullThrows(
       removedEdgeIds[0],

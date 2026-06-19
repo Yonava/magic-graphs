@@ -2,6 +2,7 @@ import { Ref } from 'vue';
 
 import { CoreEdge, CoreNode } from '../../types.ts';
 import { NodePositionStoreControls } from '../positions/types.ts';
+import type { EdgeWeightStoreControls } from '../weights/types.ts';
 import { CommitTransaction } from '../transaction/types.ts';
 import {
   createAddEdgeHandler,
@@ -18,6 +19,7 @@ export type CreateCoreActionOptions = {
     nodes: Ref<CoreNode[]>;
     edges: Ref<CoreEdge[]>;
     positions: NodePositionStoreControls;
+    weights: EdgeWeightStoreControls;
   };
 };
 

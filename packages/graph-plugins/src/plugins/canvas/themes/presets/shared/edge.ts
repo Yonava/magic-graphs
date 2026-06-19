@@ -179,9 +179,7 @@ const edgeShape: GraphTheme['edge']['default']['shape'] = (edge, graph) => {
 
 export const edgeShared = {
   ...textDefaults,
-  text: ({ weight }: CoreEdge) => {
-    return weight.toFraction();
-  },
+  text: '?',
   width: 10,
   shape: edgeShape,
 } as const;

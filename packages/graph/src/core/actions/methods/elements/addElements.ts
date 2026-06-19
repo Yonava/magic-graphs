@@ -24,6 +24,7 @@ export const createAddElementsHandler: CreateCoreAction<'addElements'> =
     // positioning system will hold a reference to a node id that
     // doesn't exist in the graph
     graph.positions._internal.add(nodesWithDefaults);
+    graph.weights._internal.add(edgesWithDefaults);
 
     const { addedEdges, addedNodes } = commitTransaction({
       addNodes: nodesWithDefaults,

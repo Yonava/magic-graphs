@@ -6,7 +6,7 @@ import {
   GraphGetters,
   GraphPlugin,
 } from '@magic/graph/plugins/types';
-import { CoreEdge, CoreNode } from '@magic/graph/types';
+import { CoreNode } from '@magic/graph/types';
 
 import { Ref } from 'vue';
 
@@ -16,7 +16,7 @@ import { Ref } from 'vue';
  */
 export type WeightedAdjacencyList = Record<
   CoreNode['id'],
-  (CoreNode & Pick<CoreEdge, 'weight'>)[]
+  (CoreNode & Pick<CoreGetters['getEdge'], 'weight'>)[]
 >;
 
 export type Graph = Pick<

@@ -1,3 +1,4 @@
+import { Fraction } from 'mathjs';
 import { UnionToIntersection } from 'ts-essentials';
 
 import {
@@ -19,7 +20,7 @@ type BaseGetters = {
 
 export type CoreGetters = {
   getNode: CoreNode;
-  getEdge: CoreEdge;
+  getEdge: CoreEdge & { weight: Fraction };
 };
 
 export type ResolveGetters<Getters extends Partial<BaseGetters>> = {

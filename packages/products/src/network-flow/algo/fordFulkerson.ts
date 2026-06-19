@@ -3,7 +3,7 @@ import { Fraction } from 'mathjs';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
-export type FlowTrace = Record<CoreEdge['id'], CoreEdge['weight']>;
+export type FlowTrace = Record<CoreEdge['id'], Fraction>;
 
 /**
  * implementation of the Ford-Fulkerson algorithm
@@ -19,7 +19,7 @@ export const fordFulkerson = (
   },
 ) => {
   const edgeIdToWeight = graph.edges.value.reduce<FlowTrace>((record, edge) => {
-    record[edge.id] = graph.helpers.edges.getWeight(edge.id);
+    record[edge.id] = graph.getEdge(edge.id).weight;
     return record;
   }, {});
 

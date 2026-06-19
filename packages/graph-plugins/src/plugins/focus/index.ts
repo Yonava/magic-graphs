@@ -107,10 +107,7 @@ export const focus: FocusPlugin = (
         return;
       }
 
-      actions.updateEdge({
-        id: edge.id,
-        values: { weight: newWeight },
-      });
+      controls.weights.set({ edgeId: edge.id, update: newWeight });
     });
   };
 

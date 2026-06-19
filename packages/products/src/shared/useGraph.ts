@@ -41,6 +41,7 @@ const createGraphWithPlugins = (
 
 export type GraphWithPlugins = ReturnType<typeof createGraphWithPlugins>;
 export type GNode = ReturnType<GraphWithPlugins['getNode']>;
+export type GEdge = ReturnType<GraphWithPlugins['getEdge']>;
 
 /**
  * a hook brimming with tools for creating and managing graphs bringing

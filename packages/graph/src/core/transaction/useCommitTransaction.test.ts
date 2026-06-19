@@ -30,7 +30,6 @@ describe(useCommitTransaction, () => {
       id: 'edge-1',
       source: 'node-1',
       target: 'node-2',
-      weight: new Fraction(1),
     };
 
     const commitTransaction = useCommitTransaction({

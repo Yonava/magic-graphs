@@ -179,7 +179,10 @@ export class SimulationGuard {
   nonNegativeEdgeWeights() {
     const nonNegativeWeights = () => {
       const negativeEdgeIds = this.graph.edges.value
-        .filter((e) => e.weight.valueOf() < 0)
+        .filter((e) => {
+          const { weight } = this.graph.getEdge(e.id);
+          return weight.valueOf() < 0;
+        })
         .map((e) => e.id);
 
       if (negativeEdgeIds.length === 0) return;
@@ -199,7 +202,10 @@ export class SimulationGuard {
   positiveEdgeWeights() {
     const positiveWeights = () => {
       const negativeOrZeroEdgeIds = this.graph.edges.value
-        .filter((edge) => edge.weight.valueOf() <= 0)
+        .filter((edge) => {
+          const { weight } = this.graph.getEdge(edge.id);
+          return weight.valueOf() <= 0;
+        })
         .map((edge) => edge.id);
 
       if (negativeOrZeroEdgeIds.length === 0) return;

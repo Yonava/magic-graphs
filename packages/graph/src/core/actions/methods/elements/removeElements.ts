@@ -9,6 +9,7 @@ export const createRemoveElementsHandler: CreateCoreAction<'removeElements'> =
     });
 
     graph.positions._internal.remove(removedNodeIds);
+    graph.weights._internal.remove(removedEdgeIds);
 
     return { removedNodeIds, removedEdgeIds };
   };

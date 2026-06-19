@@ -1,5 +1,3 @@
-import { Fraction } from 'mathjs';
-
 export type { RemovableRef } from '@vueuse/core';
 export type {
   DeepRequired,
@@ -27,9 +25,4 @@ export type CoreEdge = {
    * {@link CoreNode.id | id} of the node that the edge is coming from
    */
   source: string;
-  /**
-   * the weight of the edge
-   * @default new Fraction(1)
-   */
-  weight: Fraction;
 };
