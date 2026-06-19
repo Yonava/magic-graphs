@@ -209,24 +209,25 @@ export const anchors: AnchorsPlugin = (
 
   const resolveLinkPreviewCanvasElement = (elements: CanvasElement[]) => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
-    if (!parentNode.value || !draggedAnchor) return;
+    const currentParentNode = parentNode.value;
+    if (!currentParentNode || !draggedAnchor) return;
     const { x, y } = draggedAnchor;
-    const start = controls.positions.get(parentNode.value.id);
+    const start = controls.positions.get(currentParentNode.id);
     const end = { x, y };
     const { _resolveToken: resolveToken } = controls.canvas.theme;
 
     // TODO https://github.com/Yonava/magic-graphs/issues/707
-    const isFocused = controls.focus.isFocused(parentNode.value.id);
+    const isFocused = controls.focus.isFocused(currentParentNode.id);
 
     const baseColor = resolveToken(
       'nodeAnchor.default.linkPreview.color',
-      parentNode.value,
+      currentParentNode,
       draggedAnchor,
     );
 
     const focusColor = resolveToken(
       'nodeAnchor.focus.linkPreview.color',
-      parentNode.value,
+      currentParentNode,
       draggedAnchor,
     );
 
@@ -234,13 +235,13 @@ export const anchors: AnchorsPlugin = (
 
     const baseWidth = resolveToken(
       'nodeAnchor.default.linkPreview.width',
-      parentNode.value,
+      currentParentNode,
       draggedAnchor,
     );
 
     const focusWidth = resolveToken(
       'nodeAnchor.focus.linkPreview.width',
-      parentNode.value,
+      currentParentNode,
       draggedAnchor,
     );
 
@@ -255,7 +256,7 @@ export const anchors: AnchorsPlugin = (
     });
 
     const parentNodePriority = nullThrows(
-      elements.find((e) => e.id === parentNode.value?.id),
+      elements.find((e) => e.id === currentParentNode.id),
       'could not find parent node in aggregator pipeline',
     ).priority;
 
