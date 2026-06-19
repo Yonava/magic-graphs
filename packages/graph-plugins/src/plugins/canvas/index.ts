@@ -23,6 +23,7 @@ import {
   CANVAS_ELEMENT_CURSOR_FIELD_KEY,
   setupCanvasCursor,
 } from './setupCanvasCursor.ts';
+import { setupHoveredElement } from './setupHoveredElement.ts';
 import { createLayer } from './themes/createLayer.ts';
 import { createTokenResolver } from './themes/createTokenResolver.ts';
 import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
@@ -84,6 +85,12 @@ export const canvas =
       getNode: getters.getNode,
       resolveToken,
       graphUnderCursor,
+    });
+
+    const hoveredElement = setupHoveredElement(events);
+
+    events.subscribe('onHoveredElementChange', () => {
+      console.log(hoveredElement.value?.graphType);
     });
 
     const forceUpdateGraphUnderCursor = (): DeepReadonly<GraphUnderCursor> => {

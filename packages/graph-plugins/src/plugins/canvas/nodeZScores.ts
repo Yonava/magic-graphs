@@ -8,8 +8,8 @@ export const getNodeZScores = ({
   nodes: readonly CoreNode[];
   positions: NodePositionStoreControls;
 }) => {
-  const map = new Map<string, number>();
-  if (nodes.length === 0) return map;
+  const zScores = new Map<string, number>();
+  if (nodes.length === 0) return zScores;
 
   const increment = 1 / nodes.length;
 
@@ -18,8 +18,8 @@ export const getNodeZScores = ({
   });
 
   for (let i = 0; i < nodesSortedByZ.length; i++) {
-    map.set(nodesSortedByZ[i].id, increment * i);
+    zScores.set(nodesSortedByZ[i].id, increment * i);
   }
 
-  return map;
+  return zScores;
 };
