@@ -100,11 +100,15 @@ export const canvas =
       controls.positions.set({ nodeId, update: { z: maxZ + 1 } });
     };
 
-    events.subscribe('onHoveredElementChange', (hoveredEl) => {
-      if (!hoveredEl) return;
-      const { id } = hoveredEl;
-      if (controls.isNode(id)) setHoveredNode(id);
-    });
+    events.handle(
+      'onHoveredElementChange',
+      (hoveredEl) => {
+        if (!hoveredEl) return;
+        const { id } = hoveredEl;
+        if (controls.isNode(id)) setHoveredNode(id);
+      },
+      CANVAS_PLUGIN_ID,
+    );
 
     const forceUpdateGraphUnderCursor = (): DeepReadonly<GraphUnderCursor> => {
       const coords = magicCanvas.cursorCoordinates.value;

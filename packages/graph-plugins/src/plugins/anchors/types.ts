@@ -1,4 +1,4 @@
-import { GraphPlugin } from '@magic/graph/plugins/types';
+import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
 import { CoreNode } from '@magic/graph/types';
 
 import { Ref } from 'vue';
@@ -43,7 +43,7 @@ type AnchorsControls = {
 };
 
 export type AnchorsPlugin = GraphPlugin<{
-  controls: { anchors: AnchorsControls };
+  controls: { anchors: WithLifecycle<AnchorsControls> };
   events: AnchorsEventMap;
   actions: {};
   dependsOn: [CanvasPlugin, FocusPlugin];

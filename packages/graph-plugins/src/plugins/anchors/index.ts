@@ -7,11 +7,12 @@ import type { WithId } from '@magic/shapes/types/index';
 import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
-import { readonly, ref } from 'vue';
+import { DeepReadonly, readonly, ref } from 'vue';
 
 import type { AnchorsPlugin, NodeAnchor } from '../../plugins/anchors/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
+import { HoveredElement } from '../canvas/setupHoveredElement.ts';
 import { CanvasElement } from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { ANCHOR_PLUGIN_ID } from './constants.ts';
@@ -253,9 +254,6 @@ export const anchors: AnchorsPlugin = (
       lineWidth: width,
     });
 
-    // TODO works like a charm as long as the parent node is the last node hovered, but thats
-    // not the case if the user moves their mouse so fast that the system accidentally thinks
-    // that the hovered node is the destination node
     const parentNodePriority = nullThrows(
       elements.find((e) => e.id === parentNode.value?.id),
       'could not find parent node in aggregator pipeline',
@@ -360,7 +358,15 @@ export const anchors: AnchorsPlugin = (
   controls.canvas.aggregator.transformers.push(insertAnchorsIntoAggregator);
   controls.canvas.aggregator.transformers.push(insertLinkPreviewIntoAggregator);
 
-  const activate = () => {
+  const consumeOnElementHoverEvent = (
+    _: HoveredElement['value'] | undefined,
+    __: HoveredElement['value'] | undefined,
+    consume: () => void,
+  ) => {
+    if (anchorDragState.isDragging()) consume();
+  };
+
+  const enable = () => {
     events.handle(
       'onNodesRemoved',
       clearAnchorStateIfParentRemoved,
@@ -368,7 +374,7 @@ export const anchors: AnchorsPlugin = (
     );
     events.handle('onNodeMoveStreamStart', clearAnchorState, ANCHOR_PLUGIN_ID);
 
-    // for when the user is mousing over the canvas. checks if a node is under the cursor
+    // when the user is mousing over the canvas. checks if a node is under the cursor
     // to set the anchors on. onGraphUnderCursorChange because onMouseMove doesn't capture
     // the cases where the canvas state changes under the cursor while the cursor is
     // stationary, ie node being added via double click
@@ -378,7 +384,7 @@ export const anchors: AnchorsPlugin = (
       ANCHOR_PLUGIN_ID,
     );
 
-    // for when a node is finished dragging, set the dropped node as anchor parent
+    // when a node is finished dragging, set the dropped node as anchor parent
     events.handle('onMouseUp', checkForParentNodeUpdate, ANCHOR_PLUGIN_ID);
 
     // if an anchor is being dragged, update its position
@@ -397,12 +403,20 @@ export const anchors: AnchorsPlugin = (
     // drop the node anchor being dragged
     events.handle('onMouseUp', dropAnchor, ANCHOR_PLUGIN_ID);
 
-    // TODO this is triggered twice! https://github.com/Yonava/magic-graphs/issues/664
-    // console.log('activating');
-    dragCursorTheme.activate();
+    // prevents fast mouse movement from updating the hovered element to the destination node mid-drag
+    events.handle(
+      'onHoveredElementChange',
+      consumeOnElementHoverEvent,
+      ANCHOR_PLUGIN_ID,
+      {
+        before: ['plugins/canvas'],
+      },
+    );
+
+    dragCursorTheme.enable();
   };
 
-  const deactivate = () => {
+  const disable = () => {
     events.unhandle('onNodesRemoved', clearAnchorStateIfParentRemoved);
     events.unhandle('onNodeMoveStreamStart', clearAnchorState);
     events.unhandle('onGraphUnderCursorChange', checkForParentNodeUpdate);
@@ -410,11 +424,12 @@ export const anchors: AnchorsPlugin = (
     events.unhandle('onMouseMove', updateHoveredNodeAnchorId);
     events.unhandle('onMouseDown', setCurrentlyDraggingAnchor);
     events.unhandle('onMouseUp', dropAnchor);
+    events.unhandle('onHoveredElementChange', consumeOnElementHoverEvent);
     clearAnchorState();
-    dragCursorTheme.deactivate();
+    dragCursorTheme.disable();
   };
 
-  activate();
+  enable();
 
   return {
     events,
@@ -422,8 +437,10 @@ export const anchors: AnchorsPlugin = (
     getters,
     controls: {
       anchors: {
-        activate,
-        deactivate,
+        lifecycle: {
+          enable,
+          disable,
+        },
         parentNode: readonly(parentNode),
         setParentNode,
         clearAnchorState,
