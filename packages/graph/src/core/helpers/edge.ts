@@ -1,16 +1,6 @@
-import { Fraction } from 'mathjs';
-
 import { CurryWithCoreGraph, EdgeHelpers } from './types.ts';
 
 type CurriedEdgeHelpers = CurryWithCoreGraph<EdgeHelpers>;
-
-const getWeight: CurriedEdgeHelpers['getWeight'] = (graph) => (edgeId) => {
-  const { isGraphWeighted } = graph.settings.value;
-
-  const edge = graph.getEdge(edgeId);
-  if (!edge) throw new Error(`Edge with ID ${edgeId} not found`);
-  return isGraphWeighted ? edge.weight : new Fraction(1);
-};
 
 const getConnectedNodes: CurriedEdgeHelpers['getConnectedNodes'] =
   (graph) => (edgeId) => {
@@ -23,7 +13,6 @@ const getConnectedNodes: CurriedEdgeHelpers['getConnectedNodes'] =
   };
 
 export const edgeHelpers: CurriedEdgeHelpers = {
-  getWeight,
   getConnectedNodes,
   isPointingAwayFromNode: (graph) => (edgeId, nodeId) => {
     const { isGraphDirected } = graph.settings.value;

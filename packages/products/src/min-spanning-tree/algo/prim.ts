@@ -14,8 +14,8 @@ export const prim = (graph: Graph) => {
         (inMST.has(edge.target) && !inMST.has(edge.source))
       ) {
         if (!minEdge) minEdge = edge;
-        const minEdgeCost = graph.helpers.edges.getWeight(minEdge.id);
-        const edgeCost = graph.helpers.edges.getWeight(edge.id);
+        const minEdgeCost = graph.getEdge(minEdge.id).weight;
+        const edgeCost = graph.getEdge(edge.id).weight;
         if (edgeCost < minEdgeCost) minEdge = edge;
       }
     }

@@ -1,17 +1,9 @@
-import type { Fraction } from 'mathjs';
-
 import { CoreGetters, GraphGetters } from '../../plugins/types.ts';
 import type { GraphSettings } from '../../settings/index.ts';
 import type { CoreEdge, CoreNode } from '../../types.ts';
 import { CoreControls } from '../types.ts';
 
 export type EdgeHelpers = {
-  /**
-   * a {@link GraphSettings.isGraphDirected | settings.isGraphDirected} aware getter for an {@link CoreEdge.weight | edge weight}
-   *
-   * ✅ recommended over using {@link CoreEdge.weight | edge weight} directly, as {@link CoreEdge.weight | edge weight} won't dynamically adjust to {@link GraphSettings.isGraphDirected | settings.isGraphDirected}
-   */
-  getWeight: (edgeId: CoreEdge['id']) => Fraction;
   /**
    * resolves {@link CoreEdge.source | edge.from} and {@link CoreEdge.target | edge.to} fields into an their referenced {@link CoreNode | nodes}
    */

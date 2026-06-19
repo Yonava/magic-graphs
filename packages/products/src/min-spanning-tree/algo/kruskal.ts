@@ -36,8 +36,8 @@ export const kruskal = (graph: Graph) => {
 
   const run = () => {
     const sortedEdges = edges.value.toSorted((edgeA, edgeB) => {
-      const weightA = graph.helpers.edges.getWeight(edgeA.id);
-      const weightB = graph.helpers.edges.getWeight(edgeB.id);
+      const weightA = graph.getEdge(edgeA.id).weight;
+      const weightB = graph.getEdge(edgeB.id).weight;
       return weightA.valueOf() - weightB.valueOf();
     });
 
