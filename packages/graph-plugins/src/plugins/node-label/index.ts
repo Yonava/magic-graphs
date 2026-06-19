@@ -19,8 +19,7 @@ export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
 
   const setNodeLabels: NodeLabelControls['setMany'] = (labels) => {
     return labels.map(({ nodeId, label: labelOrLabelGetter }) => {
-      const currentLabel = getNodeLabel(nodeId) ?? undefined;
-
+      const currentLabel = getNodeLabel(nodeId);
       const label = getValue(labelOrLabelGetter, currentLabel);
       nodeIdToLabel.set(nodeId, label);
       return { nodeId, label };
@@ -56,6 +55,8 @@ export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
       ...actions,
       addNode: (options) => {
         const id = options?.id ?? generateId();
+        // TODO addNode transaction might fail, and if it does it will
+        // leave dangling labels in memory
         setNodeLabels([
           { label: options.label ?? generateLabel(), nodeId: id },
         ]);

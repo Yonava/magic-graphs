@@ -12,6 +12,7 @@ export const nodeDefaults = () =>
 export const createAddNodeHandler: CreateCoreAction<'addNode'> =
   ({ graph, commitTransaction }) =>
   (node) => {
+    console.log(node, 'requesting being handled');
     const nodeWithDefaults = { ...nodeDefaults(), ...node };
 
     // https://github.com/Yonava/magic-graphs/issues/685

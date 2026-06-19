@@ -72,8 +72,8 @@ export const history: HistoryPlugin = (
     getters,
     actions: {
       ...actions,
-      addNode: ({ history, x, id }) => {
-        return actions.addNode({ id });
+      addNode: (options) => {
+        return actions.addNode(options);
       },
     },
     events,

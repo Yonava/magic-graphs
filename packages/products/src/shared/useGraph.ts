@@ -25,8 +25,8 @@ const createGraphWithPlugins = (
     plugins: [
       canvas(magicCanvas),
       history,
-      anchors,
       focus,
+      anchors,
       nodeDrag,
       marquee,
       nodeLabel,
