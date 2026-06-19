@@ -20,7 +20,6 @@ export const useInteractive = (graph: GraphWithPlugins) => {
 
     if (items.at(-1)?.graphType === 'node') return;
 
-    console.log('handling node creation');
     graph.actions.addNode({ x: coords.x, y: coords.y });
   };
 

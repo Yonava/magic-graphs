@@ -2,6 +2,7 @@ import { CoreControls } from '@magic/graph/core/types';
 import type { BoundingBox } from '@magic/shapes/types/utility';
 
 import { CanvasControls } from '../canvas/types.ts';
+import { FocusControls } from '../focus/types.ts';
 
 export function getSurfaceArea(box: BoundingBox) {
   const { width, height } = box;
@@ -9,7 +10,7 @@ export function getSurfaceArea(box: BoundingBox) {
 }
 
 export const getEncapsulatedNodeBox = (
-  graph: CoreControls & { canvas: CanvasControls },
+  graph: CoreControls & { canvas: CanvasControls; focus: FocusControls },
 ): BoundingBox => {
   const encapsulatedNodeBox = {
     at: { x: Infinity, y: Infinity },
@@ -17,7 +18,7 @@ export const getEncapsulatedNodeBox = (
     height: 0,
   };
 
-  if (graph.nodes.value.length < 2) return encapsulatedNodeBox;
+  if (graph.focus.focusedNodes.value.length < 2) return encapsulatedNodeBox;
 
   let minX = Infinity,
     minY = Infinity;
