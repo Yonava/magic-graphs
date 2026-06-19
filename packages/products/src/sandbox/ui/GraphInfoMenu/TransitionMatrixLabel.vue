@@ -8,8 +8,8 @@
   import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
 
   const props = defineProps<{
-    toNode: CoreNode;
-    fromNode: CoreNode;
+    targetNode: CoreNode;
+    sourceNode: CoreNode;
     weight: string;
   }>();
 </script>
@@ -28,7 +28,7 @@
       <template #content>
         <GWell class="flex items-center py-2 px-3 rounded-md">
           <GraphNode
-            :node="toNode"
+            :node="targetNode"
             :size="30"
           />
           <CIcon
@@ -36,7 +36,7 @@
             icon="arrow-right"
           />
           <GraphNode
-            :node="fromNode"
+            :node="sourceNode"
             :size="30"
           />
         </GWell>

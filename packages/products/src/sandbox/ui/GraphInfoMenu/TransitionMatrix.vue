@@ -11,7 +11,7 @@
    * hit when rendering it. To mitigate this, we only load the
    * transition matrix after the user has prompted us to do so.
    */
-  const loadOnlyAfterPrompt = ref(graph.value.nodes.value.length > 10);
+  const hidden = ref(graph.value.nodes.value.length > 10);
 </script>
 
 <template>
@@ -22,10 +22,8 @@
     secondary
     class="p-3 rounded-lg max-h-[300px] overflow-auto"
   >
-    <div v-if="loadOnlyAfterPrompt">
-      <GButton @click="loadOnlyAfterPrompt = false">
-        Load Transition Matrix
-      </GButton>
+    <div v-if="hidden">
+      <GButton @click="hidden = false"> Show Transition Matrix </GButton>
     </div>
     <div v-else>
       <TransitionMatrixDisplay />

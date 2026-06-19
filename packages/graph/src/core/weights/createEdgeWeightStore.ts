@@ -40,11 +40,13 @@ export const createEdgeWeightStore = (
     set: (update) => {
       const [entry] = setEdgeWeights([update]);
       events.emit('onEdgeWeightsCommitted', [entry]);
+      events.emit('onStructureChange');
       return entry;
     },
     setMany: (updates) => {
       const entries = setEdgeWeights(updates);
       events.emit('onEdgeWeightsCommitted', entries);
+      events.emit('onStructureChange');
       return entries;
     },
     _internal: {
