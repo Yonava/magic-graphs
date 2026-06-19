@@ -116,7 +116,7 @@ export const anchors: AnchorsPlugin = (
         id: anchor.id,
         graphType: 'node-anchor',
         shape: nodeAnchorShape,
-        priority: 3,
+        priority: 4,
         data: {
           [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: resolveToken(
             'nodeAnchor.default.cursor',

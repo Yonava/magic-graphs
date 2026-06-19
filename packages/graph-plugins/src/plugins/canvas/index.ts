@@ -29,7 +29,6 @@ import { createTokenResolver } from './themes/createTokenResolver.ts';
 import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
 import { createThemeOverrides } from './themes/types.ts';
 import { Aggregator, CanvasPlugin, GraphUnderCursor } from './types.ts';
-import { rotateNodeZIndexes } from './rotateNodeZIndexes.ts';
 import { useAggregator } from './useAggregator.ts';
 
 export const canvas =
@@ -90,29 +89,15 @@ export const canvas =
 
     setupOnHoveredElementChangeEvent(events);
 
+    // went with max+1 instead of closed rotation for node hovers since rotation requires
+    // redistributing z values across all nodes, which breaks when new nodes arrive with a default z that
+    // collides with the existing distribution. max+1 gives permanent promotion
+    // without touching other nodes and works fine since node z-scored get normalized for rendering anyway.
     const updateHoveredNode = (nodeId: string) => {
-      // get the z positions for all nodes.
-      // ignore the raw z position just focus on the nodes' z positions relative to each other.
-      // if we do that, we get something like this
-      // where the nodes are ranked from
-      // best z position relative to other nodes (aka N[0])
-      // to the worst z position relative to other nodes (aka N[-1])
-      // - in the case that nodes have the same z-index, use the nodes index in the controls.nodes array as the tie breaker, the higher the index value, the higher they should rank -
-      // [{ id: 'best-node-id', z: 3 }, { id: 'mid-node-id', z: 2 }, { id: 'hovered-node-id', z: 1 }, { id: 'worst-node-id', z: 0 }]
-      //
-      // then we must take the best-node-ids raw z position score and assign it to hovered-node-ids z position
-      // after that we need to back-fill the positions.
-      // best-node-id gets mid-node-ids z position
-      // mid-node-id gets hovered-node-ids old z position
-      //
-      // this leaves us with
-      // [{ id: 'hovered-node-id', z: 3 }, { id: 'best-node-id', z: 2 }, { id: 'mid-node-id', z: 1 }, { id: 'worst-node-id', z: 0 }]
-      const updates = rotateNodeZIndexes(
-        nodeId,
-        controls.nodes.value,
-        (id) => controls.positions.get(id).z,
+      const maxZ = Math.max(
+        ...controls.nodes.value.map((n) => controls.positions.get(n.id).z),
       );
-      if (updates.length > 0) controls.positions.setMany(updates);
+      controls.positions.set({ nodeId, update: { z: maxZ + 1 } });
     };
 
     events.subscribe('onHoveredElementChange', (ev) => {
