@@ -4,6 +4,7 @@ import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { cross } from '@magic/shapes/shapes/cross/index';
+import { nullThrows } from '@magic/utils/assert';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 import { DeepReadonly } from 'ts-essentials';
@@ -17,6 +18,7 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
+import { getNodeZScores } from './nodeZScores.ts';
 import {
   CANVAS_ELEMENT_CURSOR_FIELD_KEY,
   setupCanvasCursor,
@@ -131,6 +133,11 @@ export const canvas =
         })
         .filter((el) => !!el);
 
+      const nodeZScores = getNodeZScores({
+        nodes: controls.nodes.value,
+        positions: controls.positions,
+      });
+
       const nodeCanvasElements = controls.nodes.value
         .map((node) => {
           const shape = resolveToken('node.default.shape', node, {
@@ -145,7 +152,9 @@ export const canvas =
             shape,
             id: node.id,
             graphType: 'node',
-            priority: 2,
+            priority:
+              2 +
+              nullThrows(nodeZScores.get(node.id), 'node z score not found'),
             data: {
               [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: resolveToken(
                 'node.default.cursor',
