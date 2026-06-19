@@ -1,4 +1,3 @@
-
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { MarkovChainTrace } from './runner.ts';

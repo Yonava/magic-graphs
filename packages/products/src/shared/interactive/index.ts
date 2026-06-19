@@ -23,7 +23,10 @@ export const useInteractive = (graph: GraphWithPlugins) => {
     graph.actions.addNode({ x: coords.x, y: coords.y });
   };
 
-  const doesEdgeConformToRules = (fromNode: { id: string }, toNode: { id: string }) => {
+  const doesEdgeConformToRules = (
+    fromNode: { id: string },
+    toNode: { id: string },
+  ) => {
     if (graph.settings.value.userAddedEdgeRuleNoSelfLoops) {
       const violatesRule = fromNode.id === toNode.id;
       if (violatesRule) return false;

@@ -1,4 +1,4 @@
-import { GraphPlugin, CoreGetters } from '@magic/graph/plugins/types';
+import { CoreGetters, GraphPlugin } from '@magic/graph/plugins/types';
 
 import { ComputedRef } from 'vue';
 

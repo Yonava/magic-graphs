@@ -25,5 +25,10 @@ export const ERASER_BRUSH_RADIUS = 10;
 export const ANNOTATION_PLUGIN_ID = 'plugins/annotations';
 
 export const PRIORITY = {
-  before: [MARQUEE_PLUGIN_ID, NODE_DRAG_PLUGIN_ID, ANCHOR_PLUGIN_ID, FOCUS_PLUGIN_ID],
+  before: [
+    MARQUEE_PLUGIN_ID,
+    NODE_DRAG_PLUGIN_ID,
+    ANCHOR_PLUGIN_ID,
+    FOCUS_PLUGIN_ID,
+  ],
 } as const;

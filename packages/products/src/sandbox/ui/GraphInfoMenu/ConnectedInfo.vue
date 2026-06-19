@@ -29,7 +29,9 @@
     () => graph.value.characteristics.bipartite.isBipartite.value,
   );
 
-  const isAcyclic = computed(() => graph.value.characteristics.cycles.isAcyclic.value);
+  const isAcyclic = computed(
+    () => graph.value.characteristics.cycles.isAcyclic.value,
+  );
 
   const isComplete = computed(
     () => graph.value.characteristics.complete.isComplete.value,

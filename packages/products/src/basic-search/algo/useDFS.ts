@@ -1,7 +1,6 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import { computed, ref, watch } from 'vue';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import state from '../state.ts';
 import { dfs } from './dfs.ts';
 import type { BasicSearchTrace } from './types.ts';

@@ -1,5 +1,5 @@
-import { Fraction } from 'mathjs';
 import { MaybeGetter } from '@magic/utils/maybeGetter/index';
+import { Fraction } from 'mathjs';
 
 import { CoreEdge } from '../../types.ts';
 

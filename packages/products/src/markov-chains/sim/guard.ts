@@ -1,6 +1,5 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import { SimulationGuard } from '../../shared/ui/general/sim/guard/index.ts';
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import definitions from '../markov/definitions.ts';
 import { useMarkovChain } from '../markov/useMarkovChain.ts';
 import { useInvalidStateColorizer } from '../ui/useInvalidStateColorizer.ts';

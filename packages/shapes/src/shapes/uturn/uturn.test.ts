@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { UTURN_SCHEMA_DEFAULTS } from './defaults.ts';
+import { uturn } from './index.ts';
+
 vi.mock('@magic/canvas/coordinates/index', () => ({
   getClientCoordinates: vi.fn(),
 }));
@@ -19,13 +22,15 @@ vi.mock('@magic/utils/ctx/index', () => ({
   })),
 }));
 
-import { UTURN_SCHEMA_DEFAULTS } from './defaults.ts';
-import { uturn } from './index.ts';
-
 describe('uturn', () => {
   describe('defaults', () => {
     it('has name "uturn"', () => {
-      const u = uturn({ at: { x: 0, y: 0 }, spacing: 20, upDistance: 100, downDistance: 50 });
+      const u = uturn({
+        at: { x: 0, y: 0 },
+        spacing: 20,
+        upDistance: 100,
+        downDistance: 50,
+      });
       expect(u.name).toBe('uturn');
     });
 
@@ -43,13 +48,23 @@ describe('uturn', () => {
 
     it('throws when upDistance is negative', () => {
       expect(() =>
-        uturn({ at: { x: 0, y: 0 }, spacing: 20, upDistance: -1, downDistance: 50 }),
+        uturn({
+          at: { x: 0, y: 0 },
+          spacing: 20,
+          upDistance: -1,
+          downDistance: 50,
+        }),
       ).toThrow();
     });
 
     it('throws when downDistance is negative', () => {
       expect(() =>
-        uturn({ at: { x: 0, y: 0 }, spacing: 20, upDistance: 100, downDistance: -1 }),
+        uturn({
+          at: { x: 0, y: 0 },
+          spacing: 20,
+          upDistance: 100,
+          downDistance: -1,
+        }),
       ).toThrow();
     });
 
@@ -59,7 +74,12 @@ describe('uturn', () => {
       // minY = min(0,0)   - lineWidth/2 - spacing = -25
       // maxX = max(0,100) + lineWidth/2 + spacing = 125
       // maxY = max(0,0)   + lineWidth/2 + spacing = 25
-      const u = uturn({ at: { x: 0, y: 0 }, spacing: 20, upDistance: 100, downDistance: 50 });
+      const u = uturn({
+        at: { x: 0, y: 0 },
+        spacing: 20,
+        upDistance: 100,
+        downDistance: 50,
+      });
       const bbox = u.getBoundingBox();
       expect(bbox.at.x).toBe(-25);
       expect(bbox.at.y).toBe(-25);
@@ -73,7 +93,12 @@ describe('uturn', () => {
     // long leg:  line from (0,-20)  to (100,-20) — the "going out" arm
     // short leg: arrow from (100,20) to (50,20)  — the "return" arm with arrowhead
     // arc:       circle at (100,0), radius = spacing + lineWidth/2 = 25
-    const u = uturn({ at: { x: 0, y: 0 }, spacing: 20, upDistance: 100, downDistance: 50 });
+    const u = uturn({
+      at: { x: 0, y: 0 },
+      spacing: 20,
+      upDistance: 100,
+      downDistance: 50,
+    });
 
     describe('long leg', () => {
       it('hits the center of the long leg', () => {

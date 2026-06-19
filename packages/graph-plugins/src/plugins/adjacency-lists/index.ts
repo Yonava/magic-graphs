@@ -63,7 +63,9 @@ const getWeightedAdjacencyList = (graph: Graph) => {
     (acc, [keyNodeId, toNodeIds]) => {
       acc[keyNodeId] = toNodeIds.map((toNodeId) => ({
         ...graph.getNode(toNodeId)!,
-        weight: graph.getEdge(graph.helpers.nodes.getEdgeBetween(keyNodeId, toNodeId)!.id).weight,
+        weight: graph.getEdge(
+          graph.helpers.nodes.getEdgeBetween(keyNodeId, toNodeId)!.id,
+        ).weight,
       }));
       return acc;
     },

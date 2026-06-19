@@ -11,11 +11,11 @@ import {
   NodePositionStoreEventMap,
   createNodePositionStoreEventRegistry,
 } from './positions/events.ts';
+import { TransactionPayload } from './transaction/types.ts';
 import {
   EdgeWeightStoreEventMap,
   createEdgeWeightStoreEventRegistry,
 } from './weights/events.ts';
-import { TransactionPayload } from './transaction/types.ts';
 
 export type CoreEventMap = {
   /**
@@ -68,8 +68,8 @@ export type CoreEventMap = {
    * when the {@link Graph.settings | settings} of the graph have changed
    */
   onSettingsChange: (diff: DeepPartial<GraphSettings>) => void;
-} & NodePositionStoreEventMap
-  & EdgeWeightStoreEventMap;
+} & NodePositionStoreEventMap &
+  EdgeWeightStoreEventMap;
 
 export type CoreEventRegistry = EventMapToEventRegistry<CoreEventMap>;
 

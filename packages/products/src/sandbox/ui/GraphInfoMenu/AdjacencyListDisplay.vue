@@ -32,7 +32,10 @@
             <GWell class="px-3 py-2 rounded-md">
               <b>{{ graph.nodeLabel.get(key) }}</b>
               links to
-              <b>{{ getCommaList(value.map((n) => graph.nodeLabel.get(n.id))) || 'nothing' }}</b>
+              <b>{{
+                getCommaList(value.map((n) => graph.nodeLabel.get(n.id))) ||
+                'nothing'
+              }}</b>
             </GWell>
           </template>
         </CPopoverTooltip>

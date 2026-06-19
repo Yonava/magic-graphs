@@ -1,9 +1,10 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { AdjacencyList } from '@magic/graph-plugins/plugins/adjacency-lists/types';
 import { gcd, lowestPrimeFactor } from '@magic/utils/math';
 
 import { computed } from 'vue';
 import type { Ref } from 'vue';
+
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 /**
  * because we dont know how many possible paths
@@ -23,10 +24,7 @@ const MAX_VISITATIONS = 100;
  * @param adjacencyMap the adjacency map of the component
  * @returns an array of the number of steps it took for a path to return to the start node
  */
-const getStepsToStart = (
-  adjacencyList: AdjacencyList,
-  startNodeId: string,
-) => {
+const getStepsToStart = (adjacencyList: AdjacencyList, startNodeId: string) => {
   /**
    * a queue of nodes to visit and the number of steps it took to get there
    */

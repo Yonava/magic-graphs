@@ -67,7 +67,9 @@ export const canvas =
     const resolveToken = createTokenResolver(activeThemePreset, themeOverrides);
 
     const weightLayer = createLayer(themeOverrides, 'canvas/weight');
-    weightLayer.set('edge.default.text', (edge) => getters.getEdge(edge.id).weight.toFraction());
+    weightLayer.set('edge.default.text', (edge) =>
+      getters.getEdge(edge.id).weight.toFraction(),
+    );
 
     setupCanvasCursor({
       canvas: magicCanvas.canvas,

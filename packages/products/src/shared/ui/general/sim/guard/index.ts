@@ -245,7 +245,8 @@ export class SimulationGuard {
    */
   noBidirectionalEdges() {
     const noBidirectional = () => {
-      const { bidirectionalEdges } = this.graph.characteristics.bidirectionalEdges;
+      const { bidirectionalEdges } =
+        this.graph.characteristics.bidirectionalEdges;
       const edgeIds = bidirectionalEdges.value.map((e: { id: string }) => e.id);
       if (edgeIds.length === 0) return;
       return {

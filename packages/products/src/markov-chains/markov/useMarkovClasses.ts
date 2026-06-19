@@ -1,7 +1,6 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import { computed } from 'vue';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { ComponentAdjacencyMap } from './useComponentAdjacencyMap.ts';
 
 /**

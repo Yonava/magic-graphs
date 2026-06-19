@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { STAR_SCHEMA_DEFAULTS } from './defaults.ts';
+import { star } from './index.ts';
+
 vi.mock('@magic/canvas/coordinates/index', () => ({
   getClientCoordinates: vi.fn(),
 }));
@@ -18,9 +21,6 @@ vi.mock('@magic/utils/ctx/index', () => ({
     fillText: vi.fn(),
   })),
 }));
-
-import { STAR_SCHEMA_DEFAULTS } from './defaults.ts';
-import { star } from './index.ts';
 
 describe('star', () => {
   describe('defaults', () => {
@@ -51,7 +51,11 @@ describe('star', () => {
     });
 
     it('centers the bounding box on the at point', () => {
-      const s = star({ at: { x: 100, y: 200 }, innerRadius: 10, outerRadius: 30 });
+      const s = star({
+        at: { x: 100, y: 200 },
+        innerRadius: 10,
+        outerRadius: 30,
+      });
       const bbox = s.getBoundingBox();
       expect(bbox.at.x).toBe(70);
       expect(bbox.at.y).toBe(170);
@@ -90,7 +94,11 @@ describe('star', () => {
     });
 
     describe('with offset position', () => {
-      const s2 = star({ at: { x: 100, y: 200 }, innerRadius: 20, outerRadius: 50 });
+      const s2 = star({
+        at: { x: 100, y: 200 },
+        innerRadius: 20,
+        outerRadius: 50,
+      });
 
       it('hits the center of the offset star', () => {
         expect(s2.hitbox({ x: 100, y: 200 })).toBe(true);
@@ -106,7 +114,12 @@ describe('star', () => {
     });
 
     describe('with custom point count', () => {
-      const s3 = star({ at: { x: 0, y: 0 }, innerRadius: 20, outerRadius: 50, points: 6 });
+      const s3 = star({
+        at: { x: 0, y: 0 },
+        innerRadius: 20,
+        outerRadius: 50,
+        points: 6,
+      });
 
       it('hits the center of a 6-pointed star', () => {
         expect(s3.hitbox({ x: 0, y: 0 })).toBe(true);

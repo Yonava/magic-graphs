@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { TRIANGLE_SCHEMA_DEFAULTS } from './defaults.ts';
+import { triangle } from './index.ts';
+
 vi.mock('@magic/canvas/coordinates/index', () => ({
   getClientCoordinates: vi.fn(),
 }));
@@ -18,9 +21,6 @@ vi.mock('@magic/utils/ctx/index', () => ({
     fillText: vi.fn(),
   })),
 }));
-
-import { TRIANGLE_SCHEMA_DEFAULTS } from './defaults.ts';
-import { triangle } from './index.ts';
 
 describe('triangle', () => {
   describe('defaults', () => {

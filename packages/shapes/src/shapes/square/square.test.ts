@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { SQUARE_SCHEMA_DEFAULTS } from './defaults.ts';
+import { square } from './index.ts';
+
 vi.mock('@magic/canvas/coordinates/index', () => ({
   getClientCoordinates: vi.fn(),
 }));
@@ -18,9 +21,6 @@ vi.mock('@magic/utils/ctx/index', () => ({
     fillText: vi.fn(),
   })),
 }));
-
-import { SQUARE_SCHEMA_DEFAULTS } from './defaults.ts';
-import { square } from './index.ts';
 
 describe('square', () => {
   describe('defaults', () => {
@@ -133,7 +133,11 @@ describe('square', () => {
       });
 
       it('excludes corners when borderRadius is explicitly rounded', () => {
-        const rounded = square({ at: { x: 0, y: 0 }, size: 100, borderRadius: 50 });
+        const rounded = square({
+          at: { x: 0, y: 0 },
+          size: 100,
+          borderRadius: 50,
+        });
         expect(rounded.hitbox({ x: 0, y: 0 })).toBe(false);
       });
     });

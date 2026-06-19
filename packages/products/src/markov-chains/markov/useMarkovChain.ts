@@ -1,8 +1,8 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { mergeSetArrayIntoSet } from '@magic/utils/sets';
 
 import { computed } from 'vue';
 
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { useMarkovClasses } from './useMarkovClasses.ts';
 import { useNodeIdToOutboundWeight } from './useMarkovNodeWeights.ts';
 import { useMarkovPeriodicity } from './useMarkovPeriodicity.ts';

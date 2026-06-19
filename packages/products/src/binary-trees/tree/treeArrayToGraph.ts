@@ -13,7 +13,6 @@ const newEdge = (source: number, target: number): CoreEdge => ({
   source: source.toString(),
   target: target.toString(),
   id: `${source}-${target}`,
-
 });
 
 const edgesInTree = (treeArray: TreeNodeKeyArray) => {

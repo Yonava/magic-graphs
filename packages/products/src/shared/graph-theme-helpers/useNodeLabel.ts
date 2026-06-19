@@ -1,4 +1,3 @@
-
 import type { MaybeRef } from 'vue';
 
 import { Graph } from '../useGraphWithCanvas.ts';

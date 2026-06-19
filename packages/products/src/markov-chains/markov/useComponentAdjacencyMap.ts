@@ -1,6 +1,6 @@
-import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import { computed } from 'vue';
+
+import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
 /**
  * a adjacency map for strongly connected components.

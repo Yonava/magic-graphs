@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { RECT_SCHEMA_DEFAULTS } from './defaults.ts';
+import { rect } from './index.ts';
+
 vi.mock('@magic/canvas/coordinates/index', () => ({
   getClientCoordinates: vi.fn(),
 }));
@@ -18,9 +21,6 @@ vi.mock('@magic/utils/ctx/index', () => ({
     fillText: vi.fn(),
   })),
 }));
-
-import { RECT_SCHEMA_DEFAULTS } from './defaults.ts';
-import { rect } from './index.ts';
 
 describe('rect', () => {
   describe('defaults', () => {
@@ -108,7 +108,12 @@ describe('rect', () => {
     });
 
     describe('with border radius', () => {
-      const r = rect({ at: { x: 0, y: 0 }, width: 100, height: 100, borderRadius: 20 });
+      const r = rect({
+        at: { x: 0, y: 0 },
+        width: 100,
+        height: 100,
+        borderRadius: 20,
+      });
 
       it('hits the center', () => {
         expect(r.hitbox({ x: 50, y: 50 })).toBe(true);

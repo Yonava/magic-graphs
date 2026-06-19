@@ -1,6 +1,6 @@
-import type { Graph } from '../shared/useGraphWithCanvas.ts';
-
 import { ref } from 'vue';
+
+import type { Graph } from '../shared/useGraphWithCanvas.ts';
 
 type GraphState = {
   nodes: Graph['nodes']['value'];

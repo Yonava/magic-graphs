@@ -1,6 +1,5 @@
-import type { Graph } from '../shared/useGraphWithCanvas.ts';
-
 import { useSimulationControls } from '../shared/ui/general/sim/useSimulationControls.ts';
+import type { Graph } from '../shared/useGraphWithCanvas.ts';
 import state from './state.ts';
 import { useTargetNodeColor } from './theme/useTargetNodeColor.ts';
 import type { AVLTree, TreeTraceStep } from './tree/avl.ts';

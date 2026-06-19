@@ -1,4 +1,3 @@
-
 import { useSCCColorizer } from '../../sandbox/ui/GraphInfoMenu/useSCCColorizer.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { USETHEME_ID } from '../constants.ts';

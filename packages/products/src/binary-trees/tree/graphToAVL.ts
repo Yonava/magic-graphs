@@ -1,5 +1,4 @@
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-
 import type { AVLTree } from './avl.ts';
 
 /**
