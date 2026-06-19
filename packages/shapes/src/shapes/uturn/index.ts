@@ -23,7 +23,9 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
 
   const schema = resolveUTurnDefaults(options);
   const anchorPt = getTextAreaAnchorPoint(schema);
-  const text = getShapeTextProps(anchorPt, schema.textArea);
+  const drawShape = drawUTurnWithCtx(schema);
+  const text = getShapeTextProps(anchorPt, schema.textArea, drawShape);
+  const { drawOverride, ...textProps } = text ?? {};
 
   const getBoundingBox = getUTurnBoundingBox(schema);
 
@@ -31,11 +33,10 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   const shapeHitbox = uturnHitbox(schema);
   const efficientHitbox = uturnEfficientHitbox(schema);
 
-  const drawShape = drawUTurnWithCtx(schema);
-  const draw = (ctx: CanvasRenderingContext2D) => {
+  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
     text?.drawTextArea(ctx);
-  };
+  });
 
   return shapeFactoryWrapper({
     name: 'uturn',
@@ -49,6 +50,6 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
 
     getBoundingBox,
 
-    ...text,
+    ...textProps,
   });
 };

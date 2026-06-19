@@ -20,7 +20,9 @@ export const line: ShapeFactory<LineSchema> = (options) => {
   const schema = resolveLineDefaults(options);
 
   const anchorPt = getTextAreaAnchorPoint(schema);
-  const text = getShapeTextProps(anchorPt, schema.textArea);
+  const drawShape = drawLineWithCtx(schema);
+  const text = getShapeTextProps(anchorPt, schema.textArea, drawShape);
+  const { drawOverride, ...textProps } = text ?? {};
 
   const shapeHitbox = lineHitbox(schema);
   const efficientHitbox = lineEfficientHitbox(schema);
@@ -29,11 +31,10 @@ export const line: ShapeFactory<LineSchema> = (options) => {
 
   const getBoundingBox = getLineBoundingBox(schema);
 
-  const drawShape = drawLineWithCtx(schema);
-  const draw = (ctx: CanvasRenderingContext2D) => {
+  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
     drawShape(ctx);
     text?.drawTextArea(ctx);
-  };
+  });
 
   return shapeFactoryWrapper({
     name: 'line',
@@ -46,6 +47,6 @@ export const line: ShapeFactory<LineSchema> = (options) => {
     efficientHitbox,
     getBoundingBox,
 
-    ...text,
+    ...textProps,
   });
 };

@@ -5,6 +5,7 @@ import type { ShapeTextProps } from '../types/index.ts';
 import type { Coordinate } from '../types/utility.ts';
 import { createTextarea } from './createTextarea.ts';
 import type { TextAreaWithDefaults } from './defaults.ts';
+import { drawWithNoMatte } from './drawWithNoMatte.ts';
 import { getTextDimensions } from './getTextDimensions.ts';
 import type {
   StartTextAreaEdit,
@@ -14,15 +15,23 @@ import type {
 
 export const HORIZONTAL_TEXT_PADDING = 20;
 
+type DrawFn = (ctx: CanvasRenderingContext2D) => void;
+
 /**
- * if a text area is provided, will return ShapeTextProps, otherwise undefined
+ * Returned by {@link getShapeTextProps}. Extends {@link ShapeTextProps} with an
+ * optional `drawOverride` that replaces the shape factory's default draw function
+ * when the text area color is `'none'`. Shape factories should use this
+ * instead of their own draw when it is defined.
  */
-type ShapeTextPropsGetter = (
+export type ShapeTextPropsResult = ShapeTextProps & {
+  drawOverride?: DrawFn;
+};
+
+export const getShapeTextProps = (
   at?: Coordinate,
   textArea?: TextAreaWithDefaults,
-) => ShapeTextProps | undefined;
-
-export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
+  drawShape?: DrawFn,
+): ShapeTextPropsResult | undefined => {
   if (!at || !textArea) return;
 
   const dimensions = getTextAreaDimension(textArea.textBlock);
@@ -53,12 +62,34 @@ export const getShapeTextProps: ShapeTextPropsGetter = (at, textArea) => {
     createTextarea(ctx, onTextAreaBlur, placedTextArea);
   };
 
+  const isNoMatte = placedTextArea.color === 'none';
+
+  const drawOverride =
+    isNoMatte && drawShape
+      ? (ctx: CanvasRenderingContext2D) =>
+          drawWithNoMatte(ctx, drawShape, placedTextArea, dimensions, drawText)
+      : undefined;
+
+  const drawTextAreaHole = isNoMatte
+    ? (ctx: CanvasRenderingContext2D) => {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(
+          placedTextArea.at.x,
+          placedTextArea.at.y,
+          dimensions.width,
+          dimensions.height,
+        );
+      }
+    : undefined;
+
   return {
     textHitbox: textAreaMatte.hitbox,
     drawTextAreaMatte: textAreaMatte.draw,
+    drawTextAreaHole,
     drawText,
     drawTextArea,
     startTextAreaEdit,
+    drawOverride,
   };
 };
 

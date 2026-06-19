@@ -1,4 +1,5 @@
 import { EventHub } from '@magic/graph/events/createEventHub';
+import { drawGroup } from '@magic/shapes/drawGroup';
 
 import { ref } from 'vue';
 
@@ -27,30 +28,24 @@ export const useAggregator = ({
     ];
   };
 
+  const groupByPriority = (elements: Aggregator): Map<number, Aggregator> => {
+    const groups = new Map<number, Aggregator>();
+    for (const item of elements) {
+      const group = groups.get(item.priority) ?? [];
+      group.push(item);
+      groups.set(item.priority, group);
+    }
+    return groups;
+  };
+
   const draw = (ctx: CanvasRenderingContext2D) => {
     updateAggregator();
 
-    const indexOfLastEdge = aggregator.value.findLastIndex(
-      (item) => item.graphType === 'edge',
-    );
-
-    const beforeLastEdge = aggregator.value.slice(0, indexOfLastEdge + 1);
-    const afterLastEdge = aggregator.value.slice(indexOfLastEdge + 1);
-
-    for (const item of beforeLastEdge) {
-      item.shape.drawShape(ctx);
-    }
-
-    for (const item of beforeLastEdge) {
-      item.shape.drawTextAreaMatte?.(ctx);
-    }
-
-    for (const item of beforeLastEdge) {
-      item.shape.drawText?.(ctx);
-    }
-
-    for (const item of afterLastEdge) {
-      item.shape.draw(ctx);
+    for (const group of groupByPriority(aggregator.value).values()) {
+      drawGroup(
+        ctx,
+        group.map((item) => item.shape),
+      );
     }
 
     emit('onDraw', ctx);

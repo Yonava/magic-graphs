@@ -67,7 +67,13 @@
     id: 'something',
     end: { x: 500, y: 500 },
     start: { x: 100, y: 200 },
-    dash: [20, 20],
+    textArea: {
+      color: 'transparent',
+      textBlock: {
+        color: 'red',
+        content: 'Hello',
+      },
+    },
   });
 
   const cir2 = shapes.circle({
