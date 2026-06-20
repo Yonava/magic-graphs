@@ -57,6 +57,7 @@ type LoosePluginData = {
   getters: Partial<BaseGetters>;
   actions: PartialBaseActions;
   dependsOn: LooseGraphPlugin[];
+  optionalDependsOn: LooseGraphPlugin[];
 };
 
 type DefaultPluginData = {
@@ -65,6 +66,7 @@ type DefaultPluginData = {
   getters: {};
   actions: {};
   dependsOn: [];
+  optionalDependsOn: [];
 };
 
 type ResolvePluginData<PartialPluginData> = {
@@ -90,8 +92,18 @@ export type GraphPlugin<PluginData extends Partial<LoosePluginData>> =
  * downstream plugins and consumers only ever see what's returned here.
  */
 type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
-  controls: CoreControls & ExtractControls<PluginData['dependsOn']>,
-  events: EventHub<CoreEventMap & ExtractEventMap<PluginData['dependsOn']>>,
+  controls: CoreControls &
+    ExtractControls<PluginData['dependsOn']> &
+    (PluginData['optionalDependsOn'] extends never[]
+      ? {}
+      : Partial<ExtractControls<PluginData['optionalDependsOn']>>),
+  events: EventHub<
+    CoreEventMap &
+      ExtractEventMap<PluginData['dependsOn']> &
+      (PluginData['optionalDependsOn'] extends never[]
+        ? {}
+        : ExtractEventMap<PluginData['optionalDependsOn']>)
+  >,
   actions: GraphActions<CoreActions>,
   getters: GraphGetters<CoreGetters>,
 ) => {
@@ -99,6 +111,9 @@ type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
   events: EventHub<
     CoreEventMap &
       ExtractEventMap<PluginData['dependsOn']> &
+      (PluginData['optionalDependsOn'] extends never[]
+        ? {}
+        : ExtractEventMap<PluginData['optionalDependsOn']>) &
       PluginData['events']
   >;
   getters: GraphGetters<MergeGetters<[PluginData['getters'], CoreGetters]>>;
