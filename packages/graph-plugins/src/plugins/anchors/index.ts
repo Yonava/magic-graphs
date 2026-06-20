@@ -7,7 +7,7 @@ import type { WithId } from '@magic/shapes/types/index';
 import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
-import { DeepReadonly, readonly, ref } from 'vue';
+import { readonly, ref } from 'vue';
 
 import type { AnchorsPlugin, NodeAnchor } from '../../plugins/anchors/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
@@ -95,8 +95,7 @@ export const anchors: AnchorsPlugin = (
       const isAnchorHovered = id === hoveredNodeAnchorId.value;
       const isAnchorDragged = id === draggedAnchor?.id;
 
-      // TODO https://github.com/Yonava/magic-graphs/issues/707
-      const isNodeFocused = controls.focus.isFocused(node.id);
+      const isNodeFocused = controls.focus?.isFocused(node.id) ?? false;
       const isFocused = isNodeFocused || isAnchorHovered || isAnchorDragged;
 
       const nodeAnchorSchema: WithId<CircleSchema> = {
@@ -146,8 +145,7 @@ export const anchors: AnchorsPlugin = (
     if (!node) return (nodeAnchors.value = []);
     const { _resolveToken: resolveToken } = controls.canvas.theme;
 
-    // TODO https://github.com/Yonava/magic-graphs/issues/707
-    const isNodeFocused = controls.focus.isFocused(node.id);
+    const isNodeFocused = controls.focus?.isFocused(node.id) ?? false;
 
     const anchorBaseRadius = resolveToken('nodeAnchor.default.radius', node);
     const anchorFocusRadius = resolveToken('nodeAnchor.focus.radius', node);
@@ -216,8 +214,7 @@ export const anchors: AnchorsPlugin = (
     const end = { x, y };
     const { _resolveToken: resolveToken } = controls.canvas.theme;
 
-    // TODO https://github.com/Yonava/magic-graphs/issues/707
-    const isFocused = controls.focus.isFocused(currentParentNode.id);
+    const isFocused = controls.focus?.isFocused(currentParentNode.id) ?? false;
 
     const baseColor = resolveToken(
       'nodeAnchor.default.linkPreview.color',

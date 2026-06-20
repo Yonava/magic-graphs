@@ -46,5 +46,6 @@ export type AnchorsPlugin = GraphPlugin<{
   controls: { anchors: WithLifecycle<AnchorsControls> };
   events: AnchorsEventMap;
   actions: {};
-  dependsOn: [CanvasPlugin, FocusPlugin];
+  dependsOn: [CanvasPlugin];
+  optionalDependsOn: [FocusPlugin];
 }>;
