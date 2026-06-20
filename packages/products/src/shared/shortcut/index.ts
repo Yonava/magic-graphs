@@ -27,7 +27,7 @@ export const useShortcuts = (graph: GraphWithPlugins) => {
   const defaultShortcutTriggerSelectAll = () => graph.focus.all();
   const defaultShortcutTriggerDelete = () => {
     if (settings.value.interactive === false) return;
-    const ids = [...graph.focus.focusedItemIds.value].map((id) => ({ id }));
+    const ids = [...graph.focus.focusedElementIds.value].map((id) => ({ id }));
     graph.actions.removeElements({ nodes: ids, edges: ids }, {});
   };
 

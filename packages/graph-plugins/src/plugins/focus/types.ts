@@ -50,7 +50,7 @@ export type FocusControls = {
   /**
    * The ids of all focused elements
    */
-  focusedItemIds: Readonly<Ref<ReadonlySet<string>>>;
+  focusedElementIds: Readonly<Ref<ReadonlySet<string>>>;
   /**
    * All the nodes that are focused
    */

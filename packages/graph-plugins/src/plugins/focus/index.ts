@@ -289,7 +289,7 @@ export const focus: FocusPlugin = (
         add: addToFocus,
         all: focusAll,
         isFocused,
-        focusedItemIds: readonly(focusedElementIds),
+        focusedElementIds: readonly(focusedElementIds),
         focusedNodes: computed(() =>
           controls.nodes.value.filter((node) => isFocused(node.id)),
         ),

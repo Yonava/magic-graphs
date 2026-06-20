@@ -10,17 +10,6 @@ import { DARK_THEME } from './presets/dark.ts';
 import { LIGHT_THEME } from './presets/light.ts';
 import { PINK_THEME } from './presets/pink.ts';
 
-/*
- * NOTE ON THEME TOKEN DESIGN:
- * Theme tokens are defined statically regardless of which plugins are loaded.
- * Focus tokens (e.g. node.focus.color) are intentionally designed to have no effect
- * if the focus plugin is not active. Making the theme schema dynamic based on
- * plugin composition would require the type system to track plugin state at
- * compile time, adding significant complexity for no real benefit.
- * Unused tokens are inert and harmless, and a static schema lets you
- * configure a complete theme upfront without knowing which plugins will be loaded.
- */
-
 export type GraphTheme = GraphThemeImport;
 export type GraphThemeKey = keyof GraphTheme;
 
