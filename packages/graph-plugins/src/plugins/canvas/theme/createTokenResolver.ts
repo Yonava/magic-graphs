@@ -14,17 +14,11 @@ import {
 } from './types.ts';
 
 // TODO remove as part of https://github.com/Yonava/magic-graphs/issues/584
-export const getDataFromNestedPath = <Obj, Path>(
-  obj: Obj,
-  path: Path,
-): ThemeOverride<unknown>[] | undefined => {
-  return (
-    path
-      // @ts-expect-error will be replaced soon in 584
-      .split('.')
-      .reduce((acc: Record<string, unknown>, curr: string) => acc?.[curr], obj)
-  );
-};
+export const getDataFromNestedPath = <Obj, Path>(obj: Obj, path: Path) =>
+  path
+    // @ts-expect-error will be replaced soon in 584
+    .split('.')
+    .reduce((acc: Record<string, unknown>, curr: string) => acc?.[curr], obj);
 
 export type TokenResolver<ThemeOverrides> = <
   Token extends ThemeToken<ToThemes<ThemeOverrides>>,
@@ -34,32 +28,35 @@ export type TokenResolver<ThemeOverrides> = <
   ...args: Args
 ) => TokenStyleValue<Token, ToThemes<ThemeOverrides>>;
 
-export function createTokenResolver<ThemeOverrides>(
-  themePreset: Ref<ThemePreset>,
-  themeOverrides: ThemeOverrides,
-) {
-  const resolveToken: TokenResolver<ThemeOverrides> = (token, ...args) => {
-    const overrides = nullThrows(
+export const createTokenResolver =
+  <ThemeOverrides>(
+    themePreset: Ref<ThemePreset>,
+    themeOverrides: ThemeOverrides,
+  ): TokenResolver<ThemeOverrides> =>
+  (token, ...args) => {
+    // 1. get all the overrides we have stored for a given token
+    const overrides: ThemeOverride<unknown>[] = nullThrows(
       getDataFromNestedPath(themeOverrides, token),
-      `No theme overrides found for token "${token}"`,
+      `Theme overrides is missing entry for "${token}": Is "${token}" a registered token?`,
     );
 
+    // 2. use the find last approach to get the override that was most recently registered
     const override = overrides.findLast((overrideItem) => {
       const themeValue = overrideItem.value;
       const styleValue = getValue(themeValue, ...args);
       return styleValue !== undefined;
     });
 
+    // 3. get the preset resolved style value ready just in case there is no override
     const preset = ALL_THEME_PRESETS[themePreset.value];
     const presetStyleValue = getDataFromNestedPath(preset, token);
 
+    // 4. the theme value for the token with the preset fallback
     const themeValue = nullThrows(
       override?.value ?? presetStyleValue,
-      `Theme token "${token}" not found`,
+      `No theme value found for token "${token}" in overrides or preset: Is "${token}" a registered token?`,
     );
 
-    return getValue(themeValue, ...args) as any;
+    // 5. combine the theme value with the token resolution args to get the final resolved style value
+    return getValue(themeValue, ...args);
   };
-
-  return resolveToken;
-}
