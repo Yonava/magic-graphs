@@ -29,7 +29,7 @@ import {
   TokenResolver,
   createTokenResolver,
 } from './theme/createTokenResolver.ts';
-import { createTokenStuff } from './theme/createTokenStuff.ts';
+import { createThemeController } from './theme/createTokenStuff.ts';
 import { CanvasThemeOverrides, createCanvasThemeOverrides } from './themes.ts';
 import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
 import { Aggregator, CanvasPlugin, GraphUnderCursor } from './types.ts';
@@ -70,14 +70,12 @@ export const canvas =
 
     const activeThemePreset = ref<ThemePreset>('light');
 
-    const canvasThemeOverrides = createCanvasThemeOverrides();
-
-    const tokenStuff = createTokenStuff(
-      canvasThemeOverrides,
+    const theme = createThemeController(
+      createCanvasThemeOverrides(),
       activeThemePreset,
     );
 
-    const weightLayer = tokenStuff.createLayer(
+    const weightLayer = theme.createLayer(
       CANVAS_PLUGIN_ID + '/theme/edge-weight',
     );
 
@@ -89,7 +87,7 @@ export const canvas =
       canvas: magicCanvas.canvas,
       subscribe: events.subscribe,
       getNode: getters.getNode,
-      resolveToken: tokenStuff._resolveToken,
+      resolveToken: theme._resolveToken,
       graphUnderCursor,
     });
 
@@ -147,7 +145,7 @@ export const canvas =
     const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
       const edgeCanvasElements = controls.edges.value
         .map((edge) => {
-          const shape = tokenStuff._resolveToken('edge.default.shape', edge);
+          const shape = theme._resolveToken('edge.default.shape', edge);
           if (!shape) return;
 
           return {
@@ -166,7 +164,7 @@ export const canvas =
 
       const nodeCanvasElements = controls.nodes.value
         .map((node) => {
-          const shape = tokenStuff._resolveToken('node.default.shape', node);
+          const shape = theme._resolveToken('node.default.shape', node);
           if (!shape) return;
 
           return {
@@ -177,7 +175,7 @@ export const canvas =
               2 +
               nullThrows(nodeZScores.get(node.id), 'node z score not found'),
             data: {
-              [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenStuff._resolveToken(
+              [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: theme._resolveToken(
                 'node.default.cursor',
                 node,
               ),
@@ -233,7 +231,7 @@ export const canvas =
     events.subscribe('onDraw', () => {
       const canvas = magicCanvas.canvas.value;
       if (!canvas) return;
-      canvas.style.backgroundColor = tokenStuff._resolveToken('canvas.color');
+      canvas.style.backgroundColor = theme._resolveToken('canvas.color');
     });
 
     magicCanvas.draw.backgroundPattern.value = (ctx, at, alpha) =>
@@ -241,7 +239,7 @@ export const canvas =
         at,
         size: 12,
         lineWidth: 1,
-        fillColor: tokenStuff._resolveToken('canvas.patternColor') + alpha,
+        fillColor: theme._resolveToken('canvas.patternColor') + alpha,
       }).draw(ctx);
 
     return {
@@ -264,7 +262,7 @@ export const canvas =
           ),
           activePreset: activeThemePreset,
 
-          theme: tokenStuff,
+          theme,
         },
       },
       actions,

@@ -1,7 +1,7 @@
 import { ThemeLayer, createLayer } from './createLayer.ts';
 import { TokenResolver, createTokenResolver } from './createTokenResolver.ts';
 
-export type TokenStuffControls<ThemeOverrides> = {
+export type ThemeController<ThemeOverrides> = {
   /** @internal resolves a ThemeToken through the override stack to its final StyleValue. */
   _resolveToken: TokenResolver<ThemeOverrides>;
   /** @internal the full override stack — all ThemeOverride arrays keyed by token. */
@@ -10,10 +10,10 @@ export type TokenStuffControls<ThemeOverrides> = {
   createLayer: (layerId?: string) => ThemeLayer<ThemeOverrides>;
 };
 
-export const createTokenStuff = <ThemeOverrides>(
+export const createThemeController = <ThemeOverrides>(
   themeOverrides: ThemeOverrides,
   activeThemePreset: any,
-): TokenStuffControls<ThemeOverrides> => {
+): ThemeController<ThemeOverrides> => {
   const resolver = createTokenResolver(activeThemePreset, themeOverrides);
 
   return {

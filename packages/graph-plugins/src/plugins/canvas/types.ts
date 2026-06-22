@@ -7,7 +7,7 @@ import { DeepReadonly } from 'ts-essentials';
 import { ComputedRef, Ref, ShallowRef } from 'vue';
 
 import { CanvasEventMap } from './events.ts';
-import { TokenStuffControls } from './theme/createTokenStuff.ts';
+import { ThemeController } from './theme/createTokenStuff.ts';
 import { CanvasThemeOverrides } from './themes.ts';
 import { AllThemePresets, ThemePreset } from './themes/index.ts';
 import { AggregatorProps } from './useAggregator.ts';
@@ -63,7 +63,7 @@ export type CanvasControls = {
   /** the currently active preset name. */
   activePreset: Ref<ThemePreset>;
 
-  theme: TokenStuffControls<CanvasThemeOverrides>;
+  theme: ThemeController<CanvasThemeOverrides>;
 };
 
 /**

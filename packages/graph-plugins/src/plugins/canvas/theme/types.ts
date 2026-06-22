@@ -8,7 +8,7 @@
  *               either a static StyleValue or a getter that may return void to defer
  *               ("fall through") to the next override layer, eventually reaching the preset.
  *
- * ThemeToken  — a dot-notation path into a theme shape that addresses a single StyleValue leaf
+ * ThemeToken  — a dot-notation path into a theme shape that addresses a single StyleValue
  *               (e.g. "node.default.color"). used to identify which token an override targets.
  */
 import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
@@ -84,7 +84,7 @@ export type TokenResolverArgs<Token, Themes> = Parameters<
 // ─── ToThemeOverrides / ToThemes ─────────────────────────────────────────────
 
 /**
- * recursively transforms a theme shape so every ThemeValue leaf becomes a `ThemeOverride` array.
+ * recursively transforms a theme shape so every ThemeValue becomes a `ThemeOverride` array.
  * the outermost check is non-distributing so that ThemeValue unions (StyleValue | getter) are
  * recognized as leaves rather than recursed into.
  */
