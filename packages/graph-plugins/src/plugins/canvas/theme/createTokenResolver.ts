@@ -24,15 +24,19 @@ export type ThemeArgs<ThemeOverrides> =
     : [];
 
 // TODO remove as part of https://github.com/Yonava/magic-graphs/issues/584
-export const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
+export const getDataFromNestedPath = <Obj, Path>(
   obj: Obj,
   path: Path,
-): PathValue<Obj, Path> | undefined =>
-  path
-    .split('.')
-    .reduce((acc: Record<string, any>, curr: string) => acc?.[curr], obj);
+): ThemeOverride<unknown>[] | undefined => {
+  return (
+    path
+      // @ts-expect-error will be replaced soon in 584
+      .split('.')
+      .reduce((acc: Record<string, unknown>, curr: string) => acc?.[curr], obj)
+  );
+};
 
-export function createTokenResolver<ThemeOverrides>(
+export function createTokenResolver<ThemeOverrides extends object>(
   themePreset: Ref<ThemePreset>,
   themeOverrides: ThemeOverrides,
 ) {
@@ -50,7 +54,7 @@ export function createTokenResolver<ThemeOverrides>(
 
     const override = overrides.findLast((overrideItem) => {
       const themeValue = overrideItem.value;
-      const styleValue = getValue<typeof themeValue, Args>(themeValue, ...args);
+      const styleValue = getValue(themeValue, ...args);
       return styleValue !== undefined;
     });
 
@@ -62,10 +66,10 @@ export function createTokenResolver<ThemeOverrides>(
       `Theme token "${token}" not found`,
     );
 
-    const styleValue = getValue<typeof themeValue, Args>(
-      themeValue,
-      ...args,
-    ) as Exclude<UnwrapMaybeGetter<PathValue<GraphTheme, Token>>, void>;
+    const styleValue = getValue(themeValue, ...args) as Exclude<
+      UnwrapMaybeGetter<PathValue<ToThemes<ThemeOverrides>, Token>>,
+      void
+    >;
 
     return styleValue;
   };
@@ -74,6 +78,6 @@ export function createTokenResolver<ThemeOverrides>(
 }
 
 /** the function that resolves a theme token to its final StyleValue. */
-export type TokenResolver<ThemeOverrides> = ReturnType<
+export type TokenResolver<ThemeOverrides extends object> = ReturnType<
   typeof createTokenResolver<ThemeOverrides>
 >;

@@ -9,7 +9,7 @@ type TokenStuffControls<ThemeOverrides> = {
   createLayer: (layerId?: string) => any;
 };
 
-export const createTokenStuff = <ThemeOverrides>(
+export const createTokenStuff = <ThemeOverrides extends object>(
   canvasThemeOverrides: ThemeOverrides,
   activeThemePreset: any,
 ): TokenStuffControls<ThemeOverrides> => {
