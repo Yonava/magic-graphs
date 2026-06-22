@@ -1,4 +1,4 @@
-import { ThemeController } from '../plugins/canvas/theme/createTokenStuff.ts';
+import { ThemeController } from '../plugins/canvas/theme/createThemeController.ts';
 import { ToThemeOverrides } from '../plugins/canvas/theme/types.ts';
 
 export type Coordinate = {

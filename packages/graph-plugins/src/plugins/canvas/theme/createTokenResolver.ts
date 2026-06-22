@@ -26,17 +26,19 @@ export const getDataFromNestedPath = <Obj, Path>(
   );
 };
 
+export type TokenResolver<ThemeOverrides> = <
+  Token extends ThemeToken<ToThemes<ThemeOverrides>>,
+  Args extends TokenResolverArgs<Token, ToThemes<ThemeOverrides>>,
+>(
+  token: Token,
+  ...args: Args
+) => TokenStyleValue<Token, ToThemes<ThemeOverrides>>;
+
 export function createTokenResolver<ThemeOverrides>(
   themePreset: Ref<ThemePreset>,
   themeOverrides: ThemeOverrides,
 ) {
-  const resolveToken = <
-    Token extends ThemeToken<ToThemes<ThemeOverrides>>,
-    Args extends TokenResolverArgs<Token, ToThemes<ThemeOverrides>>,
-  >(
-    token: Token,
-    ...args: Args
-  ) => {
+  const resolveToken: TokenResolver<ThemeOverrides> = (token, ...args) => {
     const overrides = nullThrows(
       getDataFromNestedPath(themeOverrides, token),
       `No theme overrides found for token "${token}"`,
@@ -56,18 +58,8 @@ export function createTokenResolver<ThemeOverrides>(
       `Theme token "${token}" not found`,
     );
 
-    const styleValue = getValue(themeValue, ...args) as TokenStyleValue<
-      Token,
-      ToThemes<ThemeOverrides>
-    >;
-
-    return styleValue;
+    return getValue(themeValue, ...args) as any;
   };
 
   return resolveToken;
 }
-
-/** the function that resolves a theme token to its final StyleValue. */
-export type TokenResolver<ThemeOverrides> = ReturnType<
-  typeof createTokenResolver<ThemeOverrides>
->;

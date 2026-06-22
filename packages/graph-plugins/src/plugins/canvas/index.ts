@@ -24,7 +24,7 @@ import {
   setupCanvasCursor,
 } from './setupCanvasCursor.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
-import { createThemeController } from './theme/createTokenStuff.ts';
+import { createThemeController } from './theme/createThemeController.ts';
 import { createCanvasThemeOverrides } from './themes.ts';
 import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
 import { Aggregator, CanvasPlugin, GraphUnderCursor } from './types.ts';
