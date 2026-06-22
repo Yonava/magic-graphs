@@ -5,13 +5,13 @@ import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
 import type { Ref } from 'vue';
 
-import type { GraphTheme, ThemePreset } from '../themes/index.ts';
-import { ALL_THEME_PRESETS } from '../themes/index.ts';
 import {
   type ThemeOverride,
   type ThemeOverrides,
   type ThemeToken,
-} from '../themes/types.ts';
+} from '../themes.ts';
+import type { GraphTheme, ThemePreset } from '../themes/index.ts';
+import { ALL_THEME_PRESETS } from '../themes/index.ts';
 
 /** the override array stored at a given ThemeToken path in ThemeOverrides. */
 export type TokenOverrides<Token extends ThemeToken> = PathValue<

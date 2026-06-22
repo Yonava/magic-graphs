@@ -16,7 +16,7 @@ import {
   Aggregator,
   CanvasElement,
   GraphUnderCursor,
-} from '../canvas/types.ts';
+} from '../canvas/themes.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD } from '../node-drag/constants.ts';
 import { MARQUEE_PLUGIN_ID, MARQUEE_SHAPE_ID } from './constants.ts';

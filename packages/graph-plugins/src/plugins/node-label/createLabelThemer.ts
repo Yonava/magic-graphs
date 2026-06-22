@@ -1,4 +1,4 @@
-import { CanvasControls } from '../canvas/types.ts';
+import { CanvasControls } from '../canvas/themes.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
 import { NodeLabelControls } from './types.ts';
 

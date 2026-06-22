@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { createCanvasEventRegistry } from './events.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
-import { CanvasElement } from './types.ts';
+import { CanvasElement } from './themes.ts';
 
 const makeElement = (id: string): CanvasElement => ({ id }) as CanvasElement;
 

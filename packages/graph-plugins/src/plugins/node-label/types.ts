@@ -1,7 +1,7 @@
 import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
 import { MaybeGetter } from '@magic/utils/maybeGetter/index';
 
-import { CanvasPlugin } from '../canvas/types.ts';
+import { CanvasPlugin } from '../canvas/themes.ts';
 
 export type NodeLabelEntry = {
   nodeId: string;

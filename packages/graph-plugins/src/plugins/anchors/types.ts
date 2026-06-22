@@ -3,7 +3,7 @@ import { CoreNode } from '@magic/graph/types';
 
 import { Ref } from 'vue';
 
-import { CanvasPlugin } from '../canvas/types.ts';
+import { CanvasPlugin } from '../canvas/themes.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { AnchorsEventMap } from './events.ts';
 

@@ -3,8 +3,8 @@ import { CoreEdge, CoreNode } from '@magic/graph/types';
 
 import { ComputedRef, Ref } from 'vue';
 
-import { ThemeToken } from '../canvas/themes/types.ts';
-import { CanvasPlugin } from '../canvas/types.ts';
+import { ThemeToken } from '../canvas/themes.ts';
+import { CanvasPlugin } from '../canvas/themes.ts';
 import { FocusEventMap } from './events.ts';
 
 export type NodeBaseThemePath = Extract<ThemeToken, `node.default.${string}`>;

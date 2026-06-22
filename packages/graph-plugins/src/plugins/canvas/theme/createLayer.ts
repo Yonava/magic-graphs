@@ -1,6 +1,6 @@
 import { generateId } from '@magic/utils/id';
 
-import type { ThemeToken } from '../themes/types.ts';
+import type { ThemeToken } from '../themes.ts';
 import {
   TokenOverrides,
   getDataFromNestedPath,

@@ -2,7 +2,7 @@ import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
 
 import { ComputedRef } from 'vue';
 
-import { CanvasPlugin } from '../canvas/types.ts';
+import { CanvasPlugin } from '../canvas/themes.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { MarqueeEventMap } from './events.ts';
 

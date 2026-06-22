@@ -13,7 +13,7 @@ import type { AnchorsPlugin, NodeAnchor } from '../../plugins/anchors/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
 import { HoveredElement } from '../canvas/setupHoveredElement.ts';
-import { CanvasElement } from '../canvas/types.ts';
+import { CanvasElement } from '../canvas/themes.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { ANCHOR_PLUGIN_ID } from './constants.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';

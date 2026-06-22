@@ -1,6 +1,6 @@
 import colors from '@magic/utils/colors';
 
-import type { GraphTheme } from '../types.ts';
+import type { GraphTheme } from '../../themes.ts';
 import { canvasShared } from './shared/canvas.ts';
 import { edgeShared } from './shared/edge.ts';
 import { marqueeEncapsulatedNodeBoxShared } from './shared/marquee.ts';

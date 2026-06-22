@@ -1,6 +1,4 @@
 import { Coordinate, MagicCanvasProps } from '@magic/canvas/types';
-import { CoreEventMap } from '@magic/graph/core/events';
-import { CoreControls } from '@magic/graph/core/types';
 import { GraphPlugin } from '@magic/graph/plugins/types';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import { Shape } from '@magic/shapes/types/index';
@@ -9,7 +7,6 @@ import { DeepReadonly } from 'ts-essentials';
 import { ComputedRef, Ref, ShallowRef } from 'vue';
 
 import { CanvasEventMap } from './events.ts';
-import { HoveredElement } from './setupHoveredElement.ts';
 import { ThemeLayer } from './themes/createLayer.ts';
 import { TokenResolver } from './themes/createTokenResolver.ts';
 import { AllThemePresets, ThemePreset } from './themes/index.ts';
@@ -87,6 +84,7 @@ export type Aggregator = CanvasElement[];
  * which will be invoked with a reducer each render cycle
  */
 export type AggregatorTransformer = (aggregator: Aggregator) => Aggregator;
+
 type CoreGraphTypes = 'node' | 'edge';
 type MarqueeGraphTypes = 'marquee-box' | 'encapsulated-node-box';
 type NodeAnchorGraphTypes = 'node-anchor' | 'link-preview';

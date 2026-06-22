@@ -1,6 +1,6 @@
 import { DragStateControls } from '../../shared/drag/types.ts';
+import { CanvasControls } from '../canvas/themes.ts';
 import { CURSOR } from '../canvas/themes/cursor.ts';
-import { CanvasControls } from '../canvas/types.ts';
 import { NodeAnchor } from './types.ts';
 
 export const createAnchorDragThemer = (

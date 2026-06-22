@@ -2,7 +2,7 @@ import { Coordinate } from '@magic/canvas/types';
 import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
 import { CoreNode } from '@magic/graph/types';
 
-import { CanvasPlugin } from '../canvas/types.ts';
+import { CanvasPlugin } from '../canvas/themes.ts';
 import { NodeDragEventMap } from './events.ts';
 
 export type NodeIdDragState = { nodeIds: string[] };

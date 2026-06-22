@@ -11,7 +11,7 @@ import { DeepReadonly } from 'ts-essentials';
 import { computed, readonly, ref } from 'vue';
 
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasElement } from '../canvas/types.ts';
+import { CanvasElement } from '../canvas/themes.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
 import {
   FOCUSABLE_GRAPH_TYPES,

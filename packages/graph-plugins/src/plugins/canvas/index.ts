@@ -24,11 +24,11 @@ import {
   setupCanvasCursor,
 } from './setupCanvasCursor.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
+import { createThemeOverrides } from './themes.ts';
+import { Aggregator, CanvasPlugin, GraphUnderCursor } from './themes.ts';
 import { createLayer } from './themes/createLayer.ts';
 import { createTokenResolver } from './themes/createTokenResolver.ts';
 import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
-import { createThemeOverrides } from './themes/types.ts';
-import { Aggregator, CanvasPlugin, GraphUnderCursor } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
 export const canvas =
@@ -65,6 +65,7 @@ export const canvas =
     });
 
     const activeThemePreset = ref<ThemePreset>('light');
+
     const themeOverrides = createThemeOverrides();
     const resolveToken = createTokenResolver(activeThemePreset, themeOverrides);
 

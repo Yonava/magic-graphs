@@ -9,7 +9,7 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { GraphUnderCursor } from '../canvas/types.ts';
+import { GraphUnderCursor } from '../canvas/themes.ts';
 import {
   NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD,
   NODE_DRAG_PLUGIN_ID,

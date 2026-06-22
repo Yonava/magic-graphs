@@ -1,7 +1,7 @@
 import { DragStateControls } from '@magic/graph-plugins/shared/drag/types';
 
+import { CanvasControls } from '../canvas/themes.ts';
 import { CURSOR } from '../canvas/themes/cursor.ts';
-import { CanvasControls } from '../canvas/types.ts';
 import { NODE_DRAG_PLUGIN_ID } from './constants.ts';
 import { NodeIdDragState } from './types.ts';
 

@@ -3,8 +3,8 @@ import { getLargestAngularSpaceBisector } from '@magic/shapes/helpers';
 import { TextArea } from '@magic/shapes/text/types';
 import { GOLDEN_RATIO } from '@magic/utils/math';
 
+import { GraphInterface } from '../../../themes.ts';
 import { GraphTheme, resolveEdgeStyles } from '../../index.ts';
-import { GraphInterface } from '../../types.ts';
 import { textDefaults } from './text.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;

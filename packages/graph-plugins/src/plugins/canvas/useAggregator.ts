@@ -9,7 +9,7 @@ import type {
   Aggregator,
   AggregatorTransformer,
   CanvasElement,
-} from './types.ts';
+} from './themes.ts';
 
 export const useAggregator = ({
   emit,
