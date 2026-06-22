@@ -233,7 +233,7 @@ export const canvas =
     events.subscribe('onDraw', () => {
       const canvas = magicCanvas.canvas.value;
       if (!canvas) return;
-      canvas.style.backgroundColor = resolveToken('canvas.color');
+      canvas.style.backgroundColor = tokenStuff._resolveToken('canvas.color');
     });
 
     magicCanvas.draw.backgroundPattern.value = (ctx, at, alpha) =>
@@ -241,7 +241,7 @@ export const canvas =
         at,
         size: 12,
         lineWidth: 1,
-        fillColor: resolveToken('canvas.patternColor') + alpha,
+        fillColor: tokenStuff._resolveToken('canvas.patternColor') + alpha,
       }).draw(ctx);
 
     return {

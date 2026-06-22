@@ -1,24 +1,17 @@
 import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
-import type { UnwrapMaybeGetter } from '@magic/utils/maybeGetter/index';
-import { AnyFunction, Builtin, PathValue } from 'ts-essentials';
 
 import type { Ref } from 'vue';
 
 import type { ThemePreset } from '../themes/index.ts';
 import { ALL_THEME_PRESETS } from '../themes/index.ts';
-import { ThemeOverride, ThemeToken, ToThemes } from './types.ts';
-
-/** the override array stored at a given ThemeToken path in ThemeOverrides. */
-type OverridesOnTheme<ThemeOverrides, Token> = PathValue<ThemeOverrides, Token>;
-
-/** extracts the getter arguments for a token's ThemeValue, or [] if the token takes a static StyleValue. */
-export type ThemeArgs<ThemeOverrides> =
-  ThemeOverrides extends ThemeOverride<Builtin>[]
-    ? Extract<ThemeOverrides[number]['value'], AnyFunction> extends never
-      ? []
-      : Parameters<Extract<ThemeOverrides[number]['value'], AnyFunction>>
-    : [];
+import {
+  ThemeOverride,
+  ThemeToken,
+  ToThemes,
+  TokenResolverArgs,
+  TokenStyleValue,
+} from './types.ts';
 
 // TODO remove as part of https://github.com/Yonava/magic-graphs/issues/584
 export const getDataFromNestedPath = <Obj, Path>(
@@ -39,7 +32,7 @@ export function createTokenResolver<ThemeOverrides>(
 ) {
   const resolveToken = <
     Token extends ThemeToken<ToThemes<ThemeOverrides>>,
-    Args extends ThemeArgs<OverridesOnTheme<ThemeOverrides, Token>>,
+    Args extends TokenResolverArgs<Token, ToThemes<ThemeOverrides>>,
   >(
     token: Token,
     ...args: Args
@@ -63,9 +56,9 @@ export function createTokenResolver<ThemeOverrides>(
       `Theme token "${token}" not found`,
     );
 
-    const styleValue = getValue(themeValue, ...args) as Exclude<
-      UnwrapMaybeGetter<PathValue<ToThemes<ThemeOverrides>, Token>>,
-      void
+    const styleValue = getValue(themeValue, ...args) as TokenStyleValue<
+      Token,
+      ToThemes<ThemeOverrides>
     >;
 
     return styleValue;

@@ -5,7 +5,12 @@ import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
 
 import { Cursor, CursorFallback } from './theme/cursor.ts';
-import { AsStyleValue, ThemeValue, ToThemeOverrides } from './theme/types.ts';
+import {
+  AsStyleValue,
+  ThemeValue,
+  ToThemeOverrides,
+  ToThemes,
+} from './theme/types.ts';
 
 type TextStyleValues = {
   text: string;
@@ -60,8 +65,6 @@ export type CanvasThemes = {
 };
 
 export type CanvasThemeOverrides = ToThemeOverrides<CanvasThemes>;
-
-type t = ToThemeOverrides<NodeStyleValues>;
 
 const textFields = (): ToThemeOverrides<TextStyleValues> => ({
   text: [],
