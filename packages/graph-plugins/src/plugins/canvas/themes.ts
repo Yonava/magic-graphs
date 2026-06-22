@@ -2,15 +2,9 @@ import { CoreEdge, CoreNode } from '@magic/graph/types';
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Shape } from '@magic/shapes/types/index';
 import { Color } from '@magic/utils/colors';
-import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
 
 import { Cursor, CursorFallback } from './theme/cursor.ts';
-import {
-  AsStyleValue,
-  ThemeValue,
-  ToThemeOverrides,
-  ToThemes,
-} from './theme/types.ts';
+import { AsStyleValue, ThemeValue, ToThemeOverrides } from './theme/types.ts';
 
 type TextStyleValues = {
   text: string;
@@ -64,8 +58,6 @@ export type CanvasThemes = {
   canvas: CanvasThemeValues;
 };
 
-export type CanvasThemeOverrides = ToThemeOverrides<CanvasThemes>;
-
 const textFields = (): ToThemeOverrides<TextStyleValues> => ({
   text: [],
   textColor: [],
@@ -90,16 +82,17 @@ const edgeFields = (): ToThemeOverrides<EdgeStyleValues> => ({
   width: [],
 });
 
-export const createCanvasThemeOverrides = (): CanvasThemeOverrides => ({
-  node: {
-    default: nodeFields(),
-  },
-  edge: {
-    default: edgeFields(),
-  },
-  canvas: {
-    color: [],
-    patternColor: [],
-    cursor: [],
-  },
-});
+export const createCanvasThemeOverrides =
+  (): ToThemeOverrides<CanvasThemes> => ({
+    node: {
+      default: nodeFields(),
+    },
+    edge: {
+      default: edgeFields(),
+    },
+    canvas: {
+      color: [],
+      patternColor: [],
+      cursor: [],
+    },
+  });

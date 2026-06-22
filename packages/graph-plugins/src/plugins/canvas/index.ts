@@ -24,13 +24,8 @@ import {
   setupCanvasCursor,
 } from './setupCanvasCursor.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
-import { createLayer } from './theme/createLayer.ts';
-import {
-  TokenResolver,
-  createTokenResolver,
-} from './theme/createTokenResolver.ts';
 import { createThemeController } from './theme/createTokenStuff.ts';
-import { CanvasThemeOverrides, createCanvasThemeOverrides } from './themes.ts';
+import { createCanvasThemeOverrides } from './themes.ts';
 import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
 import { Aggregator, CanvasPlugin, GraphUnderCursor } from './types.ts';
 import { useAggregator } from './useAggregator.ts';

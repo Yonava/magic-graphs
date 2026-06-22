@@ -6,9 +6,9 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { ComputedRef, Ref, ShallowRef } from 'vue';
 
+import { WithTheme } from '../../shared/types.ts';
 import { CanvasEventMap } from './events.ts';
-import { ThemeController } from './theme/createTokenStuff.ts';
-import { CanvasThemeOverrides } from './themes.ts';
+import { CanvasThemes } from './themes.ts';
 import { AllThemePresets, ThemePreset } from './themes/index.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
@@ -62,8 +62,6 @@ export type CanvasControls = {
   resolvedPreset: ComputedRef<AllThemePresets[ThemePreset]>;
   /** the currently active preset name. */
   activePreset: Ref<ThemePreset>;
-
-  theme: ThemeController<CanvasThemeOverrides>;
 };
 
 /**
@@ -122,6 +120,6 @@ export type CanvasElement = {
 };
 
 export type CanvasPlugin = GraphPlugin<{
-  controls: { canvas: CanvasControls };
+  controls: { canvas: WithTheme<CanvasControls, CanvasThemes> };
   events: CanvasEventMap;
 }>;
