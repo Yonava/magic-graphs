@@ -25,11 +25,14 @@ import {
 } from './setupCanvasCursor.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
 import { createLayer } from './theme/createLayer.ts';
-import { createTokenResolver } from './theme/createTokenResolver.ts';
+import {
+  TokenResolver,
+  createTokenResolver,
+} from './theme/createTokenResolver.ts';
 import { createTokenStuff } from './theme/createTokenStuff.ts';
-import { createCanvasThemeOverrides } from './themes.ts';
+import { CanvasThemeOverrides, createCanvasThemeOverrides } from './themes.ts';
 import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
-import { CanvasPlugin, GraphUnderCursor } from './types.ts';
+import { Aggregator, CanvasPlugin, GraphUnderCursor } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
 export const canvas =
@@ -68,6 +71,7 @@ export const canvas =
     const activeThemePreset = ref<ThemePreset>('light');
 
     const canvasThemeOverrides = createCanvasThemeOverrides();
+
     const tokenStuff = createTokenStuff(
       canvasThemeOverrides,
       activeThemePreset,
@@ -80,15 +84,12 @@ export const canvas =
     weightLayer.set('edge.default.text', (edge) =>
       getters.getEdge(edge.id).weight.toFraction(),
     );
-    weightLayer.set('edge.focus.text', (edge) =>
-      getters.getEdge(edge.id).weight.toFraction(),
-    );
 
     setupCanvasCursor({
       canvas: magicCanvas.canvas,
       subscribe: events.subscribe,
       getNode: getters.getNode,
-      resolveToken,
+      resolveToken: tokenStuff._resolveToken,
       graphUnderCursor,
     });
 
@@ -146,12 +147,7 @@ export const canvas =
     const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
       const edgeCanvasElements = controls.edges.value
         .map((edge) => {
-          const shape = resolveToken('edge.default.shape', edge, {
-            ...controls,
-            ...getters,
-            resolveToken,
-            shapes,
-          });
+          const shape = tokenStuff._resolveToken('edge.default.shape', edge);
           if (!shape) return;
 
           return {
@@ -170,12 +166,7 @@ export const canvas =
 
       const nodeCanvasElements = controls.nodes.value
         .map((node) => {
-          const shape = resolveToken('node.default.shape', node, {
-            ...controls,
-            ...getters,
-            resolveToken,
-            shapes,
-          });
+          const shape = tokenStuff._resolveToken('node.default.shape', node);
           if (!shape) return;
 
           return {
@@ -186,7 +177,7 @@ export const canvas =
               2 +
               nullThrows(nodeZScores.get(node.id), 'node z score not found'),
             data: {
-              [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: resolveToken(
+              [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenStuff._resolveToken(
                 'node.default.cursor',
                 node,
               ),

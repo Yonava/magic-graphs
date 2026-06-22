@@ -5,7 +5,7 @@ import { Color } from '@magic/utils/colors';
 import type { MaybeGetter } from '@magic/utils/maybeGetter/index';
 
 import { Cursor, CursorFallback } from './theme/cursor.ts';
-import { ToThemeOverrides, ToThemeValue } from './theme/types.ts';
+import { AsStyleValue, ThemeValue, ToThemeOverrides } from './theme/types.ts';
 
 type TextStyleValues = {
   text: string;
@@ -15,9 +15,7 @@ type TextStyleValues = {
 };
 
 type NodeStyleValues = TextStyleValues & {
-  // TODO consider wrapping this in a branded type or something so
-  // it we can just say shape: NotAThemeOverride<Shape>
-  shape: () => Shape;
+  shape: AsStyleValue<Shape>;
   size: number;
   borderWidth: number;
   borderColor: Color;
@@ -26,30 +24,32 @@ type NodeStyleValues = TextStyleValues & {
 };
 
 type EdgeStyleValues = TextStyleValues & {
-  shape: () => Shape;
+  shape: AsStyleValue<Shape>;
   color: Color;
   width: number;
 };
 
 type NodeThemeValues = {
-  [K in keyof NodeStyleValues]: ToThemeValue<
-    (node: CoreNode) => NodeStyleValues[K]
+  [K in keyof NodeStyleValues]: ThemeValue<
+    NodeStyleValues[K],
+    [node: CoreNode]
   >;
 };
 
 type EdgeThemeValue = {
-  [K in keyof EdgeStyleValues]: ToThemeValue<
-    (edge: CoreEdge) => EdgeStyleValues[K]
+  [K in keyof EdgeStyleValues]: ThemeValue<
+    EdgeStyleValues[K],
+    [edge: CoreEdge]
   >;
 };
 
 type CanvasThemeValues = {
-  color: MaybeGetter<string>;
-  patternColor: MaybeGetter<string>;
-  cursor: ToThemeValue<() => Cursor | CursorFallback>;
+  color: ThemeValue<string>;
+  patternColor: ThemeValue<string>;
+  cursor: ThemeValue<Cursor | CursorFallback>;
 };
 
-type CanvasTheme = {
+export type CanvasThemes = {
   node: {
     default: NodeThemeValues;
   };
@@ -59,7 +59,9 @@ type CanvasTheme = {
   canvas: CanvasThemeValues;
 };
 
-export type CanvasThemeOverrides = ToThemeOverrides<CanvasTheme>;
+export type CanvasThemeOverrides = ToThemeOverrides<CanvasThemes>;
+
+type t = ToThemeOverrides<NodeStyleValues>;
 
 const textFields = (): ToThemeOverrides<TextStyleValues> => ({
   text: [],

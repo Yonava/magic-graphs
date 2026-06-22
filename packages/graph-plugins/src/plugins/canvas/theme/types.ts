@@ -13,7 +13,7 @@
  */
 import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
-import { CanvasThemeOverrides } from '../themes.ts';
+import { CanvasThemes } from '../themes.ts';
 
 type LeafPaths<Schema, Path> = Path extends Path
   ? PathValue<Schema, Path> extends Builtin
@@ -29,16 +29,36 @@ export type ToThemes<ThemeOverrides> = {
     : ToThemes<ThemeOverrides[K]>;
 };
 
-export type ThemeToken<Themes> = LeafPaths<Themes, Paths<Themes>>;
+type KeysThatAreExplicitStyleValues<Schema, Path> = Path extends Path
+  ? IsStyleValue<Exclude<PathValue<Schema, Path>, AnyFunction>> extends true
+    ? Path
+    : never
+  : never;
+
+type DoesNotStartWith<T extends string, Union> = Union extends `${T}${infer _}`
+  ? never
+  : Union;
+
+export type ThemeToken<Themes> =
+  | KeysThatAreExplicitStyleValues<Themes, Paths<Themes>>
+  | DoesNotStartWith<
+      KeysThatAreExplicitStyleValues<Themes, Paths<Themes>>,
+      LeafPaths<Themes, Paths<Themes>>
+    >;
+
+type t = ToThemeOverrides<CanvasThemes>['node']['default']['color'];
+type s = ToThemeOverrides<CanvasThemes>['node']['default']['shape'];
+type f = CanvasThemes['node']['default']['shape'];
 
 /**
  * a theme token value that supports layered resolution. a static value is used as-is;
  * a getter returning `void` signals "no opinion" and defers to the next override layer,
  * eventually falling back to the active preset.
  */
-export type ToThemeValue<StyleValue extends AnyFunction> =
-  | ReturnType<StyleValue>
-  | ((...args: Parameters<StyleValue>) => ReturnType<StyleValue> | void);
+export type ThemeValue<
+  StyleValue,
+  NeededForResolution extends unknown[] = [],
+> = StyleValue | ((...args: NeededForResolution) => StyleValue | void);
 
 /** a single consumer-defined override for one theme token, tagged with the id of the `createLayer` instance that registered it. */
 export type ThemeOverride<ThemeValue> = {
@@ -46,15 +66,18 @@ export type ThemeOverride<ThemeValue> = {
   layerId: string;
 };
 
+export type AsStyleValue<T> = T & { __explicitStyleValue: 'style' };
+
+type IsStyleValue<T> = '__explicitStyleValue' extends keyof T ? true : false;
+
 /** recursively transforms a theme shape so every leaf value becomes a `ThemeOverride` array. */
 export type ToThemeOverrides<Theme> = [Theme] extends [Builtin]
   ? ThemeOverride<Theme>[]
   : Theme extends Array<infer ThemeValue>
     ? // handles nested arrays gracefully
       Array<ToThemeOverrides<ThemeValue>>
-    : Theme extends Function
-      ? // leaves methods alone if theme has helpers
-        Theme
+    : IsStyleValue<Theme> extends true
+      ? ThemeOverride<Theme>[]
       : Theme extends object
         ? { [K in keyof Theme]: ToThemeOverrides<Theme[K]> }
         : Theme;

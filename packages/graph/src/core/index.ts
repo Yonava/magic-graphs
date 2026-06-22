@@ -29,7 +29,7 @@ import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
 
 export const CORE_EVENT_ID = 'core';
 
-export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
+export const createGraph = <const TPlugins extends LooseGraphPlugin[]>({
   plugins,
   settings: startupSettings = {},
 }: {

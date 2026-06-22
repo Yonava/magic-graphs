@@ -1,29 +1,30 @@
 import { generateId } from '@magic/utils/id';
+import { PathValue } from 'ts-essentials';
 
-import type { ThemeToken } from '../themes.ts';
-import {
-  TokenOverrides,
-  getDataFromNestedPath,
-} from './createTokenResolver.ts';
-import { ThemeOverrides } from './types.ts';
+import { getDataFromNestedPath } from './createTokenResolver.ts';
+import { ThemeOverride, ThemeToken, ToThemes } from './types.ts';
 
-export type ThemeLayer = {
+export type ThemeLayer<ThemeOverrides> = {
   /**
    * set a ThemeValue for a specific token in your graph.
    *
    * @param token - the ThemeToken you want to override
    * @param value - the ThemeValue (static StyleValue or fallthrough getter) to set
    */
-  set: <Token extends ThemeToken>(
+  set: <Token extends ThemeToken<ToThemes<ThemeOverrides>>>(
     token: Token,
-    value: TokenOverrides<Token>[number]['value'],
+    value: PathValue<ThemeOverrides, Token> extends ThemeOverride<
+      infer ThemeValue
+    >[]
+      ? ThemeValue
+      : never,
   ) => void;
   /**
    * removes the override for a specific token registered by this layer.
    *
    * @param token - the ThemeToken to remove the override for
    */
-  remove: (token: ThemeToken) => void;
+  remove: (token: ThemeToken<ToThemes<ThemeOverrides>>) => void;
   /**
    * removes all overrides registered by this layer.
    */
@@ -38,16 +39,13 @@ export type ThemeLayer = {
  * @param layerId - identifier for this layer, useful for debugging
  * @returns controls to set and remove token overrides
  */
-export const createLayer = (
+export const createLayer = <ThemeOverrides>(
   themeOverrides: ThemeOverrides,
   layerId = generateId(),
-): ThemeLayer => {
-  const activeTokens = new Set<ThemeToken>();
+): ThemeLayer<ThemeOverrides> => {
+  const activeTokens = new Set<ThemeToken<ToThemes<ThemeOverrides>>>();
 
-  const set = <Token extends ThemeToken>(
-    token: Token,
-    value: TokenOverrides<Token>[number]['value'],
-  ) => {
+  const set: ThemeLayer<ThemeOverrides>['set'] = (token, value) => {
     if (activeTokens.has(token)) {
       console.warn(
         `Attempted to set token "${token}" multiple times on the same theme layer`,
@@ -64,8 +62,6 @@ export const createLayer = (
     }
 
     overrides.push({
-      // @ts-expect-error Safe: The consumer arguments are strictly typed to match 'token',
-      // but TS cannot internally correlate the dynamic lookup array with the resolved generic union.
       value,
       layerId,
     });
@@ -73,7 +69,7 @@ export const createLayer = (
     activeTokens.add(token);
   };
 
-  const remove = (token: ThemeToken) => {
+  const remove: ThemeLayer<ThemeOverrides>['remove'] = (token) => {
     const overrides = getDataFromNestedPath(themeOverrides, token);
     if (!overrides) {
       console.warn(

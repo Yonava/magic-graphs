@@ -1,19 +1,16 @@
 import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
 import type { UnwrapMaybeGetter } from '@magic/utils/maybeGetter/index';
-import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
+import { AnyFunction, Builtin, PathValue } from 'ts-essentials';
 
 import type { Ref } from 'vue';
 
-import type { GraphTheme, ThemePreset } from '../themes/index.ts';
+import type { ThemePreset } from '../themes/index.ts';
 import { ALL_THEME_PRESETS } from '../themes/index.ts';
 import { ThemeOverride, ThemeToken, ToThemes } from './types.ts';
 
 /** the override array stored at a given ThemeToken path in ThemeOverrides. */
-export type TokenOverrides<ThemeOverrides, Token> = PathValue<
-  ThemeOverrides,
-  Token
->;
+type OverridesOnTheme<ThemeOverrides, Token> = PathValue<ThemeOverrides, Token>;
 
 /** extracts the getter arguments for a token's ThemeValue, or [] if the token takes a static StyleValue. */
 export type ThemeArgs<ThemeOverrides> =
@@ -36,13 +33,13 @@ export const getDataFromNestedPath = <Obj, Path>(
   );
 };
 
-export function createTokenResolver<ThemeOverrides extends object>(
+export function createTokenResolver<ThemeOverrides>(
   themePreset: Ref<ThemePreset>,
   themeOverrides: ThemeOverrides,
 ) {
   const resolveToken = <
     Token extends ThemeToken<ToThemes<ThemeOverrides>>,
-    Args extends ThemeArgs<TokenOverrides<ThemeOverrides, Token>>,
+    Args extends ThemeArgs<OverridesOnTheme<ThemeOverrides, Token>>,
   >(
     token: Token,
     ...args: Args
@@ -78,6 +75,6 @@ export function createTokenResolver<ThemeOverrides extends object>(
 }
 
 /** the function that resolves a theme token to its final StyleValue. */
-export type TokenResolver<ThemeOverrides extends object> = ReturnType<
+export type TokenResolver<ThemeOverrides> = ReturnType<
   typeof createTokenResolver<ThemeOverrides>
 >;

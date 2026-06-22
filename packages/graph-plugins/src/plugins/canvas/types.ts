@@ -7,6 +7,8 @@ import { DeepReadonly } from 'ts-essentials';
 import { ComputedRef, Ref, ShallowRef } from 'vue';
 
 import { CanvasEventMap } from './events.ts';
+import { TokenStuffControls } from './theme/createTokenStuff.ts';
+import { CanvasThemeOverrides } from './themes.ts';
 import { AllThemePresets, ThemePreset } from './themes/index.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
@@ -56,18 +58,12 @@ export type CanvasControls = {
    */
   forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
 
-  theme: {
-    /** the active preset providing StyleValue fallbacks when no override layer covers a token. */
-    resolvedPreset: ComputedRef<AllThemePresets[ThemePreset]>;
-    /** the currently active preset name. */
-    activePreset: Ref<ThemePreset>;
-    /** @internal resolves a ThemeToken through the override stack to its final StyleValue. */
-    _resolveToken: TokenResolver;
-    /** @internal the full override stack — all ThemeOverride arrays keyed by token. */
-    _overrides: ThemeOverrides;
-    /** creates a scoped override layer for pushing ThemeValues into the stack. */
-    createLayer: (layerId?: string) => ThemeLayer;
-  };
+  /** the active preset providing StyleValue fallbacks when no override layer covers a token. */
+  resolvedPreset: ComputedRef<AllThemePresets[ThemePreset]>;
+  /** the currently active preset name. */
+  activePreset: Ref<ThemePreset>;
+
+  theme: TokenStuffControls<CanvasThemeOverrides>;
 };
 
 /**
