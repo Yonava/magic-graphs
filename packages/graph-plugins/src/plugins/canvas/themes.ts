@@ -35,7 +35,7 @@ type NodeThemeValues = {
   >;
 };
 
-type EdgeThemeValue = {
+type EdgeThemeValues = {
   [K in keyof EdgeStyleValues]: ThemeValue<
     EdgeStyleValues[K],
     [edge: CoreEdge]
@@ -53,7 +53,7 @@ export type CanvasThemes = {
     default: NodeThemeValues;
   };
   edge: {
-    default: EdgeThemeValue;
+    default: EdgeThemeValues;
   };
   canvas: CanvasThemeValues;
 };
