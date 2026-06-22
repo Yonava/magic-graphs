@@ -5,26 +5,23 @@ import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
 import type { Ref } from 'vue';
 
-import {
-  type ThemeOverride,
-  type ThemeOverrides,
-  type ThemeToken,
-} from '../themes.ts';
 import type { GraphTheme, ThemePreset } from '../themes/index.ts';
 import { ALL_THEME_PRESETS } from '../themes/index.ts';
+import { ThemeOverride, ThemeToken, ToThemes } from './types.ts';
 
 /** the override array stored at a given ThemeToken path in ThemeOverrides. */
-export type TokenOverrides<Token extends ThemeToken> = PathValue<
+export type TokenOverrides<ThemeOverrides, Token> = PathValue<
   ThemeOverrides,
   Token
 >;
 
 /** extracts the getter arguments for a token's ThemeValue, or [] if the token takes a static StyleValue. */
-export type ThemeArgs<Overrides> = Overrides extends ThemeOverride<Builtin>[]
-  ? Extract<Overrides[number]['value'], AnyFunction> extends never
-    ? []
-    : Parameters<Extract<Overrides[number]['value'], AnyFunction>>
-  : [];
+export type ThemeArgs<ThemeOverrides> =
+  ThemeOverrides extends ThemeOverride<Builtin>[]
+    ? Extract<ThemeOverrides[number]['value'], AnyFunction> extends never
+      ? []
+      : Parameters<Extract<ThemeOverrides[number]['value'], AnyFunction>>
+    : [];
 
 // TODO remove as part of https://github.com/Yonava/magic-graphs/issues/584
 export const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
@@ -35,13 +32,13 @@ export const getDataFromNestedPath = <Obj, Path extends Paths<Obj>>(
     .split('.')
     .reduce((acc: Record<string, any>, curr: string) => acc?.[curr], obj);
 
-export function createTokenResolver(
+export function createTokenResolver<ThemeOverrides>(
   themePreset: Ref<ThemePreset>,
   themeOverrides: ThemeOverrides,
 ) {
   const resolveToken = <
-    Token extends ThemeToken,
-    Args extends ThemeArgs<TokenOverrides<Token>>,
+    Token extends ThemeToken<ToThemes<ThemeOverrides>>,
+    Args extends ThemeArgs<TokenOverrides<ThemeOverrides, Token>>,
   >(
     token: Token,
     ...args: Args
@@ -77,4 +74,6 @@ export function createTokenResolver(
 }
 
 /** the function that resolves a theme token to its final StyleValue. */
-export type TokenResolver = ReturnType<typeof createTokenResolver>;
+export type TokenResolver<ThemeOverrides> = ReturnType<
+  typeof createTokenResolver<ThemeOverrides>
+>;

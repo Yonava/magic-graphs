@@ -59,7 +59,7 @@ type CanvasTheme = {
   canvas: CanvasThemeValues;
 };
 
-export type ThemeOverrides = ToThemeOverrides<CanvasTheme>;
+export type CanvasThemeOverrides = ToThemeOverrides<CanvasTheme>;
 
 const textFields = (): ToThemeOverrides<TextStyleValues> => ({
   text: [],
@@ -85,7 +85,7 @@ const edgeFields = (): ToThemeOverrides<EdgeStyleValues> => ({
   width: [],
 });
 
-export const createThemeOverrides = (): ThemeOverrides => ({
+export const createCanvasThemeOverrides = (): CanvasThemeOverrides => ({
   node: {
     default: nodeFields(),
   },

@@ -13,13 +13,23 @@
  */
 import { AnyFunction, Builtin, PathValue, Paths } from 'ts-essentials';
 
+import { CanvasThemeOverrides } from '../themes.ts';
+
 type LeafPaths<Schema, Path> = Path extends Path
   ? PathValue<Schema, Path> extends Builtin
     ? Path
     : never
   : never;
 
-export type ThemeToken<GraphTheme> = LeafPaths<GraphTheme, Paths<GraphTheme>>;
+export type ToThemes<ThemeOverrides> = {
+  [K in keyof ThemeOverrides]: ThemeOverrides[K] extends ThemeOverride<
+    infer ThemeValue
+  >[]
+    ? ThemeValue
+    : ToThemes<ThemeOverrides[K]>;
+};
+
+export type ThemeToken<Themes> = LeafPaths<Themes, Paths<Themes>>;
 
 /**
  * a theme token value that supports layered resolution. a static value is used as-is;
@@ -43,7 +53,7 @@ export type ToThemeOverrides<Theme> = [Theme] extends [Builtin]
     ? // handles nested arrays gracefully
       Array<ToThemeOverrides<ThemeValue>>
     : Theme extends Function
-      ? // leaves methods alone if your theme has helpers
+      ? // leaves methods alone if theme has helpers
         Theme
       : Theme extends object
         ? { [K in keyof Theme]: ToThemeOverrides<Theme[K]> }

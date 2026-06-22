@@ -24,11 +24,12 @@ import {
   setupCanvasCursor,
 } from './setupCanvasCursor.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
-import { createThemeOverrides } from './themes.ts';
-import { Aggregator, CanvasPlugin, GraphUnderCursor } from './themes.ts';
-import { createLayer } from './themes/createLayer.ts';
-import { createTokenResolver } from './themes/createTokenResolver.ts';
+import { createLayer } from './theme/createLayer.ts';
+import { createTokenResolver } from './theme/createTokenResolver.ts';
+import { createTokenStuff } from './theme/createTokenStuff.ts';
+import { createCanvasThemeOverrides } from './themes.ts';
 import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
+import { CanvasPlugin, GraphUnderCursor } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
 export const canvas =
@@ -66,13 +67,16 @@ export const canvas =
 
     const activeThemePreset = ref<ThemePreset>('light');
 
-    const themeOverrides = createThemeOverrides();
-    const resolveToken = createTokenResolver(activeThemePreset, themeOverrides);
+    const canvasThemeOverrides = createCanvasThemeOverrides();
+    const tokenStuff = createTokenStuff(
+      canvasThemeOverrides,
+      activeThemePreset,
+    );
 
-    const weightLayer = createLayer(
-      themeOverrides,
+    const weightLayer = tokenStuff.createLayer(
       CANVAS_PLUGIN_ID + '/theme/edge-weight',
     );
+
     weightLayer.set('edge.default.text', (edge) =>
       getters.getEdge(edge.id).weight.toFraction(),
     );
@@ -264,15 +268,12 @@ export const canvas =
           graphUnderCursor,
           forceUpdateGraphUnderCursor,
 
-          theme: {
-            resolvedPreset: computed(
-              () => ALL_THEME_PRESETS[activeThemePreset.value],
-            ),
-            activePreset: activeThemePreset,
-            _resolveToken: resolveToken,
-            _overrides: themeOverrides,
-            createLayer: (layerId) => createLayer(themeOverrides, layerId),
-          },
+          resolvedPreset: computed(
+            () => ALL_THEME_PRESETS[activeThemePreset.value],
+          ),
+          activePreset: activeThemePreset,
+
+          theme: tokenStuff,
         },
       },
       actions,

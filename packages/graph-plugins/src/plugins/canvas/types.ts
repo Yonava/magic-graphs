@@ -7,10 +7,7 @@ import { DeepReadonly } from 'ts-essentials';
 import { ComputedRef, Ref, ShallowRef } from 'vue';
 
 import { CanvasEventMap } from './events.ts';
-import { ThemeLayer } from './themes/createLayer.ts';
-import { TokenResolver } from './themes/createTokenResolver.ts';
 import { AllThemePresets, ThemePreset } from './themes/index.ts';
-import { ThemeOverrides } from './themes/types.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
 export type GraphUnderCursor = {
