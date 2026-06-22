@@ -20,6 +20,8 @@ const edgeSharedLight = {
   ...edgeShared,
 } as const;
 
+const EDGE_COLOR = colors.GRAY_800;
+
 export const LIGHT_THEME = {
   node: {
     default: {
@@ -35,7 +37,7 @@ export const LIGHT_THEME = {
   },
   edge: {
     default: {
-      color: colors.GRAY_800,
+      color: EDGE_COLOR,
       ...edgeSharedLight,
     },
     focus: {
@@ -61,7 +63,7 @@ export const LIGHT_THEME = {
     default: {
       color: colors.BLACK,
       linkPreview: {
-        color: colors.BLACK,
+        color: EDGE_COLOR,
         ...nodeAnchorLinkPreviewShared,
       },
       ...nodeAnchorShared,
@@ -69,7 +71,7 @@ export const LIGHT_THEME = {
     focus: {
       color: colors.BLUE_900,
       linkPreview: {
-        color: colors.BLACK,
+        color: EDGE_COLOR,
         ...nodeAnchorLinkPreviewShared,
       },
       ...nodeAnchorShared,

@@ -20,6 +20,8 @@ const edgeSharedPink = {
   ...edgeShared,
 } as const;
 
+const EDGE_COLOR = colors.PINK_600;
+
 export const PINK_THEME = {
   node: {
     default: {
@@ -36,7 +38,7 @@ export const PINK_THEME = {
   },
   edge: {
     default: {
-      color: colors.PINK_600,
+      color: EDGE_COLOR,
       ...edgeSharedPink,
     },
     focus: {
@@ -63,7 +65,7 @@ export const PINK_THEME = {
     default: {
       color: colors.PINK_500,
       linkPreview: {
-        color: colors.PINK_900,
+        color: EDGE_COLOR,
         ...nodeAnchorLinkPreviewShared,
       },
       ...nodeAnchorShared,
@@ -71,7 +73,7 @@ export const PINK_THEME = {
     focus: {
       color: colors.PURPLE_700,
       linkPreview: {
-        color: colors.PINK_900,
+        color: EDGE_COLOR,
         ...nodeAnchorLinkPreviewShared,
       },
       ...nodeAnchorShared,

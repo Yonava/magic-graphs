@@ -22,6 +22,8 @@ const edgeSharedDark = {
   ...edgeShared,
 } as const;
 
+const EDGE_COLOR = colors.STONE_900;
+
 export const DARK_THEME = {
   node: {
     default: {
@@ -37,7 +39,7 @@ export const DARK_THEME = {
   },
   edge: {
     default: {
-      color: colors.STONE_900,
+      color: EDGE_COLOR,
       ...edgeSharedDark,
     },
     focus: {
@@ -63,7 +65,7 @@ export const DARK_THEME = {
     default: {
       color: colors.GRAY_900,
       linkPreview: {
-        color: colors.BLACK,
+        color: EDGE_COLOR,
         ...nodeAnchorLinkPreviewShared,
       },
       ...nodeAnchorShared,
@@ -71,7 +73,7 @@ export const DARK_THEME = {
     focus: {
       color: colors.RED_900,
       linkPreview: {
-        color: colors.BLACK,
+        color: EDGE_COLOR,
         ...nodeAnchorLinkPreviewShared,
       },
       ...nodeAnchorShared,
