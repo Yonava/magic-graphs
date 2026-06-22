@@ -70,7 +70,10 @@ export const createLayer = <ThemeOverrides>(
   };
 
   const remove: ThemeLayer<ThemeOverrides>['remove'] = (token) => {
-    const overrides = getDataFromNestedPath(themeOverrides, token);
+    const overrides: ThemeOverride<unknown>[] = getDataFromNestedPath(
+      themeOverrides,
+      token,
+    );
     if (!overrides) {
       console.warn(
         `Attempted to remove token "${token}" but it was not recognized`,
