@@ -9,7 +9,9 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { GraphUnderCursor } from '../canvas/themes.ts';
+import { GraphUnderCursor } from '../canvas/types.ts';
+import { FocusEventMap } from '../focus/events.ts';
+import { MarqueeEventMap } from '../marquee/events.ts';
 import {
   NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD,
   NODE_DRAG_PLUGIN_ID,
@@ -20,7 +22,7 @@ import { NodeDragPlugin, NodeIdDragState } from './types.ts';
 import { validateNodeIds } from './validateNodeIds.ts';
 
 export const nodeDrag: NodeDragPlugin = (
-  graph,
+  controls,
   graphEventMap,
   actions,
   getters,
@@ -29,7 +31,7 @@ export const nodeDrag: NodeDragPlugin = (
   const nodeDragEventHub = createEventHub(nodeDragEventRegistry);
   const events = mergeEventHubs<
     NodeDragEventMap,
-    CoreEventMap & CanvasEventMap
+    CoreEventMap & CanvasEventMap & MarqueeEventMap & FocusEventMap
   >(nodeDragEventHub, graphEventMap);
 
   const dragState = createDragState<NodeIdDragState>();
@@ -76,7 +78,7 @@ export const nodeDrag: NodeDragPlugin = (
       );
     }
     dragState.startDrag(coords, { nodeIds: nodeIdsToDrag });
-    nodePositionStream = graph.positions.createStream();
+    nodePositionStream = controls.positions.createStream();
     events.emit('onNodeDragStart', nodes);
   };
 
@@ -98,10 +100,10 @@ export const nodeDrag: NodeDragPlugin = (
   };
 
   const drag = (
-    { coords: magicCoords }: DeepReadonly<GraphUnderCursor>,
+    { coords }: DeepReadonly<GraphUnderCursor>,
     consume: () => void,
   ) => {
-    const dragData = dragState.applyMove(magicCoords);
+    const dragData = dragState.applyMove(coords);
     if (!dragData) return;
 
     const {
@@ -130,10 +132,7 @@ export const nodeDrag: NodeDragPlugin = (
     );
   };
 
-  const cursorTheme = createDragThemer(
-    graph.canvas.theme.createLayer,
-    dragState,
-  );
+  const cursorTheme = createDragThemer(controls, dragState);
 
   const enable = () => {
     events.handle('onMouseDown', beginDrag, NODE_DRAG_PLUGIN_ID, {
@@ -145,14 +144,14 @@ export const nodeDrag: NodeDragPlugin = (
     events.handle('onGraphUnderCursorChange', drag, NODE_DRAG_PLUGIN_ID, {
       before: [ANCHOR_PLUGIN_ID],
     });
-    cursorTheme.activate();
+    cursorTheme.enable();
   };
 
   const disable = () => {
     events.unhandle('onMouseDown', beginDrag);
     events.unhandle('onMouseUp', drop);
     events.unhandle('onGraphUnderCursorChange', drag);
-    cursorTheme.deactivate();
+    cursorTheme.disable();
     drop();
   };
 

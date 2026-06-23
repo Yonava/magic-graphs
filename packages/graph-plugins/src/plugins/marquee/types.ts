@@ -2,11 +2,13 @@ import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
 
 import { ComputedRef } from 'vue';
 
-import { CanvasPlugin } from '../canvas/themes.ts';
+import { WithTheme } from '../../shared/types.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { MarqueeEventMap } from './events.ts';
+import { MarqueeThemes } from './themes.ts';
 
-export type MarqueeControls = {
+type BaseMarqueeControls = {
   /**
    * updates the bounding box around the nodes that are currently focused.
    * use this when you are changing theme or position outside of the standard supported use cases
@@ -18,9 +20,10 @@ export type MarqueeControls = {
   activelySelecting: ComputedRef<boolean>;
 };
 
+export type MarqueeControls = WithTheme<BaseMarqueeControls, MarqueeThemes>;
+
 export type MarqueePlugin = GraphPlugin<{
   controls: { marquee: WithLifecycle<MarqueeControls> };
   events: MarqueeEventMap;
-  actions: {};
   dependsOn: [CanvasPlugin, FocusPlugin];
 }>;

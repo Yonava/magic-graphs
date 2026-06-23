@@ -1,7 +1,7 @@
 import { CoreControls } from '@magic/graph/core/types';
 import type { BoundingBox } from '@magic/shapes/types/utility';
 
-import { CanvasControls } from '../canvas/themes.ts';
+import { CanvasControls } from '../canvas/types.ts';
 import { FocusControls } from '../focus/types.ts';
 
 export function getSurfaceArea(box: BoundingBox) {

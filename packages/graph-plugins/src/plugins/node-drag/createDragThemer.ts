@@ -1,28 +1,38 @@
 import { DragStateControls } from '@magic/graph-plugins/shared/drag/types';
 
-import { CanvasControls } from '../canvas/themes.ts';
-import { CURSOR } from '../canvas/themes/cursor.ts';
+import { CURSOR } from '../canvas/theme/cursor.ts';
 import { NODE_DRAG_PLUGIN_ID } from './constants.ts';
-import { NodeIdDragState } from './types.ts';
+import { NodeDragPlugin, NodeIdDragState } from './types.ts';
+
+const layerId = `${NODE_DRAG_PLUGIN_ID}/theme`;
 
 export const createDragThemer = (
-  createLayer: CanvasControls['theme']['createLayer'],
+  // TODO this will be more declarative if we deliver plugin arguments in an options bag!
+  controls: Parameters<NodeDragPlugin>[0],
   dragState: DragStateControls<NodeIdDragState>,
 ) => {
-  const { set, removeAll } = createLayer(`${NODE_DRAG_PLUGIN_ID}/theme`);
+  const canvas = controls.canvas.theme.createLayer(layerId);
+  const focus = controls.focus?.theme.createLayer(layerId);
+  const marquee = controls.marquee?.theme.createLayer(layerId);
 
   const globalGrabbing = () =>
     dragState.isDragging() ? CURSOR.GRABBING : undefined;
 
-  const activate = () => {
-    set('canvas.cursor', globalGrabbing);
-    set('node.default.cursor', CURSOR.GRAB);
-    set('node.focus.cursor', CURSOR.GRAB);
-    set('marquee.encapsulatedNodeBox.cursor', CURSOR.GRAB);
+  const enable = () => {
+    canvas.set('canvas.cursor', globalGrabbing);
+    canvas.set('node.default.cursor', CURSOR.GRAB);
+    focus?.set('node.focus.cursor', CURSOR.GRAB);
+    marquee?.set('marquee.encapsulatedNodeBox.cursor', CURSOR.GRAB);
+  };
+
+  const disable = () => {
+    canvas.removeAll();
+    focus?.removeAll();
+    marquee?.removeAll();
   };
 
   return {
-    activate,
-    deactivate: removeAll,
+    enable,
+    disable,
   };
 };

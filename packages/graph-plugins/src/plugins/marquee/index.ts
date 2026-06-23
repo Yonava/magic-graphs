@@ -10,18 +10,17 @@ import { ref } from 'vue';
 import { computed } from 'vue';
 
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
+import { Aggregator, CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
-import {
-  Aggregator,
-  CanvasElement,
-  GraphUnderCursor,
-} from '../canvas/themes.ts';
+import { createThemeController } from '../canvas/theme/createThemeController.ts';
+import { GraphUnderCursor } from '../canvas/types.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD } from '../node-drag/constants.ts';
 import { MARQUEE_PLUGIN_ID, MARQUEE_SHAPE_ID } from './constants.ts';
 import { MarqueeEventMap, createMarqueeEventRegistry } from './events.ts';
 import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
+import { createMarqueeThemeOverrides } from './themes.ts';
 import { MarqueePlugin } from './types.ts';
 
 export const marquee: MarqueePlugin = (
@@ -36,6 +35,8 @@ export const marquee: MarqueePlugin = (
     MarqueeEventMap,
     CoreEventMap & CanvasEventMap & FocusEventMap
   >(marqueeEventHub, graphEventMap);
+
+  const theme = createThemeController(createMarqueeThemeOverrides());
 
   const marqueeBox = ref<BoundingBox | undefined>();
   const encapsulatedNodeBox = ref<BoundingBox | undefined>();
@@ -103,10 +104,10 @@ export const marquee: MarqueePlugin = (
     const shape = controls.canvas.shapes.shapes.rect({
       id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
-      fillColor: controls.canvas.theme._resolveToken('marquee.color'),
+      fillColor: theme._resolveToken('marquee.color'),
       stroke: {
-        color: controls.canvas.theme._resolveToken('marquee.borderColor'),
-        lineWidth: 2,
+        color: theme._resolveToken('marquee.borderColor'),
+        lineWidth: theme._resolveToken('marquee.borderWidth'),
       },
     });
 
@@ -131,19 +132,17 @@ export const marquee: MarqueePlugin = (
     return aggregator;
   };
 
-  const getEncapsulatedNodeBoxSchema = (box: BoundingBox) => {
+  const getEncapsulatedNodeBoxSchema = (box: BoundingBox): CanvasElement => {
     const id = 'encapsulated-node-box';
     const shape = controls.canvas.shapes.shapes.rect({
       id,
       ...box,
-      fillColor: controls.canvas.theme._resolveToken(
-        'marquee.encapsulatedNodeBox.color',
-      ),
+      fillColor: theme._resolveToken('marquee.encapsulatedNodeBox.color'),
       stroke: {
-        color: controls.canvas.theme._resolveToken(
-          'marquee.encapsulatedNodeBox.borderColor',
+        color: theme._resolveToken('marquee.encapsulatedNodeBox.borderColor'),
+        lineWidth: theme._resolveToken(
+          'marquee.encapsulatedNodeBox.borderWidth',
         ),
-        lineWidth: 2,
       },
     });
 
@@ -155,11 +154,11 @@ export const marquee: MarqueePlugin = (
       data: {
         [NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD]:
           controls.focus.focusedNodes.value.map((n) => n.id),
-        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: controls.canvas.theme._resolveToken(
+        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: theme._resolveToken(
           'marquee.encapsulatedNodeBox.cursor',
         ),
       },
-    } as const;
+    };
   };
 
   const addEncapsulatedNodeBoxToAggregator = (aggregator: Aggregator) => {
@@ -222,6 +221,7 @@ export const marquee: MarqueePlugin = (
       marquee: {
         updateEncapsulatedNodeBox,
         activelySelecting: computed(() => !!marqueeBox.value),
+        theme,
         lifecycle: {
           enable,
           disable,
