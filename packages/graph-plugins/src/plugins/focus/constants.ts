@@ -1,4 +1,4 @@
-import { CanvasElement } from '../canvas/themes.ts';
+import { CanvasElement } from '../canvas/aggregator/types.ts';
 
 export const FOCUSABLE_GRAPH_TYPES: CanvasElement['graphType'][] = [
   'node',

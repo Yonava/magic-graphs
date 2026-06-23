@@ -3,10 +3,12 @@ import { CoreEdge, CoreNode } from '@magic/graph/types';
 
 import { ComputedRef, Ref } from 'vue';
 
+import { WithTheme } from '../../shared/types.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';
+import { FocusThemes } from './themes.ts';
 
-export type FocusControls = {
+type BaseFocusControls = {
   /**
    * Sets the focus to the element with the given ids
    *
@@ -63,6 +65,8 @@ export type FocusActions = {
     shared: FocusOption;
   };
 };
+
+export type FocusControls = WithTheme<BaseFocusControls, FocusThemes>;
 
 export type FocusPlugin = GraphPlugin<{
   controls: { focus: WithLifecycle<FocusControls> };

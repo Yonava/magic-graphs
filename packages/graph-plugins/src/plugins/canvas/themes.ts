@@ -28,14 +28,14 @@ type EdgeStyleValues = TextStyleValues & {
   width: number;
 };
 
-type NodeThemeValues = {
+export type NodeThemeValues = {
   [K in keyof NodeStyleValues]: ThemeValue<
     NodeStyleValues[K],
     [node: CoreNode]
   >;
 };
 
-type EdgeThemeValues = {
+export type EdgeThemeValues = {
   [K in keyof EdgeStyleValues]: ThemeValue<
     EdgeStyleValues[K],
     [edge: CoreEdge]
@@ -65,7 +65,7 @@ const textFields = (): ToThemeOverrides<TextStyleValues> => ({
   textSize: [],
 });
 
-const nodeFields = (): ToThemeOverrides<NodeStyleValues> => ({
+export const nodeFields = (): ToThemeOverrides<NodeStyleValues> => ({
   ...textFields(),
   shape: [],
   borderColor: [],
@@ -75,7 +75,7 @@ const nodeFields = (): ToThemeOverrides<NodeStyleValues> => ({
   cursor: [],
 });
 
-const edgeFields = (): ToThemeOverrides<EdgeStyleValues> => ({
+export const edgeFields = (): ToThemeOverrides<EdgeStyleValues> => ({
   ...textFields(),
   shape: [],
   color: [],
