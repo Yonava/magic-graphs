@@ -7,7 +7,12 @@ import { createLabelGenerator } from './createLabelGenerator.ts';
 import { createLabelThemer } from './createLabelThemer.ts';
 import { NodeLabelControls, NodeLabelPlugin } from './types.ts';
 
-export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
+export const nodeLabel: NodeLabelPlugin = (
+  controls,
+  events,
+  actions,
+  getters,
+) => {
   const nodeIdToLabel = new Map<string, string>();
 
   const getNodeLabel = (nodeId: string) => nodeIdToLabel.get(nodeId);
@@ -30,11 +35,11 @@ export const nodeLabel: NodeLabelPlugin = (graph, events, actions, getters) => {
     getLabels: () =>
       // TODO breaks when multiple nodes are added in bulk. Needs to change
       // https://github.com/Yonava/magic-graphs/issues/700
-      graph.nodes.value.map((n) => getNodeLabelWithAssert(n.id)),
+      controls.nodes.value.map((n) => getNodeLabelWithAssert(n.id)),
     sequence: UPPERCASE_ALPHABET,
   });
 
-  const themer = createLabelThemer(graph.canvas.theme, getNodeLabelWithAssert);
+  const themer = createLabelThemer(controls, getNodeLabelWithAssert);
 
   const enable = themer.enable;
   const disable = themer.disable;

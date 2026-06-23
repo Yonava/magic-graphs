@@ -1,21 +1,27 @@
-import { CanvasControls } from '../canvas/themes.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
-import { NodeLabelControls } from './types.ts';
+import { NodeLabelControls, NodeLabelPlugin } from './types.ts';
+
+const layerId = `${NODE_DRAG_PLUGIN_ID}/createLabelThemer`;
 
 export const createLabelThemer = (
-  theme: CanvasControls['theme'],
+  controls: Parameters<NodeLabelPlugin>[0],
   getLabel: NodeLabelControls['get'],
 ) => {
-  const layer = theme.createLayer(NODE_DRAG_PLUGIN_ID);
+  const canvas = controls.canvas.theme.createLayer(layerId);
+  const focus = controls.focus?.theme.createLayer(layerId);
 
   const enable = () => {
-    layer.set('node.default.text', (n) => getLabel(n.id));
-    // TODO will work when focus tokens actually resolve properly
-    layer.set('node.focus.text', (n) => getLabel(n.id));
+    canvas.set('node.default.text', (n) => getLabel(n.id));
+    focus?.set('node.focus.text', (n) => getLabel(n.id));
+  };
+
+  const disable = () => {
+    canvas.removeAll();
+    focus?.removeAll();
   };
 
   return {
     enable,
-    disable: layer.removeAll,
+    disable,
   };
 };

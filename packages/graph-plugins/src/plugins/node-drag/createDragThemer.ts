@@ -4,7 +4,7 @@ import { CURSOR } from '../canvas/theme/cursor.ts';
 import { NODE_DRAG_PLUGIN_ID } from './constants.ts';
 import { NodeDragPlugin, NodeIdDragState } from './types.ts';
 
-const layerId = `${NODE_DRAG_PLUGIN_ID}/theme`;
+const layerId = `${NODE_DRAG_PLUGIN_ID}/createDragThemer`;
 
 export const createDragThemer = (
   // TODO this will be more declarative if we deliver plugin arguments in an options bag!
