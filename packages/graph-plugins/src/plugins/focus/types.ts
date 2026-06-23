@@ -3,23 +3,8 @@ import { CoreEdge, CoreNode } from '@magic/graph/types';
 
 import { ComputedRef, Ref } from 'vue';
 
-import { ThemeToken } from '../canvas/themes.ts';
-import { CanvasPlugin } from '../canvas/themes.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';
-
-export type NodeBaseThemePath = Extract<ThemeToken, `node.default.${string}`>;
-export type EdgeBaseThemePath = Extract<ThemeToken, `edge.default.${string}`>;
-
-export type NodeBaseToNodeFocusTheme = {
-  [Path in NodeBaseThemePath]: Path extends `node.default.${infer Style}`
-    ? `node.focus.${Style}`
-    : never;
-};
-export type EdgeBaseToNodeFocusTheme = {
-  [Path in EdgeBaseThemePath]: Path extends `edge.default.${infer Style}`
-    ? `edge.focus.${Style}`
-    : never;
-};
 
 export type FocusControls = {
   /**

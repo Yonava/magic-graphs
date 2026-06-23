@@ -2,7 +2,6 @@ import { ElementRemovalPayload } from '@magic/graph/core/actions/types';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { createEventHub } from '@magic/graph/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
-import { CoreEdge, CoreNode } from '@magic/graph/types';
 import { nullThrows } from '@magic/utils/assert';
 import { getCtx } from '@magic/utils/ctx/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -10,22 +9,12 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { computed, readonly, ref } from 'vue';
 
+import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
-import { CanvasElement } from '../canvas/themes.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
-import {
-  FOCUSABLE_GRAPH_TYPES,
-  FOCUS_PLUGIN_ID,
-  FOCUS_THEME_ID,
-} from './constants.ts';
+import { FOCUSABLE_GRAPH_TYPES, FOCUS_PLUGIN_ID } from './constants.ts';
 import { FocusEventMap, createFocusEventRegistry } from './events.ts';
-import {
-  EdgeBaseThemePath,
-  EdgeBaseToNodeFocusTheme,
-  FocusPlugin,
-  NodeBaseThemePath,
-  NodeBaseToNodeFocusTheme,
-} from './types.ts';
+import { FocusPlugin } from './types.ts';
 
 export const focus: FocusPlugin = (
   controls,
@@ -168,69 +157,6 @@ export const focus: FocusPlugin = (
   };
 
   const isFocused = (id: string) => focusedElementIds.value.has(id);
-
-  const nodeBaseStylePathMapping: NodeBaseToNodeFocusTheme = {
-    'node.default.cursor': 'node.focus.cursor',
-    'node.default.color': 'node.focus.color',
-    'node.default.borderColor': 'node.focus.borderColor',
-    'node.default.borderWidth': 'node.focus.borderWidth',
-    'node.default.size': 'node.focus.size',
-    'node.default.shape': 'node.focus.shape',
-    'node.default.textColor': 'node.focus.textColor',
-    'node.default.textSize': 'node.focus.textSize',
-    'node.default.textFontWeight': 'node.focus.textFontWeight',
-    'node.default.text': 'node.focus.text',
-  };
-
-  const edgeBaseStylePathMapping: EdgeBaseToNodeFocusTheme = {
-    'edge.default.color': 'edge.focus.color',
-    'edge.default.width': 'edge.focus.width',
-    'edge.default.shape': 'edge.focus.shape',
-    'edge.default.textColor': 'edge.focus.textColor',
-    'edge.default.textSize': 'edge.focus.textSize',
-    'edge.default.textFontWeight': 'edge.focus.textFontWeight',
-    'edge.default.text': 'edge.focus.text',
-  };
-
-  const nodeEntries = Object.entries(nodeBaseStylePathMapping);
-  const edgeEntries = Object.entries(edgeBaseStylePathMapping);
-
-  const { set: setThemeOverrideLayer } =
-    controls.canvas.theme.createLayer(FOCUS_THEME_ID);
-
-  for (const [nodeBasePath, nodeFocusPath] of nodeEntries) {
-    setThemeOverrideLayer(
-      nodeBasePath as NodeBaseThemePath,
-      (node: CoreNode) => {
-        if (!isFocused(node.id)) return;
-        // typescript generics to differentiate each callbacks individual
-        // return type is juice not worth the squeeze
-        return controls.canvas.theme._resolveToken(nodeFocusPath, node, {
-          ...controls,
-          ...getters,
-          shapes: controls.canvas.shapes,
-          resolveToken: controls.canvas.theme._resolveToken,
-        }) as any;
-      },
-    );
-  }
-
-  for (const [edgeBasePath, edgeFocusPath] of edgeEntries) {
-    setThemeOverrideLayer(
-      edgeBasePath as EdgeBaseThemePath,
-      (edge: CoreEdge) => {
-        if (!isFocused(edge.id)) return;
-        // typescript generics to differentiate each callbacks individual
-        // return type is juice not worth the squeeze
-        return controls.canvas.theme._resolveToken(edgeFocusPath, edge, {
-          ...controls,
-          ...getters,
-          shapes: controls.canvas.shapes,
-          resolveToken: controls.canvas.theme._resolveToken,
-        }) as any;
-      },
-    );
-  }
 
   const enable = () => {
     // focus a node when clicked, or clear focus if background is clicked
