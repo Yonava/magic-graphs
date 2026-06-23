@@ -1,4 +1,5 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
+import { createGraph } from '@magic/create-graph/index';
 import { adjacencyLists } from '@magic/graph-plugins/plugins/adjacency-lists/index';
 import { anchors } from '@magic/graph-plugins/plugins/anchors/index';
 import { canvas } from '@magic/graph-plugins/plugins/canvas/index';
@@ -9,7 +10,6 @@ import { marquee } from '@magic/graph-plugins/plugins/marquee/index';
 import { nodeDrag } from '@magic/graph-plugins/plugins/node-drag/index';
 import { nodeLabel } from '@magic/graph-plugins/plugins/node-label/index';
 import { transitionMatrix } from '@magic/graph-plugins/plugins/transition-matrix/index';
-import { createGraph } from '@magic/graph/core/index';
 import type { GraphSettings } from '@magic/graph/settings/index';
 
 import { useInteractive } from './interactive/index.ts';
@@ -26,9 +26,9 @@ const createGraphWithPlugins = (
       canvas(magicCanvas),
       history,
       focus,
+      marquee,
       anchors,
       nodeDrag,
-      marquee,
       nodeLabel,
       adjacencyLists,
       transitionMatrix,

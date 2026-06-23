@@ -16,6 +16,7 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
+    "@magic/create-graph": "workspace:*",
     "@magic/canvas": "workspace:*",
     "@magic/graph": "workspace:*",
     "@magic/shapes": "workspace:*",

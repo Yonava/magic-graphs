@@ -12,7 +12,8 @@
     { "path": "../ui" },
     { "path": "../utils" },
     { "path": "../graph" },
-    { "path": "../graph-plugins" }
+    { "path": "../graph-plugins" },
+    { "path": "../create-graph" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

@@ -1,0 +1,19 @@
+{
+  "name": "@magic/create-graph",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": {
+      "types": "./dist/types/*.d.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "build:types": "vue-tsc -b tsconfig.json"
+  },
+  "dependencies": {
+    "@magic/graph": "workspace:*"
+  },
+  "devDependencies": {}
+}
