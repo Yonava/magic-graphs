@@ -12,9 +12,8 @@ export type ThemeController<ThemeOverrides> = {
 
 export const createThemeController = <ThemeOverrides>(
   themeOverrides: ThemeOverrides,
-  activeThemePreset: any,
 ): ThemeController<ThemeOverrides> => {
-  const resolver = createTokenResolver(activeThemePreset, themeOverrides);
+  const resolver = createTokenResolver(themeOverrides);
 
   return {
     _resolveToken: resolver,

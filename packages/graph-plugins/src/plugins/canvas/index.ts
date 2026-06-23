@@ -26,7 +26,6 @@ import {
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
 import { createThemeController } from './theme/createThemeController.ts';
 import { createCanvasThemeOverrides } from './themes.ts';
-import { ALL_THEME_PRESETS, ThemePreset } from './themes/index.ts';
 import { Aggregator, CanvasPlugin, GraphUnderCursor } from './types.ts';
 import { useAggregator } from './useAggregator.ts';
 
@@ -63,12 +62,7 @@ export const canvas =
       forceUpdateGraphUnderCursor();
     });
 
-    const activeThemePreset = ref<ThemePreset>('light');
-
-    const theme = createThemeController(
-      createCanvasThemeOverrides(),
-      activeThemePreset,
-    );
+    const theme = createThemeController(createCanvasThemeOverrides());
 
     const weightLayer = theme.createLayer(
       CANVAS_PLUGIN_ID + '/theme/edge-weight',
@@ -251,11 +245,6 @@ export const canvas =
 
           graphUnderCursor,
           forceUpdateGraphUnderCursor,
-
-          resolvedPreset: computed(
-            () => ALL_THEME_PRESETS[activeThemePreset.value],
-          ),
-          activePreset: activeThemePreset,
 
           theme,
         },

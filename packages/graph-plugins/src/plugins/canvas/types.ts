@@ -9,7 +9,6 @@ import { ComputedRef, Ref, ShallowRef } from 'vue';
 import { WithTheme } from '../../shared/types.ts';
 import { CanvasEventMap } from './events.ts';
 import { CanvasThemes } from './themes.ts';
-import { AllThemePresets, ThemePreset } from './themes/index.ts';
 import { AggregatorProps } from './useAggregator.ts';
 
 export type GraphUnderCursor = {
@@ -57,11 +56,6 @@ export type CanvasControls = {
    * hit-testing may have changed.
    */
   forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
-
-  /** the active preset providing StyleValue fallbacks when no override layer covers a token. */
-  resolvedPreset: ComputedRef<AllThemePresets[ThemePreset]>;
-  /** the currently active preset name. */
-  activePreset: Ref<ThemePreset>;
 };
 
 /**

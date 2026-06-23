@@ -3,8 +3,6 @@ import { getValue } from '@magic/utils/maybeGetter/index';
 
 import type { Ref } from 'vue';
 
-import type { ThemePreset } from '../themes/index.ts';
-import { ALL_THEME_PRESETS } from '../themes/index.ts';
 import {
   ThemeOverride,
   ThemeToken,
@@ -30,7 +28,6 @@ export type TokenResolver<ThemeOverrides> = <
 
 export const createTokenResolver =
   <ThemeOverrides>(
-    themePreset: Ref<ThemePreset>,
     themeOverrides: ThemeOverrides,
   ): TokenResolver<ThemeOverrides> =>
   (token, ...args) => {
@@ -47,13 +44,12 @@ export const createTokenResolver =
       return styleValue !== undefined;
     });
 
-    // 3. get the preset resolved style value ready just in case there is no override
-    const preset = ALL_THEME_PRESETS[themePreset.value];
-    const presetStyleValue = getDataFromNestedPath(preset, token);
+    // TODO when we add presets back, this needs to be re-threaded
+    if (!override) return undefined as any;
 
     // 4. the theme value for the token with the preset fallback
     const themeValue = nullThrows(
-      override?.value ?? presetStyleValue,
+      override?.value,
       `No theme value found for token "${token}" in overrides or preset: Is "${token}" a registered token?`,
     );
 
