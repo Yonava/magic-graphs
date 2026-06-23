@@ -10,15 +10,17 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { readonly, ref } from 'vue';
 
 import type { AnchorsPlugin, NodeAnchor } from '../../plugins/anchors/types.ts';
+import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
 import { HoveredElement } from '../canvas/setupHoveredElement.ts';
-import { CanvasElement } from '../canvas/themes.ts';
+import { createThemeController } from '../canvas/theme/createThemeController.ts';
 import { FocusEventMap } from '../focus/events.ts';
 import { ANCHOR_PLUGIN_ID } from './constants.ts';
 import { createAnchorDragState } from './createAnchorDragState.ts';
 import { createAnchorDragThemer } from './createAnchorDragThemer.ts';
 import { AnchorsEventMap, createAnchorsEventRegistry } from './events.ts';
+import { createAnchorsThemeOverrides } from './themes.ts';
 
 /**
  * anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
@@ -42,16 +44,15 @@ export const anchors: AnchorsPlugin = (
     CoreEventMap & CanvasEventMap & FocusEventMap
   >(anchorsEventHub, graphEventHub);
 
+  const theme = createThemeController(createAnchorsThemeOverrides());
+
   /**
    * The node which anchors actively orbit around
    */
   const parentNode = ref<CoreNode>();
 
   const anchorDragState = createAnchorDragState();
-  const dragCursorTheme = createAnchorDragThemer(
-    controls.canvas.theme.createLayer,
-    anchorDragState,
-  );
+  const dragCursorTheme = createAnchorDragThemer(controls, anchorDragState);
 
   const hoveredNodeAnchorId = ref<NodeAnchor['id']>();
 
@@ -80,12 +81,14 @@ export const anchors: AnchorsPlugin = (
   };
 
   const getAnchorSchemas = (node: CoreNode) => {
-    const { _resolveToken: resolveToken } = controls.canvas.theme;
+    const color = theme._resolveToken('anchors.default.color', node);
+    const focusColor = theme._resolveToken('anchors.parentFocused.color', node);
 
-    const color = resolveToken('nodeAnchor.default.color', node);
-    const focusColor = resolveToken('nodeAnchor.focus.color', node);
-    const radius = resolveToken('nodeAnchor.default.radius', node);
-    const focusRadius = resolveToken('nodeAnchor.focus.radius', node);
+    const radius = theme._resolveToken('anchors.default.radius', node);
+    const focusRadius = theme._resolveToken(
+      'anchors.parentFocused.radius',
+      node,
+    );
 
     const anchorSchemas: CanvasElement[] = [];
     for (const anchor of nodeAnchors.value) {
@@ -119,8 +122,8 @@ export const anchors: AnchorsPlugin = (
         shape: nodeAnchorShape,
         priority: 4,
         data: {
-          [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: resolveToken(
-            'nodeAnchor.default.cursor',
+          [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: theme._resolveToken(
+            'anchors.default.cursor',
             node,
           ),
         },
@@ -143,22 +146,25 @@ export const anchors: AnchorsPlugin = (
    */
   const updateNodeAnchors = (node: CoreNode | undefined) => {
     if (!node) return (nodeAnchors.value = []);
-    const { _resolveToken: resolveToken } = controls.canvas.theme;
+    const anchorToken = theme._resolveToken;
+    const canvasToken = controls.canvas.theme._resolveToken;
+    const focusToken = controls.focus?.theme._resolveToken;
 
     const isNodeFocused = controls.focus?.isFocused(node.id) ?? false;
 
-    const anchorBaseRadius = resolveToken('nodeAnchor.default.radius', node);
-    const anchorFocusRadius = resolveToken('nodeAnchor.focus.radius', node);
+    const anchorBaseRadius = anchorToken('anchors.default.radius', node);
+    const anchorFocusRadius = anchorToken('anchors.parentFocused.radius', node);
 
     const anchorRadius = isNodeFocused ? anchorFocusRadius : anchorBaseRadius;
 
-    const nodeBaseSize = resolveToken('node.default.size', node);
-    const nodeFocusSize = resolveToken('node.focus.size', node);
+    const nodeBaseSize = canvasToken('node.default.size', node);
+    const nodeFocusSize = focusToken?.('node.focus.size', node) ?? nodeBaseSize;
 
     const nodeSize = isNodeFocused ? nodeBaseSize : nodeFocusSize;
 
-    const nodeBaseBorderWidth = resolveToken('node.default.borderWidth', node);
-    const nodeFocusBorderWidth = resolveToken('node.focus.borderWidth', node);
+    const nodeBaseBorderWidth = canvasToken('node.default.borderWidth', node);
+    const nodeFocusBorderWidth =
+      focusToken?.('node.focus.borderWidth', node) ?? nodeBaseBorderWidth;
 
     const nodeBorderWidth = isNodeFocused
       ? nodeFocusBorderWidth
@@ -212,32 +218,33 @@ export const anchors: AnchorsPlugin = (
     const { x, y } = draggedAnchor;
     const start = controls.positions.get(currentParentNode.id);
     const end = { x, y };
-    const { _resolveToken: resolveToken } = controls.canvas.theme;
+
+    const anchorToken = theme._resolveToken;
 
     const isFocused = controls.focus?.isFocused(currentParentNode.id) ?? false;
 
-    const baseColor = resolveToken(
-      'nodeAnchor.default.linkPreview.color',
+    const baseColor = anchorToken(
+      'anchors.linkPreview.default.color',
       currentParentNode,
       draggedAnchor,
     );
 
-    const focusColor = resolveToken(
-      'nodeAnchor.focus.linkPreview.color',
+    const focusColor = anchorToken(
+      'anchors.linkPreview.parentFocused.color',
       currentParentNode,
       draggedAnchor,
     );
 
     const color = isFocused ? focusColor : baseColor;
 
-    const baseWidth = resolveToken(
-      'nodeAnchor.default.linkPreview.width',
+    const baseWidth = anchorToken(
+      'anchors.linkPreview.default.width',
       currentParentNode,
       draggedAnchor,
     );
 
-    const focusWidth = resolveToken(
-      'nodeAnchor.focus.linkPreview.width',
+    const focusWidth = anchorToken(
+      'anchors.linkPreview.parentFocused.width',
       currentParentNode,
       draggedAnchor,
     );
@@ -439,6 +446,7 @@ export const anchors: AnchorsPlugin = (
           enable,
           disable,
         },
+        theme,
         parentNode: readonly(parentNode),
         setParentNode,
         clearAnchorState,

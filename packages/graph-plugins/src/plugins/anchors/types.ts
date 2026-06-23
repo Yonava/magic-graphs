@@ -3,9 +3,11 @@ import { CoreNode } from '@magic/graph/types';
 
 import { Ref } from 'vue';
 
-import { CanvasPlugin } from '../canvas/themes.ts';
+import { WithTheme } from '../../shared/types.ts';
+import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { AnchorsEventMap } from './events.ts';
+import { AnchorsThemes } from './themes.ts';
 
 /**
  * an anchor instance that is attached to a node
@@ -30,7 +32,7 @@ export type NodeAnchor = {
   id: string;
 };
 
-type AnchorsControls = {
+type BaseAnchorsControls = {
   /**
    * the parent node of the active anchor
    */
@@ -42,10 +44,11 @@ type AnchorsControls = {
   clearAnchorState: () => void;
 };
 
+export type AnchorsControls = WithTheme<BaseAnchorsControls, AnchorsThemes>;
+
 export type AnchorsPlugin = GraphPlugin<{
   controls: { anchors: WithLifecycle<AnchorsControls> };
   events: AnchorsEventMap;
-  actions: {};
   dependsOn: [CanvasPlugin];
   optionalDependsOn: [FocusPlugin];
 }>;

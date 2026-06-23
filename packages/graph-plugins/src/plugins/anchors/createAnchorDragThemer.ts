@@ -1,25 +1,31 @@
 import { DragStateControls } from '../../shared/drag/types.ts';
-import { CanvasControls } from '../canvas/themes.ts';
-import { CURSOR } from '../canvas/themes/cursor.ts';
-import { NodeAnchor } from './types.ts';
+import { CURSOR } from '../canvas/theme/cursor.ts';
+import { ANCHOR_PLUGIN_ID } from './constants.ts';
+import { AnchorsPlugin, NodeAnchor } from './types.ts';
+
+const layerId = `${ANCHOR_PLUGIN_ID}/createAnchorDragThemer`;
 
 export const createAnchorDragThemer = (
-  createLayer: CanvasControls['theme']['createLayer'],
+  controls: Parameters<AnchorsPlugin>[0],
   dragState: DragStateControls<NodeAnchor>,
 ) => {
-  const { set, removeAll } = createLayer('plugins/anchors/drag');
+  const canvas = controls.canvas.theme.createLayer(layerId);
+  const focus = controls.focus?.theme.createLayer(layerId);
 
   const globalGrabbing = () =>
     dragState.isDragging() ? CURSOR.GRABBING : undefined;
 
   const enable = () => {
-    set('canvas.cursor', globalGrabbing);
-    set('nodeAnchor.default.cursor', CURSOR.GRAB);
-    set('nodeAnchor.focus.cursor', CURSOR.GRAB);
+    canvas.set('canvas.cursor', globalGrabbing);
+  };
+
+  const disable = () => {
+    canvas.removeAll();
+    focus?.removeAll();
   };
 
   return {
     enable,
-    disable: removeAll,
+    disable,
   };
 };
