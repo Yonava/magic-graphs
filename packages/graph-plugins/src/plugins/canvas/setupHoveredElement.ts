@@ -1,8 +1,8 @@
 import { EventHub } from '@magic/graph/events/createEventHub';
 import { DeepReadonly } from 'ts-essentials';
 
+import { CanvasElement } from './aggregator/types.ts';
 import { CanvasEventMap } from './events.ts';
-import { CanvasElement } from './themes.ts';
 
 export type HoveredElement = { value: DeepReadonly<CanvasElement> | undefined };
 

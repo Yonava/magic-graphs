@@ -1,15 +1,15 @@
 import { Coordinate, MagicCanvasProps } from '@magic/canvas/types';
 import { GraphPlugin } from '@magic/graph/plugins/types';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
-import { Shape } from '@magic/shapes/types/index';
 import { DeepReadonly } from 'ts-essentials';
 
-import { ComputedRef, Ref, ShallowRef } from 'vue';
+import { Ref, ShallowRef } from 'vue';
 
 import { WithTheme } from '../../shared/types.ts';
+import { AggregatorControls } from './aggregator/createAggregator.ts';
+import { CanvasElement } from './aggregator/types.ts';
 import { CanvasEventMap } from './events.ts';
 import { CanvasThemes } from './themes.ts';
-import { AggregatorProps } from './useAggregator.ts';
 
 export type GraphUnderCursor = {
   /**
@@ -22,14 +22,14 @@ export type GraphUnderCursor = {
   elements: CanvasElement[];
 };
 
-export type CanvasControls = {
+type BaseCanvasControls = {
   /** @internal */
   magicCanvas: MagicCanvasProps;
   /**
    * manages the set of canvas elements rendered on the canvas.
    * use `aggregator.transformers` to register custom canvas elements for your extension.
    */
-  aggregator: AggregatorProps;
+  aggregator: AggregatorControls;
   /**
    * controls for adding and managing animated shapes on the canvas.
    */
@@ -58,62 +58,9 @@ export type CanvasControls = {
   forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
 };
 
-/**
- * the array in which canvas elements are added into in order to be rendered on the canvas
- */
-export type Aggregator = CanvasElement[];
-
-/**
- * a function that takes an `aggregator` and returns an `aggregator` with alterations to
- * the internal contents, these functions are layered on top of each other to create a pipeline
- * which will be invoked with a reducer each render cycle
- */
-export type AggregatorTransformer = (aggregator: Aggregator) => Aggregator;
-
-type CoreGraphTypes = 'node' | 'edge';
-type MarqueeGraphTypes = 'marquee-box' | 'encapsulated-node-box';
-type NodeAnchorGraphTypes = 'node-anchor' | 'link-preview';
-type AnnotationGraphTypes = 'annotation' | 'annotation-eraser';
-
-/**
- * an element that can be fed into the `aggregator` in order to be rendered on the canvas
- */
-export type CanvasElement = {
-  /**
-   * unique identifier for this element
-   */
-  id: string;
-  /**
-   * 🚨
-   * TODO remove this field: https://github.com/Yonava/magic-graphs/issues/652
-   * 🚨
-   *
-   * the type of graph data this element represents (node, edge, etc.)
-   * @deprecated
-   */
-  graphType:
-    | CoreGraphTypes
-    | NodeAnchorGraphTypes
-    | MarqueeGraphTypes
-    | AnnotationGraphTypes;
-  /**
-   * determines the rendering order on the canvas.
-   *
-   * ℹ️ elements with lower priority values are rendered earlier and appear
-   * visually beneath items with higher values.
-   */
-  priority: number;
-  /**
-   * the {@link Shape | shape} to be rendered on the canvas
-   */
-  shape: Shape;
-  /**
-   * attached metadata
-   */
-  data?: Record<string, unknown>;
-};
+export type CanvasControls = WithTheme<BaseCanvasControls, CanvasThemes>;
 
 export type CanvasPlugin = GraphPlugin<{
-  controls: { canvas: WithTheme<CanvasControls, CanvasThemes> };
+  controls: { canvas: CanvasControls };
   events: CanvasEventMap;
 }>;

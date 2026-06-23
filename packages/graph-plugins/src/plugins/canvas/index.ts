@@ -11,6 +11,8 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
+import { createAggregator } from './aggregator/createAggregator.ts';
+import { Aggregator } from './aggregator/types.ts';
 import { CANVAS_PLUGIN_ID } from './constants.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
@@ -26,8 +28,7 @@ import {
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
 import { createThemeController } from './theme/createThemeController.ts';
 import { createCanvasThemeOverrides } from './themes.ts';
-import { Aggregator, CanvasPlugin, GraphUnderCursor } from './types.ts';
-import { useAggregator } from './useAggregator.ts';
+import { CanvasPlugin, GraphUnderCursor } from './types.ts';
 
 export const canvas =
   (magicCanvas: MagicCanvasProps): CanvasPlugin =>
@@ -39,7 +40,7 @@ export const canvas =
       graphEventHub,
     );
 
-    const aggregator = useAggregator({ emit: events.emit });
+    const aggregator = createAggregator({ emit: events.emit });
 
     const canvasFocused = ref(true);
 

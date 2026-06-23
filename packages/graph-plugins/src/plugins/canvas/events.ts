@@ -2,7 +2,7 @@ import { EventMapToEventRegistry } from '@magic/graph/events/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import { HoveredElement } from './setupHoveredElement.ts';
-import { CanvasElement, GraphUnderCursor } from './themes.ts';
+import { GraphUnderCursor } from './types.ts';
 
 /**
  * a standard mouse event along with extra graph related info

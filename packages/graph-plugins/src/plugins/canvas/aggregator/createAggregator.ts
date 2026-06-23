@@ -3,15 +3,11 @@ import { drawGroup } from '@magic/shapes/drawGroup';
 
 import { ref } from 'vue';
 
-import { Coordinate } from '../../shared/types.ts';
-import { CanvasEventMap } from './events.ts';
-import type {
-  Aggregator,
-  AggregatorTransformer,
-  CanvasElement,
-} from './themes.ts';
+import { Coordinate } from '../../../shared/types.ts';
+import { CanvasEventMap } from '../events.ts';
+import { Aggregator, AggregatorTransformer } from './types.ts';
 
-export const useAggregator = ({
+export const createAggregator = ({
   emit,
 }: Pick<EventHub<CanvasEventMap>, 'emit'>) => {
   const aggregator = ref<Aggregator>([]);
@@ -74,4 +70,4 @@ export const useAggregator = ({
   };
 };
 
-export type AggregatorProps = ReturnType<typeof useAggregator>;
+export type AggregatorControls = ReturnType<typeof createAggregator>;

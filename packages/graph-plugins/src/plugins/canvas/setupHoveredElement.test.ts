@@ -1,9 +1,9 @@
 import { createMockEventHub } from '@magic/graph/testing/events/createMockEventHub';
 import { describe, expect, it, vi } from 'vitest';
 
+import { CanvasElement } from './aggregator/types.ts';
 import { createCanvasEventRegistry } from './events.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
-import { CanvasElement } from './themes.ts';
 
 const makeElement = (id: string): CanvasElement => ({ id }) as CanvasElement;
 
