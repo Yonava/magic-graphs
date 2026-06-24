@@ -175,27 +175,24 @@ importers:
       '@magic/graph':
         specifier: workspace:*
         version: link:../graph
+      '@magic/graph-core-infra':
+        specifier: workspace:*
+        version: link:../graph-core-infra
       '@magic/graph-plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared
 
   packages/graph:
     dependencies:
-      '@magic/shapes':
+      '@magic/graph-core-infra':
         specifier: workspace:*
-        version: link:../shapes
+        version: link:../graph-core-infra
       '@magic/utils':
         specifier: workspace:*
         version: link:../utils
-      '@vueuse/core':
-        specifier: 'catalog:'
-        version: 13.9.0(vue@3.5.38(typescript@6.0.3))
       fraction.js:
         specifier: ^5.3.4
         version: 5.3.4
-      graphlib:
-        specifier: ^2.1.8
-        version: 2.1.8
       mathjs:
         specifier: 'catalog:'
         version: 14.9.1
@@ -203,9 +200,6 @@ importers:
         specifier: 'catalog:'
         version: 1.6.0
     devDependencies:
-      '@types/graphlib':
-        specifier: ^2.1.12
-        version: 2.1.12
       '@types/tinycolor2':
         specifier: 'catalog:'
         version: 1.4.6
@@ -231,9 +225,9 @@ importers:
       '@magic/canvas':
         specifier: workspace:*
         version: link:../canvas
-      '@magic/graph':
+      '@magic/graph-plugins-shared':
         specifier: workspace:*
-        version: link:../graph
+        version: link:../graph-plugins-shared
       '@magic/shapes':
         specifier: workspace:*
         version: link:../shapes
@@ -275,9 +269,6 @@ importers:
       '@magic/create-graph':
         specifier: workspace:*
         version: link:../create-graph
-      '@magic/graph':
-        specifier: workspace:*
-        version: link:../graph
       '@magic/graph-plugins':
         specifier: workspace:*
         version: link:../graph-plugins
@@ -1455,9 +1446,6 @@ packages:
   '@types/express@5.0.6':
     resolution: {integrity: sha512-sKYVuV7Sv9fbPIt/442koC7+IIwK5olP1KWeD88e/idgoJqDm3JV/YUiPwkoKK92ylff2MGxSz1CSjsXelx0YA==}
 
-  '@types/graphlib@2.1.12':
-    resolution: {integrity: sha512-abRfQWMphT2qlXwppQa+CTCtUz/GqxBeozQcMjnOFD/WOKD6sRgxkfG8vq1yagV03447BBzCYhuJ0wiNb+/r+Q==}
-
   '@types/http-errors@2.0.5':
     resolution: {integrity: sha512-r8Tayk8HJnX0FztbZN7oVqGccWgw98T/0neJphO91KkmOzug1KkofZURD4UaD5uH8AqcFLfdPErnBod0u71/qg==}
 
@@ -2404,9 +2392,6 @@ packages:
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
     engines: {node: '>= 0.4'}
-
-  graphlib@2.1.8:
-    resolution: {integrity: sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==}
 
   graphql@16.14.2:
     resolution: {integrity: sha512-Chq1s4CY7jmh8gO2qvLIJyfCDIN+EHLFW/9iShnp1z8FjBQMoodWP1kDC36VAMXXIvAjj4ARa7ntfAV2BrjsbA==}
@@ -4511,8 +4496,6 @@ snapshots:
       '@types/express-serve-static-core': 5.1.1
       '@types/serve-static': 2.2.0
 
-  '@types/graphlib@2.1.12': {}
-
   '@types/http-errors@2.0.5': {}
 
   '@types/json-schema@7.0.15': {}
@@ -5697,10 +5680,6 @@ snapshots:
   globals@15.15.0: {}
 
   gopd@1.2.0: {}
-
-  graphlib@2.1.8:
-    dependencies:
-      lodash: 4.18.1
 
   graphql@16.14.2: {}
 
