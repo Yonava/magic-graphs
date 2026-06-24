@@ -15,7 +15,8 @@
   "dependencies": {
     "@magic/graph": "workspace:*",
     "@magic/graph-plugins-shared": "workspace:*",
-    "@magic/graph-core-infra": "workspace:*"
+    "@magic/graph-core-infra": "workspace:*",
+    "@magic/utils": "workspace:*"
   },
   "devDependencies": {
     "ts-essentials": "^10.2.0"

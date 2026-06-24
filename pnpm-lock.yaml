@@ -181,6 +181,9 @@ importers:
       '@magic/graph-plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared
+      '@magic/utils':
+        specifier: workspace:*
+        version: link:../utils
     devDependencies:
       ts-essentials:
         specifier: ^10.2.0

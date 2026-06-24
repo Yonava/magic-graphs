@@ -8,10 +8,12 @@ import {
   ExtractGetters,
   LooseGraphPlugin,
 } from '@magic/graph-plugins-shared/plugins/types';
+import { ThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
 import { ThemesForPlugins } from '@magic/graph-plugins-shared/types';
 import { core as createCore } from '@magic/graph/core/index';
 import { CoreControls } from '@magic/graph/core/types';
 import { GraphSettings } from '@magic/graph/settings/index';
+import { nullThrows } from '@magic/utils/assert';
 import type { Prettify } from 'ts-essentials';
 
 type CreateGraphOptions<
@@ -33,12 +35,20 @@ export const createGraph = <
 }: CreateGraphOptions<TPlugins, PresetName>) => {
   const core = createCore({ settings });
 
+  const presetNames = Object.keys(themePresets) as PresetName[];
+
+  let activePresetName = nullThrows(
+    presetNames.at(0),
+    'createGraph requires at least 1 theme preset!',
+  );
+
   // TODO add topo sort and explicit error handling for missing plugin dependencies
 
   let evolvingControls = core.controls;
   let evolvingEvents: any = core.events;
   let evolvingActions = core.actions;
   let evolvingGetters = core.getters;
+  let evolvingThemeControllers: any = {};
 
   for (const plugin of plugins) {
     const pluginResult = plugin(
@@ -51,6 +61,21 @@ export const createGraph = <
     evolvingEvents = pluginResult.events;
     evolvingActions = { ...evolvingActions, ...pluginResult.actions };
     evolvingGetters = { ...evolvingGetters, ...pluginResult.getters };
+
+    const pluginName = nullThrows(
+      Object.keys(pluginResult.controls).at(0),
+      'Could not resolve name of plugin',
+    );
+    const themeController: ThemeController<any> | undefined = (
+      pluginResult.controls as any
+    )[pluginName]?.theme;
+
+    if (!themeController) continue;
+
+    evolvingThemeControllers = {
+      ...evolvingThemeControllers,
+      [pluginName]: themeController,
+    };
   }
 
   const events = evolvingEvents as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
@@ -72,5 +97,9 @@ export const createGraph = <
     ...getters,
     actions,
     events,
+    themePresets: {
+      activePresetName: () => activePresetName,
+      activePreset: () => themePresets[activePresetName],
+    },
   };
 };

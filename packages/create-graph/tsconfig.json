@@ -8,7 +8,8 @@
   "references": [
     { "path": "../graph" },
     { "path": "../graph-plugins-shared" },
-    { "path": "../graph-core-infra" }
+    { "path": "../graph-core-infra" },
+    { "path": "../utils" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }
