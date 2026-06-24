@@ -6,7 +6,7 @@ import {
 } from '../transactions/types.ts';
 import { CoreEdge, CoreNode } from '../types.ts';
 
-export type BulkActionConfig = {
+type BulkActionConfig = {
   nodes: {};
   edges: {};
   // a special field for options like "add to focus" or "add to history stack" that would
@@ -14,7 +14,7 @@ export type BulkActionConfig = {
   shared: {};
 };
 
-export type BaseActions = {
+type BaseActions = {
   addNode: {};
   removeNode: {};
 
@@ -39,7 +39,7 @@ export type PartialBaseActions = Partial<{
 // the secret sauce allowing plugin definitions to omit action fields
 // such as addNode or removeEdge if they do not care to extend those
 // respective definitions
-export type ResolveActions<Actions extends PartialBaseActions> = {
+type ResolveActions<Actions extends PartialBaseActions> = {
   addNode: 'addNode' extends keyof Actions
     ? NonNullable<Actions['addNode']>
     : {};

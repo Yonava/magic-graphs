@@ -8,7 +8,7 @@ export type TransactionPayload = {
   removedEdgeIds: CoreEdge['id'][];
 };
 
-export type TransactionDraft = {
+type TransactionDraft = {
   addNodes: CoreNode[];
   addEdges: CoreEdge[];
 
