@@ -6,7 +6,6 @@
     "rewriteRelativeImportExtensions": false
   },
   "references": [
-    { "path": "../canvas" },
     { "path": "../shapes" },
     { "path": "../utils" },
     { "path": "../graph-core-infra" }

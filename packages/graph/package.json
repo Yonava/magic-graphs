@@ -16,7 +16,6 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
-    "@magic/shapes": "workspace:*",
     "@magic/utils": "workspace:*",
     "@magic/graph-core-infra": "workspace:*",
     "fraction.js": "^5.3.4",
