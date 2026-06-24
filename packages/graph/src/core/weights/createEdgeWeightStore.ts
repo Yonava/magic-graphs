@@ -1,10 +1,10 @@
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
 import { Fraction } from 'mathjs';
 
 import { Ref } from 'vue';
 
-import { EventHub } from '../../events/createEventHub.ts';
 import type { GraphSettings } from '../../settings/index.ts';
 import { CoreEventMap } from '../events.ts';
 import { DEFAULT_WEIGHT } from './constants.ts';
