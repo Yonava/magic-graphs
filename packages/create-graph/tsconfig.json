@@ -5,6 +5,10 @@
     "rootDir": "./src",
     "rewriteRelativeImportExtensions": false
   },
-  "references": [{ "path": "../graph" }, { "path": "../graph-plugins-shared" }],
+  "references": [
+    { "path": "../graph" },
+    { "path": "../graph-plugins-shared" },
+    { "path": "../graph-core-infra" }
+  ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }
