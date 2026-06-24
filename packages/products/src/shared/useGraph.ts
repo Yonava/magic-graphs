@@ -14,7 +14,6 @@ import type { GraphSettings } from '@magic/graph/settings/index';
 
 import { useInteractive } from './interactive/index.ts';
 import { useShortcuts } from './shortcut/index.ts';
-import { usePreferredThemePreset } from './usePreferredThemePreset.ts';
 
 const createGraphWithPlugins = (
   magicCanvas: MagicCanvasProps,
@@ -56,17 +55,12 @@ export const useGraph = (
   settings: Partial<GraphSettings> = {},
 ) => {
   const graph = createGraphWithPlugins(canvas, settings);
-
-  const preferredTheme = usePreferredThemePreset(graph);
-
   const shortcut = useShortcuts(graph);
 
   useInteractive(graph);
 
   return {
     ...graph,
-
     shortcut,
-    ...preferredTheme,
   };
 };
