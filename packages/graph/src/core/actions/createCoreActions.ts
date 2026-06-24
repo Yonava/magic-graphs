@@ -1,8 +1,9 @@
+import { CommitTransaction } from '@magic/graph-core-infra/transactions/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+
 import { Ref } from 'vue';
 
-import { CoreEdge, CoreNode } from '../../../../graph-core-infra/src/types.ts';
 import { NodePositionStoreControls } from '../positions/types.ts';
-import { CommitTransaction } from '../transaction/types.ts';
 import type { EdgeWeightStoreControls } from '../weights/types.ts';
 import {
   createAddEdgeHandler,

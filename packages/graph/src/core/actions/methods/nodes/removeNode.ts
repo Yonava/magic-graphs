@@ -1,4 +1,4 @@
-import { CreateCoreAction } from '@magic/graph-core-infra/actions/types';
+import { CreateCoreAction } from '../../types.ts';
 
 export const createRemoveNodeHandler: CreateCoreAction<'removeNode'> =
   ({ graph, commitTransaction }) =>

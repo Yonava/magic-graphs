@@ -1,8 +1,9 @@
-import type {
-  CoreEdge,
-  CoreNode,
-} from '../../../../graph-core-infra/src/types.ts';
-import { CoreGetters, GraphGetters } from '../../plugins/types.ts';
+import {
+  CoreGetters,
+  GraphGetters,
+} from '@magic/graph-core-infra/getters/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+
 import type { GraphSettings } from '../../settings/index.ts';
 import { CoreControls } from '../types.ts';
 

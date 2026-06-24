@@ -1,6 +1,6 @@
+import { CoreNode } from '@magic/graph-core-infra/types';
 import { MaybeGetter } from '@magic/utils/maybeGetter/index';
 
-import { CoreNode } from '../../../../graph-core-infra/src/types.ts';
 import type { NodePositionStoreEventMap } from './events.ts';
 
 export type Position = {

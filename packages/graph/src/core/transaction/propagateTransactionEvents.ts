@@ -1,7 +1,7 @@
 import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { TransactionPayload } from '@magic/graph-core-infra/transactions/types';
 
 import { CoreEventMap } from '../events.ts';
-import { TransactionPayload } from './types.ts';
 
 type TransactionEventPayloadResolverMap = {
   [EventName in keyof CoreEventMap]: (payload: TransactionPayload) => {
