@@ -1,15 +1,15 @@
+import { GraphActions } from '@magic/graph-core-infra/actions/types';
 import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
-import { GraphActions } from '@magic/graph/core/actions/types';
-import { core as createCore } from '@magic/graph/core/index';
-import { CoreControls } from '@magic/graph/core/types';
+import { GraphGetters } from '@magic/graph-core-infra/getters/types';
 import {
   ExtractActions,
   ExtractControls,
   ExtractEventMap,
   ExtractGetters,
-  GraphGetters,
   LooseGraphPlugin,
-} from '@magic/graph/plugins/types';
+} from '@magic/graph-plugins-shared/plugins/types';
+import { core as createCore } from '@magic/graph/core/index';
+import { CoreControls } from '@magic/graph/core/types';
 import { GraphSettings } from '@magic/graph/settings/index';
 import type { Prettify } from 'ts-essentials';
 

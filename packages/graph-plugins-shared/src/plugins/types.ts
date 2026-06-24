@@ -7,13 +7,13 @@ import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { GenericEventMap } from '@magic/graph-core-infra/events/types';
 import {
   BaseGetters,
-  CoreGetters,
   GraphGetters,
   MergeGetters,
 } from '@magic/graph-core-infra/getters/types';
 import { CoreActions } from '@magic/graph/core/actions/types';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { CoreControls } from '@magic/graph/core/types';
+import { CoreGetters } from '@magic/graph/getters';
 import { UnionToIntersection } from 'ts-essentials';
 
 type LoosePluginData = {

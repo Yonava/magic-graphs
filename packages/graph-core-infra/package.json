@@ -12,11 +12,8 @@
   "scripts": {
     "build:types": "vue-tsc -b tsconfig.json"
   },
-  "dependencies": {
-    "@magic/utils": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "mathjs": "catalog:",
     "ts-essentials": "^10.2.0"
   }
 }

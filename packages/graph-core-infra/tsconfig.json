@@ -4,6 +4,6 @@
     "outDir": "./dist/types",
     "rootDir": "./src"
   },
-  "references": [{ "path": "../utils" }],
+  "references": [],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }
