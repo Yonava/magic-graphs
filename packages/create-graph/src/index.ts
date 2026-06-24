@@ -8,18 +8,29 @@ import {
   ExtractGetters,
   LooseGraphPlugin,
 } from '@magic/graph-plugins-shared/plugins/types';
+import { ThemesForPlugins } from '@magic/graph-plugins-shared/types';
 import { core as createCore } from '@magic/graph/core/index';
 import { CoreControls } from '@magic/graph/core/types';
 import { GraphSettings } from '@magic/graph/settings/index';
 import type { Prettify } from 'ts-essentials';
 
-export const createGraph = <const TPlugins extends LooseGraphPlugin[]>({
-  plugins,
-  settings = {},
-}: {
+type CreateGraphOptions<
+  TPlugins extends LooseGraphPlugin[],
+  PresetName extends string,
+> = {
   plugins: TPlugins;
+  themePresets: Record<PresetName, ThemesForPlugins<NoInfer<TPlugins>>>;
   settings: Partial<GraphSettings>;
-}) => {
+};
+
+export const createGraph = <
+  const TPlugins extends LooseGraphPlugin[],
+  PresetName extends string,
+>({
+  plugins,
+  themePresets,
+  settings = {},
+}: CreateGraphOptions<TPlugins, PresetName>) => {
   const core = createCore({ settings });
 
   // TODO add topo sort and explicit error handling for missing plugin dependencies

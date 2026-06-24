@@ -30,9 +30,9 @@ export const createTokenResolver =
   ): TokenResolver<ThemeOverrides> =>
   (token, ...args) => {
     // 1. get all the overrides we have stored for a given token
-    const overrides: ThemeOverride<unknown>[] = nullThrows(
+    const overrides: ThemeOverride<any>[] = nullThrows(
       getDataFromNestedPath(themeOverrides, token),
-      `Theme overrides is missing entry for "${token}": Is "${token}" a registered token?`,
+      `Theme overrides is missing entry for "${token}": Is "${token}" a valid token?`,
     );
 
     // 2. use the find last approach to get the override that was most recently registered
@@ -42,13 +42,10 @@ export const createTokenResolver =
       return styleValue !== undefined;
     });
 
-    // TODO when we add presets back, this needs to be re-threaded
-    if (!override) return undefined as any;
-
-    // 4. the theme value for the token with the preset fallback
+    // 4. the theme value for the token
     const themeValue = nullThrows(
       override?.value,
-      `No theme value found for token "${token}" in overrides or preset: Is "${token}" a registered token?`,
+      `No theme value found for token "${token}": Is "${token}" a valid token?`,
     );
 
     // 5. combine the theme value with the token resolution args to get the final resolved style value

@@ -33,6 +33,9 @@ const createGraphWithPlugins = (
       transitionMatrix,
       characteristics,
     ],
+    themePresets: {
+      light: {},
+    },
   });
 
   return graph;
