@@ -1,15 +1,20 @@
-import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
-import { UnionToIntersection } from 'ts-essentials';
-
 import {
-  CoreActions,
   GraphActions,
   MergeActions,
   PartialBaseActions,
-} from '../core/actions/types.ts';
-import { CoreEventMap } from '../core/events.ts';
-import { CoreControls } from '../core/types.ts';
-import { GenericEventMap } from '../events/types.ts';
+} from '@magic/graph-core-infra/actions/types';
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { GenericEventMap } from '@magic/graph-core-infra/events/types';
+import {
+  BaseGetters,
+  CoreGetters,
+  GraphGetters,
+  MergeGetters,
+} from '@magic/graph-core-infra/getters/types';
+import { CoreActions } from '@magic/graph/core/actions/types';
+import { CoreEventMap } from '@magic/graph/core/events';
+import { CoreControls } from '@magic/graph/core/types';
+import { UnionToIntersection } from 'ts-essentials';
 
 type LoosePluginData = {
   controls: object;

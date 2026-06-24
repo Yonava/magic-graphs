@@ -1,7 +1,7 @@
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
 
-import { EventHub } from '../../events/createEventHub.ts';
 import { CoreEventMap } from '../events.ts';
 import { DEFAULT_POSITION } from './constants.ts';
 import {

@@ -1,8 +1,8 @@
+import { CreateCoreAction } from '@magic/graph-core-infra/actions/types';
 import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 
 import { CoreNode } from '../../../../../../graph-core-infra/src/types.ts';
-import { CreateCoreAction } from '../../types.ts';
 
 export const nodeDefaults = () =>
   ({

@@ -4,6 +4,10 @@
     "outDir": "./dist/types",
     "rootDir": "./src"
   },
-  "references": [{ "path": "../graph-core-infra" }, { "path": "../utils" }],
+  "references": [
+    { "path": "../graph-core-infra" },
+    { "path": "../graph" },
+    { "path": "../utils" }
+  ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

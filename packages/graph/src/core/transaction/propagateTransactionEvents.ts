@@ -1,4 +1,5 @@
-import { EventHub } from '../../events/createEventHub.ts';
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
+
 import { CoreEventMap } from '../events.ts';
 import { TransactionPayload } from './types.ts';
 

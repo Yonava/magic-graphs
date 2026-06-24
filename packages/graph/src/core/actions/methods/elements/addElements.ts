@@ -1,4 +1,5 @@
-import { CreateCoreAction } from '../../types.ts';
+import { CreateCoreAction } from '@magic/graph-core-infra/actions/types';
+
 import { edgeDefaults } from '../edges/addEdge.ts';
 import { nodeDefaults } from '../nodes/addNode.ts';
 

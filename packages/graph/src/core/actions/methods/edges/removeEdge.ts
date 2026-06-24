@@ -1,6 +1,5 @@
+import { CreateCoreAction } from '@magic/graph-core-infra/actions/types';
 import { nullThrows } from '@magic/utils/assert';
-
-import { CreateCoreAction } from '../../types.ts';
 
 export const createRemoveEdgeHandler: CreateCoreAction<'removeEdge'> =
   ({ graph, commitTransaction }) =>

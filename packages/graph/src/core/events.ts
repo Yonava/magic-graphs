@@ -1,10 +1,10 @@
-import { DeepPartial, DeepReadonly } from 'ts-essentials';
-
-import { GraphSettings } from '../settings/index.ts';
 import {
   ElementAdditionPayload,
   ElementRemovalPayload,
-} from './actions/types.ts';
+} from '@magic/graph-core-infra/actions/types';
+import { DeepPartial, DeepReadonly } from 'ts-essentials';
+
+import { GraphSettings } from '../settings/index.ts';
 import {
   NodePositionStoreEventMap,
   createNodePositionStoreEventRegistry,

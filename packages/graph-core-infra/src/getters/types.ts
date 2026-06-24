@@ -3,7 +3,7 @@ import { UnionToIntersection } from 'ts-essentials';
 
 import { CoreEdge, CoreNode } from '../types.ts';
 
-type BaseGetters = {
+export type BaseGetters = {
   getNode: {};
   getEdge: {};
 };

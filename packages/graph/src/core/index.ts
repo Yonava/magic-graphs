@@ -11,7 +11,7 @@ import type {
 } from '../../../graph-core-infra/src/types.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
-import { createCoreActions } from './actions/createGraphActions.ts';
+import { createCoreActions } from './actions/createCoreActions.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { createHelpers } from './helpers/createHelpers.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
