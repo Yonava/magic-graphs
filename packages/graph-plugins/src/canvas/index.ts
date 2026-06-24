@@ -1,7 +1,8 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
+import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph-core-infra/events/mergeEventHubs';
+import { createThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
 import { CoreEventMap } from '@magic/graph/core/events';
-import { createEventHub } from '@magic/graph/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { cross } from '@magic/shapes/shapes/cross/index';
 import { nullThrows } from '@magic/utils/assert';
@@ -9,9 +10,8 @@ import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 import { DeepReadonly } from 'ts-essentials';
 
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-import { createThemeController } from '../../../graph-plugins-shared/src/theme/createThemeController.ts';
 import { createAggregator } from './aggregator/createAggregator.ts';
 import { Aggregator } from './aggregator/types.ts';
 import { CANVAS_PLUGIN_ID } from './constants.ts';

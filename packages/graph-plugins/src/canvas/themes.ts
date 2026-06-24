@@ -1,17 +1,16 @@
-import { CoreEdge, CoreNode } from '@magic/graph/types';
-import type { FontWeight } from '@magic/shapes/text/types';
-import { Shape } from '@magic/shapes/types/index';
-import { Color } from '@magic/utils/colors';
-
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
 import {
   Cursor,
   CursorFallback,
-} from '../../../graph-plugins-shared/src/theme/cursor.ts';
+} from '@magic/graph-plugins-shared/theme/cursor';
 import {
   AsStyleValue,
   ThemeValue,
   ToThemeOverrides,
-} from '../../../graph-plugins-shared/src/theme/types.ts';
+} from '@magic/graph-plugins-shared/theme/types';
+import type { FontWeight } from '@magic/shapes/text/types';
+import { Shape } from '@magic/shapes/types/index';
+import { Color } from '@magic/utils/colors';
 
 type TextStyleValues = {
   text: string;

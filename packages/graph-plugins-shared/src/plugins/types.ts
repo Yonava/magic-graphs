@@ -1,4 +1,4 @@
-import type { Fraction } from 'mathjs';
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { UnionToIntersection } from 'ts-essentials';
 
 import {
@@ -9,47 +9,7 @@ import {
 } from '../core/actions/types.ts';
 import { CoreEventMap } from '../core/events.ts';
 import { CoreControls } from '../core/types.ts';
-import { EventHub } from '../events/createEventHub.ts';
 import { GenericEventMap } from '../events/types.ts';
-import { CoreEdge, CoreNode } from '../types.ts';
-
-type BaseGetters = {
-  getNode: {};
-  getEdge: {};
-};
-
-export type CoreGetters = {
-  getNode: CoreNode;
-  getEdge: CoreEdge & { weight: Fraction };
-};
-
-export type ResolveGetters<Getters extends Partial<BaseGetters>> = {
-  getNode: 'getNode' extends keyof Getters
-    ? NonNullable<Getters['getNode']>
-    : {};
-  getEdge: 'getEdge' extends keyof Getters
-    ? NonNullable<Getters['getEdge']>
-    : {};
-};
-
-type DistributeResolveGetters<PartialGetters extends Partial<BaseGetters>> =
-  PartialGetters extends PartialGetters
-    ? ResolveGetters<PartialGetters>
-    : never;
-
-export type MergeGetters<Getters extends Partial<BaseGetters>[]> =
-  Getters extends []
-    ? BaseGetters
-    : {
-        [GettersField in keyof BaseGetters]: UnionToIntersection<
-          DistributeResolveGetters<Getters[number]>[GettersField]
-        >;
-      };
-
-export type GraphGetters<Getters extends BaseGetters> = {
-  getNode: (nodeId: string) => Getters['getNode'];
-  getEdge: (edgeId: string) => Getters['getEdge'];
-};
 
 type LoosePluginData = {
   controls: object;
@@ -162,12 +122,13 @@ export type ExtractActions<TPlugins extends LooseGraphPlugin[]> =
           : never
       >;
 
-type GettersFromPlugin<P extends LooseGraphPlugin> = P extends LooseGraphPlugin
-  ? {
-      getNode: ReturnType<ReturnType<P>['getters']['getNode']>;
-      getEdge: ReturnType<ReturnType<P>['getters']['getEdge']>;
-    }
-  : never;
+type GettersFromPlugin<Plugin extends LooseGraphPlugin> =
+  Plugin extends LooseGraphPlugin
+    ? {
+        getNode: ReturnType<ReturnType<Plugin>['getters']['getNode']>;
+        getEdge: ReturnType<ReturnType<Plugin>['getters']['getEdge']>;
+      }
+    : never;
 
 export type ExtractGetters<TPlugins extends LooseGraphPlugin[]> =
   TPlugins extends never[]

@@ -1,4 +1,4 @@
-import { EventHub } from '@magic/graph/events/createEventHub';
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { DeepReadonly } from 'ts-essentials';
 
 import { CanvasElement } from './aggregator/types.ts';

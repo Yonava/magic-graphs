@@ -1,4 +1,4 @@
-import { EventMapToEventRegistry } from '@magic/graph/events/types';
+import { EventMapToEventRegistry } from '@magic/graph-core-infra/events/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import { HoveredElement } from './setupHoveredElement.ts';

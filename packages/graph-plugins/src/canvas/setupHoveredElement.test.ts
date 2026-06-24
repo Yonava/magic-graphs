@@ -1,6 +1,6 @@
+import { createMockEventHub } from '@magic/graph-core-infra/testing/events/createMockEventHub';
 import { describe, expect, it, vi } from 'vitest';
 
-import { createMockEventHub } from '../../../graph-core-infra/src/testing/events/createMockEventHub.ts';
 import { CanvasElement } from './aggregator/types.ts';
 import { createCanvasEventRegistry } from './events.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';

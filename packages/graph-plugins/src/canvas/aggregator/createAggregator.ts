@@ -1,9 +1,9 @@
-import { EventHub } from '@magic/graph/events/createEventHub';
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { Coordinate } from '@magic/graph-plugins-shared/types';
 import { drawGroup } from '@magic/shapes/drawGroup';
 
 import { ref } from 'vue';
 
-import { Coordinate } from '../../../shared/types.ts';
 import { CanvasEventMap } from '../events.ts';
 import { Aggregator, AggregatorTransformer } from './types.ts';
 

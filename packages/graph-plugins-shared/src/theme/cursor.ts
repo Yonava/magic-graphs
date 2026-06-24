@@ -54,3 +54,9 @@ export type Cursor = (typeof CURSOR)[keyof typeof CURSOR];
  */
 export const CURSOR_FALLBACK = 'fallback' as const;
 export type CursorFallback = typeof CURSOR_FALLBACK;
+
+const validCursors = new Set<string>(Object.values(CURSOR));
+
+/** Type guard that returns true if `cursorOrJunk` is a valid {@link Cursor}. */
+export const isValidCursor = (cursorOrJunk: unknown): cursorOrJunk is Cursor =>
+  typeof cursorOrJunk === 'string' && validCursors.has(cursorOrJunk);

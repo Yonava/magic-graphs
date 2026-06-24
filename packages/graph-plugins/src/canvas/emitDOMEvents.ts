@@ -1,4 +1,4 @@
-import { EventHub } from '@magic/graph/events/createEventHub';
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { KeyboardEventMap, MouseEventMap } from '@magic/utils/types';
 
 import { CanvasEventMap, CanvasGraphMouseEvent } from './events.ts';

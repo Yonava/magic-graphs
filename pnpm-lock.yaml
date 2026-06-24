@@ -220,6 +220,9 @@ importers:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
+      mathjs:
+        specifier: 'catalog:'
+        version: 14.9.1
       ts-essentials:
         specifier: ^10.2.0
         version: 10.2.1(typescript@6.0.3)

@@ -1,11 +1,12 @@
-import { EventHub } from '@magic/graph/events/createEventHub';
-import { CoreGetters, GraphGetters } from '@magic/graph/plugins/types';
-
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import {
   CURSOR,
   CURSOR_FALLBACK,
   Cursor,
-} from '../../../graph-plugins-shared/src/theme/cursor.ts';
+  isValidCursor,
+} from '@magic/graph-plugins-shared/theme/cursor';
+import { CoreGetters, GraphGetters } from '@magic/graph/plugins/types';
+
 import { CanvasEventMap } from './events.ts';
 import { CanvasControls } from './types.ts';
 
@@ -18,11 +19,6 @@ type GraphCursorProps = {
 };
 
 export const CANVAS_ELEMENT_CURSOR_FIELD_KEY = 'cursor';
-
-const validCursors = new Set<string>(Object.values(CURSOR));
-
-const isValidCursor = (cursorOrJunk: unknown): cursorOrJunk is Cursor =>
-  typeof cursorOrJunk === 'string' && validCursors.has(cursorOrJunk);
 
 /**
  * manages the cursor type when hovering over the graph
