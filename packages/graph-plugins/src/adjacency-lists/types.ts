@@ -1,12 +1,7 @@
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { CoreNode } from '@magic/graph-core-infra/types';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { CoreControls } from '@magic/graph/core/types';
-import { EventHub } from '@magic/graph/events/createEventHub';
-import {
-  CoreGetters,
-  GraphGetters,
-  GraphPlugin,
-} from '@magic/graph/plugins/types';
-import { CoreNode } from '@magic/graph/types';
 
 import { Ref } from 'vue';
 

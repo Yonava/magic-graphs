@@ -181,6 +181,10 @@ importers:
       '@magic/graph-plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared
+    devDependencies:
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.1(typescript@6.0.3)
 
   packages/graph:
     dependencies:
@@ -225,6 +229,9 @@ importers:
       '@magic/canvas':
         specifier: workspace:*
         version: link:../canvas
+      '@magic/graph-core-infra':
+        specifier: workspace:*
+        version: link:../graph-core-infra
       '@magic/graph-plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared

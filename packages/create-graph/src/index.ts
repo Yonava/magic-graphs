@@ -1,7 +1,7 @@
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { GraphActions } from '@magic/graph/core/actions/types';
 import { core as createCore } from '@magic/graph/core/index';
 import { CoreControls } from '@magic/graph/core/types';
-import { EventHub } from '@magic/graph/events/createEventHub';
 import {
   ExtractActions,
   ExtractControls,
@@ -11,8 +11,7 @@ import {
   LooseGraphPlugin,
 } from '@magic/graph/plugins/types';
 import { GraphSettings } from '@magic/graph/settings/index';
-import { Prettify } from '@magic/graph/types';
-import type { ThemesForPlugins } '@magic/graph-plugins/'
+import type { Prettify } from 'ts-essentials';
 
 export const createGraph = <const TPlugins extends LooseGraphPlugin[]>({
   plugins,
