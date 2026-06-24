@@ -1,5 +1,9 @@
 import { Prettify, UnionToIntersection } from 'ts-essentials';
 
+import { LooseGraphPlugin } from './plugins/types.ts';
+import { ThemeController } from './theme/createThemeController.ts';
+import { ToThemeOverrides } from './theme/types.ts';
+
 export type Coordinate = {
   x: number;
   y: number;

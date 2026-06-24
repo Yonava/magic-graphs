@@ -15,8 +15,7 @@
   "dependencies": {
     "@magic/graph-core-infra": "workspace:*",
     "@magic/graph": "workspace:*",
-    "@magic/utils": "workspace:*",
-    "mathjs": "catalog:"
+    "@magic/utils": "workspace:*"
   },
   "devDependencies": {
     "ts-essentials": "^10.2.0"
