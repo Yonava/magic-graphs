@@ -1,4 +1,3 @@
-import { ThemePreset } from '@magic/graph-plugins/plugins/canvas/themes/index';
 import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';

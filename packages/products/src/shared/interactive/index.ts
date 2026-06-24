@@ -1,4 +1,4 @@
-import { CanvasGraphMouseEvent } from '@magic/graph-plugins/plugins/canvas/events';
+import { CanvasGraphMouseEvent } from '@magic/graph-plugins/canvas/events';
 
 import { GraphWithPlugins } from '../useGraph.ts';
 

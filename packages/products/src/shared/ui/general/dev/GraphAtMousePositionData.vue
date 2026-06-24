@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { GraphUnderCursor } from '@magic/graph-plugins/plugins/canvas/types';
+  import { GraphUnderCursor } from '@magic/graph-plugins/canvas/types';
 
   import { computed, ref } from 'vue';
 
