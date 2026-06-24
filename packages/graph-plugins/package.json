@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@magic/graph-plugins-shared": "workspace:*",
+    "@magic/graph-core-infra": "workspace:*",
     "@magic/utils": "workspace:*",
     "@magic/canvas": "workspace:*",
     "@magic/shapes": "workspace:*",
