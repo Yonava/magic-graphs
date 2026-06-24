@@ -1,7 +1,8 @@
+import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph-core-infra/events/mergeEventHubs';
+import { CoreNode } from '@magic/graph-core-infra/types';
+import { createThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
 import { CoreEventMap } from '@magic/graph/core/events';
-import { createEventHub } from '@magic/graph/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
-import { CoreNode } from '@magic/graph/types';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
 import type { WithId } from '@magic/shapes/types/index';
 import { nullThrows } from '@magic/utils/assert';
@@ -9,7 +10,6 @@ import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { readonly, ref } from 'vue';
 
-import { createThemeController } from '../../../graph-plugins-shared/src/theme/createThemeController.ts';
 import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';

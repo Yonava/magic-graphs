@@ -1,7 +1,7 @@
+import { createDragState } from '@magic/graph-plugins-shared/drag/createDragState';
+import { DragStateControls } from '@magic/graph-plugins-shared/drag/types';
 import { nullThrows } from '@magic/utils/assert';
 
-import { createDragState } from '../../../graph-plugins-shared/src/drag/createDragState.ts';
-import { DragStateControls } from '../../../graph-plugins-shared/src/drag/types.ts';
 import { NodeAnchor } from './types.ts';
 
 export const createAnchorDragState = (): DragStateControls<NodeAnchor> => {

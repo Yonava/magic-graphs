@@ -1,14 +1,14 @@
-import { CoreNode } from '@magic/graph/types';
-import { Color } from '@magic/utils/colors';
-
+import { CoreNode } from '@magic/graph-core-infra/types';
 import {
   Cursor,
   CursorFallback,
-} from '../../../graph-plugins-shared/src/theme/cursor.ts';
-import type {
+} from '@magic/graph-plugins-shared/theme/cursor';
+import {
   ThemeValue,
   ToThemeOverrides,
-} from '../../../graph-plugins-shared/src/theme/types.ts';
+} from '@magic/graph-plugins-shared/theme/types';
+import { Color } from '@magic/utils/colors';
+
 import { NodeAnchor } from './types.ts';
 
 export type AnchorsThemes = {
