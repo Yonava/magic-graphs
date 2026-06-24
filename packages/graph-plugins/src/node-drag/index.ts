@@ -1,12 +1,12 @@
+import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph-core-infra/events/mergeEventHubs';
+import { createDragState } from '@magic/graph-plugins-shared/drag/createDragState';
 import { CoreEventMap } from '@magic/graph/core/events';
 import { NodePositionStreamControls } from '@magic/graph/core/positions/types';
-import { createEventHub } from '@magic/graph/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
-import { createDragState } from '../../../graph-plugins-shared/src/drag/createDragState.ts';
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { GraphUnderCursor } from '../canvas/types.ts';

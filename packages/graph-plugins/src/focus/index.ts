@@ -1,7 +1,8 @@
-import { ElementRemovalPayload } from '@magic/graph/core/actions/types';
+import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph-core-infra/events/mergeEventHubs';
+import { ElementRemovalPayload } from '@magic/graph-core-infra/transactions/types';
+import { createThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
 import { CoreEventMap } from '@magic/graph/core/events';
-import { createEventHub } from '@magic/graph/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { nullThrows } from '@magic/utils/assert';
 import { getCtx } from '@magic/utils/ctx/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -9,7 +10,6 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { computed, readonly, ref } from 'vue';
 
-import { createThemeController } from '../../../graph-plugins-shared/src/theme/createThemeController.ts';
 import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';

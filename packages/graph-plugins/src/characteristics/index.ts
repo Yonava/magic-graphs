@@ -1,4 +1,4 @@
-import { GraphPlugin } from '@magic/graph/plugins/types';
+import { GraphPlugin } from '@magic/graph-plugins-shared/plugins/types';
 
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 import {

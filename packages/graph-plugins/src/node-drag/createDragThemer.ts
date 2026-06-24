@@ -1,5 +1,6 @@
-import { DragStateControls } from '../../../../graph-plugins-shared/src/drag/types.ts';
-import { CURSOR } from '../../../graph-plugins-shared/src/theme/cursor.ts';
+import { DragStateControls } from '@magic/graph-plugins-shared/drag/types';
+import { CURSOR } from '@magic/graph-plugins-shared/theme/cursor';
+
 import { NODE_DRAG_PLUGIN_ID } from './constants.ts';
 import { NodeDragPlugin, NodeIdDragState } from './types.ts';
 

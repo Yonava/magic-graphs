@@ -1,4 +1,5 @@
-import type { ToThemeOverrides } from '../../../graph-plugins-shared/src/theme/types.ts';
+import { ToThemeOverrides } from '@magic/graph-plugins-shared/theme/types';
+
 import {
   EdgeThemeValues,
   NodeThemeValues,

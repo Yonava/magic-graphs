@@ -1,4 +1,7 @@
-import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
+import {
+  GraphPlugin,
+  WithLifecycle,
+} from '@magic/graph-plugins-shared/plugins/types';
 import { MaybeGetter } from '@magic/utils/maybeGetter/index';
 
 import { CanvasPlugin } from '../canvas/types.ts';

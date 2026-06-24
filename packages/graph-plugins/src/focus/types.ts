@@ -1,9 +1,12 @@
-import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
-import { CoreEdge, CoreNode } from '@magic/graph/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import {
+  GraphPlugin,
+  WithLifecycle,
+} from '@magic/graph-plugins-shared/plugins/types';
+import { WithTheme } from '@magic/graph-plugins-shared/types';
 
 import { ComputedRef, Ref } from 'vue';
 
-import { WithTheme } from '../../shared/types.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';
 import { FocusThemes } from './themes.ts';

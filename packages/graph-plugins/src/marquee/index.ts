@@ -1,6 +1,7 @@
+import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph-core-infra/events/mergeEventHubs';
+import { createThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
 import { CoreEventMap } from '@magic/graph/core/events';
-import { createEventHub } from '@magic/graph/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph/events/mergeEventHubs';
 import { normalizeBoundingBox } from '@magic/shapes/helpers';
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -9,7 +10,6 @@ import { DeepReadonly } from 'ts-essentials';
 import { ref } from 'vue';
 import { computed } from 'vue';
 
-import { createThemeController } from '../../../graph-plugins-shared/src/theme/createThemeController.ts';
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
 import { Aggregator, CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';

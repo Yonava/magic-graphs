@@ -1,6 +1,9 @@
 import { Coordinate } from '@magic/canvas/types';
-import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
-import { CoreNode } from '@magic/graph/types';
+import { CoreNode } from '@magic/graph-core-infra/types';
+import {
+  GraphPlugin,
+  WithLifecycle,
+} from '@magic/graph-plugins-shared/plugins/types';
 
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';

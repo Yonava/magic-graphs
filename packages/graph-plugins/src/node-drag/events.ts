@@ -1,5 +1,5 @@
-import { EventMapToEventRegistry } from '@magic/graph/events/types';
-import { CoreNode } from '@magic/graph/types';
+import { EventMapToEventRegistry } from '@magic/graph-core-infra/events/types';
+import { CoreNode } from '@magic/graph-core-infra/types';
 import { DeepReadonly } from 'ts-essentials';
 
 export type NodeDragEventMap = {

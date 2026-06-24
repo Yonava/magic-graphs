@@ -1,4 +1,4 @@
-import { CoreEdge, CoreNode } from '@magic/graph/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
 
 import { ComputedRef, computed } from 'vue';
 

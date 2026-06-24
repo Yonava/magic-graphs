@@ -1,4 +1,7 @@
-import { GraphPlugin, WithLifecycle } from '@magic/graph/plugins/types';
+import {
+  GraphPlugin,
+  WithLifecycle,
+} from '@magic/graph-plugins-shared/plugins/types';
 
 import { ComputedRef, Ref } from 'vue';
 
