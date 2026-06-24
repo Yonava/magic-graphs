@@ -2,6 +2,8 @@ import {
   ElementAdditionPayload,
   ElementRemovalPayload,
 } from '@magic/graph-core-infra/actions/types';
+import { EventMapToEventRegistry } from '@magic/graph-core-infra/events/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
 import { DeepPartial, DeepReadonly } from 'ts-essentials';
 
 import { GraphSettings } from '../settings/index.ts';

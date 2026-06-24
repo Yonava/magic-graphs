@@ -1,5 +1,9 @@
 import { UnionToIntersection } from 'ts-essentials';
 
+import {
+  ElementAdditionPayload,
+  ElementRemovalPayload,
+} from '../transactions/types.ts';
 import { CoreEdge, CoreNode } from '../types.ts';
 
 export type BulkActionConfig = {
@@ -141,13 +145,3 @@ export type GraphActions<Actions extends BaseActions> = {
    */
   removeElements: BulkHandler<Actions['removeElements'], ElementRemovalPayload>;
 };
-
-export type ElementRemovalPayload = Pick<
-  TransactionPayload,
-  'removedNodeIds' | 'removedEdgeIds'
->;
-
-export type ElementAdditionPayload = Pick<
-  TransactionPayload,
-  'addedNodes' | 'addedEdges'
->;

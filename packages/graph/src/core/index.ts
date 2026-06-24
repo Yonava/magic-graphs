@@ -1,4 +1,4 @@
-import { createEventHub } from '@magic/graph-core-infra/src/events/createEventHub';
+import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { nullThrows } from '@magic/utils/assert';
 import { clone } from '@magic/utils/clone';
 import { delta } from '@magic/utils/delta/index';

@@ -6,9 +6,5 @@
     "rewriteRelativeImportExtensions": false
   },
   "references": [{ "path": "../utils" }, { "path": "../graph-core-infra" }],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "../graph-core-infra/src/actions/types.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

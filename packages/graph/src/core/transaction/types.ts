@@ -7,23 +7,3 @@ export type TransactionOptions = {
   getGraph: () => GraphState;
   onTransactionSucceeded: (payload: TransactionPayload) => void;
 };
-
-export type TransactionPayload = {
-  addedNodes: CoreNode[];
-  addedEdges: CoreEdge[];
-
-  removedNodeIds: CoreNode['id'][];
-  removedEdgeIds: CoreEdge['id'][];
-};
-
-export type TransactionDraft = {
-  addNodes: CoreNode[];
-  addEdges: CoreEdge[];
-
-  removeNodeIds: CoreNode['id'][];
-  removeEdgeIds: CoreEdge['id'][];
-};
-
-export type CommitTransaction = (
-  draft: Partial<TransactionDraft>,
-) => TransactionPayload;
