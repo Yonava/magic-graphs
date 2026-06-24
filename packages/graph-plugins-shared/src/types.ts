@@ -1,4 +1,3 @@
-import { LooseGraphPlugin } from '@magic/graph/plugins/types';
 import { Prettify, UnionToIntersection } from 'ts-essentials';
 
 export type Coordinate = {

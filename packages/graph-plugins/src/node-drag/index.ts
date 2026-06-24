@@ -6,7 +6,7 @@ import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
-import { createDragState } from '../../../../graph-plugins-shared/src/drag/createDragState.ts';
+import { createDragState } from '../../../graph-plugins-shared/src/drag/createDragState.ts';
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { GraphUnderCursor } from '../canvas/types.ts';

@@ -12,6 +12,7 @@ import {
 } from '@magic/graph/plugins/types';
 import { GraphSettings } from '@magic/graph/settings/index';
 import { Prettify } from '@magic/graph/types';
+import type { ThemesForPlugins } '@magic/graph-plugins/'
 
 export const createGraph = <const TPlugins extends LooseGraphPlugin[]>({
   plugins,

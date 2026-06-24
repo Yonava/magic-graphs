@@ -1,10 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import {
-  CoreEventMap,
-  CoreEventRegistry,
-  createCoreEventRegistry,
-} from '../core/events.ts';
 import { EventHub, createEventHub } from './createEventHub.ts';
 
 describe(createEventHub, () => {
