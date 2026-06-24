@@ -1,7 +1,10 @@
 import { computed } from 'vue';
 import type { Ref } from 'vue';
 
-import type { CoreEdge, CoreNode } from '../types.ts';
+import type {
+  CoreEdge,
+  CoreNode,
+} from '../../../graph-core-infra/src/types.ts';
 
 export const useNodeEdgeMap = (
   nodes: Ref<CoreNode[]>,

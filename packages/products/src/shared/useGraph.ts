@@ -1,20 +1,27 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import { createGraph } from '@magic/create-graph/index';
-import { adjacencyLists } from '@magic/graph-plugins/plugins/adjacency-lists/index';
-import { anchors } from '@magic/graph-plugins/plugins/anchors/index';
-import { canvas } from '@magic/graph-plugins/plugins/canvas/index';
-import { characteristics } from '@magic/graph-plugins/plugins/characteristics/index';
-import { focus } from '@magic/graph-plugins/plugins/focus/index';
-import { history } from '@magic/graph-plugins/plugins/history/index';
-import { marquee } from '@magic/graph-plugins/plugins/marquee/index';
-import { nodeDrag } from '@magic/graph-plugins/plugins/node-drag/index';
-import { nodeLabel } from '@magic/graph-plugins/plugins/node-label/index';
-import { transitionMatrix } from '@magic/graph-plugins/plugins/transition-matrix/index';
+import { LooseGraphPlugin } from '@magic/graph/plugins/types';
 import type { GraphSettings } from '@magic/graph/settings/index';
+import { Prettify, UnionToIntersection } from 'ts-essentials';
 
+import { ThemeController } from '../../../graph-plugins-shared/src/theme/createThemeController.ts';
+import { adjacencyLists } from '../../../graph-plugins/dist/types/adjacency-lists/index.ts';
+import { anchors } from '../../../graph-plugins/dist/types/anchors/index.ts';
+import { canvas } from '../../../graph-plugins/dist/types/canvas/index.ts';
+import { CanvasPlugin } from '../../../graph-plugins/dist/types/canvas/types.ts';
+import { characteristics } from '../../../graph-plugins/dist/types/characteristics/index.ts';
+import { focus } from '../../../graph-plugins/dist/types/focus/index.ts';
+import { FocusPlugin } from '../../../graph-plugins/dist/types/focus/types.ts';
+import { history } from '../../../graph-plugins/dist/types/history/index.ts';
+import { marquee } from '../../../graph-plugins/dist/types/marquee/index.ts';
+import { nodeDrag } from '../../../graph-plugins/dist/types/node-drag/index.ts';
+import { nodeLabel } from '../../../graph-plugins/dist/types/node-label/index.ts';
+import { transitionMatrix } from '../../../graph-plugins/dist/types/transition-matrix/index.ts';
 import { useInteractive } from './interactive/index.ts';
 import { useShortcuts } from './shortcut/index.ts';
 import { usePreferredThemePreset } from './usePreferredThemePreset.ts';
+
+type t = ThemesForPlugins<[FocusPlugin, CanvasPlugin]>;
 
 const createGraphWithPlugins = (
   magicCanvas: MagicCanvasProps,

@@ -1,6 +1,9 @@
+import type {
+  CoreEdge,
+  CoreNode,
+} from '../../../../graph-core-infra/src/types.ts';
 import { CoreGetters, GraphGetters } from '../../plugins/types.ts';
 import type { GraphSettings } from '../../settings/index.ts';
-import type { CoreEdge, CoreNode } from '../../types.ts';
 import { CoreControls } from '../types.ts';
 
 export type EdgeHelpers = {

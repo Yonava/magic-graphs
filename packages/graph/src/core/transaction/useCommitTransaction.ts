@@ -1,4 +1,7 @@
-import type { CoreEdge, CoreNode } from '../../types.ts';
+import type {
+  CoreEdge,
+  CoreNode,
+} from '../../../../graph-core-infra/src/types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import type {
   CommitTransaction,

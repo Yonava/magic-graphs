@@ -1,13 +1,16 @@
+import { createEventHub } from '@magic/graph-core-infra/src/events/createEventHub';
 import { nullThrows } from '@magic/utils/assert';
 import { clone } from '@magic/utils/clone';
 import { delta } from '@magic/utils/delta/index';
 
 import { computed, ref, watch } from 'vue';
 
-import { createEventHub } from '../events/createEventHub.ts';
+import type {
+  CoreEdge,
+  CoreNode,
+} from '../../../graph-core-infra/src/types.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
-import type { CoreEdge, CoreNode } from '../types.ts';
 import { createCoreActions } from './actions/createGraphActions.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { createHelpers } from './helpers/createHelpers.ts';

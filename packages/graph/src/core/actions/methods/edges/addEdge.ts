@@ -1,7 +1,7 @@
 import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 
-import { CoreEdge } from '../../../../types.ts';
+import { CoreEdge } from '../../../../../../graph-core-infra/src/types.ts';
 import { CreateCoreAction } from '../../types.ts';
 
 export const edgeDefaults = () =>

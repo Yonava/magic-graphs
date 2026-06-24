@@ -1,5 +1,5 @@
 {
-  "name": "@magic/create-graph",
+  "name": "@magic/graph-core-infra",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -13,8 +13,9 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@magic/graph": "workspace:*",
-    "@magic/graph-plugins-shared": "workspace:*"
+    "@magic/utils": "workspace:*"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "ts-essentials": "^10.2.0"
+  }
 }

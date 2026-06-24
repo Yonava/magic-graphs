@@ -8,7 +8,8 @@
   "references": [
     { "path": "../canvas" },
     { "path": "../shapes" },
-    { "path": "../utils" }
+    { "path": "../utils" },
+    { "path": "../graph-core-infra" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

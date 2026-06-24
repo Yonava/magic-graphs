@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import type { Ref } from 'vue';
 
-import { CoreEdge, CoreNode } from '../../types.ts';
+import { CoreEdge, CoreNode } from '../../../../graph-core-infra/src/types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import { TransactionPayload } from './types.ts';
 import { useCommitTransaction } from './useCommitTransaction.ts';

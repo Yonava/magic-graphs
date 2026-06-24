@@ -1,6 +1,6 @@
 import { Fraction } from 'mathjs';
 
-import type { CoreEdge } from '../types.ts';
+import type { CoreEdge } from '../../../graph-core-infra/src/types.ts';
 
 export type CoreGraphSettings = {
   /**

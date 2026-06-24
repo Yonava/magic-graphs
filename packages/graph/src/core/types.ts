@@ -1,7 +1,10 @@
 import type { ComputedRef, Ref } from 'vue';
 
+import type {
+  CoreEdge,
+  CoreNode,
+} from '../../../graph-core-infra/src/types.ts';
 import { GraphSettings } from '../settings/index.ts';
-import type { CoreEdge, CoreNode } from '../types.ts';
 import { CoreGraphHelpers } from './helpers/types.ts';
 import { NodePositionStoreControls } from './positions/types.ts';
 import { EdgeWeightStoreControls } from './weights/types.ts';

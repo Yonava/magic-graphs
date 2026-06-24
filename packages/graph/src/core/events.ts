@@ -1,8 +1,6 @@
 import { DeepPartial, DeepReadonly } from 'ts-essentials';
 
-import { EventMapToEventRegistry } from '../events/types.ts';
 import { GraphSettings } from '../settings/index.ts';
-import { CoreEdge, CoreNode } from '../types.ts';
 import {
   ElementAdditionPayload,
   ElementRemovalPayload,

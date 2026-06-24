@@ -1,4 +1,8 @@
-import { CoreEdge, CoreNode, UnionToIntersection } from '../../types.ts';
+import {
+  CoreEdge,
+  CoreNode,
+  UnionToIntersection,
+} from '../../../../graph-core-infra/src/types.ts';
 import { Position } from '../positions/types.ts';
 import { TransactionPayload } from '../transaction/types.ts';
 import { CreateCoreActionOptions } from './createGraphActions.ts';

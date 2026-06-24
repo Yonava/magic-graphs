@@ -1,5 +1,5 @@
 {
-  "name": "@magic/graph",
+  "name": "@magic/graph-plugins-shared",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -12,20 +12,12 @@
   "scripts": {
     "build:types": "vue-tsc -b tsconfig.json"
   },
-  "peerDependencies": {
-    "vue": "^3.5.18"
-  },
   "dependencies": {
-    "@magic/shapes": "workspace:*",
-    "@magic/utils": "workspace:*",
     "@magic/graph-core-infra": "workspace:*",
-    "fraction.js": "^5.3.4",
-    "mathjs": "catalog:",
-    "tinycolor2": "catalog:"
+    "@magic/utils": "workspace:*",
+    "mathjs": "catalog:"
   },
   "devDependencies": {
-    "@types/tinycolor2": "catalog:",
-    "ts-essentials": "^10.2.0",
-    "vue": "catalog:"
+    "ts-essentials": "^10.2.0"
   }
 }

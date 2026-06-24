@@ -1,8 +1,8 @@
 import { Fraction } from 'mathjs';
 import { describe, expect, it } from 'vitest';
 
+import { createMockEventHub } from '../../../../graph-core-infra/src/testing/events/createMockEventHub.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../../settings/index.ts';
-import { createMockEventHub } from '../../testing/events/createMockEventHub.ts';
 import { DEFAULT_WEIGHT } from './constants.ts';
 import { createEdgeWeightStore } from './createEdgeWeightStore.ts';
 import { createEdgeWeightStoreEventRegistry } from './events.ts';
