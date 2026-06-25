@@ -27,7 +27,7 @@ import {
   setupCanvasCursor,
 } from './setupCanvasCursor.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
-import { createCanvasThemeOverrides } from './themes.ts';
+import { createCanvasDetectors, createCanvasThemeOverrides } from './themes.ts';
 import { CanvasPlugin, GraphUnderCursor } from './types.ts';
 
 export const canvas =
@@ -204,7 +204,10 @@ export const canvas =
 
           _nodeZScores: nodeZScores,
 
-          theme,
+          theme: {
+            ...theme,
+            detectors: createCanvasDetectors(theme._resolveToken),
+          },
         },
       },
       actions,

@@ -1,4 +1,6 @@
 import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { ComputedTokenDetectorMap } from '@magic/graph-plugins-shared/computed-tokens/types';
+import { TokenResolver } from '@magic/graph-plugins-shared/theme/createTokenResolver';
 import {
   Cursor,
   CursorFallback,
@@ -74,6 +76,33 @@ export type CanvasThemes = {
   'canvas.patternColor': CanvasThemeValues['patternColor'];
   'canvas.cursor': CanvasThemeValues['cursor'];
 };
+
+export const createCanvasDetectors = (
+  resolveToken: TokenResolver<CanvasThemes>,
+): ComputedTokenDetectorMap => ({
+  default: {
+    node: {
+      'node.color': (node) => resolveToken('node.default.color', node),
+      'node.size': (node) => resolveToken('node.default.size', node),
+      'node.border.color': (node) => resolveToken('node.default.border.color', node),
+      'node.border.width': (node) => resolveToken('node.default.border.width', node),
+      'node.cursor': (node) => resolveToken('node.default.cursor', node),
+      'node.text.content': (node) => resolveToken('node.default.text.content', node),
+      'node.text.size': (node) => resolveToken('node.default.text.size', node),
+      'node.text.color': (node) => resolveToken('node.default.text.color', node),
+      'node.text.fontWeight': (node) => resolveToken('node.default.text.fontWeight', node),
+    },
+    edge: {
+      'edge.color': (edge) => resolveToken('edge.default.color', edge),
+      'edge.width': (edge) => resolveToken('edge.default.width', edge),
+      'edge.cursor': (edge) => resolveToken('edge.default.cursor', edge),
+      'edge.text.content': (edge) => resolveToken('edge.default.text.content', edge),
+      'edge.text.size': (edge) => resolveToken('edge.default.text.size', edge),
+      'edge.text.color': (edge) => resolveToken('edge.default.text.color', edge),
+      'edge.text.fontWeight': (edge) => resolveToken('edge.default.text.fontWeight', edge),
+    },
+  },
+});
 
 export const createCanvasThemeOverrides = (): ThemeOverrides<CanvasThemes> => ({
   'node.default.text.content': [],
