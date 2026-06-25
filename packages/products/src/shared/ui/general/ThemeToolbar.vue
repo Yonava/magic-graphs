@@ -4,9 +4,8 @@
   import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
   import GToolbar from '../../../shared/ui/graph-core/toolbar/GToolbarBase.vue';
   import GToolbarButton from '../../../shared/ui/graph-core/toolbar/GToolbarButton.vue';
-  import { PreferredThemePresent } from '../../usePreferredThemePreset.ts';
 
-  const themePresetToIcon: Record<PreferredThemePresent, string> = {
+  const themePresetToIcon = {
     auto: 'cog-outline',
     light: 'weather-sunny',
     dark: 'weather-night',
@@ -20,9 +19,8 @@
       <GToolbarButton
         v-for="(val, key) in themePresetToIcon"
         :key="key"
-        @click="graph.preferredTheme.value = key"
         :icon="val"
-        :active="key === graph.preferredTheme.value"
+        :active="key === graph.themePresets.activePresetName()"
       />
     </ToolbarButtonGroup>
   </GToolbar>

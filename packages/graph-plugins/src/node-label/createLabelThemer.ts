@@ -11,8 +11,8 @@ export const createLabelThemer = (
   const focus = controls.focus?.theme.createLayer(layerId);
 
   const enable = () => {
-    canvas.set('node.default.text', (n) => getLabel(n.id));
-    focus?.set('node.focus.text', (n) => getLabel(n.id));
+    canvas.set('node.default.text.content', (n) => getLabel(n.id));
+    focus?.set('node.focus.text.content', (n) => getLabel(n.id));
   };
 
   const disable = () => {

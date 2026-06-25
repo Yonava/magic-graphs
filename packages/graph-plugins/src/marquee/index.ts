@@ -19,7 +19,7 @@ import { FocusEventMap } from '../focus/events.ts';
 import { NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD } from '../node-drag/constants.ts';
 import { MARQUEE_PLUGIN_ID, MARQUEE_SHAPE_ID } from './constants.ts';
 import { MarqueeEventMap, createMarqueeEventRegistry } from './events.ts';
-import { getEncapsulatedNodeBox, getSurfaceArea } from './helpers.ts';
+import { getSelectionBox, getSurfaceArea } from './helpers.ts';
 import { createMarqueeThemeOverrides } from './themes.ts';
 import { MarqueePlugin } from './types.ts';
 
@@ -39,7 +39,7 @@ export const marquee: MarqueePlugin = (
   const theme = createThemeController(createMarqueeThemeOverrides());
 
   const marqueeBox = ref<BoundingBox | undefined>();
-  const encapsulatedNodeBox = ref<BoundingBox | undefined>();
+  const selectionBox = ref<BoundingBox | undefined>();
 
   /**
    * given a mouse event, engages or disengages the marquee box
@@ -84,7 +84,7 @@ export const marquee: MarqueePlugin = (
   };
 
   const updateEncapsulatedNodeBox = () => {
-    encapsulatedNodeBox.value = getEncapsulatedNodeBox(controls);
+    selectionBox.value = getSelectionBox(controls);
   };
 
   const setMarqueeBoxDimensions = (
@@ -104,10 +104,10 @@ export const marquee: MarqueePlugin = (
     const shape = controls.canvas.shapes.shapes.rect({
       id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
-      fillColor: theme._resolveToken('marquee.color'),
+      fillColor: theme._resolveToken('marquee.drag.color'),
       stroke: {
-        color: theme._resolveToken('marquee.borderColor'),
-        lineWidth: theme._resolveToken('marquee.borderWidth'),
+        color: theme._resolveToken('marquee.drag.border.color'),
+        lineWidth: theme._resolveToken('marquee.drag.border.width'),
       },
     });
 
@@ -132,17 +132,15 @@ export const marquee: MarqueePlugin = (
     return aggregator;
   };
 
-  const getEncapsulatedNodeBoxSchema = (box: BoundingBox): CanvasElement => {
+  const getSelectionBoxSchema = (box: BoundingBox): CanvasElement => {
     const id = 'encapsulated-node-box';
     const shape = controls.canvas.shapes.shapes.rect({
       id,
       ...box,
-      fillColor: theme._resolveToken('marquee.encapsulatedNodeBox.color'),
+      fillColor: theme._resolveToken('marquee.selection.color'),
       stroke: {
-        color: theme._resolveToken('marquee.encapsulatedNodeBox.borderColor'),
-        lineWidth: theme._resolveToken(
-          'marquee.encapsulatedNodeBox.borderWidth',
-        ),
+        color: theme._resolveToken('marquee.selection.border.color'),
+        lineWidth: theme._resolveToken('marquee.selection.border.width'),
       },
     });
 
@@ -155,21 +153,19 @@ export const marquee: MarqueePlugin = (
         [NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD]:
           controls.focus.focusedNodes.value.map((n) => n.id),
         [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: theme._resolveToken(
-          'marquee.encapsulatedNodeBox.cursor',
+          'marquee.selection.cursor',
         ),
       },
     };
   };
 
   const addEncapsulatedNodeBoxToAggregator = (aggregator: Aggregator) => {
-    if (!encapsulatedNodeBox.value) return aggregator;
+    if (!selectionBox.value) return aggregator;
 
-    const { width, height } = encapsulatedNodeBox.value;
+    const { width, height } = selectionBox.value;
     if (width === 0 || height === 0) return aggregator;
 
-    const nodeBoxSchema = getEncapsulatedNodeBoxSchema(
-      encapsulatedNodeBox.value,
-    );
+    const nodeBoxSchema = getSelectionBoxSchema(selectionBox.value);
 
     aggregator.push(nodeBoxSchema);
     return aggregator;

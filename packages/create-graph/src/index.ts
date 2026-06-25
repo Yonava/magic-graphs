@@ -9,6 +9,12 @@ import {
   LooseGraphPlugin,
 } from '@magic/graph-plugins-shared/plugins/types';
 import { ThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
+import {
+  ComputedTokenState,
+  EdgeComputedTokens,
+  NodeComputedTokens,
+  computedTokenStatePrecedence,
+} from '@magic/graph-plugins-shared/computed-tokens';
 import { ThemesForPlugins } from '@magic/graph-plugins-shared/types';
 import { core as createCore } from '@magic/graph/core/index';
 import { CoreControls } from '@magic/graph/core/types';
@@ -24,6 +30,7 @@ type CreateGraphOptions<
   themePresets: Record<PresetName, ThemesForPlugins<NoInfer<TPlugins>>>;
   settings: Partial<GraphSettings>;
 };
+
 
 export const createGraph = <
   const TPlugins extends LooseGraphPlugin[],
@@ -48,6 +55,7 @@ export const createGraph = <
   let evolvingEvents: any = core.events;
   let evolvingActions = core.actions;
   let evolvingGetters = core.getters;
+
   let evolvingThemeControllers: any = {};
 
   for (const plugin of plugins) {
@@ -72,6 +80,12 @@ export const createGraph = <
 
     if (!themeController) continue;
 
+    const { set } = themeController.createLayer('create-graph/theme-presets');
+    const tokens = Object.keys(themePresets[pluginName]);
+    for (const token of tokens) {
+      set(token, () => themePresets[pluginName][token]);
+    }
+
     evolvingThemeControllers = {
       ...evolvingThemeControllers,
       [pluginName]: themeController,
@@ -92,6 +106,8 @@ export const createGraph = <
     ExtractGetters<NoInfer<TPlugins>>
   >;
 
+  // const theme
+
   return {
     ...controls,
     ...getters,
@@ -100,6 +116,8 @@ export const createGraph = <
     themePresets: {
       activePresetName: () => activePresetName,
       activePreset: () => themePresets[activePresetName],
+      setActivePreset: (newPresetName: PresetName) =>
+        (activePresetName = newPresetName),
     },
   };
 };

@@ -3,36 +3,28 @@ import {
   CursorFallback,
 } from '@magic/graph-plugins-shared/theme/cursor';
 import {
+  ThemeOverrides,
   ThemeValue,
-  ToThemeOverrides,
 } from '@magic/graph-plugins-shared/theme/types';
 import { Color } from '@magic/utils/colors';
 
 export type MarqueeThemes = {
-  marquee: {
-    color: ThemeValue<Color>;
-    borderColor: ThemeValue<Color>;
-    borderWidth: ThemeValue<number>;
-    encapsulatedNodeBox: {
-      color: ThemeValue<Color>;
-      borderColor: ThemeValue<Color>;
-      borderWidth: ThemeValue<number>;
-      cursor: ThemeValue<Cursor | CursorFallback>;
-    };
-  };
+  'marquee.drag.color': ThemeValue<Color>;
+  'marquee.drag.border.color': ThemeValue<Color>;
+  'marquee.drag.border.width': ThemeValue<number>;
+  'marquee.selection.color': ThemeValue<Color>;
+  'marquee.selection.border.color': ThemeValue<Color>;
+  'marquee.selection.border.width': ThemeValue<number>;
+  'marquee.selection.cursor': ThemeValue<Cursor | CursorFallback>;
 };
 
 export const createMarqueeThemeOverrides =
-  (): ToThemeOverrides<MarqueeThemes> => ({
-    marquee: {
-      color: [],
-      borderColor: [],
-      borderWidth: [],
-      encapsulatedNodeBox: {
-        color: [],
-        borderColor: [],
-        borderWidth: [],
-        cursor: [],
-      },
-    },
+  (): ThemeOverrides<MarqueeThemes> => ({
+    'marquee.drag.color': [],
+    'marquee.drag.border.color': [],
+    'marquee.drag.border.width': [],
+    'marquee.selection.color': [],
+    'marquee.selection.border.color': [],
+    'marquee.selection.border.width': [],
+    'marquee.selection.cursor': [],
   });

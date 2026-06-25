@@ -16,6 +16,7 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
+    "@magic/graph-core-infra": "workspace:*",
     "@magic/create-graph": "workspace:*",
     "@magic/graph-plugins": "workspace:*",
     "@magic/graph-plugins-shared": "workspace:*",

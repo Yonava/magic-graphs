@@ -4,60 +4,36 @@ import {
   CursorFallback,
 } from '@magic/graph-plugins-shared/theme/cursor';
 import {
+  ThemeOverrides,
   ThemeValue,
-  ToThemeOverrides,
 } from '@magic/graph-plugins-shared/theme/types';
 import { Color } from '@magic/utils/colors';
 
 import { NodeAnchor } from './types.ts';
 
 export type AnchorsThemes = {
-  anchors: {
-    default: {
-      color: ThemeValue<Color, [node: CoreNode]>;
-      radius: ThemeValue<number, [node: CoreNode]>;
-      cursor: ThemeValue<Cursor | CursorFallback, [node: CoreNode]>;
-    };
-    parentFocused: {
-      color: ThemeValue<Color, [node: CoreNode]>;
-      radius: ThemeValue<number, [node: CoreNode]>;
-      cursor: ThemeValue<Cursor | CursorFallback, [node: CoreNode]>;
-    };
-    linkPreview: {
-      default: {
-        color: ThemeValue<Color, [node: CoreNode, anchor: NodeAnchor]>;
-        width: ThemeValue<number, [node: CoreNode, anchor: NodeAnchor]>;
-      };
-      parentFocused: {
-        color: ThemeValue<Color, [node: CoreNode, anchor: NodeAnchor]>;
-        width: ThemeValue<number, [node: CoreNode, anchor: NodeAnchor]>;
-      };
-    };
-  };
+  'anchors.default.color': ThemeValue<Color, [node: CoreNode]>;
+  'anchors.default.radius': ThemeValue<number, [node: CoreNode]>;
+  'anchors.default.cursor': ThemeValue<Cursor | CursorFallback, [node: CoreNode]>;
+  'anchors.parentFocused.color': ThemeValue<Color, [node: CoreNode]>;
+  'anchors.parentFocused.radius': ThemeValue<number, [node: CoreNode]>;
+  'anchors.parentFocused.cursor': ThemeValue<Cursor | CursorFallback, [node: CoreNode]>;
+  'anchors.edge.preview.default.color': ThemeValue<Color, [node: CoreNode, anchor: NodeAnchor]>;
+  'anchors.edge.preview.default.width': ThemeValue<number, [node: CoreNode, anchor: NodeAnchor]>;
+  'anchors.edge.preview.parentFocused.color': ThemeValue<Color, [node: CoreNode, anchor: NodeAnchor]>;
+  'anchors.edge.preview.parentFocused.width': ThemeValue<number, [node: CoreNode, anchor: NodeAnchor]>;
 };
 
 export const createAnchorsThemeOverrides =
-  (): ToThemeOverrides<AnchorsThemes> => ({
-    anchors: {
-      default: {
-        color: [],
-        cursor: [],
-        radius: [],
-      },
-      parentFocused: {
-        color: [],
-        cursor: [],
-        radius: [],
-      },
-      linkPreview: {
-        default: {
-          color: [],
-          width: [],
-        },
-        parentFocused: {
-          color: [],
-          width: [],
-        },
-      },
-    },
+  (): ThemeOverrides<AnchorsThemes> => ({
+    'anchors.default.color': [],
+    'anchors.default.radius': [],
+    'anchors.default.cursor': [],
+    'anchors.parentFocused.color': [],
+    'anchors.parentFocused.radius': [],
+    'anchors.parentFocused.cursor': [],
+    'anchors.edge.preview.default.color': [],
+    'anchors.edge.preview.default.width': [],
+    'anchors.edge.preview.parentFocused.color': [],
+    'anchors.edge.preview.parentFocused.width': [],
   });

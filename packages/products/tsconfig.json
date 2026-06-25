@@ -13,7 +13,8 @@
     { "path": "../utils" },
     { "path": "../graph-plugins" },
     { "path": "../graph-plugins-shared" },
-    { "path": "../create-graph" }
+    { "path": "../create-graph" },
+    { "path": "../graph-core-infra" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

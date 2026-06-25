@@ -22,7 +22,7 @@ export const createDragThemer = (
     canvas.set('canvas.cursor', globalGrabbing);
     canvas.set('node.default.cursor', CURSOR.GRAB);
     focus?.set('node.focus.cursor', CURSOR.GRAB);
-    marquee?.set('marquee.encapsulatedNodeBox.cursor', CURSOR.GRAB);
+    marquee?.set('marquee.selection.cursor', CURSOR.GRAB);
   };
 
   const disable = () => {

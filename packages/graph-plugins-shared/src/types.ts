@@ -1,8 +1,7 @@
-import { Prettify, UnionToIntersection } from 'ts-essentials';
+import { UnionToIntersection } from 'ts-essentials';
 
 import { LooseGraphPlugin } from './plugins/types.ts';
 import { ThemeController } from './theme/createThemeController.ts';
-import { ToThemeOverrides } from './theme/types.ts';
 
 export type Coordinate = {
   x: number;
@@ -10,7 +9,7 @@ export type Coordinate = {
 };
 
 export type WithTheme<T, Themes> = T & {
-  theme: ThemeController<ToThemeOverrides<Themes>>;
+  theme: ThemeController<Themes>;
 };
 
 type ThemeForPlugin<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
@@ -24,6 +23,5 @@ type ThemeForPlugin<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
     : never
   : never;
 
-export type ThemesForPlugins<Plugins extends LooseGraphPlugin[]> = Prettify<
-  UnionToIntersection<ThemeForPlugin<Plugins[number]>>
->;
+export type ThemesForPlugins<Plugins extends LooseGraphPlugin[]> =
+  UnionToIntersection<ThemeForPlugin<Plugins[number]>>;

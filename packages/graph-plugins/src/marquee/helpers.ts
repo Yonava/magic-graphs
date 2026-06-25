@@ -9,16 +9,16 @@ export function getSurfaceArea(box: BoundingBox) {
   return Math.abs(width * height);
 }
 
-export const getEncapsulatedNodeBox = (
+export const getSelectionBox = (
   graph: CoreControls & { canvas: CanvasControls; focus: FocusControls },
 ): BoundingBox => {
-  const encapsulatedNodeBox = {
+  const selectionBox = {
     at: { x: Infinity, y: Infinity },
     width: 0,
     height: 0,
   };
 
-  if (graph.focus.focusedNodes.value.length < 2) return encapsulatedNodeBox;
+  if (graph.focus.focusedNodes.value.length < 2) return selectionBox;
 
   let minX = Infinity,
     minY = Infinity;
@@ -31,7 +31,7 @@ export const getEncapsulatedNodeBox = (
       node,
     );
     const nodeBorderWidth = graph.canvas.theme._resolveToken(
-      'node.default.borderWidth',
+      'node.default.border.width',
       node,
     );
     const nodeArea = nodeRadius + nodeBorderWidth / 2;
@@ -49,14 +49,14 @@ export const getEncapsulatedNodeBox = (
     maxX > -Infinity &&
     maxY > -Infinity
   ) {
-    encapsulatedNodeBox.at.x = minX;
-    encapsulatedNodeBox.at.y = minY;
-    encapsulatedNodeBox.width = maxX - minX;
-    encapsulatedNodeBox.height = maxY - minY;
+    selectionBox.at.x = minX;
+    selectionBox.at.y = minY;
+    selectionBox.width = maxX - minX;
+    selectionBox.height = maxY - minY;
   } else {
-    encapsulatedNodeBox.width = 0;
-    encapsulatedNodeBox.height = 0;
+    selectionBox.width = 0;
+    selectionBox.height = 0;
   }
 
-  return encapsulatedNodeBox;
+  return selectionBox;
 };

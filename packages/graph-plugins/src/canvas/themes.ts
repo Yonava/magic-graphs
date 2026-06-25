@@ -4,13 +4,13 @@ import {
   CursorFallback,
 } from '@magic/graph-plugins-shared/theme/cursor';
 import {
-  AsStyleValue,
+  ThemeOverrides,
   ThemeValue,
-  ToThemeOverrides,
 } from '@magic/graph-plugins-shared/theme/types';
 import type { FontWeight } from '@magic/shapes/text/types';
-import { Shape } from '@magic/shapes/types/index';
 import { Color } from '@magic/utils/colors';
+
+import { Ref } from 'vue';
 
 type TextStyleValues = {
   text: string;
@@ -20,7 +20,6 @@ type TextStyleValues = {
 };
 
 type NodeStyleValues = TextStyleValues & {
-  shape: AsStyleValue<Shape>;
   size: number;
   borderWidth: number;
   borderColor: Color;
@@ -29,9 +28,9 @@ type NodeStyleValues = TextStyleValues & {
 };
 
 type EdgeStyleValues = TextStyleValues & {
-  shape: AsStyleValue<Shape>;
   color: Color;
   width: number;
+  cursor: Cursor;
 };
 
 export type NodeThemeValues = {
@@ -55,50 +54,45 @@ type CanvasThemeValues = {
 };
 
 export type CanvasThemes = {
-  node: {
-    default: NodeThemeValues;
-  };
-  edge: {
-    default: EdgeThemeValues;
-  };
-  canvas: CanvasThemeValues;
+  'node.default.text.content': NodeThemeValues['text'];
+  'node.default.text.size': NodeThemeValues['textSize'];
+  'node.default.text.color': NodeThemeValues['textColor'];
+  'node.default.text.fontWeight': NodeThemeValues['textFontWeight'];
+  'node.default.size': NodeThemeValues['size'];
+  'node.default.border.width': NodeThemeValues['borderWidth'];
+  'node.default.border.color': NodeThemeValues['borderColor'];
+  'node.default.color': NodeThemeValues['color'];
+  'node.default.cursor': NodeThemeValues['cursor'];
+  'edge.default.text.content': EdgeThemeValues['text'];
+  'edge.default.text.size': EdgeThemeValues['textSize'];
+  'edge.default.text.color': EdgeThemeValues['textColor'];
+  'edge.default.text.fontWeight': EdgeThemeValues['textFontWeight'];
+  'edge.default.color': EdgeThemeValues['color'];
+  'edge.default.width': EdgeThemeValues['width'];
+  'edge.default.cursor': EdgeThemeValues['cursor'];
+  'canvas.color': CanvasThemeValues['color'];
+  'canvas.patternColor': CanvasThemeValues['patternColor'];
+  'canvas.cursor': CanvasThemeValues['cursor'];
 };
 
-const textFields = (): ToThemeOverrides<TextStyleValues> => ({
-  text: [],
-  textColor: [],
-  textFontWeight: [],
-  textSize: [],
+export const createCanvasThemeOverrides = (): ThemeOverrides<CanvasThemes> => ({
+  'node.default.text.content': [],
+  'node.default.text.size': [],
+  'node.default.text.color': [],
+  'node.default.text.fontWeight': [],
+  'node.default.size': [],
+  'node.default.border.width': [],
+  'node.default.border.color': [],
+  'node.default.color': [],
+  'node.default.cursor': [],
+  'edge.default.text.content': [],
+  'edge.default.text.size': [],
+  'edge.default.text.color': [],
+  'edge.default.text.fontWeight': [],
+  'edge.default.color': [],
+  'edge.default.width': [],
+  'edge.default.cursor': [],
+  'canvas.color': [],
+  'canvas.patternColor': [],
+  'canvas.cursor': [],
 });
-
-export const nodeFields = (): ToThemeOverrides<NodeStyleValues> => ({
-  ...textFields(),
-  shape: [],
-  borderColor: [],
-  borderWidth: [],
-  color: [],
-  size: [],
-  cursor: [],
-});
-
-export const edgeFields = (): ToThemeOverrides<EdgeStyleValues> => ({
-  ...textFields(),
-  shape: [],
-  color: [],
-  width: [],
-});
-
-export const createCanvasThemeOverrides =
-  (): ToThemeOverrides<CanvasThemes> => ({
-    node: {
-      default: nodeFields(),
-    },
-    edge: {
-      default: edgeFields(),
-    },
-    canvas: {
-      color: [],
-      patternColor: [],
-      cursor: [],
-    },
-  });

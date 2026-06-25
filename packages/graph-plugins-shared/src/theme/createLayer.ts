@@ -1,30 +1,21 @@
 import { generateId } from '@magic/utils/id';
-import { PathValue } from 'ts-essentials';
 
-import { getDataFromNestedPath } from './createTokenResolver.ts';
-import { ThemeOverride, ThemeToken, ToThemes } from './types.ts';
+import { ThemeOverrides } from './types.ts';
 
-export type ThemeLayer<ThemeOverrides> = {
+export type ThemeLayer<Themes> = {
   /**
    * set a ThemeValue for a specific token in your graph.
    *
    * @param token - the ThemeToken you want to override
-   * @param value - the ThemeValue (static StyleValue or fallthrough getter) to set
+   * @param value - the ThemeValue to set
    */
-  set: <Token extends ThemeToken<ToThemes<ThemeOverrides>>>(
-    token: Token,
-    value: PathValue<ThemeOverrides, Token> extends ThemeOverride<
-      infer ThemeValue
-    >[]
-      ? ThemeValue
-      : never,
-  ) => void;
+  set: <Token extends keyof Themes>(token: Token, value: Themes[Token]) => void;
   /**
    * removes the override for a specific token registered by this layer.
    *
    * @param token - the ThemeToken to remove the override for
    */
-  remove: (token: ThemeToken<ToThemes<ThemeOverrides>>) => void;
+  remove: (token: keyof Themes) => void;
   /**
    * removes all overrides registered by this layer.
    */
@@ -39,24 +30,24 @@ export type ThemeLayer<ThemeOverrides> = {
  * @param layerId - identifier for this layer, useful for debugging
  * @returns controls to set and remove token overrides
  */
-export const createLayer = <ThemeOverrides>(
-  themeOverrides: ThemeOverrides,
+export const createLayer = <Themes>(
+  themeOverrides: ThemeOverrides<Themes>,
   layerId = generateId(),
-): ThemeLayer<ThemeOverrides> => {
-  const activeTokens = new Set<ThemeToken<ToThemes<ThemeOverrides>>>();
+): ThemeLayer<Themes> => {
+  const activeTokens = new Set<keyof Themes>();
 
-  const set: ThemeLayer<ThemeOverrides>['set'] = (token, value) => {
+  const set: ThemeLayer<Themes>['set'] = (token, value) => {
     if (activeTokens.has(token)) {
       console.warn(
-        `Attempted to set token "${token}" multiple times on the same theme layer`,
+        `Attempted to set token "${token.toString()}" multiple times on the same theme layer`,
       );
       return;
     }
 
-    const overrides = getDataFromNestedPath(themeOverrides, token);
+    const overrides = themeOverrides[token];
     if (!overrides) {
       console.warn(
-        `Attempted to set token "${token}" but it was not recognized`,
+        `Attempted to set token "${token.toString()}" but it was not recognized`,
       );
       return;
     }
@@ -69,14 +60,11 @@ export const createLayer = <ThemeOverrides>(
     activeTokens.add(token);
   };
 
-  const remove: ThemeLayer<ThemeOverrides>['remove'] = (token) => {
-    const overrides: ThemeOverride<unknown>[] = getDataFromNestedPath(
-      themeOverrides,
-      token,
-    );
+  const remove: ThemeLayer<Themes>['remove'] = (token) => {
+    const overrides = themeOverrides[token];
     if (!overrides) {
       console.warn(
-        `Attempted to remove token "${token}" but it was not recognized`,
+        `Attempted to remove token "${token.toString()}" but it was not recognized`,
       );
       return;
     }
@@ -85,7 +73,7 @@ export const createLayer = <ThemeOverrides>(
 
     if (index === -1) {
       console.warn(
-        `Attempted to remove token "${token}" but no override was found for layerId "${layerId}"`,
+        `Attempted to remove token "${token.toString()}" but no override was found for layerId "${layerId}"`,
       );
       return;
     }

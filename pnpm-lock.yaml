@@ -181,6 +181,9 @@ importers:
       '@magic/graph-plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared
+      '@magic/shapes':
+        specifier: workspace:*
+        version: link:../shapes
       '@magic/utils':
         specifier: workspace:*
         version: link:../utils
@@ -259,6 +262,9 @@ importers:
       '@magic/graph-core-infra':
         specifier: workspace:*
         version: link:../graph-core-infra
+      '@magic/shapes':
+        specifier: workspace:*
+        version: link:../shapes
       '@magic/utils':
         specifier: workspace:*
         version: link:../utils
@@ -275,6 +281,9 @@ importers:
       '@magic/create-graph':
         specifier: workspace:*
         version: link:../create-graph
+      '@magic/graph-core-infra':
+        specifier: workspace:*
+        version: link:../graph-core-infra
       '@magic/graph-plugins':
         specifier: workspace:*
         version: link:../graph-plugins
