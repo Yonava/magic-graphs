@@ -1,3 +1,5 @@
+import { ComputedTokenDetectorMap } from '@magic/graph-plugins-shared/computed-tokens/types';
+import { TokenResolver } from '@magic/graph-plugins-shared/theme/createTokenResolver';
 import { ThemeOverrides } from '@magic/graph-plugins-shared/theme/types';
 
 import { EdgeThemeValues, NodeThemeValues } from '../canvas/themes.ts';
@@ -20,6 +22,34 @@ export type FocusThemes = {
   'edge.focus.width': EdgeThemeValues['width'];
   'edge.focus.cursor': EdgeThemeValues['cursor'];
 };
+
+export const createFocusDetectors = (
+  isFocused: (id: string) => boolean,
+  resolveToken: TokenResolver<FocusThemes>,
+): ComputedTokenDetectorMap => ({
+  focus: {
+    node: {
+      'node.color': (node) => isFocused(node.id) ? resolveToken('node.focus.color', node) : undefined,
+      'node.size': (node) => isFocused(node.id) ? resolveToken('node.focus.size', node) : undefined,
+      'node.border.color': (node) => isFocused(node.id) ? resolveToken('node.focus.border.color', node) : undefined,
+      'node.border.width': (node) => isFocused(node.id) ? resolveToken('node.focus.border.width', node) : undefined,
+      'node.cursor': (node) => isFocused(node.id) ? resolveToken('node.focus.cursor', node) : undefined,
+      'node.text.content': (node) => isFocused(node.id) ? resolveToken('node.focus.text.content', node) : undefined,
+      'node.text.size': (node) => isFocused(node.id) ? resolveToken('node.focus.text.size', node) : undefined,
+      'node.text.color': (node) => isFocused(node.id) ? resolveToken('node.focus.text.color', node) : undefined,
+      'node.text.fontWeight': (node) => isFocused(node.id) ? resolveToken('node.focus.text.fontWeight', node) : undefined,
+    },
+    edge: {
+      'edge.color': (edge) => isFocused(edge.id) ? resolveToken('edge.focus.color', edge) : undefined,
+      'edge.width': (edge) => isFocused(edge.id) ? resolveToken('edge.focus.width', edge) : undefined,
+      'edge.cursor': (edge) => isFocused(edge.id) ? resolveToken('edge.focus.cursor', edge) : undefined,
+      'edge.text.content': (edge) => isFocused(edge.id) ? resolveToken('edge.focus.text.content', edge) : undefined,
+      'edge.text.size': (edge) => isFocused(edge.id) ? resolveToken('edge.focus.text.size', edge) : undefined,
+      'edge.text.color': (edge) => isFocused(edge.id) ? resolveToken('edge.focus.text.color', edge) : undefined,
+      'edge.text.fontWeight': (edge) => isFocused(edge.id) ? resolveToken('edge.focus.text.fontWeight', edge) : undefined,
+    },
+  },
+});
 
 export const createFocusThemeOverrides = (): ThemeOverrides<FocusThemes> => ({
   'node.focus.text.content': [],

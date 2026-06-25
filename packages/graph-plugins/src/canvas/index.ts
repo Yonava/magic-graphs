@@ -69,7 +69,7 @@ export const canvas =
       CANVAS_PLUGIN_ID + '/theme/edge-weight',
     );
 
-    weightLayer.set('edge.default.text', (edge) =>
+    weightLayer.set('edge.default.text.content', (edge) =>
       getters.getEdge(edge.id).weight.toFraction(),
     );
 
@@ -132,55 +132,10 @@ export const canvas =
 
     const shapes = useAnimatedShapes();
 
-    const addNodesAndEdgesToAggregator = (aggregator: Aggregator) => {
-      const edgeCanvasElements = controls.edges.value
-        .map((edge) => {
-          const shape = theme._resolveToken('edge.default.shape', edge);
-          if (!shape) return;
-
-          return {
-            shape,
-            id: edge.id,
-            graphType: 'edge',
-            priority: 1,
-          } as const;
-        })
-        .filter((el) => !!el);
-
-      const nodeZScores = getNodeZScores({
-        nodes: controls.nodes.value,
-        positions: controls.positions,
-      });
-
-      const nodeCanvasElements = controls.nodes.value
-        .map((node) => {
-          const shape = theme._resolveToken('node.default.shape', node);
-          if (!shape) return;
-
-          return {
-            shape,
-            id: node.id,
-            graphType: 'node',
-            priority:
-              2 +
-              nullThrows(nodeZScores.get(node.id), 'node z score not found'),
-            data: {
-              [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: theme._resolveToken(
-                'node.default.cursor',
-                node,
-              ),
-            },
-          } as const;
-        })
-        .filter((el) => !!el);
-
-      aggregator.push(...edgeCanvasElements);
-      aggregator.push(...nodeCanvasElements);
-
-      return aggregator;
-    };
-
-    aggregator.transformers.push(addNodesAndEdgesToAggregator);
+    const nodeZScores = getNodeZScores({
+      nodes: controls.nodes.value,
+      positions: controls.positions,
+    });
 
     onMounted(() => {
       if (!magicCanvas.canvas.value) {
@@ -246,6 +201,8 @@ export const canvas =
 
           graphUnderCursor,
           forceUpdateGraphUnderCursor,
+
+          _nodeZScores: nodeZScores,
 
           theme,
         },

@@ -56,6 +56,8 @@ type BaseCanvasControls = {
    * hit-testing may have changed.
    */
   forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
+  /** @internal */
+  _nodeZScores: Map<string, number>;
 };
 
 export type CanvasControls = WithTheme<BaseCanvasControls, CanvasThemes>;

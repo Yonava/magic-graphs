@@ -41,11 +41,25 @@ export const computedTokenStatePrecedence = [
 export type ComputedTokenState = (typeof computedTokenStatePrecedence)[number];
 
 /** maps computed node tokens to detector functions. return a value to claim the token, return undefined to defer to the next state in the precedence chain. */
-export type NodeComputedTokenDetectors = {
-  [Token in keyof NodeComputedTokens]?: (node: CoreNode) => NodeComputedTokens[Token] | undefined;
+type NodeComputedTokenDetectors = {
+  [Token in keyof NodeComputedTokens]?: (
+    node: CoreNode,
+  ) => NodeComputedTokens[Token] | undefined;
 };
 
 /** maps computed edge tokens to detector functions. return a value to claim the token, return undefined to defer to the next state in the precedence chain. */
-export type EdgeComputedTokenDetectors = {
-  [Token in keyof EdgeComputedTokens]?: (edge: CoreEdge) => EdgeComputedTokens[Token] | undefined;
+type EdgeComputedTokenDetectors = {
+  [Token in keyof EdgeComputedTokens]?: (
+    edge: CoreEdge,
+  ) => EdgeComputedTokens[Token] | undefined;
 };
+
+export type ComputedTokenDetectorMap = Partial<
+  Record<
+    ComputedTokenState,
+    {
+      node?: NodeComputedTokenDetectors;
+      edge?: EdgeComputedTokenDetectors;
+    }
+  >
+>;

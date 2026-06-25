@@ -15,7 +15,7 @@ import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
 import { FOCUSABLE_GRAPH_TYPES, FOCUS_PLUGIN_ID } from './constants.ts';
 import { FocusEventMap, createFocusEventRegistry } from './events.ts';
-import { createFocusThemeOverrides } from './themes.ts';
+import { createFocusDetectors, createFocusThemeOverrides } from './themes.ts';
 import { FocusPlugin } from './types.ts';
 
 export const focus: FocusPlugin = (
@@ -206,6 +206,8 @@ export const focus: FocusPlugin = (
     },
   };
 
+  const theme = createThemeController(createFocusThemeOverrides());
+
   return {
     events,
     actions: extendedActions,
@@ -224,7 +226,10 @@ export const focus: FocusPlugin = (
         focusedEdges: computed(() =>
           controls.edges.value.filter((edge) => isFocused(edge.id)),
         ),
-        theme: createThemeController(createFocusThemeOverrides()),
+        theme: {
+          ...theme,
+          detectors: createFocusDetectors(isFocused, theme._resolveToken),
+        },
         lifecycle: {
           enable,
           disable,
