@@ -20,6 +20,7 @@
     "@magic/create-graph": "workspace:*",
     "@magic/graph-plugins": "workspace:*",
     "@magic/graph-plugins-shared": "workspace:*",
+    "@magic/graph-theme-presets": "workspace:*",
     "@magic/canvas": "workspace:*",
     "@magic/shapes": "workspace:*",
     "@magic/ui": "workspace:*",

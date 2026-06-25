@@ -14,7 +14,8 @@
     { "path": "../graph-plugins" },
     { "path": "../graph-plugins-shared" },
     { "path": "../create-graph" },
-    { "path": "../graph-core-infra" }
+    { "path": "../graph-core-infra" },
+    { "path": "../graph-theme-presets" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

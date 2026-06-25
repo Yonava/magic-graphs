@@ -2,12 +2,6 @@ import { GraphActions } from '@magic/graph-core-infra/actions/types';
 import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { GraphGetters } from '@magic/graph-core-infra/getters/types';
 import {
-  ComputedTokenState,
-  EdgeComputedTokens,
-  NodeComputedTokens,
-  computedTokenStatePrecedence,
-} from '@magic/graph-plugins-shared/computed-tokens/types';
-import {
   ExtractActions,
   ExtractControls,
   ExtractEventMap,
