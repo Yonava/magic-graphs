@@ -259,15 +259,10 @@ export const anchors: AnchorsPlugin = (
       lineWidth: width,
     });
 
-    const parentNodePriority = nullThrows(
-      elements.find((e) => e.id === currentParentNode.id),
-      'could not find parent node in aggregator pipeline',
-    ).priority;
-
     const element: CanvasElement = {
       id: 'link-preview',
       graphType: 'link-preview',
-      priority: parentNodePriority - 0.001,
+      priority: controls.canvas.getNodePriority()(currentParentNode.id) - 0.001,
       shape,
     };
 
