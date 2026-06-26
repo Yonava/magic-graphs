@@ -83,6 +83,7 @@ type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
   >;
   getters: GraphGetters<MergeGetters<[PluginData['getters'], CoreGetters]>>;
   actions: GraphActions<MergeActions<[PluginData['actions'], CoreActions]>>;
+  onAfterInit?: () => void;
 };
 
 /**
@@ -105,6 +106,7 @@ export type LooseGraphPlugin = (
   events: EventHub<CoreEventMap & LoosePluginData['events']>;
   actions: GraphActions<any>;
   getters: GraphGetters<any>;
+  onAfterInit?: () => void;
 };
 
 export type RemoveArray<T> = T extends (infer F)[] ? F : T;

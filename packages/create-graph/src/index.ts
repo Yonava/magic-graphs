@@ -94,23 +94,27 @@ export const createGraph = <
       pluginResult.controls as any
     )[pluginName]?.theme;
 
-    if (!pluginThemeField) continue;
-
-    const { set } = pluginThemeField.createLayer('create-graph/theme-presets');
-    const tokens = Object.keys(
-      (themePresets as any)[activePresetName][pluginName],
-    );
-    for (const token of tokens) {
-      set(
-        token,
-        () => (themePresets as any)[activePresetName][pluginName][token],
+    if (pluginThemeField) {
+      const { set } = pluginThemeField.createLayer(
+        'create-graph/theme-presets',
       );
+      const tokens = Object.keys(
+        (themePresets as any)[activePresetName][pluginName],
+      );
+      for (const token of tokens) {
+        set(
+          token,
+          () => (themePresets as any)[activePresetName][pluginName][token],
+        );
+      }
+
+      evolvingThemeDetectors = {
+        ...evolvingThemeDetectors,
+        ...pluginThemeField.detectors,
+      };
     }
 
-    evolvingThemeDetectors = {
-      ...evolvingThemeDetectors,
-      ...pluginThemeField.detectors,
-    };
+    pluginResult.onAfterInit?.();
   }
 
   const events = evolvingEvents as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
@@ -172,6 +176,9 @@ export const createGraph = <
       id: edge.id,
       graphType: 'edge',
       priority: 1,
+      data: {
+        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenResolver('edge.cursor', edge),
+      },
     };
   };
 

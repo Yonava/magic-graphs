@@ -236,5 +236,13 @@ export const focus: FocusPlugin = (
         },
       },
     },
+    onAfterInit: () => {
+      const weightLayer = theme.createLayer(
+        FOCUS_PLUGIN_ID + '/theme/edge-weight',
+      );
+      weightLayer.set('edge.focus.text.content', (edge) =>
+        getters.getEdge(edge.id).weight.toFraction(),
+      );
+    },
   };
 };

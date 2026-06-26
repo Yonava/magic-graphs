@@ -60,14 +60,6 @@ export const canvas =
 
     const theme = createThemeController(createCanvasThemeOverrides());
 
-    const weightLayer = theme.createLayer(
-      CANVAS_PLUGIN_ID + '/theme/edge-weight',
-    );
-
-    weightLayer.set('edge.default.text.content', (edge) =>
-      getters.getEdge(edge.id).weight.toFraction(),
-    );
-
     setupCanvasCursor({
       canvas: magicCanvas.canvas,
       subscribe: events.subscribe,
@@ -213,5 +205,13 @@ export const canvas =
       },
       actions,
       events,
+      onAfterInit: () => {
+        const weightLayer = theme.createLayer(
+          CANVAS_PLUGIN_ID + '/theme/edge-weight',
+        );
+        weightLayer.set('edge.default.text.content', (edge) =>
+          getters.getEdge(edge.id).weight.toFraction(),
+        );
+      },
     };
   };

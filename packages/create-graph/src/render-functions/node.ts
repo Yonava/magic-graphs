@@ -47,7 +47,7 @@ export const nodeRenderer: NodeRenderer = ({ resolver, node, controls }) => {
       lineWidth: styles.border.width,
     },
     textArea: {
-      color: styles.text.color,
+      color: 'transparent',
       textBlock: {
         content: styles.text.content,
         fontSize: styles.text.size,
