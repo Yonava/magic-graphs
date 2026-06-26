@@ -13,9 +13,9 @@
     pink: colors.PINK_800,
   };
 
-  const textColor = computed(
-    () => THEME_TO_TEXT_COLOR[graph.value.vue.activePreset.value],
-  );
+  const textColor = computed(() => {
+    return THEME_TO_TEXT_COLOR[graph.value.vue.activePreset.value];
+  });
 
   const styles = computed((): StyleValue => ({ color: textColor.value }));
 </script>

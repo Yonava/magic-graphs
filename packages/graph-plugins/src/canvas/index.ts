@@ -5,7 +5,6 @@ import { createThemeController } from '@magic/graph-plugins-shared/theme/createT
 import { CoreEventMap } from '@magic/graph/core/events';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { cross } from '@magic/shapes/shapes/cross/index';
-import { nullThrows } from '@magic/utils/assert';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { onClickOutside, useElementHover } from '@vueuse/core';
 import { DeepReadonly } from 'ts-essentials';
@@ -13,7 +12,6 @@ import { DeepReadonly } from 'ts-essentials';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { createAggregator } from './aggregator/createAggregator.ts';
-import { Aggregator } from './aggregator/types.ts';
 import { CANVAS_PLUGIN_ID } from './constants.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import {
@@ -21,11 +19,7 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
-import { getNodeZScores } from './nodeZScores.ts';
-import {
-  CANVAS_ELEMENT_CURSOR_FIELD_KEY,
-  setupCanvasCursor,
-} from './setupCanvasCursor.ts';
+import { setupCanvasCursor } from './setupCanvasCursor.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
 import { createCanvasDetectors, createCanvasThemeOverrides } from './themes.ts';
 import { CanvasPlugin, GraphUnderCursor } from './types.ts';
@@ -132,11 +126,6 @@ export const canvas =
 
     const shapes = useAnimatedShapes();
 
-    const nodeZScores = getNodeZScores({
-      nodes: controls.nodes.value,
-      positions: controls.positions,
-    });
-
     onMounted(() => {
       if (!magicCanvas.canvas.value) {
         throw new Error('Canvas element not found in DOM');
@@ -201,8 +190,6 @@ export const canvas =
 
           graphUnderCursor,
           forceUpdateGraphUnderCursor,
-
-          _nodeZScores: nodeZScores,
 
           theme: {
             ...theme,

@@ -16,7 +16,7 @@ import { light } from '@magic/graph-theme-presets/light/index';
 import { pink } from '@magic/graph-theme-presets/pink/index';
 import type { GraphSettings } from '@magic/graph/settings/index';
 
-import { computed } from 'vue';
+import { ref, watch } from 'vue';
 
 import { useInteractive } from './interactive/index.ts';
 import { useShortcuts } from './shortcut/index.ts';
@@ -40,8 +40,8 @@ const createGraphWithPlugins = (
       characteristics,
     ],
     themePresets: {
-      light,
       dark,
+      light,
       pink,
     },
   });
@@ -71,13 +71,10 @@ export const useGraph = (
 ) => {
   const graph = createGraphWithPlugins(canvas, settings);
 
-  const activePreset = computed({
-    get: () => {
-      return graph.theme.activePresetName();
-    },
-    set: (v) => {
-      graph.theme.setActivePreset(v);
-    },
+  const activePreset = ref(graph.theme.activePresetName());
+
+  watch(activePreset, (v) => {
+    graph.theme.setActivePreset(v);
   });
 
   const shortcut = useShortcuts(graph);

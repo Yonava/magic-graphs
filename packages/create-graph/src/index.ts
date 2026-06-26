@@ -15,7 +15,11 @@ import {
   PluginThemeField,
   ThemesForPlugins,
 } from '@magic/graph-plugins-shared/types';
-import { CanvasElement } from '@magic/graph-plugins/canvas/aggregator/types';
+import {
+  Aggregator,
+  AggregatorTransformer,
+  CanvasElement,
+} from '@magic/graph-plugins/canvas/aggregator/types';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@magic/graph-plugins/canvas/setupCanvasCursor';
 import { CanvasControls } from '@magic/graph-plugins/canvas/types';
 import { core as createCore } from '@magic/graph/core/index';
@@ -32,6 +36,7 @@ import {
   nodeRenderer,
   resolveNodeComputedTokens,
 } from './render-functions/node.ts';
+import { getNodeZScores } from './render-functions/nodeZScores.ts';
 
 type CreateGraphOptions<
   TPlugins extends LooseGraphPlugin[],
@@ -124,35 +129,33 @@ export const createGraph = <
 
   const tokenResolver = createComputedTokenResolver(evolvingThemeDetectors);
 
-  const nodeCanvasElement = (node: CoreNode): CanvasElement | undefined => {
-    // assume we have canvas plugin!
-    const castControls = controls as unknown as CoreControls & {
-      canvas: CanvasControls;
+  const nodeCanvasElement =
+    (zScores: Map<string, number>) =>
+    (node: CoreNode): CanvasElement | undefined => {
+      // assume we have canvas plugin!
+      const castControls = controls as unknown as CoreControls & {
+        canvas: CanvasControls;
+      };
+
+      const shape = nodeRenderer({
+        resolver: tokenResolver,
+        controls: castControls,
+        node,
+      });
+
+      if (!shape) return;
+
+      return {
+        id: node.id,
+        priority:
+          2 + nullThrows(zScores.get(node.id), 'node z score not found'),
+        graphType: 'node',
+        shape,
+        data: {
+          [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenResolver('node.cursor', node),
+        },
+      };
     };
-
-    const shape = nodeRenderer({
-      resolver: tokenResolver,
-      controls: castControls,
-      node,
-    });
-
-    if (!shape) return;
-
-    return {
-      id: node.id,
-      priority:
-        2 +
-        nullThrows(
-          castControls.canvas._nodeZScores.get(node.id),
-          'node z score not found',
-        ),
-      graphType: 'node',
-      shape,
-      data: {
-        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenResolver('node.cursor', node),
-      },
-    };
-  };
 
   const edgeCanvasElement = (edge: CoreEdge): CanvasElement | undefined => {
     // assume we have canvas plugin!
@@ -176,16 +179,27 @@ export const createGraph = <
   };
 
   // assume we have canvas in controls!
-  const { aggregator } = (controls as unknown as { canvas: CanvasControls })
+  const { transformers } = (controls as unknown as { canvas: CanvasControls })
     .canvas.aggregator;
 
-  aggregator.value.push(
-    ...controls.nodes.value.map(nodeCanvasElement).filter((v) => !!v),
-  );
+  const transformer: AggregatorTransformer = (agg) => {
+    agg.push(
+      ...controls.nodes.value
+        .map(
+          nodeCanvasElement(
+            getNodeZScores({
+              nodes: controls.nodes.value,
+              positions: controls.positions,
+            }),
+          ),
+        )
+        .filter((v) => !!v),
+    );
+    agg.push(...controls.edges.value.map(edgeCanvasElement).filter((v) => !!v));
+    return agg;
+  };
 
-  aggregator.value.push(
-    ...controls.edges.value.map(edgeCanvasElement).filter((v) => !!v),
-  );
+  transformers.push(transformer);
 
   const resolveNodeStyles = resolveNodeComputedTokens(tokenResolver);
   const resolveEdgeStyles = resolveEdgeComputedTokens(tokenResolver);
@@ -202,8 +216,7 @@ export const createGraph = <
       activePresetName: () => activePresetName,
       activePreset: () => themePresets[activePresetName],
       setActivePreset: (newPresetName: PresetName) => {
-        console.log(newPresetName);
-        activePresetName = newPresetName;
+        return (activePresetName = newPresetName);
       },
     },
   };
