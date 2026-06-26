@@ -13,7 +13,7 @@ export type Coordinate = {
   y: number;
 };
 
-export type WithTheme<Controls, Themes> = Controls & {
+export type PluginThemeField<Themes> = {
   theme: ThemeController<Themes> & {
     /**
      * maps computed token states to node/edge detector functions for this plugin.
@@ -25,6 +25,8 @@ export type WithTheme<Controls, Themes> = Controls & {
     detectors?: ComputedTokenDetectorMap;
   };
 };
+
+export type WithTheme<Controls, Themes> = Controls & PluginThemeField<Themes>;
 
 type ThemeForPlugin<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
   ? ReturnType<Plugin> extends {

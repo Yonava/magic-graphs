@@ -1,6 +1,7 @@
 import { GraphActions } from '@magic/graph-core-infra/actions/types';
 import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { GraphGetters } from '@magic/graph-core-infra/getters/types';
+import { createComputedTokenResolver } from '@magic/graph-plugins-shared/computed-tokens/createComputedTokenResolver';
 import {
   ExtractActions,
   ExtractControls,
@@ -9,7 +10,10 @@ import {
   LooseGraphPlugin,
 } from '@magic/graph-plugins-shared/plugins/types';
 import { ThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
-import { ThemesForPlugins } from '@magic/graph-plugins-shared/types';
+import {
+  PluginThemeField,
+  ThemesForPlugins,
+} from '@magic/graph-plugins-shared/types';
 import { core as createCore } from '@magic/graph/core/index';
 import { CoreControls } from '@magic/graph/core/types';
 import { GraphSettings } from '@magic/graph/settings/index';
@@ -49,7 +53,8 @@ export const createGraph = <
   let evolvingActions = core.actions;
   let evolvingGetters = core.getters;
 
-  let evolvingThemeControllers: any = {};
+  // plugin name to the registered detectors
+  let evolvingThemeDetectors: PluginThemeField<any>['theme']['detectors'] = {};
 
   for (const plugin of plugins) {
     const pluginResult = plugin(
@@ -67,23 +72,25 @@ export const createGraph = <
       Object.keys(pluginResult.controls).at(0),
       'Could not resolve name of plugin',
     );
-    const themeController: ThemeController<any> | undefined = (
+    const pluginThemeField: PluginThemeField<any>['theme'] | undefined = (
       pluginResult.controls as any
     )[pluginName]?.theme;
 
-    if (!themeController) continue;
+    if (!pluginThemeField) continue;
 
-    const { set } = themeController.createLayer('create-graph/theme-presets');
-    const tokens = Object.keys(themePresets[pluginName]);
+    const { set } = pluginThemeField.createLayer('create-graph/theme-presets');
+    const tokens = Object.keys((themePresets as any)[pluginName]);
     for (const token of tokens) {
-      set(token, () => themePresets[pluginName][token]);
+      set(token, () => (themePresets as any)[pluginName][token]);
     }
 
-    evolvingThemeControllers = {
-      ...evolvingThemeControllers,
-      [pluginName]: themeController,
+    evolvingThemeDetectors = {
+      ...evolvingThemeDetectors,
+      ...pluginThemeField.detectors,
     };
   }
+
+  const resolver = createComputedTokenResolver(evolvingThemeDetectors);
 
   const events = evolvingEvents as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
 
@@ -98,8 +105,6 @@ export const createGraph = <
   const getters = evolvingGetters as GraphGetters<
     ExtractGetters<NoInfer<TPlugins>>
   >;
-
-  // const theme
 
   return {
     ...controls,

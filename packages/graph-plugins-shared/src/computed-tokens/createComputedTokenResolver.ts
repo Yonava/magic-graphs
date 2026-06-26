@@ -21,7 +21,9 @@ import {
  * @throws if no detector claims the token — at least one plugin must register a `default` detector
  * for every computed token to guarantee resolution.
  */
-export function createComputedTokenResolver(detectors: ComputedTokenDetectorMap) {
+export function createComputedTokenResolver(
+  detectors: ComputedTokenDetectorMap,
+) {
   function resolveComputedToken<Token extends keyof NodeComputedTokens>(
     token: Token,
     subject: CoreNode,
@@ -61,3 +63,7 @@ export function createComputedTokenResolver(detectors: ComputedTokenDetectorMap)
 
   return resolveComputedToken;
 }
+
+export type CompoundTokenResolver = ReturnType<
+  typeof createComputedTokenResolver
+>;
