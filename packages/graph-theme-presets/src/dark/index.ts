@@ -36,10 +36,10 @@ export const dark: DarkPreset = {
     'node.default.color': colors.STONE_600,
     'node.default.cursor': shared.node.cursor,
     'node.default.size': shared.node.size,
-    'node.default.text.color': shared.node.text.color,
-    'node.default.text.content': shared.node.text.content,
-    'node.default.text.fontWeight': shared.node.text.fontWeight,
-    'node.default.text.size': shared.node.text.size,
+    'node.default.text.content.color': shared.node.text.color,
+    'node.default.text.content.content': shared.node.text.content,
+    'node.default.text.content.fontWeight': shared.node.text.fontWeight,
+    'node.default.text.content.size': shared.node.text.size,
   },
   focus: {
     'edge.focus.color': colors.RED_700,
@@ -77,8 +77,10 @@ export const dark: DarkPreset = {
 
     'anchors.edge.preview.default.color': shared.anchors.edgePreview.color,
     'anchors.edge.preview.default.width': shared.anchors.edgePreview.width,
-    'anchors.edge.preview.parentFocused.color': shared.anchors.edgePreview.color,
-    'anchors.edge.preview.parentFocused.width': shared.anchors.edgePreview.width,
+    'anchors.edge.preview.parentFocused.color':
+      shared.anchors.edgePreview.color,
+    'anchors.edge.preview.parentFocused.width':
+      shared.anchors.edgePreview.width,
 
     'anchors.parentFocused.color': colors.RED_900,
     'anchors.parentFocused.cursor': shared.anchors.cursor,

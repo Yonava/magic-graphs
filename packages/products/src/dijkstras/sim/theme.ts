@@ -36,9 +36,9 @@ export const useSimulationTheme = (
   };
 
   const activate = () => {
-    set('node.default.borderColor', colorBorders);
-    set('nodeAnchor.default.color', colorBorders);
-    set('node.default.text', nodeDistanceText);
+    set('node.default.border.color', colorBorders);
+    set('anchors.default.color', colorBorders);
+    set('node.default.text.content', nodeDistanceText);
   };
 
   const deactivate = () => {

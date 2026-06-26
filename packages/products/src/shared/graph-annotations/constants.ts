@@ -1,9 +1,10 @@
-import { ANCHOR_PLUGIN_ID } from '@magic/graph-plugins/plugins/anchors/constants';
-import { ThemePreset } from '@magic/graph-plugins/plugins/canvas/themes/index';
-import { FOCUS_PLUGIN_ID } from '@magic/graph-plugins/plugins/focus/constants';
-import { MARQUEE_PLUGIN_ID } from '@magic/graph-plugins/plugins/marquee/constants';
-import { NODE_DRAG_PLUGIN_ID } from '@magic/graph-plugins/plugins/node-drag/constants';
+import { ANCHOR_PLUGIN_ID } from '@magic/graph-plugins/anchors/constants';
+import { FOCUS_PLUGIN_ID } from '@magic/graph-plugins/focus/constants';
+import { MARQUEE_PLUGIN_ID } from '@magic/graph-plugins/marquee/constants';
+import { NODE_DRAG_PLUGIN_ID } from '@magic/graph-plugins/node-drag/constants';
 import colors, { Color } from '@magic/utils/colors';
+
+import { ThemePreset } from '../useGraph.ts';
 
 export const COLORS = [
   colors.RED_600,

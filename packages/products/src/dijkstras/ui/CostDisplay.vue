@@ -13,7 +13,7 @@
   } = graph.value;
 
   const getNodeCosts = (node: CoreNode) =>
-    resolveToken('node.default.text', node);
+    resolveToken('node.default.text.content', node);
 
   const costToColor = (strCost: string) => {
     if (strCost === INF_STR) return colors.RED_800;
@@ -28,18 +28,18 @@
   };
 
   const isExplored = (node: CoreNode) =>
-    resolveToken('node.default.borderColor', node) === SIM_COLORS.EXPLORED;
+    resolveToken('node.default.border.color', node) === SIM_COLORS.EXPLORED;
   const isQueued = (node: CoreNode) =>
-    resolveToken('node.default.borderColor', node) === SIM_COLORS.QUEUED;
+    resolveToken('node.default.border.color', node) === SIM_COLORS.QUEUED;
   const isSource = (node: CoreNode) =>
-    resolveToken('node.default.borderColor', node) === SIM_COLORS.SOURCE;
+    resolveToken('node.default.border.color', node) === SIM_COLORS.SOURCE;
 
   const exploreStateColor = (node: CoreNode) => {
     if (isExplored(node)) return SIM_COLORS.EXPLORED;
     if (isQueued(node)) return SIM_COLORS.QUEUED;
     if (isSource(node)) return SIM_COLORS.SOURCE;
     if (isFocused(node.id))
-      return resolveToken('node.default.borderColor', node);
+      return resolveToken('node.default.border.color', node);
     return colors.GRAY_600;
   };
 

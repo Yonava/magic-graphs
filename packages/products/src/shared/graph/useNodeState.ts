@@ -1,8 +1,7 @@
-import type { CoreNode } from '@magic/graph/types';
-
 import { computed, readonly, ref } from 'vue';
 
 import { useGTextTip } from '../../shared/ui/graph-core/useGTextTip.ts';
+import { GNode } from '../useGraph.ts';
 import type { Graph } from '../useGraphWithCanvas.ts';
 import { selectNode } from './select.ts';
 
@@ -28,7 +27,7 @@ export const useNodeState = (options: Partial<NodeStateOptions> = {}) => {
     ...options,
   };
 
-  const node = ref<CoreNode>();
+  const node = ref<GNode>();
   const isSetting = ref(false);
 
   let cancelNodeSetter = () => {};

@@ -20,8 +20,8 @@ export const useTargetNodeColor = (graph: Graph) => {
 
   const activate = (nodeId?: string) => {
     if (nodeId) targetNodeId.value = nodeId;
-    set('node.default.borderColor', colorNode);
-    set('nodeAnchor.default.color', colorNode);
+    set('node.default.border.color', colorNode);
+    set('anchors.default.color', colorNode);
   };
 
   const deactivate = () => {

@@ -12,8 +12,6 @@ import {
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Color } from '@magic/utils/colors';
 
-import { Ref } from 'vue';
-
 type TextStyleValues = {
   text: string;
   textSize: number;
@@ -84,22 +82,30 @@ export const createCanvasDetectors = (
     node: {
       'node.color': (node) => resolveToken('node.default.color', node),
       'node.size': (node) => resolveToken('node.default.size', node),
-      'node.border.color': (node) => resolveToken('node.default.border.color', node),
-      'node.border.width': (node) => resolveToken('node.default.border.width', node),
+      'node.border.color': (node) =>
+        resolveToken('node.default.border.color', node),
+      'node.border.width': (node) =>
+        resolveToken('node.default.border.width', node),
       'node.cursor': (node) => resolveToken('node.default.cursor', node),
-      'node.text.content': (node) => resolveToken('node.default.text.content', node),
+      'node.text.content': (node) =>
+        resolveToken('node.default.text.content', node),
       'node.text.size': (node) => resolveToken('node.default.text.size', node),
-      'node.text.color': (node) => resolveToken('node.default.text.color', node),
-      'node.text.fontWeight': (node) => resolveToken('node.default.text.fontWeight', node),
+      'node.text.color': (node) =>
+        resolveToken('node.default.text.color', node),
+      'node.text.fontWeight': (node) =>
+        resolveToken('node.default.text.fontWeight', node),
     },
     edge: {
       'edge.color': (edge) => resolveToken('edge.default.color', edge),
       'edge.width': (edge) => resolveToken('edge.default.width', edge),
       'edge.cursor': (edge) => resolveToken('edge.default.cursor', edge),
-      'edge.text.content': (edge) => resolveToken('edge.default.text.content', edge),
+      'edge.text.content': (edge) =>
+        resolveToken('edge.default.text.content', edge),
       'edge.text.size': (edge) => resolveToken('edge.default.text.size', edge),
-      'edge.text.color': (edge) => resolveToken('edge.default.text.color', edge),
-      'edge.text.fontWeight': (edge) => resolveToken('edge.default.text.fontWeight', edge),
+      'edge.text.color': (edge) =>
+        resolveToken('edge.default.text.color', edge),
+      'edge.text.fontWeight': (edge) =>
+        resolveToken('edge.default.text.fontWeight', edge),
     },
   },
 });

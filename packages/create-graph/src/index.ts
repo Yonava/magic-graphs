@@ -24,8 +24,14 @@ import { GraphSettings } from '@magic/graph/settings/index';
 import { nullThrows } from '@magic/utils/assert';
 import type { Prettify } from 'ts-essentials';
 
-import { edgeRenderer } from './render-functions/edge.ts';
-import { nodeRenderer } from './render-functions/node.ts';
+import {
+  edgeRenderer,
+  resolveEdgeComputedTokens,
+} from './render-functions/edge.ts';
+import {
+  nodeRenderer,
+  resolveNodeComputedTokens,
+} from './render-functions/node.ts';
 
 type CreateGraphOptions<
   TPlugins extends LooseGraphPlugin[],
@@ -176,6 +182,9 @@ export const createGraph = <
     ...controls.edges.value.map(edgeCanvasElement).filter((v) => !!v),
   );
 
+  const resolveNodeStyles = resolveNodeComputedTokens(tokenResolver);
+  const resolveEdgeStyles = resolveEdgeComputedTokens(tokenResolver);
+
   return {
     ...controls,
     ...getters,
@@ -183,6 +192,8 @@ export const createGraph = <
     events,
     theme: {
       tokenResolver,
+      resolveNodeStyles,
+      resolveEdgeStyles,
       activePresetName: () => activePresetName,
       activePreset: () => themePresets[activePresetName],
       setActivePreset: (newPresetName: PresetName) =>

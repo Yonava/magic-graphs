@@ -23,14 +23,14 @@ export const useSimulationTheme = (
 
   const nodeTextSize = ({ id }: { id: string }) => {
     const defaultSize =
-      graph.canvas.theme.resolvedPreset.value.node.default.textSize;
+      graph.canvas.theme.resolvedPreset.value.node.default.text.contentSize;
     if (graph.focus.isFocused(id)) return;
     return defaultSize - 5;
   };
 
   const theme = () => {
-    set('node.default.text', nodeText);
-    set('node.default.textSize', nodeTextSize);
+    set('node.default.text.content', nodeText);
+    set('node.default.text.contentSize', nodeTextSize);
   };
 
   const untheme = () => {

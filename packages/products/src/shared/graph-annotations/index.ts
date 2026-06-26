@@ -1,8 +1,6 @@
-import { CanvasGraphMouseEvent } from '@magic/graph-plugins/plugins/canvas/events';
-import {
-  Aggregator,
-  GraphUnderCursor,
-} from '@magic/graph-plugins/plugins/canvas/types';
+import { Aggregator } from '@magic/graph-plugins/canvas/aggregator/types';
+import { CanvasGraphMouseEvent } from '@magic/graph-plugins/canvas/events';
+import { GraphUnderCursor } from '@magic/graph-plugins/canvas/types';
 import { circle } from '@magic/shapes/shapes/circle/index';
 import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
 import type { WithId } from '@magic/shapes/types/index';
@@ -15,7 +13,7 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { computed, ref } from 'vue';
 
-import { GraphWithPlugins } from '../useGraph.ts';
+import { useGraph } from '../useGraph.ts';
 import {
   ANNOTATION_PLUGIN_ID,
   BRUSH_WEIGHTS,
@@ -28,7 +26,7 @@ import { useAnnotationHistory } from './history.ts';
 import type { Annotation } from './types.ts';
 import { useAnnotationCursor } from './useAnnotationCursor.ts';
 
-export const useGraphAnnotations = (graph: GraphWithPlugins) => {
+export const useGraphAnnotations = (graph: ReturnType<typeof useGraph>) => {
   const selectedColor = ref<Color>(COLORS[0]);
   const selectedBrushWeight = ref(BRUSH_WEIGHTS[1]);
   const isErasing = ref(false);
@@ -201,7 +199,7 @@ export const useGraphAnnotations = (graph: GraphWithPlugins) => {
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
-          color: THEME_TO_ERASER_OUTLINE[graph.canvas.theme.activePreset.value],
+          color: THEME_TO_ERASER_OUTLINE[graph.vue.activePreset.value],
           lineWidth: 2,
         },
       });

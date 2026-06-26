@@ -34,15 +34,15 @@ export const useSourceSinkTheme = (
   };
 
   const stylize = () => {
-    set('node.default.borderColor', colorSourceSink);
-    set('nodeAnchor.default.color', colorSourceSink);
-    set('node.default.text', labelSourceSink);
+    set('node.default.border.color', colorSourceSink);
+    set('anchors.default.color', colorSourceSink);
+    set('node.default.text.content', labelSourceSink);
   };
 
   const destylize = () => {
-    remove('node.default.borderColor');
-    remove('nodeAnchor.default.color');
-    remove('node.default.text');
+    remove('node.default.border.color');
+    remove('anchors.default.color');
+    remove('node.default.text.content');
   };
 
   return {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import type { CoreNode } from '@magic/graph/types';
   import CPopover from '@magic/ui/core/Popover.vue';
   import CButton from '@magic/ui/core/button/Button.vue';
   import colors from '@magic/utils/colors';
@@ -11,6 +10,7 @@
   import GraphNode from '../../shared/ui/graph-core/GNode.vue';
   import GWell from '../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../shared/ui/graph-core/button/GButton.vue';
+  import { GNode } from '../../shared/useGraph.ts';
   import TreeShapeMenuSettings from './TreeShapeMenuSettings.vue';
 
   const props = defineProps<{
@@ -22,7 +22,7 @@
   const { isActive, activate, deactivate, updateShape, rootNodeId } =
     treeControls.value;
 
-  const nodeSelected = (node: CoreNode) => {
+  const nodeSelected = (node: GNode) => {
     rootNodeId.value = node.id;
     if (!isActive.value) updateShape();
   };
@@ -63,7 +63,7 @@
           <GraphNode
             v-for="node in graph.nodes.value"
             :key="node.id"
-            @click="nodeSelected(node)"
+            @click="nodeSelected(graph.getNode(node.id))"
             :node="node"
             :size="55"
           />

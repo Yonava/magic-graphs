@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import definitions from '@magic/graph-plugins/plugins/characteristics/definitions';
+  import definitions from '@magic/graph-plugins/characteristics/definitions';
 
   import { computed } from 'vue';
 

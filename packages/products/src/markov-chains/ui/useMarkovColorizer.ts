@@ -12,19 +12,19 @@ export const useMarkovColorizer = (graph: Graph, markov: MarkovChain) => {
     if (graph.focus.isFocused(id))
       return graph.canvas.theme.resolvedPreset.value.node.focus.borderColor;
     if (markov.transientStates.value.has(id))
-      return graph.canvas.theme.resolvedPreset.value.node.default.borderColor;
+      return graph.canvas.theme.resolvedPreset.value.node.default.border.color;
   };
 
   const colorize = () => {
     sccColorizer.color();
-    set('node.default.borderColor', colorNodeBorder);
-    set('nodeAnchor.default.color', colorNodeBorder);
+    set('node.default.border.color', colorNodeBorder);
+    set('anchors.default.color', colorNodeBorder);
   };
 
   const decolorize = () => {
     sccColorizer.uncolor();
-    remove('node.default.borderColor');
-    remove('nodeAnchor.default.color');
+    remove('node.default.border.color');
+    remove('anchors.default.color');
   };
 
   return {

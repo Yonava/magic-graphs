@@ -31,11 +31,11 @@ export const useNodeLabel = (
   };
 
   const label = () => {
-    set('node.default.text', nodeText);
+    set('node.default.text.content', nodeText);
   };
 
   const unlabel = () => {
-    remove('node.default.text');
+    remove('node.default.text.content');
   };
 
   return {

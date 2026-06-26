@@ -19,7 +19,8 @@ export const useNodeColor = (
     return mapOrGetter.get(nodeId);
   };
 
-  const { set, remove } = graph.canvas.theme.createLayer(themeId);
+  const canvas = graph.canvas.theme.createLayer(themeId);
+  const anchors = graph.anchors.theme.createLayer(themeId);
 
   const nodeColor = (nodeId: GNode['id']) => {
     if (graph.focus.isFocused(nodeId)) return;
@@ -27,13 +28,13 @@ export const useNodeColor = (
   };
 
   const color = () => {
-    set('node.default.borderColor', ({ id }) => nodeColor(id));
-    set('nodeAnchor.default.color', ({ id }) => nodeColor(id));
+    canvas.set('node.default.border.color', ({ id }) => nodeColor(id));
+    anchors.set('anchors.default.color', ({ id }) => nodeColor(id));
   };
 
   const uncolor = () => {
-    remove('node.default.borderColor');
-    remove('nodeAnchor.default.color');
+    canvas.remove('node.default.border.color');
+    anchors.remove('anchors.default.color');
   };
 
   return {
