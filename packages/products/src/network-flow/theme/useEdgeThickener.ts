@@ -1,5 +1,4 @@
-import type { CoreEdge } from '@magic/graph/types';
-
+import { GEdge } from '../../shared/useGraph.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { FLOW_USETHEME_ID } from '../constants.ts';
 
@@ -18,7 +17,7 @@ const ZERO_THICKNESS = 1;
 export const useEdgeThickener = (graph: Graph, themeId = FLOW_USETHEME_ID) => {
   const { set, remove } = graph.canvas.theme.createLayer(themeId);
 
-  const thickener = (edge: CoreEdge) => {
+  const thickener = (edge: Pick<GEdge, 'id'>) => {
     const edgeWeight = graph.getEdge(edge.id).weight.valueOf();
     if (edgeWeight === 0) return ZERO_THICKNESS;
     const adjustedWeight = edgeWeight * 2;

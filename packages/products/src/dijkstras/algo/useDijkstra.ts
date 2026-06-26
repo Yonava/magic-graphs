@@ -1,14 +1,13 @@
-import type { CoreNode } from '@magic/graph/types';
-
 import { computed, ref, watch } from 'vue';
 
+import { GNode } from '../../shared/useGraph.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import state from '../state.ts';
 import { dijkstras } from './dijkstra.ts';
 
 export type DijkstrasOutput = {
-  startNode: CoreNode;
-  distances: Record<CoreNode['id'], number>;
+  startNode: GNode;
+  distances: Record<GNode['id'], number>;
 };
 
 export type DijkstrasTraceStep = {
@@ -16,16 +15,16 @@ export type DijkstrasTraceStep = {
    * the node the algorithm is currently at. `undefined` if the algorithm
    * is in its initial step, or has finished
    */
-  currentNode?: CoreNode;
+  currentNode?: GNode;
   /**
    * a map of the distances from the start node to each node in the graph
    * at this step
    */
-  distances: Record<CoreNode['id'], number>;
+  distances: Record<GNode['id'], number>;
   /**
    * the nodes that are currently in the queue
    */
-  queue: Set<CoreNode['id']>;
+  queue: Set<GNode['id']>;
 };
 
 export const useDijkstra = (graph: Graph) => {
@@ -47,7 +46,9 @@ export const useDijkstra = (graph: Graph) => {
     // it also optimizes the trace for quick lookups
 
     trace.value = res.trace.map(({ currentNode, distances, queue }) => ({
-      currentNode: graph.nodes.value[currentNode ?? -1] ?? undefined,
+      currentNode: currentNode
+        ? graph.getNode(graph.nodes.value[currentNode].id)
+        : undefined,
       distances: Object.fromEntries(
         distances.map((distance, i) => [graph.nodes.value[i].id, distance]),
       ),

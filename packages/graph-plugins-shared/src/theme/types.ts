@@ -11,6 +11,7 @@
  * ThemeToken  — a dot-notation path into a theme shape that addresses a single StyleValue
  *               (e.g. "node.default.color"). used to identify which token an override targets.
  */
+import { AnyFunction } from 'ts-essentials';
 
 /**
  * a theme token value that supports layered resolution. a static value is used as-is;
@@ -21,8 +22,9 @@ export type ThemeValue<StyleValue, ResolverArgs extends unknown[] = []> =
   | StyleValue
   | ((...args: ResolverArgs) => StyleValue | void);
 
-export type ThemeValueResolverArgs<Value> =
-  Value extends ThemeValue<infer _, infer ResolverArgs> ? ResolverArgs : never;
+export type ThemeValueResolverArgs<ThemeValue> = Parameters<
+  Extract<ThemeValue, AnyFunction>
+>;
 
 export type StyleValueFromThemeValue<Value> =
   Value extends ThemeValue<infer StyleValue, infer _> ? StyleValue : never;

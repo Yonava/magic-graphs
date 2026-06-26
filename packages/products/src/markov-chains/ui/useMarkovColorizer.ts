@@ -1,3 +1,5 @@
+import { getValue } from '@magic/utils/maybeGetter/index';
+
 import { useSCCColorizer } from '../../sandbox/ui/GraphInfoMenu/useSCCColorizer.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import { USETHEME_ID } from '../constants.ts';
@@ -6,25 +8,34 @@ import type { MarkovChain } from '../markov/useMarkovChain.ts';
 export const useMarkovColorizer = (graph: Graph, markov: MarkovChain) => {
   const sccColorizer = useSCCColorizer(graph, 'default-markov-scc-colors');
 
-  const { set, remove } = graph.canvas.theme.createLayer(USETHEME_ID);
+  const canvas = graph.canvas.theme.createLayer(USETHEME_ID);
+  const anchors = graph.anchors.theme.createLayer(USETHEME_ID);
 
-  const colorNodeBorder = ({ id }: { id: string }) => {
-    if (graph.focus.isFocused(id))
-      return graph.canvas.theme.resolvedPreset.value.node.focus.borderColor;
-    if (markov.transientStates.value.has(id))
-      return graph.canvas.theme.resolvedPreset.value.node.default.border.color;
+  const colorNodeBorder = (node: { id: string }) => {
+    const preset = graph.theme.activePreset();
+    const focusBorderColor = getValue(
+      preset.focus['node.focus.border.color'],
+      node,
+    )!;
+    const defaultBorderColor = getValue(
+      preset.canvas['node.default.border.color'],
+      node,
+    )!;
+
+    if (graph.focus.isFocused(node.id)) return focusBorderColor;
+    if (markov.transientStates.value.has(node.id)) return defaultBorderColor;
   };
 
   const colorize = () => {
     sccColorizer.color();
-    set('node.default.border.color', colorNodeBorder);
-    set('anchors.default.color', colorNodeBorder);
+    canvas.set('node.default.border.color', colorNodeBorder);
+    anchors.set('anchors.default.color', colorNodeBorder);
   };
 
   const decolorize = () => {
     sccColorizer.uncolor();
-    remove('node.default.border.color');
-    remove('anchors.default.color');
+    canvas.remove('node.default.border.color');
+    anchors.remove('anchors.default.color');
   };
 
   return {

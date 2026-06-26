@@ -1,4 +1,4 @@
-import { UPPERCASE_ALPHABET } from '@magic/graph-plugins/plugins/node-label/constants';
+import { UPPERCASE_ALPHABET } from '@magic/graph-plugins/node-label/constants';
 import type { GraphSettings } from '@magic/graph/settings/index';
 import { Fraction } from 'mathjs';
 

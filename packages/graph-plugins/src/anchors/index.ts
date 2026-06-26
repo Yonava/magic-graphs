@@ -162,9 +162,9 @@ export const anchors: AnchorsPlugin = (
 
     const nodeSize = isNodeFocused ? nodeBaseSize : nodeFocusSize;
 
-    const nodeBaseBorderWidth = canvasToken('node.default.borderWidth', node);
+    const nodeBaseBorderWidth = canvasToken('node.default.border.width', node);
     const nodeFocusBorderWidth =
-      focusToken?.('node.focus.borderWidth', node) ?? nodeBaseBorderWidth;
+      focusToken?.('node.focus.border.width', node) ?? nodeBaseBorderWidth;
 
     const nodeBorderWidth = isNodeFocused
       ? nodeFocusBorderWidth
@@ -224,13 +224,13 @@ export const anchors: AnchorsPlugin = (
     const isFocused = controls.focus?.isFocused(currentParentNode.id) ?? false;
 
     const baseColor = anchorToken(
-      'anchors.linkPreview.default.color',
+      'anchors.edge.preview.default.color',
       currentParentNode,
       draggedAnchor,
     );
 
     const focusColor = anchorToken(
-      'anchors.linkPreview.parentFocused.color',
+      'anchors.edge.preview.parentFocused.color',
       currentParentNode,
       draggedAnchor,
     );
@@ -238,13 +238,13 @@ export const anchors: AnchorsPlugin = (
     const color = isFocused ? focusColor : baseColor;
 
     const baseWidth = anchorToken(
-      'anchors.linkPreview.default.width',
+      'anchors.edge.preview.default.width',
       currentParentNode,
       draggedAnchor,
     );
 
     const focusWidth = anchorToken(
-      'anchors.linkPreview.parentFocused.width',
+      'anchors.edge.preview.parentFocused.width',
       currentParentNode,
       draggedAnchor,
     );

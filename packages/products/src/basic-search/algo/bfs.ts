@@ -1,4 +1,4 @@
-import type { AdjacencyList } from '@magic/graph-plugins/plugins/adjacency-lists/types';
+import { AdjacencyList } from '@magic/graph-plugins/adjacency-lists/types';
 
 import type { BasicSearchTrace } from './types.ts';
 

@@ -1,22 +1,23 @@
 import { NodePositionUpdate } from '@magic/graph/core/positions/types';
-import type { CoreEdge } from '@magic/graph/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { nullThrows } from '@magic/utils/assert';
-import { Fraction } from 'mathjs';
+import Fraction from 'fraction.js';
 
 import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner.ts';
+import { GEdge } from '../../shared/useGraph.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { TreeNodeKeyArray } from './avl.ts';
 import type { TreeNode } from './treeNode.ts';
 
-const newEdge = (source: number, target: number): CoreEdge => ({
+const newEdge = (source: number, target: number): GEdge => ({
   source: source.toString(),
   target: target.toString(),
   id: `${source}-${target}`,
+  weight: new Fraction(1),
 });
 
 const edgesInTree = (treeArray: TreeNodeKeyArray) => {
-  const edges: CoreEdge[] = [];
+  const edges: GEdge[] = [];
 
   for (let i = 0; i < treeArray.length; i++) {
     const node = treeArray[i];

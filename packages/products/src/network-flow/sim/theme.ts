@@ -1,4 +1,3 @@
-import type { CoreEdge } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';
@@ -16,7 +15,7 @@ export const useSimulationTheme = (
   graph: Graph,
   sim: SimulationControls<FlowTrace>,
 ) => {
-  const { set, remove } = graph.canvas.theme.createLayer(FLOW_USETHEME_ID);
+  const canvas = graph.canvas.theme.createLayer(FLOW_USETHEME_ID);
 
   const getActiveEdgeIdsAtStep = (step: number) => {
     const trace = sim.trace.value;
@@ -57,27 +56,30 @@ export const useSimulationTheme = (
     () => edgeWeightMapAtStep.value[sim.step.value],
   );
 
-  const colorActiveEdges = (edge: CoreEdge) => {
+  const colorActiveEdges = (edge: Omit<GEdge, 'weight'>) => {
     const isActive = activeEdgeIdsAtStep.value.includes(edge.id);
-    const focusColor = graph.canvas.theme.resolvedPreset.value.edge.focus.color;
+    const focusColor = graph.focus.theme._resolveToken(
+      'edge.focus.color',
+      edge,
+    );
     if (isActive) return focusColor;
     else if (isResidual(edge.id)) return colors.ORANGE_400;
   };
 
-  const labelEdges = (edge: CoreEdge) => {
+  const labelEdges = (edge: Pick<GEdge, 'id'>) => {
     const weight = weightMapAtStep.value.get(edge.id);
     if (weight === undefined) return graph.getEdge(edge.id).weight.toString();
     return weight.toString();
   };
 
   const activate = () => {
-    set('edge.default.color', colorActiveEdges);
-    set('edge.default.text', labelEdges);
+    canvas.set('edge.default.color', colorActiveEdges);
+    canvas.set('edge.default.text.content', labelEdges);
   };
 
   const deactivate = () => {
-    remove('edge.default.color');
-    remove('edge.default.text');
+    canvas.remove('edge.default.color');
+    canvas.remove('edge.default.text.content');
   };
 
   return {

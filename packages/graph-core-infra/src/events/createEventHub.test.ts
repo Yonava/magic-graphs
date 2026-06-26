@@ -1,13 +1,27 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { CoreNode } from '../types.ts';
 import { EventHub, createEventHub } from './createEventHub.ts';
+import { EventMapToEventRegistry } from './types.ts';
+
+type MockEventMap = {
+  onNodesAdded: (nodes: CoreNode[]) => void;
+  onStructureChange: () => void;
+};
+
+type MockEventRegistry = EventMapToEventRegistry<MockEventMap>;
+
+const createMockEventRegistry = (): MockEventRegistry => ({
+  onNodesAdded: new Set(),
+  onStructureChange: new Set(),
+});
 
 describe(createEventHub, () => {
-  let registry: CoreEventRegistry;
-  let hub: EventHub<CoreEventMap>;
+  let registry: EventMapToEventRegistry<MockEventMap>;
+  let hub: EventHub<MockEventMap>;
 
   beforeEach(() => {
-    registry = createCoreEventRegistry();
+    registry = createMockEventRegistry();
     hub = createEventHub(registry);
   });
 

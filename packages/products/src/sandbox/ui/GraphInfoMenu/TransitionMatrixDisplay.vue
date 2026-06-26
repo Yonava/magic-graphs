@@ -34,7 +34,6 @@
   };
 
   const nodes = computed(() => graph.value.nodes.value);
-  console.log(graph.value.transitionMatrix.value);
 </script>
 
 <template>
@@ -57,8 +56,8 @@
           :key="'col-' + colIndex"
         >
           <TransitionMatrixLabel
-            :target-node="nodes[rowIndex]"
-            :source-node="nodes[colIndex]"
+            :target-node="graph.getNode(nodes[rowIndex].id)"
+            :source-node="graph.getNode(nodes[colIndex].id)"
             :weight="col.toString()"
           />
         </div>

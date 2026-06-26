@@ -7,7 +7,8 @@ import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 const TARGET_COLOR = colors.AMBER_600;
 
 export const useTargetNodeColor = (graph: Graph) => {
-  const { set, removeAll } = graph.canvas.theme.createLayer('tree');
+  const canvas = graph.canvas.theme.createLayer('tree');
+  const anchors = graph.anchors.theme.createLayer('tree');
 
   const targetNodeId = ref<string>();
 
@@ -20,13 +21,14 @@ export const useTargetNodeColor = (graph: Graph) => {
 
   const activate = (nodeId?: string) => {
     if (nodeId) targetNodeId.value = nodeId;
-    set('node.default.border.color', colorNode);
-    set('anchors.default.color', colorNode);
+    canvas.set('node.default.border.color', colorNode);
+    anchors.set('anchors.default.color', colorNode);
   };
 
   const deactivate = () => {
     targetNodeId.value = undefined;
-    removeAll();
+    canvas.removeAll();
+    anchors.removeAll();
   };
 
   return {

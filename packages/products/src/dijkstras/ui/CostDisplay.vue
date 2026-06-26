@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import type { CoreNode } from '@magic/graph/types';
   import colors from '@magic/utils/colors';
 
   import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
+  import { GNode } from '../../shared/useGraph.ts';
   import { INF_STR, SIM_COLORS } from '../sim/theme.ts';
 
   const {
@@ -12,7 +12,7 @@
     focus: { isFocused },
   } = graph.value;
 
-  const getNodeCosts = (node: CoreNode) =>
+  const getNodeCosts = (node: GNode) =>
     resolveToken('node.default.text.content', node);
 
   const costToColor = (strCost: string) => {
@@ -27,14 +27,14 @@
     return colors.RED_600;
   };
 
-  const isExplored = (node: CoreNode) =>
+  const isExplored = (node: GNode) =>
     resolveToken('node.default.border.color', node) === SIM_COLORS.EXPLORED;
-  const isQueued = (node: CoreNode) =>
+  const isQueued = (node: GNode) =>
     resolveToken('node.default.border.color', node) === SIM_COLORS.QUEUED;
-  const isSource = (node: CoreNode) =>
+  const isSource = (node: GNode) =>
     resolveToken('node.default.border.color', node) === SIM_COLORS.SOURCE;
 
-  const exploreStateColor = (node: CoreNode) => {
+  const exploreStateColor = (node: GNode) => {
     if (isExplored(node)) return SIM_COLORS.EXPLORED;
     if (isQueued(node)) return SIM_COLORS.QUEUED;
     if (isSource(node)) return SIM_COLORS.SOURCE;
@@ -43,7 +43,7 @@
     return colors.GRAY_600;
   };
 
-  const exploreStateText = (node: CoreNode) => {
+  const exploreStateText = (node: GNode) => {
     if (isExplored(node)) return 'Explored';
     if (isQueued(node)) return 'Queued';
     if (isSource(node)) return 'Source';
@@ -54,7 +54,7 @@
 
 <template>
   <div
-    v-for="node in graph.nodes.value"
+    v-for="node in graph.nodes.value.map((n) => graph.getNode(n.id))"
     :key="node.id"
     @click="graph.focus.set([node.id])"
     class="text-white flex items-center gap-3 p-2 hover:bg-gray-900 cursor-pointer rounded-lg"

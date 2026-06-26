@@ -6,7 +6,8 @@ import type { MarkovChain } from '../markov/useMarkovChain.ts';
 const USETHEME_ID = 'markov-invalid-state';
 
 export const useInvalidStateColorizer = (graph: Graph, markov: MarkovChain) => {
-  const { set, removeAll } = graph.canvas.theme.createLayer(USETHEME_ID);
+  const canvas = graph.canvas.theme.createLayer(USETHEME_ID);
+  const anchors = graph.anchors.theme.createLayer(USETHEME_ID);
 
   const { invalidStates, nodeIdToOutgoingWeight } = markov;
 
@@ -24,13 +25,14 @@ export const useInvalidStateColorizer = (graph: Graph, markov: MarkovChain) => {
   };
 
   const colorize = () => {
-    set('node.default.border.color', nodeBorderColor);
-    set('anchors.default.color', nodeBorderColor);
-    set('node.default.text.content', nodeText);
+    canvas.set('node.default.border.color', nodeBorderColor);
+    anchors.set('anchors.default.color', nodeBorderColor);
+    canvas.set('node.default.text.content', nodeText);
   };
 
   const decolorize = () => {
-    removeAll();
+    canvas.removeAll();
+    anchors.removeAll();
   };
 
   return {
