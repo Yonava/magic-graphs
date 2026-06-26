@@ -51,12 +51,20 @@ export type CanvasEventMap = {
   onKeyUp: (ev: KeyboardEvent) => void;
 
   /**
-   * when the canvas is repainted
+   * after the canvas is repainted
    *
    * **WARNING** items drawn to the canvas using ctx won't be tied to graphs internal state.
    * see {@link graph.canvas.aggregator | `aggregator`} if you need drawn item to integrate with graph APIs
    */
   onDraw: (ctx: CanvasRenderingContext2D) => void;
+
+  /**
+   * right after the canvas is cleared and right before it is repainted
+   *
+   * **WARNING** items drawn to the canvas using ctx won't be tied to graphs internal state.
+   * see {@link graph.canvas.aggregator | `aggregator`} if you need drawn item to integrate with graph APIs
+   */
+  onBeforeDraw: (ctx: CanvasRenderingContext2D) => void;
 
   onGraphUnderCursorChange: (data: DeepReadonly<GraphUnderCursor>) => void;
   onHoveredElementChange: (
@@ -78,7 +86,9 @@ export const createCanvasEventRegistry = (): CanvasEventRegistry => ({
   onKeyDown: new Set(),
   onKeyUp: new Set(),
 
+  onBeforeDraw: new Set(),
   onDraw: new Set(),
+
   onGraphUnderCursorChange: new Set(),
   onHoveredElementChange: new Set(),
 });

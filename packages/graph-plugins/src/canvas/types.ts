@@ -56,6 +56,7 @@ type BaseCanvasControls = {
    * hit-testing may have changed.
    */
   forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
+  getNodePriority: () => (nodeId: string) => number;
 };
 
 export type CanvasControls = WithTheme<BaseCanvasControls, CanvasThemes>;

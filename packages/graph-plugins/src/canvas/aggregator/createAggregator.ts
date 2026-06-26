@@ -35,6 +35,7 @@ export const createAggregator = ({
   };
 
   const draw = (ctx: CanvasRenderingContext2D) => {
+    emit('onBeforeDraw', ctx);
     updateAggregator();
 
     for (const group of groupByPriority(aggregator.value).values()) {

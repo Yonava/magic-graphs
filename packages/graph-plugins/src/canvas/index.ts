@@ -19,6 +19,7 @@ import {
   CanvasGraphMouseEvent,
   createCanvasEventRegistry,
 } from './events.ts';
+import { createNodeCanvasElementPriorityGetter } from './nodeCanvasElementPriority.ts';
 import { setupCanvasCursor } from './setupCanvasCursor.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
 import { createCanvasDetectors, createCanvasThemeOverrides } from './themes.ts';
@@ -168,6 +169,17 @@ export const canvas =
       canvas.style.backgroundColor = theme._resolveToken('canvas.color');
     });
 
+    let getNodePriority = createNodeCanvasElementPriorityGetter({
+      nodes: controls.nodes.value,
+      positions: controls.positions,
+    });
+    events.subscribe('onBeforeDraw', () => {
+      getNodePriority = createNodeCanvasElementPriorityGetter({
+        nodes: controls.nodes.value,
+        positions: controls.positions,
+      });
+    });
+
     magicCanvas.draw.backgroundPattern.value = (ctx, at, alpha) =>
       cross({
         at,
@@ -190,6 +202,8 @@ export const canvas =
 
           graphUnderCursor,
           forceUpdateGraphUnderCursor,
+
+          getNodePriority: () => getNodePriority,
 
           theme: {
             ...theme,

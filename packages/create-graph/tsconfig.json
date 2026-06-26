@@ -13,5 +13,9 @@
     { "path": "../utils" },
     { "path": "../shapes" }
   ],
-  "include": ["src/**/*.ts", "src/**/*.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "../graph-plugins/src/canvas/nodeZScores.ts"
+  ]
 }

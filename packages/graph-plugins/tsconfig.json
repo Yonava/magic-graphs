@@ -11,9 +11,5 @@
     { "path": "../graph-core-infra" },
     { "path": "../shapes" }
   ],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "../create-graph/src/render-functions/nodeZScores.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/canvas/nodeZScores.ts"]
 }

@@ -1,13 +1,12 @@
 import { CoreNode } from '@magic/graph-core-infra/types';
 import { NodePositionStoreControls } from '@magic/graph/core/positions/types';
 
-export const getNodeZScores = ({
-  nodes,
-  positions,
-}: {
+export type NodeZScoreOptions = {
   nodes: readonly CoreNode[];
   positions: NodePositionStoreControls;
-}) => {
+};
+
+export const getNodeZScores = ({ nodes, positions }: NodeZScoreOptions) => {
   const zScores = new Map<string, number>();
   if (nodes.length === 0) return zScores;
 
