@@ -86,6 +86,8 @@ export const createGraph = <
     evolvingActions = { ...evolvingActions, ...pluginResult.actions };
     evolvingGetters = { ...evolvingGetters, ...pluginResult.getters };
 
+    // TODO make the contract to define plugin name scope in the controls more explicit!
+    // Something like the plugin itself exposes a name field in pluginResult like pluginResult.name = 'focus'
     const pluginName = nullThrows(
       Object.keys(pluginResult.controls).at(0),
       'Could not resolve name of plugin',
