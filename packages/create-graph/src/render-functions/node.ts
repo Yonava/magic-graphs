@@ -11,7 +11,7 @@ type Props = {
   controls: CoreControls & CanvasControls;
 };
 
-type NodeRenderer = (props: Props) => Shape;
+type NodeRenderer = (props: Props) => Shape | undefined;
 
 export const resolveNodeComputedTokens =
   (resolver: CompoundTokenResolver) => (node: CoreNode) => ({

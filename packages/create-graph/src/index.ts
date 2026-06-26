@@ -1,6 +1,7 @@
 import { GraphActions } from '@magic/graph-core-infra/actions/types';
 import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { GraphGetters } from '@magic/graph-core-infra/getters/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
 import { createComputedTokenResolver } from '@magic/graph-plugins-shared/computed-tokens/createComputedTokenResolver';
 import {
   ExtractActions,
@@ -14,11 +15,17 @@ import {
   PluginThemeField,
   ThemesForPlugins,
 } from '@magic/graph-plugins-shared/types';
+import { CanvasElement } from '@magic/graph-plugins/canvas/aggregator/types';
+import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@magic/graph-plugins/canvas/setupCanvasCursor';
+import { CanvasControls } from '@magic/graph-plugins/canvas/types';
 import { core as createCore } from '@magic/graph/core/index';
 import { CoreControls } from '@magic/graph/core/types';
 import { GraphSettings } from '@magic/graph/settings/index';
 import { nullThrows } from '@magic/utils/assert';
 import type { Prettify } from 'ts-essentials';
+
+import { edgeRenderer } from './render-functions/edge.ts';
+import { nodeRenderer } from './render-functions/node.ts';
 
 type CreateGraphOptions<
   TPlugins extends LooseGraphPlugin[],
@@ -90,8 +97,6 @@ export const createGraph = <
     };
   }
 
-  const resolver = createComputedTokenResolver(evolvingThemeDetectors);
-
   const events = evolvingEvents as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
 
   const controls = evolvingControls as Prettify<
@@ -106,12 +111,73 @@ export const createGraph = <
     ExtractGetters<NoInfer<TPlugins>>
   >;
 
+  const tokenResolver = createComputedTokenResolver(evolvingThemeDetectors);
+
+  const nodeCanvasElement = (node: CoreNode): CanvasElement | undefined => {
+    const shape = nodeRenderer({
+      resolver: tokenResolver,
+      // assume we have canvas plugin!
+      controls: controls as any,
+      node,
+    });
+
+    if (!shape) return;
+
+    return {
+      id: node.id,
+      priority:
+        2 +
+        nullThrows(
+          (
+            controls as unknown as { canvas: CanvasControls }
+          ).canvas._nodeZScores.get(node.id),
+          'node z score not found',
+        ),
+      graphType: 'node',
+      shape,
+      data: {
+        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenResolver('node.cursor', node),
+      },
+    };
+  };
+
+  const edgeCanvasElement = (edge: CoreEdge): CanvasElement | undefined => {
+    const shape = edgeRenderer({
+      resolver: tokenResolver,
+      // assume we have canvas plugin!
+      controls: controls as any,
+      edge,
+    });
+
+    if (!shape) return;
+
+    return {
+      shape,
+      id: edge.id,
+      graphType: 'edge',
+      priority: 1,
+    };
+  };
+
+  // assume we have canvas in controls!
+  const { aggregator } = (controls as unknown as { canvas: CanvasControls })
+    .canvas.aggregator;
+
+  aggregator.value.push(
+    ...controls.nodes.value.map(nodeCanvasElement).filter((v) => !!v),
+  );
+
+  aggregator.value.push(
+    ...controls.edges.value.map(edgeCanvasElement).filter((v) => !!v),
+  );
+
   return {
     ...controls,
     ...getters,
     actions,
     events,
-    themePresets: {
+    theme: {
+      tokenResolver,
       activePresetName: () => activePresetName,
       activePreset: () => themePresets[activePresetName],
       setActivePreset: (newPresetName: PresetName) =>

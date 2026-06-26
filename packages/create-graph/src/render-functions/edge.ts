@@ -14,7 +14,7 @@ type Props = {
   controls: CoreControls & CanvasControls;
 };
 
-type EdgeRenderer = (props: Props) => Shape;
+type EdgeRenderer = (props: Props) => Shape | undefined;
 
 export const resolveEdgeComputedTokens =
   (resolver: CompoundTokenResolver) => (edge: CoreEdge) => ({
