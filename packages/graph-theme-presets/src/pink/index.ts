@@ -1,0 +1,87 @@
+import {
+  CURSOR,
+  CURSOR_FALLBACK,
+} from '@magic/graph-plugins-shared/theme/cursor';
+import { ThemesForPlugins } from '@magic/graph-plugins-shared/types';
+import { AnchorsPlugin } from '@magic/graph-plugins/anchors/types';
+import { CanvasPlugin } from '@magic/graph-plugins/canvas/types';
+import { FocusPlugin } from '@magic/graph-plugins/focus/types';
+import { MarqueePlugin } from '@magic/graph-plugins/marquee/types';
+import colors from '@magic/utils/colors';
+
+import { shared } from './shared.ts';
+
+type PinkPreset = ThemesForPlugins<
+  [CanvasPlugin, FocusPlugin, MarqueePlugin, AnchorsPlugin]
+>;
+
+export const pink: PinkPreset = {
+  canvas: {
+    'canvas.color': colors.PINK_300,
+    'canvas.cursor': CURSOR_FALLBACK,
+    'canvas.patternColor': colors.PURPLE_200,
+
+    'edge.default.color': colors.PINK_600,
+    'edge.default.cursor': shared.edge.cursor,
+    'edge.default.text.color': shared.edge.text.color,
+    'edge.default.text.content': shared.edge.text.content,
+    'edge.default.text.fontWeight': shared.edge.text.fontWeight,
+    'edge.default.text.size': shared.edge.text.size,
+    'edge.default.width': shared.edge.width,
+
+    'node.default.border.color': colors.PINK_400,
+    'node.default.border.width': shared.node.borderWidth,
+    'node.default.color': colors.PINK_100,
+    'node.default.cursor': shared.node.cursor,
+    'node.default.size': shared.node.size,
+    'node.default.text.color': shared.node.text.color,
+    'node.default.text.content': shared.node.text.content,
+    'node.default.text.fontWeight': shared.node.text.fontWeight,
+    'node.default.text.size': shared.node.text.size,
+  },
+  focus: {
+    'edge.focus.color': colors.PURPLE_600,
+    'edge.focus.cursor': shared.edge.cursor,
+    'edge.focus.text.color': colors.PURPLE_600,
+    'edge.focus.text.content': shared.edge.text.content,
+    'edge.focus.text.fontWeight': shared.edge.text.fontWeight,
+    'edge.focus.text.size': shared.edge.text.size,
+    'edge.focus.width': shared.edge.width,
+
+    'node.focus.border.color': colors.PURPLE_600,
+    'node.focus.border.width': shared.node.borderWidth,
+    'node.focus.color': colors.PURPLE_200,
+    'node.focus.cursor': shared.node.cursor,
+    'node.focus.size': shared.node.size,
+    'node.focus.text.color': colors.PURPLE_900,
+    'node.focus.text.content': shared.node.text.content,
+    'node.focus.text.fontWeight': shared.node.text.fontWeight,
+    'node.focus.text.size': shared.node.text.size,
+  },
+  marquee: {
+    'marquee.drag.border.color': colors.PINK_500,
+    'marquee.drag.border.width': 1,
+    'marquee.drag.color': colors.PINK_300 + '15',
+
+    'marquee.selection.border.color': colors.PINK_700,
+    'marquee.selection.border.width': 1,
+    'marquee.selection.color': colors.PINK_700 + '05',
+    'marquee.selection.cursor': CURSOR.POINTER,
+  },
+  anchors: {
+    'anchors.default.color': colors.PINK_500,
+    'anchors.default.cursor': shared.anchors.cursor,
+    'anchors.default.radius': shared.anchors.radius,
+
+    'anchors.edge.preview.default.color': shared.anchors.edgePreview.color,
+    'anchors.edge.preview.default.width': shared.anchors.edgePreview.width,
+    'anchors.edge.preview.parentFocused.color':
+      shared.anchors.edgePreview.color,
+    'anchors.edge.preview.parentFocused.width':
+      shared.anchors.edgePreview.width,
+
+    'anchors.parentFocused.color': colors.PURPLE_700,
+    'anchors.parentFocused.cursor': shared.anchors.cursor,
+    'anchors.parentFocused.radius': shared.anchors.radius,
+  },
+};

@@ -11,10 +11,12 @@ import { marquee } from '@magic/graph-plugins/marquee/index';
 import { nodeDrag } from '@magic/graph-plugins/node-drag/index';
 import { nodeLabel } from '@magic/graph-plugins/node-label/index';
 import { transitionMatrix } from '@magic/graph-plugins/transition-matrix/index';
+import { dark } from '@magic/graph-theme-presets/dark/index';
 import { light } from '@magic/graph-theme-presets/light/index';
+import { pink } from '@magic/graph-theme-presets/pink/index';
 import type { GraphSettings } from '@magic/graph/settings/index';
 
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 
 import { useInteractive } from './interactive/index.ts';
 import { useShortcuts } from './shortcut/index.ts';
@@ -39,6 +41,8 @@ const createGraphWithPlugins = (
     ],
     themePresets: {
       light,
+      dark,
+      pink,
     },
   });
 

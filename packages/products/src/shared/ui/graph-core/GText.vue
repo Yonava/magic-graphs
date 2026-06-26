@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import { ThemePreset } from '@magic/graph-plugins/plugins/canvas/themes/index';
   import type { Color } from '@magic/utils/colors';
   import colors from '@magic/utils/colors';
 
   import { type StyleValue, computed } from 'vue';
 
   import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
+  import { ThemePreset } from '../../useGraph.ts';
 
   const THEME_TO_TEXT_COLOR: Record<ThemePreset, Color> = {
     light: colors.GRAY_900,
@@ -14,7 +14,7 @@
   };
 
   const textColor = computed(
-    () => THEME_TO_TEXT_COLOR[graph.value.canvas.theme.activePreset.value],
+    () => THEME_TO_TEXT_COLOR[graph.value.vue.activePreset.value],
   );
 
   const styles = computed((): StyleValue => ({ color: textColor.value }));
