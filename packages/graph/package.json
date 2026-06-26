@@ -16,16 +16,13 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
-    "@magic/shapes": "workspace:*",
     "@magic/utils": "workspace:*",
-    "@vueuse/core": "catalog:",
+    "@magic/graph-core-infra": "workspace:*",
     "fraction.js": "^5.3.4",
-    "graphlib": "^2.1.8",
     "mathjs": "catalog:",
     "tinycolor2": "catalog:"
   },
   "devDependencies": {
-    "@types/graphlib": "^2.1.12",
     "@types/tinycolor2": "catalog:",
     "ts-essentials": "^10.2.0",
     "vue": "catalog:"

@@ -1,9 +1,9 @@
-import type { CoreEdge } from '@magic/graph/types';
 import { Fraction } from 'mathjs';
 
+import { GEdge } from '../../shared/useGraph.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 
-export type FlowTrace = Record<CoreEdge['id'], Fraction>;
+export type FlowTrace = Record<GEdge['id'], Fraction>;
 
 /**
  * implementation of the Ford-Fulkerson algorithm

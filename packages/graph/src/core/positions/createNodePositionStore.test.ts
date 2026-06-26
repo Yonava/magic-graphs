@@ -1,6 +1,6 @@
+import { createMockEventHub } from '@magic/graph-core-infra/testing/events/createMockEventHub';
 import { describe, expect, it } from 'vitest';
 
-import { createMockEventHub } from '../../testing/events/createMockEventHub.ts';
 import { DEFAULT_POSITION } from './constants.ts';
 import { createNodePositionStore } from './createNodePositionStore.ts';
 import { createNodePositionStoreEventRegistry } from './events.ts';

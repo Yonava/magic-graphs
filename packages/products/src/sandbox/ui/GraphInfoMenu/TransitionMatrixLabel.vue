@@ -1,15 +1,15 @@
 <script setup lang="ts">
-  import type { CoreNode } from '@magic/graph/types';
   import CIcon from '@magic/ui/core/Icon.vue';
   import CPopoverTooltip from '@magic/ui/core/PopoverTooltip.vue';
 
   import GraphNode from '../../../shared/ui/graph-core/GNode.vue';
   import GWell from '../../../shared/ui/graph-core/GWell.vue';
   import GButton from '../../../shared/ui/graph-core/button/GButton.vue';
+  import { GNode } from '../../../shared/useGraph.ts';
 
   const props = defineProps<{
-    targetNode: CoreNode;
-    sourceNode: CoreNode;
+    targetNode: GNode;
+    sourceNode: GNode;
     weight: string;
   }>();
 </script>

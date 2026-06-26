@@ -17,7 +17,8 @@ export const useSimulationTheme = (
   sim: SimulationControls<DijkstrasTraceStep>,
 ) => {
   const { traceAtStep } = sim;
-  const { set, removeAll } = graph.canvas.theme.createLayer('dijkstra');
+  const canvas = graph.canvas.theme.createLayer('dijkstra');
+  const anchors = graph.anchors.theme.createLayer('dijkstra');
 
   const colorBorders = ({ id }: { id: string }) => {
     if (graph.focus.isFocused(id)) return;
@@ -36,13 +37,14 @@ export const useSimulationTheme = (
   };
 
   const activate = () => {
-    set('node.default.borderColor', colorBorders);
-    set('nodeAnchor.default.color', colorBorders);
-    set('node.default.text', nodeDistanceText);
+    canvas.set('node.default.border.color', colorBorders);
+    anchors.set('anchors.default.color', colorBorders);
+    canvas.set('node.default.text.content', nodeDistanceText);
   };
 
   const deactivate = () => {
-    removeAll();
+    canvas.removeAll();
+    anchors.removeAll();
   };
 
   return {

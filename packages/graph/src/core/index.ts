@@ -1,23 +1,17 @@
+import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
 import { nullThrows } from '@magic/utils/assert';
 import { clone } from '@magic/utils/clone';
 import { delta } from '@magic/utils/delta/index';
 
 import { computed, ref, watch } from 'vue';
 
-import { EventHub, createEventHub } from '../events/createEventHub.ts';
-import {
-  ExtractActions,
-  ExtractControls,
-  ExtractEventMap,
-  ExtractGetters,
-  GraphGetters,
-  LooseGraphPlugin,
-} from '../plugins/types.ts';
+import type {
+  CoreEdge,
+  CoreNode,
+} from '../../../graph-core-infra/src/types.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import type { GraphSettings } from '../settings/index.ts';
-import type { CoreEdge, CoreNode, Prettify } from '../types.ts';
-import { createCoreActions } from './actions/createGraphActions.ts';
-import { GraphActions } from './actions/types.ts';
+import { createCoreActions } from './actions/createCoreActions.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { createHelpers } from './helpers/createHelpers.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
@@ -29,11 +23,9 @@ import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
 
 export const CORE_EVENT_ID = 'core';
 
-export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
-  plugins,
+export const core = ({
   settings: startupSettings = {},
 }: {
-  plugins: TPlugins;
   settings: Partial<GraphSettings>;
 }) => {
   const settings = ref<GraphSettings>({
@@ -129,44 +121,10 @@ export const createGraph = <TPlugins extends LooseGraphPlugin[]>({
     weights: edgeWeightStore,
   };
 
-  // TODO add topo sort and explicit error handling for missing plugin dependencies
-
-  let evolvingControls = coreControls;
-  let evolvingEvents: any = coreEventHub;
-  let evolvingActions = coreActions;
-  let evolvingGetters = coreGetters;
-
-  for (const plugin of plugins) {
-    const pluginResult = plugin(
-      evolvingControls,
-      evolvingEvents,
-      evolvingActions,
-      evolvingGetters,
-    );
-    evolvingControls = { ...evolvingControls, ...pluginResult.controls };
-    evolvingEvents = pluginResult.events;
-    evolvingActions = { ...evolvingActions, ...pluginResult.actions };
-    evolvingGetters = { ...evolvingGetters, ...pluginResult.getters };
-  }
-
-  const events = evolvingEvents as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
-
-  const controls = evolvingControls as Prettify<
-    CoreControls & ExtractControls<NoInfer<TPlugins>>
-  >;
-
-  const actions = evolvingActions as GraphActions<
-    ExtractActions<NoInfer<TPlugins>>
-  >;
-
-  const getters = evolvingGetters as GraphGetters<
-    ExtractGetters<NoInfer<TPlugins>>
-  >;
-
   return {
-    ...controls,
-    ...getters,
-    actions,
-    events,
+    controls: coreControls,
+    actions: coreActions,
+    getters: coreGetters,
+    events: coreEventHub,
   };
 };

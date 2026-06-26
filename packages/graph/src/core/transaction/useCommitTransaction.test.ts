@@ -1,10 +1,10 @@
+import { TransactionPayload } from '@magic/graph-core-infra/transactions/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { Ref } from 'vue';
 
-import { CoreEdge, CoreNode } from '../../types.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
-import { TransactionPayload } from './types.ts';
 import { useCommitTransaction } from './useCommitTransaction.ts';
 
 const ref = <T>(value: T) => ({ value }) as unknown as Ref<T>;

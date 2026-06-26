@@ -1,7 +1,7 @@
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+
 import { computed } from 'vue';
 import type { Ref } from 'vue';
-
-import type { CoreEdge, CoreNode } from '../types.ts';
 
 export const useNodeEdgeMap = (
   nodes: Ref<CoreNode[]>,

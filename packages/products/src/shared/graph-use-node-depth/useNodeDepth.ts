@@ -1,4 +1,4 @@
-import type { AdjacencyList } from '@magic/graph-plugins/plugins/adjacency-lists/types';
+import { AdjacencyList } from '@magic/graph-plugins/adjacency-lists/types';
 
 import { computed } from 'vue';
 import type { Ref } from 'vue';

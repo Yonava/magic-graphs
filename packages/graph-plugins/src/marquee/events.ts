@@ -1,0 +1,21 @@
+import { Coordinate } from '@magic/canvas/types';
+import { EventMapToEventRegistry } from '@magic/graph-core-infra/events/types';
+import { BoundingBox } from '@magic/shapes/types/utility';
+
+export type MarqueeEventMap = {
+  /**
+   * when the user starts a marquee selection
+   */
+  onMarqueeBeginSelection: (startingCoords: Readonly<Coordinate>) => void;
+  /**
+   * when the user ends a marquee selection
+   */
+  onMarqueeEndSelection: (marqueeBox: Readonly<BoundingBox>) => void;
+};
+
+type MarqueeEventRegistry = EventMapToEventRegistry<MarqueeEventMap>;
+
+export const createMarqueeEventRegistry = (): MarqueeEventRegistry => ({
+  onMarqueeBeginSelection: new Set(),
+  onMarqueeEndSelection: new Set(),
+});

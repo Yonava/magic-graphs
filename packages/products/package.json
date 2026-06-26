@@ -16,11 +16,14 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
+    "@magic/graph-core-infra": "workspace:*",
+    "@magic/create-graph": "workspace:*",
+    "@magic/graph-plugins": "workspace:*",
+    "@magic/graph-plugins-shared": "workspace:*",
+    "@magic/graph-theme-presets": "workspace:*",
     "@magic/canvas": "workspace:*",
-    "@magic/graph": "workspace:*",
     "@magic/shapes": "workspace:*",
     "@magic/ui": "workspace:*",
-    "@magic/graph-plugins": "workspace:*",
     "@magic/utils": "workspace:*",
     "@vueuse/core": "catalog:",
     "ctrl-keys": "catalog:",

@@ -1,9 +1,9 @@
-import { ThemePreset } from '@magic/graph-plugins/plugins/canvas/themes/index';
 import colors from '@magic/utils/colors';
 
 import { computed } from 'vue';
 
 import { graph } from './globalGraph.ts';
+import { ThemePreset } from './useGraph.ts';
 
 type GraphColors = {
   primary: string;
@@ -44,13 +44,13 @@ export const ThemePresetToGraphColors: Record<ThemePreset, GraphColors> = {
 export const useGraphColors = () =>
   computed(() => {
     if (!graph.value) return;
-    const theme = graph.value.canvas.theme.activePreset.value;
+    const theme = graph.value.vue.activePreset.value;
     return ThemePresetToGraphColors[theme];
   });
 
 export const useNonNullGraphColors = () =>
   computed(() => {
     if (!graph.value) throw 'global graph state not set';
-    const theme = graph.value.canvas.theme.activePreset.value;
+    const theme = graph.value.vue.activePreset.value;
     return ThemePresetToGraphColors[theme];
   });

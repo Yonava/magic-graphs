@@ -1,3 +1,5 @@
+import { getValue } from '@magic/utils/maybeGetter/index';
+
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { MarkovChainTrace } from './runner.ts';
@@ -22,15 +24,17 @@ export const useSimulationTheme = (
   };
 
   const nodeTextSize = ({ id }: { id: string }) => {
-    const defaultSize =
-      graph.canvas.theme.resolvedPreset.value.node.default.textSize;
+    const preset = graph.theme.activePreset();
+    const defaultSize = getValue(preset.canvas['node.default.text.size'], {
+      id,
+    })!;
     if (graph.focus.isFocused(id)) return;
     return defaultSize - 5;
   };
 
   const theme = () => {
-    set('node.default.text', nodeText);
-    set('node.default.textSize', nodeTextSize);
+    set('node.default.text.content', nodeText);
+    set('node.default.text.size', nodeTextSize);
   };
 
   const untheme = () => {

@@ -4,6 +4,12 @@
     "outDir": "./dist/types",
     "rootDir": "./src"
   },
-  "references": [{ "path": "../graph" }, { "path": "../utils" }],
-  "include": ["src/**/*.ts", "src/**/*.d.ts"]
+  "references": [
+    { "path": "../canvas" },
+    { "path": "../utils" },
+    { "path": "../graph-plugins-shared" },
+    { "path": "../graph-core-infra" },
+    { "path": "../shapes" }
+  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/canvas/nodeZScores.ts"]
 }

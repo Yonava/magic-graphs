@@ -5,10 +5,6 @@
     "rootDir": "./src",
     "rewriteRelativeImportExtensions": false
   },
-  "references": [
-    { "path": "../canvas" },
-    { "path": "../shapes" },
-    { "path": "../utils" }
-  ],
+  "references": [{ "path": "../utils" }, { "path": "../graph-core-infra" }],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

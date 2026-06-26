@@ -1,7 +1,7 @@
-import type { CoreEdge } from '@magic/graph/types';
 import colors from '@magic/utils/colors';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
+import { GEdge } from '../../shared/useGraph.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { BasicSearchTrace } from '../algo/types.ts';
 
@@ -18,7 +18,8 @@ export const useSimulationTheme = (
   sim: SimulationControls<BasicSearchTrace>,
 ) => {
   const { traceAtStep } = sim;
-  const { set, removeAll } = graph.canvas.theme.createLayer(USETHEME_ID);
+  const canvas = graph.canvas.theme.createLayer(USETHEME_ID);
+  const anchors = graph.anchors.theme.createLayer(USETHEME_ID);
 
   const colorBorders = ({ id }: { id: string }) => {
     if (graph.focus.isFocused(id)) return;
@@ -28,7 +29,7 @@ export const useSimulationTheme = (
     if (traceAtStep.value.queue?.includes(id)) return SIM_COLORS.QUEUED;
   };
 
-  const colorEdge = (edge: CoreEdge) => {
+  const colorEdge = (edge: Omit<GEdge, 'weight'>) => {
     if (
       traceAtStep.value.currentNodeId === edge.source &&
       !traceAtStep.value.visited.has(edge.target) &&
@@ -39,13 +40,14 @@ export const useSimulationTheme = (
   };
 
   const activate = () => {
-    set('node.default.borderColor', colorBorders);
-    set('nodeAnchor.default.color', colorBorders);
-    set('edge.default.color', colorEdge);
+    canvas.set('node.default.border.color', colorBorders);
+    anchors.set('anchors.default.color', colorBorders);
+    canvas.set('edge.default.color', colorEdge);
   };
 
   const deactivate = () => {
-    removeAll();
+    canvas.removeAll();
+    anchors.removeAll();
   };
 
   return {

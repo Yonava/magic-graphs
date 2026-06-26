@@ -1,6 +1,8 @@
-import { CoreGetters, GraphGetters } from '../../plugins/types.ts';
+import { GraphGetters } from '@magic/graph-core-infra/getters/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+
+import { CoreGetters } from '../../getters.ts';
 import type { GraphSettings } from '../../settings/index.ts';
-import type { CoreEdge, CoreNode } from '../../types.ts';
 import { CoreControls } from '../types.ts';
 
 export type EdgeHelpers = {

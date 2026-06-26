@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "rewriteRelativeImportExtensions": false
+  },
+  "references": [
+    { "path": "../graph" },
+    { "path": "../graph-plugins-shared" },
+    { "path": "../graph-plugins" },
+    { "path": "../graph-core-infra" },
+    { "path": "../utils" },
+    { "path": "../shapes" }
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "../graph-plugins/src/canvas/nodeZScores.ts"
+  ]
+}

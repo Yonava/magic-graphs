@@ -41,7 +41,7 @@
     return props.items.find((item) => item.value === selectedItem.value)?.label;
   });
 
-  const isOpen = defineModel('open', { default: false });
+  const isOpen = defineModel<boolean>('open', { default: false });
 
   const toggleMenu = () => (isOpen.value = !isOpen.value);
 

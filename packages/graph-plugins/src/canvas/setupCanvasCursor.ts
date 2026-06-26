@@ -1,0 +1,59 @@
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { GraphGetters } from '@magic/graph-core-infra/getters/types';
+import {
+  CURSOR,
+  CURSOR_FALLBACK,
+  Cursor,
+  isValidCursor,
+} from '@magic/graph-plugins-shared/theme/cursor';
+import { CoreGetters } from '@magic/graph/getters';
+
+import { CanvasEventMap } from './events.ts';
+import { CanvasControls } from './types.ts';
+
+type GraphCursorProps = {
+  subscribe: EventHub<CanvasEventMap>['subscribe'];
+  canvas: CanvasControls['magicCanvas']['canvas'];
+  getNode: GraphGetters<CoreGetters>['getNode'];
+  resolveToken: CanvasControls['theme']['_resolveToken'];
+  graphUnderCursor: CanvasControls['graphUnderCursor'];
+};
+
+export const CANVAS_ELEMENT_CURSOR_FIELD_KEY = 'cursor';
+
+/**
+ * manages the cursor type when hovering over the graph
+ */
+export const setupCanvasCursor = ({
+  subscribe,
+  canvas,
+  resolveToken,
+  graphUnderCursor,
+}: GraphCursorProps) => {
+  const getCursor = (): Cursor => {
+    const canvasTheme = resolveToken('canvas.cursor');
+    if (canvasTheme !== CURSOR_FALLBACK) return canvasTheme;
+
+    const topElement = graphUnderCursor.elements.at(-1);
+    if (!topElement) return CURSOR.DEFAULT;
+
+    const elementCursor = topElement.data?.[CANVAS_ELEMENT_CURSOR_FIELD_KEY];
+
+    if (elementCursor === undefined) return CURSOR.DEFAULT;
+    if (!isValidCursor(elementCursor)) {
+      console.warn(`expected valid cursor: got "${elementCursor}"`);
+      return CURSOR.DEFAULT;
+    }
+
+    return elementCursor;
+  };
+
+  const refreshCursor = () => {
+    if (!canvas.value) return;
+    const currentCursor = canvas.value.style.cursor;
+    const newCursor = getCursor();
+    if (currentCursor !== newCursor) canvas.value.style.cursor = newCursor;
+  };
+
+  subscribe('onDraw', refreshCursor);
+};

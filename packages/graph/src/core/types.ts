@@ -1,7 +1,8 @@
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+
 import type { ComputedRef, Ref } from 'vue';
 
 import { GraphSettings } from '../settings/index.ts';
-import type { CoreEdge, CoreNode } from '../types.ts';
 import { CoreGraphHelpers } from './helpers/types.ts';
 import { NodePositionStoreControls } from './positions/types.ts';
 import { EdgeWeightStoreControls } from './weights/types.ts';

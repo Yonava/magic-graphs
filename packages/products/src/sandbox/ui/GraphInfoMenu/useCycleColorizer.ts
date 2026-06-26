@@ -14,7 +14,8 @@ const COLORS = [
 ];
 
 export const useCycleColorizer = (graph: Graph) => {
-  const { set, removeAll } = graph.canvas.theme.createLayer(CYCLE_THEME_ID);
+  const canvas = graph.canvas.theme.createLayer(CYCLE_THEME_ID);
+  const anchors = graph.anchors.theme.createLayer(CYCLE_THEME_ID);
 
   const colorNodeBorders = ({ id }: { id: string }) => {
     const isAcyclic = graph.characteristics.cycles.isAcyclic.value;
@@ -26,12 +27,13 @@ export const useCycleColorizer = (graph: Graph) => {
   };
 
   const colorize = () => {
-    set('node.default.borderColor', colorNodeBorders);
-    set('nodeAnchor.default.color', colorNodeBorders);
+    canvas.set('node.default.border.color', colorNodeBorders);
+    anchors.set('anchors.default.color', colorNodeBorders);
   };
 
   const decolorize = () => {
-    removeAll();
+    canvas.removeAll();
+    anchors.removeAll();
   };
 
   return {

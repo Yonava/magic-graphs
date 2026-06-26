@@ -1,10 +1,8 @@
-import type { CoreEdge, CoreNode } from '../../types.ts';
+import { CommitTransaction } from '@magic/graph-core-infra/transactions/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+
 import { createEmptyPayload } from './createEmptyPayload.ts';
-import type {
-  CommitTransaction,
-  GraphState,
-  TransactionOptions,
-} from './types.ts';
+import type { GraphState, TransactionOptions } from './types.ts';
 
 // TODO 1. ❌ Validation https://github.com/Yonava/magic-graphs/issues/598
 // 2. ✅ Process Mutation State

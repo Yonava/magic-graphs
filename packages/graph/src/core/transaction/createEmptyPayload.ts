@@ -1,4 +1,4 @@
-import type { TransactionPayload } from './types.ts';
+import { TransactionPayload } from '@magic/graph-core-infra/transactions/types';
 
 export function createEmptyPayload() {
   const payload: TransactionPayload = {

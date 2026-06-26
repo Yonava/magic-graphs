@@ -1,6 +1,5 @@
 <script setup lang="ts">
-  import { resolveNodeStyles } from '@magic/graph-plugins/plugins/canvas/themes/index';
-  import type { CoreNode } from '@magic/graph/types';
+  import { CoreNode } from '@magic/graph-core-infra/types';
 
   import { computed, onUnmounted, ref } from 'vue';
 
@@ -15,9 +14,7 @@
     size: 60,
   });
 
-  const theme = ref(
-    resolveNodeStyles(graph.value.canvas.theme._resolveToken, props.node),
-  );
+  const theme = ref(graph.value.theme.resolveNodeStyles(props.node));
 
   const borderSize = computed(() =>
     Math.round(Math.max(1, Math.log(props.size))),
@@ -28,10 +25,7 @@
   };
 
   const updateTheme = setInterval(() => {
-    theme.value = resolveNodeStyles(
-      graph.value.canvas.theme._resolveToken,
-      props.node,
-    );
+    theme.value = graph.value.theme.resolveNodeStyles(props.node);
   }, 100);
 
   onUnmounted(() => {
@@ -51,8 +45,8 @@
       'cursor-pointer',
     ]"
     :style="{
-      color: theme.textColor,
-      border: `${borderSize}px solid ${theme.borderColor}`,
+      color: theme.text.color,
+      border: `${borderSize}px solid ${theme.border.color}`,
       backgroundColor: theme.color,
       height: `${size}px`,
       width: `${size}px`,

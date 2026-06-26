@@ -3,8 +3,10 @@
   "references": [
     { "path": "./packages/canvas" },
     { "path": "./packages/client" },
-    { "path": "./packages/graph" },
+    { "path": "./packages/graph-plugins-shared" },
     { "path": "./packages/graph-plugins" },
+    { "path": "./packages/graph-core-infra" },
+    { "path": "./packages/graph" },
     { "path": "./packages/products" },
     { "path": "./packages/server" },
     { "path": "./packages/shapes" },

@@ -1,7 +1,5 @@
 import { Fraction } from 'mathjs';
 
-import type { CoreEdge } from '../types.ts';
-
 export type CoreGraphSettings = {
   /**
    * whether graph is weighted, if true, all individual {@link CoreEdge.weight | edge weights} are ignored and are treated as if they were `new Fraction(1)`

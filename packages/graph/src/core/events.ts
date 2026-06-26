@@ -1,17 +1,17 @@
-import { DeepPartial, DeepReadonly } from 'ts-essentials';
-
-import { EventMapToEventRegistry } from '../events/types.ts';
-import { GraphSettings } from '../settings/index.ts';
-import { CoreEdge, CoreNode } from '../types.ts';
+import { EventMapToEventRegistry } from '@magic/graph-core-infra/events/types';
 import {
   ElementAdditionPayload,
   ElementRemovalPayload,
-} from './actions/types.ts';
+  TransactionPayload,
+} from '@magic/graph-core-infra/transactions/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { DeepPartial, DeepReadonly } from 'ts-essentials';
+
+import { GraphSettings } from '../settings/index.ts';
 import {
   NodePositionStoreEventMap,
   createNodePositionStoreEventRegistry,
 } from './positions/events.ts';
-import { TransactionPayload } from './transaction/types.ts';
 import {
   EdgeWeightStoreEventMap,
   createEdgeWeightStoreEventRegistry,

@@ -1,5 +1,5 @@
-import { CURSOR } from '@magic/graph-plugins/plugins/canvas/themes/cursor';
-import { CanvasElement } from '@magic/graph-plugins/plugins/canvas/types';
+import { CURSOR } from '@magic/graph-plugins-shared/theme/cursor';
+import { CanvasElement } from '@magic/graph-plugins/canvas/aggregator/types';
 
 import { Graph } from '../useGraphWithCanvas.ts';
 

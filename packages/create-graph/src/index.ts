@@ -1,0 +1,218 @@
+import { GraphActions } from '@magic/graph-core-infra/actions/types';
+import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { GraphGetters } from '@magic/graph-core-infra/getters/types';
+import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { createComputedTokenResolver } from '@magic/graph-plugins-shared/computed-tokens/createComputedTokenResolver';
+import {
+  ExtractActions,
+  ExtractControls,
+  ExtractEventMap,
+  ExtractGetters,
+  LooseGraphPlugin,
+} from '@magic/graph-plugins-shared/plugins/types';
+import { ThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
+import {
+  PluginThemeField,
+  ThemesForPlugins,
+} from '@magic/graph-plugins-shared/types';
+import {
+  Aggregator,
+  AggregatorTransformer,
+  CanvasElement,
+} from '@magic/graph-plugins/canvas/aggregator/types';
+import { getNodeZScores } from '@magic/graph-plugins/canvas/nodeZScores';
+import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@magic/graph-plugins/canvas/setupCanvasCursor';
+import { CanvasControls } from '@magic/graph-plugins/canvas/types';
+import { core as createCore } from '@magic/graph/core/index';
+import { CoreControls } from '@magic/graph/core/types';
+import { GraphSettings } from '@magic/graph/settings/index';
+import { nullThrows } from '@magic/utils/assert';
+import type { Prettify } from 'ts-essentials';
+
+import {
+  edgeRenderer,
+  resolveEdgeComputedTokens,
+} from './render-functions/edge.ts';
+import {
+  nodeRenderer,
+  resolveNodeComputedTokens,
+} from './render-functions/node.ts';
+
+type CreateGraphOptions<
+  TPlugins extends LooseGraphPlugin[],
+  PresetName extends string,
+> = {
+  plugins: TPlugins;
+  themePresets: Record<PresetName, ThemesForPlugins<NoInfer<TPlugins>>>;
+  settings: Partial<GraphSettings>;
+};
+
+export const createGraph = <
+  const TPlugins extends LooseGraphPlugin[],
+  PresetName extends string,
+>({
+  plugins,
+  themePresets,
+  settings = {},
+}: CreateGraphOptions<TPlugins, PresetName>) => {
+  const core = createCore({ settings });
+
+  const presetNames = Object.keys(themePresets) as PresetName[];
+
+  let activePresetName = nullThrows(
+    presetNames.at(0),
+    'createGraph requires at least 1 theme preset!',
+  );
+
+  // TODO add topo sort and explicit error handling for missing plugin dependencies
+
+  let evolvingControls = core.controls;
+  let evolvingEvents: any = core.events;
+  let evolvingActions = core.actions;
+  let evolvingGetters = core.getters;
+
+  // plugin name to the registered detectors
+  let evolvingThemeDetectors: PluginThemeField<any>['theme']['detectors'] = {};
+
+  for (const plugin of plugins) {
+    const pluginResult = plugin(
+      evolvingControls,
+      evolvingEvents,
+      evolvingActions,
+      evolvingGetters,
+    );
+    evolvingControls = { ...evolvingControls, ...pluginResult.controls };
+    evolvingEvents = pluginResult.events;
+    evolvingActions = { ...evolvingActions, ...pluginResult.actions };
+    evolvingGetters = { ...evolvingGetters, ...pluginResult.getters };
+
+    // TODO make the contract to define plugin name scope in the controls more explicit!
+    // Something like the plugin itself exposes a name field in pluginResult like pluginResult.name = 'focus'
+    const pluginName = nullThrows(
+      Object.keys(pluginResult.controls).at(0),
+      'Could not resolve name of plugin',
+    );
+    const pluginThemeField: PluginThemeField<any>['theme'] | undefined = (
+      pluginResult.controls as any
+    )[pluginName]?.theme;
+
+    if (pluginThemeField) {
+      const { set } = pluginThemeField.createLayer(
+        'create-graph/theme-presets',
+      );
+      const tokens = Object.keys(
+        (themePresets as any)[activePresetName][pluginName],
+      );
+      for (const token of tokens) {
+        set(
+          token,
+          () => (themePresets as any)[activePresetName][pluginName][token],
+        );
+      }
+
+      evolvingThemeDetectors = {
+        ...evolvingThemeDetectors,
+        ...pluginThemeField.detectors,
+      };
+    }
+
+    pluginResult.onAfterInit?.();
+  }
+
+  const events = evolvingEvents as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
+
+  const controls = evolvingControls as Prettify<
+    CoreControls & ExtractControls<NoInfer<TPlugins>>
+  >;
+
+  const actions = evolvingActions as GraphActions<
+    ExtractActions<NoInfer<TPlugins>>
+  >;
+
+  const getters = evolvingGetters as GraphGetters<
+    ExtractGetters<NoInfer<TPlugins>>
+  >;
+
+  const tokenResolver = createComputedTokenResolver(evolvingThemeDetectors);
+
+  const nodeCanvasElement = (node: CoreNode): CanvasElement | undefined => {
+    // assume we have canvas plugin!
+    const castControls = controls as unknown as CoreControls & {
+      canvas: CanvasControls;
+    };
+
+    const shape = nodeRenderer({
+      resolver: tokenResolver,
+      controls: castControls,
+      node,
+    });
+
+    if (!shape) return;
+
+    return {
+      id: node.id,
+      priority: castControls.canvas.getNodePriority()(node.id),
+      graphType: 'node',
+      shape,
+      data: {
+        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenResolver('node.cursor', node),
+      },
+    };
+  };
+
+  const edgeCanvasElement = (edge: CoreEdge): CanvasElement | undefined => {
+    // assume we have canvas plugin!
+    const castControls = controls as unknown as CoreControls & {
+      canvas: CanvasControls;
+    };
+    const shape = edgeRenderer({
+      resolver: tokenResolver,
+      controls: castControls,
+      edge,
+    });
+
+    if (!shape) return;
+
+    return {
+      shape,
+      id: edge.id,
+      graphType: 'edge',
+      priority: 1,
+      data: {
+        [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenResolver('edge.cursor', edge),
+      },
+    };
+  };
+
+  // assume we have canvas in controls!
+  const { transformers } = (controls as unknown as { canvas: CanvasControls })
+    .canvas.aggregator;
+
+  const transformer: AggregatorTransformer = (agg) => {
+    agg.push(...controls.nodes.value.map(nodeCanvasElement).filter((v) => !!v));
+    agg.push(...controls.edges.value.map(edgeCanvasElement).filter((v) => !!v));
+    return agg;
+  };
+
+  transformers.push(transformer);
+
+  const resolveNodeStyles = resolveNodeComputedTokens(tokenResolver);
+  const resolveEdgeStyles = resolveEdgeComputedTokens(tokenResolver);
+
+  return {
+    ...controls,
+    ...getters,
+    actions,
+    events,
+    theme: {
+      tokenResolver,
+      resolveNodeStyles,
+      resolveEdgeStyles,
+      activePresetName: () => activePresetName,
+      activePreset: () => themePresets[activePresetName],
+      setActivePreset: (newPresetName: PresetName) => {
+        return (activePresetName = newPresetName);
+      },
+    },
+  };
+};

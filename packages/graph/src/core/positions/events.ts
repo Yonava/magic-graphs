@@ -1,6 +1,6 @@
+import { EventMapToEventRegistry } from '@magic/graph-core-infra/events/types';
 import { DeepReadonly } from 'ts-essentials';
 
-import { EventMapToEventRegistry } from '../../events/types.ts';
 import { NodePositionEntry } from './types.ts';
 
 export type NodePositionStoreEventMap = {
