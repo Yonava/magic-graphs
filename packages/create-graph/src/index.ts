@@ -114,10 +114,14 @@ export const createGraph = <
   const tokenResolver = createComputedTokenResolver(evolvingThemeDetectors);
 
   const nodeCanvasElement = (node: CoreNode): CanvasElement | undefined => {
+    // assume we have canvas plugin!
+    const castControls = controls as unknown as CoreControls & {
+      canvas: CanvasControls;
+    };
+
     const shape = nodeRenderer({
       resolver: tokenResolver,
-      // assume we have canvas plugin!
-      controls: controls as any,
+      controls: castControls,
       node,
     });
 
@@ -128,9 +132,7 @@ export const createGraph = <
       priority:
         2 +
         nullThrows(
-          (
-            controls as unknown as { canvas: CanvasControls }
-          ).canvas._nodeZScores.get(node.id),
+          castControls.canvas._nodeZScores.get(node.id),
           'node z score not found',
         ),
       graphType: 'node',
@@ -142,10 +144,13 @@ export const createGraph = <
   };
 
   const edgeCanvasElement = (edge: CoreEdge): CanvasElement | undefined => {
+    // assume we have canvas plugin!
+    const castControls = controls as unknown as CoreControls & {
+      canvas: CanvasControls;
+    };
     const shape = edgeRenderer({
       resolver: tokenResolver,
-      // assume we have canvas plugin!
-      controls: controls as any,
+      controls: castControls,
       edge,
     });
 

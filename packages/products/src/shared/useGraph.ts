@@ -14,6 +14,8 @@ import { transitionMatrix } from '@magic/graph-plugins/transition-matrix/index';
 import { light } from '@magic/graph-theme-presets/light/index';
 import type { GraphSettings } from '@magic/graph/settings/index';
 
+import { computed, ref, watch } from 'vue';
+
 import { useInteractive } from './interactive/index.ts';
 import { useShortcuts } from './shortcut/index.ts';
 
@@ -47,6 +49,10 @@ export type GraphWithPlugins = ReturnType<typeof createGraphWithPlugins>;
 export type GNode = ReturnType<GraphWithPlugins['getNode']>;
 export type GEdge = ReturnType<GraphWithPlugins['getEdge']>;
 
+export type ThemePreset = ReturnType<
+  GraphWithPlugins['theme']['activePresetName']
+>;
+
 /**
  * a hook brimming with tools for creating and managing graphs bringing
  * light and joy to the world
@@ -60,12 +66,25 @@ export const useGraph = (
   settings: Partial<GraphSettings> = {},
 ) => {
   const graph = createGraphWithPlugins(canvas, settings);
+
+  const activePreset = computed({
+    get: () => {
+      return graph.theme.activePresetName();
+    },
+    set: (v) => {
+      graph.theme.setActivePreset(v);
+    },
+  });
+
   const shortcut = useShortcuts(graph);
 
   useInteractive(graph);
 
   return {
     ...graph,
+    vue: {
+      activePreset,
+    },
     shortcut,
   };
 };

@@ -5,13 +5,14 @@ import { CoreControls } from '@magic/graph/core/types';
 import { getLargestAngularSpaceBisector } from '@magic/shapes/helpers';
 import { Shape } from '@magic/shapes/types/index';
 import { nullThrows } from '@magic/utils/assert';
+import { GOLDEN_RATIO } from '@magic/utils/math';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
 type Props = {
   resolver: CompoundTokenResolver;
   edge: CoreEdge;
-  controls: CoreControls & CanvasControls;
+  controls: CoreControls & { canvas: CanvasControls };
 };
 
 type EdgeRenderer = (props: Props) => Shape | undefined;
@@ -47,7 +48,12 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
   const sourceNode = { ...rawSourceNode, ...sourcePosition } as const;
   const targetNode = { ...rawTargetNode, ...targetPosition } as const;
 
-  const { isGraphDirected } = controls.settings.value;
+  const { isGraphDirected, isGraphWeighted } = controls.settings.value;
+
+  const fromNodeSize = resolver('node.size', rawSourceNode);
+  const fromNodeBorderWidth = resolver('node.border.width', rawSourceNode);
+  const toNodeSize = resolver('node.size', rawTargetNode);
+  const toNodeBorderWidth = resolver('node.border.width', rawTargetNode);
 
   const edgesAlongPath = controls.helpers.nodes.getEdgesBetweenConnectedNodes(
     sourceNode.id,
@@ -62,17 +68,12 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
     targetNode.x - sourceNode.x,
   );
 
-  // resolve source and target node sizes to correctly offset the edge endpoints
-  const sourceNodeSize = resolver('node.size', rawSourceNode);
-  const targetNodeSize = resolver('node.size', rawTargetNode);
-  const toNodeBorderWidth = resolver('node.border.width', rawTargetNode);
-
   const arrowHeadSpacingAwayFromNode =
     toNodeBorderWidth / 2 + WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX;
 
   const arrowDrawOffset = {
-    x: (targetNodeSize + arrowHeadSpacingAwayFromNode) * Math.cos(angle),
-    y: (targetNodeSize + arrowHeadSpacingAwayFromNode) * Math.sin(angle),
+    x: (toNodeSize + arrowHeadSpacingAwayFromNode) * Math.cos(angle),
+    y: (toNodeSize + arrowHeadSpacingAwayFromNode) * Math.sin(angle),
   };
 
   const edgeStart = { x: sourceNode.x, y: sourceNode.y };
@@ -92,6 +93,11 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
 
   const largestAngularSpaceBisector = getLargestAngularSpaceBisector(
     edgeStart,
+    /**
+     * 1. filter to remove self-referencing edges
+     * 2. map to { x, y } format
+     * 3. filter duplicates — prevents bi-directional edges from causing angle issues when no other edges are present
+     */
     controls.edges.value
       .filter(
         (e) =>
@@ -110,35 +116,51 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
       ),
   );
 
+  const textArea = isGraphWeighted
+    ? {
+        color: 'none' as const,
+        activeColor: controls.canvas.theme._resolveToken('canvas.color'),
+        textBlock: {
+          content: styles.text.content,
+          color: styles.text.color,
+          fontSize: styles.text.size,
+          fontWeight: styles.text.fontWeight,
+        },
+      }
+    : undefined;
+
   if (isSelfDirected) {
-    return controls.shapes.shapes.circle({
+    const upDistance = (fromNodeSize + fromNodeBorderWidth) * GOLDEN_RATIO;
+    const downDistance =
+      upDistance -
+      (fromNodeSize + fromNodeBorderWidth / 2) -
+      WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX;
+
+    return controls.canvas.shapes.shapes.uturn({
       id: edge.id,
-      at: {
-        x:
-          sourceNode.x + Math.cos(largestAngularSpaceBisector) * sourceNodeSize,
-        y:
-          sourceNode.y + Math.sin(largestAngularSpaceBisector) * sourceNodeSize,
-      },
-      radius: sourceNodeSize * 0.75,
+      spacing: styles.width * 1.2,
+      at: { x: sourceNode.x, y: sourceNode.y },
+      upDistance,
+      downDistance,
+      rotation: largestAngularSpaceBisector,
+      lineWidth: styles.width,
       fillColor: styles.color,
-      stroke: {
-        color: styles.color,
-        lineWidth: styles.width,
-      },
+      textArea,
     });
   }
 
-  const textArea = {
-    textBlock: {
-      content: styles.text.content,
-      fontSize: styles.text.size,
-      fontWeight: styles.text.fontWeight,
-      color: styles.text.color,
-    },
-  };
+  const sumOfToAndFromNodeSize =
+    fromNodeSize + fromNodeBorderWidth / 2 + toNodeSize + toNodeBorderWidth / 2;
+  const distanceSquaredBetweenNodes =
+    (sourceNode.x - targetNode.x) ** 2 + (sourceNode.y - targetNode.y) ** 2;
+  const areNodesTouching =
+    sumOfToAndFromNodeSize ** 2 > distanceSquaredBetweenNodes;
 
-  if (isGraphDirected) {
-    return controls.shapes.shapes.arrow({
+  // prevents edges from rendering when connecting nodes are overlapping
+  if (areNodesTouching) return undefined;
+
+  if (!isGraphDirected) {
+    return controls.canvas.shapes.shapes.line({
       id: edge.id,
       start: edgeStart,
       end: edgeEnd,
@@ -148,11 +170,12 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
     });
   }
 
-  return controls.shapes.shapes.line({
+  return controls.canvas.shapes.shapes.arrow({
     id: edge.id,
     start: edgeStart,
     end: edgeEnd,
     lineWidth: styles.width,
+    textOffsetFromCenter: (fromNodeSize + fromNodeBorderWidth / 2) / 2,
     fillColor: styles.color,
     textArea,
   });

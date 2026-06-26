@@ -8,7 +8,7 @@ import { nullThrows } from '@magic/utils/assert';
 type Props = {
   resolver: CompoundTokenResolver;
   node: CoreNode;
-  controls: CoreControls & CanvasControls;
+  controls: CoreControls & { canvas: CanvasControls };
 };
 
 type NodeRenderer = (props: Props) => Shape | undefined;
@@ -37,7 +37,7 @@ export const nodeRenderer: NodeRenderer = ({ resolver, node, controls }) => {
   );
   const styles = resolveNodeComputedTokens(resolver)(node);
 
-  return controls.shapes.shapes.circle({
+  return controls.canvas.shapes.shapes.circle({
     id: node.id,
     at: position,
     radius: styles.size,
