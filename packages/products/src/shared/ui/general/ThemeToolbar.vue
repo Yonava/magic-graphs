@@ -19,6 +19,7 @@
     <ToolbarButtonGroup>
       <GToolbarButton
         v-for="(val, key) in themePresetToIcon"
+        @click="graph.vue.activePreset.value = key"
         :key="key"
         :icon="val"
         :active="key === graph.vue.activePreset.value"

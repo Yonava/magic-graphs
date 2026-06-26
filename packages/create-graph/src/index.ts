@@ -92,9 +92,14 @@ export const createGraph = <
     if (!pluginThemeField) continue;
 
     const { set } = pluginThemeField.createLayer('create-graph/theme-presets');
-    const tokens = Object.keys((themePresets as any)[pluginName]);
+    const tokens = Object.keys(
+      (themePresets as any)[activePresetName][pluginName],
+    );
     for (const token of tokens) {
-      set(token, () => (themePresets as any)[pluginName][token]);
+      set(
+        token,
+        () => (themePresets as any)[activePresetName][pluginName][token],
+      );
     }
 
     evolvingThemeDetectors = {
@@ -196,8 +201,10 @@ export const createGraph = <
       resolveEdgeStyles,
       activePresetName: () => activePresetName,
       activePreset: () => themePresets[activePresetName],
-      setActivePreset: (newPresetName: PresetName) =>
-        (activePresetName = newPresetName),
+      setActivePreset: (newPresetName: PresetName) => {
+        console.log(newPresetName);
+        activePresetName = newPresetName;
+      },
     },
   };
 };
