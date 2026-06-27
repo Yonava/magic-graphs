@@ -12,23 +12,9 @@ import {
   MergeGetters,
 } from '@magic/graph-primitives/getters/types';
 
+import { ResolvePluginData } from './defaults.ts';
 import { ExtractControls, ExtractEventMap } from './extractors.ts';
 import { LooseGraphPlugin, LoosePluginData } from './loose.ts';
-
-type DefaultPluginData = {
-  controls: {};
-  events: {};
-  getters: {};
-  actions: {};
-  dependsOn: [];
-  optionalDependsOn: [];
-};
-
-type ResolvePluginData<PartialPluginData> = {
-  [K in keyof LoosePluginData]: K extends keyof PartialPluginData
-    ? NonNullable<PartialPluginData[K]>
-    : DefaultPluginData[K];
-};
 
 export type GraphPlugin<PluginData extends Partial<LoosePluginData>> =
   ResolvedGraphPlugin<ResolvePluginData<PluginData>>;
