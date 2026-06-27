@@ -17,7 +17,7 @@ import { ExtractControls, ExtractEventMap } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';
 
 export type GraphPlugin<PluginSchema extends Partial<LoosePluginSchema>> =
-  PluginOutput<ResolvePluginData<PluginSchema>>;
+  ResolvedGraphPlugin<ResolvePluginData<PluginSchema>>;
 
 type PluginInput<PluginSchema extends LoosePluginSchema> = {
   controls: CoreControls &
@@ -36,9 +36,7 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
   getters: GraphGetters<CoreGetters>;
 };
 
-type PluginOutput<PluginSchema extends LoosePluginSchema> = (
-  options: PluginInput<PluginSchema>,
-) => {
+type PluginOutput<PluginSchema extends LoosePluginSchema> = {
   controls: PluginSchema['controls'];
   // [1]
   events: EventHub<
@@ -53,6 +51,10 @@ type PluginOutput<PluginSchema extends LoosePluginSchema> = (
   actions: GraphActions<MergeActions<[PluginSchema['actions'], CoreActions]>>;
   onAfterInit?: () => void;
 };
+
+type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
+  options: PluginInput<PluginSchema>,
+) => PluginOutput<PluginSchema>;
 
 // [1] a plugin receives the upstream event hub (core's events plus everything
 // dependent plugins have already merged in) and is responsible for merging
