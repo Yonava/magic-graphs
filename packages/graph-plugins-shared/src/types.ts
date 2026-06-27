@@ -5,7 +5,7 @@ import {
   ComputedTokenDetectorMap,
   computedTokenStatePrecedence,
 } from './computed-tokens/types.ts';
-import { LooseGraphPlugin } from './plugins/types.ts';
+import { LooseGraphPlugin } from './plugins/internals/types.ts';
 import { ThemeController } from './theme/createThemeController.ts';
 
 export type Coordinate = {

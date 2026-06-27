@@ -14,7 +14,7 @@ import {
 
 import { ResolvePluginData } from './defaults.ts';
 import { ExtractControls, ExtractEventMap } from './extractors.ts';
-import { LooseGraphPlugin, LoosePluginData } from './loose.ts';
+import { LoosePluginData } from './loose.ts';
 
 export type GraphPlugin<PluginData extends Partial<LoosePluginData>> =
   ResolvedGraphPlugin<ResolvePluginData<PluginData>>;
@@ -36,27 +36,11 @@ type GraphPluginOptions<PluginData extends LoosePluginData> = {
   getters: GraphGetters<CoreGetters>;
 };
 
-/** get the options in a plugins parameters  */
-export type PluginOptions<Plugin extends LooseGraphPlugin> =
-  Parameters<Plugin>[0];
-
-/**
- * a plugin receives the upstream event hub (core's events plus everything
- * dependent plugins have already merged in) and is responsible for merging
- * its own events into it and returning the *same* hub, extended.
- *
- * there's no separate slot to stash a plugin's event map alongside the
- * upstream one (unlike `controls`, which is just flat intersection) because
- * the hub is a single threaded object: each plugin subscribes to it,
- * extends it, and hands the merged hub to the next plugin in the chain.
- * a plugin that returned a fresh, unmerged hub of just its own events
- * would silently drop every event upstream plugins (and core) emit, since
- * downstream plugins and consumers only ever see what's returned here.
- */
 type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
   options: GraphPluginOptions<PluginData>,
 ) => {
   controls: PluginData['controls'];
+  // [1]
   events: EventHub<
     CoreEventMap &
       ExtractEventMap<PluginData['dependsOn']> &
@@ -69,3 +53,15 @@ type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
   actions: GraphActions<MergeActions<[PluginData['actions'], CoreActions]>>;
   onAfterInit?: () => void;
 };
+
+// [1] a plugin receives the upstream event hub (core's events plus everything
+// dependent plugins have already merged in) and is responsible for merging
+// its own events into it and returning the *same* hub, extended.
+//
+// there's no separate slot to stash a plugin's event map alongside the
+// upstream one (unlike `controls`, which is just flat intersection) because
+// the hub is a single threaded object: each plugin subscribes to it,
+// extends it, and hands the merged hub to the next plugin in the chain.
+// a plugin that returned a fresh, unmerged hub of just its own events
+// would silently drop every event upstream plugins (and core) emit, since
+// downstream plugins and consumers only ever see what's returned here.

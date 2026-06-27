@@ -1,11 +1,11 @@
 import { Coordinate, MagicCanvasProps } from '@magic/canvas/types';
-import { GraphPlugin } from '@magic/graph-plugins-shared/plugins/types';
 import { WithTheme } from '@magic/graph-plugins-shared/types';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import { DeepReadonly } from 'ts-essentials';
 
 import { Ref, ShallowRef } from 'vue';
 
+import { GraphPlugin } from '../../../graph-plugins-shared/dist/types/plugins/internals/types.ts';
 import { AggregatorControls } from './aggregator/createAggregator.ts';
 import { CanvasElement } from './aggregator/types.ts';
 import { CanvasEventMap } from './events.ts';

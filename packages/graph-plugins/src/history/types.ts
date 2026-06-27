@@ -1,10 +1,9 @@
+import { ComputedRef, Ref } from 'vue';
+
 import {
   GraphPlugin,
   WithLifecycle,
-} from '@magic/graph-plugins-shared/plugins/types';
-
-import { ComputedRef, Ref } from 'vue';
-
+} from '../../../graph-plugins-shared/dist/types/plugins/internals/types.ts';
 import { HistoryEventMap } from './events.ts';
 
 type HistoryOption = {
