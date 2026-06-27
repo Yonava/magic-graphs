@@ -73,12 +73,12 @@ const getWeightedAdjacencyList = (graph: Graph) => {
   );
 };
 
-export const adjacencyLists: AdjacencyListsPlugin = (
+export const adjacencyLists: AdjacencyListsPlugin = ({
   controls,
   events,
   actions,
   getters,
-) => {
+}) => {
   const standard = ref<AdjacencyList>({});
   const weighted = ref<WeightedAdjacencyList>({});
 

@@ -4,7 +4,9 @@ import type { Shape } from './types/index.ts';
  * Creates an offscreen canvas that mirrors the main canvas's pixel dimensions
  * and has the same camera transform applied, ready for isolated drawing.
  */
-const createOffscreenCanvas = (ctx: CanvasRenderingContext2D): CanvasRenderingContext2D => {
+const createOffscreenCanvas = (
+  ctx: CanvasRenderingContext2D,
+): CanvasRenderingContext2D => {
   const offscreen = document.createElement('canvas');
   offscreen.width = ctx.canvas.width;
   offscreen.height = ctx.canvas.height;
@@ -19,7 +21,10 @@ const createOffscreenCanvas = (ctx: CanvasRenderingContext2D): CanvasRenderingCo
  * Composites the offscreen canvas onto the main canvas.
  * Transform is reset so offscreen pixels map 1:1 to main canvas pixels.
  */
-const compositeToMain = (ctx: CanvasRenderingContext2D, offCtx: CanvasRenderingContext2D) => {
+const compositeToMain = (
+  ctx: CanvasRenderingContext2D,
+  offCtx: CanvasRenderingContext2D,
+) => {
   ctx.save();
   ctx.resetTransform();
   ctx.drawImage(offCtx.canvas, 0, 0);

@@ -1,8 +1,7 @@
-import { CoreControls } from '@magic/graph/core/types';
+import { PluginOptions } from '@magic/graph-plugins-shared/plugins/types';
 import type { BoundingBox } from '@magic/shapes/types/utility';
 
-import { CanvasControls } from '../canvas/types.ts';
-import { FocusControls } from '../focus/types.ts';
+import { MarqueePlugin } from './types.ts';
 
 export function getSurfaceArea(box: BoundingBox) {
   const { width, height } = box;
@@ -10,7 +9,7 @@ export function getSurfaceArea(box: BoundingBox) {
 }
 
 export const getSelectionBox = (
-  graph: CoreControls & { canvas: CanvasControls; focus: FocusControls },
+  controls: PluginOptions<MarqueePlugin>['controls'],
 ): BoundingBox => {
   const selectionBox = {
     at: { x: Infinity, y: Infinity },
@@ -18,24 +17,24 @@ export const getSelectionBox = (
     height: 0,
   };
 
-  if (graph.focus.focusedNodes.value.length < 2) return selectionBox;
+  if (controls.focus.focusedNodes.value.length < 2) return selectionBox;
 
   let minX = Infinity,
     minY = Infinity;
   let maxX = -Infinity,
     maxY = -Infinity;
 
-  for (const node of graph.nodes.value) {
-    const nodeRadius = graph.canvas.theme._resolveToken(
+  for (const node of controls.nodes.value) {
+    const nodeRadius = controls.canvas.theme._resolveToken(
       'node.default.size',
       node,
     );
-    const nodeBorderWidth = graph.canvas.theme._resolveToken(
+    const nodeBorderWidth = controls.canvas.theme._resolveToken(
       'node.default.border.width',
       node,
     );
     const nodeArea = nodeRadius + nodeBorderWidth / 2;
-    const { x, y } = graph.positions.get(node.id);
+    const { x, y } = controls.positions.get(node.id);
 
     minX = Math.min(minX, x - nodeArea);
     minY = Math.min(minY, y - nodeArea);

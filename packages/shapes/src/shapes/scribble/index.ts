@@ -35,10 +35,12 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
   const efficientHitbox = scribbleEfficientHitbox(schema);
   const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);
 
-  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx);
-    text?.drawTextArea(ctx);
-  });
+  const draw =
+    drawOverride ??
+    ((ctx: CanvasRenderingContext2D) => {
+      drawShape(ctx);
+      text?.drawTextArea(ctx);
+    });
 
   return shapeFactoryWrapper({
     name: 'scribble',

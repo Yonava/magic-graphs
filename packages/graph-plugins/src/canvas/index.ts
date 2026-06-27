@@ -27,7 +27,7 @@ import { CanvasPlugin, GraphUnderCursor } from './types.ts';
 
 export const canvas =
   (magicCanvas: MagicCanvasProps): CanvasPlugin =>
-  (controls, graphEventHub, actions, getters) => {
+  ({ controls, events: graphEventHub, actions, getters }) => {
     const canvasEventRegistry = createCanvasEventRegistry();
     const canvasEventHub = createEventHub(canvasEventRegistry);
     const events = mergeEventHubs<CanvasEventMap, CoreEventMap>(

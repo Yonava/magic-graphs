@@ -21,12 +21,12 @@ import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
 import { NodeDragPlugin, NodeIdDragState } from './types.ts';
 import { validateNodeIds } from './validateNodeIds.ts';
 
-export const nodeDrag: NodeDragPlugin = (
+export const nodeDrag: NodeDragPlugin = ({
   controls,
-  graphEventMap,
+  events: graphEventMap,
   actions,
   getters,
-) => {
+}) => {
   const nodeDragEventRegistry = createNodeDragEventRegistry();
   const nodeDragEventHub = createEventHub(nodeDragEventRegistry);
   const events = mergeEventHubs<

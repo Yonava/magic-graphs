@@ -23,12 +23,12 @@ import { getSelectionBox, getSurfaceArea } from './helpers.ts';
 import { createMarqueeThemeOverrides } from './themes.ts';
 import { MarqueePlugin } from './types.ts';
 
-export const marquee: MarqueePlugin = (
+export const marquee: MarqueePlugin = ({
   controls,
-  graphEventMap,
+  events: graphEventMap,
   actions,
   getters,
-) => {
+}) => {
   const marqueeEventRegistry = createMarqueeEventRegistry();
   const marqueeEventHub = createEventHub(marqueeEventRegistry);
   const events = mergeEventHubs<

@@ -75,12 +75,12 @@ export const createGraph = <
   let evolvingThemeDetectors: PluginThemeField<any>['theme']['detectors'] = {};
 
   for (const plugin of plugins) {
-    const pluginResult = plugin(
-      evolvingControls,
-      evolvingEvents,
-      evolvingActions,
-      evolvingGetters,
-    );
+    const pluginResult = plugin({
+      controls: evolvingControls,
+      events: evolvingEvents,
+      actions: evolvingActions,
+      getters: evolvingGetters,
+    });
     evolvingControls = { ...evolvingControls, ...pluginResult.controls };
     evolvingEvents = pluginResult.events;
     evolvingActions = { ...evolvingActions, ...pluginResult.actions };

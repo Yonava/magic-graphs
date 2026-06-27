@@ -5,7 +5,6 @@ import { createThemeController } from '@magic/graph-plugins-shared/theme/createT
 import { CoreEventMap } from '@magic/graph/core/events';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
 import type { WithId } from '@magic/shapes/types/index';
-import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
 import { readonly, ref } from 'vue';
@@ -31,12 +30,12 @@ import type { AnchorsPlugin, NodeAnchor } from './types.ts';
  * - Parent Node: The node which anchors actively orbit around.
  * - Link Preview: The line that appears between the parent node and the anchor when the anchor is being dragged.
  */
-export const anchors: AnchorsPlugin = (
+export const anchors: AnchorsPlugin = ({
   controls,
-  graphEventHub,
+  events: graphEventHub,
   actions,
   getters,
-) => {
+}) => {
   const anchorsEventRegistry = createAnchorsEventRegistry();
   const anchorsEventHub = createEventHub(anchorsEventRegistry);
   const events = mergeEventHubs<

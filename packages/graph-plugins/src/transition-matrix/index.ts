@@ -28,15 +28,10 @@ export const getTransitionMatrix = (
   return matrix;
 };
 
-export const transitionMatrix: TransitionMatrixPlugin = (
+export const transitionMatrix: TransitionMatrixPlugin = ({
   controls,
-  events,
-  actions,
-  getters,
-) => ({
-  events,
-  actions,
-  getters,
+  ...rest
+}) => ({
   controls: {
     transitionMatrix: computed(() =>
       getTransitionMatrix(
@@ -45,4 +40,5 @@ export const transitionMatrix: TransitionMatrixPlugin = (
       ),
     ),
   },
+  ...rest,
 });

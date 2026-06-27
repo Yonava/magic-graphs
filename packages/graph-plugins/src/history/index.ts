@@ -8,12 +8,11 @@ import { MAX_HISTORY } from './constants.ts';
 import { HistoryEventMap, createHistoryEventRegistry } from './events.ts';
 import { HistoryPlugin } from './types.ts';
 
-export const history: HistoryPlugin = (
-  controls,
-  graphEventHub,
+export const history: HistoryPlugin = ({
+  events: graphEventHub,
   actions,
   getters,
-) => {
+}) => {
   const historyRegistry = createHistoryEventRegistry();
   const historyEventHub = createEventHub(historyRegistry);
   const events = mergeEventHubs<HistoryEventMap, CoreEventMap>(

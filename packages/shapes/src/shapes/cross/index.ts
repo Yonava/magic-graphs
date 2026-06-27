@@ -20,10 +20,12 @@ export const cross: ShapeFactory<CrossSchema> = (options) => {
   const drawShape = drawCrossWithCtx(schema);
   const text = getShapeTextProps(schema.at, schema.textArea, drawShape);
   const { drawOverride, ...textProps } = text ?? {};
-  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx);
-    text?.drawTextArea(ctx);
-  });
+  const draw =
+    drawOverride ??
+    ((ctx: CanvasRenderingContext2D) => {
+      drawShape(ctx);
+      text?.drawTextArea(ctx);
+    });
 
   const shapeHitbox = crossHitbox(schema);
   const efficientHitbox = crossEfficientHitbox(schema);

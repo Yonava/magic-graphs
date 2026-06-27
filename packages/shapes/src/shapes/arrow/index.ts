@@ -31,10 +31,12 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
 
   const getBoundingBox = getArrowBoundingBox(schema);
 
-  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx);
-    text?.drawTextArea(ctx);
-  });
+  const draw =
+    drawOverride ??
+    ((ctx: CanvasRenderingContext2D) => {
+      drawShape(ctx);
+      text?.drawTextArea(ctx);
+    });
 
   return shapeFactoryWrapper({
     name: 'arrow',

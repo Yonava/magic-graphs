@@ -25,10 +25,12 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const efficientHitbox = triangleEfficientHitbox(schema);
   const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);
 
-  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx);
-    text?.drawTextArea(ctx);
-  });
+  const draw =
+    drawOverride ??
+    ((ctx: CanvasRenderingContext2D) => {
+      drawShape(ctx);
+      text?.drawTextArea(ctx);
+    });
 
   return shapeFactoryWrapper({
     name: 'triangle',

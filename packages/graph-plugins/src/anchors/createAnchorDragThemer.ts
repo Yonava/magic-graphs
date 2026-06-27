@@ -7,7 +7,7 @@ import { AnchorsPlugin, NodeAnchor } from './types.ts';
 const layerId = `${ANCHOR_PLUGIN_ID}/createAnchorDragThemer`;
 
 export const createAnchorDragThemer = (
-  controls: Parameters<AnchorsPlugin>[0],
+  controls: Parameters<AnchorsPlugin>[0]['controls'],
   dragState: DragStateControls<NodeAnchor>,
 ) => {
   const canvas = controls.canvas.theme.createLayer(layerId);

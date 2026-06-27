@@ -28,10 +28,12 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
 
   const getBoundingBox = getEllipseBoundingBox(schema);
 
-  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx);
-    text?.drawTextArea(ctx);
-  });
+  const draw =
+    drawOverride ??
+    ((ctx: CanvasRenderingContext2D) => {
+      drawShape(ctx);
+      text?.drawTextArea(ctx);
+    });
 
   return shapeFactoryWrapper({
     name: 'ellipse',

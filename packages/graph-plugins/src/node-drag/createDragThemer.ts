@@ -1,4 +1,5 @@
 import { DragStateControls } from '@magic/graph-plugins-shared/drag/types';
+import { PluginOptions } from '@magic/graph-plugins-shared/plugins/types';
 import { CURSOR } from '@magic/graph-plugins-shared/theme/cursor';
 
 import { NODE_DRAG_PLUGIN_ID } from './constants.ts';
@@ -7,8 +8,7 @@ import { NodeDragPlugin, NodeIdDragState } from './types.ts';
 const layerId = `${NODE_DRAG_PLUGIN_ID}/createDragThemer`;
 
 export const createDragThemer = (
-  // TODO this will be more declarative if we deliver plugin arguments in an options bag!
-  controls: Parameters<NodeDragPlugin>[0],
+  controls: PluginOptions<NodeDragPlugin>['controls'],
   dragState: DragStateControls<NodeIdDragState>,
 ) => {
   const canvas = controls.canvas.theme.createLayer(layerId);

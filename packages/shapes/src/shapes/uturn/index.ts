@@ -33,10 +33,12 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
   const shapeHitbox = uturnHitbox(schema);
   const efficientHitbox = uturnEfficientHitbox(schema);
 
-  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx);
-    text?.drawTextArea(ctx);
-  });
+  const draw =
+    drawOverride ??
+    ((ctx: CanvasRenderingContext2D) => {
+      drawShape(ctx);
+      text?.drawTextArea(ctx);
+    });
 
   return shapeFactoryWrapper({
     name: 'uturn',

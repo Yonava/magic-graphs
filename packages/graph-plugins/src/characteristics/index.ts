@@ -1,4 +1,7 @@
-import { GraphPlugin } from '@magic/graph-plugins-shared/plugins/types';
+import {
+  GraphPlugin,
+  PluginOptions,
+} from '@magic/graph-plugins-shared/plugins/types';
 
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 import {
@@ -25,14 +28,14 @@ type CharacteristicsPlugin = GraphPlugin<{
   dependsOn: [AdjacencyListsPlugin];
 }>;
 
-export type Controls = Parameters<CharacteristicsPlugin>[0];
+export type Controls = PluginOptions<CharacteristicsPlugin>['controls'];
 
-export const characteristics: CharacteristicsPlugin = (
+export const characteristics: CharacteristicsPlugin = ({
   controls,
   events,
   actions,
   getters,
-) => {
+}) => {
   const sccs = useStronglyConnectedComponents(controls);
 
   return {

@@ -27,10 +27,12 @@ export const star: ShapeFactory<StarSchema> = (options) => {
   const drawShape = drawStarWithCtx(schema);
   const text = getShapeTextProps(schema.at, schema.textArea, drawShape);
   const { drawOverride, ...textProps } = text ?? {};
-  const draw = drawOverride ?? ((ctx: CanvasRenderingContext2D) => {
-    drawShape(ctx);
-    text?.drawTextArea(ctx);
-  });
+  const draw =
+    drawOverride ??
+    ((ctx: CanvasRenderingContext2D) => {
+      drawShape(ctx);
+      text?.drawTextArea(ctx);
+    });
 
   const shapeHitbox = starHitbox(schema);
   const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);

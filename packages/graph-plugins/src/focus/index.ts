@@ -18,12 +18,12 @@ import { FocusEventMap, createFocusEventRegistry } from './events.ts';
 import { createFocusDetectors, createFocusThemeOverrides } from './themes.ts';
 import { FocusPlugin } from './types.ts';
 
-export const focus: FocusPlugin = (
+export const focus: FocusPlugin = ({
   controls,
-  graphEventHub,
+  events: graphEventHub,
   actions,
   getters,
-) => {
+}) => {
   const focusEventRegistry = createFocusEventRegistry();
   const focusEventHub = createEventHub(focusEventRegistry);
   const events = mergeEventHubs<FocusEventMap, CoreEventMap & CanvasEventMap>(

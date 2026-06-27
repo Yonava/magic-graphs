@@ -1,10 +1,12 @@
+import { PluginOptions } from '@magic/graph-plugins-shared/plugins/types';
+
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
 import { NodeLabelControls, NodeLabelPlugin } from './types.ts';
 
 const layerId = `${NODE_DRAG_PLUGIN_ID}/createLabelThemer`;
 
 export const createLabelThemer = (
-  controls: Parameters<NodeLabelPlugin>[0],
+  controls: PluginOptions<NodeLabelPlugin>['controls'],
   getLabel: NodeLabelControls['get'],
 ) => {
   const canvas = controls.canvas.theme.createLayer(layerId);

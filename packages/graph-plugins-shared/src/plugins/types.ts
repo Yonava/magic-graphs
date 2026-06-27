@@ -43,6 +43,27 @@ type ResolvePluginData<PartialPluginData> = {
 export type GraphPlugin<PluginData extends Partial<LoosePluginData>> =
   ResolvedGraphPlugin<ResolvePluginData<PluginData>>;
 
+type GraphPluginOptions<PluginData extends LoosePluginData> = {
+  controls: CoreControls &
+    ExtractControls<PluginData['dependsOn']> &
+    (PluginData['optionalDependsOn'] extends never[]
+      ? {}
+      : Partial<ExtractControls<PluginData['optionalDependsOn']>>);
+  events: EventHub<
+    CoreEventMap &
+      ExtractEventMap<PluginData['dependsOn']> &
+      (PluginData['optionalDependsOn'] extends never[]
+        ? {}
+        : ExtractEventMap<PluginData['optionalDependsOn']>)
+  >;
+  actions: GraphActions<CoreActions>;
+  getters: GraphGetters<CoreGetters>;
+};
+
+/** get the options in a plugins parameters  */
+export type PluginOptions<Plugin extends LooseGraphPlugin> =
+  Parameters<Plugin>[0];
+
 /**
  * a plugin receives the upstream event hub (core's events plus everything
  * dependent plugins have already merged in) and is responsible for merging
@@ -57,20 +78,7 @@ export type GraphPlugin<PluginData extends Partial<LoosePluginData>> =
  * downstream plugins and consumers only ever see what's returned here.
  */
 type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
-  controls: CoreControls &
-    ExtractControls<PluginData['dependsOn']> &
-    (PluginData['optionalDependsOn'] extends never[]
-      ? {}
-      : Partial<ExtractControls<PluginData['optionalDependsOn']>>),
-  events: EventHub<
-    CoreEventMap &
-      ExtractEventMap<PluginData['dependsOn']> &
-      (PluginData['optionalDependsOn'] extends never[]
-        ? {}
-        : ExtractEventMap<PluginData['optionalDependsOn']>)
-  >,
-  actions: GraphActions<CoreActions>,
-  getters: GraphGetters<CoreGetters>,
+  options: GraphPluginOptions<PluginData>,
 ) => {
   controls: PluginData['controls'];
   events: EventHub<
@@ -86,6 +94,13 @@ type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
   onAfterInit?: () => void;
 };
 
+type LooseGraphPluginOptions = {
+  controls: any;
+  events: EventHub<CoreEventMap>;
+  actions: GraphActions<CoreActions>;
+  getters: GraphGetters<CoreGetters>;
+};
+
 /**
  * `CoreEventMap` is intersected into the return type here (not just the
  * `events` param) to keep the "merge yourself" contract honest at the type
@@ -96,12 +111,7 @@ type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
  * threaded hub, which is exactly the failure mode `ExtractEventMap` relies
  * on this type to rule out.
  */
-export type LooseGraphPlugin = (
-  controls: any,
-  events: EventHub<CoreEventMap>,
-  actions: GraphActions<CoreActions>,
-  getters: GraphGetters<CoreGetters>,
-) => {
+export type LooseGraphPlugin = (options: LooseGraphPluginOptions) => {
   controls: LoosePluginData['controls'];
   events: EventHub<CoreEventMap & LoosePluginData['events']>;
   actions: GraphActions<any>;
