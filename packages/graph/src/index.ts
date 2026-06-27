@@ -1,20 +1,17 @@
 import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
+import type { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
 import { nullThrows } from '@magic/utils/assert';
 import { clone } from '@magic/utils/clone';
 import { delta } from '@magic/utils/delta/index';
 
 import { computed, ref, watch } from 'vue';
 
-import type {
-  CoreEdge,
-  CoreNode,
-} from '../../../graph-core-infra/src/types.ts';
-import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
-import type { GraphSettings } from '../settings/index.ts';
 import { createCoreActions } from './actions/createCoreActions.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { createHelpers } from './helpers/createHelpers.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
+import { DEFAULT_GRAPH_SETTINGS } from './settings/index.ts';
+import type { GraphSettings } from './settings/index.ts';
 import { setupTransactionSucceeded } from './transaction/setupTransactionSucceeded.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import type { CoreControls } from './types.ts';
