@@ -1,29 +1,19 @@
+import { CoreActions } from '@magic/graph-core/actions/types';
+import { CoreEventMap } from '@magic/graph-core/events';
+import { CoreGetters } from '@magic/graph-core/getters';
+import { CoreControls } from '@magic/graph-core/types';
 import {
   GraphActions,
   MergeActions,
-  PartialBaseActions,
 } from '@magic/graph-primitives/actions/types';
 import { EventHub } from '@magic/graph-primitives/events/createEventHub';
-import { GenericEventMap } from '@magic/graph-primitives/events/types';
 import {
-  BaseGetters,
   GraphGetters,
   MergeGetters,
 } from '@magic/graph-primitives/getters/types';
-import { CoreActions } from '@magic/graph-core/actions/types';
-import { CoreEventMap } from '@magic/graph-core/events';
-import { CoreControls } from '@magic/graph-core/types';
-import { CoreGetters } from '@magic/graph-core/getters';
-import { UnionToIntersection } from 'ts-essentials';
 
-type LoosePluginData = {
-  controls: object;
-  events: GenericEventMap;
-  getters: Partial<BaseGetters>;
-  actions: PartialBaseActions;
-  dependsOn: LooseGraphPlugin[];
-  optionalDependsOn: LooseGraphPlugin[];
-};
+import { ExtractControls, ExtractEventMap } from './extractors.ts';
+import { LooseGraphPlugin, LoosePluginData } from './loose.ts';
 
 type DefaultPluginData = {
   controls: {};
@@ -93,94 +83,3 @@ type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
   actions: GraphActions<MergeActions<[PluginData['actions'], CoreActions]>>;
   onAfterInit?: () => void;
 };
-
-type LooseGraphPluginOptions = {
-  controls: any;
-  events: EventHub<CoreEventMap>;
-  actions: GraphActions<CoreActions>;
-  getters: GraphGetters<CoreGetters>;
-};
-
-/**
- * `CoreEventMap` is intersected into the return type here (not just the
- * `events` param) to keep the "merge yourself" contract honest at the type
- * level: every plugin must hand back a hub that still carries everything
- * core (and upstream plugins) emit, not just its own events. dropping this
- * intersection would let a plugin's loosely-typed return shape claim to
- * satisfy `LooseGraphPlugin` while actually losing `CoreEventMap` from the
- * threaded hub, which is exactly the failure mode `ExtractEventMap` relies
- * on this type to rule out.
- */
-export type LooseGraphPlugin = (options: LooseGraphPluginOptions) => {
-  controls: LoosePluginData['controls'];
-  events: EventHub<CoreEventMap & LoosePluginData['events']>;
-  actions: GraphActions<any>;
-  getters: GraphGetters<any>;
-  onAfterInit?: () => void;
-};
-
-export type RemoveArray<T> = T extends (infer F)[] ? F : T;
-
-export type ExtractData<TPlugins extends LooseGraphPlugin[]> =
-  UnionToIntersection<ReturnType<RemoveArray<NoInfer<TPlugins>>>>;
-
-export type ExtractControls<TPlugins extends LooseGraphPlugin[]> =
-  ExtractData<TPlugins> extends { controls: infer Controls } ? Controls : never;
-
-export type ExtractActions<TPlugins extends LooseGraphPlugin[]> =
-  TPlugins extends never[]
-    ? // all plugins come pre-baked with core actions
-      CoreActions
-    : UnionToIntersection<
-        ReturnType<RemoveArray<NoInfer<TPlugins>>> extends {
-          actions: GraphActions<infer Actions>;
-        }
-          ? Actions
-          : never
-      >;
-
-type GettersFromPlugin<Plugin extends LooseGraphPlugin> =
-  Plugin extends LooseGraphPlugin
-    ? {
-        getNode: ReturnType<ReturnType<Plugin>['getters']['getNode']>;
-        getEdge: ReturnType<ReturnType<Plugin>['getters']['getEdge']>;
-      }
-    : never;
-
-export type ExtractGetters<TPlugins extends LooseGraphPlugin[]> =
-  TPlugins extends never[]
-    ? // all plugins come pre-baked with core getters
-      CoreGetters
-    : {
-        [K in keyof BaseGetters]: UnionToIntersection<
-          GettersFromPlugin<RemoveArray<NoInfer<TPlugins>>>[K]
-        >;
-      };
-
-export type ExtractEventMap<TPlugins extends LooseGraphPlugin[]> =
-  TPlugins extends never[]
-    ? // all plugins come pre-baked with core events
-      CoreEventMap
-    : UnionToIntersection<
-        ReturnType<RemoveArray<NoInfer<TPlugins>>> extends {
-          events: EventHub<infer EventMap>;
-        }
-          ? EventMap
-          : never
-      >;
-
-type PluginLifecycleControls = {
-  /** Lifecycle management and runtime status */
-  lifecycle: {
-    /** Activates the plugin. */
-    enable: () => void;
-    /** Deactivates the plugin. */
-    disable: () => void;
-    // TODO implement: https://github.com/Yonava/magic-graphs/issues/702
-    /** @returns true if the plugin is currently active */
-    // isEnabled: () => boolean;
-  };
-};
-
-export type WithLifecycle<PluginControls> = PluginControls &
-  PluginLifecycleControls;
