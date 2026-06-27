@@ -1,4 +1,4 @@
-import { NodePositionUpdate } from '@magic/graph/core/positions/types';
+import { NodePositionUpdate } from '@magic/graph/positions/types';
 
 import { NodeDepth } from '../../graph-use-node-depth/useNodeDepth.ts';
 import type { Graph } from '../../useGraphWithCanvas.ts';

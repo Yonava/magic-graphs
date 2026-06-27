@@ -1,4 +1,4 @@
-import type { CoreEventMap } from '@magic/graph/core/events';
+import type { CoreEventMap } from '@magic/graph/events';
 
 import type { ComputedRef, Ref } from 'vue';
 

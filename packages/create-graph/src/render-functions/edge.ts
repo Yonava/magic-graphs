@@ -1,7 +1,7 @@
 import { CoreEdge } from '@magic/graph-core-infra/types';
 import { CompoundTokenResolver } from '@magic/graph-plugins-shared/computed-tokens/createComputedTokenResolver';
 import { CanvasControls } from '@magic/graph-plugins/canvas/types';
-import { CoreControls } from '@magic/graph/core/types';
+import { CoreControls } from '@magic/graph/types';
 import { getLargestAngularSpaceBisector } from '@magic/shapes/helpers';
 import { Shape } from '@magic/shapes/types/index';
 import { nullThrows } from '@magic/utils/assert';

@@ -16,15 +16,13 @@ import {
   ThemesForPlugins,
 } from '@magic/graph-plugins-shared/types';
 import {
-  Aggregator,
   AggregatorTransformer,
   CanvasElement,
 } from '@magic/graph-plugins/canvas/aggregator/types';
-import { getNodeZScores } from '@magic/graph-plugins/canvas/nodeZScores';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@magic/graph-plugins/canvas/setupCanvasCursor';
 import { CanvasControls } from '@magic/graph-plugins/canvas/types';
-import { core as createCore } from '@magic/graph/core/index';
-import { CoreControls } from '@magic/graph/core/types';
+import { CoreControls } from '@magic/graph/types';
+import { core as createCore } from '@magic/graph/index';
 import { GraphSettings } from '@magic/graph/settings/index';
 import { nullThrows } from '@magic/utils/assert';
 import type { Prettify } from 'ts-essentials';
