@@ -31,15 +31,6 @@ export const useShortcuts = (graph: GraphWithPlugins) => {
     graph.actions.removeElements({ nodes: ids, edges: ids }, {});
   };
 
-  /**
-   * get the function to run based on the keyboard shortcut setting
-   */
-  const getFn = (defaultFn: () => void, setting: boolean | (() => void)) => {
-    if (setting === false) return () => {};
-    if (typeof setting === 'function') return setting;
-    return defaultFn;
-  };
-
   const notImplemented = () => console.warn('not implemented');
   const triggerRedo = { fn: notImplemented };
   const triggerUndo = { fn: notImplemented };
@@ -50,34 +41,13 @@ export const useShortcuts = (graph: GraphWithPlugins) => {
   const triggerZoomOut = { fn: notImplemented };
 
   const updateBindings = () => {
-    triggerRedo.fn = getFn(
-      defaultShortcutTriggerRedo,
-      settings.value.shortcutRedo,
-    );
-    triggerUndo.fn = getFn(
-      defaultShortcutTriggerUndo,
-      settings.value.shortcutUndo,
-    );
-    triggerEscape.fn = getFn(
-      defaultShortcutTriggerEscape,
-      settings.value.shortcutEscape,
-    );
-    triggerSelectAll.fn = getFn(
-      defaultShortcutTriggerSelectAll,
-      settings.value.shortcutSelectAll,
-    );
-    triggerDelete.fn = getFn(
-      defaultShortcutTriggerDelete,
-      graph.settings.value.shortcutDelete,
-    );
-    triggerZoomIn.fn = getFn(
-      graph.canvas.magicCanvas.camera.actions.zoomIn,
-      settings.value.shortcutZoomIn,
-    );
-    triggerZoomOut.fn = getFn(
-      graph.canvas.magicCanvas.camera.actions.zoomOut,
-      settings.value.shortcutZoomOut,
-    );
+    triggerRedo.fn = defaultShortcutTriggerRedo;
+    triggerUndo.fn = defaultShortcutTriggerUndo;
+    triggerEscape.fn = defaultShortcutTriggerEscape;
+    triggerSelectAll.fn = defaultShortcutTriggerSelectAll;
+    triggerDelete.fn = defaultShortcutTriggerDelete;
+    triggerZoomIn.fn = graph.canvas.magicCanvas.camera.actions.zoomIn;
+    triggerZoomOut.fn = graph.canvas.magicCanvas.camera.actions.zoomOut;
   };
 
   const allShortcuts: PlatformShortcuts = {
@@ -158,17 +128,7 @@ export const useShortcuts = (graph: GraphWithPlugins) => {
     graph.events.subscribe('onSettingsChange', updateBindings);
   };
 
-  const deactivate = () => {
-    graph.events.unsubscribe('onKeyDown', ctrlKeysHandler.handle);
-    graph.events.unsubscribe('onSettingsChange', updateBindings);
-  };
-
-  if (settings.value.shortcuts) activate();
-
-  graph.events.subscribe('onSettingsChange', (diff) => {
-    if (diff.shortcuts === true) activate();
-    else if (diff.shortcuts === false) deactivate();
-  });
+  activate();
 
   return {
     /**
