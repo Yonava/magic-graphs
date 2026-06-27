@@ -2,7 +2,7 @@ import { createMockEventHub } from '@magic/graph-core-infra/testing/events/creat
 import { Fraction } from 'mathjs';
 import { describe, expect, it } from 'vitest';
 
-import { DEFAULT_GRAPH_SETTINGS } from '../../settings/index.ts';
+import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import { DEFAULT_WEIGHT } from './constants.ts';
 import { createEdgeWeightStore } from './createEdgeWeightStore.ts';
 import { createEdgeWeightStoreEventRegistry } from './events.ts';

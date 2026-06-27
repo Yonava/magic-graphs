@@ -5,8 +5,8 @@ import { Fraction } from 'mathjs';
 
 import { Ref } from 'vue';
 
-import type { GraphSettings } from '../../settings/index.ts';
 import { CoreEventMap } from '../events.ts';
+import { GraphSettings } from '../settings/index.ts';
 import { DEFAULT_WEIGHT } from './constants.ts';
 import { EdgeWeightStoreControls } from './types.ts';
 

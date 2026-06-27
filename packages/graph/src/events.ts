@@ -7,11 +7,11 @@ import {
 import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
 import { DeepPartial, DeepReadonly } from 'ts-essentials';
 
-import { GraphSettings } from '../settings/index.ts';
 import {
   NodePositionStoreEventMap,
   createNodePositionStoreEventRegistry,
 } from './positions/events.ts';
+import { GraphSettings } from './settings/index.ts';
 import {
   EdgeWeightStoreEventMap,
   createEdgeWeightStoreEventRegistry,
