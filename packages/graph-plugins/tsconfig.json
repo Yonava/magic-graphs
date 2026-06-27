@@ -7,6 +7,7 @@
   "references": [
     { "path": "../canvas" },
     { "path": "../utils" },
+    { "path": "../graph-core" },
     { "path": "../graph-plugins-shared" },
     { "path": "../graph-core-infra" },
     { "path": "../shapes" }

@@ -1,4 +1,4 @@
-import type { GraphSettings } from '@magic/graph/settings/index';
+import type { GraphSettings } from '@magic/graph-core/settings/index';
 
 /**
  * settings for graph sandbox useGraph instance

@@ -6,7 +6,7 @@
   },
   "references": [
     { "path": "../graph-core-infra" },
-    { "path": "../graph" },
+    { "path": "../graph-core" },
     { "path": "../utils" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]

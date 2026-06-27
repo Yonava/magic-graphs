@@ -6,7 +6,7 @@ import {
   Cursor,
   isValidCursor,
 } from '@magic/graph-plugins-shared/theme/cursor';
-import { CoreGetters } from '@magic/graph/getters';
+import { CoreGetters } from '@magic/graph-core/getters';
 
 import { CanvasEventMap } from './events.ts';
 import { CanvasControls } from './types.ts';

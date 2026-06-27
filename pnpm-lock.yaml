@@ -172,9 +172,9 @@ importers:
 
   packages/create-graph:
     dependencies:
-      '@magic/graph':
+      '@magic/graph-core':
         specifier: workspace:*
-        version: link:../graph
+        version: link:../graph-core
       '@magic/graph-core-infra':
         specifier: workspace:*
         version: link:../graph-core-infra
@@ -195,7 +195,7 @@ importers:
         specifier: ^10.2.0
         version: 10.2.1(typescript@6.0.3)
 
-  packages/graph:
+  packages/graph-core:
     dependencies:
       '@magic/graph-core-infra':
         specifier: workspace:*
@@ -234,6 +234,9 @@ importers:
       '@magic/canvas':
         specifier: workspace:*
         version: link:../canvas
+      '@magic/graph-core':
+        specifier: workspace:*
+        version: link:../graph-core
       '@magic/graph-core-infra':
         specifier: workspace:*
         version: link:../graph-core-infra
@@ -259,9 +262,9 @@ importers:
 
   packages/graph-plugins-shared:
     dependencies:
-      '@magic/graph':
+      '@magic/graph-core':
         specifier: workspace:*
-        version: link:../graph
+        version: link:../graph-core
       '@magic/graph-core-infra':
         specifier: workspace:*
         version: link:../graph-core-infra
@@ -296,6 +299,9 @@ importers:
       '@magic/create-graph':
         specifier: workspace:*
         version: link:../create-graph
+      '@magic/graph-core':
+        specifier: workspace:*
+        version: link:../graph-core
       '@magic/graph-core-infra':
         specifier: workspace:*
         version: link:../graph-core-infra

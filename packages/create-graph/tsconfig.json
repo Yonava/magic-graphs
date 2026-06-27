@@ -6,7 +6,7 @@
     "rewriteRelativeImportExtensions": false
   },
   "references": [
-    { "path": "../graph" },
+    { "path": "../graph-core" },
     { "path": "../graph-plugins-shared" },
     { "path": "../graph-plugins" },
     { "path": "../graph-core-infra" },

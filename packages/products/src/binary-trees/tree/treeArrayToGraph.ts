@@ -1,4 +1,4 @@
-import { NodePositionUpdate } from '@magic/graph/positions/types';
+import { NodePositionUpdate } from '@magic/graph-core/positions/types';
 import { Coordinate } from '@magic/shapes/types/utility';
 import { nullThrows } from '@magic/utils/assert';
 import Fraction from 'fraction.js';

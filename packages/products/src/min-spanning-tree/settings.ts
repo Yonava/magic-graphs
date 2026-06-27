@@ -1,4 +1,4 @@
-import type { GraphSettings } from '@magic/graph/settings/index';
+import type { GraphSettings } from '@magic/graph-core/settings/index';
 import { Fraction } from 'mathjs';
 
 /**

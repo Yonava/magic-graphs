@@ -21,9 +21,9 @@ import {
 } from '@magic/graph-plugins/canvas/aggregator/types';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@magic/graph-plugins/canvas/setupCanvasCursor';
 import { CanvasControls } from '@magic/graph-plugins/canvas/types';
-import { CoreControls } from '@magic/graph/types';
-import { core as createCore } from '@magic/graph/index';
-import { GraphSettings } from '@magic/graph/settings/index';
+import { CoreControls } from '@magic/graph-core/types';
+import { core as createCore } from '@magic/graph-core/index';
+import { GraphSettings } from '@magic/graph-core/settings/index';
 import { nullThrows } from '@magic/utils/assert';
 import type { Prettify } from 'ts-essentials';
 

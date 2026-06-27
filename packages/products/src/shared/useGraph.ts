@@ -14,7 +14,7 @@ import { transitionMatrix } from '@magic/graph-plugins/transition-matrix/index';
 import { dark } from '@magic/graph-theme-presets/dark/index';
 import { light } from '@magic/graph-theme-presets/light/index';
 import { pink } from '@magic/graph-theme-presets/pink/index';
-import type { GraphSettings } from '@magic/graph/settings/index';
+import type { GraphSettings } from '@magic/graph-core/settings/index';
 
 import { ref, watch } from 'vue';
 
