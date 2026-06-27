@@ -1,6 +1,6 @@
-import { LoosePluginData } from './loose.ts';
+import { LoosePluginSchema } from './loose.ts';
 
-type DefaultPluginData = {
+type DefaultPluginSchema = {
   controls: {};
   events: {};
   getters: {};
@@ -10,7 +10,7 @@ type DefaultPluginData = {
 };
 
 export type ResolvePluginData<PartialPluginData> = {
-  [K in keyof LoosePluginData]: K extends keyof PartialPluginData
+  [K in keyof LoosePluginSchema]: K extends keyof PartialPluginData
     ? NonNullable<PartialPluginData[K]>
-    : DefaultPluginData[K];
+    : DefaultPluginSchema[K];
 };

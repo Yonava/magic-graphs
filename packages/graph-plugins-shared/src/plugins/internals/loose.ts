@@ -19,7 +19,7 @@ type LooseGraphPluginOptions = {
   getters: GraphGetters<CoreGetters>;
 };
 
-export type LoosePluginData = {
+export type LoosePluginSchema = {
   controls: object;
   events: GenericEventMap;
   getters: Partial<BaseGetters>;
@@ -29,9 +29,9 @@ export type LoosePluginData = {
 };
 
 export type LooseGraphPlugin = (options: LooseGraphPluginOptions) => {
-  controls: LoosePluginData['controls'];
+  controls: LoosePluginSchema['controls'];
   // [1]
-  events: EventHub<CoreEventMap & LoosePluginData['events']>;
+  events: EventHub<CoreEventMap & LoosePluginSchema['events']>;
   actions: GraphActions<any>;
   getters: GraphGetters<any>;
   onAfterInit?: () => void;

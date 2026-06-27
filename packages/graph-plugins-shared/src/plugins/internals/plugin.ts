@@ -14,43 +14,43 @@ import {
 
 import { ResolvePluginData } from './defaults.ts';
 import { ExtractControls, ExtractEventMap } from './extractors.ts';
-import { LoosePluginData } from './loose.ts';
+import { LoosePluginSchema } from './loose.ts';
 
-export type GraphPlugin<PluginData extends Partial<LoosePluginData>> =
-  ResolvedGraphPlugin<ResolvePluginData<PluginData>>;
+export type GraphPlugin<PluginSchema extends Partial<LoosePluginSchema>> =
+  PluginOutput<ResolvePluginData<PluginSchema>>;
 
-type GraphPluginOptions<PluginData extends LoosePluginData> = {
+type PluginInput<PluginSchema extends LoosePluginSchema> = {
   controls: CoreControls &
-    ExtractControls<PluginData['dependsOn']> &
-    (PluginData['optionalDependsOn'] extends never[]
+    ExtractControls<PluginSchema['dependsOn']> &
+    (PluginSchema['optionalDependsOn'] extends never[]
       ? {}
-      : Partial<ExtractControls<PluginData['optionalDependsOn']>>);
+      : Partial<ExtractControls<PluginSchema['optionalDependsOn']>>);
   events: EventHub<
     CoreEventMap &
-      ExtractEventMap<PluginData['dependsOn']> &
-      (PluginData['optionalDependsOn'] extends never[]
+      ExtractEventMap<PluginSchema['dependsOn']> &
+      (PluginSchema['optionalDependsOn'] extends never[]
         ? {}
-        : ExtractEventMap<PluginData['optionalDependsOn']>)
+        : ExtractEventMap<PluginSchema['optionalDependsOn']>)
   >;
   actions: GraphActions<CoreActions>;
   getters: GraphGetters<CoreGetters>;
 };
 
-type ResolvedGraphPlugin<PluginData extends LoosePluginData> = (
-  options: GraphPluginOptions<PluginData>,
+type PluginOutput<PluginSchema extends LoosePluginSchema> = (
+  options: PluginInput<PluginSchema>,
 ) => {
-  controls: PluginData['controls'];
+  controls: PluginSchema['controls'];
   // [1]
   events: EventHub<
     CoreEventMap &
-      ExtractEventMap<PluginData['dependsOn']> &
-      (PluginData['optionalDependsOn'] extends never[]
+      ExtractEventMap<PluginSchema['dependsOn']> &
+      (PluginSchema['optionalDependsOn'] extends never[]
         ? {}
-        : ExtractEventMap<PluginData['optionalDependsOn']>) &
-      PluginData['events']
+        : ExtractEventMap<PluginSchema['optionalDependsOn']>) &
+      PluginSchema['events']
   >;
-  getters: GraphGetters<MergeGetters<[PluginData['getters'], CoreGetters]>>;
-  actions: GraphActions<MergeActions<[PluginData['actions'], CoreActions]>>;
+  getters: GraphGetters<MergeGetters<[PluginSchema['getters'], CoreGetters]>>;
+  actions: GraphActions<MergeActions<[PluginSchema['actions'], CoreActions]>>;
   onAfterInit?: () => void;
 };
 

@@ -32,5 +32,5 @@ type ThemeForPlugin<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
     : never
   : never;
 
-export type ThemesForPlugins<Plugins extends LooseGraphPlugin[]> =
+export type PluginThemes<Plugins extends LooseGraphPlugin[]> =
   UnionToIntersection<ThemeForPlugin<Plugins[number]>>;
