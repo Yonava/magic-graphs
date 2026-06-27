@@ -1,6 +1,6 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import { createGraph } from '@magic/create-graph/index';
-import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { adjacencyLists } from '@magic/graph-plugins/adjacency-lists/index';
 import { anchors } from '@magic/graph-plugins/anchors/index';
 import { canvas } from '@magic/graph-plugins/canvas/index';

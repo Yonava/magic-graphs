@@ -175,15 +175,15 @@ importers:
       '@magic/graph-core':
         specifier: workspace:*
         version: link:../graph-core
-      '@magic/graph-core-infra':
-        specifier: workspace:*
-        version: link:../graph-core-infra
       '@magic/graph-plugins':
         specifier: workspace:*
         version: link:../graph-plugins
       '@magic/graph-plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared
+      '@magic/graph-primitives':
+        specifier: workspace:*
+        version: link:../graph-primitives
       '@magic/shapes':
         specifier: workspace:*
         version: link:../shapes
@@ -197,9 +197,9 @@ importers:
 
   packages/graph-core:
     dependencies:
-      '@magic/graph-core-infra':
+      '@magic/graph-primitives':
         specifier: workspace:*
-        version: link:../graph-core-infra
+        version: link:../graph-primitives
       '@magic/utils':
         specifier: workspace:*
         version: link:../utils
@@ -223,12 +223,6 @@ importers:
         specifier: 'catalog:'
         version: 3.5.39(typescript@6.0.3)
 
-  packages/graph-core-infra:
-    devDependencies:
-      ts-essentials:
-        specifier: ^10.2.0
-        version: 10.2.1(typescript@6.0.3)
-
   packages/graph-plugins:
     dependencies:
       '@magic/canvas':
@@ -237,12 +231,12 @@ importers:
       '@magic/graph-core':
         specifier: workspace:*
         version: link:../graph-core
-      '@magic/graph-core-infra':
-        specifier: workspace:*
-        version: link:../graph-core-infra
       '@magic/graph-plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared
+      '@magic/graph-primitives':
+        specifier: workspace:*
+        version: link:../graph-primitives
       '@magic/shapes':
         specifier: workspace:*
         version: link:../shapes
@@ -265,15 +259,21 @@ importers:
       '@magic/graph-core':
         specifier: workspace:*
         version: link:../graph-core
-      '@magic/graph-core-infra':
+      '@magic/graph-primitives':
         specifier: workspace:*
-        version: link:../graph-core-infra
+        version: link:../graph-primitives
       '@magic/shapes':
         specifier: workspace:*
         version: link:../shapes
       '@magic/utils':
         specifier: workspace:*
         version: link:../utils
+    devDependencies:
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.1(typescript@6.0.3)
+
+  packages/graph-primitives:
     devDependencies:
       ts-essentials:
         specifier: ^10.2.0
@@ -302,15 +302,15 @@ importers:
       '@magic/graph-core':
         specifier: workspace:*
         version: link:../graph-core
-      '@magic/graph-core-infra':
-        specifier: workspace:*
-        version: link:../graph-core-infra
       '@magic/graph-plugins':
         specifier: workspace:*
         version: link:../graph-plugins
       '@magic/graph-plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared
+      '@magic/graph-primitives':
+        specifier: workspace:*
+        version: link:../graph-primitives
       '@magic/graph-theme-presets':
         specifier: workspace:*
         version: link:../graph-theme-presets

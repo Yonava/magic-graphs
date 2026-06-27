@@ -1,4 +1,4 @@
-import { createMockEventHub } from '@magic/graph-core-infra/testing/events/createMockEventHub';
+import { createMockEventHub } from '@magic/graph-primitives/testing/events/createMockEventHub';
 import { describe, expect, it, vi } from 'vitest';
 
 import { CanvasElement } from './aggregator/types.ts';

@@ -1,5 +1,5 @@
-import { CommitTransaction } from '@magic/graph-core-infra/transactions/types';
-import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { CommitTransaction } from '@magic/graph-primitives/transactions/types';
+import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import type { GraphState, TransactionOptions } from './types.ts';

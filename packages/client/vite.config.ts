@@ -32,7 +32,7 @@ export default defineConfig({
   optimizeDeps: {
     exclude: [
       '@magic/graph-core',
-      '@magic/graph-core-infra',
+      '@magic/graph-primitives',
       '@magic/graph-plugins-shared',
       '@magic/graph-plugins',
       '@magic/graph-theme-presets',
@@ -47,7 +47,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@magic/graph-core': r('../graph-core/src'),
-      '@magic/graph-core-infra': r('../graph-core-infra/src'),
+      '@magic/graph-primitives': r('../graph-primitives/src'),
       '@magic/graph-plugins-shared': r('../graph-plugins-shared/src'),
       '@magic/graph-plugins': r('../graph-plugins/src'),
       '@magic/graph-theme-presets': r('../graph-theme-presets/src'),

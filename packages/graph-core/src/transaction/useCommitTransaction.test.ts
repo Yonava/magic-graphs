@@ -1,5 +1,5 @@
-import { TransactionPayload } from '@magic/graph-core-infra/transactions/types';
-import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { TransactionPayload } from '@magic/graph-primitives/transactions/types';
+import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { Ref } from 'vue';

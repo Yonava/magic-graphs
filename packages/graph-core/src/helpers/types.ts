@@ -1,5 +1,5 @@
-import { GraphGetters } from '@magic/graph-core-infra/getters/types';
-import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { GraphGetters } from '@magic/graph-primitives/getters/types';
+import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 
 import { CoreGetters } from '../getters.ts';
 import { CoreControls } from '../types.ts';

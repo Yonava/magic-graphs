@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@magic/utils": "workspace:*",
-    "@magic/graph-core-infra": "workspace:*",
+    "@magic/graph-primitives": "workspace:*",
     "fraction.js": "^5.3.4",
     "mathjs": "catalog:",
     "tinycolor2": "catalog:"

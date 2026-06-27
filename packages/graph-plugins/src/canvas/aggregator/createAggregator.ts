@@ -1,4 +1,4 @@
-import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 import { Coordinate } from '@magic/graph-plugins-shared/types';
 import { drawGroup } from '@magic/shapes/drawGroup';
 

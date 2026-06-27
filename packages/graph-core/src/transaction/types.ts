@@ -1,4 +1,4 @@
-import { TransactionPayload } from '@magic/graph-core-infra/transactions/types';
+import { TransactionPayload } from '@magic/graph-primitives/transactions/types';
 
 import { CoreControls } from '../types.ts';
 

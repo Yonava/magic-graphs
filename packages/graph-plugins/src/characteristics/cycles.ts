@@ -1,4 +1,4 @@
-import { CoreNode } from '@magic/graph-core-infra/types';
+import { CoreNode } from '@magic/graph-primitives/types';
 
 import { ComputedRef, computed } from 'vue';
 

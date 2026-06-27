@@ -1,4 +1,4 @@
-import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
+import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 
 import { CoreEventMap } from '../events.ts';
 import { CoreControls } from '../types.ts';

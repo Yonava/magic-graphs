@@ -5,6 +5,6 @@
     "rootDir": "./src",
     "rewriteRelativeImportExtensions": false
   },
-  "references": [{ "path": "../utils" }, { "path": "../graph-core-infra" }],
+  "references": [{ "path": "../utils" }, { "path": "../graph-primitives" }],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

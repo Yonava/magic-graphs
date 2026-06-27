@@ -1,5 +1,5 @@
-import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
-import type { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
+import type { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { nullThrows } from '@magic/utils/assert';
 import { clone } from '@magic/utils/clone';
 import { delta } from '@magic/utils/delta/index';

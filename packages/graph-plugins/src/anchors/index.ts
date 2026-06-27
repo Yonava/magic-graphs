@@ -1,6 +1,6 @@
-import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph-core-infra/events/mergeEventHubs';
-import { CoreNode } from '@magic/graph-core-infra/types';
+import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
+import { CoreNode } from '@magic/graph-primitives/types';
 import { createThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
 import { CoreEventMap } from '@magic/graph-core/events';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';

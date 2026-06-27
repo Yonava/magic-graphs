@@ -5,7 +5,7 @@
     { "path": "./packages/client" },
     { "path": "./packages/graph-plugins-shared" },
     { "path": "./packages/graph-plugins" },
-    { "path": "./packages/graph-core-infra" },
+    { "path": "./packages/graph-primitives" },
     { "path": "./packages/graph-core" },
     { "path": "./packages/products" },
     { "path": "./packages/server" },

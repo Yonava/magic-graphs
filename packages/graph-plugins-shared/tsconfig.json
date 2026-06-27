@@ -5,7 +5,7 @@
     "rootDir": "./src"
   },
   "references": [
-    { "path": "../graph-core-infra" },
+    { "path": "../graph-primitives" },
     { "path": "../graph-core" },
     { "path": "../utils" }
   ],

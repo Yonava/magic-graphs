@@ -1,6 +1,6 @@
-import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
-import { GraphGetters } from '@magic/graph-core-infra/getters/types';
-import { CoreNode } from '@magic/graph-core-infra/types';
+import { EventHub } from '@magic/graph-primitives/events/createEventHub';
+import { GraphGetters } from '@magic/graph-primitives/getters/types';
+import { CoreNode } from '@magic/graph-primitives/types';
 import { GraphPlugin } from '@magic/graph-plugins-shared/plugins/types';
 import { CoreEventMap } from '@magic/graph-core/events';
 import { CoreControls } from '@magic/graph-core/types';

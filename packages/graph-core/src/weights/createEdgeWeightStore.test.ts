@@ -1,4 +1,4 @@
-import { createMockEventHub } from '@magic/graph-core-infra/testing/events/createMockEventHub';
+import { createMockEventHub } from '@magic/graph-primitives/testing/events/createMockEventHub';
 import { Fraction } from 'mathjs';
 import { describe, expect, it } from 'vitest';
 

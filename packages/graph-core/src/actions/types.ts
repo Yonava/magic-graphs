@@ -1,4 +1,4 @@
-import { GraphActions } from '@magic/graph-core-infra/actions/types';
+import { GraphActions } from '@magic/graph-primitives/actions/types';
 
 import { Position } from '../positions/types.ts';
 import { CreateCoreActionOptions } from './createCoreActions.ts';

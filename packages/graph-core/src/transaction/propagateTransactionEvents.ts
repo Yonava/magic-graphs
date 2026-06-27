@@ -1,5 +1,5 @@
-import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
-import { TransactionPayload } from '@magic/graph-core-infra/transactions/types';
+import { EventHub } from '@magic/graph-primitives/events/createEventHub';
+import { TransactionPayload } from '@magic/graph-primitives/transactions/types';
 
 import { CoreEventMap } from '../events.ts';
 

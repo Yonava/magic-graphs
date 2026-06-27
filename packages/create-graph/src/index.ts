@@ -1,7 +1,7 @@
-import { GraphActions } from '@magic/graph-core-infra/actions/types';
-import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
-import { GraphGetters } from '@magic/graph-core-infra/getters/types';
-import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { GraphActions } from '@magic/graph-primitives/actions/types';
+import { EventHub } from '@magic/graph-primitives/events/createEventHub';
+import { GraphGetters } from '@magic/graph-primitives/getters/types';
+import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { createComputedTokenResolver } from '@magic/graph-plugins-shared/computed-tokens/createComputedTokenResolver';
 import {
   ExtractActions,

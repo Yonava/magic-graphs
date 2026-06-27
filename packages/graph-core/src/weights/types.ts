@@ -1,4 +1,4 @@
-import { CoreEdge } from '@magic/graph-core-infra/types';
+import { CoreEdge } from '@magic/graph-primitives/types';
 import { MaybeGetter } from '@magic/utils/maybeGetter/index';
 import { Fraction } from 'mathjs';
 
