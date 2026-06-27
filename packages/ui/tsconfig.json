@@ -5,6 +5,6 @@
     "rootDir": "./src",
     "rewriteRelativeImportExtensions": false
   },
-  "references": [{ "path": "../graph" }, { "path": "../utils" }],
+  "references": [{ "path": "../graph-core" }, { "path": "../utils" }],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

@@ -1,4 +1,4 @@
-import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { ComputedTokenDetectorMap } from '@magic/graph-plugins-shared/computed-tokens/types';
 import { TokenResolver } from '@magic/graph-plugins-shared/theme/createTokenResolver';
 import {

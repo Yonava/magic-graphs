@@ -4,7 +4,7 @@ import { useLocalStorage } from '@vueuse/core';
 import { computed, ref, toRef, watch } from 'vue';
 import type { ComputedRef, MaybeRef } from 'vue';
 
-import { CoreEventMap } from '../../../../../../graph/dist/types/core/events.ts';
+import { CoreEventMap } from '@magic/graph-core/events';
 import type {
   OnStepChangeCallback,
   SimulationControls,

@@ -16,6 +16,6 @@
     "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true
   },
-  "references": [{ "path": "../graph" }],
+  "references": [{ "path": "../graph-core" }],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

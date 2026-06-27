@@ -1,12 +1,12 @@
-import { EventHub } from '@magic/graph-core-infra/events/createEventHub';
-import { GraphGetters } from '@magic/graph-core-infra/getters/types';
+import { EventHub } from '@magic/graph-primitives/events/createEventHub';
+import { GraphGetters } from '@magic/graph-primitives/getters/types';
 import {
   CURSOR,
   CURSOR_FALLBACK,
   Cursor,
   isValidCursor,
 } from '@magic/graph-plugins-shared/theme/cursor';
-import { CoreGetters } from '@magic/graph/getters';
+import { CoreGetters } from '@magic/graph-core/getters';
 
 import { CanvasEventMap } from './events.ts';
 import { CanvasControls } from './types.ts';

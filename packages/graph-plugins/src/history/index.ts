@@ -1,6 +1,6 @@
-import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph-core-infra/events/mergeEventHubs';
-import { CoreEventMap } from '@magic/graph/core/events';
+import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
+import { CoreEventMap } from '@magic/graph-core/events';
 
 import { computed, ref } from 'vue';
 

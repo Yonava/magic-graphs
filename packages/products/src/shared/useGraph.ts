@@ -1,6 +1,6 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import { createGraph } from '@magic/create-graph/index';
-import { CoreEdge, CoreNode } from '@magic/graph-core-infra/types';
+import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { adjacencyLists } from '@magic/graph-plugins/adjacency-lists/index';
 import { anchors } from '@magic/graph-plugins/anchors/index';
 import { canvas } from '@magic/graph-plugins/canvas/index';
@@ -14,7 +14,7 @@ import { transitionMatrix } from '@magic/graph-plugins/transition-matrix/index';
 import { dark } from '@magic/graph-theme-presets/dark/index';
 import { light } from '@magic/graph-theme-presets/light/index';
 import { pink } from '@magic/graph-theme-presets/pink/index';
-import type { GraphSettings } from '@magic/graph/settings/index';
+import type { GraphSettings } from '@magic/graph-core/settings/index';
 
 import { ref, watch } from 'vue';
 

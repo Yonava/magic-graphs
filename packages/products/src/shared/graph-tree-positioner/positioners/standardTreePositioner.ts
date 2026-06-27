@@ -1,4 +1,4 @@
-import { NodePositionUpdate } from '@magic/graph/core/positions/types';
+import { NodePositionUpdate } from '@magic/graph-core/positions/types';
 import { roundToNearestN } from '@magic/utils/math';
 import { getValue } from '@magic/utils/maybeGetter/index';
 

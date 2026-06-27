@@ -1,5 +1,5 @@
 import { Coordinate } from '@magic/canvas/types';
-import { CoreNode } from '@magic/graph-core-infra/types';
+import { CoreNode } from '@magic/graph-primitives/types';
 import {
   GraphPlugin,
   WithLifecycle,

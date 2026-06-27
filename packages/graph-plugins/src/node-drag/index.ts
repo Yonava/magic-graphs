@@ -1,8 +1,8 @@
-import { createEventHub } from '@magic/graph-core-infra/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph-core-infra/events/mergeEventHubs';
+import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
 import { createDragState } from '@magic/graph-plugins-shared/drag/createDragState';
-import { CoreEventMap } from '@magic/graph/core/events';
-import { NodePositionStreamControls } from '@magic/graph/core/positions/types';
+import { CoreEventMap } from '@magic/graph-core/events';
+import { NodePositionStreamControls } from '@magic/graph-core/positions/types';
 import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';

@@ -1,5 +1,5 @@
 import { UPPERCASE_ALPHABET } from '@magic/graph-plugins/node-label/constants';
-import type { GraphSettings } from '@magic/graph/settings/index';
+import type { GraphSettings } from '@magic/graph-core/settings/index';
 import { Fraction } from 'mathjs';
 
 import { SINK_LABEL, SOURCE_LABEL } from './constants.ts';
