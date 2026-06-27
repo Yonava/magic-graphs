@@ -2,7 +2,7 @@ import { LooseGraphPlugin } from './internals/loose.ts';
 
 export { LooseGraphPlugin };
 export { WithLifecycle } from './internals/lifecycle.ts';
-export { GraphPlugin } from './internals/types.ts';
+export { GraphPlugin } from './internals/plugin.ts';
 export { ThemesForPlugins, WithTheme } from './internals/themes.ts';
 export {
   ExtractActions,

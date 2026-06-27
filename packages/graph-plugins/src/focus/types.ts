@@ -6,7 +6,7 @@ import { ComputedRef, Ref } from 'vue';
 import {
   GraphPlugin,
   WithLifecycle,
-} from '../../../graph-plugins-shared/dist/types/plugins/internals/types.ts';
+} from '../../../graph-plugins-shared/dist/types/plugins/internals/plugin.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';
 import { FocusThemes } from './themes.ts';

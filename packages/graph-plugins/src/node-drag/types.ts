@@ -4,7 +4,7 @@ import { CoreNode } from '@magic/graph-primitives/types';
 import {
   GraphPlugin,
   WithLifecycle,
-} from '../../../graph-plugins-shared/dist/types/plugins/internals/types.ts';
+} from '../../../graph-plugins-shared/dist/types/plugins/internals/plugin.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { MarqueePlugin } from '../marquee/types.ts';

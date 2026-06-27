@@ -5,7 +5,7 @@ import { DeepReadonly } from 'ts-essentials';
 
 import { Ref, ShallowRef } from 'vue';
 
-import { GraphPlugin } from '../../../graph-plugins-shared/dist/types/plugins/internals/types.ts';
+import { GraphPlugin } from '../../../graph-plugins-shared/dist/types/plugins/internals/plugin.ts';
 import { AggregatorControls } from './aggregator/createAggregator.ts';
 import { CanvasElement } from './aggregator/types.ts';
 import { CanvasEventMap } from './events.ts';

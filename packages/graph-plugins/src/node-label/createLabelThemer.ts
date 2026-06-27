@@ -1,4 +1,4 @@
-import { PluginOptions } from '../../../graph-plugins-shared/dist/types/plugins/internals/types.ts';
+import { PluginOptions } from '../../../graph-plugins-shared/dist/types/plugins/internals/plugin.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
 import { NodeLabelControls, NodeLabelPlugin } from './types.ts';
 
