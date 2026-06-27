@@ -1,6 +1,9 @@
 import type { DeepReadonly } from 'ts-essentials';
 
-import { Coordinate } from '../types.ts';
+export type Coordinate = {
+  x: number;
+  y: number;
+};
 
 export type ActiveDrag<TData extends object> = Coordinate & { data: TData };
 
