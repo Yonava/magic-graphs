@@ -1,8 +1,12 @@
 /** Resolves computed token values for nodes and edges by running detectors in precedence order. */
-export { CompoundTokenResolver, createComputedTokenResolver } from './internals/createComputedTokenResolver.ts';
+export { createComputedTokenResolver } from './internals/createComputedTokenResolver.ts';
+export type { CompoundTokenResolver } from './internals/createComputedTokenResolver.ts';
 
 /** The map of detector functions keyed by computed token state, used to resolve node and edge style tokens. */
-export type { ComputedTokenDetectorMap, ComputedTokenState } from './internals/types.ts';
+export type {
+  ComputedTokenDetectorMap,
+  ComputedTokenState,
+} from './internals/types.ts';
 
 /** The computed style tokens available for nodes. */
 export type { NodeComputedTokens } from './internals/types.ts';
