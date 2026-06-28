@@ -1,16 +1,12 @@
-import { WithTheme } from '@magic/graph-plugins-shared/types';
 import { CoreNode } from '@magic/graph-primitives/types';
 
 import { Ref } from 'vue';
 
-import {
-  GraphPlugin,
-  WithLifecycle,
-} from '../../../graph-plugins-shared/dist/types/plugins/internals/plugin.ts';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { AnchorsEventMap } from './events.ts';
 import { AnchorsThemes } from './themes.ts';
+import { GraphPlugin, WithLifecycle, WithTheme } from '@magic/graph-plugins-shared/plugins/index';
 
 /**
  * an anchor instance that is attached to a node

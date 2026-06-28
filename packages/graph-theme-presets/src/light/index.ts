@@ -2,7 +2,6 @@ import {
   CURSOR,
   CURSOR_FALLBACK,
 } from '@magic/graph-plugins-shared/theme/cursor';
-import { ThemesForPlugins } from '@magic/graph-plugins-shared/types';
 import { AnchorsPlugin } from '@magic/graph-plugins/anchors/types';
 import { CanvasPlugin } from '@magic/graph-plugins/canvas/types';
 import { FocusPlugin } from '@magic/graph-plugins/focus/types';
@@ -10,8 +9,9 @@ import { MarqueePlugin } from '@magic/graph-plugins/marquee/types';
 import colors from '@magic/utils/colors';
 
 import { shared } from './shared.ts';
+import { PluginThemes } from '@magic/graph-plugins-shared/plugins/index';
 
-type LightPreset = ThemesForPlugins<
+type LightPreset = PluginThemes<
   [CanvasPlugin, FocusPlugin, MarqueePlugin, AnchorsPlugin]
 >;
 
