@@ -431,6 +431,7 @@ export const anchors: AnchorsPlugin = ({
   enable();
 
   return {
+    name: 'anchors',
     events,
     actions,
     getters,

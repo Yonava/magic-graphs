@@ -210,6 +210,7 @@ export const marquee: MarqueePlugin = ({
   enable();
 
   return {
+    name: 'marquee',
     events,
     actions,
     getters,

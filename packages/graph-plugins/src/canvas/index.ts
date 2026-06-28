@@ -181,6 +181,7 @@ export const canvas =
       }).draw(ctx);
 
     return {
+      name: 'canvas',
       getters,
       controls: {
         canvas: {

@@ -158,6 +158,7 @@ export const nodeDrag: NodeDragPlugin = ({
   enable();
 
   return {
+    name: 'nodeDrag',
     events,
     getters,
     actions,

@@ -38,6 +38,7 @@ export const characteristics: CharacteristicsPlugin = ({
   const sccs = useStronglyConnectedComponents(controls);
 
   return {
+    name: 'characteristics',
     actions,
     events,
     getters,

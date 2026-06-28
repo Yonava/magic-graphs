@@ -103,6 +103,7 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
   events.subscribe('onStructureChange', update);
 
   return {
+    name: 'adjacencyLists',
     actions,
     getters,
     events,

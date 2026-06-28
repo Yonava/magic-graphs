@@ -209,6 +209,7 @@ export const focus: FocusPlugin = ({
   const theme = createThemeController(createFocusThemeOverrides());
 
   return {
+    name: 'focus',
     events,
     actions: extendedActions,
     getters,

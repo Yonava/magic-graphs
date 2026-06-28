@@ -32,6 +32,7 @@ export const transitionMatrix: TransitionMatrixPlugin = ({
   controls,
   ...rest
 }) => ({
+  name: 'transitionMatrix',
   controls: {
     transitionMatrix: computed(() =>
       getTransitionMatrix(

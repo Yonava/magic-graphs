@@ -68,6 +68,7 @@ export const history: HistoryPlugin = ({
   };
 
   return {
+    name: 'history',
     getters,
     actions: {
       ...actions,
