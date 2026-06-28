@@ -1,8 +1,8 @@
 import { UnionToIntersection } from 'ts-essentials';
 
-import { ComputedTokenDetectorMap } from '../../computed-tokens/types.ts';
-import { ThemeController } from '../../theme/createThemeController.ts';
+import { ThemeController } from '../../theme/internals/createThemeController.ts';
 import { LooseGraphPlugin } from './loose.ts';
+import { ComputedTokenDetectorMap } from '../../computed-tokens/index.ts';
 
 type Detectors = {
   /**
