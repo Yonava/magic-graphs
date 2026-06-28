@@ -4,6 +4,7 @@ import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import { DeepReadonly } from 'ts-essentials';
 
 import { Ref, ShallowRef } from 'vue';
+
 import { AggregatorControls } from './aggregator/createAggregator.ts';
 import { CanvasElement } from './aggregator/types.ts';
 import { CanvasEventMap } from './events.ts';
@@ -60,6 +61,6 @@ type BaseCanvasControls = {
 export type CanvasControls = WithTheme<BaseCanvasControls, CanvasThemes>;
 
 export type CanvasPlugin = GraphPlugin<{
-  controls: { canvas: CanvasControls };
+  controls: CanvasControls;
   events: CanvasEventMap;
 }>;

@@ -107,8 +107,6 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
     actions,
     getters,
     events,
-    controls: {
-      adjacencyLists: { standard, weighted, directed, undirected },
-    },
+    controls: { standard, weighted, directed, undirected },
   };
 };

@@ -1,8 +1,8 @@
+import { CoreEventMap } from '@magic/graph-core/events';
+import { createThemeController } from '@magic/graph-plugins-shared/theme';
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
 import { ElementRemovalPayload } from '@magic/graph-primitives/transactions/types';
-import { createThemeController } from '@magic/graph-plugins-shared/theme';
-import { CoreEventMap } from '@magic/graph-core/events';
 import { nullThrows } from '@magic/utils/assert';
 import { getCtx } from '@magic/utils/ctx/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -214,27 +214,25 @@ export const focus: FocusPlugin = ({
     actions: extendedActions,
     getters,
     controls: {
-      focus: {
-        set: setFocus,
-        clear: clearFocus,
-        add: addToFocus,
-        all: focusAll,
-        isFocused,
-        focusedElementIds: readonly(focusedElementIds),
-        focusedNodes: computed(() =>
-          controls.nodes.value.filter((node) => isFocused(node.id)),
-        ),
-        focusedEdges: computed(() =>
-          controls.edges.value.filter((edge) => isFocused(edge.id)),
-        ),
-        theme: {
-          ...theme,
-          detectors: createFocusDetectors(isFocused, theme._resolveToken),
-        },
-        lifecycle: {
-          enable,
-          disable,
-        },
+      set: setFocus,
+      clear: clearFocus,
+      add: addToFocus,
+      all: focusAll,
+      isFocused,
+      focusedElementIds: readonly(focusedElementIds),
+      focusedNodes: computed(() =>
+        controls.nodes.value.filter((node) => isFocused(node.id)),
+      ),
+      focusedEdges: computed(() =>
+        controls.edges.value.filter((edge) => isFocused(edge.id)),
+      ),
+      theme: {
+        ...theme,
+        detectors: createFocusDetectors(isFocused, theme._resolveToken),
+      },
+      lifecycle: {
+        enable,
+        disable,
       },
     },
     onAfterInit: () => {

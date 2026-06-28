@@ -1,9 +1,9 @@
-import { MaybeGetter } from '@magic/utils/maybeGetter/index';
-
 import {
   GraphPlugin,
   WithLifecycle,
 } from '@magic/graph-plugins-shared/plugins';
+import { MaybeGetter } from '@magic/utils/maybeGetter/index';
+
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 
@@ -43,7 +43,7 @@ type NodeLabelGetters = {
 };
 
 export type NodeLabelPlugin = GraphPlugin<{
-  controls: { nodeLabel: WithLifecycle<NodeLabelControls> };
+  controls: WithLifecycle<NodeLabelControls>;
   actions: NodeLabelActions;
   getters: NodeLabelGetters;
   dependsOn: [CanvasPlugin];

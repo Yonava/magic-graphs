@@ -1,8 +1,8 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
+import { CoreEventMap } from '@magic/graph-core/events';
+import { createThemeController } from '@magic/graph-plugins-shared/theme';
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
-import { createThemeController } from '@magic/graph-plugins-shared/theme';
-import { CoreEventMap } from '@magic/graph-core/events';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { cross } from '@magic/shapes/shapes/cross/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
@@ -184,24 +184,22 @@ export const canvas =
       name: 'canvas',
       getters,
       controls: {
-        canvas: {
-          aggregator,
-          shapes,
+        aggregator,
+        shapes,
 
-          magicCanvas,
+        magicCanvas,
 
-          focused: canvasFocused,
-          hovered: useElementHover(magicCanvas.canvas),
+        focused: canvasFocused,
+        hovered: useElementHover(magicCanvas.canvas),
 
-          graphUnderCursor,
-          forceUpdateGraphUnderCursor,
+        graphUnderCursor,
+        forceUpdateGraphUnderCursor,
 
-          getNodePriority: () => getNodePriority,
+        getNodePriority: () => getNodePriority,
 
-          theme: {
-            ...theme,
-            detectors: createCanvasDetectors(theme._resolveToken),
-          },
+        theme: {
+          ...theme,
+          detectors: createCanvasDetectors(theme._resolveToken),
         },
       },
       actions,

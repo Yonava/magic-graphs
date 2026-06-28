@@ -1,8 +1,8 @@
-import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
-import { createDragState } from '@magic/graph-plugins-shared/drag';
 import { CoreEventMap } from '@magic/graph-core/events';
 import { NodePositionStreamControls } from '@magic/graph-core/positions/types';
+import { createDragState } from '@magic/graph-plugins-shared/drag';
+import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
+import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
 import { nullThrows } from '@magic/utils/assert';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
@@ -163,11 +163,9 @@ export const nodeDrag: NodeDragPlugin = ({
     getters,
     actions,
     controls: {
-      nodeDrag: {
-        lifecycle: {
-          enable,
-          disable,
-        },
+      lifecycle: {
+        enable,
+        disable,
       },
     },
   };

@@ -1,8 +1,8 @@
+import { CoreEventMap } from '@magic/graph-core/events';
+import { createThemeController } from '@magic/graph-plugins-shared/theme';
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
 import { CoreNode } from '@magic/graph-primitives/types';
-import { createThemeController } from '@magic/graph-plugins-shared/theme';
-import { CoreEventMap } from '@magic/graph-core/events';
 import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
 import type { WithId } from '@magic/shapes/types/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -436,16 +436,14 @@ export const anchors: AnchorsPlugin = ({
     actions,
     getters,
     controls: {
-      anchors: {
-        lifecycle: {
-          enable,
-          disable,
-        },
-        theme,
-        parentNode: readonly(parentNode),
-        setParentNode,
-        clearAnchorState,
+      lifecycle: {
+        enable,
+        disable,
       },
+      theme,
+      parentNode: readonly(parentNode),
+      setParentNode,
+      clearAnchorState,
     },
   };
 };

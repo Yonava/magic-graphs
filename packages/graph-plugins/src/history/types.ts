@@ -1,9 +1,10 @@
-import { ComputedRef, Ref } from 'vue';
-
 import {
   GraphPlugin,
   WithLifecycle,
 } from '@magic/graph-plugins-shared/plugins';
+
+import { ComputedRef, Ref } from 'vue';
+
 import { HistoryEventMap } from './events.ts';
 
 type HistoryOption = {
@@ -47,7 +48,7 @@ type HistoryControls = {
 };
 
 export type HistoryPlugin = GraphPlugin<{
-  controls: { history: WithLifecycle<HistoryControls> };
+  controls: WithLifecycle<HistoryControls>;
   events: HistoryEventMap;
   actions: HistoryActions;
   dependsOn: [];

@@ -75,17 +75,15 @@ export const nodeLabel: NodeLabelPlugin = ({
       // TODO add bulk additions and removals!
     },
     controls: {
-      nodeLabel: {
-        get: getNodeLabelWithAssert,
-        set: (label) => setNodeLabels([label]),
-        setMany: setNodeLabels,
-        lifecycle: {
-          enable,
-          disable,
-        },
-        _internal: {
-          nodeIdToLabel,
-        },
+      get: getNodeLabelWithAssert,
+      set: (label) => setNodeLabels([label]),
+      setMany: setNodeLabels,
+      lifecycle: {
+        enable,
+        disable,
+      },
+      _internal: {
+        nodeIdToLabel,
       },
     },
   };

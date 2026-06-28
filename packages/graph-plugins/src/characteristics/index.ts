@@ -2,6 +2,7 @@ import {
   GraphPlugin,
   PluginOptions,
 } from '@magic/graph-plugins-shared/plugins';
+
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 import {
   BidirectionalEdgesControls,
@@ -23,7 +24,7 @@ type CharacteristicsControls = {
 };
 
 type CharacteristicsPlugin = GraphPlugin<{
-  controls: { characteristics: CharacteristicsControls };
+  controls: CharacteristicsControls;
   dependsOn: [AdjacencyListsPlugin];
 }>;
 
@@ -43,14 +44,12 @@ export const characteristics: CharacteristicsPlugin = ({
     events,
     getters,
     controls: {
-      characteristics: {
-        complete: useComplete(controls),
-        cycles: useCycles(controls, sccs),
-        sccs: sccs,
-        bidirectionalEdges: useBidirectionalEdges(controls),
-        bipartite: useBipartite(controls),
-        connected: useConnected(controls),
-      },
+      complete: useComplete(controls),
+      cycles: useCycles(controls, sccs),
+      sccs: sccs,
+      bidirectionalEdges: useBidirectionalEdges(controls),
+      bipartite: useBipartite(controls),
+      connected: useConnected(controls),
     },
   };
 };
