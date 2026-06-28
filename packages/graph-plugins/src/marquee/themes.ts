@@ -1,11 +1,9 @@
 import {
   Cursor,
   CursorFallback,
-} from '@magic/graph-plugins-shared/theme/cursor';
-import {
   ThemeOverrides,
   ThemeValue,
-} from '@magic/graph-plugins-shared/theme/types';
+} from '@magic/graph-plugins-shared/theme';
 import { Color } from '@magic/utils/colors';
 
 export type MarqueeThemes = {

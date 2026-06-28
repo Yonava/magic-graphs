@@ -1,4 +1,4 @@
-import { CURSOR } from '@magic/graph-plugins-shared/theme/cursor';
+import { CURSOR } from '@magic/graph-plugins-shared/theme';
 
 import { ComputedRef } from 'vue';
 

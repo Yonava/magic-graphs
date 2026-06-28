@@ -1,11 +1,6 @@
-import {
-  GraphPlugin,
-  WithLifecycle,
-} from '@magic/graph-plugins-shared/plugins/types';
-import { WithTheme } from '@magic/graph-plugins-shared/types';
+import { GraphPlugin, WithLifecycle, WithTheme } from '@magic/graph-plugins-shared/plugins';
 
 import { ComputedRef } from 'vue';
-
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { MarqueeEventMap } from './events.ts';

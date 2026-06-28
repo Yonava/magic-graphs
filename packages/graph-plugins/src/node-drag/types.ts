@@ -1,10 +1,10 @@
 import { Coordinate } from '@magic/canvas/types';
 import { CoreNode } from '@magic/graph-primitives/types';
+
 import {
   GraphPlugin,
   WithLifecycle,
-} from '@magic/graph-plugins-shared/plugins/types';
-
+} from '@magic/graph-plugins-shared/plugins';
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { MarqueePlugin } from '../marquee/types.ts';

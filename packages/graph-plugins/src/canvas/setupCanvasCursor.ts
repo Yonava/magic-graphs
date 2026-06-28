@@ -5,7 +5,7 @@ import {
   CURSOR_FALLBACK,
   Cursor,
   isValidCursor,
-} from '@magic/graph-plugins-shared/theme/cursor';
+} from '@magic/graph-plugins-shared/theme';
 import { CoreGetters } from '@magic/graph-core/getters';
 
 import { CanvasEventMap } from './events.ts';

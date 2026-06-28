@@ -1,8 +1,8 @@
-import { GraphPlugin } from '@magic/graph-plugins-shared/plugins/types';
 import { CoreGetters } from '@magic/graph-core/getters';
 
 import { ComputedRef } from 'vue';
 
+import { GraphPlugin } from '@magic/graph-plugins-shared/plugins';
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 
 /**

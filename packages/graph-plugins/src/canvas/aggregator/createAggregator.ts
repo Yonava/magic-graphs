@@ -1,5 +1,5 @@
 import { EventHub } from '@magic/graph-primitives/events/createEventHub';
-import { Coordinate } from '@magic/graph-plugins-shared/types';
+import { Coordinate } from '@magic/graph-plugins-shared/drag';
 import { drawGroup } from '@magic/shapes/drawGroup';
 
 import { ref } from 'vue';

@@ -1,7 +1,7 @@
 import { MagicCanvasProps } from '@magic/canvas/types';
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
-import { createThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
+import { createThemeController } from '@magic/graph-plugins-shared/theme';
 import { CoreEventMap } from '@magic/graph-core/events';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { cross } from '@magic/shapes/shapes/cross/index';

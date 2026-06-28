@@ -1,6 +1,6 @@
-import { PluginOptions } from '@magic/graph-plugins-shared/plugins/types';
 import type { BoundingBox } from '@magic/shapes/types/utility';
 
+import { PluginOptions } from '@magic/graph-plugins-shared/plugins';
 import { MarqueePlugin } from './types.ts';
 
 export function getSurfaceArea(box: BoundingBox) {

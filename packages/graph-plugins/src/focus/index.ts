@@ -1,7 +1,7 @@
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
 import { ElementRemovalPayload } from '@magic/graph-primitives/transactions/types';
-import { createThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
+import { createThemeController } from '@magic/graph-plugins-shared/theme';
 import { CoreEventMap } from '@magic/graph-core/events';
 import { nullThrows } from '@magic/utils/assert';
 import { getCtx } from '@magic/utils/ctx/index';

@@ -1,8 +1,8 @@
 import {
   CURSOR,
   CURSOR_FALLBACK,
-} from '@magic/graph-plugins-shared/theme/cursor';
-import { ThemesForPlugins } from '@magic/graph-plugins-shared/types';
+} from '@magic/graph-plugins-shared/theme';
+import { PluginThemes } from '@magic/graph-plugins-shared/plugins';
 import { AnchorsPlugin } from '@magic/graph-plugins/anchors/types';
 import { CanvasPlugin } from '@magic/graph-plugins/canvas/types';
 import { FocusPlugin } from '@magic/graph-plugins/focus/types';
@@ -13,7 +13,7 @@ import { shared } from './shared.ts';
 
 const REDDISH_GRAY = 'rgb(100, 60, 70)';
 
-type DarkPreset = ThemesForPlugins<
+type DarkPreset = PluginThemes<
   [CanvasPlugin, FocusPlugin, MarqueePlugin, AnchorsPlugin]
 >;
 

@@ -1,12 +1,13 @@
+import { CoreEventMap } from '@magic/graph-core/events';
+import { CoreGetters } from '@magic/graph-core/getters';
+import { CoreControls } from '@magic/graph-core/types';
 import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 import { GraphGetters } from '@magic/graph-primitives/getters/types';
 import { CoreNode } from '@magic/graph-primitives/types';
-import { GraphPlugin } from '@magic/graph-plugins-shared/plugins/types';
-import { CoreEventMap } from '@magic/graph-core/events';
-import { CoreControls } from '@magic/graph-core/types';
-import { CoreGetters } from '@magic/graph-core/getters';
 
 import { Ref } from 'vue';
+
+import { GraphPlugin } from '@magic/graph-plugins-shared/plugins';
 
 /**
  * a mapping of nodes to their neighbors where neighbors are the full node objects

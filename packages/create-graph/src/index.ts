@@ -1,29 +1,26 @@
-import { GraphActions } from '@magic/graph-primitives/actions/types';
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
-import { GraphGetters } from '@magic/graph-primitives/getters/types';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
-import { createComputedTokenResolver } from '@magic/graph-plugins-shared/computed-tokens/createComputedTokenResolver';
+import { core as createCore } from '@magic/graph-core/index';
+import { GraphSettings } from '@magic/graph-core/settings/index';
+import { CoreControls } from '@magic/graph-core/types';
+import { createComputedTokenResolver } from '@magic/graph-plugins-shared/computed-tokens';
 import {
   ExtractActions,
   ExtractControls,
   ExtractEventMap,
   ExtractGetters,
   LooseGraphPlugin,
-} from '@magic/graph-plugins-shared/plugins/types';
-import { ThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
-import {
   PluginThemeField,
-  ThemesForPlugins,
-} from '@magic/graph-plugins-shared/types';
+  PluginThemes,
+} from '@magic/graph-plugins-shared/plugins';
 import {
   AggregatorTransformer,
   CanvasElement,
 } from '@magic/graph-plugins/canvas/aggregator/types';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@magic/graph-plugins/canvas/setupCanvasCursor';
 import { CanvasControls } from '@magic/graph-plugins/canvas/types';
-import { CoreControls } from '@magic/graph-core/types';
-import { core as createCore } from '@magic/graph-core/index';
-import { GraphSettings } from '@magic/graph-core/settings/index';
+import { GraphActions } from '@magic/graph-primitives/actions/types';
+import { EventHub } from '@magic/graph-primitives/events/createEventHub';
+import { GraphGetters } from '@magic/graph-primitives/getters/types';
+import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { nullThrows } from '@magic/utils/assert';
 import type { Prettify } from 'ts-essentials';
 
@@ -41,7 +38,7 @@ type CreateGraphOptions<
   PresetName extends string,
 > = {
   plugins: TPlugins;
-  themePresets: Record<PresetName, ThemesForPlugins<NoInfer<TPlugins>>>;
+  themePresets: Record<PresetName, PluginThemes<NoInfer<TPlugins>>>;
   settings: Partial<GraphSettings>;
 };
 

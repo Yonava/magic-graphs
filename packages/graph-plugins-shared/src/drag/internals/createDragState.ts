@@ -1,7 +1,6 @@
 import { DeepReadonly } from 'ts-essentials';
 
-import { Coordinate } from '../types.ts';
-import { ActiveDrag, DragStateControls } from './types.ts';
+import { ActiveDrag, Coordinate, DragStateControls } from './types.ts';
 
 /**
  * tracks cursor delta and attached data for a drag interaction.
