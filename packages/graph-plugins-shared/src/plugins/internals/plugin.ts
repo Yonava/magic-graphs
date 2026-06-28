@@ -37,6 +37,7 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
 };
 
 type PluginOutput<PluginSchema extends LoosePluginSchema> = {
+  name: string;
   controls: PluginSchema['controls'];
   // [1]
   events: EventHub<
