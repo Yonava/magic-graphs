@@ -1,6 +1,6 @@
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
-import { createDragState } from '@magic/graph-plugins-shared/drag/createDragState';
+import { createDragState } from '@magic/graph-plugins-shared/drag';
 import { CoreEventMap } from '@magic/graph-core/events';
 import { NodePositionStreamControls } from '@magic/graph-core/positions/types';
 import { nullThrows } from '@magic/utils/assert';

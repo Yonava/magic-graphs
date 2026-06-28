@@ -1,6 +1,6 @@
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
-import { createThemeController } from '@magic/graph-plugins-shared/theme/createThemeController';
+import { createThemeController } from '@magic/graph-plugins-shared/theme';
 import { CoreEventMap } from '@magic/graph-core/events';
 import { normalizeBoundingBox } from '@magic/shapes/helpers';
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';

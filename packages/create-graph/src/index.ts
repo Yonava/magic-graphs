@@ -1,18 +1,16 @@
 import { core as createCore } from '@magic/graph-core/index';
 import { GraphSettings } from '@magic/graph-core/settings/index';
 import { CoreControls } from '@magic/graph-core/types';
-import { createComputedTokenResolver } from '@magic/graph-plugins-shared/computed-tokens/createComputedTokenResolver';
+import { createComputedTokenResolver } from '@magic/graph-plugins-shared/computed-tokens';
 import {
   ExtractActions,
   ExtractControls,
   ExtractEventMap,
   ExtractGetters,
-} from '@magic/graph-plugins-shared/plugins/extractors';
-import { LooseGraphPlugin } from '@magic/graph-plugins-shared/plugins/loose';
-import {
+  LooseGraphPlugin,
   PluginThemeField,
-  ThemesForPlugins,
-} from '@magic/graph-plugins-shared/types';
+  PluginThemes,
+} from '@magic/graph-plugins-shared/plugins';
 import {
   AggregatorTransformer,
   CanvasElement,
@@ -40,7 +38,7 @@ type CreateGraphOptions<
   PresetName extends string,
 > = {
   plugins: TPlugins;
-  themePresets: Record<PresetName, ThemesForPlugins<NoInfer<TPlugins>>>;
+  themePresets: Record<PresetName, PluginThemes<NoInfer<TPlugins>>>;
   settings: Partial<GraphSettings>;
 };
 

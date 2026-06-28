@@ -11,5 +11,5 @@ export { ThemeLayer, createLayer } from './internals/createLayer.ts';
 export type { ThemeValue, ThemeOverrides, ThemeOverride } from './internals/types.ts';
 
 /** All cursor values supported by the browser. */
-export { CURSOR } from './internals/cursor.ts';
+export { CURSOR, CURSOR_FALLBACK, isValidCursor } from './internals/cursor.ts';
 export type { Cursor, CursorFallback } from './internals/cursor.ts';

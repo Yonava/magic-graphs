@@ -3,7 +3,7 @@ import { ComputedRef, Ref } from 'vue';
 import {
   GraphPlugin,
   WithLifecycle,
-} from '../../../graph-plugins-shared/dist/types/plugins/internals/plugin.ts';
+} from '@magic/graph-plugins-shared/plugins';
 import { HistoryEventMap } from './events.ts';
 
 type HistoryOption = {

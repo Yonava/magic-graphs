@@ -1,14 +1,12 @@
 import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
-import { ComputedTokenDetectorMap } from '@magic/graph-plugins-shared/computed-tokens/types';
-import { TokenResolver } from '@magic/graph-plugins-shared/theme/createTokenResolver';
+import { ComputedTokenDetectorMap } from '@magic/graph-plugins-shared/computed-tokens';
 import {
+  TokenResolver,
   Cursor,
   CursorFallback,
-} from '@magic/graph-plugins-shared/theme/cursor';
-import {
   ThemeOverrides,
   ThemeValue,
-} from '@magic/graph-plugins-shared/theme/types';
+} from '@magic/graph-plugins-shared/theme';
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Color } from '@magic/utils/colors';
 

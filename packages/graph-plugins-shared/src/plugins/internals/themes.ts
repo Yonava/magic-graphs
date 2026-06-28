@@ -15,7 +15,7 @@ type Detectors = {
   detectors?: ComputedTokenDetectorMap;
 };
 
-type PluginThemeField<Themes> = {
+export type PluginThemeField<Themes> = {
   theme: ThemeController<Themes> & Detectors;
 };
 

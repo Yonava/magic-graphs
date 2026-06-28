@@ -7,7 +7,7 @@ import { CoreNode } from '@magic/graph-primitives/types';
 
 import { Ref } from 'vue';
 
-import { GraphPlugin } from '../../../graph-plugins-shared/dist/types/plugins/internals/plugin.ts';
+import { GraphPlugin } from '@magic/graph-plugins-shared/plugins';
 
 /**
  * a mapping of nodes to their neighbors where neighbors are the full node objects

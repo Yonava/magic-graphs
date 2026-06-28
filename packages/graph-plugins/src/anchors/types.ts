@@ -6,7 +6,7 @@ import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { AnchorsEventMap } from './events.ts';
 import { AnchorsThemes } from './themes.ts';
-import { GraphPlugin, WithLifecycle, WithTheme } from '@magic/graph-plugins-shared/plugins/index';
+import { GraphPlugin, WithLifecycle, WithTheme } from '@magic/graph-plugins-shared/plugins';
 
 /**
  * an anchor instance that is attached to a node

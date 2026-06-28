@@ -2,7 +2,7 @@ import { CoreGetters } from '@magic/graph-core/getters';
 
 import { ComputedRef } from 'vue';
 
-import { GraphPlugin } from '../../../graph-plugins-shared/dist/types/plugins/internals/plugin.ts';
+import { GraphPlugin } from '@magic/graph-plugins-shared/plugins';
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 
 /**

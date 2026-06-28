@@ -1,7 +1,7 @@
 import {
   GraphPlugin,
   PluginOptions,
-} from '../../../graph-plugins-shared/dist/types/plugins/internals/plugin.ts';
+} from '@magic/graph-plugins-shared/plugins';
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 import {
   BidirectionalEdgesControls,

@@ -9,7 +9,7 @@ export { GraphPlugin } from './internals/plugin.ts';
 export { WithLifecycle } from './internals/lifecycle.ts';
 
 /** Wraps a plugin's controls with a theme controller. */
-export { WithTheme } from './internals/themes.ts';
+export { WithTheme, PluginThemeField } from './internals/themes.ts';
 
 /** Extracts the options type from a plugin function's first parameter. */
 export type PluginOptions<Plugin extends LooseGraphPlugin> =
