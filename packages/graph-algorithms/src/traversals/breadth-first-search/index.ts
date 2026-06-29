@@ -5,10 +5,6 @@
  * Explores neighbors level by level using a queue, guaranteeing that nodes
  * are visited in non-decreasing order of hop distance from `start`.
  *
- * @param graph - adjacency list: { nodeId: [neighbor, ...] }
- * @param start - the node to begin traversal from
- * @returns visited nodes in breadth-first order
- *
  * @complexity
  * Time:  O(V + E)   Θ(V + E)   Ω(1)
  * Space: O(V)       Θ(V)       Ω(1)
