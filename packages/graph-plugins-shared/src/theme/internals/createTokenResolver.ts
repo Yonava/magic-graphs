@@ -20,6 +20,13 @@ export const createTokenResolver = <Themes>(
     upperBound: number,
     args: ThemeValueResolverArgs<Themes[Token]>,
   ): StyleValueFromThemeValue<Themes[Token]> => {
+    // upperBound at zero means we're at the preset layer so there's nothing beneath it to resolve
+    if (upperBound === 0) {
+      throw new Error(
+        `resolveUnderneath was invoked for token "${token.toString()}" with nothing beneath it.`,
+      );
+    }
+
     // get all the overrides we have stored for a given token, up to (but excluding) upperBound
     const overrides = nullThrows(
       themeOverrides[token],
