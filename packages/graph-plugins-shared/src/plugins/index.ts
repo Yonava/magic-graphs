@@ -3,13 +3,13 @@ import { LooseGraphPlugin } from './internals/loose.ts';
 // --- for plugin authors ---
 
 /** The type for a graph plugin. Use this to type your plugin function. */
-export { GraphPlugin } from './internals/plugin.ts';
+export type { GraphPlugin } from './internals/plugin.ts';
 
 /** Wraps a plugin's controls with lifecycle methods (enable/disable). */
-export { WithLifecycle } from './internals/lifecycle.ts';
+export type { WithLifecycle } from './internals/lifecycle.ts';
 
 /** Wraps a plugin's controls with a theme controller. */
-export { WithTheme, PluginThemeField } from './internals/themes.ts';
+export type { WithTheme, PluginThemeField } from './internals/themes.ts';
 
 /** Extracts the options type from a plugin function's first parameter. */
 export type PluginOptions<Plugin extends LooseGraphPlugin> =
@@ -21,19 +21,19 @@ export type PluginOptions<Plugin extends LooseGraphPlugin> =
  * The loose, unresolved plugin type used for plugin list inference.
  * Plugin authors should use {@link GraphPlugin} instead.
  */
-export { LooseGraphPlugin };
+export type { LooseGraphPlugin };
 
 /** Extracts the merged theme map from a list of plugins. To build the theming interface. */
-export { PluginThemes } from './internals/themes.ts';
+export type { PluginThemes } from './internals/themes.ts';
 
 /** Extracts the merged controls type from a list of plugins. To assemble the graph controls. */
-export { ExtractControls } from './internals/extractors.ts';
+export type { ExtractControls } from './internals/extractors.ts';
 
 /** Extracts the merged event map from a list of plugins. To wire the event hub. */
-export { ExtractEventMap } from './internals/extractors.ts';
+export type { ExtractEventMap } from './internals/extractors.ts';
 
 /** Extracts the merged getters type from a list of plugins. To build the getters interface. */
-export { ExtractGetters } from './internals/extractors.ts';
+export type { ExtractGetters } from './internals/extractors.ts';
 
 /** Extracts the merged actions type from a list of plugins. To build the actions interface. */
-export { ExtractActions } from './internals/extractors.ts';
+export type { ExtractActions } from './internals/extractors.ts';
