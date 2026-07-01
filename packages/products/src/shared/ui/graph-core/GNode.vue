@@ -24,12 +24,14 @@
     graph.value.focus.set([props.node.id]);
   };
 
-  const updateTheme = setInterval(() => {
+  const updateTheme = () => {
     theme.value = graph.value.theme.resolveNodeStyles(props.node);
-  }, 100);
+  };
+
+  graph.value.events.subscribe('onDraw', updateTheme);
 
   onUnmounted(() => {
-    clearInterval(updateTheme);
+    graph.value.events.unsubscribe('onDraw', updateTheme);
   });
 </script>
 
@@ -53,7 +55,7 @@
     }"
   >
     <slot>
-      {{ theme.text }}
+      {{ theme.text.content }}
     </slot>
   </div>
 </template>

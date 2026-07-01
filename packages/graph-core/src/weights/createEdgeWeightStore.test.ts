@@ -2,13 +2,13 @@ import { createMockEventHub } from '@magic/graph-primitives/testing/events/creat
 import { Fraction } from 'mathjs';
 import { describe, expect, it } from 'vitest';
 
+import { createCoreEventRegistry } from '../events.ts';
 import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import { DEFAULT_WEIGHT } from './constants.ts';
 import { createEdgeWeightStore } from './createEdgeWeightStore.ts';
-import { createEdgeWeightStoreEventRegistry } from './events.ts';
 
 const makeStore = (isGraphWeighted = true) => {
-  const hub = createMockEventHub(createEdgeWeightStoreEventRegistry());
+  const hub = createMockEventHub(createCoreEventRegistry());
   const settings = { value: { ...DEFAULT_GRAPH_SETTINGS, isGraphWeighted } };
   const store = createEdgeWeightStore(hub, settings as never);
   return { store, hub, settings };

@@ -12,28 +12,54 @@ export type TokenResolver<Themes> = <Token extends keyof Themes>(
   ...args: ThemeValueResolverArgs<Themes[Token]>
 ) => StyleValueFromThemeValue<Themes[Token]>;
 
-export const createTokenResolver =
-  <Themes>(themeOverrides: ThemeOverrides<Themes>): TokenResolver<Themes> =>
-  (token, ...args) => {
-    // 1. get all the overrides we have stored for a given token
+export const createTokenResolver = <Themes>(
+  themeOverrides: ThemeOverrides<Themes>,
+) => {
+  const resolveUpTo = <Token extends keyof Themes>(
+    token: Token,
+    upperBound: number,
+    args: ThemeValueResolverArgs<Themes[Token]>,
+  ): StyleValueFromThemeValue<Themes[Token]> => {
+    // upperBound at zero means we're at the preset layer so there's nothing beneath it to resolve
+    if (upperBound === 0) {
+      throw new Error(
+        `resolveUnderneath was invoked for token "${token.toString()}" with nothing beneath it.`,
+      );
+    }
+
+    // get all the overrides we have stored for a given token, up to (but excluding) upperBound
     const overrides = nullThrows(
       themeOverrides[token],
       `Theme overrides is missing entry for "${token.toString()}": Is "${token.toString()}" a valid token?`,
-    );
+    ).slice(0, upperBound);
 
-    // 2. use the find last approach to get the override that was most recently registered
-    const override = overrides.findLast((overrideItem) => {
+    let resolvedValue: StyleValueFromThemeValue<Themes[Token]> | undefined =
+      undefined;
+
+    // use the find last approach to get the override that was most recently registered
+    overrides.findLast((overrideItem, index) => {
       const themeValue = overrideItem.value;
-      const styleValue = getValue(themeValue, ...args);
-      return styleValue !== undefined;
+      const fullArgs = [...args, () => resolveUpTo(token, index, args)];
+      const styleValue = getValue(themeValue, ...fullArgs);
+      const isResolved = styleValue !== undefined;
+      if (isResolved) {
+        resolvedValue = styleValue as StyleValueFromThemeValue<Themes[Token]>;
+      }
+      return isResolved;
     });
 
-    // 4. the theme value for the token
-    const themeValue = nullThrows(
-      override?.value,
-      `No theme value found for token "${token.toString()}": Is "${token.toString()}" a valid token?`,
-    );
+    // if there is no resolved value it means that a token is not mapped to a style, which should never happen!
+    if (resolvedValue === undefined) {
+      throw new Error(
+        `No theme value found for token "${token.toString()}": Is "${token.toString()}" a valid token?`,
+      );
+    }
 
-    // 5. combine the theme value with the token resolution args to get the final resolved style value
-    return getValue(themeValue as any, ...args);
+    return resolvedValue;
   };
+
+  const resolver: TokenResolver<Themes> = (token, ...args) =>
+    resolveUpTo(token, themeOverrides[token].length, args);
+
+  return resolver;
+};
