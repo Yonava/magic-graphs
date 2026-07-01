@@ -12,14 +12,8 @@ import {
   GraphGetters,
 } from '@magic/graph-primitives/getters/types';
 
-type LooseGraphPluginOptions = {
-  controls: any;
-  events: EventHub<CoreEventMap>;
-  actions: GraphActions<CoreActions>;
-  getters: GraphGetters<CoreGetters>;
-};
-
 export type LoosePluginSchema = {
+  name: string;
   controls: object;
   events: GenericEventMap;
   getters: Partial<BaseGetters>;
@@ -28,7 +22,15 @@ export type LoosePluginSchema = {
   optionalDependsOn: LooseGraphPlugin[];
 };
 
-export type LooseGraphPlugin = (options: LooseGraphPluginOptions) => {
+type LoosePluginInput = {
+  controls: any;
+  events: EventHub<CoreEventMap>;
+  actions: GraphActions<CoreActions>;
+  getters: GraphGetters<CoreGetters>;
+};
+
+type LoosePluginOutput = {
+  name: LooseGraphPlugin['name'];
   controls: LoosePluginSchema['controls'];
   // [1]
   events: EventHub<CoreEventMap & LoosePluginSchema['events']>;
@@ -36,6 +38,8 @@ export type LooseGraphPlugin = (options: LooseGraphPluginOptions) => {
   getters: GraphGetters<any>;
   onAfterInit?: () => void;
 };
+
+export type LooseGraphPlugin = (options: LoosePluginInput) => LoosePluginOutput;
 
 // [1] `CoreEventMap` is intersected into the return type (not just the events
 // param) to keep the "merge yourself" contract honest at the type level: every

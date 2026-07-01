@@ -1,7 +1,7 @@
+import { CoreEventMap } from '@magic/graph-core/events';
+import { createThemeController } from '@magic/graph-plugins-shared/theme';
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
-import { createThemeController } from '@magic/graph-plugins-shared/theme';
-import { CoreEventMap } from '@magic/graph-core/events';
 import { normalizeBoundingBox } from '@magic/shapes/helpers';
 import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
@@ -210,18 +210,17 @@ export const marquee: MarqueePlugin = ({
   enable();
 
   return {
+    name: 'marquee',
     events,
     actions,
     getters,
     controls: {
-      marquee: {
-        updateEncapsulatedNodeBox,
-        activelySelecting: computed(() => !!marqueeBox.value),
-        theme,
-        lifecycle: {
-          enable,
-          disable,
-        },
+      updateEncapsulatedNodeBox,
+      activelySelecting: computed(() => !!marqueeBox.value),
+      theme,
+      lifecycle: {
+        enable,
+        disable,
       },
     },
   };

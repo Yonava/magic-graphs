@@ -1,8 +1,8 @@
 import { CoreGetters } from '@magic/graph-core/getters';
+import { GraphPlugin } from '@magic/graph-plugins-shared/plugins';
 
 import { ComputedRef } from 'vue';
 
-import { GraphPlugin } from '@magic/graph-plugins-shared/plugins';
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 
 /**
@@ -12,6 +12,7 @@ import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 export type TransitionMatrix = CoreGetters['getEdge']['weight'][][];
 
 export type TransitionMatrixPlugin = GraphPlugin<{
-  controls: { transitionMatrix: ComputedRef<TransitionMatrix> };
+  name: 'transitionMatrix';
+  controls: ComputedRef<TransitionMatrix>;
   dependsOn: [AdjacencyListsPlugin];
 }>;

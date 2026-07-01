@@ -1,6 +1,11 @@
-import { GraphPlugin, WithLifecycle, WithTheme } from '@magic/graph-plugins-shared/plugins';
+import {
+  GraphPlugin,
+  WithLifecycle,
+  WithTheme,
+} from '@magic/graph-plugins-shared/plugins';
 
 import { ComputedRef } from 'vue';
+
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { MarqueeEventMap } from './events.ts';
@@ -21,7 +26,8 @@ type BaseMarqueeControls = {
 export type MarqueeControls = WithTheme<BaseMarqueeControls, MarqueeThemes>;
 
 export type MarqueePlugin = GraphPlugin<{
-  controls: { marquee: WithLifecycle<MarqueeControls> };
+  name: 'marquee';
+  controls: WithLifecycle<MarqueeControls>;
   events: MarqueeEventMap;
   dependsOn: [CanvasPlugin, FocusPlugin];
 }>;

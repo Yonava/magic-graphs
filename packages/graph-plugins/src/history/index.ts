@@ -1,6 +1,6 @@
+import { CoreEventMap } from '@magic/graph-core/events';
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
-import { CoreEventMap } from '@magic/graph-core/events';
 
 import { computed, ref } from 'vue';
 
@@ -68,6 +68,7 @@ export const history: HistoryPlugin = ({
   };
 
   return {
+    name: 'history',
     getters,
     actions: {
       ...actions,
@@ -77,21 +78,19 @@ export const history: HistoryPlugin = ({
     },
     events,
     controls: {
-      history: {
-        undo,
-        redo,
-        canUndo: computed(() => undoStack.value.length > 0),
-        canRedo: computed(() => redoStack.value.length > 0),
-        undoStack,
-        redoStack,
-        clearHistory,
-        lifecycle: {
-          enable: () => {
-            console.warn('not implemented');
-          },
-          disable: () => {
-            console.warn('not implemented');
-          },
+      undo,
+      redo,
+      canUndo: computed(() => undoStack.value.length > 0),
+      canRedo: computed(() => redoStack.value.length > 0),
+      undoStack,
+      redoStack,
+      clearHistory,
+      lifecycle: {
+        enable: () => {
+          console.warn('not implemented');
+        },
+        disable: () => {
+          console.warn('not implemented');
         },
       },
     },

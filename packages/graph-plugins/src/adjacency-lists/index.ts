@@ -103,11 +103,10 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
   events.subscribe('onStructureChange', update);
 
   return {
+    name: 'adjacencyLists',
     actions,
     getters,
     events,
-    controls: {
-      adjacencyLists: { standard, weighted, directed, undirected },
-    },
+    controls: { standard, weighted, directed, undirected },
   };
 };

@@ -1,3 +1,8 @@
+import {
+  GraphPlugin,
+  WithLifecycle,
+  WithTheme,
+} from '@magic/graph-plugins-shared/plugins';
 import { CoreNode } from '@magic/graph-primitives/types';
 
 import { Ref } from 'vue';
@@ -6,7 +11,6 @@ import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { AnchorsEventMap } from './events.ts';
 import { AnchorsThemes } from './themes.ts';
-import { GraphPlugin, WithLifecycle, WithTheme } from '@magic/graph-plugins-shared/plugins';
 
 /**
  * an anchor instance that is attached to a node
@@ -46,7 +50,8 @@ type BaseAnchorsControls = {
 export type AnchorsControls = WithTheme<BaseAnchorsControls, AnchorsThemes>;
 
 export type AnchorsPlugin = GraphPlugin<{
-  controls: { anchors: WithLifecycle<AnchorsControls> };
+  name: 'anchors';
+  controls: WithLifecycle<AnchorsControls>;
   events: AnchorsEventMap;
   dependsOn: [CanvasPlugin];
   optionalDependsOn: [FocusPlugin];

@@ -1,10 +1,10 @@
 import { Coordinate } from '@magic/canvas/types';
-import { CoreNode } from '@magic/graph-primitives/types';
-
 import {
   GraphPlugin,
   WithLifecycle,
 } from '@magic/graph-plugins-shared/plugins';
+import { CoreNode } from '@magic/graph-primitives/types';
+
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { MarqueePlugin } from '../marquee/types.ts';
@@ -21,7 +21,8 @@ export type ActiveDragNode = {
 };
 
 export type NodeDragPlugin = GraphPlugin<{
-  controls: { nodeDrag: WithLifecycle<{}> };
+  name: 'nodeDrag';
+  controls: WithLifecycle<{}>;
   events: NodeDragEventMap;
   dependsOn: [CanvasPlugin];
   optionalDependsOn: [FocusPlugin, MarqueePlugin];

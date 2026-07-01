@@ -1,8 +1,8 @@
 import { UnionToIntersection } from 'ts-essentials';
 
+import { ComputedTokenDetectorMap } from '../../computed-tokens/index.ts';
 import { ThemeController } from '../../theme/internals/createThemeController.ts';
 import { LooseGraphPlugin } from './loose.ts';
-import { ComputedTokenDetectorMap } from '../../computed-tokens/index.ts';
 
 type Detectors = {
   /**
@@ -22,13 +22,10 @@ export type PluginThemeField<Themes> = {
 export type WithTheme<Controls, Themes> = Controls & PluginThemeField<Themes>;
 
 type ThemeForPlugin<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
-  ? ReturnType<Plugin> extends {
-      controls: Record<
-        infer PluginName extends string,
-        { theme: ThemeController<infer Themes> }
-      >;
+  ? ReturnType<Plugin>['controls'] extends {
+      theme: ThemeController<infer Themes>;
     }
-    ? Record<PluginName, Themes>
+    ? Record<ReturnType<Plugin>['name'], Themes>
     : never
   : never;
 

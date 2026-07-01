@@ -1,7 +1,12 @@
-import { GraphPlugin, WithLifecycle, WithTheme } from '@magic/graph-plugins-shared/plugins';
+import {
+  GraphPlugin,
+  WithLifecycle,
+  WithTheme,
+} from '@magic/graph-plugins-shared/plugins';
 import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 
 import { ComputedRef, Ref } from 'vue';
+
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';
 import { FocusThemes } from './themes.ts';
@@ -67,7 +72,8 @@ export type FocusActions = {
 export type FocusControls = WithTheme<BaseFocusControls, FocusThemes>;
 
 export type FocusPlugin = GraphPlugin<{
-  controls: { focus: WithLifecycle<FocusControls> };
+  name: 'focus';
+  controls: WithLifecycle<FocusControls>;
   events: FocusEventMap;
   actions: FocusActions;
   dependsOn: [CanvasPlugin];

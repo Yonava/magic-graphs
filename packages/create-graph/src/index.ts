@@ -16,7 +16,11 @@ import {
   CanvasElement,
 } from '@magic/graph-plugins/canvas/aggregator/types';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@magic/graph-plugins/canvas/setupCanvasCursor';
-import { CanvasControls } from '@magic/graph-plugins/canvas/types';
+import {
+  CanvasControls,
+  CanvasPlugin,
+} from '@magic/graph-plugins/canvas/types';
+import { FocusPlugin } from '@magic/graph-plugins/focus/types';
 import { GraphActions } from '@magic/graph-primitives/actions/types';
 import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 import { GraphGetters } from '@magic/graph-primitives/getters/types';
@@ -76,32 +80,30 @@ export const createGraph = <
       actions: evolvingActions,
       getters: evolvingGetters,
     });
-    evolvingControls = { ...evolvingControls, ...pluginResult.controls };
+    evolvingControls = {
+      ...evolvingControls,
+      [pluginResult.name]: pluginResult.controls,
+    };
     evolvingEvents = pluginResult.events;
     evolvingActions = { ...evolvingActions, ...pluginResult.actions };
     evolvingGetters = { ...evolvingGetters, ...pluginResult.getters };
 
-    // TODO make the contract to define plugin name scope in the controls more explicit!
-    // Something like the plugin itself exposes a name field in pluginResult like pluginResult.name = 'focus'
-    const pluginName = nullThrows(
-      Object.keys(pluginResult.controls).at(0),
-      'Could not resolve name of plugin',
-    );
     const pluginThemeField: PluginThemeField<any>['theme'] | undefined = (
       pluginResult.controls as any
-    )[pluginName]?.theme;
+    )?.theme;
 
     if (pluginThemeField) {
       const { set } = pluginThemeField.createLayer(
         'create-graph/theme-presets',
       );
       const tokens = Object.keys(
-        (themePresets as any)[activePresetName][pluginName],
+        (themePresets as any)[activePresetName][pluginResult.name],
       );
       for (const token of tokens) {
         set(
           token,
-          () => (themePresets as any)[activePresetName][pluginName][token],
+          () =>
+            (themePresets as any)[activePresetName][pluginResult.name][token],
         );
       }
 
@@ -117,7 +119,7 @@ export const createGraph = <
   const events = evolvingEvents as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
 
   const controls = evolvingControls as Prettify<
-    CoreControls & ExtractControls<NoInfer<TPlugins>>
+    ExtractControls<NoInfer<TPlugins>>
   >;
 
   const actions = evolvingActions as GraphActions<

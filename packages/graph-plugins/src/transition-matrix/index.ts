@@ -32,13 +32,12 @@ export const transitionMatrix: TransitionMatrixPlugin = ({
   controls,
   ...rest
 }) => ({
-  controls: {
-    transitionMatrix: computed(() =>
-      getTransitionMatrix(
-        controls.adjacencyLists.weighted.value,
-        controls.nodeIdToIndex.value,
-      ),
+  name: 'transitionMatrix',
+  controls: computed(() =>
+    getTransitionMatrix(
+      controls.adjacencyLists.weighted.value,
+      controls.nodeIdToIndex.value,
     ),
-  },
+  ),
   ...rest,
 });
