@@ -21,7 +21,7 @@ import { AnyFunction } from 'ts-essentials';
 export type ThemeValue<StyleValue, ResolverArgs extends unknown[] = []> =
   | StyleValue
   | ((
-      ...args: [...ResolverArgs, resolveBase: () => StyleValue]
+      ...args: [...ResolverArgs, resolveUnderneath: () => StyleValue]
     ) => StyleValue | void);
 
 export type ThemeValueResolverArgs<ThemeValue> =

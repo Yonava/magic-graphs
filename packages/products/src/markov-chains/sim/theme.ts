@@ -23,18 +23,11 @@ export const useSimulationTheme = (
     return traceAtStep.value[index].simplify(0.001).toFraction();
   };
 
-  const nodeTextSize = ({ id }: { id: string }) => {
-    const preset = graph.theme.activePreset();
-    const defaultSize = getValue(preset.canvas['node.default.text.size'], {
-      id,
-    })!;
-    if (graph.focus.isFocused(id)) return;
-    return defaultSize - 5;
-  };
-
   const theme = () => {
     set('node.default.text.content', nodeText);
-    set('node.default.text.size', nodeTextSize);
+    set('node.default.text.size', (_, resolveUnderneath) => {
+      return resolveUnderneath() - 5;
+    });
   };
 
   const untheme = () => {
