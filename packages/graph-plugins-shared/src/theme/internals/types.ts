@@ -20,11 +20,14 @@ import { AnyFunction } from 'ts-essentials';
  */
 export type ThemeValue<StyleValue, ResolverArgs extends unknown[] = []> =
   | StyleValue
-  | ((...args: ResolverArgs) => StyleValue | void);
+  | ((
+      ...args: [...ResolverArgs, resolveBase: () => StyleValue]
+    ) => StyleValue | void);
 
-export type ThemeValueResolverArgs<ThemeValue> = Parameters<
-  Extract<ThemeValue, AnyFunction>
->;
+export type ThemeValueResolverArgs<ThemeValue> =
+  Parameters<Extract<ThemeValue, AnyFunction>> extends [...infer F, infer _]
+    ? F
+    : never;
 
 export type StyleValueFromThemeValue<Value> =
   Value extends ThemeValue<infer StyleValue, infer _> ? StyleValue : never;

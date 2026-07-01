@@ -1,10 +1,10 @@
-import { CoreNode } from '@magic/graph-primitives/types';
 import {
   Cursor,
   CursorFallback,
   ThemeOverrides,
   ThemeValue,
 } from '@magic/graph-plugins-shared/theme';
+import { CoreNode } from '@magic/graph-primitives/types';
 import { Color } from '@magic/utils/colors';
 
 import { NodeAnchor } from './types.ts';

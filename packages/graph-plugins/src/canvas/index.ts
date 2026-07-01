@@ -211,6 +211,10 @@ export const canvas =
         weightLayer.set('edge.default.text.content', (edge) =>
           getters.getEdge(edge.id).weight.toFraction(),
         );
+        weightLayer.set('node.default.text.color', (_, r) => {
+          console.log(r());
+          return 'red';
+        });
       },
     };
   };
