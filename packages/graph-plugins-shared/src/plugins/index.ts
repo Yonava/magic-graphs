@@ -1,4 +1,4 @@
-import { LooseGraphPlugin } from './internals/loose.ts';
+import type { LooseGraphPlugin } from './internals/loose.ts';
 
 // --- for plugin authors ---
 
