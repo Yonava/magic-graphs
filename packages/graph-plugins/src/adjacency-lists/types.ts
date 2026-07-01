@@ -49,6 +49,6 @@ export type AdjacencyListsControls = {
 };
 
 export type AdjacencyListsPlugin = GraphPlugin<{
-  name: 'adjacencyList';
+  name: 'adjacencyLists';
   controls: AdjacencyListsControls;
 }>;
