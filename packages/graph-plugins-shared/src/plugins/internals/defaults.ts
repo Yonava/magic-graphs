@@ -3,7 +3,7 @@ import { Prettify } from 'ts-essentials';
 
 import { LoosePluginSchema } from './loose.ts';
 
-export type DefaultPluginSchema = {
+export type PluginSchemaDefaults = {
   controls: {};
   events: {};
   getters: {};
@@ -12,17 +12,15 @@ export type DefaultPluginSchema = {
   optionalDependsOn: [];
 };
 
-export type TestSchema = PartiallyPartial<
+export type PluginSchemaInput = PartiallyPartial<
   LoosePluginSchema,
-  keyof DefaultPluginSchema
+  keyof PluginSchemaDefaults
 >;
 
-export type ResolvePluginSchema<Schema extends TestSchema> = Prettify<
+export type ResolvePluginSchema<Schema extends PluginSchemaInput> = Prettify<
   {
-    [K in keyof DefaultPluginSchema]: K extends keyof Schema
+    [K in keyof PluginSchemaDefaults]: K extends keyof Schema
       ? NonNullable<Schema[K]>
-      : DefaultPluginSchema[K];
-  } & Omit<Schema, keyof DefaultPluginSchema>
+      : PluginSchemaDefaults[K];
+  } & Omit<Schema, keyof PluginSchemaDefaults>
 >;
-
-type t = ResolvePluginSchema<{ name: string }>;

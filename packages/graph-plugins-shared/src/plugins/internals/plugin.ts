@@ -12,13 +12,12 @@ import {
   MergeGetters,
 } from '@magic/graph-primitives/getters/types';
 
-import { ResolvePluginSchema, TestSchema } from './defaults.ts';
+import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls, ExtractEventMap } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';
 
-export type GraphPlugin<PluginSchema extends TestSchema> = ResolvedGraphPlugin<
-  ResolvePluginSchema<PluginSchema>
->;
+export type GraphPlugin<PluginSchema extends PluginSchemaInput> =
+  ResolvedGraphPlugin<ResolvePluginSchema<PluginSchema>>;
 
 type PluginInput<PluginSchema extends LoosePluginSchema> = {
   controls: CoreControls &
