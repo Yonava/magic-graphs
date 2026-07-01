@@ -11,13 +11,19 @@ import {
   GraphGetters,
   MergeGetters,
 } from '@magic/graph-primitives/getters/types';
+import { PartiallyPartial } from '@magic/utils/types';
 
-import { ResolvePluginData } from './defaults.ts';
+import {
+  DefaultPluginSchema,
+  ResolvePluginSchema,
+  TestSchema,
+} from './defaults.ts';
 import { ExtractControls, ExtractEventMap } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';
 
-export type GraphPlugin<PluginSchema extends Partial<LoosePluginSchema>> =
-  ResolvedGraphPlugin<ResolvePluginData<PluginSchema>>;
+export type GraphPlugin<PluginSchema extends TestSchema> = ResolvedGraphPlugin<
+  ResolvePluginSchema<PluginSchema>
+>;
 
 type PluginInput<PluginSchema extends LoosePluginSchema> = {
   controls: CoreControls &
@@ -53,7 +59,7 @@ type PluginOutput<PluginSchema extends LoosePluginSchema> = {
   onAfterInit?: () => void;
 };
 
-type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
+type ResolvedGraphPlugin<PluginSchema extends TestSchema> = (
   options: PluginInput<PluginSchema>,
 ) => PluginOutput<PluginSchema>;
 

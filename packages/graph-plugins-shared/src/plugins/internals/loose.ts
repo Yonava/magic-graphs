@@ -13,6 +13,7 @@ import {
 } from '@magic/graph-primitives/getters/types';
 
 type LooseGraphPluginOptions = {
+  name: string;
   controls: any;
   events: EventHub<CoreEventMap>;
   actions: GraphActions<CoreActions>;
@@ -20,6 +21,7 @@ type LooseGraphPluginOptions = {
 };
 
 export type LoosePluginSchema = {
+  name: string;
   controls: object;
   events: GenericEventMap;
   getters: Partial<BaseGetters>;
@@ -29,6 +31,7 @@ export type LoosePluginSchema = {
 };
 
 export type LooseGraphPlugin = (options: LooseGraphPluginOptions) => {
+  name: string;
   controls: LoosePluginSchema['controls'];
   // [1]
   events: EventHub<CoreEventMap & LoosePluginSchema['events']>;

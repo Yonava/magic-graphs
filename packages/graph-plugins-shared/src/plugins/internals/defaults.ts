@@ -1,6 +1,8 @@
+import { PartiallyPartial } from '@magic/utils/types';
+
 import { LoosePluginSchema } from './loose.ts';
 
-type DefaultPluginSchema = {
+export type DefaultPluginSchema = {
   controls: {};
   events: {};
   getters: {};
@@ -9,8 +11,13 @@ type DefaultPluginSchema = {
   optionalDependsOn: [];
 };
 
-export type ResolvePluginData<PartialPluginData> = {
-  [K in keyof LoosePluginSchema]: K extends keyof PartialPluginData
-    ? NonNullable<PartialPluginData[K]>
+export type TestSchema = PartiallyPartial<
+  LoosePluginSchema,
+  keyof DefaultPluginSchema
+>;
+
+export type ResolvePluginSchema<Schema extends TestSchema> = {
+  [K in keyof DefaultPluginSchema]: K extends keyof Schema
+    ? NonNullable<Schema[K]>
     : DefaultPluginSchema[K];
 };
