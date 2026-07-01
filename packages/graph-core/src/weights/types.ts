@@ -1,6 +1,6 @@
 import { CoreEdge } from '@magic/graph-primitives/types';
 import { MaybeGetter } from '@magic/utils/maybeGetter/index';
-import { Fraction } from 'mathjs';
+import type { Fraction } from 'mathjs';
 
 export type EdgeWeightEntry = {
   edgeId: CoreEdge['id'];
