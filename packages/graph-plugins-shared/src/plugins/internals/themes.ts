@@ -21,14 +21,13 @@ export type PluginThemeField<Themes> = {
 
 export type WithTheme<Controls, Themes> = Controls & PluginThemeField<Themes>;
 
-export type ThemeForPlugin<Plugin extends LooseGraphPlugin> =
-  Plugin extends Plugin
-    ? ReturnType<Plugin>['controls'] extends {
-        theme: ThemeController<infer Themes>;
-      }
-      ? Record<ReturnType<Plugin>['name'], Themes>
-      : never
-    : never;
+type ThemeForPlugin<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
+  ? ReturnType<Plugin>['controls'] extends {
+      theme: ThemeController<infer Themes>;
+    }
+    ? Record<ReturnType<Plugin>['name'], Themes>
+    : never
+  : never;
 
 export type PluginThemes<Plugins extends LooseGraphPlugin[]> =
   UnionToIntersection<ThemeForPlugin<Plugins[number]>>;

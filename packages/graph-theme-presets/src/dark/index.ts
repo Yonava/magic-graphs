@@ -1,5 +1,4 @@
 import { PluginThemes } from '@magic/graph-plugins-shared/plugins';
-import { ThemeForPlugin } from '@magic/graph-plugins-shared/plugins/internals/themes';
 import { CURSOR, CURSOR_FALLBACK } from '@magic/graph-plugins-shared/theme';
 import { AnchorsPlugin } from '@magic/graph-plugins/anchors/types';
 import { CanvasPlugin } from '@magic/graph-plugins/canvas/types';
