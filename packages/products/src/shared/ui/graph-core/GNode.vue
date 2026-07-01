@@ -53,7 +53,7 @@
     }"
   >
     <slot>
-      {{ theme.text }}
+      {{ theme.text.content }}
     </slot>
   </div>
 </template>
