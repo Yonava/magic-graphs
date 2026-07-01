@@ -1,6 +1,7 @@
 import { CoreActions } from '@magic/graph-core/actions/types';
 import { CoreEventMap } from '@magic/graph-core/events';
 import { CoreGetters } from '@magic/graph-core/getters';
+import { CoreControls } from '@magic/graph-core/types';
 import { GraphActions } from '@magic/graph-primitives/actions/types';
 import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 import { BaseGetters } from '@magic/graph-primitives/getters/types';
@@ -10,12 +11,20 @@ import { LooseGraphPlugin } from './loose.ts';
 
 type RemoveArray<T> = T extends (infer F)[] ? F : T;
 
-type ExtractData<TPlugins extends LooseGraphPlugin[]> = UnionToIntersection<
-  ReturnType<RemoveArray<NoInfer<TPlugins>>>
->;
+type ResolveControls<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
+  ? ReturnType<Plugin> extends {
+      name: infer Name extends string;
+      controls: infer Controls;
+    }
+    ? Record<Name, Controls>
+    : never
+  : never;
 
 export type ExtractControls<TPlugins extends LooseGraphPlugin[]> =
-  ExtractData<TPlugins> extends { controls: infer Controls } ? Controls : never;
+  CoreControls &
+    (TPlugins extends never[]
+      ? {}
+      : UnionToIntersection<ResolveControls<RemoveArray<NoInfer<TPlugins>>>>);
 
 export type ExtractActions<TPlugins extends LooseGraphPlugin[]> =
   TPlugins extends never[]

@@ -16,7 +16,11 @@ import {
   CanvasElement,
 } from '@magic/graph-plugins/canvas/aggregator/types';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@magic/graph-plugins/canvas/setupCanvasCursor';
-import { CanvasControls } from '@magic/graph-plugins/canvas/types';
+import {
+  CanvasControls,
+  CanvasPlugin,
+} from '@magic/graph-plugins/canvas/types';
+import { FocusPlugin } from '@magic/graph-plugins/focus/types';
 import { GraphActions } from '@magic/graph-primitives/actions/types';
 import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 import { GraphGetters } from '@magic/graph-primitives/getters/types';
@@ -117,7 +121,7 @@ export const createGraph = <
   const events = evolvingEvents as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
 
   const controls = evolvingControls as Prettify<
-    CoreControls & ExtractControls<NoInfer<TPlugins>>
+    ExtractControls<NoInfer<TPlugins>>
   >;
 
   const actions = evolvingActions as GraphActions<
