@@ -48,6 +48,7 @@ type HistoryControls = {
 };
 
 export type HistoryPlugin = GraphPlugin<{
+  name: 'history';
   controls: WithLifecycle<HistoryControls>;
   events: HistoryEventMap;
   actions: HistoryActions;

@@ -72,6 +72,7 @@ export type FocusActions = {
 export type FocusControls = WithTheme<BaseFocusControls, FocusThemes>;
 
 export type FocusPlugin = GraphPlugin<{
+  name: 'focus';
   controls: WithLifecycle<FocusControls>;
   events: FocusEventMap;
   actions: FocusActions;

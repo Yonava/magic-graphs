@@ -43,6 +43,7 @@ type NodeLabelGetters = {
 };
 
 export type NodeLabelPlugin = GraphPlugin<{
+  name: 'nodeLabel';
   controls: WithLifecycle<NodeLabelControls>;
   actions: NodeLabelActions;
   getters: NodeLabelGetters;

@@ -21,6 +21,7 @@ export type ActiveDragNode = {
 };
 
 export type NodeDragPlugin = GraphPlugin<{
+  name: 'nodeDrag';
   controls: WithLifecycle<{}>;
   events: NodeDragEventMap;
   dependsOn: [CanvasPlugin];

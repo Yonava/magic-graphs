@@ -50,6 +50,7 @@ type BaseAnchorsControls = {
 export type AnchorsControls = WithTheme<BaseAnchorsControls, AnchorsThemes>;
 
 export type AnchorsPlugin = GraphPlugin<{
+  name: 'anchors';
   controls: WithLifecycle<AnchorsControls>;
   events: AnchorsEventMap;
   dependsOn: [CanvasPlugin];

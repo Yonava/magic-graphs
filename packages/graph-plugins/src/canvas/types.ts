@@ -61,6 +61,7 @@ type BaseCanvasControls = {
 export type CanvasControls = WithTheme<BaseCanvasControls, CanvasThemes>;
 
 export type CanvasPlugin = GraphPlugin<{
+  name: 'canvas';
   controls: CanvasControls;
   events: CanvasEventMap;
 }>;

@@ -11,13 +11,8 @@ import {
   GraphGetters,
   MergeGetters,
 } from '@magic/graph-primitives/getters/types';
-import { PartiallyPartial } from '@magic/utils/types';
 
-import {
-  DefaultPluginSchema,
-  ResolvePluginSchema,
-  TestSchema,
-} from './defaults.ts';
+import { ResolvePluginSchema, TestSchema } from './defaults.ts';
 import { ExtractControls, ExtractEventMap } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';
 
@@ -59,7 +54,7 @@ type PluginOutput<PluginSchema extends LoosePluginSchema> = {
   onAfterInit?: () => void;
 };
 
-type ResolvedGraphPlugin<PluginSchema extends TestSchema> = (
+type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
   options: PluginInput<PluginSchema>,
 ) => PluginOutput<PluginSchema>;
 

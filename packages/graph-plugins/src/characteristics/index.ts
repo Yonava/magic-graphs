@@ -24,6 +24,7 @@ type CharacteristicsControls = {
 };
 
 type CharacteristicsPlugin = GraphPlugin<{
+  name: 'characteristics';
   controls: CharacteristicsControls;
   dependsOn: [AdjacencyListsPlugin];
 }>;

@@ -26,6 +26,7 @@ type BaseMarqueeControls = {
 export type MarqueeControls = WithTheme<BaseMarqueeControls, MarqueeThemes>;
 
 export type MarqueePlugin = GraphPlugin<{
+  name: 'marquee';
   controls: WithLifecycle<MarqueeControls>;
   events: MarqueeEventMap;
   dependsOn: [CanvasPlugin, FocusPlugin];
