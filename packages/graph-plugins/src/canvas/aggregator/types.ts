@@ -12,11 +12,6 @@ export type Aggregator = CanvasElement[];
  */
 export type AggregatorTransformer = (aggregator: Aggregator) => Aggregator;
 
-type CoreGraphTypes = 'node' | 'edge';
-type MarqueeGraphTypes = 'marquee-box' | 'encapsulated-node-box';
-type NodeAnchorGraphTypes = 'node-anchor' | 'link-preview';
-type AnnotationGraphTypes = 'annotation' | 'annotation-eraser';
-
 /**
  * an element that can be fed into the `aggregator` in order to be rendered on the canvas
  */
@@ -25,19 +20,6 @@ export type CanvasElement = {
    * unique identifier for this element
    */
   id: string;
-  /**
-   * 🚨
-   * TODO remove this field: https://github.com/Yonava/magic-graphs/issues/652
-   * 🚨
-   *
-   * the type of graph data this element represents (node, edge, etc.)
-   * @deprecated
-   */
-  graphType:
-    | CoreGraphTypes
-    | NodeAnchorGraphTypes
-    | MarqueeGraphTypes
-    | AnnotationGraphTypes;
   /**
    * determines the rendering order on the canvas.
    *

@@ -113,7 +113,6 @@ export const marquee: MarqueePlugin = ({
 
     return {
       id: MARQUEE_SHAPE_ID,
-      graphType: 'marquee-box',
       shape,
       priority: Infinity,
     };
@@ -146,7 +145,6 @@ export const marquee: MarqueePlugin = ({
 
     return {
       id,
-      graphType: 'encapsulated-node-box',
       shape,
       priority: 3,
       data: {

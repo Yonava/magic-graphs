@@ -48,7 +48,7 @@ export const nodeDrag: NodeDragPlugin = ({
 
     const nodeIdsToDrag = [];
 
-    if (topElement.graphType === 'node') {
+    if (controls.isNode(topElement.id)) {
       nodeIdsToDrag.push(topElement.id);
     }
 

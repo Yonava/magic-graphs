@@ -49,7 +49,7 @@ const animateNodePulse = (graph: Graph) =>
  */
 export const selectNode = (graph: Graph) => {
   const { selectedItemPromise, cancelSelection } = selectFromGraph(graph, {
-    isCanvasElementSelectable: (element) => element.graphType === 'node',
+    isCanvasElementSelectable: (el) => graph.isNode(el.id),
   });
 
   const pulse = animateNodePulse(graph);
@@ -76,7 +76,7 @@ export const selectNode = (graph: Graph) => {
  */
 export const selectEdge = (graph: Graph) => {
   const { selectedItemPromise, cancelSelection } = selectFromGraph(graph, {
-    isCanvasElementSelectable: (element) => element.graphType === 'edge',
+    isCanvasElementSelectable: (el) => graph.isEdge(el.id),
   });
 
   return {

@@ -53,9 +53,11 @@ export const interactive: InteractivePlugin = ({
   };
 
   const handleEdgeCreation = (sourceNode: { id: string }) => {
-    const { elements: items } = controls.canvas.graphUnderCursor;
+    const { elements } = controls.canvas.graphUnderCursor;
 
-    const nodeUnderneathAnchor = items.findLast((i) => i.graphType === 'node');
+    const nodeUnderneathAnchor = elements.findLast((el) =>
+      controls.isNode(el.id),
+    );
     if (!nodeUnderneathAnchor) return;
 
     const targetNode = getters.getNode(nodeUnderneathAnchor.id);

@@ -21,6 +21,11 @@ import { AnchorsEventMap, createAnchorsEventRegistry } from './events.ts';
 import { createAnchorsThemeOverrides } from './themes.ts';
 import type { AnchorsPlugin, NodeAnchor } from './types.ts';
 
+const EDGE_PREVIEW_ID = 'edge-preview';
+
+const ANCHOR_ID_POSTFIX = 'anchor';
+const isAnchor = (id: string) => id.endsWith(ANCHOR_ID_POSTFIX);
+
 /**
  * anchors provide an additional layer of interaction by allowing nodes to spawn draggable anchors
  * when hovered over.
@@ -117,7 +122,6 @@ export const anchors: AnchorsPlugin = ({
 
       anchorSchemas.push({
         id: anchor.id,
-        graphType: 'node-anchor',
         shape: nodeAnchorShape,
         priority: 4,
         data: {
@@ -173,25 +177,25 @@ export const anchors: AnchorsPlugin = ({
     const nodePosition = controls.positions.get(node.id);
     nodeAnchors.value = [
       {
-        id: 'n-anchor',
+        id: 'n-' + ANCHOR_ID_POSTFIX,
         x: nodePosition.x,
         y: nodePosition.y - offset,
         direction: 'north',
       },
       {
-        id: 'e-anchor',
+        id: 'e-' + ANCHOR_ID_POSTFIX,
         x: nodePosition.x + offset,
         y: nodePosition.y,
         direction: 'east',
       },
       {
-        id: 's-anchor',
+        id: 's-' + ANCHOR_ID_POSTFIX,
         x: nodePosition.x,
         y: nodePosition.y + offset,
         direction: 'south',
       },
       {
-        id: 'w-anchor',
+        id: 'w-' + ANCHOR_ID_POSTFIX,
         x: nodePosition.x - offset,
         y: nodePosition.y,
         direction: 'west',
@@ -202,11 +206,11 @@ export const anchors: AnchorsPlugin = ({
   /**
    * the anchor at the given event location
    */
-  const getAnchor = ({ elements: items, event }: CanvasGraphMouseEvent) => {
+  const getAnchor = ({ elements, event }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
-    const topItem = items.at(-1);
-    if (!topItem || topItem.graphType !== 'node-anchor') return;
-    const { id: anchorId } = topItem;
+    const topElement = elements.at(-1);
+    if (!topElement || !isAnchor(topElement.id)) return;
+    const { id: anchorId } = topElement;
     return nodeAnchors.value.find((anchor) => anchor.id === anchorId);
   };
 
@@ -251,7 +255,7 @@ export const anchors: AnchorsPlugin = ({
     const width = isFocused ? focusWidth : baseWidth;
 
     const shape = controls.canvas.shapes.shapes.line({
-      id: 'link-preview',
+      id: EDGE_PREVIEW_ID,
       start,
       end,
       fillColor: color,
@@ -259,8 +263,7 @@ export const anchors: AnchorsPlugin = ({
     });
 
     const element: CanvasElement = {
-      id: 'link-preview',
-      graphType: 'link-preview',
+      id: EDGE_PREVIEW_ID,
       priority: controls.canvas.getNodePriority()(currentParentNode.id) - 0.001,
       shape,
     };
@@ -275,13 +278,15 @@ export const anchors: AnchorsPlugin = ({
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (draggedAnchor) return;
 
-    const { elements: items } = controls.canvas.graphUnderCursor;
-    const topItem = items.at(-1);
-    if (!topItem) return clearAnchorState();
-    if (topItem.graphType === 'node-anchor') return;
-    if (topItem.graphType !== 'node') return clearAnchorState();
+    const { elements } = controls.canvas.graphUnderCursor;
 
-    const newParentNode = getters.getNode(topItem.id);
+    const topElement = elements.at(-1);
+    if (!topElement) return clearAnchorState();
+
+    if (isAnchor(topElement.id)) return;
+    if (!controls.isNode(topElement.id)) return clearAnchorState();
+
+    const newParentNode = getters.getNode(topElement.id);
     if (!newParentNode) {
       throw new Error('anchors: node shown on screen not in graph state');
     }
