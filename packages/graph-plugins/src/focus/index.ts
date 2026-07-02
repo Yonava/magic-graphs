@@ -13,7 +13,7 @@ import { computed, readonly, ref } from 'vue';
 import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
-import { FOCUSABLE_GRAPH_TYPES, FOCUS_PLUGIN_ID } from './constants.ts';
+import { FOCUS_PLUGIN_ID } from './constants.ts';
 import { FocusEventMap, createFocusEventRegistry } from './events.ts';
 import { createFocusDetectors, createFocusThemeOverrides } from './themes.ts';
 import { FocusPlugin } from './types.ts';
@@ -86,7 +86,7 @@ export const focus: FocusPlugin = ({
     canvasElement.shape.startTextAreaEdit?.(ctx, (textAreaContent) => {
       const edge = nullThrows(
         getters.getEdge(canvasElement.id),
-        `Only edges may include TextAreas: Got ${canvasElement.graphType}`,
+        'Only edges may include TextAreas',
       );
 
       const newWeight = controls.settings.edgeInputToWeight(textAreaContent);
@@ -135,17 +135,12 @@ export const focus: FocusPlugin = ({
     const canEdit =
       inATextArea &&
       controls.settings.edgeLabelsEditable &&
-      topItem.graphType === 'edge';
+      controls.isEdge(topItem.id);
 
     if (canEdit) {
       clearFocus();
       return handleTextArea(topItem);
     }
-
-    const canFocus = FOCUSABLE_GRAPH_TYPES.some(
-      (type) => type === topItem.graphType,
-    );
-    if (!canFocus) return;
 
     if (event.shiftKey) addToFocus(topItem.id);
     else setFocus([topItem.id]);

@@ -149,7 +149,6 @@ export const createGraph = <
     return {
       id: node.id,
       priority: castControls.canvas.getNodePriority()(node.id),
-      graphType: 'node',
       shape,
       data: {
         [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenResolver('node.cursor', node),
@@ -173,7 +172,6 @@ export const createGraph = <
     return {
       shape,
       id: edge.id,
-      graphType: 'edge',
       priority: 1,
       data: {
         [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenResolver('edge.cursor', edge),

@@ -18,7 +18,7 @@
 
   const hoveredItems = computed(() => {
     return mouseData.value.elements.map(
-      (item) => `${item.graphType} - ${item.shape.name} (${item.id})`,
+      (item) => `${item.shape.name} (${item.id})`,
     );
   });
 </script>

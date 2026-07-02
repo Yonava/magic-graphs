@@ -205,7 +205,6 @@ export const useGraphAnnotations = (graph: ReturnType<typeof useGraph>) => {
       });
 
       aggregator.push({
-        graphType: 'annotation-eraser',
         id: eraserId,
         shape: eraserCursor,
         priority: 5050,
@@ -221,7 +220,6 @@ export const useGraphAnnotations = (graph: ReturnType<typeof useGraph>) => {
       });
 
       aggregator.push({
-        graphType: 'annotation',
         id: incompleteAnnotationId,
         shape: incompleteScribble,
         priority: 5001,
@@ -236,7 +234,6 @@ export const useGraphAnnotations = (graph: ReturnType<typeof useGraph>) => {
       });
 
       aggregator.push({
-        graphType: 'annotation',
         id: laserPointerCursorId,
         shape: laserPointerCursor,
         priority: 5050,
@@ -246,7 +243,6 @@ export const useGraphAnnotations = (graph: ReturnType<typeof useGraph>) => {
     for (const scribble of scribbles.value) {
       const isErased = erasedScribbleIds.value.has(scribble.id);
       aggregator.push({
-        graphType: 'annotation',
         id: scribble.id,
         shape: graph.canvas.shapes.shapes.scribble({
           ...scribble,
