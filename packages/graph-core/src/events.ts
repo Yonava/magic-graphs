@@ -5,13 +5,12 @@ import {
   TransactionPayload,
 } from '@magic/graph-primitives/transactions/types';
 import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
-import { DeepPartial, DeepReadonly } from 'ts-essentials';
+import { DeepReadonly } from 'ts-essentials';
 
 import {
   NodePositionStoreEventMap,
   createNodePositionStoreEventRegistry,
 } from './positions/events.ts';
-import { GraphSettings } from './settings/index.ts';
 import {
   EdgeWeightStoreEventMap,
   createEdgeWeightStoreEventRegistry,
@@ -63,11 +62,6 @@ export type CoreEventMap = {
    * when any nodes or edges are deleted
    */
   onElementsRemoved: (removals: DeepReadonly<ElementRemovalPayload>) => void;
-
-  /**
-   * when the {@link Graph.settings | settings} of the graph have changed
-   */
-  onSettingsChange: (diff: DeepPartial<GraphSettings>) => void;
 } & NodePositionStoreEventMap &
   EdgeWeightStoreEventMap;
 
@@ -86,7 +80,6 @@ export const createCoreEventRegistry = (): CoreEventRegistry => ({
   onElementsAdded: new Set(),
   onElementsRemoved: new Set(),
 
-  onSettingsChange: new Set(),
   ...createNodePositionStoreEventRegistry(),
   ...createEdgeWeightStoreEventRegistry(),
 });
