@@ -6,7 +6,7 @@ type CurriedNodeHelpers = CurryWithCoreGraph<NodeHelpers>;
 
 const getOutboundEdges: CurriedNodeHelpers['getOutboundEdges'] =
   (graph) => (nodeId) => {
-    const { isGraphDirected } = graph.settings.value;
+    const { isGraphDirected } = graph.settings;
 
     const isUndirectedEdgeOutbound = (edge: CoreEdge) => {
       return edge.source === nodeId || edge.target === nodeId;
@@ -23,7 +23,7 @@ const getOutboundEdges: CurriedNodeHelpers['getOutboundEdges'] =
 
 const getInboundEdges: CurriedNodeHelpers['getInboundEdges'] =
   (graph) => (nodeId) => {
-    const { isGraphDirected } = graph.settings.value;
+    const { isGraphDirected } = graph.settings;
 
     const isUndirectedEdgeInbound = (edge: CoreEdge) => {
       return edge.source === nodeId || edge.target === nodeId;
@@ -86,7 +86,7 @@ const getDescendants: CurriedNodeHelpers['getDescendants'] =
 
 const getEdgeBetween: CurriedNodeHelpers['getEdgeBetween'] =
   (graph) => (fromNodeId, toNodeId) => {
-    const { isGraphDirected } = graph.settings.value;
+    const { isGraphDirected } = graph.settings;
 
     return graph.edges.value.find((edge) => {
       if (isGraphDirected) {

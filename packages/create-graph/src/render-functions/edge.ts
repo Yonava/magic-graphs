@@ -1,7 +1,7 @@
-import { CoreEdge } from '@magic/graph-primitives/types';
+import { CoreControls } from '@magic/graph-core/types';
 import { CompoundTokenResolver } from '@magic/graph-plugins-shared/computed-tokens';
 import { CanvasControls } from '@magic/graph-plugins/canvas/types';
-import { CoreControls } from '@magic/graph-core/types';
+import { CoreEdge } from '@magic/graph-primitives/types';
 import { getLargestAngularSpaceBisector } from '@magic/shapes/helpers';
 import { Shape } from '@magic/shapes/types/index';
 import { nullThrows } from '@magic/utils/assert';
@@ -48,7 +48,7 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
   const sourceNode = { ...rawSourceNode, ...sourcePosition } as const;
   const targetNode = { ...rawTargetNode, ...targetPosition } as const;
 
-  const { isGraphDirected, isGraphWeighted } = controls.settings.value;
+  const { isGraphDirected, isGraphWeighted } = controls.settings;
 
   const fromNodeSize = resolver('node.size', rawSourceNode);
   const fromNodeBorderWidth = resolver('node.border.width', rawSourceNode);

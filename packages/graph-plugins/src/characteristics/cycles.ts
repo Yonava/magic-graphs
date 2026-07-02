@@ -67,7 +67,7 @@ export const useCycles = (
   const { stronglyConnectedComponents } = scc;
 
   const cycles = computed(() => {
-    const { isGraphDirected } = settings.value;
+    const { isGraphDirected } = settings;
     if (!isGraphDirected) {
       const res = getCycles(adjacencyLists.standard.value);
       return res.sort((a, b) => a.length - b.length);

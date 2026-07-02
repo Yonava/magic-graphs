@@ -29,7 +29,7 @@
     const { canUndo } = graph.value.history;
     const { settings } = graph.value;
     if (annotations.isActive.value) return annotations.history.canUndo.value;
-    if (!settings.value.interactive) return false;
+    if (!settings.interactive) return false;
     return canUndo.value;
   });
 
@@ -38,7 +38,7 @@
     const { canRedo } = graph.value.history;
     const { settings } = graph.value;
     if (annotations.isActive.value) return annotations.history.canRedo.value;
-    if (!settings.value.interactive) return false;
+    if (!settings.interactive) return false;
     return canRedo.value;
   });
 
@@ -51,32 +51,32 @@
   <GToolbar>
     <ToolbarButtonGroup class="gap-0">
       <GToolbarButton
-        @click="graph.settings.value.isGraphWeighted = true"
-        :active="graph.settings.value.isGraphWeighted"
+        @click="graph.settings.isGraphWeighted = true"
+        :active="graph.settings.isGraphWeighted"
         icon="label-outline"
       />
 
       <GToolbarDivider />
 
       <GToolbarButton
-        @click="graph.settings.value.isGraphWeighted = false"
-        :active="!graph.settings.value.isGraphWeighted"
+        @click="graph.settings.isGraphWeighted = false"
+        :active="!graph.settings.isGraphWeighted"
         icon="label-off-outline"
       />
     </ToolbarButtonGroup>
 
     <ToolbarButtonGroup class="gap-0">
       <GToolbarButton
-        @click="graph.settings.value.isGraphDirected = true"
-        :active="graph.settings.value.isGraphDirected"
+        @click="graph.settings.isGraphDirected = true"
+        :active="graph.settings.isGraphDirected"
         icon="arrow-right-thin"
       />
 
       <GToolbarDivider />
 
       <GToolbarButton
-        @click="graph.settings.value.isGraphDirected = false"
-        :active="!graph.settings.value.isGraphDirected"
+        @click="graph.settings.isGraphDirected = false"
+        :active="!graph.settings.isGraphDirected"
         icon="minus"
       />
     </ToolbarButtonGroup>

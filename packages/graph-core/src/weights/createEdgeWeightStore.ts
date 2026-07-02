@@ -3,8 +3,6 @@ import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
 import { Fraction } from 'mathjs';
 
-import { Ref } from 'vue';
-
 import { CoreEventMap } from '../events.ts';
 import { GraphSettings } from '../settings/index.ts';
 import { DEFAULT_WEIGHT } from './constants.ts';
@@ -12,7 +10,7 @@ import { EdgeWeightStoreControls } from './types.ts';
 
 export const createEdgeWeightStore = (
   events: EventHub<CoreEventMap>,
-  settings: Ref<GraphSettings>,
+  settings: GraphSettings,
 ): EdgeWeightStoreControls => {
   const edgeIdToEdgeWeight = new Map<string, Fraction>();
 
@@ -21,7 +19,7 @@ export const createEdgeWeightStore = (
       edgeIdToEdgeWeight.get(edgeId),
       `could not resolve weight from edge with id ${edgeId}`,
     );
-    return settings.value.isGraphWeighted
+    return settings.isGraphWeighted
       ? edgeIdToEdgeWeight.get(edgeId)!
       : new Fraction(1);
   };

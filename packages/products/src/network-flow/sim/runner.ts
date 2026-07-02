@@ -50,7 +50,7 @@ export const useSimulationRunner = (graph: Graph): FlowSimulationRunner => {
     createResidualEdges();
     activateTheme();
 
-    graph.settings.value.interactive = false;
+    graph.settings.interactive = false;
 
     simControls.start();
   };
@@ -66,7 +66,7 @@ export const useSimulationRunner = (graph: Graph): FlowSimulationRunner => {
     deactivateFlowColorizer();
     deactivateEdgeThickener();
 
-    graph.settings.value.interactive = true;
+    graph.settings.interactive = true;
   };
 
   return {

@@ -16,17 +16,17 @@ export const useShortcuts = (graph: GraphWithPlugins) => {
   const ctrlKeysHandler = keys();
 
   const defaultShortcutTriggerUndo = () => {
-    if (settings.value.interactive) return graph.history.undo();
+    if (settings.interactive) return graph.history.undo();
   };
 
   const defaultShortcutTriggerRedo = () => {
-    if (settings.value.interactive) return graph.history.redo();
+    if (settings.interactive) return graph.history.redo();
   };
 
   const defaultShortcutTriggerEscape = () => graph.focus.clear();
   const defaultShortcutTriggerSelectAll = () => graph.focus.all();
   const defaultShortcutTriggerDelete = () => {
-    if (settings.value.interactive === false) return;
+    if (settings.interactive === false) return;
     const ids = [...graph.focus.focusedElementIds.value].map((id) => ({ id }));
     graph.actions.removeElements({ nodes: ids, edges: ids }, {});
   };

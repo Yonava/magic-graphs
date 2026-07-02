@@ -25,10 +25,10 @@ export const core = ({
 }: {
   settings: Partial<GraphSettings>;
 }) => {
-  const settings = ref<GraphSettings>({
+  const settings = {
     ...DEFAULT_GRAPH_SETTINGS,
     ...startupSettings,
-  });
+  };
 
   const eventRegistry = createCoreEventRegistry();
   const coreEventHub = createEventHub(eventRegistry);
@@ -89,20 +89,6 @@ export const core = ({
       map.set(edge.id, i);
       return map;
     }, new Map()),
-  );
-
-  const activeSettings = ref(clone(settings.value));
-  watch(
-    settings,
-    (newSettings) => {
-      const settingsDiff = delta(activeSettings.value, newSettings);
-      if (!settingsDiff) return;
-      activeSettings.value = clone(settings.value);
-      coreEventHub.emit('onSettingsChange', settingsDiff);
-      if ('isGraphDirected' in settingsDiff)
-        coreEventHub.emit('onStructureChange');
-    },
-    { deep: true },
   );
 
   const coreControls: CoreControls = {

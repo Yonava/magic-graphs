@@ -89,8 +89,7 @@ export const focus: FocusPlugin = ({
         `Only edges may include TextAreas: Got ${canvasElement.graphType}`,
       );
 
-      const newWeight =
-        controls.settings.value.edgeInputToWeight(textAreaContent);
+      const newWeight = controls.settings.edgeInputToWeight(textAreaContent);
       if (
         newWeight === undefined ||
         edge.weight.valueOf() === newWeight.valueOf()
@@ -135,7 +134,7 @@ export const focus: FocusPlugin = ({
     const inATextArea = topItem.shape.textHitbox?.(coords);
     const canEdit =
       inATextArea &&
-      controls.settings.value.edgeLabelsEditable &&
+      controls.settings.edgeLabelsEditable &&
       topItem.graphType === 'edge';
 
     if (canEdit) {

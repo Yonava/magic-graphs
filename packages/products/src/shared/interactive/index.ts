@@ -27,12 +27,12 @@ export const useInteractive = (graph: GraphWithPlugins) => {
     fromNode: { id: string },
     toNode: { id: string },
   ) => {
-    if (graph.settings.value.userAddedEdgeRuleNoSelfLoops) {
+    if (graph.settings.userAddedEdgeRuleNoSelfLoops) {
       const violatesRule = fromNode.id === toNode.id;
       if (violatesRule) return false;
     }
 
-    if (graph.settings.value.userAddedEdgeRuleOneEdgePerPath) {
+    if (graph.settings.userAddedEdgeRuleOneEdgePerPath) {
       const edgeBetweenToAndFrom = graph.edges.value.find(
         (edge) => edge.source === fromNode.id && edge.target === toNode.id,
       );
@@ -70,18 +70,18 @@ export const useInteractive = (graph: GraphWithPlugins) => {
     graph.events.subscribe('onClick', handleNodeCreation);
     graph.events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
     // graph.nodeAnchor.activate();
-    graph.settings.value.edgeLabelsEditable = true;
+    graph.settings.edgeLabelsEditable = true;
   };
 
   const deactivate = () => {
     graph.events.unsubscribe('onClick', handleNodeCreation);
     graph.events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
     // graph.nodeAnchor.deactivate();
-    graph.settings.value.edgeLabelsEditable = false;
+    graph.settings.edgeLabelsEditable = false;
   };
 
-  if (graph.settings.value.interactive) activate();
-  if (!graph.settings.value.interactive) deactivate();
+  if (graph.settings.interactive) activate();
+  if (!graph.settings.interactive) deactivate();
 
   graph.events.subscribe('onSettingsChange', (diff) => {
     if (diff.interactive === true) activate();

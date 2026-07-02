@@ -18,7 +18,7 @@
 
   const tree = useTree(graph);
 
-  // graph.settings.value.shortcutDelete = () => {
+  // graph.settings.shortcutDelete = () => {
   //   if (simRunner.value) return;
   //   const { focusedNodes } = graph.focus;
   //   if (focusedNodes.value.length === 1)
@@ -28,8 +28,8 @@
   //   graph.focus.clear();
   // };
 
-  // graph.settings.value.shortcutUndo = () => !simRunner.value && tree.undo();
-  // graph.settings.value.shortcutRedo = () => !simRunner.value && tree.redo();
+  // graph.settings.shortcutUndo = () => !simRunner.value && tree.undo();
+  // graph.settings.shortcutRedo = () => !simRunner.value && tree.redo();
 
   useEscSimulationShortcut(() => simRunner.value?.stop());
 </script>
