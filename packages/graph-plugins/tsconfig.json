@@ -12,5 +12,5 @@
     { "path": "../graph-primitives" },
     { "path": "../shapes" }
   ],
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/canvas/nodeZScores.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

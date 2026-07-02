@@ -7,7 +7,7 @@ import { canvas } from '@magic/graph-plugins/canvas/index';
 import { characteristics } from '@magic/graph-plugins/characteristics/index';
 import { focus } from '@magic/graph-plugins/focus/index';
 import { history } from '@magic/graph-plugins/history/index';
-import { interactive } from '@magic/graph-plugins/interactive';
+import { interactive } from '@magic/graph-plugins/interactive/index';
 import { marquee } from '@magic/graph-plugins/marquee/index';
 import { nodeDrag } from '@magic/graph-plugins/node-drag/index';
 import { nodeLabel } from '@magic/graph-plugins/node-label/index';
