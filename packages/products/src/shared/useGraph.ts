@@ -1,12 +1,13 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import { createGraph } from '@magic/create-graph/index';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+import type { GraphSettings } from '@magic/graph-core/settings/index';
 import { adjacencyLists } from '@magic/graph-plugins/adjacency-lists/index';
 import { anchors } from '@magic/graph-plugins/anchors/index';
 import { canvas } from '@magic/graph-plugins/canvas/index';
 import { characteristics } from '@magic/graph-plugins/characteristics/index';
 import { focus } from '@magic/graph-plugins/focus/index';
 import { history } from '@magic/graph-plugins/history/index';
+import { interactive } from '@magic/graph-plugins/interactive/index';
 import { marquee } from '@magic/graph-plugins/marquee/index';
 import { nodeDrag } from '@magic/graph-plugins/node-drag/index';
 import { nodeLabel } from '@magic/graph-plugins/node-label/index';
@@ -14,11 +15,9 @@ import { transitionMatrix } from '@magic/graph-plugins/transition-matrix/index';
 import { dark } from '@magic/graph-theme-presets/dark/index';
 import { light } from '@magic/graph-theme-presets/light/index';
 import { pink } from '@magic/graph-theme-presets/pink/index';
-import type { GraphSettings } from '@magic/graph-core/settings/index';
 
 import { ref, watch } from 'vue';
 
-import { useInteractive } from './interactive/index.ts';
 import { useShortcuts } from './shortcut/index.ts';
 
 const createGraphWithPlugins = (
@@ -38,6 +37,7 @@ const createGraphWithPlugins = (
       adjacencyLists,
       transitionMatrix,
       characteristics,
+      interactive,
     ],
     themePresets: {
       dark,
@@ -78,8 +78,6 @@ export const useGraph = (
   });
 
   const shortcut = useShortcuts(graph);
-
-  useInteractive(graph);
 
   return {
     ...graph,

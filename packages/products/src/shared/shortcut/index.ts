@@ -11,25 +11,7 @@ export const USER_PLATFORM = window.navigator.userAgent.includes('Mac')
  * a plugin that allows users to use keyboard shortcuts to interact with the graph
  */
 export const useShortcuts = (graph: GraphWithPlugins) => {
-  const { settings } = graph;
-
   const ctrlKeysHandler = keys();
-
-  const defaultShortcutTriggerUndo = () => {
-    if (settings.interactive) return graph.history.undo();
-  };
-
-  const defaultShortcutTriggerRedo = () => {
-    if (settings.interactive) return graph.history.redo();
-  };
-
-  const defaultShortcutTriggerEscape = () => graph.focus.clear();
-  const defaultShortcutTriggerSelectAll = () => graph.focus.all();
-  const defaultShortcutTriggerDelete = () => {
-    if (settings.interactive === false) return;
-    const ids = [...graph.focus.focusedElementIds.value].map((id) => ({ id }));
-    graph.actions.removeElements({ nodes: ids, edges: ids }, {});
-  };
 
   const notImplemented = () => console.warn('not implemented');
   const triggerRedo = { fn: notImplemented };
@@ -39,16 +21,6 @@ export const useShortcuts = (graph: GraphWithPlugins) => {
   const triggerDelete = { fn: notImplemented };
   const triggerZoomIn = { fn: notImplemented };
   const triggerZoomOut = { fn: notImplemented };
-
-  const updateBindings = () => {
-    triggerRedo.fn = defaultShortcutTriggerRedo;
-    triggerUndo.fn = defaultShortcutTriggerUndo;
-    triggerEscape.fn = defaultShortcutTriggerEscape;
-    triggerSelectAll.fn = defaultShortcutTriggerSelectAll;
-    triggerDelete.fn = defaultShortcutTriggerDelete;
-    triggerZoomIn.fn = graph.canvas.magicCanvas.camera.actions.zoomIn;
-    triggerZoomOut.fn = graph.canvas.magicCanvas.camera.actions.zoomOut;
-  };
 
   const allShortcuts: PlatformShortcuts = {
     Mac: {
@@ -125,7 +97,6 @@ export const useShortcuts = (graph: GraphWithPlugins) => {
 
   const activate = () => {
     graph.events.subscribe('onKeyDown', ctrlKeysHandler.handle);
-    graph.events.subscribe('onSettingsChange', updateBindings);
   };
 
   activate();
