@@ -1,11 +1,15 @@
-import { CanvasGraphMouseEvent } from '@magic/graph-plugins/canvas/events';
-
-import { GraphWithPlugins } from '../useGraph.ts';
+import { CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { InteractivePlugin } from './types.ts';
 
 /**
  * interactive allows users to create, edit and delete nodes and edges
  */
-export const useInteractive = (graph: GraphWithPlugins) => {
+export const interactive: InteractivePlugin = ({
+  controls,
+  actions,
+  events,
+  getters,
+}) => {
   let lastClickTime = 0;
 
   const handleNodeCreation = ({ coords, elements }: CanvasGraphMouseEvent) => {
@@ -16,27 +20,27 @@ export const useInteractive = (graph: GraphWithPlugins) => {
     lastClickTime = 0;
 
     const topElement = elements.at(-1);
-    if (topElement && graph.isNode(topElement.id)) return;
+    if (topElement && controls.isNode(topElement.id)) return;
 
-    graph.actions.addNode({ x: coords.x, y: coords.y });
+    actions.addNode({ x: coords.x, y: coords.y });
   };
 
   const doesEdgeConformToRules = (
     sourceNode: { id: string },
     targetNode: { id: string },
   ) => {
-    if (graph.settings.userAddedEdgeRuleNoSelfLoops) {
+    if (controls.settings.userAddedEdgeRuleNoSelfLoops) {
       const violatesRule = sourceNode.id === targetNode.id;
       if (violatesRule) return false;
     }
 
-    if (graph.settings.userAddedEdgeRuleOneEdgePerPath) {
-      const edgeBetweenToAndFrom = graph.edges.value.find(
+    if (controls.settings.userAddedEdgeRuleOneEdgePerPath) {
+      const edgeBetweenToAndFrom = controls.edges.value.find(
         (edge) =>
           edge.source === sourceNode.id && edge.target === targetNode.id,
       );
 
-      const edgeBetweenFromAndTo = graph.edges.value.find(
+      const edgeBetweenFromAndTo = controls.edges.value.find(
         (edge) =>
           edge.source === targetNode.id && edge.target === sourceNode.id,
       );
@@ -49,32 +53,45 @@ export const useInteractive = (graph: GraphWithPlugins) => {
   };
 
   const handleEdgeCreation = (sourceNode: { id: string }) => {
-    const { elements: items } = graph.canvas.graphUnderCursor;
+    const { elements: items } = controls.canvas.graphUnderCursor;
 
     const nodeUnderneathAnchor = items.findLast((i) => i.graphType === 'node');
     if (!nodeUnderneathAnchor) return;
 
-    const targetNode = graph.getNode(nodeUnderneathAnchor.id);
+    const targetNode = getters.getNode(nodeUnderneathAnchor.id);
     if (!targetNode) return;
 
     const canCreateEdge = doesEdgeConformToRules(sourceNode, targetNode);
     if (!canCreateEdge) return;
 
-    graph.actions.addEdge({
+    actions.addEdge({
       source: sourceNode.id,
       target: targetNode.id,
     });
   };
 
-  const activate = () => {
-    graph.events.subscribe('onClick', handleNodeCreation);
-    graph.events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
+  const enable = () => {
+    events.subscribe('onClick', handleNodeCreation);
+    events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
   };
 
-  const deactivate = () => {
-    graph.events.unsubscribe('onClick', handleNodeCreation);
-    graph.events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
+  const disable = () => {
+    events.unsubscribe('onClick', handleNodeCreation);
+    events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
   };
 
-  activate();
+  enable();
+
+  return {
+    name: 'interactive',
+    actions,
+    events,
+    getters,
+    controls: {
+      lifecycle: {
+        enable,
+        disable,
+      },
+    },
+  };
 };
