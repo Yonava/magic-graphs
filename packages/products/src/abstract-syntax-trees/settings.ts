@@ -5,5 +5,4 @@ import type { GraphSettings } from '@magic/graph-core/settings/index';
  */
 export const AST_GRAPH_SETTINGS: Partial<GraphSettings> = {
   isGraphWeighted: false,
-  interactive: false,
 };

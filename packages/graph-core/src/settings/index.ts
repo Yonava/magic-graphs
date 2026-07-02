@@ -41,12 +41,6 @@ export const DEFAULT_BASE_SETTINGS: CoreGraphSettings = {
  */
 export type InteractiveGraphSettings = {
   /**
-   * whether the user can create, edit and delete nodes and edges.
-   * when disabled, also disables graph settings: `nodeAnchors` and `edgeLabelsEditable`
-   * @default true
-   */
-  interactive: boolean;
-  /**
    * the default {@link CoreEdge.weight | weight} assigned to edges when created using the UI
    * @default new Fraction(1)
    */
@@ -66,7 +60,6 @@ export type InteractiveGraphSettings = {
 };
 
 export const DEFAULT_INTERACTIVE_SETTINGS: InteractiveGraphSettings = {
-  interactive: true,
   userAddedDefaultEdgeWeight: () => new Fraction(1),
   userAddedEdgeRuleNoSelfLoops: false,
   userAddedEdgeRuleOneEdgePerPath: false,
@@ -75,8 +68,7 @@ export const DEFAULT_INTERACTIVE_SETTINGS: InteractiveGraphSettings = {
 /**
  * represents all settings on a graph instance
  */
-export type GraphSettings = CoreGraphSettings &
-  InteractiveGraphSettings;
+export type GraphSettings = CoreGraphSettings & InteractiveGraphSettings;
 
 /**
  * the default settings for a graph instance

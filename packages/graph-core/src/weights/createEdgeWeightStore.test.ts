@@ -9,7 +9,7 @@ import { createEdgeWeightStore } from './createEdgeWeightStore.ts';
 
 const makeStore = (isGraphWeighted = true) => {
   const hub = createMockEventHub(createCoreEventRegistry());
-  const settings = { value: { ...DEFAULT_GRAPH_SETTINGS, isGraphWeighted } };
+  const settings = { ...DEFAULT_GRAPH_SETTINGS, isGraphWeighted };
   const store = createEdgeWeightStore(hub, settings as never);
   return { store, hub, settings };
 };

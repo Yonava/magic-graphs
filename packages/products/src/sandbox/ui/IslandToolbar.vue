@@ -29,7 +29,6 @@
     const { canUndo } = graph.value.history;
     const { settings } = graph.value;
     if (annotations.isActive.value) return annotations.history.canUndo.value;
-    if (!settings.interactive) return false;
     return canUndo.value;
   });
 
@@ -38,7 +37,6 @@
     const { canRedo } = graph.value.history;
     const { settings } = graph.value;
     if (annotations.isActive.value) return annotations.history.canRedo.value;
-    if (!settings.interactive) return false;
     return canRedo.value;
   });
 
