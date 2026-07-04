@@ -28,7 +28,7 @@ export const dark: DarkPreset = {
     'edge.default.text.size': shared.edge.text.size,
     'edge.default.width': shared.edge.width,
 
-    'node.default.border.color': colors.BLACK,
+    'node.default.border.color': colors.GRAY_900,
     'node.default.border.width': shared.node.borderWidth,
     'node.default.color': colors.STONE_600,
     'node.default.cursor': shared.node.cursor,

@@ -24,7 +24,7 @@ export const shared = {
     radius: Math.ceil(Math.sqrt(35) * 2),
     cursor: CURSOR.GRAB,
     edgePreview: {
-      color: colors.BLACK,
+      color: colors.STONE_900,
       width: 10,
     },
   },
