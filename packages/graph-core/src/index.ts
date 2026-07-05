@@ -1,10 +1,8 @@
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import type { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { nullThrows } from '@magic/utils/assert';
-import { clone } from '@magic/utils/clone';
-import { delta } from '@magic/utils/delta/index';
 
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 import { createCoreActions } from './actions/createCoreActions.ts';
 import { createCoreEventRegistry } from './events.ts';
@@ -17,8 +15,6 @@ import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import type { CoreControls } from './types.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
-
-export const CORE_EVENT_ID = 'core';
 
 export const core = ({
   settings: startupSettings = {},
