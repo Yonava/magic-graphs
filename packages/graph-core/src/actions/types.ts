@@ -1,4 +1,5 @@
 import { GraphActions } from '@magic/graph-primitives/actions/types';
+import Fraction from 'fraction.js';
 
 import { Position } from '../positions/types.ts';
 import { CreateCoreActionOptions } from './createCoreActions.ts';
@@ -8,6 +9,7 @@ export type CreateCoreAction<
 > = (options: CreateCoreActionOptions) => GraphActions<CoreActions>[ActionName];
 
 type Id = { id: string };
+type Weight = { weight?: Fraction };
 type SourceTarget = {
   /** id of the source node */
   source: string;
@@ -16,7 +18,7 @@ type SourceTarget = {
 };
 
 type AddNodeOptions = Partial<Id & Position>;
-type AddEdgeOptions = Partial<Id> & SourceTarget;
+type AddEdgeOptions = Partial<Id> & SourceTarget & Weight;
 
 // TODO remove handlers may need to be another "special" case!
 // Examine how annoying it is to call remove handlers like:

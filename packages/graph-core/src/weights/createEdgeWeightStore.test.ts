@@ -3,15 +3,14 @@ import { Fraction } from 'mathjs';
 import { describe, expect, it } from 'vitest';
 
 import { createCoreEventRegistry } from '../events.ts';
-import { DEFAULT_GRAPH_SETTINGS } from '../settings/index.ts';
 import { DEFAULT_WEIGHT } from './constants.ts';
 import { createEdgeWeightStore } from './createEdgeWeightStore.ts';
 
 const makeStore = (isGraphWeighted = true) => {
   const hub = createMockEventHub(createCoreEventRegistry());
-  const settings = { ...DEFAULT_GRAPH_SETTINGS, isGraphWeighted };
-  const store = createEdgeWeightStore(hub, settings as never);
-  return { store, hub, settings };
+  const options = { isGraphWeighted } as any;
+  const store = createEdgeWeightStore(hub, options);
+  return { store, hub };
 };
 
 describe(createEdgeWeightStore, () => {
