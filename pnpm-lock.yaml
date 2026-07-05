@@ -255,6 +255,9 @@ importers:
       '@vueuse/core':
         specifier: 'catalog:'
         version: 13.9.0(vue@3.5.39(typescript@6.0.3))
+      mathjs:
+        specifier: 'catalog:'
+        version: 14.9.1
     devDependencies:
       ts-essentials:
         specifier: ^10.2.0

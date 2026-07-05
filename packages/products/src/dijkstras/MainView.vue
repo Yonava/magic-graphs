@@ -1,11 +1,29 @@
 <script setup lang="ts">
+  import { Fraction } from 'mathjs';
+
   import GraphProduct from '../shared/ui/general/GraphProduct.vue';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
-  import { DIJKSTRAS_GRAPH_SETTINGS } from './settings.ts';
   import { isRunning } from './sim/runner.ts';
   import CostDisplay from './ui/CostDisplay.vue';
 
-  const graphWithCanvas = useGraphWithCanvas(DIJKSTRAS_GRAPH_SETTINGS);
+  const graphWithCanvas = useGraphWithCanvas({
+    interactive: {
+      userAddedEdgeRuleNoSelfLoops: true,
+      userAddedEdgeRuleOneEdgePerPath: true,
+    },
+    core: {
+      edgeInputToWeight: (input) => {
+        // fraction throws an error if the input cannot be parsed or
+        // is a divide by zero operation
+        try {
+          const fraction = new Fraction(input);
+          // dijkstras only works on positive weight edges
+          if (fraction.valueOf() <= 0) return;
+          return fraction;
+        } catch {}
+      },
+    },
+  });
 </script>
 
 <template>

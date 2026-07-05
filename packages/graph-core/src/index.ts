@@ -1,33 +1,24 @@
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import type { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { nullThrows } from '@magic/utils/assert';
-import { clone } from '@magic/utils/clone';
-import { delta } from '@magic/utils/delta/index';
 
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 import { createCoreActions } from './actions/createCoreActions.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { createHelpers } from './helpers/createHelpers.ts';
+import { CoreOptions, DEFAULT_CORE_OPTIONS } from './options.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
-import { DEFAULT_GRAPH_SETTINGS } from './settings/index.ts';
-import type { GraphSettings } from './settings/index.ts';
 import { setupTransactionSucceeded } from './transaction/setupTransactionSucceeded.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import type { CoreControls } from './types.ts';
 import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
 
-export const CORE_EVENT_ID = 'core';
-
-export const core = ({
-  settings: startupSettings = {},
-}: {
-  settings: Partial<GraphSettings>;
-}) => {
-  const settings = {
-    ...DEFAULT_GRAPH_SETTINGS,
-    ...startupSettings,
+export const core = (options: Partial<CoreOptions>) => {
+  const optionsWithDefaults = {
+    ...DEFAULT_CORE_OPTIONS,
+    ...options,
   };
 
   const eventRegistry = createCoreEventRegistry();
@@ -37,7 +28,10 @@ export const core = ({
   const edges = ref<CoreEdge[]>([]);
 
   const nodePositionStore = createNodePositionStore(coreEventHub);
-  const edgeWeightStore = createEdgeWeightStore(coreEventHub, settings);
+  const edgeWeightStore = createEdgeWeightStore(
+    coreEventHub,
+    optionsWithDefaults,
+  );
 
   const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
 
@@ -98,8 +92,13 @@ export const core = ({
     isEdge: (id: string) => edgeIdToIndex.value.has(id),
     nodeIdToIndex,
     edgeIdToIndex,
-    helpers: createHelpers({ edges, getEdge, getNode, settings }),
-    settings,
+    helpers: createHelpers({
+      edges,
+      getEdge,
+      getNode,
+      options: optionsWithDefaults,
+    }),
+    options: optionsWithDefaults,
     positions: nodePositionStore,
     weights: edgeWeightStore,
   };

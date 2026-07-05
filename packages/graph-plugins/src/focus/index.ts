@@ -89,7 +89,7 @@ export const focus: FocusPlugin = ({
         'Only edges may include TextAreas',
       );
 
-      const newWeight = controls.settings.edgeInputToWeight(textAreaContent);
+      const newWeight = controls.options.edgeInputToWeight(textAreaContent);
       if (
         newWeight === undefined ||
         edge.weight.valueOf() === newWeight.valueOf()
@@ -132,10 +132,7 @@ export const focus: FocusPlugin = ({
 
     // handle text areas
     const inATextArea = topItem.shape.textHitbox?.(coords);
-    const canEdit =
-      inATextArea &&
-      controls.settings.edgeLabelsEditable &&
-      controls.isEdge(topItem.id);
+    const canEdit = inATextArea && controls.isEdge(topItem.id);
 
     if (canEdit) {
       clearFocus();

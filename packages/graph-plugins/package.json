@@ -16,16 +16,17 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
+    "@magic/canvas": "workspace:*",
     "@magic/graph-core": "workspace:*",
     "@magic/graph-plugins-shared": "workspace:*",
     "@magic/graph-primitives": "workspace:*",
-    "@magic/utils": "workspace:*",
-    "@magic/canvas": "workspace:*",
     "@magic/shapes": "workspace:*",
-    "@vueuse/core": "catalog:"
+    "@magic/utils": "workspace:*",
+    "@vueuse/core": "catalog:",
+    "mathjs": "catalog:"
   },
   "devDependencies": {
-    "vue": "catalog:",
-    "ts-essentials": "^10.2.0"
+    "ts-essentials": "^10.2.0",
+    "vue": "catalog:"
   }
 }
