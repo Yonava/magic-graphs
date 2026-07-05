@@ -1,41 +1,5 @@
 import { Fraction } from 'mathjs';
 
-export type CoreGraphSettings = {
-  /**
-   * whether graph is weighted, if true, all individual {@link CoreEdge.weight | edge weights} are ignored and are treated as if they were `new Fraction(1)`
-   * @default true
-   */
-  isGraphWeighted: boolean;
-  /**
-   * whether graph is directed, if true, all {@link CoreEdge | edges} are directed, else all {@link CoreEdge | edges} are undirected
-   * @default true
-   */
-  isGraphDirected: boolean;
-  /**
-   * whether {@link CoreEdge.label | edge labels} should be editable
-   * @default true
-   */
-  edgeLabelsEditable: boolean;
-  /**
-   * a setter for {@link CoreEdge.weight | edge weight} - takes the user inputted string and returns a fraction that will
-   * be set as the edge weight or returns undefined if the edge label should not be set
-   */
-  edgeInputToWeight: (input: string) => Fraction | undefined;
-};
-
-export const DEFAULT_BASE_SETTINGS: CoreGraphSettings = {
-  isGraphWeighted: true,
-  edgeLabelsEditable: true,
-  edgeInputToWeight: (input: string) => {
-    // fraction throws an error if the input cannot be parsed or
-    // is a divide by zero operation
-    try {
-      return new Fraction(input);
-    } catch {}
-  },
-  isGraphDirected: true,
-};
-
 /**
  * INTERACTIVE GRAPH SETTINGS
  */
@@ -68,12 +32,4 @@ export const DEFAULT_INTERACTIVE_SETTINGS: InteractiveGraphSettings = {
 /**
  * represents all settings on a graph instance
  */
-export type GraphSettings = CoreGraphSettings & InteractiveGraphSettings;
-
-/**
- * the default settings for a graph instance
- */
-export const DEFAULT_GRAPH_SETTINGS = {
-  ...DEFAULT_BASE_SETTINGS,
-  ...DEFAULT_INTERACTIVE_SETTINGS,
-} as const satisfies GraphSettings;
+export type GraphSettings = InteractiveGraphSettings;

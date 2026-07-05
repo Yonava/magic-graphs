@@ -3,8 +3,8 @@ import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import type { ComputedRef, Ref } from 'vue';
 
 import { CoreGraphHelpers } from './helpers/types.ts';
+import { CoreOptions } from './options.ts';
 import { NodePositionStoreControls } from './positions/types.ts';
-import { GraphSettings } from './settings/index.ts';
 import { EdgeWeightStoreControls } from './weights/types.ts';
 
 export type CoreControls = {
@@ -17,7 +17,7 @@ export type CoreControls = {
   nodeIdToIndex: ComputedRef<Map<CoreNode['id'], number>>;
   edgeIdToIndex: ComputedRef<Map<CoreEdge['id'], number>>;
 
-  settings: GraphSettings;
+  options: CoreOptions;
 
   helpers: CoreGraphHelpers;
   positions: NodePositionStoreControls;

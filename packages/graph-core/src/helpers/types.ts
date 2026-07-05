@@ -89,7 +89,7 @@ export type NodeHelpers = {
   ) => CoreEdge | undefined;
 };
 
-type FieldsNeededFromCoreGraph = 'edges' | 'settings';
+type FieldsNeededFromCoreGraph = 'edges' | 'options';
 
 export type CoreGraphForHelpers = Pick<
   CoreControls,

@@ -132,10 +132,7 @@ export const focus: FocusPlugin = ({
 
     // handle text areas
     const inATextArea = topItem.shape.textHitbox?.(coords);
-    const canEdit =
-      inATextArea &&
-      controls.settings.edgeLabelsEditable &&
-      controls.isEdge(topItem.id);
+    const canEdit = inATextArea && controls.isEdge(topItem.id);
 
     if (canEdit) {
       clearFocus();
