@@ -12,12 +12,15 @@
   import { GEdge, GNode } from '../shared/useGraph.ts';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
   import CodeEditor from './code-editor/CodeEditor.vue';
-  import { AST_GRAPH_SETTINGS } from './settings.ts';
 
   type ASTNode = ts.Node;
   type ASTEdge = { fromNode: ts.Node; toNode: ts.Node };
 
-  const graphWithCanvas = useGraphWithCanvas(AST_GRAPH_SETTINGS);
+  const graphWithCanvas = useGraphWithCanvas({
+    core: {
+      isGraphWeighted: false,
+    },
+  });
 
   /**
    * coverts ts node object into a unique serializable form
@@ -74,21 +77,17 @@
 
   const graphNodesAndEdges = computed(() => {
     const { nodes, edges } = astNodesAndEdges.value;
-    const graphNodes = nodes.map(
-      (astNode): GNode => ({
-        id: getASTNodeId(astNode),
-        label: getASTNodeId(astNode),
-      }),
-    );
+    const graphNodes = nodes.map((astNode): GNode => ({
+      id: getASTNodeId(astNode),
+      label: getASTNodeId(astNode),
+    }));
 
-    const graphEdges = edges.map(
-      (astEdge): GEdge => ({
-        target: getASTNodeId(astEdge.toNode),
-        source: getASTNodeId(astEdge.fromNode),
-        id: getASTEdgeId(astEdge),
-        weight: new Fraction(1),
-      }),
-    );
+    const graphEdges = edges.map((astEdge): GEdge => ({
+      target: getASTNodeId(astEdge.toNode),
+      source: getASTNodeId(astEdge.fromNode),
+      id: getASTEdgeId(astEdge),
+      weight: new Fraction(1),
+    }));
 
     return {
       rootNode: graphNodes[0],

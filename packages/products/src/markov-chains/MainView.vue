@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import colors from '@magic/utils/colors';
   import gsap from 'gsap';
+  import { Fraction } from 'mathjs';
 
   import { watch } from 'vue';
 
@@ -8,12 +9,25 @@
   import GButton from '../shared/ui/graph-core/button/GButton.vue';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
   import { useMarkovChain } from './markov/useMarkovChain.ts';
-  import { MARKOV_CHAIN_GRAPH_SETTINGS } from './settings.ts';
   import MarkovChainInfo from './ui/MarkovChainInfo.vue';
   import MarkovChainInfoLabels from './ui/MarkovChainInfoLabels.vue';
   import { useMarkovColorizer } from './ui/useMarkovColorizer.ts';
 
-  const graphWithCanvas = useGraphWithCanvas(MARKOV_CHAIN_GRAPH_SETTINGS);
+  const graphWithCanvas = useGraphWithCanvas({
+    core: {
+      edgeInputToWeight: (input: string) => {
+        // fraction throws an error if the input cannot be parsed or
+        // is a divide by zero operation
+        try {
+          const fraction = new Fraction(input);
+          const numericValue = fraction.valueOf();
+          // markov chain edges must be between 0 and 1
+          if (numericValue <= 0 || numericValue > 1) return;
+          return fraction;
+        } catch {}
+      },
+    },
+  });
   const { graph } = graphWithCanvas;
 
   const markov = useMarkovChain(graph);

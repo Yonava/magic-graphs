@@ -1,13 +1,32 @@
 <script setup lang="ts">
+  import { Fraction } from 'mathjs';
+
   import GraphProduct from '../shared/ui/general/GraphProduct.vue';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
-  import { FLOW_GRAPH_SETTINGS } from './settings.ts';
   import { useEdgeThickener } from './theme/useEdgeThickener.ts';
   import { useSourceSinkTheme } from './theme/useSourceSinkTheme.ts';
   import FordFulkersonOutput from './ui/FordFulkersonOutput.vue';
   import SourceSinkControls from './ui/SourceSinkControls.vue';
 
-  const graphWithCanvas = useGraphWithCanvas(FLOW_GRAPH_SETTINGS);
+  const graphWithCanvas = useGraphWithCanvas({
+    interactive: {
+      userAddedDefaultEdgeWeight: () => new Fraction(5),
+      userAddedEdgeRuleNoSelfLoops: true,
+      userAddedEdgeRuleOneEdgePerPath: true,
+    },
+    core: {
+      edgeInputToWeight: (input: string) => {
+        // fraction throws an error if the input cannot be parsed or
+        // is a divide by zero operation
+        try {
+          const fraction = new Fraction(input);
+          const numericValue = fraction.valueOf();
+          if (numericValue <= 0) return;
+          return fraction;
+        } catch {}
+      },
+    },
+  });
   const { graph } = graphWithCanvas;
 
   const { activate: activateEdgeThickener } = useEdgeThickener(graph);

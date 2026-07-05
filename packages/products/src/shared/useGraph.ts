@@ -1,6 +1,6 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
 import { createGraph } from '@magic/create-graph/index';
-import type { GraphSettings } from '@magic/graph-core/settings/index';
+import { CoreOptions } from '@magic/graph-core/options';
 import { adjacencyLists } from '@magic/graph-plugins/adjacency-lists/index';
 import { anchors } from '@magic/graph-plugins/anchors/index';
 import { canvas } from '@magic/graph-plugins/canvas/index';
@@ -8,6 +8,7 @@ import { characteristics } from '@magic/graph-plugins/characteristics/index';
 import { focus } from '@magic/graph-plugins/focus/index';
 import { history } from '@magic/graph-plugins/history/index';
 import { interactive } from '@magic/graph-plugins/interactive/index';
+import { InteractiveOptions } from '@magic/graph-plugins/interactive/options';
 import { marquee } from '@magic/graph-plugins/marquee/index';
 import { nodeDrag } from '@magic/graph-plugins/node-drag/index';
 import { nodeLabel } from '@magic/graph-plugins/node-label/index';
@@ -20,14 +21,17 @@ import { ref, watch } from 'vue';
 
 import { useShortcuts } from './shortcut/index.ts';
 
-const createGraphWithPlugins = (
-  magicCanvas: MagicCanvasProps,
-  settings: Partial<GraphSettings> = {},
-) => {
+export type CreateGraphWithPluginsOptions = {
+  core?: Partial<CoreOptions>;
+  interactive?: Partial<InteractiveOptions>;
+  canvas: MagicCanvasProps;
+};
+
+const createGraphWithPlugins = (options: CreateGraphWithPluginsOptions) => {
   const graph = createGraph({
-    settings,
+    options: options.core ?? {},
     plugins: [
-      canvas(magicCanvas),
+      canvas(options.canvas),
       history,
       focus,
       marquee,
@@ -37,7 +41,7 @@ const createGraphWithPlugins = (
       adjacencyLists,
       transitionMatrix,
       characteristics,
-      interactive,
+      interactive(options.interactive ?? {}),
     ],
     themePresets: {
       dark,
@@ -65,11 +69,8 @@ export type ThemePreset = ReturnType<
  * @param settings default settings for the graph
  * @returns a graph instance with APIs for managing the graph
  */
-export const useGraph = (
-  canvas: MagicCanvasProps,
-  settings: Partial<GraphSettings> = {},
-) => {
-  const graph = createGraphWithPlugins(canvas, settings);
+export const useGraph = (options: CreateGraphWithPluginsOptions) => {
+  const graph = createGraphWithPlugins(options);
 
   const activePreset = ref(graph.theme.activePresetName());
 

@@ -63,11 +63,11 @@ export const useCycles = (
   controls: Controls,
   scc: Pick<SCCControls, 'stronglyConnectedComponents'>,
 ): CyclesControls => {
-  const { settings, adjacencyLists } = controls;
+  const { options, adjacencyLists } = controls;
   const { stronglyConnectedComponents } = scc;
 
   const cycles = computed(() => {
-    const { isGraphDirected } = settings;
+    const { isGraphDirected } = options;
     if (!isGraphDirected) {
       const res = getCycles(adjacencyLists.standard.value);
       return res.sort((a, b) => a.length - b.length);

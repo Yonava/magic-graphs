@@ -4,7 +4,6 @@
   import SimulationPlaybackControls from '../shared/ui/general/sim/SimulationPlaybackControls.vue';
   import { useEscSimulationShortcut } from '../shared/ui/general/useEscSimulationShortcut.ts';
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
-  import { BINARY_TREE_GRAPH_SETTINGS } from './settings.ts';
   import state from './state.ts';
   import AddNodePanel from './ui/AddNodePanel.vue';
   import CRUDControls from './ui/CRUDControls.vue';
@@ -13,7 +12,11 @@
 
   const { simRunner } = state;
 
-  const graphWithCanvas = useGraphWithCanvas(BINARY_TREE_GRAPH_SETTINGS);
+  const graphWithCanvas = useGraphWithCanvas({
+    core: {
+      isGraphWeighted: false,
+    },
+  });
   const { graph } = graphWithCanvas;
 
   const tree = useTree(graph);

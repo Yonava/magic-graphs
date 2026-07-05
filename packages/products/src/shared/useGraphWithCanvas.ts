@@ -6,7 +6,7 @@ import {
   GraphAnnotationsControls,
   useGraphAnnotations,
 } from './graph-annotations/index.ts';
-import { useGraph } from './useGraph.ts';
+import { CreateGraphWithPluginsOptions, useGraph } from './useGraph.ts';
 
 // TODO replace this return type with the final type contract of useGraph
 export type Graph = ReturnType<typeof useGraph> & {
@@ -18,13 +18,16 @@ export type GraphWithCanvas = {
   canvas: MagicCanvasProps;
 };
 
-type UseGraphWithCanvas = (settings: Partial<GraphSettings>) => GraphWithCanvas;
+type UseGraphWithCanvas = (
+  options?: Omit<CreateGraphWithPluginsOptions, 'canvas'>,
+) => GraphWithCanvas;
 
-export const useGraphWithCanvas: UseGraphWithCanvas = (
-  settings: Partial<GraphSettings> = {},
-) => {
+export const useGraphWithCanvas: UseGraphWithCanvas = (options = {}) => {
   const canvas = useMagicCanvas();
-  const graphWithPlugins = useGraph(canvas, settings);
+  const graphWithPlugins = useGraph({
+    canvas,
+    ...options,
+  });
 
   const annotations = useGraphAnnotations(graphWithPlugins);
   const graph = { ...graphWithPlugins, annotations };

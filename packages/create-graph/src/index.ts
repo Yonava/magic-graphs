@@ -16,11 +16,7 @@ import {
   CanvasElement,
 } from '@magic/graph-plugins/canvas/aggregator/types';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@magic/graph-plugins/canvas/setupCanvasCursor';
-import {
-  CanvasControls,
-  CanvasPlugin,
-} from '@magic/graph-plugins/canvas/types';
-import { FocusPlugin } from '@magic/graph-plugins/focus/types';
+import { CanvasControls } from '@magic/graph-plugins/canvas/types';
 import { GraphActions } from '@magic/graph-primitives/actions/types';
 import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 import { GraphGetters } from '@magic/graph-primitives/getters/types';
@@ -43,7 +39,7 @@ type CreateGraphOptions<
 > = {
   plugins: TPlugins;
   themePresets: Record<PresetName, PluginThemes<NoInfer<TPlugins>>>;
-  settings: Partial<GraphSettings>;
+  options: Partial<GraphSettings>;
 };
 
 export const createGraph = <
@@ -52,9 +48,9 @@ export const createGraph = <
 >({
   plugins,
   themePresets,
-  settings = {},
+  options = {},
 }: CreateGraphOptions<TPlugins, PresetName>) => {
-  const core = createCore({ settings });
+  const core = createCore(options);
 
   const presetNames = Object.keys(themePresets) as PresetName[];
 
