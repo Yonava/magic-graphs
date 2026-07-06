@@ -7,8 +7,8 @@ import { createCoreEventRegistry } from './events.ts';
 import { createHelpers } from './helpers/createHelpers.ts';
 import { CoreOptions, DEFAULT_CORE_OPTIONS } from './options.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
+import { createCommitTransaction } from './transaction/createCommitTransaction.ts';
 import { setupTransactionSucceeded } from './transaction/setupTransactionSucceeded.ts';
-import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import type { CoreControls } from './types.ts';
 import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
 
@@ -51,7 +51,7 @@ export const core = (options: Partial<CoreOptions>) => {
     emit: coreEventHub.emit,
   });
 
-  const commitTransaction = useCommitTransaction({
+  const commitTransaction = createCommitTransaction({
     getGraph: () => ({ nodes, edges }),
     getters: coreGetters,
     onTransactionSucceeded,

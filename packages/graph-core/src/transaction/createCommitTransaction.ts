@@ -6,7 +6,7 @@ import type { TransactionOptions } from './types.ts';
 // TODO 1. ❌ Validation https://github.com/Yonava/magic-graphs/issues/598
 // 2. ✅ Process Mutation State
 // 3. ✅ Commit Payload and Return Confirmation
-export function useCommitTransaction({
+export function createCommitTransaction({
   getGraph,
   getters,
   onTransactionSucceeded,
