@@ -75,7 +75,7 @@ export const useStronglyConnectedComponents = (
 
     return sccs.reduce<ComponentAdjacencyMap>((acc, comp, compIndex) => {
       const componentChildren = comp
-        .flatMap((node) => adjacencyLists.standard.value[node.id] ?? [])
+        .flatMap((node) => adjacencyLists.standard()[node.id] ?? [])
         .filter((nodeId) => nodeToScc.get(nodeId) !== compIndex)
         .map((nodeId) => nodeToScc.get(nodeId)!);
 

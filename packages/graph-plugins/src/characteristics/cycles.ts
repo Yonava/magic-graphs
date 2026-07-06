@@ -1,4 +1,5 @@
 import { CoreNode } from '@magic/graph-primitives/types';
+import { DeepReadonly } from 'ts-essentials';
 
 import { ComputedRef, computed } from 'vue';
 
@@ -6,7 +7,7 @@ import { AdjacencyList } from '../adjacency-lists/types.ts';
 import { Controls } from './index.ts';
 import type { SCCControls } from './scc.ts';
 
-type GetCycles = (adjList: AdjacencyList) => CoreNode['id'][][];
+type GetCycles = (adjList: DeepReadonly<AdjacencyList>) => CoreNode['id'][][];
 
 export const getCycles: GetCycles = (adjList) => {
   const visited = new Set<string>();
@@ -69,7 +70,7 @@ export const useCycles = (
   const cycles = computed(() => {
     const { directed: isGraphDirected } = metadata;
     if (!isGraphDirected) {
-      const res = getCycles(adjacencyLists.standard.value);
+      const res = getCycles(adjacencyLists.standard());
       return res.sort((a, b) => a.length - b.length);
     }
 

@@ -22,8 +22,7 @@
     "@magic/graph-primitives": "workspace:*",
     "@magic/shapes": "workspace:*",
     "@magic/utils": "workspace:*",
-    "@vueuse/core": "catalog:",
-    "mathjs": "catalog:"
+    "fraction.js": "^5.3.4"
   },
   "devDependencies": {
     "ts-essentials": "^10.2.0",

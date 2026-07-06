@@ -1,3 +1,5 @@
+import { DeepReadonly } from 'ts-essentials';
+
 import { ComputedRef, computed } from 'vue';
 
 import { AdjacencyList } from '../adjacency-lists/types.ts';
@@ -11,7 +13,7 @@ export type ConnectedControls = {
 export const useConnected = (controls: Controls): ConnectedControls => {
   const { adjacencyLists } = controls;
 
-  const runBFS = (adjList: AdjacencyList, startNode: string) => {
+  const runBFS = (adjList: DeepReadonly<AdjacencyList>, startNode: string) => {
     const visited = new Set<string>();
     const q = [];
 
@@ -32,18 +34,18 @@ export const useConnected = (controls: Controls): ConnectedControls => {
     return visited;
   };
 
-  const getIsConnectedWithAdjList = (adjList: AdjacencyList) =>
+  const getIsConnectedWithAdjList = (adjList: DeepReadonly<AdjacencyList>) =>
     Object.keys(adjList).every((nodeId) => {
       const visited = runBFS(adjList, nodeId);
       return visited.size === Object.keys(adjList).length;
     });
 
   const isConnected = computed(() => {
-    return getIsConnectedWithAdjList(adjacencyLists.standard.value);
+    return getIsConnectedWithAdjList(adjacencyLists.standard());
   });
 
   const isWeaklyConnected = computed(() => {
-    return getIsConnectedWithAdjList(adjacencyLists.undirected.value);
+    return getIsConnectedWithAdjList(adjacencyLists.undirected());
   });
 
   return {
