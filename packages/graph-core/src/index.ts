@@ -29,12 +29,12 @@ export const core = (options: Partial<CoreOptions>) => {
 
   const getNode = (id: CoreNode['id']) =>
     nullThrows(
-      nodes.find((n) => n.id),
+      nodes.find((n) => n.id === id),
       `node with id ${id} not found`,
     );
   const getEdge = (id: CoreEdge['id']) => {
     const edge = nullThrows(
-      edges.find((e) => e.id),
+      edges.find((e) => e.id === id),
       `edge with id ${id} not found`,
     );
     return { ...edge, weight: edgeWeightStore.get(id) };
