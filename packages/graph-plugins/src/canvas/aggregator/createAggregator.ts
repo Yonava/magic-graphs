@@ -7,7 +7,7 @@ import { CanvasEventMap } from '../events.ts';
 import { Aggregator, AggregatorTransformer, CanvasElement } from './types.ts';
 
 export type AggregatorControls = {
-  aggregator: DeepReadonly<Aggregator>;
+  aggregator: () => DeepReadonly<Aggregator>;
   transformers: AggregatorTransformer[];
   updateAggregator: () => void;
   getCanvasElementsAtCoordinate: (coords: Coordinate) => CanvasElement[];
@@ -70,7 +70,7 @@ export const createAggregator = ({
   };
 
   return {
-    aggregator,
+    aggregator: () => aggregator,
     transformers,
     updateAggregator,
     getCanvasElementsAtCoordinate,
