@@ -2,8 +2,6 @@ import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import type { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { nullThrows } from '@magic/utils/assert';
 
-import { computed, ref } from 'vue';
-
 import { createCoreActions } from './actions/createCoreActions.ts';
 import { createCoreEventRegistry } from './events.ts';
 import { createHelpers } from './helpers/createHelpers.ts';
@@ -12,7 +10,6 @@ import { createNodePositionStore } from './positions/createNodePositionStore.ts'
 import { setupTransactionSucceeded } from './transaction/setupTransactionSucceeded.ts';
 import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import type { CoreControls } from './types.ts';
-import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
 
 export const core = (options: Partial<CoreOptions>) => {
@@ -24,19 +21,20 @@ export const core = (options: Partial<CoreOptions>) => {
   const eventRegistry = createCoreEventRegistry();
   const coreEventHub = createEventHub(eventRegistry);
 
-  const nodes = ref<CoreNode[]>([]);
-  const edges = ref<CoreEdge[]>([]);
+  const nodes: CoreNode[] = [];
+  const edges: CoreEdge[] = [];
 
   const nodePositionStore = createNodePositionStore(coreEventHub);
   const edgeWeightStore = createEdgeWeightStore(coreEventHub, metadata);
 
-  const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
-
   const getNode = (id: CoreNode['id']) =>
-    nullThrows(nodeIdToNodeMap.value.get(id), `node with id ${id} not found`);
+    nullThrows(
+      nodes.find((n) => n.id),
+      `node with id ${id} not found`,
+    );
   const getEdge = (id: CoreEdge['id']) => {
     const edge = nullThrows(
-      edgeIdToEdgeMap.value.get(id),
+      edges.find((e) => e.id),
       `edge with id ${id} not found`,
     );
     return { ...edge, weight: edgeWeightStore.get(id) };
@@ -55,6 +53,7 @@ export const core = (options: Partial<CoreOptions>) => {
 
   const commitTransaction = useCommitTransaction({
     getGraph: () => ({ nodes, edges }),
+    getters: coreGetters,
     onTransactionSucceeded,
   });
 
@@ -68,27 +67,13 @@ export const core = (options: Partial<CoreOptions>) => {
     },
   });
 
-  const nodeIdToIndex = computed(() =>
-    nodes.value.reduce<Map<CoreNode['id'], number>>((map, node, i) => {
-      map.set(node.id, i);
-      return map;
-    }, new Map()),
-  );
-
-  const edgeIdToIndex = computed(() =>
-    edges.value.reduce<Map<CoreEdge['id'], number>>((map, edge, i) => {
-      map.set(edge.id, i);
-      return map;
-    }, new Map()),
-  );
-
   const coreControls: CoreControls = {
     nodes,
     edges,
-    isNode: (id: string) => nodeIdToIndex.value.has(id),
-    isEdge: (id: string) => edgeIdToIndex.value.has(id),
-    nodeIdToIndex,
-    edgeIdToIndex,
+    isNode: (id: string) => nodes.some((n) => n.id === id),
+    isEdge: (id: string) => edges.some((e) => e.id === id),
+    nodeIdToIndex: (id: string) => nodes.findIndex((n) => n.id === id),
+    edgeIdToIndex: (id: string) => edges.findIndex((n) => n.id === id),
     helpers: createHelpers({
       edges,
       getEdge,

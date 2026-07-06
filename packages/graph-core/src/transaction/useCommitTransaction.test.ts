@@ -2,20 +2,31 @@ import { TransactionPayload } from '@magic/graph-primitives/transactions/types';
 import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { describe, expect, it, vi } from 'vitest';
 
-import type { Ref } from 'vue';
-
 import { createEmptyPayload } from './createEmptyPayload.ts';
+import { TransactionOptions } from './types.ts';
 import { useCommitTransaction } from './useCommitTransaction.ts';
 
-const ref = <T>(value: T) => ({ value }) as unknown as Ref<T>;
+const options = (
+  state: {
+    nodes?: CoreNode[];
+    edges?: CoreEdge[];
+    success?: () => void;
+  } = {},
+): TransactionOptions => {
+  return {
+    getGraph: () => ({ nodes: state.nodes ?? [], edges: state.edges ?? [] }),
+    getters: {
+      getEdge: (id) => state.edges?.find((e) => e.id === id)!,
+      getNode: (id) => state.nodes?.find((n) => n.id === id)!,
+    },
+    onTransactionSucceeded: state.success ?? (() => {}),
+  };
+};
 
 describe(useCommitTransaction, () => {
   it('handles adding a node', () => {
     const newNode: CoreNode = { id: 'new-node' };
-    const commitTransaction = useCommitTransaction({
-      getGraph: () => ({ nodes: ref([]), edges: ref([]) }),
-      onTransactionSucceeded: () => {},
-    });
+    const commitTransaction = useCommitTransaction(options());
     const expectedPayload: TransactionPayload = {
       ...createEmptyPayload(),
       addedNodes: [newNode],
@@ -33,13 +44,12 @@ describe(useCommitTransaction, () => {
       target: 'node-2',
     };
 
-    const commitTransaction = useCommitTransaction({
-      getGraph: () => ({
-        nodes: ref([node1, node2]),
-        edges: ref([connectedEdge]),
+    const commitTransaction = useCommitTransaction(
+      options({
+        nodes: [node1, node2],
+        edges: [connectedEdge],
       }),
-      onTransactionSucceeded: () => {},
-    });
+    );
 
     const expectedPayload: TransactionPayload = {
       ...createEmptyPayload(),
@@ -57,10 +67,9 @@ describe(useCommitTransaction, () => {
 
     const successSpy = vi.fn();
 
-    const commitTransaction = useCommitTransaction({
-      getGraph: () => ({ nodes: ref([]), edges: ref([]) }),
-      onTransactionSucceeded: successSpy,
-    });
+    const commitTransaction = useCommitTransaction(
+      options({ success: successSpy }),
+    );
 
     const payload = commitTransaction({ addNodes: [newNode] });
     expect(successSpy).toHaveBeenCalledExactlyOnceWith(payload);

@@ -23,13 +23,7 @@ export type CoreEventMap = {
    */
   onTransactionComplete: (payload: DeepReadonly<TransactionPayload>) => void;
   /**
-   * when one of the following occurs:
-   * - a node is {@link graph.actions.addNode | added} or {@link graph.actions.removeNode | removed}
-   * - an edge is {@link graph.actions.actions.addEdge | added} or {@link Graph.removeEdge | removed}
-   * - an edge label is {@link Graph.editEdgeLabel | edited}
-   * - the {@link Graph.load | graph load} api is invoked with new nodes and edges
-   * - the {@link Graph.reset | graph reset} api is invoked clearing all nodes and edges
-   * - the `isGraphDirected` {@link Graph.settings | graph setting} is toggled
+   * triggered when any nodes or edges are added or removed, or an an edge weight is changed
    */
   onStructureChange: () => void;
 

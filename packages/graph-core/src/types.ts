@@ -8,14 +8,14 @@ import { NodePositionStoreControls } from './positions/types.ts';
 import { EdgeWeightStoreControls } from './weights/types.ts';
 
 export type CoreControls = {
-  nodes: Ref<CoreNode[]>;
-  edges: Ref<CoreEdge[]>;
+  nodes: Readonly<CoreNode[]>;
+  edges: Readonly<CoreEdge[]>;
 
   isNode: (id: string) => boolean;
   isEdge: (id: string) => boolean;
 
-  nodeIdToIndex: ComputedRef<Map<CoreNode['id'], number>>;
-  edgeIdToIndex: ComputedRef<Map<CoreEdge['id'], number>>;
+  nodeIdToIndex: (id: string) => number;
+  edgeIdToIndex: (id: string) => number;
 
   metadata: Readonly<CoreOptions>;
 

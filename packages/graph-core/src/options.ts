@@ -18,7 +18,7 @@
 
 export type CoreOptions = {
   /**
-   * whether graph is weighted, if true, all individual {@link CoreEdge.weight | edge weights} are ignored and are treated as if they were `new Fraction(1)`
+   * whether graph is weighted, if true, all individual {@link CoreEdge.weight | edge weights} are treated as `new Fraction(1)`
    * @default true
    */
   weighted: boolean;

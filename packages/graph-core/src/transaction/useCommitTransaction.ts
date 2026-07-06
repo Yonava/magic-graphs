@@ -1,26 +1,24 @@
 import { CommitTransaction } from '@magic/graph-primitives/transactions/types';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 
 import { createEmptyPayload } from './createEmptyPayload.ts';
-import type { GraphState, TransactionOptions } from './types.ts';
+import type { TransactionOptions } from './types.ts';
 
 // TODO 1. ❌ Validation https://github.com/Yonava/magic-graphs/issues/598
 // 2. ✅ Process Mutation State
 // 3. ✅ Commit Payload and Return Confirmation
 export function useCommitTransaction({
   getGraph,
+  getters,
   onTransactionSucceeded,
 }: TransactionOptions): CommitTransaction {
   return (draft) => {
-    const { nodes, edges } = getGraph();
-    const { getNode, getEdge } = quickGetters({ nodes, edges });
-
+    const { edges } = getGraph();
     const payload = createEmptyPayload();
 
     // PROCESS REMOVALS - edges first, then nodes to ensure references don't hang
     if (draft.removeEdgeIds) {
       for (const edgeId of draft.removeEdgeIds) {
-        const edge = getEdge(edgeId);
+        const edge = getters.getEdge(edgeId);
         if (!edge) continue;
         payload.removedEdgeIds.push(edge.id);
       }
@@ -28,10 +26,10 @@ export function useCommitTransaction({
 
     if (draft.removeNodeIds) {
       for (const nodeId of draft.removeNodeIds) {
-        const node = getNode(nodeId);
+        const node = getters.getNode(nodeId);
         if (!node) continue;
         payload.removedNodeIds.push(node.id);
-        const orphanedEdgeIds = edges.value
+        const orphanedEdgeIds = edges
           .filter((edge) => edge.source === nodeId || edge.target === nodeId)
           .filter(
             (edge) => !payload.removedEdgeIds.some((id) => id === edge.id),
@@ -53,12 +51,4 @@ export function useCommitTransaction({
     onTransactionSucceeded(payload);
     return payload;
   };
-}
-
-function quickGetters({ nodes, edges }: GraphState) {
-  const nodeMap = new Map(nodes.value.map((node) => [node.id, node]));
-  const edgeMap = new Map(edges.value.map((edge) => [edge.id, edge]));
-  const getNode = (id: CoreNode['id']) => nodeMap.get(id);
-  const getEdge = (id: CoreEdge['id']) => edgeMap.get(id);
-  return { getNode, getEdge };
 }
