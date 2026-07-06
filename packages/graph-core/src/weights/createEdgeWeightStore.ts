@@ -19,9 +19,7 @@ export const createEdgeWeightStore = (
       edgeIdToEdgeWeight.get(edgeId),
       `could not resolve weight from edge with id ${edgeId}`,
     );
-    return options.isGraphWeighted
-      ? edgeIdToEdgeWeight.get(edgeId)!
-      : new Fraction(1);
+    return options.weighted ? edgeIdToEdgeWeight.get(edgeId)! : new Fraction(1);
   };
 
   const setEdgeWeights: EdgeWeightStoreControls['setMany'] = (updates) => {

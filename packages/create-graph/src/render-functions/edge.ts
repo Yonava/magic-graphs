@@ -48,7 +48,8 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
   const sourceNode = { ...rawSourceNode, ...sourcePosition } as const;
   const targetNode = { ...rawTargetNode, ...targetPosition } as const;
 
-  const { isGraphDirected, isGraphWeighted } = controls.options;
+  const { directed: isGraphDirected, weighted: isGraphWeighted } =
+    controls.options;
 
   const fromNodeSize = resolver('node.size', rawSourceNode);
   const fromNodeBorderWidth = resolver('node.border.width', rawSourceNode);

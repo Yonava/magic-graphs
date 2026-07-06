@@ -49,32 +49,32 @@
   <GToolbar>
     <ToolbarButtonGroup class="gap-0">
       <GToolbarButton
-        @click="graph.options.isGraphWeighted = true"
-        :active="graph.options.isGraphWeighted"
+        @click="graph.options.weighted = true"
+        :active="graph.options.weighted"
         icon="label-outline"
       />
 
       <GToolbarDivider />
 
       <GToolbarButton
-        @click="graph.options.isGraphWeighted = false"
-        :active="!graph.options.isGraphWeighted"
+        @click="graph.options.weighted = false"
+        :active="!graph.options.weighted"
         icon="label-off-outline"
       />
     </ToolbarButtonGroup>
 
     <ToolbarButtonGroup class="gap-0">
       <GToolbarButton
-        @click="graph.options.isGraphDirected = true"
-        :active="graph.options.isGraphDirected"
+        @click="graph.options.directed = true"
+        :active="graph.options.directed"
         icon="arrow-right-thin"
       />
 
       <GToolbarDivider />
 
       <GToolbarButton
-        @click="graph.options.isGraphDirected = false"
-        :active="!graph.options.isGraphDirected"
+        @click="graph.options.directed = false"
+        :active="!graph.options.directed"
         icon="minus"
       />
     </ToolbarButtonGroup>

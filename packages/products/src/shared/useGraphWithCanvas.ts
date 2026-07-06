@@ -1,6 +1,5 @@
 import { useMagicCanvas } from '@magic/canvas/index';
 import type { MagicCanvasProps } from '@magic/canvas/types';
-import type { GraphSettings } from '@magic/graph-core/settings/index';
 
 import {
   GraphAnnotationsControls,

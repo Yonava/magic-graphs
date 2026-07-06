@@ -35,7 +35,7 @@ export class SimulationGuard {
    */
   weighted() {
     const isWeighted = () => {
-      if (this.graph.options.isGraphWeighted) return;
+      if (this.graph.options.weighted) return;
       return {
         themer: this.color.edges(),
         ...CANT_RUN_REASONS.NOT_WEIGHTED,
@@ -51,7 +51,7 @@ export class SimulationGuard {
    */
   unweighted() {
     const isUnweighted = () => {
-      if (!this.graph.options.isGraphWeighted) return;
+      if (!this.graph.options.weighted) return;
       return {
         themer: this.color.edges(),
         ...CANT_RUN_REASONS.NOT_UNWEIGHTED,
@@ -67,7 +67,7 @@ export class SimulationGuard {
    */
   directed() {
     const isDirected = () => {
-      if (this.graph.options.isGraphDirected) return;
+      if (this.graph.options.directed) return;
       return {
         themer: this.color.edges(),
         ...CANT_RUN_REASONS.NOT_DIRECTED,
@@ -83,7 +83,7 @@ export class SimulationGuard {
    */
   undirected() {
     const isUndirected = () => {
-      if (!this.graph.options.isGraphDirected) return;
+      if (!this.graph.options.directed) return;
       return {
         themer: this.color.edges(),
         ...CANT_RUN_REASONS.NOT_UNDIRECTED,

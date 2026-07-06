@@ -1,3 +1,7 @@
+import { nullThrows } from '@magic/utils/assert';
+import { getCtx } from '@magic/utils/ctx/index';
+
+import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { DEFAULT_INTERACTIVE_OPTIONS, InteractiveOptions } from './options.ts';
 import { InteractivePlugin } from './types.ts';
@@ -31,16 +35,41 @@ export const interactive =
       actions.addNode({ x: coords.x, y: coords.y });
     };
 
+    const handleEdgeTextArea = ({ elements }: CanvasGraphMouseEvent) => {
+      const topElement = elements.at(-1);
+      if (!topElement || !controls.isEdge(topElement.id)) return;
+
+      const ctx = getCtx(controls.canvas.magicCanvas.canvas);
+
+      topElement.shape.startTextAreaEdit?.(ctx, (textAreaContent) => {
+        const edge = nullThrows(
+          getters.getEdge(topElement.id),
+          'Edge not found!',
+        );
+
+        const newWeight =
+          optionsWithDefaults.edgeInputToWeight(textAreaContent);
+        if (
+          newWeight === undefined ||
+          edge.weight.valueOf() === newWeight.valueOf()
+        ) {
+          return;
+        }
+
+        controls.weights.set({ edgeId: edge.id, update: newWeight });
+      });
+    };
+
     const doesEdgeConformToRules = (
       sourceNode: { id: string },
       targetNode: { id: string },
     ) => {
-      if (options.userAddedEdgeRuleNoSelfLoops) {
+      if (options.addedEdgeRuleNoSelfLoops) {
         const violatesRule = sourceNode.id === targetNode.id;
         if (violatesRule) return false;
       }
 
-      if (options.userAddedEdgeRuleOneEdgePerPath) {
+      if (options.addedEdgeRuleOneEdgePerPath) {
         const edgeBetweenToAndFrom = controls.edges.value.find(
           (edge) =>
             edge.source === sourceNode.id && edge.target === targetNode.id,
@@ -75,16 +104,18 @@ export const interactive =
       actions.addEdge({
         source: sourceNode.id,
         target: targetNode.id,
-        weight: optionsWithDefaults.userAddedDefaultEdgeWeight(),
+        weight: optionsWithDefaults.addedEdgeWeight(),
       });
     };
 
     const enable = () => {
+      events.subscribe('onClick', handleEdgeTextArea);
       events.subscribe('onClick', handleNodeCreation);
       events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
     };
 
     const disable = () => {
+      events.unsubscribe('onClick', handleEdgeTextArea);
       events.unsubscribe('onClick', handleNodeCreation);
       events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
     };

@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import colors from '@magic/utils/colors';
-  import gsap from 'gsap';
   import { Fraction } from 'mathjs';
 
   import { watch } from 'vue';
@@ -14,7 +13,7 @@
   import { useMarkovColorizer } from './ui/useMarkovColorizer.ts';
 
   const graphWithCanvas = useGraphWithCanvas({
-    core: {
+    interactive: {
       edgeInputToWeight: (input: string) => {
         // fraction throws an error if the input cannot be parsed or
         // is a divide by zero operation

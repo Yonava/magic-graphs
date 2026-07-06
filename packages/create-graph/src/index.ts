@@ -1,5 +1,5 @@
 import { core as createCore } from '@magic/graph-core/index';
-import { GraphSettings } from '@magic/graph-core/settings/index';
+import { CoreOptions } from '@magic/graph-core/options';
 import { CoreControls } from '@magic/graph-core/types';
 import { createComputedTokenResolver } from '@magic/graph-plugins-shared/computed-tokens';
 import {
@@ -39,7 +39,7 @@ type CreateGraphOptions<
 > = {
   plugins: TPlugins;
   themePresets: Record<PresetName, PluginThemes<NoInfer<TPlugins>>>;
-  options: Partial<GraphSettings>;
+  options: Partial<CoreOptions>;
 };
 
 export const createGraph = <
