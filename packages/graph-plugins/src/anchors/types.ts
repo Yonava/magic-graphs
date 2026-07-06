@@ -5,8 +5,6 @@ import {
 } from '@magic/graph-plugins-shared/plugins';
 import { CoreNode } from '@magic/graph-primitives/types';
 
-import { Ref } from 'vue';
-
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
 import { AnchorsEventMap } from './events.ts';
@@ -35,19 +33,7 @@ export type NodeAnchor = {
   id: string;
 };
 
-type BaseAnchorsControls = {
-  /**
-   * the parent node of the active anchor
-   */
-  parentNode: Readonly<Ref<CoreNode | undefined>>;
-  /**
-   * set the parent node and spawn anchors around it
-   */
-  setParentNode: (nodeId: CoreNode['id']) => void;
-  clearAnchorState: () => void;
-};
-
-export type AnchorsControls = WithTheme<BaseAnchorsControls, AnchorsThemes>;
+export type AnchorsControls = WithTheme<{}, AnchorsThemes>;
 
 export type AnchorsPlugin = GraphPlugin<{
   name: 'anchors';

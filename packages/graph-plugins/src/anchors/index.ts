@@ -446,9 +446,6 @@ export const anchors: AnchorsPlugin = ({
         disable,
       },
       theme,
-      parentNode: readonly(parentNode),
-      setParentNode,
-      clearAnchorState,
     },
   };
 };

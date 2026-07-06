@@ -7,7 +7,8 @@
   "references": [
     { "path": "../graph-primitives" },
     { "path": "../graph-core" },
-    { "path": "../utils" }
+    { "path": "../utils" },
+    { "path": "../shapes" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }
