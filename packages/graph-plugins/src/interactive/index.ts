@@ -109,13 +109,13 @@ export const interactive =
     };
 
     const enable = () => {
-      events.subscribe('onClick', handleEdgeTextArea);
+      events.subscribe('onMouseDown', handleEdgeTextArea);
       events.subscribe('onClick', handleNodeCreation);
       events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
     };
 
     const disable = () => {
-      events.unsubscribe('onClick', handleEdgeTextArea);
+      events.unsubscribe('onMouseDown', handleEdgeTextArea);
       events.unsubscribe('onClick', handleNodeCreation);
       events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
     };
