@@ -206,25 +206,13 @@ importers:
       '@magic/graph-primitives':
         specifier: workspace:*
         version: link:../graph-primitives
-      '@magic/shapes':
-        specifier: workspace:*
-        version: link:../shapes
       '@magic/utils':
         specifier: workspace:*
         version: link:../utils
       fraction.js:
         specifier: ^5.3.4
         version: 5.3.4
-      mathjs:
-        specifier: 'catalog:'
-        version: 14.9.1
-      tinycolor2:
-        specifier: 'catalog:'
-        version: 1.6.0
     devDependencies:
-      '@types/tinycolor2':
-        specifier: 'catalog:'
-        version: 1.4.6
       ts-essentials:
         specifier: ^10.2.0
         version: 10.2.1(typescript@6.0.3)
@@ -249,12 +237,9 @@ importers:
       '@magic/utils':
         specifier: workspace:*
         version: link:../utils
-      '@vueuse/core':
-        specifier: 'catalog:'
-        version: 13.9.0(vue@3.5.39(typescript@6.0.3))
-      mathjs:
-        specifier: 'catalog:'
-        version: 14.9.1
+      fraction.js:
+        specifier: ^5.3.4
+        version: 5.3.4
     devDependencies:
       ts-essentials:
         specifier: ^10.2.0
