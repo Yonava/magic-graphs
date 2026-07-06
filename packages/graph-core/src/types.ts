@@ -17,7 +17,7 @@ export type CoreControls = {
   nodeIdToIndex: ComputedRef<Map<CoreNode['id'], number>>;
   edgeIdToIndex: ComputedRef<Map<CoreEdge['id'], number>>;
 
-  options: CoreOptions;
+  metadata: Readonly<CoreOptions>;
 
   helpers: CoreGraphHelpers;
   positions: NodePositionStoreControls;

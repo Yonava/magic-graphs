@@ -36,7 +36,7 @@ const getUndirectedGraphAdjacencyList = (graph: Graph) => {
  * // { 'abc123': ['def456'], 'def456': ['abc123'] }
  */
 const getAdjacencyList = (graph: Graph) => {
-  const { isGraphDirected } = graph.options;
+  const { directed: isGraphDirected } = graph.metadata;
   const fn = isGraphDirected
     ? getDirectedGraphAdjacencyList
     : getUndirectedGraphAdjacencyList;

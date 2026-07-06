@@ -14,7 +14,7 @@
 
   const graphWithCanvas = useGraphWithCanvas({
     core: {
-      isGraphWeighted: false,
+      weighted: false,
     },
   });
   const { graph } = graphWithCanvas;

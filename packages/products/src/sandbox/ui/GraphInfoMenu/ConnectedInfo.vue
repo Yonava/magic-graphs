@@ -15,7 +15,7 @@
   const isWeaklyConnected = computed(
     () => graph.value.characteristics.connected.isWeaklyConnected.value,
   );
-  const isDirected = computed(() => graph.value.options.isGraphDirected);
+  const isDirected = computed(() => graph.value.metadata.directed);
 
   const SCCs = computed(() => {
     const components =

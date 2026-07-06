@@ -80,27 +80,6 @@ export const focus: FocusPlugin = ({
     );
   };
 
-  const handleTextArea = (canvasElement: CanvasElement) => {
-    const ctx = getCtx(controls.canvas.magicCanvas.canvas);
-
-    canvasElement.shape.startTextAreaEdit?.(ctx, (textAreaContent) => {
-      const edge = nullThrows(
-        getters.getEdge(canvasElement.id),
-        'Only edges may include TextAreas',
-      );
-
-      const newWeight = controls.options.edgeInputToWeight(textAreaContent);
-      if (
-        newWeight === undefined ||
-        edge.weight.valueOf() === newWeight.valueOf()
-      ) {
-        return;
-      }
-
-      controls.weights.set({ edgeId: edge.id, update: newWeight });
-    });
-  };
-
   const clearRemovedElementsFromFocus = ({
     removedNodeIds,
     removedEdgeIds,
@@ -128,15 +107,6 @@ export const focus: FocusPlugin = ({
     const topItem = items.at(-1);
     if (!topItem) {
       return event.shiftKey ? undefined : clearFocus();
-    }
-
-    // handle text areas
-    const inATextArea = topItem.shape.textHitbox?.(coords);
-    const canEdit = inATextArea && controls.isEdge(topItem.id);
-
-    if (canEdit) {
-      clearFocus();
-      return handleTextArea(topItem);
     }
 
     if (event.shiftKey) addToFocus(topItem.id);

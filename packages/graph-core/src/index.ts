@@ -16,7 +16,7 @@ import { useNodeEdgeMap } from './useNodeEdgeMap.ts';
 import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
 
 export const core = (options: Partial<CoreOptions>) => {
-  const optionsWithDefaults = {
+  const metadata = {
     ...DEFAULT_CORE_OPTIONS,
     ...options,
   };
@@ -28,10 +28,7 @@ export const core = (options: Partial<CoreOptions>) => {
   const edges = ref<CoreEdge[]>([]);
 
   const nodePositionStore = createNodePositionStore(coreEventHub);
-  const edgeWeightStore = createEdgeWeightStore(
-    coreEventHub,
-    optionsWithDefaults,
-  );
+  const edgeWeightStore = createEdgeWeightStore(coreEventHub, metadata);
 
   const { nodeIdToNodeMap, edgeIdToEdgeMap } = useNodeEdgeMap(nodes, edges);
 
@@ -96,9 +93,9 @@ export const core = (options: Partial<CoreOptions>) => {
       edges,
       getEdge,
       getNode,
-      options: optionsWithDefaults,
+      metadata,
     }),
-    options: optionsWithDefaults,
+    metadata,
     positions: nodePositionStore,
     weights: edgeWeightStore,
   };

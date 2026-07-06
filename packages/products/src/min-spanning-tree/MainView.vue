@@ -5,8 +5,7 @@
   import { useGraphWithCanvas } from '../shared/useGraphWithCanvas.ts';
 
   const graphWithCanvas = useGraphWithCanvas({
-    core: {
-      isGraphDirected: false,
+    interactive: {
       edgeInputToWeight: (input) => {
         // fraction throws an error if the input cannot be parsed or
         // is a divide by zero operation
@@ -17,6 +16,9 @@
           return fraction;
         } catch {}
       },
+    },
+    core: {
+      directed: false,
     },
   });
 </script>

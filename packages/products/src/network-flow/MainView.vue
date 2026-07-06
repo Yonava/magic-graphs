@@ -10,11 +10,9 @@
 
   const graphWithCanvas = useGraphWithCanvas({
     interactive: {
-      userAddedDefaultEdgeWeight: () => new Fraction(5),
-      userAddedEdgeRuleNoSelfLoops: true,
-      userAddedEdgeRuleOneEdgePerPath: true,
-    },
-    core: {
+      addedEdgeWeight: () => new Fraction(5),
+      addedEdgeRuleNoSelfLoops: true,
+      addedEdgeRuleOneEdgePerPath: true,
       edgeInputToWeight: (input: string) => {
         // fraction throws an error if the input cannot be parsed or
         // is a divide by zero operation
