@@ -10,22 +10,14 @@
     }
   },
   "scripts": {
-    "build:types": "vue-tsc -b tsconfig.json"
-  },
-  "peerDependencies": {
-    "vue": "^3.5.18"
+    "build:types": "tsc -b tsconfig.json"
   },
   "dependencies": {
     "@magic/utils": "workspace:*",
     "@magic/graph-primitives": "workspace:*",
-    "@magic/shapes": "workspace:*",
-    "fraction.js": "^5.3.4",
-    "mathjs": "catalog:",
-    "tinycolor2": "catalog:"
+    "fraction.js": "^5.3.4"
   },
   "devDependencies": {
-    "@types/tinycolor2": "catalog:",
-    "ts-essentials": "^10.2.0",
-    "vue": "catalog:"
+    "ts-essentials": "^10.2.0"
   }
 }

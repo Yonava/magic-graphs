@@ -1,7 +1,7 @@
 import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 import { nullThrows } from '@magic/utils/assert';
 import { getValue } from '@magic/utils/maybeGetter/index';
-import { Fraction } from 'mathjs';
+import Fraction from 'fraction.js';
 
 import { CoreEventMap } from '../events.ts';
 import { CoreOptions } from '../options.ts';

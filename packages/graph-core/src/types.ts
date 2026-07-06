@@ -1,7 +1,5 @@
 import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 
-import type { ComputedRef, Ref } from 'vue';
-
 import { CoreGraphHelpers } from './helpers/types.ts';
 import { CoreOptions } from './options.ts';
 import { NodePositionStoreControls } from './positions/types.ts';
