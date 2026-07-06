@@ -3,8 +3,6 @@ import { GraphPlugin, WithTheme } from '@magic/graph-plugins-shared/plugins';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import { DeepReadonly } from 'ts-essentials';
 
-import { Ref, ShallowRef } from 'vue';
-
 import { AggregatorControls } from './aggregator/createAggregator.ts';
 import { CanvasElement } from './aggregator/types.ts';
 import { CanvasEventMap } from './events.ts';
@@ -33,14 +31,6 @@ type BaseCanvasControls = {
    * controls for adding and managing animated shapes on the canvas.
    */
   shapes: AnimatedShapeControls;
-  /**
-   * whether the canvas is currently focused in the browser
-   */
-  focused: Ref<boolean>;
-  /**
-   * whether the canvas is currently hovered by the mouse
-   */
-  hovered: ShallowRef<boolean>;
   /**
    * the canvas elements currently under the cursor and the cursor's canvas coordinates.
    * updated on mouse move and on any graph mutation that affects what is under the cursor.
