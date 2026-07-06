@@ -30,7 +30,7 @@
   );
 
   const isAcyclic = computed(
-    () => graph.value.characteristics.cycles.isAcyclic.value,
+    () => graph.value.characteristics.getCycles.isAcyclic.value,
   );
 
   const { color: colorizeSCCs, uncolor: decolorizeSCCs } = useSCCColorizer(

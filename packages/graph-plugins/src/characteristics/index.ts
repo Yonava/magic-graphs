@@ -2,25 +2,27 @@ import {
   GraphPlugin,
   PluginOptions,
 } from '@magic/graph-plugins-shared/plugins';
+import { CoreEdge } from '@magic/graph-primitives/types';
 
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
-import {
-  BidirectionalEdgesControls,
-  useBidirectionalEdges,
-} from './bidirectional.ts';
-import { BipartiteControls, useBipartite } from './bipartite.ts';
+import { getBidirectionalEdges } from './bidirectional.ts';
+import { BipartiteData, getBipartiteData } from './bipartite.ts';
 import { isComplete } from './complete.ts';
-import { ConnectedControls, useConnected } from './connected.ts';
-import { CyclesControls, useCycles } from './cycles.ts';
-import { SCCControls, useStronglyConnectedComponents } from './scc.ts';
+import { ConnectedData, getConnectedData } from './connected.ts';
+import { CycleData, getCycleData } from './cycles.ts';
+import {
+  StronglyConnectedComponentsData,
+  getStronglyConnectedComponents,
+  getStronglyConnectedComponentsData,
+} from './scc.ts';
 
 type CharacteristicsControls = {
-  complete: (controls: Controls) => boolean;
-  cycles: CyclesControls;
-  sccs: SCCControls;
-  bidirectionalEdges: BidirectionalEdgesControls;
-  bipartite: BipartiteControls;
-  connected: ConnectedControls;
+  isComplete: () => boolean;
+  getCycles: () => CycleData;
+  sccs: () => StronglyConnectedComponentsData;
+  bidirectionalEdges: () => CoreEdge[];
+  bipartite: () => BipartiteData;
+  connected: () => ConnectedData;
 };
 
 type CharacteristicsPlugin = GraphPlugin<{
@@ -36,21 +38,18 @@ export const characteristics: CharacteristicsPlugin = ({
   events,
   actions,
   getters,
-}) => {
-  const sccs = useStronglyConnectedComponents(controls);
-
-  return {
-    name: 'characteristics',
-    actions,
-    events,
-    getters,
-    controls: {
-      complete: isComplete,
-      cycles: useCycles(controls, sccs),
-      sccs: sccs,
-      bidirectionalEdges: useBidirectionalEdges(controls),
-      bipartite: useBipartite(controls),
-      connected: useConnected(controls),
-    },
-  };
-};
+}) => ({
+  name: 'characteristics',
+  actions,
+  events,
+  getters,
+  controls: {
+    isComplete: () => isComplete(controls),
+    getCycles: () =>
+      getCycleData(controls, getStronglyConnectedComponents(controls)),
+    sccs: () => getStronglyConnectedComponentsData(controls),
+    bidirectionalEdges: () => getBidirectionalEdges(controls),
+    bipartite: () => getBipartiteData(controls),
+    connected: () => getConnectedData(controls),
+  },
+});

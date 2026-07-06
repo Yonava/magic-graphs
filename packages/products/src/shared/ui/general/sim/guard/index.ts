@@ -146,7 +146,7 @@ export class SimulationGuard {
    */
   acyclic() {
     const isAcyclic = () => {
-      if (this.graph.characteristics.cycles.isAcyclic.value) return;
+      if (this.graph.characteristics.getCycles.isAcyclic.value) return;
       return {
         themer: {
           theme: this.cycle.colorize,

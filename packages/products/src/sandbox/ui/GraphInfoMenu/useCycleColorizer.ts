@@ -18,9 +18,9 @@ export const useCycleColorizer = (graph: Graph) => {
   const anchors = graph.anchors.theme.createLayer(CYCLE_THEME_ID);
 
   const colorNodeBorders = ({ id }: { id: string }) => {
-    const isAcyclic = graph.characteristics.cycles.isAcyclic.value;
+    const isAcyclic = graph.characteristics.getCycles.isAcyclic.value;
     if (isAcyclic) return;
-    const map = graph.characteristics.cycles.nodeIdToCycle.value;
+    const map = graph.characteristics.getCycles.nodeIdToCycle.value;
     const cycle = map.get(id);
     if (cycle === undefined) return;
     return COLORS[cycle % COLORS.length];

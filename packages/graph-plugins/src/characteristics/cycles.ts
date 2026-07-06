@@ -1,11 +1,9 @@
 import { CoreNode } from '@magic/graph-primitives/types';
 import { DeepReadonly } from 'ts-essentials';
 
-import { ComputedRef, computed } from 'vue';
-
 import { AdjacencyList } from '../adjacency-lists/types.ts';
 import { Controls } from './index.ts';
-import type { SCCControls } from './scc.ts';
+import type { StronglyConnectedComponentsData } from './scc.ts';
 
 type GetCycles = (adjList: DeepReadonly<AdjacencyList>) => CoreNode['id'][][];
 
@@ -54,43 +52,42 @@ export const getCycles: GetCycles = (adjList) => {
   return cycles;
 };
 
-export type CyclesControls = {
-  cycles: ComputedRef<string[][]>;
-  nodeIdToCycle: ComputedRef<Map<string, number>>;
-  isAcyclic: ComputedRef<boolean>;
+export type CycleData = {
+  cycles: string[][];
+  nodeIdToCycle: Map<string, number>;
+  isAcyclic: boolean;
 };
 
-export const useCycles = (
+export const getCycleData = (
   controls: Controls,
-  scc: Pick<SCCControls, 'stronglyConnectedComponents'>,
-): CyclesControls => {
+  stronglyConnectedComponents: CoreNode[][],
+): CycleData => {
   const { metadata, adjacencyLists } = controls;
-  const { stronglyConnectedComponents } = scc;
 
-  const cycles = computed(() => {
+  const cycles = () => {
     const { directed: isGraphDirected } = metadata;
     if (!isGraphDirected) {
       const res = getCycles(adjacencyLists.standard());
-      return res.sort((a, b) => a.length - b.length);
+      return res.toSorted((a, b) => a.length - b.length);
     }
 
-    return stronglyConnectedComponents.value
+    return stronglyConnectedComponents
       .filter((scc) => scc.length > 1)
       .map((scc) => scc.map((node) => node.id));
-  });
+  };
 
-  const nodeIdToCycle = computed(() => {
-    return cycles.value.reduce((acc, cycle, i) => {
+  const nodeIdToCycle = (cycles: string[][]) => {
+    return cycles.reduce((acc, cycle, i) => {
       for (const nodeId of cycle) acc.set(nodeId, i);
       return acc;
     }, new Map<CoreNode['id'], number>());
-  });
+  };
 
-  const isAcyclic = computed(() => cycles.value.length === 0);
+  const currentCycles = cycles();
 
   return {
-    cycles,
-    nodeIdToCycle,
-    isAcyclic,
+    cycles: currentCycles,
+    nodeIdToCycle: nodeIdToCycle(currentCycles),
+    isAcyclic: currentCycles.length === 0,
   };
 };
