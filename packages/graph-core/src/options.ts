@@ -1,5 +1,3 @@
-import Fraction from 'fraction.js';
-
 export type CoreOptions = {
   /**
    * whether graph is weighted, if true, all individual {@link CoreEdge.weight | edge weights} are ignored and are treated as if they were `new Fraction(1)`

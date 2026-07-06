@@ -19,7 +19,7 @@ export type WeightedAdjacencyList = Record<
 
 export type Graph = Pick<
   CoreControls,
-  'options' | 'nodes' | 'edges' | 'helpers'
+  'metadata' | 'nodes' | 'edges' | 'helpers'
 > & {
   events: EventHub<CoreEventMap>;
 } & GraphGetters<CoreGetters>;

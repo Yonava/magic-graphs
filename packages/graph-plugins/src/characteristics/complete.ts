@@ -8,7 +8,7 @@ export type CompleteControls = {
 
 export const useComplete = (controls: Controls): CompleteControls => {
   const isComplete = computed(() => {
-    const isDirected = controls.options.directed;
+    const isDirected = controls.metadata.directed;
     const n = controls.nodes.value.length;
     const m = controls.edges.value.length;
     return m === (isDirected ? n * (n - 1) : (n * (n - 1)) / 2);

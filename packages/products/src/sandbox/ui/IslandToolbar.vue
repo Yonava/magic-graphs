@@ -27,7 +27,6 @@
   const canUndo = computed(() => {
     const annotations = graph.value.annotations;
     const { canUndo } = graph.value.history;
-    const { options } = graph.value;
     if (annotations.isActive.value) return annotations.history.canUndo.value;
     return canUndo.value;
   });
@@ -35,7 +34,6 @@
   const canRedo = computed(() => {
     const annotations = graph.value.annotations;
     const { canRedo } = graph.value.history;
-    const { options } = graph.value;
     if (annotations.isActive.value) return annotations.history.canRedo.value;
     return canRedo.value;
   });
@@ -47,38 +45,6 @@
 
 <template>
   <GToolbar>
-    <ToolbarButtonGroup class="gap-0">
-      <GToolbarButton
-        @click="graph.options.weighted = true"
-        :active="graph.options.weighted"
-        icon="label-outline"
-      />
-
-      <GToolbarDivider />
-
-      <GToolbarButton
-        @click="graph.options.weighted = false"
-        :active="!graph.options.weighted"
-        icon="label-off-outline"
-      />
-    </ToolbarButtonGroup>
-
-    <ToolbarButtonGroup class="gap-0">
-      <GToolbarButton
-        @click="graph.options.directed = true"
-        :active="graph.options.directed"
-        icon="arrow-right-thin"
-      />
-
-      <GToolbarDivider />
-
-      <GToolbarButton
-        @click="graph.options.directed = false"
-        :active="!graph.options.directed"
-        icon="minus"
-      />
-    </ToolbarButtonGroup>
-
     <ToolbarButtonGroup class="gap-0">
       <GToolbarButton
         @click="undo.fn"

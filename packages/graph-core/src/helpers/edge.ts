@@ -15,7 +15,7 @@ const getConnectedNodes: CurriedEdgeHelpers['getConnectedNodes'] =
 export const edgeHelpers: CurriedEdgeHelpers = {
   getConnectedNodes,
   isPointingAwayFromNode: (graph) => (edgeId, nodeId) => {
-    const { directed: isGraphDirected } = graph.options;
+    const { directed: isGraphDirected } = graph.metadata;
 
     const edge = graph.getEdge(edgeId);
     if (!edge) throw new Error(`Edge with ID ${edgeId} not found`);
@@ -27,7 +27,7 @@ export const edgeHelpers: CurriedEdgeHelpers = {
     return edge.source === nodeId || edge.target === nodeId;
   },
   isPointingTowardNode: (graph) => (edgeId, nodeId) => {
-    const { directed: isGraphDirected } = graph.options;
+    const { directed: isGraphDirected } = graph.metadata;
 
     const edge = graph.getEdge(edgeId);
     if (!edge) throw new Error(`Edge with ID ${edgeId} not found`);
