@@ -323,7 +323,7 @@ export const anchors: AnchorsPlugin = ({
 
     // when we clear the node anchors, we must ensure that the
     // aggregator updates so that it knows the node anchors
-    // and link preview are no longer on the canvas
+    // and edge preview are no longer on the canvas
     controls.canvas.aggregator.updateAggregator();
     controls.canvas.forceUpdateGraphUnderCursor();
 

@@ -6,7 +6,6 @@ import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { cross } from '@magic/shapes/shapes/cross/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
-import { onClickOutside } from '@vueuse/core';
 import { DeepReadonly } from 'ts-essentials';
 
 import { onBeforeUnmount, onMounted } from 'vue';

@@ -75,7 +75,7 @@ export const marquee: MarqueePlugin = ({
     if (surfaceArea < 100) return;
     const targetedItems: string[] = [];
 
-    for (const { id, shape } of controls.canvas.aggregator.aggregator.value) {
+    for (const { id, shape } of controls.canvas.aggregator.aggregator) {
       const inSelectionBox = shape.efficientHitbox(box);
       if (inSelectionBox) targetedItems.push(id);
     }
