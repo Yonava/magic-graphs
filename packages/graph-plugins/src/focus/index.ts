@@ -6,8 +6,6 @@ import { ElementRemovalPayload } from '@magic/graph-primitives/transactions/type
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
-import { readonly, ref } from 'vue';
-
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
 import { FOCUS_PLUGIN_ID } from './constants.ts';
@@ -28,18 +26,16 @@ export const focus: FocusPlugin = ({
     graphEventHub,
   );
 
-  const focusedElementIds = ref(new Set<string>());
+  let focusedElementIds = new Set<string>();
 
   const setFocus = (ids: string[]) => {
-    const elementsAlreadyFocused = ids.every((id) =>
-      focusedElementIds.value.has(id),
-    );
+    const elementsAlreadyFocused = ids.every((id) => focusedElementIds.has(id));
     if (ids.length > 0 && elementsAlreadyFocused) return;
 
-    const oldIds = new Set([...focusedElementIds.value]);
-    focusedElementIds.value = new Set(ids);
+    const oldIds = new Set([...focusedElementIds]);
+    focusedElementIds = new Set(ids);
 
-    events.emit('onFocusChange', focusedElementIds.value, oldIds);
+    events.emit('onFocusChange', focusedElementIds, oldIds);
   };
 
   const clearFocus = () => setFocus([]);
@@ -59,17 +55,16 @@ export const focus: FocusPlugin = ({
     }
     const stagedElementIds = elementsAddedToFocus.filter(
       (newId) =>
-        !focusedElementIds.value.has(newId) &&
-        !nonExistingElementIds.has(newId),
+        !focusedElementIds.has(newId) && !nonExistingElementIds.has(newId),
     );
     if (stagedElementIds.length === 0) return;
 
-    const previousFocusedElementIds = new Set([...focusedElementIds.value]);
+    const previousFocusedElementIds = new Set([...focusedElementIds]);
     const newFocusedElementIds = new Set([
       ...stagedElementIds,
       ...previousFocusedElementIds,
     ]);
-    focusedElementIds.value = newFocusedElementIds;
+    focusedElementIds = newFocusedElementIds;
     events.emit(
       'onFocusChange',
       newFocusedElementIds,
@@ -88,7 +83,7 @@ export const focus: FocusPlugin = ({
 
     const removedIds = new Set<string>([...removedNodeIds, ...removedEdgeIds]);
 
-    const newFocusedIds = Array.from(focusedElementIds.value).filter(
+    const newFocusedIds = Array.from(focusedElementIds).filter(
       (id) => !removedIds.has(id),
     );
 
@@ -97,7 +92,6 @@ export const focus: FocusPlugin = ({
 
   const handleMouseDown = ({
     elements: items,
-    coords,
     event,
   }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
@@ -116,7 +110,7 @@ export const focus: FocusPlugin = ({
     setFocus([...nodeIds, ...edgeIds]);
   };
 
-  const isFocused = (id: string) => focusedElementIds.value.has(id);
+  const isFocused = (id: string) => focusedElementIds.has(id);
 
   const enable = () => {
     // focus a node when clicked, or clear focus if background is clicked
@@ -177,7 +171,6 @@ export const focus: FocusPlugin = ({
       add: addToFocus,
       all: focusAll,
       isFocused,
-      focusedElementIds: readonly(focusedElementIds),
       focusedNodes: () => controls.nodes.filter((node) => isFocused(node.id)),
       focusedEdges: () => controls.edges.filter((edge) => isFocused(edge.id)),
       theme: {
