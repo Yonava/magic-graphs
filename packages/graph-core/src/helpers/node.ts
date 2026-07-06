@@ -18,7 +18,7 @@ const getOutboundEdges: CurriedNodeHelpers['getOutboundEdges'] =
     const edgeFilter = isGraphDirected
       ? isDirectedEdgeOutbound
       : isUndirectedEdgeOutbound;
-    return graph.edges.value.filter(edgeFilter);
+    return graph.edges.filter(edgeFilter);
   };
 
 const getInboundEdges: CurriedNodeHelpers['getInboundEdges'] =
@@ -35,7 +35,7 @@ const getInboundEdges: CurriedNodeHelpers['getInboundEdges'] =
     const edgeFilter = isGraphDirected
       ? isDirectedEdgeInbound
       : isUndirectedEdgeInbound;
-    return graph.edges.value.filter(edgeFilter);
+    return graph.edges.filter(edgeFilter);
   };
 
 const getParents: CurriedNodeHelpers['getParents'] = (graph) => (nodeId) => {
@@ -54,7 +54,7 @@ const getChildren: CurriedNodeHelpers['getChildren'] = (graph) => (nodeId) => {
 
 const getConnectedEdges: CurriedNodeHelpers['getConnectedEdges'] =
   (graph) => (nodeId) =>
-    graph.edges.value.filter(
+    graph.edges.filter(
       (edge) => edge.target === nodeId || edge.source === nodeId,
     );
 
@@ -88,7 +88,7 @@ const getEdgeBetween: CurriedNodeHelpers['getEdgeBetween'] =
   (graph) => (fromNodeId, toNodeId) => {
     const { directed: isGraphDirected } = graph.metadata;
 
-    return graph.edges.value.find((edge) => {
+    return graph.edges.find((edge) => {
       if (isGraphDirected) {
         return edge.source === fromNodeId && edge.target === toNodeId;
       }
@@ -115,7 +115,7 @@ export const nodeHelpers: CurriedNodeHelpers = {
       return fromNode1ToNode2 || fromNode2ToNode1;
     };
 
-    return graph.edges.value.filter(isConnecting);
+    return graph.edges.filter(isConnecting);
   },
   getInboundEdges,
   getOutboundEdges,

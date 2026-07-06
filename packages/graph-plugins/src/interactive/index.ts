@@ -70,12 +70,12 @@ export const interactive =
       }
 
       if (options.addedEdgeRuleOneEdgePerPath) {
-        const edgeBetweenToAndFrom = controls.edges.value.find(
+        const edgeBetweenToAndFrom = controls.edges.find(
           (edge) =>
             edge.source === sourceNode.id && edge.target === targetNode.id,
         );
 
-        const edgeBetweenFromAndTo = controls.edges.value.find(
+        const edgeBetweenFromAndTo = controls.edges.find(
           (edge) =>
             edge.source === targetNode.id && edge.target === sourceNode.id,
         );

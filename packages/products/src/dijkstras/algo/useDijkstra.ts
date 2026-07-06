@@ -47,18 +47,18 @@ export const useDijkstra = (graph: Graph) => {
 
     trace.value = res.trace.map(({ currentNode, distances, queue }) => ({
       currentNode: currentNode
-        ? graph.getNode(graph.nodes[currentNode].id)
+        ? graph.getNode(graph.nodes.value[currentNode].id)
         : undefined,
       distances: Object.fromEntries(
-        distances.map((distance, i) => [graph.nodes[i].id, distance]),
+        distances.map((distance, i) => [graph.nodes.value[i].id, distance]),
       ),
-      queue: new Set(queue.map((i) => graph.nodes[i.node].id)),
+      queue: new Set(queue.map((i) => graph.nodes.value[i.node].id)),
     }));
 
     output.value = {
       startNode: startNode,
       distances: Object.fromEntries(
-        res.res.map((distance, i) => [graph.nodes[i].id, distance]),
+        res.res.map((distance, i) => [graph.nodes.value[i].id, distance]),
       ),
     };
   };

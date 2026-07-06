@@ -5,7 +5,10 @@ import { ComputedRef, computed } from 'vue';
 import { Controls } from './index.ts';
 import TarjanGraph from './tarjans.ts';
 
-type GetComponents = (nodes: CoreNode[], edges: CoreEdge[]) => CoreNode[][];
+type GetComponents = (
+  nodes: readonly CoreNode[],
+  edges: readonly CoreEdge[],
+) => CoreNode[][];
 
 /**
  * maps a node id to the index of the strongly connected component it belongs to
@@ -47,7 +50,7 @@ export const useStronglyConnectedComponents = (
   const { nodes, edges, adjacencyLists } = controls;
 
   const stronglyConnectedComponents = computed(() => {
-    return getStronglyConnectedComponents(nodes.value, edges.value);
+    return getStronglyConnectedComponents(nodes, edges);
   });
 
   const nodeIdToConnectedComponent = computed(() => {

@@ -17,7 +17,7 @@ export const useSimulationTheme = (
   const nodeText = ({ id }: { id: string }) => {
     if (graph.focus.isFocused(id)) return;
 
-    const index = nodeIdToIndex.value.get(id);
+    const index = nodeIdToIndex(id);
     if (index === undefined) return;
 
     return traceAtStep.value[index].simplify(0.001).toFraction();

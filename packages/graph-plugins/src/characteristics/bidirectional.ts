@@ -17,7 +17,7 @@ export const useBidirectionalEdges = (
   controls: Controls,
 ): BidirectionalEdgesControls => {
   const bidirectionalEdges = computed(() => {
-    const edges = controls.edges.value;
+    const edges = controls.edges;
     return edges
       .filter((edge) => edge.source !== edge.target)
       .filter((edge) => {

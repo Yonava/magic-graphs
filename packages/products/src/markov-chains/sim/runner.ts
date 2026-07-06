@@ -32,7 +32,7 @@ export const useSimulationRunner = (
     }
 
     const nodeId = initialState.get(graph)!.id;
-    const index = nodeIdToIndex.value.get(nodeId)!;
+    const index = nodeIdToIndex(nodeId)!;
 
     stateVector[index] = new Fraction(1);
     return stateVector;

@@ -148,8 +148,9 @@ export const marquee: MarqueePlugin = ({
       shape,
       priority: 3,
       data: {
-        [NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD]:
-          controls.focus.focusedNodes.value.map((n) => n.id),
+        [NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD]: controls.focus
+          .focusedNodes()
+          .map((n) => n.id),
         [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: theme._resolveToken(
           'marquee.selection.cursor',
         ),

@@ -75,7 +75,7 @@ export const canvas =
     // collides with the existing distribution. max+1 gives permanent promotion
     // without touching other nodes and works fine since node z-scored get normalized for rendering anyway.
     const setHoveredNode = (nodeId: string) => {
-      const maxZ = controls.nodes.value.reduce(
+      const maxZ = controls.nodes.reduce(
         (max, n) => Math.max(max, controls.positions.get(n.id).z),
         -Infinity,
       );
@@ -162,12 +162,12 @@ export const canvas =
     });
 
     let getNodePriority = createNodeCanvasElementPriorityGetter({
-      nodes: controls.nodes.value,
+      nodes: controls.nodes,
       positions: controls.positions,
     });
     events.subscribe('onBeforeDraw', () => {
       getNodePriority = createNodeCanvasElementPriorityGetter({
-        nodes: controls.nodes.value,
+        nodes: controls.nodes,
         positions: controls.positions,
       });
     });

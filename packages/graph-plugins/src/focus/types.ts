@@ -44,11 +44,11 @@ type BaseFocusControls = {
   /**
    * All the nodes that are focused
    */
-  focusedNodes: ComputedRef<CoreNode[]>;
+  focusedNodes: () => CoreNode[];
   /**
    * All the edges that are focused
    */
-  focusedEdges: ComputedRef<CoreEdge[]>;
+  focusedEdges: () => CoreEdge[];
 };
 
 export type FocusOption = {

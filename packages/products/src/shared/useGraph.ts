@@ -13,11 +13,12 @@ import { marquee } from '@magic/graph-plugins/marquee/index';
 import { nodeDrag } from '@magic/graph-plugins/node-drag/index';
 import { nodeLabel } from '@magic/graph-plugins/node-label/index';
 import { transitionMatrix } from '@magic/graph-plugins/transition-matrix/index';
+import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { dark } from '@magic/graph-theme-presets/dark/index';
 import { light } from '@magic/graph-theme-presets/light/index';
 import { pink } from '@magic/graph-theme-presets/pink/index';
 
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { useShortcuts } from './shortcut/index.ts';
 
@@ -80,8 +81,19 @@ export const useGraph = (options: CreateGraphWithPluginsOptions) => {
 
   const shortcut = useShortcuts(graph);
 
+  const nodes = ref<CoreNode[]>([...graph.nodes]);
+  const edges = ref<CoreEdge[]>([...graph.edges]);
+
+  graph.events.subscribe('onTransactionComplete', () => {
+    nodes.value = [...graph.nodes];
+    edges.value = [...graph.edges];
+  });
+
   return {
     ...graph,
+    // make nodes and edges read-only for consumers
+    nodes: computed(() => nodes.value),
+    edges: computed(() => edges.value),
     vue: {
       activePreset,
     },

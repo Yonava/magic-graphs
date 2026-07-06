@@ -33,7 +33,7 @@ export const createAddNodeHandler: CreateCoreAction<'addNode'> =
     );
 
     const liveNode = nullThrows(
-      graph.nodes.value.find((n) => n.id === telemetryNode.id),
+      graph.nodes.find((n) => n.id === telemetryNode.id),
       '[Graph Actions] Node creation succeeded but entity was not found in live state.',
     );
 

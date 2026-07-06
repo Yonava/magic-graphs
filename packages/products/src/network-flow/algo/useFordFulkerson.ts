@@ -1,7 +1,6 @@
 import { computed, readonly, ref, watch } from 'vue';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
-import { useResidualEdges } from '../misc/useResidualEdges.ts';
 import state from '../state.ts';
 import { fordFulkerson } from './fordFulkerson.ts';
 import type { FlowTrace } from './fordFulkerson.ts';
@@ -15,14 +14,11 @@ export const useFordFulkerson = (graph: Graph) => {
   const trace = ref<FlowTrace[]>([]);
   const maxFlow = ref<number>();
 
-  const { createResidualEdges, cleanupResidualEdges } = useResidualEdges(graph);
-
   const update = () => {
     const srcNode = sourceNode.get(graph);
     const snkNode = sinkNode.get(graph);
     if (!srcNode || !snkNode) return;
 
-    createResidualEdges();
     const { maxFlow: gotMaxFlow, trace: gotTrace } = fordFulkerson(graph, {
       sourceId: srcNode.id,
       sinkId: snkNode.id,
@@ -30,7 +26,6 @@ export const useFordFulkerson = (graph: Graph) => {
 
     trace.value = gotTrace;
     maxFlow.value = gotMaxFlow;
-    cleanupResidualEdges();
   };
 
   graph.events.subscribe('onStructureChange', update);

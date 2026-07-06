@@ -37,7 +37,7 @@
   const { label: labelSteadyState, unlabel: unlabelSteadyState } = useNodeLabel(
     graph.value,
     (nodeId) => {
-      const index = graph.value.nodeIdToIndex.value.get(nodeId)!;
+      const index = graph.value.nodeIdToIndex(nodeId)!;
       const vector = steadyState.value;
       if (typeof vector !== 'string') return vector[index];
     },

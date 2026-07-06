@@ -7,7 +7,7 @@ import { TransitionMatrix, TransitionMatrixPlugin } from './types.ts';
 
 export const getTransitionMatrix = (
   adjList: Readonly<WeightedAdjacencyList>,
-  nodeToIndex: Map<CoreNode['id'], number>,
+  nodeToIndex: (id: CoreNode['id']) => number,
 ) => {
   const adjListEntries = Object.entries(adjList);
   const nodeCount = adjListEntries.length;
@@ -17,10 +17,10 @@ export const getTransitionMatrix = (
   );
 
   for (const [nodeId, neighbors] of adjListEntries) {
-    const fromIndex = nodeToIndex.get(nodeId)!;
+    const fromIndex = nodeToIndex(nodeId)!;
 
     for (const neighbor of neighbors) {
-      const toIndex = nodeToIndex.get(neighbor.id)!;
+      const toIndex = nodeToIndex(neighbor.id)!;
       matrix[fromIndex][toIndex] = neighbor.weight;
     }
   }
@@ -36,7 +36,7 @@ export const transitionMatrix: TransitionMatrixPlugin = ({
   controls: computed(() =>
     getTransitionMatrix(
       controls.adjacencyLists.weighted.value,
-      controls.nodeIdToIndex.value,
+      controls.nodeIdToIndex,
     ),
   ),
   ...rest,

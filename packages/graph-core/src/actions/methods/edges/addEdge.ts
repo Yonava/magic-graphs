@@ -27,7 +27,7 @@ export const createAddEdgeHandler: CreateCoreAction<'addEdge'> =
     );
 
     return nullThrows(
-      graph.edges.value.find((e) => e.id === telemetryEdge.id),
+      graph.edges.find((e) => e.id === telemetryEdge.id),
       '[Graph Actions] Edge creation succeeded but entity was not found in live state.',
     );
   };

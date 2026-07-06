@@ -1,6 +1,6 @@
+import { PluginOptions } from '@magic/graph-plugins-shared/plugins';
 import type { BoundingBox } from '@magic/shapes/types/utility';
 
-import { PluginOptions } from '@magic/graph-plugins-shared/plugins';
 import { MarqueePlugin } from './types.ts';
 
 export function getSurfaceArea(box: BoundingBox) {
@@ -17,14 +17,14 @@ export const getSelectionBox = (
     height: 0,
   };
 
-  if (controls.focus.focusedNodes.value.length < 2) return selectionBox;
+  if (controls.focus.focusedNodes().length < 2) return selectionBox;
 
   let minX = Infinity,
     minY = Infinity;
   let maxX = -Infinity,
     maxY = -Infinity;
 
-  for (const node of controls.nodes.value) {
+  for (const node of controls.nodes) {
     const nodeRadius = controls.canvas.theme._resolveToken(
       'node.default.size',
       node,

@@ -35,7 +35,7 @@ export const nodeLabel: NodeLabelPlugin = ({
     getLabels: () =>
       // TODO breaks when multiple nodes are added in bulk. Needs to change
       // https://github.com/Yonava/magic-graphs/issues/700
-      controls.nodes.value.map((n) => getNodeLabelWithAssert(n.id)),
+      controls.nodes.map((n) => getNodeLabelWithAssert(n.id)),
     sequence: UPPERCASE_ALPHABET,
   });
 

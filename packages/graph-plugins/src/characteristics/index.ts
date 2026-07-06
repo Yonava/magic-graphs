@@ -9,13 +9,13 @@ import {
   useBidirectionalEdges,
 } from './bidirectional.ts';
 import { BipartiteControls, useBipartite } from './bipartite.ts';
-import { CompleteControls, useComplete } from './complete.ts';
+import { isComplete } from './complete.ts';
 import { ConnectedControls, useConnected } from './connected.ts';
 import { CyclesControls, useCycles } from './cycles.ts';
 import { SCCControls, useStronglyConnectedComponents } from './scc.ts';
 
 type CharacteristicsControls = {
-  complete: CompleteControls;
+  complete: (controls: Controls) => boolean;
   cycles: CyclesControls;
   sccs: SCCControls;
   bidirectionalEdges: BidirectionalEdgesControls;
@@ -45,7 +45,7 @@ export const characteristics: CharacteristicsPlugin = ({
     events,
     getters,
     controls: {
-      complete: useComplete(controls),
+      complete: isComplete,
       cycles: useCycles(controls, sccs),
       sccs: sccs,
       bidirectionalEdges: useBidirectionalEdges(controls),

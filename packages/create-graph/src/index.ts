@@ -180,8 +180,8 @@ export const createGraph = <
     .canvas.aggregator;
 
   const transformer: AggregatorTransformer = (agg) => {
-    agg.push(...controls.nodes.value.map(nodeCanvasElement).filter((v) => !!v));
-    agg.push(...controls.edges.value.map(edgeCanvasElement).filter((v) => !!v));
+    agg.push(...controls.nodes.map(nodeCanvasElement).filter((v) => !!v));
+    agg.push(...controls.edges.map(edgeCanvasElement).filter((v) => !!v));
     return agg;
   };
 

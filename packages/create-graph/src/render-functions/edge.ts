@@ -99,7 +99,7 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
      * 2. map to { x, y } format
      * 3. filter duplicates — prevents bi-directional edges from causing angle issues when no other edges are present
      */
-    controls.edges.value
+    controls.edges
       .filter(
         (e) =>
           (e.target === sourceNode.id || e.source === targetNode.id) &&

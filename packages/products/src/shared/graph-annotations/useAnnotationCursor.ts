@@ -5,7 +5,7 @@ import { ComputedRef } from 'vue';
 import { GraphWithPlugins } from '../useGraph.ts';
 
 export const useAnnotationCursor = (
-  graph: GraphWithPlugins,
+  graph: Omit<GraphWithPlugins, 'nodes' | 'edges'>,
   hideCursor: ComputedRef<boolean>,
 ) => {
   const { set, removeAll } = graph.canvas.theme.createLayer(

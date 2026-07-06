@@ -3,14 +3,11 @@ import { createThemeController } from '@magic/graph-plugins-shared/theme';
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
 import { ElementRemovalPayload } from '@magic/graph-primitives/transactions/types';
-import { nullThrows } from '@magic/utils/assert';
-import { getCtx } from '@magic/utils/ctx/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
-import { computed, readonly, ref } from 'vue';
+import { readonly, ref } from 'vue';
 
-import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
 import { FOCUS_PLUGIN_ID } from './constants.ts';
@@ -114,8 +111,8 @@ export const focus: FocusPlugin = ({
   };
 
   const focusAll = () => {
-    const nodeIds = controls.nodes.value.map((node) => node.id);
-    const edgeIds = controls.edges.value.map((edge) => edge.id);
+    const nodeIds = controls.nodes.map((node) => node.id);
+    const edgeIds = controls.edges.map((edge) => edge.id);
     setFocus([...nodeIds, ...edgeIds]);
   };
 
@@ -181,12 +178,8 @@ export const focus: FocusPlugin = ({
       all: focusAll,
       isFocused,
       focusedElementIds: readonly(focusedElementIds),
-      focusedNodes: computed(() =>
-        controls.nodes.value.filter((node) => isFocused(node.id)),
-      ),
-      focusedEdges: computed(() =>
-        controls.edges.value.filter((edge) => isFocused(edge.id)),
-      ),
+      focusedNodes: () => controls.nodes.filter((node) => isFocused(node.id)),
+      focusedEdges: () => controls.edges.filter((edge) => isFocused(edge.id)),
       theme: {
         ...theme,
         detectors: createFocusDetectors(isFocused, theme._resolveToken),

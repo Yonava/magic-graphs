@@ -8,8 +8,8 @@ import {
 } from './types.ts';
 
 const getDirectedGraphAdjacencyList = (graph: Graph) => {
-  return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
-    acc[node.id] = graph.edges.value
+  return graph.nodes.reduce<AdjacencyList>((acc, node) => {
+    acc[node.id] = graph.edges
       .filter((edge) => edge.source === node.id)
       .map((edge) => edge.target);
     return acc;
@@ -17,8 +17,8 @@ const getDirectedGraphAdjacencyList = (graph: Graph) => {
 };
 
 const getUndirectedGraphAdjacencyList = (graph: Graph) => {
-  return graph.nodes.value.reduce<AdjacencyList>((acc, node) => {
-    acc[node.id] = graph.edges.value
+  return graph.nodes.reduce<AdjacencyList>((acc, node) => {
+    acc[node.id] = graph.edges
       .filter((edge) => edge.source === node.id || edge.target === node.id)
       .map((edge) => {
         return edge.source === node.id ? edge.target : edge.source;

@@ -8,7 +8,6 @@ import { useSimulationControls } from '../../shared/ui/general/sim/useSimulation
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { FlowTrace } from '../algo/fordFulkerson.ts';
 import { useFordFulkerson } from '../algo/useFordFulkerson.ts';
-import { useResidualEdges } from '../misc/useResidualEdges.ts';
 import state from '../state.ts';
 import { useEdgeThickener } from '../theme/useEdgeThickener.ts';
 import { useSourceSinkTheme } from '../theme/useSourceSinkTheme.ts';
@@ -26,8 +25,6 @@ export const useSimulationRunner = (graph: Graph): FlowSimulationRunner => {
 
   const { stylize: activateFlowColorizer, destylize: deactivateFlowColorizer } =
     useSourceSinkTheme(graph, RUNNER_USETHEME_ID);
-
-  const { createResidualEdges, cleanupResidualEdges } = useResidualEdges(graph);
 
   const { trace } = useFordFulkerson(graph);
   const simControls = useSimulationControls(trace, {
@@ -47,7 +44,6 @@ export const useSimulationRunner = (graph: Graph): FlowSimulationRunner => {
     if (sinkNode.isUndefined.value) await sinkNode.set(graph);
     if (sinkNode.isUndefined.value) return;
 
-    createResidualEdges();
     activateTheme();
 
     simControls.start();
@@ -58,7 +54,6 @@ export const useSimulationRunner = (graph: Graph): FlowSimulationRunner => {
     sinkNode.cancelSet();
 
     simControls.stop();
-    cleanupResidualEdges();
     deactivateTheme();
 
     deactivateFlowColorizer();

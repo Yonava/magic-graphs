@@ -33,10 +33,6 @@
     () => graph.value.characteristics.cycles.isAcyclic.value,
   );
 
-  const isComplete = computed(
-    () => graph.value.characteristics.complete.isComplete.value,
-  );
-
   const { color: colorizeSCCs, uncolor: decolorizeSCCs } = useSCCColorizer(
     graph.value,
   );
@@ -85,10 +81,6 @@
       >
         Acyclic? {{ isAcyclic ? 'Yes' : 'No' }}
       </GHoverInfo>
-
-      <GHoverInfo :tooltip="definitions.complete">
-        Complete? {{ isComplete ? 'Yes' : 'No' }}
-      </GHoverInfo>
     </div>
     <div
       v-else
@@ -112,10 +104,6 @@
         :tooltip="definitions.acyclic"
       >
         Acyclic? {{ isAcyclic ? 'Yes' : 'No' }}
-      </GHoverInfo>
-
-      <GHoverInfo :tooltip="definitions.complete">
-        Complete? {{ isComplete ? 'Yes' : 'No' }}
       </GHoverInfo>
     </div>
   </div>

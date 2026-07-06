@@ -1,5 +1,3 @@
-import colors from '@magic/utils/colors';
-
 import { computed } from 'vue';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
@@ -7,7 +5,6 @@ import { GEdge } from '../../shared/useGraph.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { FlowTrace } from '../algo/fordFulkerson.ts';
 import { FLOW_USETHEME_ID } from '../constants.ts';
-import { isResidual } from '../misc/useResidualEdges.ts';
 
 type WeightMap = Map<GEdge['id'], GEdge['weight']>;
 
@@ -63,7 +60,6 @@ export const useSimulationTheme = (
       edge,
     );
     if (isActive) return focusColor;
-    else if (isResidual(edge.id)) return colors.ORANGE_400;
   };
 
   const labelEdges = (edge: Pick<GEdge, 'id'>) => {
