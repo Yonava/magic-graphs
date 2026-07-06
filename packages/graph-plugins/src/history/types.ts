@@ -2,8 +2,7 @@ import {
   GraphPlugin,
   WithLifecycle,
 } from '@magic/graph-plugins-shared/plugins';
-
-import { ComputedRef, Ref } from 'vue';
+import { DeepReadonly } from 'ts-essentials';
 
 import { HistoryEventMap } from './events.ts';
 
@@ -28,19 +27,19 @@ type HistoryControls = {
   /**
    * true if there are actions to undo
    */
-  canUndo: ComputedRef<boolean>;
+  canUndo: () => boolean;
   /**
    * true if there are actions to redo
    */
-  canRedo: ComputedRef<boolean>;
+  canRedo: () => boolean;
   /**
    * stores past actions to revert
    */
-  undoStack: Ref<any[]>;
+  undoStack: DeepReadonly<any[]>;
   /**
    * stores undone actions to reapply
    */
-  redoStack: Ref<any[]>;
+  redoStack: DeepReadonly<any[]>;
   /**
    * clears the undo and redo stacks
    */

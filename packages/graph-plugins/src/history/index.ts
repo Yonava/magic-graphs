@@ -2,8 +2,6 @@ import { CoreEventMap } from '@magic/graph-core/events';
 import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
 
-import { computed, ref } from 'vue';
-
 import { MAX_HISTORY } from './constants.ts';
 import { HistoryEventMap, createHistoryEventRegistry } from './events.ts';
 import { HistoryPlugin } from './types.ts';
@@ -20,25 +18,25 @@ export const history: HistoryPlugin = ({
     graphEventHub,
   );
 
-  const undoStack = ref<any[]>([]);
-  const redoStack = ref<any[]>([]);
+  let undoStack: any[] = [];
+  let redoStack: any[] = [];
 
   const addToUndoStack = (record: any) => {
-    undoStack.value.push(record);
-    if (undoStack.value.length > MAX_HISTORY) {
-      undoStack.value.shift();
+    undoStack.push(record);
+    if (undoStack.length > MAX_HISTORY) {
+      undoStack.shift();
     }
   };
 
   const addToRedoStack = (record: any) => {
-    redoStack.value.push(record);
-    if (redoStack.value.length > MAX_HISTORY) {
-      redoStack.value.shift();
+    redoStack.push(record);
+    if (redoStack.length > MAX_HISTORY) {
+      redoStack.shift();
     }
   };
 
   const undo = () => {
-    const record = undoStack.value.pop();
+    const record = undoStack.pop();
     if (!record) return;
 
     addToRedoStack(record);
@@ -49,7 +47,7 @@ export const history: HistoryPlugin = ({
   };
 
   const redo = () => {
-    const record = redoStack.value.pop();
+    const record = redoStack.pop();
     if (!record) return;
 
     addToUndoStack(record);
@@ -63,8 +61,8 @@ export const history: HistoryPlugin = ({
   const redoHistoryRecord = (record: any) => {};
 
   const clearHistory = () => {
-    undoStack.value = [];
-    redoStack.value = [];
+    undoStack = [];
+    redoStack = [];
   };
 
   return {
@@ -80,8 +78,8 @@ export const history: HistoryPlugin = ({
     controls: {
       undo,
       redo,
-      canUndo: computed(() => undoStack.value.length > 0),
-      canRedo: computed(() => redoStack.value.length > 0),
+      canUndo: () => undoStack.length > 0,
+      canRedo: () => redoStack.length > 0,
       undoStack,
       redoStack,
       clearHistory,
