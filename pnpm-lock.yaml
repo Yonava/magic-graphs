@@ -68,6 +68,9 @@ importers:
 
   packages/canvas:
     dependencies:
+      '@magic/graph-primitives':
+        specifier: workspace:*
+        version: link:../graph-primitives
       '@magic/utils':
         specifier: workspace:*
         version: link:../utils
@@ -244,9 +247,6 @@ importers:
       ts-essentials:
         specifier: ^10.2.0
         version: 10.2.1(typescript@6.0.3)
-      vue:
-        specifier: 'catalog:'
-        version: 3.5.39(typescript@6.0.3)
 
   packages/graph-plugins-shared:
     dependencies:

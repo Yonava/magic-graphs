@@ -8,8 +8,6 @@ import { cross } from '@magic/shapes/shapes/cross/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
 import { DeepReadonly } from 'ts-essentials';
 
-import { onBeforeUnmount, onMounted } from 'vue';
-
 import { createAggregator } from './aggregator/createAggregator.ts';
 import { CANVAS_PLUGIN_ID } from './constants.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
@@ -106,7 +104,7 @@ export const canvas =
 
     const shapes = useAnimatedShapes();
 
-    onMounted(() => {
+    magicCanvas.lifecycleEvents.subscribe('onMounted', () => {
       if (!magicCanvas.canvas.value) {
         throw new Error('Canvas element not found in DOM');
       }
@@ -124,7 +122,7 @@ export const canvas =
       }
     });
 
-    onBeforeUnmount(() => {
+    magicCanvas.lifecycleEvents.subscribe('onBeforeUnmount', () => {
       if (!magicCanvas.canvas.value) {
         throw new Error('Canvas element not found in DOM');
       }

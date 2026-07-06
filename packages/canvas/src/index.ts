@@ -1,12 +1,14 @@
+import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
 import { getCtx } from '@magic/utils/ctx/index';
 import { useElementSize } from '@vueuse/core';
 
-import { onMounted, ref, watch } from 'vue';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { type DrawPattern, useBackgroundPattern } from './backgroundPattern.ts';
 import { useCamera } from './camera/index.ts';
 import { getDevicePixelRatio } from './camera/utils.ts';
 import { useMagicCoordinates } from './coordinates/index.ts';
+import { createMagicCanvasLifecycleEventRegistry } from './events.ts';
 import type { DrawContent, UseMagicCanvas } from './types.ts';
 
 const REPAINT_FPS = 60;
@@ -27,11 +29,20 @@ export const useMagicCanvas: UseMagicCanvas = (options = {}) => {
   const drawContent = ref<DrawContent>(() => {});
   const drawBackgroundPattern = ref<DrawPattern>(() => {});
 
+  const lifecycleEvents = createEventHub(
+    createMagicCanvasLifecycleEventRegistry(),
+  );
+
   let repaintInterval: NodeJS.Timeout;
 
   onMounted(() => {
     initCanvasWidthHeight(canvas.value);
     repaintInterval = setInterval(repaintCanvas, 1000 / REPAINT_FPS);
+    lifecycleEvents.emit('onMounted');
+  });
+
+  onBeforeUnmount(() => {
+    lifecycleEvents.emit('onBeforeUnmount');
   });
 
   watch([canvasBoxSize.width, canvasBoxSize.height], () =>
@@ -70,5 +81,6 @@ export const useMagicCanvas: UseMagicCanvas = (options = {}) => {
       content: drawContent,
       backgroundPattern: drawBackgroundPattern,
     },
+    lifecycleEvents,
   };
 };
