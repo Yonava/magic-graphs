@@ -20,6 +20,7 @@ import { pink } from '@magic/graph-theme-presets/pink/index';
 
 import { computed, ref, watch } from 'vue';
 
+import { useCreateGraph } from '../../../graph-vue/dist/types/useCreateGraph.ts';
 import { useShortcuts } from './shortcut/index.ts';
 
 export type CreateGraphWithPluginsOptions = {
@@ -73,30 +74,13 @@ export type ThemePreset = ReturnType<
 export const useGraph = (options: CreateGraphWithPluginsOptions) => {
   const graph = createGraphWithPlugins(options);
 
-  const activePreset = ref(graph.theme.activePresetName());
-
-  watch(activePreset, (v) => {
-    graph.theme.setActivePreset(v);
-  });
+  const coreWrapper = useCreateGraph(graph);
 
   const shortcut = useShortcuts(graph);
 
-  const nodes = ref<CoreNode[]>([...graph.nodes]);
-  const edges = ref<CoreEdge[]>([...graph.edges]);
-
-  graph.events.subscribe('onTransactionComplete', () => {
-    nodes.value = [...graph.nodes];
-    edges.value = [...graph.edges];
-  });
-
   return {
     ...graph,
-    // make nodes and edges read-only for consumers
-    nodes: computed(() => nodes.value),
-    edges: computed(() => edges.value),
-    vue: {
-      activePreset,
-    },
+    ...coreWrapper,
     shortcut,
   };
 };

@@ -1,5 +1,5 @@
 {
-  "name": "@magic/products",
+  "name": "@magic/graph-vue",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     }
   },
   "scripts": {
-    "build:types": "vue-tsc -b tsconfig.json"
+    "build:types": "tsc -b tsconfig.json"
   },
   "peerDependencies": {
     "primevue": "^4.2.4",
@@ -21,25 +21,10 @@
     "@magic/create-graph": "workspace:*",
     "@magic/graph-plugins": "workspace:*",
     "@magic/graph-plugins-shared": "workspace:*",
-    "@magic/graph-theme-presets": "workspace:*",
-    "@magic/graph-vue": "workspace:*",
-    "@magic/canvas": "workspace:*",
-    "@magic/shapes": "workspace:*",
-    "@magic/ui": "workspace:*",
     "@magic/utils": "workspace:*",
-    "@vueuse/core": "catalog:",
-    "ctrl-keys": "catalog:",
-    "fraction.js": "^5.3.4",
-    "gsap": "^3.12.5",
-    "lz-string": "catalog:",
-    "mathjs": "catalog:",
-    "monaco-editor": "^0.55.1",
-    "tinycolor2": "catalog:",
-    "vue-router": "catalog:"
+    "vue": "catalog:"
   },
   "devDependencies": {
-    "@types/tinycolor2": "catalog:",
-    "primevue": "catalog:",
     "ts-essentials": "^10.2.0",
     "vue": "catalog:"
   }

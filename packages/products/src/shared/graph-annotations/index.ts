@@ -199,7 +199,7 @@ export const useGraphAnnotations = (graph: ReturnType<typeof useGraph>) => {
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
-          color: THEME_TO_ERASER_OUTLINE[graph.vue.activePreset.value],
+          color: THEME_TO_ERASER_OUTLINE[graph.activePreset.value],
           lineWidth: 2,
         },
       });

@@ -207,3 +207,12 @@ export const createGraph = <
     },
   };
 };
+
+type GraphOptions = {
+  plugins: LooseGraphPlugin[];
+  presetName: string;
+};
+
+export type Graph<Options extends GraphOptions> = ReturnType<
+  typeof createGraph<Options['plugins'], Options['presetName']>
+>;

@@ -3,21 +3,15 @@
   "compilerOptions": {
     "outDir": "./dist/types",
     "rootDir": "./src",
-    "rewriteRelativeImportExtensions": false,
-    "types": ["node"]
+    "rewriteRelativeImportExtensions": false
   },
   "references": [
-    { "path": "../canvas" },
-    { "path": "../shapes" },
-    { "path": "../ui" },
     { "path": "../utils" },
     { "path": "../graph-plugins" },
     { "path": "../graph-plugins-shared" },
     { "path": "../create-graph" },
     { "path": "../graph-core" },
-    { "path": "../graph-primitives" },
-    { "path": "../graph-theme-presets" },
-    { "path": "../graph-vue" }
+    { "path": "../graph-primitives" }
   ],
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }
