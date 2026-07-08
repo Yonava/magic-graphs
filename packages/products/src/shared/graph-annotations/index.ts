@@ -191,7 +191,7 @@ export const useGraphAnnotations = (graph: ReturnType<typeof useGraph>) => {
   const addScribblesToAggregator = (aggregator: Aggregator) => {
     if (!isActive.value) return aggregator;
 
-    if (isErasing.value && graph.canvas.hovered.value) {
+    if (isErasing.value) {
       const eraserId = 'annotation-eraser-cursor';
       const eraserCursor = graph.canvas.shapes.shapes.circle({
         id: eraserId,
@@ -224,7 +224,7 @@ export const useGraphAnnotations = (graph: ReturnType<typeof useGraph>) => {
         shape: incompleteScribble,
         priority: 5001,
       });
-    } else if (isLaserPointing.value && graph.canvas.hovered.value) {
+    } else if (isLaserPointing.value) {
       const laserPointerCursorId = 'laser-pointer-cursor';
       const laserPointerCursor = graph.canvas.shapes.shapes.circle({
         id: laserPointerCursorId,

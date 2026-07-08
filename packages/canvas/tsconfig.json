@@ -6,6 +6,6 @@
     "types": ["node"],
     "rewriteRelativeImportExtensions": false
   },
-  "references": [{ "path": "../utils" }],
+  "references": [{ "path": "../utils" }, { "path": "../graph-primitives" }],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

@@ -2,9 +2,9 @@ import { TransactionPayload } from '@magic/graph-primitives/transactions/types';
 import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { describe, expect, it, vi } from 'vitest';
 
+import { createCommitTransaction } from './createCommitTransaction.ts';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import { TransactionOptions } from './types.ts';
-import { useCommitTransaction } from './useCommitTransaction.ts';
 
 const options = (
   state: {
@@ -23,10 +23,10 @@ const options = (
   };
 };
 
-describe(useCommitTransaction, () => {
+describe(createCommitTransaction, () => {
   it('handles adding a node', () => {
     const newNode: CoreNode = { id: 'new-node' };
-    const commitTransaction = useCommitTransaction(options());
+    const commitTransaction = createCommitTransaction(options());
     const expectedPayload: TransactionPayload = {
       ...createEmptyPayload(),
       addedNodes: [newNode],
@@ -44,7 +44,7 @@ describe(useCommitTransaction, () => {
       target: 'node-2',
     };
 
-    const commitTransaction = useCommitTransaction(
+    const commitTransaction = createCommitTransaction(
       options({
         nodes: [node1, node2],
         edges: [connectedEdge],
@@ -67,7 +67,7 @@ describe(useCommitTransaction, () => {
 
     const successSpy = vi.fn();
 
-    const commitTransaction = useCommitTransaction(
+    const commitTransaction = createCommitTransaction(
       options({ success: successSpy }),
     );
 

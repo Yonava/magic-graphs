@@ -1,12 +1,10 @@
 import { CoreNode } from '@magic/graph-primitives/types';
 
-import { computed } from 'vue';
-
-import { WeightedAdjacencyList } from '../adjacency-lists/types.ts';
+import { AdjacencyListsControls } from '../adjacency-lists/types.ts';
 import { TransitionMatrix, TransitionMatrixPlugin } from './types.ts';
 
 export const getTransitionMatrix = (
-  adjList: Readonly<WeightedAdjacencyList>,
+  adjList: AdjacencyListsControls['weighted'],
   nodeToIndex: (id: CoreNode['id']) => number,
 ) => {
   const adjListEntries = Object.entries(adjList);
@@ -33,11 +31,10 @@ export const transitionMatrix: TransitionMatrixPlugin = ({
   ...rest
 }) => ({
   name: 'transitionMatrix',
-  controls: computed(() =>
+  controls: () =>
     getTransitionMatrix(
-      controls.adjacencyLists.weighted.value,
+      controls.adjacencyLists.weighted,
       controls.nodeIdToIndex,
     ),
-  ),
   ...rest,
 });

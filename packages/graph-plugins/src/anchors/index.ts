@@ -7,8 +7,6 @@ import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
 import type { WithId } from '@magic/shapes/types/index';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 
-import { readonly, ref } from 'vue';
-
 import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
@@ -50,20 +48,17 @@ export const anchors: AnchorsPlugin = ({
 
   const theme = createThemeController(createAnchorsThemeOverrides());
 
-  /**
-   * The node which anchors actively orbit around
-   */
-  const parentNode = ref<CoreNode>();
+  let parentNode: CoreNode | undefined = undefined;
 
   const anchorDragState = createAnchorDragState();
   const dragCursorTheme = createAnchorDragThemer(controls, anchorDragState);
 
-  const hoveredNodeAnchorId = ref<NodeAnchor['id']>();
+  let hoveredNodeAnchorId: NodeAnchor['id'] | undefined = undefined;
 
   const clearAnchorState = () => {
-    parentNode.value = undefined;
+    parentNode = undefined;
     anchorDragState.stopDrag();
-    hoveredNodeAnchorId.value = undefined;
+    hoveredNodeAnchorId = undefined;
   };
 
   const setParentNode = (nodeId: CoreNode['id']) => {
@@ -71,17 +66,15 @@ export const anchors: AnchorsPlugin = ({
 
     if (!node) throw new Error('node not found');
 
-    parentNode.value = node;
+    parentNode = node;
     updateNodeAnchors(node);
   };
 
-  const updateHoveredNodeAnchorId = ({
-    elements: items,
-  }: CanvasGraphMouseEvent) => {
-    const topItem = items.at(-1);
-    if (!topItem) return (hoveredNodeAnchorId.value = undefined);
+  const updateHoveredNodeAnchorId = ({ elements }: CanvasGraphMouseEvent) => {
+    const topElement = elements.at(-1);
+    if (!topElement) return (hoveredNodeAnchorId = undefined);
 
-    hoveredNodeAnchorId.value = topItem.id;
+    hoveredNodeAnchorId = topElement.id;
   };
 
   const getAnchorSchemas = (node: CoreNode) => {
@@ -95,11 +88,11 @@ export const anchors: AnchorsPlugin = ({
     );
 
     const anchorSchemas: CanvasElement[] = [];
-    for (const anchor of nodeAnchors.value) {
+    for (const anchor of nodeAnchors) {
       const { x, y, id } = anchor;
 
       const draggedAnchor = anchorDragState.getDragState()?.data;
-      const isAnchorHovered = id === hoveredNodeAnchorId.value;
+      const isAnchorHovered = id === hoveredNodeAnchorId;
       const isAnchorDragged = id === draggedAnchor?.id;
 
       const isNodeFocused = controls.focus?.isFocused(node.id) ?? false;
@@ -139,16 +132,16 @@ export const anchors: AnchorsPlugin = ({
   /**
    * Draggable handles that spawns around the parent node.
    */
-  const nodeAnchors = ref<NodeAnchor[]>([]);
+  let nodeAnchors: Readonly<NodeAnchor[]> = [];
 
   /**
-   * updates the node anchor ref with the new node anchors
+   * updates the node anchors array with the new node anchors
    *
    * @param {CoreNode} node - the parent node of the anchor
    * @returns {void}
    */
   const updateNodeAnchors = (node: CoreNode | undefined) => {
-    if (!node) return (nodeAnchors.value = []);
+    if (!node) return (nodeAnchors = []);
     const anchorToken = theme._resolveToken;
     const canvasToken = controls.canvas.theme._resolveToken;
     const focusToken = controls.focus?.theme._resolveToken;
@@ -175,7 +168,7 @@ export const anchors: AnchorsPlugin = ({
 
     const offset = nodeSize - anchorRadius / 3 + nodeBorderWidth / 2;
     const nodePosition = controls.positions.get(node.id);
-    nodeAnchors.value = [
+    nodeAnchors = [
       {
         id: 'n-' + ANCHOR_ID_POSTFIX,
         x: nodePosition.x,
@@ -211,30 +204,29 @@ export const anchors: AnchorsPlugin = ({
     const topElement = elements.at(-1);
     if (!topElement || !isAnchor(topElement.id)) return;
     const { id: anchorId } = topElement;
-    return nodeAnchors.value.find((anchor) => anchor.id === anchorId);
+    return nodeAnchors.find((anchor) => anchor.id === anchorId);
   };
 
-  const resolveLinkPreviewCanvasElement = (elements: CanvasElement[]) => {
+  const resolveLinkPreviewCanvasElement = (_: CanvasElement[]) => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
-    const currentParentNode = parentNode.value;
-    if (!currentParentNode || !draggedAnchor) return;
+    if (!parentNode || !draggedAnchor) return;
     const { x, y } = draggedAnchor;
-    const start = controls.positions.get(currentParentNode.id);
+    const start = controls.positions.get(parentNode.id);
     const end = { x, y };
 
     const anchorToken = theme._resolveToken;
 
-    const isFocused = controls.focus?.isFocused(currentParentNode.id) ?? false;
+    const isFocused = controls.focus?.isFocused(parentNode.id) ?? false;
 
     const baseColor = anchorToken(
       'anchors.edge.preview.default.color',
-      currentParentNode,
+      parentNode,
       draggedAnchor,
     );
 
     const focusColor = anchorToken(
       'anchors.edge.preview.parentFocused.color',
-      currentParentNode,
+      parentNode,
       draggedAnchor,
     );
 
@@ -242,13 +234,13 @@ export const anchors: AnchorsPlugin = ({
 
     const baseWidth = anchorToken(
       'anchors.edge.preview.default.width',
-      currentParentNode,
+      parentNode,
       draggedAnchor,
     );
 
     const focusWidth = anchorToken(
       'anchors.edge.preview.parentFocused.width',
-      currentParentNode,
+      parentNode,
       draggedAnchor,
     );
 
@@ -264,7 +256,7 @@ export const anchors: AnchorsPlugin = ({
 
     const element: CanvasElement = {
       id: EDGE_PREVIEW_ID,
-      priority: controls.canvas.getNodePriority()(currentParentNode.id) - 0.001,
+      priority: controls.canvas.getNodePriority()(parentNode.id) - 0.001,
       shape,
     };
 
@@ -291,20 +283,20 @@ export const anchors: AnchorsPlugin = ({
       throw new Error('anchors: node shown on screen not in graph state');
     }
 
-    if (newParentNode.id === parentNode.value?.id) return;
+    if (newParentNode.id === parentNode?.id) return;
     setParentNode(newParentNode.id);
   };
 
   const clearAnchorStateIfParentRemoved = (
     nodeIds: readonly CoreNode['id'][],
   ) => {
-    if (parentNode.value && nodeIds.includes(parentNode.value.id)) {
+    if (parentNode && nodeIds.includes(parentNode.id)) {
       clearAnchorState();
     }
   };
 
   const setCurrentlyDraggingAnchor = (ev: CanvasGraphMouseEvent) => {
-    if (!parentNode.value) return;
+    if (!parentNode) return;
     /**
      * TODO shouldn't getAnchor be unnecessary here because the top item in this event should
      * point to the anchor itself?
@@ -312,7 +304,7 @@ export const anchors: AnchorsPlugin = ({
     const anchor = getAnchor(ev);
     if (!anchor) return;
     anchorDragState.startDrag(ev.coords, anchor);
-    events.emit('onNodeAnchorDragStart', parentNode.value, anchor);
+    events.emit('onNodeAnchorDragStart', parentNode, anchor);
   };
 
   const updateCurrentlyDraggingAnchorPosition = ({
@@ -325,14 +317,13 @@ export const anchors: AnchorsPlugin = ({
   const dropAnchor = () => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (!draggedAnchor) return;
-    else if (!parentNode.value)
-      throw new Error('active anchor without parent node');
-    events.emit('onNodeAnchorDrop', parentNode.value, draggedAnchor);
+    else if (!parentNode) throw new Error('active anchor without parent node');
+    events.emit('onNodeAnchorDrop', parentNode, draggedAnchor);
     clearAnchorState();
 
     // when we clear the node anchors, we must ensure that the
     // aggregator updates so that it knows the node anchors
-    // and link preview are no longer on the canvas
+    // and edge preview are no longer on the canvas
     controls.canvas.aggregator.updateAggregator();
     controls.canvas.forceUpdateGraphUnderCursor();
 
@@ -341,15 +332,15 @@ export const anchors: AnchorsPlugin = ({
   };
 
   const insertAnchorsIntoAggregator = (aggregator: CanvasElement[]) => {
-    if (!parentNode.value) return aggregator;
-    const anchors = getAnchorSchemas(parentNode.value);
+    if (!parentNode) return aggregator;
+    const anchors = getAnchorSchemas(parentNode);
     for (const anchor of anchors) aggregator.push(anchor);
     return aggregator;
   };
 
   const insertLinkPreviewIntoAggregator = (aggregator: CanvasElement[]) => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
-    if (!parentNode.value || !draggedAnchor) return aggregator;
+    if (!parentNode || !draggedAnchor) return aggregator;
 
     const linkPreviewCanvasElement =
       resolveLinkPreviewCanvasElement(aggregator);

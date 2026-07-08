@@ -1,5 +1,3 @@
-import { ref } from 'vue';
-
 import {
   AdjacencyList,
   AdjacencyListsPlugin,
@@ -79,11 +77,10 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
   actions,
   getters,
 }) => {
-  const standard = ref<AdjacencyList>({});
-  const weighted = ref<WeightedAdjacencyList>({});
-
-  const directed = ref<AdjacencyList>({});
-  const undirected = ref<AdjacencyList>({});
+  let standard: AdjacencyList = {};
+  let weighted: WeightedAdjacencyList = {};
+  let directed: AdjacencyList = {};
+  let undirected: AdjacencyList = {};
 
   const update = () => {
     const graph: Graph = {
@@ -91,11 +88,11 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
       ...getters,
       events,
     };
-    standard.value = getAdjacencyList(graph);
-    weighted.value = getWeightedAdjacencyList(graph);
+    standard = getAdjacencyList(graph);
+    weighted = getWeightedAdjacencyList(graph);
 
-    directed.value = getDirectedGraphAdjacencyList(graph);
-    undirected.value = getUndirectedGraphAdjacencyList(graph);
+    directed = getDirectedGraphAdjacencyList(graph);
+    undirected = getUndirectedGraphAdjacencyList(graph);
   };
 
   update();
@@ -107,6 +104,11 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
     actions,
     getters,
     events,
-    controls: { standard, weighted, directed, undirected },
+    controls: {
+      standard: () => standard,
+      weighted: () => weighted,
+      directed: () => directed,
+      undirected: () => undirected,
+    },
   };
 };

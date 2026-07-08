@@ -5,8 +5,6 @@ import {
 } from '@magic/graph-plugins-shared/plugins';
 import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 
-import { ComputedRef, Ref } from 'vue';
-
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';
 import { FocusThemes } from './themes.ts';
@@ -37,10 +35,6 @@ type BaseFocusControls = {
    * @returns true if the element is focused
    */
   isFocused: (id: string) => boolean;
-  /**
-   * The ids of all focused elements
-   */
-  focusedElementIds: Readonly<Ref<ReadonlySet<string>>>;
   /**
    * All the nodes that are focused
    */

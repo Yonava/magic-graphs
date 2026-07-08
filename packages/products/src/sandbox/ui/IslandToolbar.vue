@@ -19,7 +19,6 @@
     } = graph.value.annotations;
 
     (isActive.value ? deactivate : activate)();
-    graph.value.canvas.focused.value = true;
   };
 
   const { undo, redo } = graph.value.shortcut.trigger;
@@ -28,14 +27,14 @@
     const annotations = graph.value.annotations;
     const { canUndo } = graph.value.history;
     if (annotations.isActive.value) return annotations.history.canUndo.value;
-    return canUndo.value;
+    return canUndo();
   });
 
   const canRedo = computed(() => {
     const annotations = graph.value.annotations;
     const { canRedo } = graph.value.history;
     if (annotations.isActive.value) return annotations.history.canRedo.value;
-    return canRedo.value;
+    return canRedo();
   });
 
   const treePositionerControls = useTreeGraphPositionerSync(graph.value, {

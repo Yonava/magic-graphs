@@ -1,7 +1,6 @@
 import { nullThrows } from '@magic/utils/assert';
 import { getCtx } from '@magic/utils/ctx/index';
 
-import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { DEFAULT_INTERACTIVE_OPTIONS, InteractiveOptions } from './options.ts';
 import { InteractivePlugin } from './types.ts';

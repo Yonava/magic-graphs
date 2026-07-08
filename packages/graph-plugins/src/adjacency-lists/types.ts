@@ -5,8 +5,7 @@ import { GraphPlugin } from '@magic/graph-plugins-shared/plugins';
 import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 import { GraphGetters } from '@magic/graph-primitives/getters/types';
 import { CoreNode } from '@magic/graph-primitives/types';
-
-import { Ref } from 'vue';
+import { DeepReadonly } from 'ts-essentials';
 
 /**
  * a mapping of nodes to their neighbors where neighbors are the full node objects
@@ -33,19 +32,19 @@ export type AdjacencyListsControls = {
   /**
    * the adjacency list using node ids as keys
    */
-  standard: Ref<AdjacencyList>;
+  standard: () => DeepReadonly<AdjacencyList>;
   /**
    * the adjacency list using node ids as keys and full node objects along with weights as values
    */
-  weighted: Ref<WeightedAdjacencyList>;
+  weighted: () => DeepReadonly<WeightedAdjacencyList>;
   /**
    * the directed adjacency list using node ids as keys
    */
-  directed: Ref<AdjacencyList>;
+  directed: () => DeepReadonly<AdjacencyList>;
   /**
    * the undirected adjacency list using node ids as keys
    */
-  undirected: Ref<AdjacencyList>;
+  undirected: () => DeepReadonly<AdjacencyList>;
 };
 
 export type AdjacencyListsPlugin = GraphPlugin<{

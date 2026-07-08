@@ -7,9 +7,6 @@ import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
-import { ref } from 'vue';
-import { computed } from 'vue';
-
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
 import { Aggregator, CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
@@ -38,8 +35,8 @@ export const marquee: MarqueePlugin = ({
 
   const theme = createThemeController(createMarqueeThemeOverrides());
 
-  const marqueeBox = ref<BoundingBox | undefined>();
-  const selectionBox = ref<BoundingBox | undefined>();
+  let marqueeBox: BoundingBox | undefined = undefined;
+  let selectionBox: BoundingBox | undefined = undefined;
 
   /**
    * given a mouse event, engages or disengages the marquee box
@@ -55,7 +52,7 @@ export const marquee: MarqueePlugin = ({
   };
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
-    marqueeBox.value = {
+    marqueeBox = {
       at: startingCoords,
       width: 0,
       height: 0,
@@ -64,9 +61,9 @@ export const marquee: MarqueePlugin = ({
   };
 
   const disengageMarqueeBox = () => {
-    if (!marqueeBox.value) return;
-    const finalMarqueeBox = marqueeBox.value;
-    marqueeBox.value = undefined;
+    if (!marqueeBox) return;
+    const finalMarqueeBox = marqueeBox;
+    marqueeBox = undefined;
     events.emit('onMarqueeEndSelection', finalMarqueeBox);
   };
 
@@ -75,7 +72,7 @@ export const marquee: MarqueePlugin = ({
     if (surfaceArea < 100) return;
     const targetedItems: string[] = [];
 
-    for (const { id, shape } of controls.canvas.aggregator.aggregator.value) {
+    for (const { id, shape } of controls.canvas.aggregator.aggregator()) {
       const inSelectionBox = shape.efficientHitbox(box);
       if (inSelectionBox) targetedItems.push(id);
     }
@@ -83,21 +80,21 @@ export const marquee: MarqueePlugin = ({
     controls.focus.set(targetedItems);
   };
 
-  const updateEncapsulatedNodeBox = () => {
-    selectionBox.value = getSelectionBox(controls);
+  const updateSelectionBox = () => {
+    selectionBox = getSelectionBox(controls);
   };
 
   const setMarqueeBoxDimensions = (
     { coords }: DeepReadonly<GraphUnderCursor>,
     consume: () => void,
   ) => {
-    if (!marqueeBox.value) return;
+    if (!marqueeBox) return;
     consume();
 
     const { x, y } = coords;
-    marqueeBox.value.width = x - marqueeBox.value.at.x;
-    marqueeBox.value.height = y - marqueeBox.value.at.y;
-    updateMarqueeSelectedItems(marqueeBox.value);
+    marqueeBox.width = x - marqueeBox.at.x;
+    marqueeBox.height = y - marqueeBox.at.y;
+    updateMarqueeSelectedItems(marqueeBox);
   };
 
   const getMarqueeBoxCanvasElement = (box: BoundingBox): CanvasElement => {
@@ -119,20 +116,18 @@ export const marquee: MarqueePlugin = ({
   };
 
   const addMarqueeBoxToAggregator = (aggregator: Aggregator) => {
-    if (!marqueeBox.value) return aggregator;
+    if (!marqueeBox) return aggregator;
 
-    const { width, height } = marqueeBox.value;
+    const { width, height } = marqueeBox;
     if (width === 0 || height === 0) return aggregator;
 
-    const selectionBoxCanvasElement = getMarqueeBoxCanvasElement(
-      marqueeBox.value,
-    );
+    const selectionBoxCanvasElement = getMarqueeBoxCanvasElement(marqueeBox);
     aggregator.push(selectionBoxCanvasElement);
     return aggregator;
   };
 
   const getSelectionBoxSchema = (box: BoundingBox): CanvasElement => {
-    const id = 'encapsulated-node-box';
+    const id = 'selection-box';
     const shape = controls.canvas.shapes.shapes.rect({
       id,
       ...box,
@@ -158,25 +153,23 @@ export const marquee: MarqueePlugin = ({
     };
   };
 
-  const addEncapsulatedNodeBoxToAggregator = (aggregator: Aggregator) => {
-    if (!selectionBox.value) return aggregator;
+  const addSelectionBoxToAggregator = (aggregator: Aggregator) => {
+    if (!selectionBox) return aggregator;
 
-    const { width, height } = selectionBox.value;
+    const { width, height } = selectionBox;
     if (width === 0 || height === 0) return aggregator;
 
-    const nodeBoxSchema = getSelectionBoxSchema(selectionBox.value);
+    const nodeBoxSchema = getSelectionBoxSchema(selectionBox);
 
     aggregator.push(nodeBoxSchema);
     return aggregator;
   };
 
-  controls.canvas.aggregator.transformers.push(
-    addEncapsulatedNodeBoxToAggregator,
-  );
+  controls.canvas.aggregator.transformers.push(addSelectionBoxToAggregator);
   controls.canvas.aggregator.transformers.push(addMarqueeBoxToAggregator);
 
   const enable = () => {
-    events.subscribe('onFocusChange', updateEncapsulatedNodeBox);
+    events.subscribe('onFocusChange', updateSelectionBox);
 
     events.handle('onMouseDown', handleMarqueeEngagement, MARQUEE_PLUGIN_ID);
     events.handle('onMouseUp', disengageMarqueeBox, MARQUEE_PLUGIN_ID);
@@ -190,20 +183,20 @@ export const marquee: MarqueePlugin = ({
       { before: [ANCHOR_PLUGIN_ID] },
     );
 
-    events.subscribe('onNodeMoveStream', updateEncapsulatedNodeBox);
+    events.subscribe('onNodeMoveStream', updateSelectionBox);
   };
 
   const disable = () => {
-    events.unsubscribe('onFocusChange', updateEncapsulatedNodeBox);
+    events.unsubscribe('onFocusChange', updateSelectionBox);
 
     events.unhandle('onMouseDown', handleMarqueeEngagement);
     events.unhandle('onMouseUp', disengageMarqueeBox);
     events.unhandle('onContextMenu', disengageMarqueeBox);
     events.unhandle('onMouseMove', setMarqueeBoxDimensions);
 
-    events.unsubscribe('onNodeMoveStream', updateEncapsulatedNodeBox);
+    events.unsubscribe('onNodeMoveStream', updateSelectionBox);
 
-    if (marqueeBox.value) disengageMarqueeBox();
+    disengageMarqueeBox();
   };
 
   enable();
@@ -214,8 +207,6 @@ export const marquee: MarqueePlugin = ({
     actions,
     getters,
     controls: {
-      updateEncapsulatedNodeBox,
-      activelySelecting: computed(() => !!marqueeBox.value),
       theme,
       lifecycle: {
         enable,

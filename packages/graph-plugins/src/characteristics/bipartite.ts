@@ -1,11 +1,11 @@
-import { ComputedRef, computed } from 'vue';
+import { DeepReadonly } from 'ts-essentials';
 
 import { AdjacencyList } from '../adjacency-lists/types.ts';
 import { Controls } from './index.ts';
 
 type BipartitePartition = [string[], string[]];
 type GetBipartitePartition = (
-  adjList: Readonly<AdjacencyList>,
+  adjList: DeepReadonly<AdjacencyList>,
 ) => BipartitePartition | undefined;
 
 export type NodeIdToBipartiteSet = Map<string, 0 | 1>;
@@ -14,6 +14,7 @@ export const getBipartitePartition: GetBipartitePartition = (adjList) => {
   const colors: { [node: string]: 0 | 1 } = {};
   const groups: BipartitePartition = [[], []];
 
+  // @ts-expect-error deep read only type I dont wanna deal with now
   const completeGraph: AdjacencyList = { ...adjList };
 
   // Ensure all nodes are in the graph
@@ -80,32 +81,29 @@ export const getBipartitePartition: GetBipartitePartition = (adjList) => {
   return groups;
 };
 
-export type BipartiteControls = {
-  bipartitePartition: ComputedRef<BipartitePartition | undefined>;
-  nodeIdToBipartitePartition: ComputedRef<NodeIdToBipartiteSet>;
-  isBipartite: ComputedRef<boolean>;
+export type BipartiteData = {
+  bipartitePartition: BipartitePartition | undefined;
+  nodeIdToBipartitePartition: NodeIdToBipartiteSet;
+  isBipartite: boolean;
 };
 
-export const useBipartite = (controls: Controls): BipartiteControls => {
-  const bipartitePartition = computed(() =>
-    getBipartitePartition(controls.adjacencyLists.standard.value),
-  );
+const getNodeIdToBipartitePartition = (
+  partition: BipartitePartition | undefined,
+) => {
+  const map: NodeIdToBipartiteSet = new Map();
+  if (!partition) return map;
+  const [left, right] = partition;
+  for (const nodeId of left) map.set(nodeId, 0);
+  for (const nodeId of right) map.set(nodeId, 1);
+  return map;
+};
 
-  const nodeIdToBipartitePartition = computed(() => {
-    const partition = bipartitePartition.value;
-    const map: NodeIdToBipartiteSet = new Map();
-    if (!partition) return map;
-    const [left, right] = partition;
-    for (const nodeId of left) map.set(nodeId, 0);
-    for (const nodeId of right) map.set(nodeId, 1);
-    return map;
-  });
-
-  const isBipartite = computed(() => bipartitePartition.value !== undefined);
+export const getBipartiteData = (controls: Controls): BipartiteData => {
+  const partition = getBipartitePartition(controls.adjacencyLists.standard());
 
   return {
-    bipartitePartition,
-    nodeIdToBipartitePartition,
-    isBipartite,
+    bipartitePartition: partition,
+    nodeIdToBipartitePartition: getNodeIdToBipartitePartition(partition),
+    isBipartite: partition !== undefined,
   };
 };

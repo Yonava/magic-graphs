@@ -7,8 +7,8 @@ import { createCoreEventRegistry } from './events.ts';
 import { createHelpers } from './helpers/createHelpers.ts';
 import { CoreOptions, DEFAULT_CORE_OPTIONS } from './options.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
+import { createCommitTransaction } from './transaction/createCommitTransaction.ts';
 import { setupTransactionSucceeded } from './transaction/setupTransactionSucceeded.ts';
-import { useCommitTransaction } from './transaction/useCommitTransaction.ts';
 import type { CoreControls } from './types.ts';
 import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
 
@@ -29,12 +29,12 @@ export const core = (options: Partial<CoreOptions>) => {
 
   const getNode = (id: CoreNode['id']) =>
     nullThrows(
-      nodes.find((n) => n.id),
+      nodes.find((n) => n.id === id),
       `node with id ${id} not found`,
     );
   const getEdge = (id: CoreEdge['id']) => {
     const edge = nullThrows(
-      edges.find((e) => e.id),
+      edges.find((e) => e.id === id),
       `edge with id ${id} not found`,
     );
     return { ...edge, weight: edgeWeightStore.get(id) };
@@ -51,7 +51,7 @@ export const core = (options: Partial<CoreOptions>) => {
     emit: coreEventHub.emit,
   });
 
-  const commitTransaction = useCommitTransaction({
+  const commitTransaction = createCommitTransaction({
     getGraph: () => ({ nodes, edges }),
     getters: coreGetters,
     onTransactionSucceeded,

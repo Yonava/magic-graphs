@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@magic/utils": "workspace:*",
+    "@magic/graph-primitives": "workspace:*",
     "@vueuse/core": "catalog:",
     "tailwind-merge": "^3.3.1"
   },

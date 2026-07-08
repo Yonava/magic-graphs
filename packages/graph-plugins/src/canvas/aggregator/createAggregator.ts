@@ -1,16 +1,23 @@
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 import { Coordinate } from '@magic/graph-plugins-shared/drag';
+import { EventHub } from '@magic/graph-primitives/events/createEventHub';
 import { drawGroup } from '@magic/shapes/drawGroup';
-
-import { ref } from 'vue';
+import { DeepReadonly } from 'ts-essentials';
 
 import { CanvasEventMap } from '../events.ts';
-import { Aggregator, AggregatorTransformer } from './types.ts';
+import { Aggregator, AggregatorTransformer, CanvasElement } from './types.ts';
+
+export type AggregatorControls = {
+  aggregator: () => DeepReadonly<Aggregator>;
+  transformers: AggregatorTransformer[];
+  updateAggregator: () => void;
+  getCanvasElementsAtCoordinate: (coords: Coordinate) => CanvasElement[];
+  draw: (ctx: CanvasRenderingContext2D) => void;
+};
 
 export const createAggregator = ({
   emit,
-}: Pick<EventHub<CanvasEventMap>, 'emit'>) => {
-  const aggregator = ref<Aggregator>([]);
+}: Pick<EventHub<CanvasEventMap>, 'emit'>): AggregatorControls => {
+  let aggregator: Aggregator = [];
   const transformers: AggregatorTransformer[] = [];
 
   const updateAggregator = () => {
@@ -19,7 +26,7 @@ export const createAggregator = ({
       [],
     );
 
-    aggregator.value = [
+    aggregator = [
       ...resolvedCanvasElements.sort((a, b) => a.priority - b.priority),
     ];
   };
@@ -38,7 +45,7 @@ export const createAggregator = ({
     emit('onBeforeDraw', ctx);
     updateAggregator();
 
-    for (const group of groupByPriority(aggregator.value).values()) {
+    for (const group of groupByPriority(aggregator).values()) {
       drawGroup(
         ctx,
         group.map((item) => item.shape),
@@ -57,18 +64,16 @@ export const createAggregator = ({
    * console.log(els) // [node, nodeAnchor] meaning nodeAnchor is above the node
    */
   const getCanvasElementsAtCoordinate = (coords: Coordinate) => {
-    return aggregator.value
+    return aggregator
       .sort((a, b) => a.priority - b.priority)
       .filter((element) => element.shape.hitbox(coords));
   };
 
   return {
-    aggregator,
+    aggregator: () => aggregator,
     transformers,
     updateAggregator,
     getCanvasElementsAtCoordinate,
     draw,
   };
 };
-
-export type AggregatorControls = ReturnType<typeof createAggregator>;

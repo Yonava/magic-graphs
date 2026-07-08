@@ -6,10 +6,7 @@ import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
 import { useAnimatedShapes } from '@magic/shapes/animation/index';
 import { cross } from '@magic/shapes/shapes/cross/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@magic/utils/types';
-import { onClickOutside, useElementHover } from '@vueuse/core';
 import { DeepReadonly } from 'ts-essentials';
-
-import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { createAggregator } from './aggregator/createAggregator.ts';
 import { CANVAS_PLUGIN_ID } from './constants.ts';
@@ -37,22 +34,10 @@ export const canvas =
 
     const aggregator = createAggregator({ emit: events.emit });
 
-    const canvasFocused = ref(true);
-
     const graphUnderCursor: GraphUnderCursor = {
       coords: { x: 0, y: 0 },
       elements: [],
     };
-
-    onClickOutside(magicCanvas.canvas, () => {
-      canvasFocused.value = false;
-    });
-
-    events.subscribe('onMouseDown', () => {
-      const el = document.activeElement;
-      if (el instanceof HTMLElement && typeof el.blur === 'function') el.blur();
-      canvasFocused.value = true;
-    });
 
     events.subscribe('onTransactionComplete', () => {
       forceUpdateGraphUnderCursor();
@@ -119,7 +104,7 @@ export const canvas =
 
     const shapes = useAnimatedShapes();
 
-    onMounted(() => {
+    magicCanvas.lifecycleEvents.subscribe('onMounted', () => {
       if (!magicCanvas.canvas.value) {
         throw new Error('Canvas element not found in DOM');
       }
@@ -137,7 +122,7 @@ export const canvas =
       }
     });
 
-    onBeforeUnmount(() => {
+    magicCanvas.lifecycleEvents.subscribe('onBeforeUnmount', () => {
       if (!magicCanvas.canvas.value) {
         throw new Error('Canvas element not found in DOM');
       }
@@ -188,9 +173,6 @@ export const canvas =
         shapes,
 
         magicCanvas,
-
-        focused: canvasFocused,
-        hovered: useElementHover(magicCanvas.canvas),
 
         graphUnderCursor,
         forceUpdateGraphUnderCursor,

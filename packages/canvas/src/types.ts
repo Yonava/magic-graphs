@@ -1,7 +1,10 @@
+import { EventHub } from '@magic/graph-primitives/events/createEventHub';
+
 import type { Ref } from 'vue';
 
 import type { DrawPattern } from './backgroundPattern.ts';
 import type { Camera } from './camera/index.ts';
+import { MagicCanvasLifecycleEvents } from './events.ts';
 
 export type Coordinate = {
   x: number;
@@ -24,6 +27,7 @@ export type MagicCanvasProps = {
     cleanup: (canvas: HTMLCanvasElement) => void;
   };
   draw: DrawFns;
+  lifecycleEvents: Omit<EventHub<MagicCanvasLifecycleEvents>, 'emit'>;
 };
 
 export type MagicCanvasOptions = {
