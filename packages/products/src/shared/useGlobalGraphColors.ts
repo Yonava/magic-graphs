@@ -44,13 +44,13 @@ export const ThemePresetToGraphColors: Record<ThemePreset, GraphColors> = {
 export const useGraphColors = () =>
   computed(() => {
     if (!graph.value) return;
-    const theme = graph.value.vue.activePreset.value;
+    const theme = graph.value.activePreset.value;
     return ThemePresetToGraphColors[theme];
   });
 
 export const useNonNullGraphColors = () =>
   computed(() => {
     if (!graph.value) throw 'global graph state not set';
-    const theme = graph.value.vue.activePreset.value;
+    const theme = graph.value.activePreset.value;
     return ThemePresetToGraphColors[theme];
   });

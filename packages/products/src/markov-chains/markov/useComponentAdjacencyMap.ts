@@ -19,10 +19,8 @@ export type ComponentAdjacencyMap = Map<number, Set<number>>;
  * map.get(1) // Set() -> component 1 is not connected to any other component
  */
 export const getComponentAdjMap = (graph: Graph) => {
-  const nodeToComponentMap =
-    graph.characteristics.sccs.nodeIdToConnectedComponent.value;
-  const connectedComponents =
-    graph.characteristics.sccs.stronglyConnectedComponents.value;
+  const nodeToComponentMap = graph.characteristics.sccs.value.nodeIdToComponent;
+  const connectedComponents = graph.characteristics.sccs.value.components;
   const graphAdjMap = graph.adjacencyLists.standard.value;
 
   /**

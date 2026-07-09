@@ -25,7 +25,7 @@ type CharacteristicsControls = {
   connected: () => ConnectedData;
 };
 
-type CharacteristicsPlugin = GraphPlugin<{
+export type CharacteristicsPlugin = GraphPlugin<{
   name: 'characteristics';
   controls: CharacteristicsControls;
   dependsOn: [AdjacencyListsPlugin];

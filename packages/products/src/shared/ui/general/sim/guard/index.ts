@@ -133,7 +133,7 @@ export class SimulationGuard {
    */
   connected() {
     const isConnected = () => {
-      if (this.graph.characteristics.connected.isConnected.value) return;
+      if (this.graph.characteristics.connected.value.isConnected) return;
       return CANT_RUN_REASONS.NOT_CONNECTED;
     };
 
@@ -146,7 +146,7 @@ export class SimulationGuard {
    */
   acyclic() {
     const isAcyclic = () => {
-      if (this.graph.characteristics.getCycles.isAcyclic.value) return;
+      if (this.graph.characteristics.cycles.value.isAcyclic) return;
       return {
         themer: {
           theme: this.cycle.colorize,
@@ -165,7 +165,7 @@ export class SimulationGuard {
    */
   bipartite() {
     const isBipartite = () => {
-      if (this.graph.characteristics.bipartite.isBipartite.value) return;
+      if (this.graph.characteristics.bipartite.value.isBipartite) return;
       return CANT_RUN_REASONS.NOT_BIPARTITE;
     };
 
@@ -245,9 +245,9 @@ export class SimulationGuard {
    */
   noBidirectionalEdges() {
     const noBidirectional = () => {
-      const { bidirectionalEdges } =
-        this.graph.characteristics.bidirectionalEdges;
-      const edgeIds = bidirectionalEdges.value.map((e: { id: string }) => e.id);
+      const bidirectionalEdges =
+        this.graph.characteristics.bidirectionalEdges.value;
+      const edgeIds = bidirectionalEdges.map((e: { id: string }) => e.id);
       if (edgeIds.length === 0) return;
       return {
         themer: this.color.edges(edgeIds),

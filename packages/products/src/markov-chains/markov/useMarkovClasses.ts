@@ -14,7 +14,7 @@ export type MarkovClass = Set<string>;
 export type MarkovStateToClassIndex = Map<string, number>;
 
 export const getMarkovClasses = (
-  connectedComponents: Graph['characteristics']['sccs']['stronglyConnectedComponents']['value'],
+  connectedComponents: Graph['characteristics']['sccs']['value']['components'],
   componentMap: ComponentAdjacencyMap,
 ) => {
   const recurrent: MarkovClass[] = [];
@@ -38,18 +38,17 @@ export const getMarkovClasses = (
  * reactive recurrent and transient classes of a markov chain
  */
 export const useMarkovClasses = (graph: Graph) => {
-  const {
-    stronglyConnectedComponents: sccs,
-    componentAdjacencyMap: componentMap,
-  } = graph.characteristics.sccs;
-
   const transientClasses = computed(() => {
-    const { transient } = getMarkovClasses(sccs.value, componentMap.value);
+    const { components, componentAdjacencyMap } =
+      graph.characteristics.sccs.value;
+    const { transient } = getMarkovClasses(components, componentAdjacencyMap);
     return transient;
   });
 
   const recurrentClasses = computed(() => {
-    const { recurrent } = getMarkovClasses(sccs.value, componentMap.value);
+    const { components, componentAdjacencyMap } =
+      graph.characteristics.sccs.value;
+    const { recurrent } = getMarkovClasses(components, componentAdjacencyMap);
     return recurrent;
   });
 

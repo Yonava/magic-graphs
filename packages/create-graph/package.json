@@ -10,7 +10,7 @@
     }
   },
   "scripts": {
-    "build:types": "tsc -b tsconfig.json"
+    "build:types": "vue-tsc -b tsconfig.json"
   },
   "dependencies": {
     "@magic/graph-core": "workspace:*",

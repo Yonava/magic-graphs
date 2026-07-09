@@ -42,7 +42,7 @@ export const useMarkovChain = (graph: Graph) => {
   });
 
   const communicatingClasses = computed(() => {
-    return graph.characteristics.sccs.stronglyConnectedComponents.value;
+    return graph.characteristics.sccs.value.components;
   });
 
   const isIrreducible = computed(() => {

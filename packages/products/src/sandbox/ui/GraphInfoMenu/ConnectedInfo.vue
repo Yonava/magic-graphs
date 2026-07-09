@@ -10,27 +10,26 @@
   import { useSCCColorizer } from './useSCCColorizer.ts';
 
   const isConnected = computed(
-    () => graph.value.characteristics.connected.isConnected.value,
+    () => graph.value.characteristics.connected.value.isConnected,
   );
   const isWeaklyConnected = computed(
-    () => graph.value.characteristics.connected.isWeaklyConnected.value,
+    () => graph.value.characteristics.connected.value.isWeaklyConnected,
   );
   const isDirected = computed(() => graph.value.metadata.directed);
 
   const SCCs = computed(() => {
-    const components =
-      graph.value.characteristics.sccs.stronglyConnectedComponents.value;
+    const components = graph.value.characteristics.sccs.value.components;
     return components.map((nodes: { id: string }[]) =>
       nodes.map((node) => graph.value.nodeLabel.get(node.id)),
     );
   });
 
   const isBipartite = computed(
-    () => graph.value.characteristics.bipartite.isBipartite.value,
+    () => graph.value.characteristics.bipartite.value.isBipartite,
   );
 
   const isAcyclic = computed(
-    () => graph.value.characteristics.getCycles.isAcyclic.value,
+    () => graph.value.characteristics.cycles.value.isAcyclic,
   );
 
   const { color: colorizeSCCs, uncolor: decolorizeSCCs } = useSCCColorizer(

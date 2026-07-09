@@ -1,17 +1,23 @@
 import { Graph } from '@magic/create-graph/index';
 import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 
-import { computed, ref, watch } from 'vue';
+import { computed, ComputedRef, ref, Ref, watch } from 'vue';
 
 type CoreGraph<PresetName extends string> = Graph<{
   plugins: [];
   presetName: PresetName;
 }>;
 
+type UseCreateGraphReturn<PresetName extends string> = {
+  nodes: ComputedRef<CoreNode[]>;
+  edges: ComputedRef<CoreEdge[]>;
+  activePreset: Ref<PresetName>;
+};
+
 /** wrapper for create graph (theme-able) */
 export const useCreateGraph = <PresetName extends string>(
   graph: CoreGraph<PresetName>,
-) => {
+): UseCreateGraphReturn<PresetName> => {
   const nodes = ref<CoreNode[]>([...graph.nodes]);
   const edges = ref<CoreEdge[]>([...graph.edges]);
 
@@ -20,7 +26,7 @@ export const useCreateGraph = <PresetName extends string>(
     edges.value = [...graph.edges];
   });
 
-  const activePreset = ref(graph.theme.activePresetName());
+  const activePreset = ref(graph.theme.activePresetName()) as Ref<PresetName>;
 
   watch(activePreset, (v) => {
     graph.theme.setActivePreset(v);

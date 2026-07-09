@@ -1,5 +1,6 @@
 import { AdjacencyList } from '@magic/graph-plugins/adjacency-lists/types';
 import { gcd, lowestPrimeFactor } from '@magic/utils/math';
+import { DeepReadonly } from 'ts-essentials';
 
 import { computed } from 'vue';
 import type { Ref } from 'vue';
@@ -24,7 +25,10 @@ const MAX_VISITATIONS = 100;
  * @param adjacencyMap the adjacency map of the component
  * @returns an array of the number of steps it took for a path to return to the start node
  */
-const getStepsToStart = (adjacencyList: AdjacencyList, startNodeId: string) => {
+const getStepsToStart = (
+  adjacencyList: DeepReadonly<AdjacencyList>,
+  startNodeId: string,
+) => {
   /**
    * a queue of nodes to visit and the number of steps it took to get there
    */
@@ -68,7 +72,7 @@ const getStepsToStart = (adjacencyList: AdjacencyList, startNodeId: string) => {
 };
 
 const getPeriod = (
-  adjacencyList: AdjacencyList,
+  adjacencyList: DeepReadonly<AdjacencyList>,
   recurrentClass: Set<string>,
 ) => {
   if (recurrentClass.size === 1) return 1;

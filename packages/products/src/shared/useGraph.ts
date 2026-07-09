@@ -17,10 +17,11 @@ import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
 import { dark } from '@magic/graph-theme-presets/dark/index';
 import { light } from '@magic/graph-theme-presets/light/index';
 import { pink } from '@magic/graph-theme-presets/pink/index';
+import { useAdjacencyLists } from '@magic/graph-vue/useAdjacencyLists';
+import { useCharacteristics } from '@magic/graph-vue/useCharacteristics';
+import { useCreateGraph } from '@magic/graph-vue/useCreateGraph';
+import { useTransitionMatrix } from '@magic/graph-vue/useTransitionMatrix';
 
-import { computed, ref, watch } from 'vue';
-
-import { useCreateGraph } from '../../../graph-vue/dist/types/useCreateGraph.ts';
 import { useShortcuts } from './shortcut/index.ts';
 
 export type CreateGraphWithPluginsOptions = {
@@ -74,12 +75,22 @@ export type ThemePreset = ReturnType<
 export const useGraph = (options: CreateGraphWithPluginsOptions) => {
   const graph = createGraphWithPlugins(options);
 
+  // @ts-expect-error event hub type contravariance causing issues with strong typing
   const coreWrapper = useCreateGraph(graph);
+  // @ts-expect-error event hub type contravariance causing issues with strong typing
+  const adjacencyLists = useAdjacencyLists(graph);
+  // @ts-expect-error event hub type contravariance causing issues with strong typing
+  const characteristics = useCharacteristics(graph);
+  // @ts-expect-error event hub type contravariance causing issues with strong typing
+  const transitionMatrix = useTransitionMatrix(graph);
 
   const shortcut = useShortcuts(graph);
 
   return {
     ...graph,
+    adjacencyLists,
+    characteristics,
+    transitionMatrix,
     ...coreWrapper,
     shortcut,
   };

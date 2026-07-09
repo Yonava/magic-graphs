@@ -1,4 +1,5 @@
 import { AdjacencyList } from '@magic/graph-plugins/adjacency-lists/types';
+import { DeepReadonly } from 'ts-essentials';
 
 import { computed } from 'vue';
 import type { Ref } from 'vue';
@@ -24,7 +25,7 @@ export type NodeIdToDepth = Map<string, number>;
  */
 export const getNodeDepths = (
   startNode: { id: string },
-  adjList: AdjacencyList,
+  adjList: DeepReadonly<AdjacencyList>,
 ) => {
   const nodeIdToDepth: NodeIdToDepth = new Map();
   if (!adjList[startNode.id]) {

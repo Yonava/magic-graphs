@@ -1,8 +1,12 @@
 import { AdjacencyList } from '@magic/graph-plugins/adjacency-lists/types';
+import { DeepReadonly } from 'ts-essentials';
 
 import type { BasicSearchTrace } from './types.ts';
 
-export const bfs = (adjList: AdjacencyList, startNode: string) => {
+export const bfs = (
+  adjList: DeepReadonly<AdjacencyList>,
+  startNode: string,
+) => {
   const trace: BasicSearchTrace[] = [];
 
   const runBfs = () => {

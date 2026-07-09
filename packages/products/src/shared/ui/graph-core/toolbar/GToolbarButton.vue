@@ -11,7 +11,7 @@
 
   // special case!
   const activeColor = computed(() => {
-    if (graph.value.vue.activePreset.value === 'dark') {
+    if (graph.value.activePreset.value === 'dark') {
       return colors.value.tertiary;
     }
     return colors.value.secondary;
