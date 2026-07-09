@@ -12,6 +12,14 @@
       "types": "./dist/types/components/tooltip/Tooltip.vue.d.ts",
       "default": "./src/components/tooltip/Tooltip.vue"
     },
+    "./Icon": {
+      "types": "./dist/types/components/icon/Icon.vue.d.ts",
+      "default": "./src/components/icon/Icon.vue"
+    },
+    "./IconButton": {
+      "types": "./dist/types/components/icon-button/IconButton.vue.d.ts",
+      "default": "./src/components/icon-button/IconButton.vue"
+    },
     "./*": {
       "types": "./dist/types/*.d.ts",
       "default": "./src/*.ts"
