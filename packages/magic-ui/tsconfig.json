@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "rewriteRelativeImportExtensions": false
+  },
+  "references": [{ "path": "../core-components" }],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
+}

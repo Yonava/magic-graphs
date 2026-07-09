@@ -312,6 +312,16 @@ importers:
         specifier: ^3.5.18
         version: 3.5.39(typescript@6.0.3)
 
+  packages/magic-ui:
+    dependencies:
+      '@core/components':
+        specifier: workspace:*
+        version: link:../core-components
+    devDependencies:
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.39(typescript@6.0.3)
+
 packages:
 
   '@adobe/css-tools@4.5.0':

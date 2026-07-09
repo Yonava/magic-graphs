@@ -1,0 +1,28 @@
+{
+  "name": "@magic/ui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*.vue": {
+      "types": "./dist/types/*.vue.d.ts",
+      "default": "./src/*.vue"
+    },
+    "./*": {
+      "types": "./dist/types/*.d.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "build:types": "vue-tsc -b tsconfig.json"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.18"
+  },
+  "dependencies": {
+    "@core/components": "workspace:*"
+  },
+  "devDependencies": {
+    "vue": "catalog:"
+  }
+}

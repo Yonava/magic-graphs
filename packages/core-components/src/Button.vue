@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { Primitive, type PrimitiveProps } from 'reka-ui';
+  import { Primitive, type PrimitiveProps } from 'reka-ui';
 
-import { cn } from './cn';
+  import { cn } from './cn.ts';
 
-interface Props extends /* @vue-ignore */ PrimitiveProps {
-  variant?: 'solid' | 'outline';
-}
+  interface Props extends /* @vue-ignore */ PrimitiveProps {
+    variant?: 'solid' | 'outline';
+  }
 
-withDefaults(defineProps<Props>(), {
-  as: 'button',
-  variant: 'solid',
-});
+  withDefaults(defineProps<Props>(), {
+    as: 'button',
+    variant: 'solid',
+  });
 </script>
 
 <template>
@@ -19,10 +19,14 @@ withDefaults(defineProps<Props>(), {
     :as-child="asChild"
     :class="
       cn(
-        'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50',
-        variant === 'solid' && 'bg-neutral-900 text-white hover:bg-neutral-700',
+        'inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+        'active:scale-[0.98]',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+        'disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100',
+        variant === 'solid' &&
+          'bg-neutral-900 text-white hover:bg-neutral-700 active:bg-neutral-800 focus-visible:ring-neutral-900',
         variant === 'outline' &&
-          'border border-neutral-300 bg-transparent text-neutral-900 hover:bg-neutral-100',
+          'border border-neutral-300 bg-transparent text-neutral-900 hover:bg-neutral-100 active:bg-neutral-200 focus-visible:ring-neutral-400',
       )
     "
   >

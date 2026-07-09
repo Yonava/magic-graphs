@@ -16,6 +16,7 @@
     { "path": "./packages/canvas-primitives/tsconfig.storybook.json" },
     { "path": "./packages/core-ui" },
     { "path": "./packages/core-utils" },
-    { "path": "./packages/core-components" }
+    { "path": "./packages/core-components" },
+    { "path": "./packages/magic-ui" }
   ]
 }
