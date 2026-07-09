@@ -5,6 +5,8 @@
   import Icon from '@core/components/Icon';
   import IconButton from '@core/components/IconButton';
   import ToggleButton from '@core/components/ToggleButton';
+  import ToggleButtonGroup from '@core/components/ToggleButtonGroup';
+  import ToggleButtonGroupItem from '@core/components/ToggleButtonGroupItem';
   import Tooltip from '@core/components/Tooltip';
   import { mdiPlus, mdiStar } from '@mdi/js';
 
@@ -12,6 +14,8 @@
     title: 'Magic Graphs',
     description: 'Hello world from Nuxt SSG.',
   });
+
+  const alignment = ref<string>('left');
 </script>
 
 <template>
@@ -67,5 +71,11 @@
       </DropdownItem>
     </Dropdown>
     <ToggleButton>Toggle Button</ToggleButton>
+    <ToggleButtonGroup v-model="alignment">
+      <ToggleButtonGroupItem value="left">Left</ToggleButtonGroupItem>
+      <ToggleButtonGroupItem value="center">Center</ToggleButtonGroupItem>
+      <ToggleButtonGroupItem value="right">Right</ToggleButtonGroupItem>
+    </ToggleButtonGroup>
+    <p>Alignment: {{ alignment }}</p>
   </main>
 </template>
