@@ -4,10 +4,10 @@
   "ignore": ["**/node_modules/**, **/dist/**", "**/.storybook/**"],
   "entry": ["**/*.test.ts", "**/*.test.tsx"],
   "workspaces": {
-    "packages/client": {
+    "packages/magic-client": {
       "ignore": ["env.d.ts"]
     },
-    "packages/products": {
+    "packages/magic-products": {
       "ignoreDependencies": ["fraction.js"]
     },
     "packages/graph-core": {

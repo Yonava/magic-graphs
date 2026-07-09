@@ -1,9 +1,9 @@
 {
   "files": [],
   "references": [
-    { "path": "./packages/canvas" },
-    { "path": "./packages/client" },
-    { "path": "./packages/create-graph" },
+    { "path": "./packages/canvas-surface" },
+    { "path": "./packages/magic-client" },
+    { "path": "./packages/graph-create-graph" },
     { "path": "./packages/graph-algorithms" },
     { "path": "./packages/graph-core" },
     { "path": "./packages/graph-plugins-shared" },
@@ -11,11 +11,11 @@
     { "path": "./packages/graph-primitives" },
     { "path": "./packages/graph-theme-presets" },
     { "path": "./packages/graph-vue" },
-    { "path": "./packages/products" },
-    { "path": "./packages/server" },
-    { "path": "./packages/shapes" },
-    { "path": "./packages/shapes/tsconfig.storybook.json" },
-    { "path": "./packages/ui" },
-    { "path": "./packages/utils" }
+    { "path": "./packages/magic-products" },
+    { "path": "./packages/magic-server" },
+    { "path": "./packages/canvas-primitives" },
+    { "path": "./packages/canvas-primitives/tsconfig.storybook.json" },
+    { "path": "./packages/core-ui" },
+    { "path": "./packages/core-utils" }
   ]
 }

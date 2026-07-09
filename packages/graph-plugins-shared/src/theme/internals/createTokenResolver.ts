@@ -1,5 +1,5 @@
-import { nullThrows } from '@magic/utils/assert';
-import { getValue } from '@magic/utils/maybeGetter/index';
+import { nullThrows } from '@core/utils/assert';
+import { getValue } from '@core/utils/maybeGetter/index';
 
 import {
   StyleValueFromThemeValue,

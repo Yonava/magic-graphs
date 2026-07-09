@@ -1,5 +1,5 @@
-import { nullThrows } from '@magic/utils/assert';
-import { getCtx } from '@magic/utils/ctx/index';
+import { nullThrows } from '@core/utils/assert';
+import { getCtx } from '@core/utils/ctx/index';
 
 import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { DEFAULT_INTERACTIVE_OPTIONS, InteractiveOptions } from './options.ts';
@@ -34,9 +34,18 @@ export const interactive =
       actions.addNode({ x: coords.x, y: coords.y });
     };
 
-    const handleEdgeTextArea = ({ elements }: CanvasGraphMouseEvent) => {
+    const handleEdgeTextArea = ({
+      elements,
+      coords,
+    }: CanvasGraphMouseEvent) => {
       const topElement = elements.at(-1);
-      if (!topElement || !controls.isEdge(topElement.id)) return;
+      if (
+        !topElement ||
+        !topElement.shape.textHitbox?.(coords) ||
+        !controls.isEdge(topElement.id)
+      ) {
+        return;
+      }
 
       const ctx = getCtx(controls.canvas.magicCanvas.canvas);
 

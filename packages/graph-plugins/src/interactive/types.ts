@@ -1,7 +1,7 @@
 import {
   GraphPlugin,
   WithLifecycle,
-} from '@magic/graph-plugins-shared/plugins';
+} from '@graph/plugins-shared/plugins';
 
 import { AnchorsPlugin } from '../anchors/types.ts';
 import { CanvasPlugin } from '../canvas/types.ts';

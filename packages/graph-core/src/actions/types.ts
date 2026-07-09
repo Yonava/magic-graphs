@@ -1,4 +1,4 @@
-import { GraphActions } from '@magic/graph-primitives/actions/types';
+import { GraphActions } from '@graph/primitives/actions/types';
 import Fraction from 'fraction.js';
 
 import { Position } from '../positions/types.ts';

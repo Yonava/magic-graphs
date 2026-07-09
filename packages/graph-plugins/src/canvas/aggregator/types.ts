@@ -1,4 +1,4 @@
-import { Shape } from '@magic/shapes/types/index';
+import { Shape } from '@canvas/primitives/types/index';
 
 /**
  * the array in which canvas elements are added into in order to be rendered on the canvas

@@ -1,6 +1,6 @@
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
-import type { FontWeight } from '@magic/shapes/text/types';
-import { Color } from '@magic/utils/colors';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
+import type { FontWeight } from '@canvas/primitives/text/types';
+import { Color } from '@core/utils/colors';
 
 import { Cursor, CursorFallback } from '../../theme/index.ts';
 

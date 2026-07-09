@@ -1,5 +1,5 @@
-import { TransactionPayload } from '@magic/graph-primitives/transactions/types';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+import { TransactionPayload } from '@graph/primitives/transactions/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { CoreControls } from '../types.ts';
 

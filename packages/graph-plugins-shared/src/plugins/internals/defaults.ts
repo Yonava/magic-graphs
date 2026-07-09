@@ -1,4 +1,4 @@
-import { PartiallyPartial } from '@magic/utils/types';
+import { PartiallyPartial } from '@core/utils/types';
 import { Prettify } from 'ts-essentials';
 
 import { LoosePluginSchema } from './loose.ts';

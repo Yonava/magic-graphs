@@ -1,11 +1,11 @@
-import { CoreEventMap } from '@magic/graph-core/events';
-import { createThemeController } from '@magic/graph-plugins-shared/theme';
-import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
-import { CoreNode } from '@magic/graph-primitives/types';
-import type { CircleSchema } from '@magic/shapes/shapes/circle/types';
-import type { WithId } from '@magic/shapes/types/index';
-import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { CoreEventMap } from '@graph/core/events';
+import { createThemeController } from '@graph/plugins-shared/theme';
+import { createEventHub } from '@graph/primitives/events/createEventHub';
+import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
+import { CoreNode } from '@graph/primitives/types';
+import type { CircleSchema } from '@canvas/primitives/shapes/circle/types';
+import type { WithId } from '@canvas/primitives/types/index';
+import { MOUSE_BUTTONS } from '@core/utils/mouse';
 
 import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';

@@ -1,5 +1,5 @@
-import { Graph } from '@magic/create-graph/index';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+import { Graph } from '@graph/create-graph/index';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { computed, ComputedRef, ref, Ref, watch } from 'vue';
 

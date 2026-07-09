@@ -1,0 +1,27 @@
+<script setup lang="ts">
+  import type { Color } from '@core/utils/colors';
+  import colors from '@core/utils/colors';
+
+  import { type StyleValue, computed } from 'vue';
+
+  import { nonNullGraph as graph } from '../../../shared/globalGraph.ts';
+  import { ThemePreset } from '../../useGraph.ts';
+
+  const THEME_TO_TEXT_COLOR: Record<ThemePreset, Color> = {
+    light: colors.GRAY_900,
+    dark: colors.GRAY_100,
+    pink: colors.PINK_800,
+  };
+
+  const textColor = computed(() => {
+    return THEME_TO_TEXT_COLOR[graph.value.activePreset.value];
+  });
+
+  const styles = computed((): StyleValue => ({ color: textColor.value }));
+</script>
+
+<template>
+  <div :style="styles">
+    <slot></slot>
+  </div>
+</template>

@@ -1,16 +1,16 @@
-import { CoreActions } from '@magic/graph-core/actions/types';
-import { CoreEventMap } from '@magic/graph-core/events';
-import { CoreGetters } from '@magic/graph-core/getters';
-import { CoreControls } from '@magic/graph-core/types';
+import { CoreActions } from '@graph/core/actions/types';
+import { CoreEventMap } from '@graph/core/events';
+import { CoreGetters } from '@graph/core/getters';
+import { CoreControls } from '@graph/core/types';
 import {
   GraphActions,
   MergeActions,
-} from '@magic/graph-primitives/actions/types';
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
+} from '@graph/primitives/actions/types';
+import { EventHub } from '@graph/primitives/events/createEventHub';
 import {
   GraphGetters,
   MergeGetters,
-} from '@magic/graph-primitives/getters/types';
+} from '@graph/primitives/getters/types';
 
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls, ExtractEventMap } from './extractors.ts';

@@ -1,0 +1,46 @@
+{
+  "name": "@magic/products",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": {
+      "types": "./dist/types/*.d.ts"
+    }
+  },
+  "scripts": {
+    "build:types": "vue-tsc -b tsconfig.json"
+  },
+  "peerDependencies": {
+    "primevue": "^4.2.4",
+    "vue": "^3.5.18"
+  },
+  "dependencies": {
+    "@graph/core": "workspace:*",
+    "@graph/primitives": "workspace:*",
+    "@graph/create-graph": "workspace:*",
+    "@graph/plugins": "workspace:*",
+    "@graph/plugins-shared": "workspace:*",
+    "@graph/theme-presets": "workspace:*",
+    "@graph/vue": "workspace:*",
+    "@canvas/surface": "workspace:*",
+    "@canvas/primitives": "workspace:*",
+    "@core/ui": "workspace:*",
+    "@core/utils": "workspace:*",
+    "@vueuse/core": "catalog:",
+    "ctrl-keys": "catalog:",
+    "fraction.js": "^5.3.4",
+    "gsap": "^3.12.5",
+    "lz-string": "catalog:",
+    "mathjs": "catalog:",
+    "monaco-editor": "^0.55.1",
+    "tinycolor2": "catalog:",
+    "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@types/tinycolor2": "catalog:",
+    "primevue": "catalog:",
+    "ts-essentials": "^10.2.0",
+    "vue": "catalog:"
+  }
+}

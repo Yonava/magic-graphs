@@ -1,8 +1,8 @@
 import {
   GraphPlugin,
   PluginOptions,
-} from '@magic/graph-plugins-shared/plugins';
-import { CoreEdge } from '@magic/graph-primitives/types';
+} from '@graph/plugins-shared/plugins';
+import { CoreEdge } from '@graph/primitives/types';
 
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 import { getBidirectionalEdges } from './bidirectional.ts';

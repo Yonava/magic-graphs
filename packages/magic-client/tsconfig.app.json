@@ -1,0 +1,15 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "types": ["vite/client"],
+    "outDir": "./dist/types",
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@core/ui/*": ["../core-ui/src/*"],
+      "@magic/products/*": ["../magic-products/src/*"]
+    }
+  },
+  "references": [{ "path": "../core-ui" }, { "path": "../magic-products" }],
+  "include": ["env.d.ts", "src/**/*.ts", "src/**/*.vue"]
+}

@@ -1,5 +1,5 @@
 {
-  "name": "@magic/graph-core",
+  "name": "@graph/core",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -13,8 +13,8 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@magic/utils": "workspace:*",
-    "@magic/graph-primitives": "workspace:*",
+    "@core/utils": "workspace:*",
+    "@graph/primitives": "workspace:*",
     "fraction.js": "^5.3.4"
   },
   "devDependencies": {

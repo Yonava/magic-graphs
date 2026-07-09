@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "rewriteRelativeImportExtensions": false
+  },
+  "references": [
+    { "path": "../graph-core" },
+    { "path": "../graph-plugins-shared" },
+    { "path": "../graph-plugins" },
+    { "path": "../graph-primitives" },
+    { "path": "../core-utils" },
+    { "path": "../canvas-primitives" }
+  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
+}

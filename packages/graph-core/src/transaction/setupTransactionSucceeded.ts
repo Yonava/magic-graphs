@@ -1,5 +1,5 @@
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+import { EventHub } from '@graph/primitives/events/createEventHub';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { CoreEventMap } from '../events.ts';
 import { propagateTransactionEvents } from './propagateTransactionEvents.ts';

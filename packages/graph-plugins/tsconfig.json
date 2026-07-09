@@ -5,12 +5,12 @@
     "rootDir": "./src"
   },
   "references": [
-    { "path": "../canvas" },
-    { "path": "../utils" },
+    { "path": "../canvas-surface" },
+    { "path": "../core-utils" },
     { "path": "../graph-core" },
     { "path": "../graph-plugins-shared" },
     { "path": "../graph-primitives" },
-    { "path": "../shapes" }
+    { "path": "../canvas-primitives" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

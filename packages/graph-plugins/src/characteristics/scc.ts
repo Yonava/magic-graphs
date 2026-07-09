@@ -1,4 +1,4 @@
-import { CoreNode } from '@magic/graph-primitives/types';
+import { CoreNode } from '@graph/primitives/types';
 
 import { Controls } from './index.ts';
 import TarjanGraph from './tarjans.ts';

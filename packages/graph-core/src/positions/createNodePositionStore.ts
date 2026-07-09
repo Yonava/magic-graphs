@@ -1,6 +1,6 @@
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
-import { nullThrows } from '@magic/utils/assert';
-import { getValue } from '@magic/utils/maybeGetter/index';
+import { EventHub } from '@graph/primitives/events/createEventHub';
+import { nullThrows } from '@core/utils/assert';
+import { getValue } from '@core/utils/maybeGetter/index';
 
 import { CoreEventMap } from '../events.ts';
 import { DEFAULT_POSITION } from './constants.ts';

@@ -1,5 +1,5 @@
-import { GraphGetters } from '@magic/graph-primitives/getters/types';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+import { GraphGetters } from '@graph/primitives/getters/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { CoreGetters } from '../getters.ts';
 import type { CoreOptions } from '../options.ts';

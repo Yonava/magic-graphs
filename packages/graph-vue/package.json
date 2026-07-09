@@ -1,5 +1,5 @@
 {
-  "name": "@magic/graph-vue",
+  "name": "@graph/vue",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -17,9 +17,9 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
-    "@magic/graph-primitives": "workspace:*",
-    "@magic/create-graph": "workspace:*",
-    "@magic/graph-plugins": "workspace:*",
+    "@graph/primitives": "workspace:*",
+    "@graph/create-graph": "workspace:*",
+    "@graph/plugins": "workspace:*",
     "vue": "catalog:"
   },
   "devDependencies": {}

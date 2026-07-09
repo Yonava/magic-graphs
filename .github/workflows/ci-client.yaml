@@ -17,7 +17,7 @@ jobs:
          cache: 'pnpm'
      - name: Install dependencies
        run: pnpm install --frozen-lockfile
-       working-directory: ./packages/client
+       working-directory: ./packages/magic-client
      - name: Run check
        run: pnpm run check
-       working-directory: ./packages/client
+       working-directory: ./packages/magic-client

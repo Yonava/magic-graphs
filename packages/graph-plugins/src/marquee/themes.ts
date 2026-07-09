@@ -3,8 +3,8 @@ import {
   CursorFallback,
   ThemeOverrides,
   ThemeValue,
-} from '@magic/graph-plugins-shared/theme';
-import { Color } from '@magic/utils/colors';
+} from '@graph/plugins-shared/theme';
+import { Color } from '@core/utils/colors';
 
 export type MarqueeThemes = {
   'marquee.drag.color': ThemeValue<Color>;

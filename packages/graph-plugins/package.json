@@ -1,5 +1,5 @@
 {
-  "name": "@magic/graph-plugins",
+  "name": "@graph/plugins",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -13,12 +13,12 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@magic/canvas": "workspace:*",
-    "@magic/graph-core": "workspace:*",
-    "@magic/graph-plugins-shared": "workspace:*",
-    "@magic/graph-primitives": "workspace:*",
-    "@magic/shapes": "workspace:*",
-    "@magic/utils": "workspace:*",
+    "@canvas/surface": "workspace:*",
+    "@graph/core": "workspace:*",
+    "@graph/plugins-shared": "workspace:*",
+    "@graph/primitives": "workspace:*",
+    "@canvas/primitives": "workspace:*",
+    "@core/utils": "workspace:*",
     "fraction.js": "^5.3.4"
   },
   "devDependencies": {

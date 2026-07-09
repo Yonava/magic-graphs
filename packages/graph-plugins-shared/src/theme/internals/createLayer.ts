@@ -1,4 +1,4 @@
-import { generateId } from '@magic/utils/id';
+import { generateId } from '@core/utils/id';
 
 import { ThemeOverrides } from './types.ts';
 

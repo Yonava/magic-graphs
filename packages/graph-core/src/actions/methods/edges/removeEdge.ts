@@ -1,4 +1,4 @@
-import { nullThrows } from '@magic/utils/assert';
+import { nullThrows } from '@core/utils/assert';
 
 import { CreateCoreAction } from '../../types.ts';
 

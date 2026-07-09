@@ -1,10 +1,10 @@
-import { EventMapToEventRegistry } from '@magic/graph-primitives/events/types';
+import { EventMapToEventRegistry } from '@graph/primitives/events/types';
 import {
   ElementAdditionPayload,
   ElementRemovalPayload,
   TransactionPayload,
-} from '@magic/graph-primitives/transactions/types';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+} from '@graph/primitives/transactions/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import {

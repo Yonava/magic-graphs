@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "types": ["node"],
+    "rewriteRelativeImportExtensions": false
+  },
+  "references": [{ "path": "../core-utils" }, { "path": "../graph-primitives" }],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
+}

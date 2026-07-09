@@ -6,7 +6,7 @@
     "rewriteRelativeImportExtensions": false
   },
   "references": [
-    { "path": "../create-graph" },
+    { "path": "../graph-create-graph" },
     { "path": "../graph-primitives" },
     { "path": "../graph-plugins" }
   ],

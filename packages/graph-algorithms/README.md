@@ -1,4 +1,4 @@
-# @magic/graph-algorithms
+# @graph/algorithms
 
 Well-documented, well-tested graph algorithm implementations. Documentation is the differentiator — every function must be thorough and consistent.
 

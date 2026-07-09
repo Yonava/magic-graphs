@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/types",
+    "rootDir": "./src"
+  },
+  "references": [{ "path": "../core-utils" }, { "path": "../canvas-surface" }],
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
+}

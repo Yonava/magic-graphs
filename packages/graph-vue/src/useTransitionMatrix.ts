@@ -1,6 +1,6 @@
-import { Graph } from '@magic/create-graph/index';
-import { AdjacencyListsPlugin } from '@magic/graph-plugins/adjacency-lists/types';
-import { TransitionMatrixPlugin } from '@magic/graph-plugins/transition-matrix/types';
+import { Graph } from '@graph/create-graph/index';
+import { AdjacencyListsPlugin } from '@graph/plugins/adjacency-lists/types';
+import { TransitionMatrixPlugin } from '@graph/plugins/transition-matrix/types';
 
 import { computed, shallowRef } from 'vue';
 

@@ -1,0 +1,28 @@
+{
+  "name": "@core/ui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": {
+      "types": "./dist/types/*.d.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "build:types": "vue-tsc -b tsconfig.json"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.18",
+    "primevue": "^4.2.4"
+  },
+  "dependencies": {
+    "@core/utils": "workspace:*",
+    "tailwind-merge": "^3.3.1",
+    "tinycolor2": "catalog:"
+  },
+  "devDependencies": {
+    "@types/tinycolor2": "catalog:",
+    "vue": "catalog:"
+  }
+}

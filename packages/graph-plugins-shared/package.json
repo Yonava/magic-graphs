@@ -1,5 +1,5 @@
 {
-  "name": "@magic/graph-plugins-shared",
+  "name": "@graph/plugins-shared",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -29,10 +29,10 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@magic/graph-primitives": "workspace:*",
-    "@magic/graph-core": "workspace:*",
-    "@magic/shapes": "workspace:*",
-    "@magic/utils": "workspace:*"
+    "@graph/primitives": "workspace:*",
+    "@graph/core": "workspace:*",
+    "@canvas/primitives": "workspace:*",
+    "@core/utils": "workspace:*"
   },
   "devDependencies": {
     "ts-essentials": "^10.2.0"

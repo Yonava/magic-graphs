@@ -1,5 +1,5 @@
-import { DragStateControls } from '@magic/graph-plugins-shared/drag';
-import { CURSOR } from '@magic/graph-plugins-shared/theme';
+import { DragStateControls } from '@graph/plugins-shared/drag';
+import { CURSOR } from '@graph/plugins-shared/theme';
 
 import { ANCHOR_PLUGIN_ID } from './constants.ts';
 import { AnchorsPlugin, NodeAnchor } from './types.ts';

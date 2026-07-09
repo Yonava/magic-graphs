@@ -1,4 +1,4 @@
-import { CommitTransaction } from '@magic/graph-primitives/transactions/types';
+import { CommitTransaction } from '@graph/primitives/transactions/types';
 
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import type { TransactionOptions } from './types.ts';

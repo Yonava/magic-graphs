@@ -1,5 +1,5 @@
-import { CommitTransaction } from '@magic/graph-primitives/transactions/types';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+import { CommitTransaction } from '@graph/primitives/transactions/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { NodePositionStoreControls } from '../positions/types.ts';
 import type { EdgeWeightStoreControls } from '../weights/types.ts';

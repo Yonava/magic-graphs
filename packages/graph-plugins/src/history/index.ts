@@ -1,6 +1,6 @@
-import { CoreEventMap } from '@magic/graph-core/events';
-import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
+import { CoreEventMap } from '@graph/core/events';
+import { createEventHub } from '@graph/primitives/events/createEventHub';
+import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
 
 import { MAX_HISTORY } from './constants.ts';
 import { HistoryEventMap, createHistoryEventRegistry } from './events.ts';

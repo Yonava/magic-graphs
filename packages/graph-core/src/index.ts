@@ -1,6 +1,6 @@
-import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
-import type { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
-import { nullThrows } from '@magic/utils/assert';
+import { createEventHub } from '@graph/primitives/events/createEventHub';
+import type { CoreEdge, CoreNode } from '@graph/primitives/types';
+import { nullThrows } from '@core/utils/assert';
 
 import { createCoreActions } from './actions/createCoreActions.ts';
 import { createCoreEventRegistry } from './events.ts';
