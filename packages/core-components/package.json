@@ -4,9 +4,13 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./*.vue": {
-      "types": "./dist/types/*.vue.d.ts",
-      "default": "./src/*.vue"
+    "./Button": {
+      "types": "./dist/types/components/button/Button.vue.d.ts",
+      "default": "./src/components/button/Button.vue"
+    },
+    "./Tooltip": {
+      "types": "./dist/types/components/tooltip/Tooltip.vue.d.ts",
+      "default": "./src/components/tooltip/Tooltip.vue"
     },
     "./*": {
       "types": "./dist/types/*.d.ts",

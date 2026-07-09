@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import {
-  TooltipContent,
-  type TooltipContentProps,
-  TooltipPortal,
-  TooltipProvider,
-  TooltipRoot,
-  TooltipTrigger,
-} from 'reka-ui';
+  import {
+    TooltipContent,
+    type TooltipContentProps,
+    TooltipPortal,
+    TooltipProvider,
+    TooltipRoot,
+    TooltipTrigger,
+  } from 'reka-ui';
 
-import { cn } from './cn.ts';
+  import { cn } from '../../cn.ts';
 
-interface Props {
-  // required, plain-text description used for the accessible name/description.
-  // always what screen readers announce, regardless of what's slotted visually.
-  label: string;
-  delayDuration?: number;
-  side?: TooltipContentProps['side'];
-}
+  interface Props {
+    /**
+     * required, plain-text description used for the accessible name/description.
+     * always what screen readers announce, regardless of what's slotted visually.
+     */
+    label: string;
+    side?: TooltipContentProps['side'];
+  }
 
-withDefaults(defineProps<Props>(), {
-  delayDuration: 0,
-  side: 'top',
-});
+  withDefaults(defineProps<Props>(), {
+    side: 'top',
+  });
 </script>
 
 <template>
   <TooltipProvider>
-    <TooltipRoot :delay-duration="delayDuration">
+    <TooltipRoot>
       <TooltipTrigger as-child>
         <slot name="trigger" />
       </TooltipTrigger>
@@ -34,7 +34,6 @@ withDefaults(defineProps<Props>(), {
         <TooltipContent
           :aria-label="label"
           :side="side"
-          :avoid-collisions="true"
           :side-offset="6"
           :class="
             cn(

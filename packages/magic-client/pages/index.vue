@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import Button from '@core/components/Button.vue';
-  import Tooltip from '@core/components/Tooltip.vue';
+  import Button from '@core/components/Button';
+  import Tooltip from '@core/components/Tooltip';
 
   useSeoMeta({
     title: 'Magic Graphs',

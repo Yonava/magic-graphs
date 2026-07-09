@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { Primitive, type PrimitiveProps } from 'reka-ui';
 
-  import { cn } from './cn.ts';
+  import { cn } from '../../cn.ts';
 
   interface Props extends /* @vue-ignore */ PrimitiveProps {
     variant?: 'solid' | 'outline';
