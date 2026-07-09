@@ -1,4 +1,4 @@
-import colors from '@magic/utils/colors';
+import colors from '@core/utils/colors';
 
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';
 import type { MarkovChain } from '../markov/useMarkovChain.ts';

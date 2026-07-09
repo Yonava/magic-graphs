@@ -1,4 +1,4 @@
-import { getValue } from '@magic/utils/maybeGetter/index';
+import { getValue } from '@core/utils/maybeGetter/index';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
 import type { Graph } from '../../shared/useGraphWithCanvas.ts';

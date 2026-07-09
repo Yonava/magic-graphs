@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import InputRange from '@magic/ui/InputRange.vue';
-  import CIcon from '@magic/ui/core/Icon.vue';
-  import CPopover from '@magic/ui/core/Popover.vue';
+  import InputRange from '@core/ui/InputRange.vue';
+  import CIcon from '@core/ui/core/Icon.vue';
+  import CPopover from '@core/ui/core/Popover.vue';
 
   import { computed } from 'vue';
 

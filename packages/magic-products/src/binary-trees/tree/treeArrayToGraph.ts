@@ -1,6 +1,6 @@
 import { NodePositionUpdate } from '@graph/core/positions/types';
-import { Coordinate } from '@magic/shapes/types/utility';
-import { nullThrows } from '@magic/utils/assert';
+import { Coordinate } from '@canvas/primitives/types/utility';
+import { nullThrows } from '@core/utils/assert';
 import Fraction from 'fraction.js';
 
 import { getTreeIndexToPosition } from '../../shared/graph-tree-positioner/positioners/binaryTreePositioner.ts';

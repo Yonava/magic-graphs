@@ -1,4 +1,4 @@
-import colors from '@magic/utils/colors';
+import colors from '@core/utils/colors';
 
 import { useNodeColor } from '../../../shared/graph-theme-helpers/useNodeColor.ts';
 import type { Graph } from '../../../shared/useGraphWithCanvas.ts';

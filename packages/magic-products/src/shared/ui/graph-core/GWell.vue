@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import CWell from '@magic/ui/core/Well.vue';
+  import CWell from '@core/ui/core/Well.vue';
 
   import { computed } from 'vue';
 

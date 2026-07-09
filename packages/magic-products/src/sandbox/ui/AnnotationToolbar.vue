@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import ToolbarButtonGroup from '@magic/ui/core/toolbar/ToolbarButtonGroup.vue';
-  import type { Color } from '@magic/utils/colors';
+  import ToolbarButtonGroup from '@core/ui/core/toolbar/ToolbarButtonGroup.vue';
+  import type { Color } from '@core/utils/colors';
 
   import { nonNullGraph as graph } from '../../shared/globalGraph.ts';
   import {

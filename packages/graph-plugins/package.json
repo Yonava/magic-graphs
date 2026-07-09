@@ -13,12 +13,12 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@magic/canvas": "workspace:*",
+    "@canvas/surface": "workspace:*",
     "@graph/core": "workspace:*",
     "@graph/plugins-shared": "workspace:*",
     "@graph/primitives": "workspace:*",
-    "@magic/shapes": "workspace:*",
-    "@magic/utils": "workspace:*",
+    "@canvas/primitives": "workspace:*",
+    "@core/utils": "workspace:*",
     "fraction.js": "^5.3.4"
   },
   "devDependencies": {

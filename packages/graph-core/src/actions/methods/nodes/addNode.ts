@@ -1,6 +1,6 @@
 import { CoreNode } from '@graph/primitives/types';
-import { nullThrows } from '@magic/utils/assert';
-import { generateId } from '@magic/utils/id';
+import { nullThrows } from '@core/utils/assert';
+import { generateId } from '@core/utils/id';
 
 import { CreateCoreAction } from '../../types.ts';
 

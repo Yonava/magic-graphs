@@ -2,10 +2,10 @@ import { CoreControls } from '@graph/core/types';
 import { CompoundTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import { CanvasControls } from '@graph/plugins/canvas/types';
 import { CoreEdge } from '@graph/primitives/types';
-import { getLargestAngularSpaceBisector } from '@magic/shapes/helpers';
-import { Shape } from '@magic/shapes/types/index';
-import { nullThrows } from '@magic/utils/assert';
-import { GOLDEN_RATIO } from '@magic/utils/math';
+import { getLargestAngularSpaceBisector } from '@canvas/primitives/helpers';
+import { Shape } from '@canvas/primitives/types/index';
+import { nullThrows } from '@core/utils/assert';
+import { GOLDEN_RATIO } from '@core/utils/math';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 

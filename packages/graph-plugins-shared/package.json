@@ -31,8 +31,8 @@
   "dependencies": {
     "@graph/primitives": "workspace:*",
     "@graph/core": "workspace:*",
-    "@magic/shapes": "workspace:*",
-    "@magic/utils": "workspace:*"
+    "@canvas/primitives": "workspace:*",
+    "@core/utils": "workspace:*"
   },
   "devDependencies": {
     "ts-essentials": "^10.2.0"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import type { Color } from '@magic/utils/colors';
-  import colors from '@magic/utils/colors';
+  import type { Color } from '@core/utils/colors';
+  import colors from '@core/utils/colors';
 
   import { type StyleValue, computed } from 'vue';
 

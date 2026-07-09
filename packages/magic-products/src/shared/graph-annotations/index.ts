@@ -1,14 +1,14 @@
 import { Aggregator } from '@graph/plugins/canvas/aggregator/types';
 import { CanvasGraphMouseEvent } from '@graph/plugins/canvas/events';
 import { GraphUnderCursor } from '@graph/plugins/canvas/types';
-import { circle } from '@magic/shapes/shapes/circle/index';
-import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
-import type { WithId } from '@magic/shapes/types/index';
-import type { Coordinate } from '@magic/shapes/types/utility';
-import colors from '@magic/utils/colors';
-import type { Color } from '@magic/utils/colors';
-import { generateId } from '@magic/utils/id';
-import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { circle } from '@canvas/primitives/shapes/circle/index';
+import type { ScribbleSchema } from '@canvas/primitives/shapes/scribble/types';
+import type { WithId } from '@canvas/primitives/types/index';
+import type { Coordinate } from '@canvas/primitives/types/utility';
+import colors from '@core/utils/colors';
+import type { Color } from '@core/utils/colors';
+import { generateId } from '@core/utils/id';
+import { MOUSE_BUTTONS } from '@core/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
 import { computed, ref } from 'vue';

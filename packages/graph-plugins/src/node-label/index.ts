@@ -1,6 +1,6 @@
-import { nullThrows } from '@magic/utils/assert';
-import { generateId } from '@magic/utils/id';
-import { getValue } from '@magic/utils/maybeGetter/index';
+import { nullThrows } from '@core/utils/assert';
+import { generateId } from '@core/utils/id';
+import { getValue } from '@core/utils/maybeGetter/index';
 
 import { UPPERCASE_ALPHABET } from './constants.ts';
 import { createLabelGenerator } from './createLabelGenerator.ts';

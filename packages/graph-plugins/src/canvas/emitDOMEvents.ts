@@ -1,5 +1,5 @@
 import { EventHub } from '@graph/primitives/events/createEventHub';
-import { KeyboardEventMap, MouseEventMap } from '@magic/utils/types';
+import { KeyboardEventMap, MouseEventMap } from '@core/utils/types';
 
 import { CanvasEventMap, CanvasGraphMouseEvent } from './events.ts';
 

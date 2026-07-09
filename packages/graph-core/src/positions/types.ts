@@ -1,5 +1,5 @@
 import { CoreNode } from '@graph/primitives/types';
-import { MaybeGetter } from '@magic/utils/maybeGetter/index';
+import { MaybeGetter } from '@core/utils/maybeGetter/index';
 
 import type { NodePositionStoreEventMap } from './events.ts';
 

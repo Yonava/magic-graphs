@@ -1,5 +1,5 @@
 import { NodePositionUpdate } from '@graph/core/positions/types';
-import { Coordinate } from '@magic/shapes/types/utility';
+import { Coordinate } from '@canvas/primitives/types/utility';
 
 import type { Graph } from '../../useGraphWithCanvas.ts';
 import { TreeGraphPositioner } from './types.ts';

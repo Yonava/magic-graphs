@@ -1,6 +1,6 @@
 import { NodePositionUpdate } from '@graph/core/positions/types';
-import { roundToNearestN } from '@magic/utils/math';
-import { getValue } from '@magic/utils/maybeGetter/index';
+import { roundToNearestN } from '@core/utils/math';
+import { getValue } from '@core/utils/maybeGetter/index';
 
 import { TreeGraphPositioner } from './types.ts';
 

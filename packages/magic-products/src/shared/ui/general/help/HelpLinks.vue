@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import CIcon from '@magic/ui/core/Icon.vue';
+  import CIcon from '@core/ui/core/Icon.vue';
 
   import GButton from '../../../../shared/ui/graph-core/button/GButton.vue';
   import HelpSection from './HelpSection.vue';

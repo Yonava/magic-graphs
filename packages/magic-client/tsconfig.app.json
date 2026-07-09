@@ -6,10 +6,10 @@
     "outDir": "./dist/types",
     "allowImportingTsExtensions": true,
     "paths": {
-      "@magic/ui/*": ["../ui/src/*"],
+      "@core/ui/*": ["../core-ui/src/*"],
       "@magic/products/*": ["../magic-products/src/*"]
     }
   },
-  "references": [{ "path": "../ui" }, { "path": "../magic-products" }],
+  "references": [{ "path": "../core-ui" }, { "path": "../magic-products" }],
   "include": ["env.d.ts", "src/**/*.ts", "src/**/*.vue"]
 }

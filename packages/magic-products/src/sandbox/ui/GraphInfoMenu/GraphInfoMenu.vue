@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import CPopover from '@magic/ui/core/Popover.vue';
+  import CPopover from '@core/ui/core/Popover.vue';
 
   import { computed } from 'vue';
 

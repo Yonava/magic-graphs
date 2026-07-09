@@ -10,8 +10,8 @@
     { "path": "../graph-plugins-shared" },
     { "path": "../graph-plugins" },
     { "path": "../graph-primitives" },
-    { "path": "../utils" },
-    { "path": "../shapes" }
+    { "path": "../core-utils" },
+    { "path": "../canvas-primitives" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

@@ -1,4 +1,4 @@
-import { debounce } from '@magic/utils/debounce';
+import { debounce } from '@core/utils/debounce';
 
 import { onUnmounted, ref, watch } from 'vue';
 

@@ -1,6 +1,6 @@
-import { Coordinate, MagicCanvasProps } from '@magic/canvas/types';
+import { Coordinate, CanvasProps } from '@canvas/surface/types';
 import { GraphPlugin, WithTheme } from '@graph/plugins-shared/plugins';
-import { AnimatedShapeControls } from '@magic/shapes/animation/index';
+import { AnimatedShapeControls } from '@canvas/primitives/animation/index';
 import { DeepReadonly } from 'ts-essentials';
 
 import { AggregatorControls } from './aggregator/createAggregator.ts';
@@ -21,7 +21,7 @@ export type GraphUnderCursor = {
 
 type BaseCanvasControls = {
   /** @internal */
-  magicCanvas: MagicCanvasProps;
+  magicCanvas: CanvasProps;
   /**
    * manages the set of canvas elements rendered on the canvas.
    * use `aggregator.transformers` to register custom canvas elements for your extension.

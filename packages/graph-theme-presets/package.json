@@ -15,7 +15,7 @@
   "dependencies": {
     "@graph/plugins": "workspace:*",
     "@graph/plugins-shared": "workspace:*",
-    "@magic/utils": "workspace:*"
+    "@core/utils": "workspace:*"
   },
   "devDependencies": {}
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { getCtx } from '@magic/utils/ctx/index';
-  import { debounce } from '@magic/utils/debounce';
+  import { getCtx } from '@core/utils/ctx/index';
+  import { debounce } from '@core/utils/debounce';
   import { Fraction } from 'mathjs';
   import * as ts from 'typescript';
 

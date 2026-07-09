@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import CIcon from '@magic/ui/core/Icon.vue';
+  import CIcon from '@core/ui/core/Icon.vue';
   import { onClickOutside } from '@vueuse/core';
   import { keys } from 'ctrl-keys';
 

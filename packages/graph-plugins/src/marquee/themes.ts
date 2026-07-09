@@ -4,7 +4,7 @@ import {
   ThemeOverrides,
   ThemeValue,
 } from '@graph/plugins-shared/theme';
-import { Color } from '@magic/utils/colors';
+import { Color } from '@core/utils/colors';
 
 export type MarqueeThemes = {
   'marquee.drag.color': ThemeValue<Color>;

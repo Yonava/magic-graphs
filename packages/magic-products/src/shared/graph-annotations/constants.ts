@@ -2,7 +2,7 @@ import { ANCHOR_PLUGIN_ID } from '@graph/plugins/anchors/constants';
 import { FOCUS_PLUGIN_ID } from '@graph/plugins/focus/constants';
 import { MARQUEE_PLUGIN_ID } from '@graph/plugins/marquee/constants';
 import { NODE_DRAG_PLUGIN_ID } from '@graph/plugins/node-drag/constants';
-import colors, { Color } from '@magic/utils/colors';
+import colors, { Color } from '@core/utils/colors';
 
 import { ThemePreset } from '../useGraph.ts';
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import CButton from '@magic/ui/core/button/Button.vue';
+  import CButton from '@core/ui/core/button/Button.vue';
 
   import { computed } from 'vue';
 

@@ -1,28 +1,28 @@
 <script setup lang="ts">
-  import MagicCanvas from '@magic/canvas/MagicCanvas.vue';
-  import { useMagicCanvas } from '@magic/canvas/index';
-  import { circle } from '@magic/shapes/shapes/circle/index';
-  import { Shape } from '@magic/shapes/types/index';
+  import CanvasSurface from '@canvas/surface/CanvasSurface.vue';
+  import { useCanvas } from '@canvas/surface/index';
+  import { circle } from '@canvas/primitives/shapes/circle/index';
+  import { Shape } from '@canvas/primitives/types/index';
 
   import CameraDebugInfo from './CanvasDebugInfo.vue';
 
   const dots: Shape[] = [];
 
-  const magic = useMagicCanvas();
-  magic.draw.content.value = (ctx) => dots.forEach((dot) => dot.draw(ctx));
+  const canvas = useCanvas();
+  canvas.draw.content.value = (ctx) => dots.forEach((dot) => dot.draw(ctx));
 
   const addDot = () => {
-    dots.push(circle({ radius: 20, at: magic.cursorCoordinates.value }));
+    dots.push(circle({ radius: 20, at: canvas.cursorCoordinates.value }));
   };
 </script>
 
 <template>
   <div class="absolute top-6 left-6">
-    <CameraDebugInfo :canvas="magic" />
+    <CameraDebugInfo :canvas="canvas" />
   </div>
-  <MagicCanvas
+  <CanvasSurface
     @dblclick="addDot"
-    v-bind="magic.ref"
+    v-bind="canvas.ref"
     class="bg-gray-700"
   />
 </template>

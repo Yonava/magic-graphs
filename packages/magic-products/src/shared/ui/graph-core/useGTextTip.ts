@@ -1,4 +1,4 @@
-import { useTextTip } from '@magic/ui/useTextTip';
+import { useTextTip } from '@core/ui/useTextTip';
 
 import { watch } from 'vue';
 import type { MaybeRef } from 'vue';

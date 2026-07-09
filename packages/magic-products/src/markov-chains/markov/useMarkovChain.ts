@@ -1,4 +1,4 @@
-import { mergeSetArrayIntoSet } from '@magic/utils/sets';
+import { mergeSetArrayIntoSet } from '@core/utils/sets';
 
 import { computed } from 'vue';
 

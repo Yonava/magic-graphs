@@ -1,4 +1,4 @@
-import { nullThrows } from '@magic/utils/assert';
+import { nullThrows } from '@core/utils/assert';
 
 import { computed, shallowRef } from 'vue';
 

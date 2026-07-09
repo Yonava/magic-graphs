@@ -1,5 +1,5 @@
 import { AdjacencyList } from '@graph/plugins/adjacency-lists/types';
-import { gcd, lowestPrimeFactor } from '@magic/utils/math';
+import { gcd, lowestPrimeFactor } from '@core/utils/math';
 import { DeepReadonly } from 'ts-essentials';
 
 import { computed } from 'vue';

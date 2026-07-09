@@ -13,7 +13,7 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@magic/utils": "workspace:*",
+    "@core/utils": "workspace:*",
     "@graph/primitives": "workspace:*",
     "fraction.js": "^5.3.4"
   },

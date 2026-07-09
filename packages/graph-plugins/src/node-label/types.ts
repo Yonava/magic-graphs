@@ -2,7 +2,7 @@ import {
   GraphPlugin,
   WithLifecycle,
 } from '@graph/plugins-shared/plugins';
-import { MaybeGetter } from '@magic/utils/maybeGetter/index';
+import { MaybeGetter } from '@core/utils/maybeGetter/index';
 
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';

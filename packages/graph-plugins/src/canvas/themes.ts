@@ -7,8 +7,8 @@ import {
   ThemeOverrides,
   ThemeValue,
 } from '@graph/plugins-shared/theme';
-import type { FontWeight } from '@magic/shapes/text/types';
-import { Color } from '@magic/utils/colors';
+import type { FontWeight } from '@canvas/primitives/text/types';
+import { Color } from '@core/utils/colors';
 
 type TextStyleValues = {
   text: string;

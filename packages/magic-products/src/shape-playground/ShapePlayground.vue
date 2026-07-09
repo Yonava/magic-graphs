@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import MagicCanvas from '@magic/canvas/MagicCanvas.vue';
-  import { useMagicCanvas } from '@magic/canvas/index';
-  import { useAnimatedShapes } from '@magic/shapes/animation/index';
-  import { cross } from '@magic/shapes/shapes/cross/index';
-  import Button from '@magic/ui/core/button/Button.vue';
-  import colors from '@magic/utils/colors';
+  import CanvasSurface from '@canvas/surface/CanvasSurface.vue';
+  import { useCanvas } from '@canvas/surface/index';
+  import { useAnimatedShapes } from '@canvas/primitives/animation/index';
+  import { cross } from '@canvas/primitives/shapes/cross/index';
+  import Button from '@core/ui/core/button/Button.vue';
+  import colors from '@core/utils/colors';
 
   const { defineTimeline, shapes, getAnimatedProp } = useAnimatedShapes();
 
@@ -91,14 +91,14 @@
     textArea: { textBlock: { content: '2' } },
   });
 
-  const magic = useMagicCanvas();
-  magic.draw.content.value = (ctx) => {
+  const canvas = useCanvas();
+  canvas.draw.content.value = (ctx) => {
     cir.draw(ctx);
     cir2.draw(ctx);
     arrowSomething.draw(ctx);
   };
 
-  magic.draw.backgroundPattern.value = (ctx, at) => {
+  canvas.draw.backgroundPattern.value = (ctx, at) => {
     cross({
       at,
       size: 14,
@@ -119,8 +119,8 @@
       <Button @click="resume({ shapeId: 'test' })">Resume Animation</Button>
     </div>
 
-    <MagicCanvas
-      v-bind="magic.ref"
+    <CanvasSurface
+      v-bind="canvas.ref"
       class="bg-gray-700"
     />
   </div>

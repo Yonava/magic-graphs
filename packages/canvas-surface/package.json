@@ -1,0 +1,27 @@
+{
+  "name": "@canvas/surface",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": {
+      "types": "./dist/types/*.d.ts",
+      "default": "./src/*"
+    }
+  },
+  "scripts": {
+    "build:types": "vue-tsc -b tsconfig.json"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.18"
+  },
+  "dependencies": {
+    "@core/utils": "workspace:*",
+    "@graph/primitives": "workspace:*",
+    "@vueuse/core": "catalog:",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "vue": "catalog:"
+  }
+}

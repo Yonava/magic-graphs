@@ -3,7 +3,7 @@ import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
 import { ElementRemovalPayload } from '@graph/primitives/transactions/types';
-import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { MOUSE_BUTTONS } from '@core/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';

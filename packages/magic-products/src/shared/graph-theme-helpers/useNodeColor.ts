@@ -1,4 +1,4 @@
-import type { Color } from '@magic/utils/colors';
+import type { Color } from '@core/utils/colors';
 
 import type { MaybeRef } from 'vue';
 

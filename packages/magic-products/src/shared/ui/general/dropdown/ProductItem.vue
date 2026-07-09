@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import CIcon from '@magic/ui/core/Icon.vue';
-  import { getRandomInRange } from '@magic/utils/random';
+  import CIcon from '@core/ui/core/Icon.vue';
+  import { getRandomInRange } from '@core/utils/random';
 
   import { computed, ref } from 'vue';
 

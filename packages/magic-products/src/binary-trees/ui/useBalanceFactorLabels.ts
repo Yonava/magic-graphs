@@ -1,5 +1,5 @@
-import colors from '@magic/utils/colors';
-import type { Color } from '@magic/utils/colors';
+import colors from '@core/utils/colors';
+import type { Color } from '@core/utils/colors';
 
 import { useNodeColor } from '../../shared/graph-theme-helpers/useNodeColor.ts';
 import { useNodeLabel } from '../../shared/graph-theme-helpers/useNodeLabel.ts';

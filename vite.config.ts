@@ -13,10 +13,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@magic/utils': r('packages/utils/src'),
-      '@magic/ui': r('packages/ui/src'),
-      '@magic/shapes': r('packages/shapes/src'),
-      '@magic/canvas': r('packages/canvas/src'),
+      '@core/utils': r('packages/core-utils/src'),
+      '@core/ui': r('packages/core-ui/src'),
+      '@canvas/primitives': r('packages/canvas-primitives/src'),
+      '@canvas/surface': r('packages/canvas-surface/src'),
       '@magic/products': r('packages/magic-products/src'),
       '@graph/create-graph': r('packages/graph-create-graph/src'),
       '@graph/algorithms': r('packages/graph-algorithms/src'),

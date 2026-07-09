@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import MagicCanvas from '@magic/canvas/MagicCanvas.vue';
+  import CanvasSurface from '@canvas/surface/CanvasSurface.vue';
 
   import { computed, onMounted, onUnmounted, ref } from 'vue';
   import type { UnwrapRef } from 'vue';
@@ -230,5 +230,5 @@
     </div>
   </div>
 
-  <MagicCanvas v-bind="props.canvas.ref" />
+  <CanvasSurface v-bind="props.canvas.ref" />
 </template>

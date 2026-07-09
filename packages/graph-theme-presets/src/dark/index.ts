@@ -4,7 +4,7 @@ import { AnchorsPlugin } from '@graph/plugins/anchors/types';
 import { CanvasPlugin } from '@graph/plugins/canvas/types';
 import { FocusPlugin } from '@graph/plugins/focus/types';
 import { MarqueePlugin } from '@graph/plugins/marquee/types';
-import colors from '@magic/utils/colors';
+import colors from '@core/utils/colors';
 
 import { shared } from './shared.ts';
 

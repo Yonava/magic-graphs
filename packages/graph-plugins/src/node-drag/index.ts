@@ -3,8 +3,8 @@ import { NodePositionStreamControls } from '@graph/core/positions/types';
 import { createDragState } from '@graph/plugins-shared/drag';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
-import { nullThrows } from '@magic/utils/assert';
-import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { nullThrows } from '@core/utils/assert';
+import { MOUSE_BUTTONS } from '@core/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';

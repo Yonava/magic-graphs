@@ -21,7 +21,7 @@ import { GraphActions } from '@graph/primitives/actions/types';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { GraphGetters } from '@graph/primitives/getters/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
-import { nullThrows } from '@magic/utils/assert';
+import { nullThrows } from '@core/utils/assert';
 import type { Prettify } from 'ts-essentials';
 
 import {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import CPopover from '@magic/ui/core/Popover.vue';
-  import CButton from '@magic/ui/core/button/Button.vue';
-  import colors from '@magic/utils/colors';
+  import CPopover from '@core/ui/core/Popover.vue';
+  import CButton from '@core/ui/core/button/Button.vue';
+  import colors from '@core/utils/colors';
 
   import { computed, toRef } from 'vue';
 

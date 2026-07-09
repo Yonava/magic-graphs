@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import CToolbarButton from '@magic/ui/core/toolbar/ToolbarButton.vue';
+  import CToolbarButton from '@core/ui/core/toolbar/ToolbarButton.vue';
 
   import { computed } from 'vue';
 

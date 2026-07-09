@@ -18,7 +18,7 @@
     "storybook": "storybook dev -p 6006"
   },
   "dependencies": {
-    "@magic/ui": "workspace:*",
+    "@core/ui": "workspace:*",
     "@mdi/font": "^7.4.47",
     "primevue": "catalog:",
     "tailwindcss-primeui": "^0.3.4",

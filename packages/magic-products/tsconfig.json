@@ -7,10 +7,10 @@
     "types": ["node"]
   },
   "references": [
-    { "path": "../canvas" },
-    { "path": "../shapes" },
-    { "path": "../ui" },
-    { "path": "../utils" },
+    { "path": "../canvas-surface" },
+    { "path": "../canvas-primitives" },
+    { "path": "../core-ui" },
+    { "path": "../core-utils" },
     { "path": "../graph-plugins" },
     { "path": "../graph-plugins-shared" },
     { "path": "../graph-create-graph" },

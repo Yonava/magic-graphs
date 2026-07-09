@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import CPopover from '@magic/ui/core/Popover.vue';
+  import CPopover from '@core/ui/core/Popover.vue';
 
   import GButton from '../../../../shared/ui/graph-core/button/GButton.vue';
   import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors.ts';

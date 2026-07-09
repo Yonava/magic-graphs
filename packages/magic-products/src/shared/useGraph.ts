@@ -1,4 +1,4 @@
-import type { MagicCanvasProps } from '@magic/canvas/types';
+import type { CanvasProps } from '@canvas/surface/types';
 import { createGraph } from '@graph/create-graph/index';
 import { CoreOptions } from '@graph/core/options';
 import { adjacencyLists } from '@graph/plugins/adjacency-lists/index';
@@ -27,7 +27,7 @@ import { useShortcuts } from './shortcut/index.ts';
 export type CreateGraphWithPluginsOptions = {
   core?: Partial<CoreOptions>;
   interactive?: Partial<InteractiveOptions>;
-  canvas: MagicCanvasProps;
+  canvas: CanvasProps;
 };
 
 const createGraphWithPlugins = (options: CreateGraphWithPluginsOptions) => {

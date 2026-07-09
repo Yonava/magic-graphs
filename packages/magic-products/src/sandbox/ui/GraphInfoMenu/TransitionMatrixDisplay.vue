@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import colors from '@magic/utils/colors';
+  import colors from '@core/utils/colors';
 
   import { computed } from 'vue';
 

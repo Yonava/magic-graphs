@@ -17,8 +17,8 @@
     "@graph/plugins-shared": "workspace:*",
     "@graph/plugins": "workspace:*",
     "@graph/primitives": "workspace:*",
-    "@magic/utils": "workspace:*",
-    "@magic/shapes": "workspace:*"
+    "@core/utils": "workspace:*",
+    "@canvas/primitives": "workspace:*"
   },
   "devDependencies": {
     "ts-essentials": "^10.2.0"

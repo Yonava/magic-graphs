@@ -7,10 +7,10 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
-    '../canvas/src/**/*.{vue,ts,js}',
+    '../canvas-surface/src/**/*.{vue,ts,js}',
     '../magic-products/src/**/*.{vue,ts,js}',
-    '../shapes/src/**/*.{vue,ts,js}',
-    '../ui/src/**/*.{vue,ts,js}',
+    '../canvas-primitives/src/**/*.{vue,ts,js}',
+    '../core-ui/src/**/*.{vue,ts,js}',
   ],
   safelist: [
     'bg-magic',

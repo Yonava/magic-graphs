@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import CToolbar from '@magic/ui/core/toolbar/ToolbarBase.vue';
+  import CToolbar from '@core/ui/core/toolbar/ToolbarBase.vue';
 
   import { useNonNullGraphColors } from '../../../../shared/useGlobalGraphColors.ts';
 

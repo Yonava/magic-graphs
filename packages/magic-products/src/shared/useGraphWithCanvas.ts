@@ -1,5 +1,5 @@
-import { useMagicCanvas } from '@magic/canvas/index';
-import type { MagicCanvasProps } from '@magic/canvas/types';
+import { useCanvas } from '@canvas/surface/index';
+import type { CanvasProps } from '@canvas/surface/types';
 
 import {
   GraphAnnotationsControls,
@@ -14,7 +14,7 @@ export type Graph = ReturnType<typeof useGraph> & {
 
 export type GraphWithCanvas = {
   graph: Graph;
-  canvas: MagicCanvasProps;
+  canvas: CanvasProps;
 };
 
 type UseGraphWithCanvas = (
@@ -22,7 +22,7 @@ type UseGraphWithCanvas = (
 ) => GraphWithCanvas;
 
 export const useGraphWithCanvas: UseGraphWithCanvas = (options = {}) => {
-  const canvas = useMagicCanvas();
+  const canvas = useCanvas();
   const graphWithPlugins = useGraph({
     canvas,
     ...options,

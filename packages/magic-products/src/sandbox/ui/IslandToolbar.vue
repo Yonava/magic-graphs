@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ToolbarButtonGroup from '@magic/ui/core/toolbar/ToolbarButtonGroup.vue';
+  import ToolbarButtonGroup from '@core/ui/core/toolbar/ToolbarButtonGroup.vue';
 
   import { computed } from 'vue';
 

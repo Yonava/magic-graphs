@@ -1,4 +1,4 @@
-import colors from '@magic/utils/colors';
+import colors from '@core/utils/colors';
 
 import type { SimulationControls } from '../../shared/ui/general/sim/types.ts';
 import { GEdge } from '../../shared/useGraph.ts';

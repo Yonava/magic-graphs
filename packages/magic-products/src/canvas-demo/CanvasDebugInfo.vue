@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import type { MagicCanvasProps } from '@magic/canvas/types';
+  import type { CanvasProps } from '@canvas/surface/types';
 
-  defineProps<{ canvas: MagicCanvasProps }>();
+  defineProps<{ canvas: CanvasProps }>();
 </script>
 
 <template>

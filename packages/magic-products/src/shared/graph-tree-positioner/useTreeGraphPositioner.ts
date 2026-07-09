@@ -1,4 +1,4 @@
-import { Coordinate } from '@magic/shapes/types/utility';
+import { Coordinate } from '@canvas/primitives/types/utility';
 
 import { ref } from 'vue';
 

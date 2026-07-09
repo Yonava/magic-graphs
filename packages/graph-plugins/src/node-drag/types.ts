@@ -1,4 +1,4 @@
-import { Coordinate } from '@magic/canvas/types';
+import { Coordinate } from '@canvas/surface/types';
 import {
   GraphPlugin,
   WithLifecycle,

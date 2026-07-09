@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { getRandomInRange } from '@magic/utils/random';
+  import { getRandomInRange } from '@core/utils/random';
 
   import { ref } from 'vue';
 

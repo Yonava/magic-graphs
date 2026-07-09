@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useFPS } from '@magic/utils/fps';
+  import { useFPS } from '@core/utils/fps';
 
   import GText from '../../graph-core/GText.vue';
 

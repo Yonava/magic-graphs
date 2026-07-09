@@ -2,9 +2,9 @@ import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
-import { normalizeBoundingBox } from '@magic/shapes/helpers';
-import type { BoundingBox, Coordinate } from '@magic/shapes/types/utility';
-import { MOUSE_BUTTONS } from '@magic/utils/mouse';
+import { normalizeBoundingBox } from '@canvas/primitives/helpers';
+import type { BoundingBox, Coordinate } from '@canvas/primitives/types/utility';
+import { MOUSE_BUTTONS } from '@core/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';

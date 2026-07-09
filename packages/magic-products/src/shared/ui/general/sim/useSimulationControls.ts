@@ -1,4 +1,4 @@
-import { localKeys } from '@magic/utils/localStorage';
+import { localKeys } from '@core/utils/localStorage';
 import { useLocalStorage } from '@vueuse/core';
 
 import { computed, ref, toRef, watch } from 'vue';
