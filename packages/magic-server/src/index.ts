@@ -6,8 +6,6 @@ import { fileURLToPath } from 'url';
 
 import { LOCALHOST_PORT } from './constants.ts';
 
-// import { sockets } from './sockets.ts';
-
 dotenv.config();
 
 const app = express();
@@ -32,5 +30,3 @@ const PORT = process.env.PORT || LOCALHOST_PORT;
 server.listen(Number(PORT), '0.0.0.0', () => {
   console.log(`Server listening on port ${PORT}`);
 });
-
-// sockets(server);
