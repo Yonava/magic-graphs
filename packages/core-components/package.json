@@ -20,6 +20,14 @@
       "types": "./dist/types/components/icon-button/IconButton.vue.d.ts",
       "default": "./src/components/icon-button/IconButton.vue"
     },
+    "./Dropdown": {
+      "types": "./dist/types/components/dropdown/Dropdown.vue.d.ts",
+      "default": "./src/components/dropdown/Dropdown.vue"
+    },
+    "./DropdownItem": {
+      "types": "./dist/types/components/dropdown/DropdownItem.vue.d.ts",
+      "default": "./src/components/dropdown/DropdownItem.vue"
+    },
     "./*": {
       "types": "./dist/types/*.d.ts",
       "default": "./src/*.ts"

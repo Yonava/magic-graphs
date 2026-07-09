@@ -4,7 +4,7 @@
   import { cn } from '../../cn.ts';
   import { type ButtonVariant, buttonVariants } from './variants.ts';
 
-  interface Props extends /* @vue-ignore */ PrimitiveProps {
+  interface Props extends PrimitiveProps {
     variant?: ButtonVariant;
   }
 

@@ -5,7 +5,7 @@
   import { type ButtonVariant, buttonVariants } from '../button/variants.ts';
   import Icon from '../icon/Icon.vue';
 
-  interface Props extends /* @vue-ignore */ PrimitiveProps {
+  interface Props extends PrimitiveProps {
     // the icon to render, e.g. an mdi path from '@mdi/js'
     path: string;
     /**
