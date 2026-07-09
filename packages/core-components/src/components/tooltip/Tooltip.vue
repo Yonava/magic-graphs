@@ -22,10 +22,16 @@
   withDefaults(defineProps<Props>(), {
     side: 'top',
   });
+
+  const classes = cn(
+    'z-50 max-w-xs rounded-md bg-neutral-900 px-3 py-1.5 text-sm text-white shadow-md',
+    'transition-[opacity,scale] duration-200 ease-[cubic-bezier(0.34,1.8,0.64,1)]',
+    'starting:opacity-0 starting:scale-75',
+  );
 </script>
 
 <template>
-  <TooltipProvider>
+  <TooltipProvider :delay-duration="0">
     <TooltipRoot>
       <TooltipTrigger as-child>
         <slot name="trigger" />
@@ -35,13 +41,7 @@
           :aria-label="label"
           :side="side"
           :side-offset="6"
-          :class="
-            cn(
-              'z-50 max-w-xs rounded-md bg-neutral-900 px-3 py-1.5 text-sm text-white shadow-md',
-              'transition-[opacity,scale] duration-200 ease-[cubic-bezier(0.34,1.8,0.64,1)]',
-              'starting:opacity-0 starting:scale-75',
-            )
-          "
+          :class="classes"
         >
           <slot>{{ label }}</slot>
         </TooltipContent>
