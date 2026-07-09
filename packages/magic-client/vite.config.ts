@@ -16,7 +16,7 @@ export default defineConfig({
   },
 
   build: {
-    outDir: r('../server/dist/public'),
+    outDir: r('../magic-server/dist/public'),
     emptyOutDir: true,
   },
 
@@ -55,7 +55,7 @@ export default defineConfig({
       '@magic/ui': r('../ui/src'),
       '@magic/shapes': r('../shapes/src'),
       '@magic/canvas': r('../canvas/src'),
-      '@magic/products': r('../products/src'),
+      '@magic/products': r('../magic-products/src'),
     },
   },
 });

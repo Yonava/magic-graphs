@@ -13,7 +13,7 @@
     { "path": "../utils" },
     { "path": "../graph-plugins" },
     { "path": "../graph-plugins-shared" },
-    { "path": "../create-graph" },
+    { "path": "../graph-create-graph" },
     { "path": "../graph-core" },
     { "path": "../graph-primitives" },
     { "path": "../graph-theme-presets" },
