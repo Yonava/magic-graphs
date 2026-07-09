@@ -28,6 +28,10 @@
       "types": "./dist/types/components/dropdown/DropdownItem.vue.d.ts",
       "default": "./src/components/dropdown/DropdownItem.vue"
     },
+    "./ToggleButton": {
+      "types": "./dist/types/components/toggle-button/ToggleButton.vue.d.ts",
+      "default": "./src/components/toggle-button/ToggleButton.vue"
+    },
     "./*": {
       "types": "./dist/types/*.d.ts",
       "default": "./src/*.ts"
