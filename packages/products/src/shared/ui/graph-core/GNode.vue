@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { CoreNode } from '@magic/graph-primitives/types';
+  import { CoreNode } from '@graph/primitives/types';
 
   import { computed, onUnmounted, ref } from 'vue';
 

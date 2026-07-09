@@ -13,10 +13,10 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@magic/graph-core": "workspace:*",
-    "@magic/graph-plugins-shared": "workspace:*",
-    "@magic/graph-plugins": "workspace:*",
-    "@magic/graph-primitives": "workspace:*",
+    "@graph/core": "workspace:*",
+    "@graph/plugins-shared": "workspace:*",
+    "@graph/plugins": "workspace:*",
+    "@graph/primitives": "workspace:*",
     "@magic/utils": "workspace:*",
     "@magic/shapes": "workspace:*"
   },

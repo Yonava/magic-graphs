@@ -1,16 +1,16 @@
-import { CoreActions } from '@magic/graph-core/actions/types';
-import { CoreEventMap } from '@magic/graph-core/events';
-import { CoreGetters } from '@magic/graph-core/getters';
+import { CoreActions } from '@graph/core/actions/types';
+import { CoreEventMap } from '@graph/core/events';
+import { CoreGetters } from '@graph/core/getters';
 import {
   GraphActions,
   PartialBaseActions,
-} from '@magic/graph-primitives/actions/types';
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
-import { GenericEventMap } from '@magic/graph-primitives/events/types';
+} from '@graph/primitives/actions/types';
+import { EventHub } from '@graph/primitives/events/createEventHub';
+import { GenericEventMap } from '@graph/primitives/events/types';
 import {
   BaseGetters,
   GraphGetters,
-} from '@magic/graph-primitives/getters/types';
+} from '@graph/primitives/getters/types';
 
 export type LoosePluginSchema = {
   name: string;

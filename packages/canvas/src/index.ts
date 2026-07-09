@@ -1,4 +1,4 @@
-import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
+import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { getCtx } from '@magic/utils/ctx/index';
 import { useElementSize } from '@vueuse/core';
 

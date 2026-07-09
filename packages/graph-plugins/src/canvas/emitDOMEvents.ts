@@ -1,4 +1,4 @@
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
+import { EventHub } from '@graph/primitives/events/createEventHub';
 import { KeyboardEventMap, MouseEventMap } from '@magic/utils/types';
 
 import { CanvasEventMap, CanvasGraphMouseEvent } from './events.ts';

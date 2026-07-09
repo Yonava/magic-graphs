@@ -1,5 +1,5 @@
 {
-  "name": "@magic/graph-theme-presets",
+  "name": "@graph/theme-presets",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -13,8 +13,8 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@magic/graph-plugins": "workspace:*",
-    "@magic/graph-plugins-shared": "workspace:*",
+    "@graph/plugins": "workspace:*",
+    "@graph/plugins-shared": "workspace:*",
     "@magic/utils": "workspace:*"
   },
   "devDependencies": {}

@@ -1,9 +1,9 @@
-import { PluginThemes } from '@magic/graph-plugins-shared/plugins';
-import { CURSOR, CURSOR_FALLBACK } from '@magic/graph-plugins-shared/theme';
-import { AnchorsPlugin } from '@magic/graph-plugins/anchors/types';
-import { CanvasPlugin } from '@magic/graph-plugins/canvas/types';
-import { FocusPlugin } from '@magic/graph-plugins/focus/types';
-import { MarqueePlugin } from '@magic/graph-plugins/marquee/types';
+import { PluginThemes } from '@graph/plugins-shared/plugins';
+import { CURSOR, CURSOR_FALLBACK } from '@graph/plugins-shared/theme';
+import { AnchorsPlugin } from '@graph/plugins/anchors/types';
+import { CanvasPlugin } from '@graph/plugins/canvas/types';
+import { FocusPlugin } from '@graph/plugins/focus/types';
+import { MarqueePlugin } from '@graph/plugins/marquee/types';
 import colors from '@magic/utils/colors';
 
 import { shared } from './shared.ts';

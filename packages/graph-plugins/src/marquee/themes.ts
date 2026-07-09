@@ -3,7 +3,7 @@ import {
   CursorFallback,
   ThemeOverrides,
   ThemeValue,
-} from '@magic/graph-plugins-shared/theme';
+} from '@graph/plugins-shared/theme';
 import { Color } from '@magic/utils/colors';
 
 export type MarqueeThemes = {

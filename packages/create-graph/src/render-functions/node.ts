@@ -1,7 +1,7 @@
-import { CoreNode } from '@magic/graph-primitives/types';
-import { CompoundTokenResolver } from '@magic/graph-plugins-shared/computed-tokens';
-import { CanvasControls } from '@magic/graph-plugins/canvas/types';
-import { CoreControls } from '@magic/graph-core/types';
+import { CoreNode } from '@graph/primitives/types';
+import { CompoundTokenResolver } from '@graph/plugins-shared/computed-tokens';
+import { CanvasControls } from '@graph/plugins/canvas/types';
+import { CoreControls } from '@graph/core/types';
 import { Shape } from '@magic/shapes/types/index';
 import { nullThrows } from '@magic/utils/assert';
 

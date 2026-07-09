@@ -1,10 +1,10 @@
-import { CoreActions } from '@magic/graph-core/actions/types';
-import { CoreEventMap } from '@magic/graph-core/events';
-import { CoreGetters } from '@magic/graph-core/getters';
-import { CoreControls } from '@magic/graph-core/types';
-import { GraphActions } from '@magic/graph-primitives/actions/types';
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
-import { BaseGetters } from '@magic/graph-primitives/getters/types';
+import { CoreActions } from '@graph/core/actions/types';
+import { CoreEventMap } from '@graph/core/events';
+import { CoreGetters } from '@graph/core/getters';
+import { CoreControls } from '@graph/core/types';
+import { GraphActions } from '@graph/primitives/actions/types';
+import { EventHub } from '@graph/primitives/events/createEventHub';
+import { BaseGetters } from '@graph/primitives/getters/types';
 import { UnionToIntersection } from 'ts-essentials';
 
 import { LooseGraphPlugin } from './loose.ts';

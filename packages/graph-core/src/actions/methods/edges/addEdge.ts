@@ -1,4 +1,4 @@
-import { CoreEdge } from '@magic/graph-primitives/types';
+import { CoreEdge } from '@graph/primitives/types';
 import { nullThrows } from '@magic/utils/assert';
 import { generateId } from '@magic/utils/id';
 

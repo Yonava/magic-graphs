@@ -1,5 +1,5 @@
-import { Coordinate } from '@magic/graph-plugins-shared/drag';
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
+import { Coordinate } from '@graph/plugins-shared/drag';
+import { EventHub } from '@graph/primitives/events/createEventHub';
 import { drawGroup } from '@magic/shapes/drawGroup';
 import { DeepReadonly } from 'ts-essentials';
 

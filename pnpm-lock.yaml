@@ -68,7 +68,7 @@ importers:
 
   packages/canvas:
     dependencies:
-      '@magic/graph-primitives':
+      '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
       '@magic/utils':
@@ -175,16 +175,16 @@ importers:
 
   packages/create-graph:
     dependencies:
-      '@magic/graph-core':
+      '@graph/core':
         specifier: workspace:*
         version: link:../graph-core
-      '@magic/graph-plugins':
+      '@graph/plugins':
         specifier: workspace:*
         version: link:../graph-plugins
-      '@magic/graph-plugins-shared':
+      '@graph/plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared
-      '@magic/graph-primitives':
+      '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
       '@magic/shapes':
@@ -206,7 +206,7 @@ importers:
 
   packages/graph-core:
     dependencies:
-      '@magic/graph-primitives':
+      '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
       '@magic/utils':
@@ -222,18 +222,18 @@ importers:
 
   packages/graph-plugins:
     dependencies:
+      '@graph/core':
+        specifier: workspace:*
+        version: link:../graph-core
+      '@graph/plugins-shared':
+        specifier: workspace:*
+        version: link:../graph-plugins-shared
+      '@graph/primitives':
+        specifier: workspace:*
+        version: link:../graph-primitives
       '@magic/canvas':
         specifier: workspace:*
         version: link:../canvas
-      '@magic/graph-core':
-        specifier: workspace:*
-        version: link:../graph-core
-      '@magic/graph-plugins-shared':
-        specifier: workspace:*
-        version: link:../graph-plugins-shared
-      '@magic/graph-primitives':
-        specifier: workspace:*
-        version: link:../graph-primitives
       '@magic/shapes':
         specifier: workspace:*
         version: link:../shapes
@@ -250,10 +250,10 @@ importers:
 
   packages/graph-plugins-shared:
     dependencies:
-      '@magic/graph-core':
+      '@graph/core':
         specifier: workspace:*
         version: link:../graph-core
-      '@magic/graph-primitives':
+      '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
       '@magic/shapes':
@@ -275,10 +275,10 @@ importers:
 
   packages/graph-theme-presets:
     dependencies:
-      '@magic/graph-plugins':
+      '@graph/plugins':
         specifier: workspace:*
         version: link:../graph-plugins
-      '@magic/graph-plugins-shared':
+      '@graph/plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared
       '@magic/utils':
@@ -287,15 +287,15 @@ importers:
 
   packages/graph-vue:
     dependencies:
+      '@graph/plugins':
+        specifier: workspace:*
+        version: link:../graph-plugins
+      '@graph/primitives':
+        specifier: workspace:*
+        version: link:../graph-primitives
       '@magic/create-graph':
         specifier: workspace:*
         version: link:../create-graph
-      '@magic/graph-plugins':
-        specifier: workspace:*
-        version: link:../graph-plugins
-      '@magic/graph-primitives':
-        specifier: workspace:*
-        version: link:../graph-primitives
       primevue:
         specifier: ^4.2.4
         version: 4.5.5(vue@3.5.39(typescript@6.0.3))
@@ -305,30 +305,30 @@ importers:
 
   packages/products:
     dependencies:
+      '@graph/core':
+        specifier: workspace:*
+        version: link:../graph-core
+      '@graph/plugins':
+        specifier: workspace:*
+        version: link:../graph-plugins
+      '@graph/plugins-shared':
+        specifier: workspace:*
+        version: link:../graph-plugins-shared
+      '@graph/primitives':
+        specifier: workspace:*
+        version: link:../graph-primitives
+      '@graph/theme-presets':
+        specifier: workspace:*
+        version: link:../graph-theme-presets
+      '@graph/vue':
+        specifier: workspace:*
+        version: link:../graph-vue
       '@magic/canvas':
         specifier: workspace:*
         version: link:../canvas
       '@magic/create-graph':
         specifier: workspace:*
         version: link:../create-graph
-      '@magic/graph-core':
-        specifier: workspace:*
-        version: link:../graph-core
-      '@magic/graph-plugins':
-        specifier: workspace:*
-        version: link:../graph-plugins
-      '@magic/graph-plugins-shared':
-        specifier: workspace:*
-        version: link:../graph-plugins-shared
-      '@magic/graph-primitives':
-        specifier: workspace:*
-        version: link:../graph-primitives
-      '@magic/graph-theme-presets':
-        specifier: workspace:*
-        version: link:../graph-theme-presets
-      '@magic/graph-vue':
-        specifier: workspace:*
-        version: link:../graph-vue
       '@magic/shapes':
         specifier: workspace:*
         version: link:../shapes

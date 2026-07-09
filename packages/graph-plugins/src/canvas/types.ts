@@ -1,5 +1,5 @@
 import { Coordinate, MagicCanvasProps } from '@magic/canvas/types';
-import { GraphPlugin, WithTheme } from '@magic/graph-plugins-shared/plugins';
+import { GraphPlugin, WithTheme } from '@graph/plugins-shared/plugins';
 import { AnimatedShapeControls } from '@magic/shapes/animation/index';
 import { DeepReadonly } from 'ts-essentials';
 

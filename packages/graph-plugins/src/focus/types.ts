@@ -2,8 +2,8 @@ import {
   GraphPlugin,
   WithLifecycle,
   WithTheme,
-} from '@magic/graph-plugins-shared/plugins';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+} from '@graph/plugins-shared/plugins';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusEventMap } from './events.ts';

@@ -1,4 +1,4 @@
-import { AdjacencyList } from '@magic/graph-plugins/adjacency-lists/types';
+import { AdjacencyList } from '@graph/plugins/adjacency-lists/types';
 import { gcd, lowestPrimeFactor } from '@magic/utils/math';
 import { DeepReadonly } from 'ts-essentials';
 

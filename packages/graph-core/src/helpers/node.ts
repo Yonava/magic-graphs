@@ -1,4 +1,4 @@
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { CurryWithCoreGraph, NodeHelpers } from './types.ts';
 

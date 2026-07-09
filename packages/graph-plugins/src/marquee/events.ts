@@ -1,5 +1,5 @@
 import { Coordinate } from '@magic/canvas/types';
-import { EventMapToEventRegistry } from '@magic/graph-primitives/events/types';
+import { EventMapToEventRegistry } from '@graph/primitives/events/types';
 import { BoundingBox } from '@magic/shapes/types/utility';
 
 export type MarqueeEventMap = {

@@ -1,5 +1,5 @@
-import { CanvasElement } from '@magic/graph-plugins/canvas/aggregator/types';
-import { CanvasGraphMouseEvent } from '@magic/graph-plugins/canvas/events';
+import { CanvasElement } from '@graph/plugins/canvas/aggregator/types';
+import { CanvasGraphMouseEvent } from '@graph/plugins/canvas/events';
 import tinycolor from 'tinycolor2';
 
 import type { Graph } from '../useGraphWithCanvas.ts';

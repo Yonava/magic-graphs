@@ -1,8 +1,8 @@
-import { CoreEventMap } from '@magic/graph-core/events';
-import { createThemeController } from '@magic/graph-plugins-shared/theme';
-import { createEventHub } from '@magic/graph-primitives/events/createEventHub';
-import { mergeEventHubs } from '@magic/graph-primitives/events/mergeEventHubs';
-import { ElementRemovalPayload } from '@magic/graph-primitives/transactions/types';
+import { CoreEventMap } from '@graph/core/events';
+import { createThemeController } from '@graph/plugins-shared/theme';
+import { createEventHub } from '@graph/primitives/events/createEventHub';
+import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
+import { ElementRemovalPayload } from '@graph/primitives/transactions/types';
 import { MOUSE_BUTTONS } from '@magic/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 

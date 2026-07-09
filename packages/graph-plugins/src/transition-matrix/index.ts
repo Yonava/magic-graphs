@@ -1,4 +1,4 @@
-import { CoreNode } from '@magic/graph-primitives/types';
+import { CoreNode } from '@graph/primitives/types';
 
 import { AdjacencyListsControls } from '../adjacency-lists/types.ts';
 import { TransitionMatrix, TransitionMatrixPlugin } from './types.ts';

@@ -1,4 +1,4 @@
-import { CoreNode } from '@magic/graph-primitives/types';
+import { CoreNode } from '@graph/primitives/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import { AdjacencyList } from '../adjacency-lists/types.ts';

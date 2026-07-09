@@ -1,5 +1,5 @@
-import { CoreGetters } from '@magic/graph-core/getters';
-import { GraphPlugin } from '@magic/graph-plugins-shared/plugins';
+import { CoreGetters } from '@graph/core/getters';
+import { GraphPlugin } from '@graph/plugins-shared/plugins';
 
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 

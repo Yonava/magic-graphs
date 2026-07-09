@@ -1,4 +1,4 @@
-import { EventMapToEventRegistry } from '@magic/graph-primitives/events/types';
+import { EventMapToEventRegistry } from '@graph/primitives/events/types';
 
 export type FocusEventMap = {
   /**

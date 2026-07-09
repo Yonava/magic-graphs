@@ -31,11 +31,11 @@ export default defineConfig({
 
   optimizeDeps: {
     exclude: [
-      '@magic/graph-core',
-      '@magic/graph-primitives',
-      '@magic/graph-plugins-shared',
-      '@magic/graph-plugins',
-      '@magic/graph-theme-presets',
+      '@graph/core',
+      '@graph/primitives',
+      '@graph/plugins-shared',
+      '@graph/plugins',
+      '@graph/theme-presets',
       '@magic/utils',
       '@magic/ui',
       '@magic/shapes',
@@ -46,11 +46,11 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@magic/graph-core': r('../graph-core/src'),
-      '@magic/graph-primitives': r('../graph-primitives/src'),
-      '@magic/graph-plugins-shared': r('../graph-plugins-shared/src'),
-      '@magic/graph-plugins': r('../graph-plugins/src'),
-      '@magic/graph-theme-presets': r('../graph-theme-presets/src'),
+      '@graph/core': r('../graph-core/src'),
+      '@graph/primitives': r('../graph-primitives/src'),
+      '@graph/plugins-shared': r('../graph-plugins-shared/src'),
+      '@graph/plugins': r('../graph-plugins/src'),
+      '@graph/theme-presets': r('../graph-theme-presets/src'),
       '@magic/utils': r('../utils/src'),
       '@magic/ui': r('../ui/src'),
       '@magic/shapes': r('../shapes/src'),

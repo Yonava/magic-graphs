@@ -1,10 +1,10 @@
-import { CoreEventMap } from '@magic/graph-core/events';
-import { CoreGetters } from '@magic/graph-core/getters';
-import { CoreControls } from '@magic/graph-core/types';
-import { GraphPlugin } from '@magic/graph-plugins-shared/plugins';
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
-import { GraphGetters } from '@magic/graph-primitives/getters/types';
-import { CoreNode } from '@magic/graph-primitives/types';
+import { CoreEventMap } from '@graph/core/events';
+import { CoreGetters } from '@graph/core/getters';
+import { CoreControls } from '@graph/core/types';
+import { GraphPlugin } from '@graph/plugins-shared/plugins';
+import { EventHub } from '@graph/primitives/events/createEventHub';
+import { GraphGetters } from '@graph/primitives/getters/types';
+import { CoreNode } from '@graph/primitives/types';
 import { DeepReadonly } from 'ts-essentials';
 
 /**

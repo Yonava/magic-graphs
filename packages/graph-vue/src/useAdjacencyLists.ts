@@ -1,5 +1,5 @@
 import { Graph } from '@magic/create-graph/index';
-import { AdjacencyListsPlugin } from '@magic/graph-plugins/adjacency-lists/types';
+import { AdjacencyListsPlugin } from '@graph/plugins/adjacency-lists/types';
 
 import { computed, shallowRef } from 'vue';
 

@@ -1,7 +1,7 @@
 import {
   GraphPlugin,
   WithLifecycle,
-} from '@magic/graph-plugins-shared/plugins';
+} from '@graph/plugins-shared/plugins';
 import { DeepReadonly } from 'ts-essentials';
 
 import { HistoryEventMap } from './events.ts';

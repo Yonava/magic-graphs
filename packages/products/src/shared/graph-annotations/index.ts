@@ -1,6 +1,6 @@
-import { Aggregator } from '@magic/graph-plugins/canvas/aggregator/types';
-import { CanvasGraphMouseEvent } from '@magic/graph-plugins/canvas/events';
-import { GraphUnderCursor } from '@magic/graph-plugins/canvas/types';
+import { Aggregator } from '@graph/plugins/canvas/aggregator/types';
+import { CanvasGraphMouseEvent } from '@graph/plugins/canvas/events';
+import { GraphUnderCursor } from '@graph/plugins/canvas/types';
 import { circle } from '@magic/shapes/shapes/circle/index';
 import type { ScribbleSchema } from '@magic/shapes/shapes/scribble/types';
 import type { WithId } from '@magic/shapes/types/index';

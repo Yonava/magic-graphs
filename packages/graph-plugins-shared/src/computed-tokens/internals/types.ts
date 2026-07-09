@@ -1,4 +1,4 @@
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 import type { FontWeight } from '@magic/shapes/text/types';
 import { Color } from '@magic/utils/colors';
 

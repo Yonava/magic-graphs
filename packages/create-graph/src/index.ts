@@ -1,7 +1,7 @@
-import { core as createCore } from '@magic/graph-core/index';
-import { CoreOptions } from '@magic/graph-core/options';
-import { CoreControls } from '@magic/graph-core/types';
-import { createComputedTokenResolver } from '@magic/graph-plugins-shared/computed-tokens';
+import { core as createCore } from '@graph/core/index';
+import { CoreOptions } from '@graph/core/options';
+import { CoreControls } from '@graph/core/types';
+import { createComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import {
   ExtractActions,
   ExtractControls,
@@ -10,17 +10,17 @@ import {
   LooseGraphPlugin,
   PluginThemeField,
   PluginThemes,
-} from '@magic/graph-plugins-shared/plugins';
+} from '@graph/plugins-shared/plugins';
 import {
   AggregatorTransformer,
   CanvasElement,
-} from '@magic/graph-plugins/canvas/aggregator/types';
-import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@magic/graph-plugins/canvas/setupCanvasCursor';
-import { CanvasControls } from '@magic/graph-plugins/canvas/types';
-import { GraphActions } from '@magic/graph-primitives/actions/types';
-import { EventHub } from '@magic/graph-primitives/events/createEventHub';
-import { GraphGetters } from '@magic/graph-primitives/getters/types';
-import { CoreEdge, CoreNode } from '@magic/graph-primitives/types';
+} from '@graph/plugins/canvas/aggregator/types';
+import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@graph/plugins/canvas/setupCanvasCursor';
+import { CanvasControls } from '@graph/plugins/canvas/types';
+import { GraphActions } from '@graph/primitives/actions/types';
+import { EventHub } from '@graph/primitives/events/createEventHub';
+import { GraphGetters } from '@graph/primitives/getters/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 import { nullThrows } from '@magic/utils/assert';
 import type { Prettify } from 'ts-essentials';
 

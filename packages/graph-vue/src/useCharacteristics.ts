@@ -1,6 +1,6 @@
 import { Graph } from '@magic/create-graph/index';
-import { AdjacencyListsPlugin } from '@magic/graph-plugins/adjacency-lists/types';
-import { CharacteristicsPlugin } from '@magic/graph-plugins/characteristics/index';
+import { AdjacencyListsPlugin } from '@graph/plugins/adjacency-lists/types';
+import { CharacteristicsPlugin } from '@graph/plugins/characteristics/index';
 
 import { computed, shallowRef } from 'vue';
 

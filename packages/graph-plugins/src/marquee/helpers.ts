@@ -1,4 +1,4 @@
-import { PluginOptions } from '@magic/graph-plugins-shared/plugins';
+import { PluginOptions } from '@graph/plugins-shared/plugins';
 import type { BoundingBox } from '@magic/shapes/types/utility';
 
 import { MarqueePlugin } from './types.ts';

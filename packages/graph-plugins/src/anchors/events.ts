@@ -1,5 +1,5 @@
-import { EventMapToEventRegistry } from '@magic/graph-primitives/events/types';
-import { CoreNode } from '@magic/graph-primitives/types';
+import { EventMapToEventRegistry } from '@graph/primitives/events/types';
+import { CoreNode } from '@graph/primitives/types';
 
 import { NodeAnchor } from './types.ts';
 

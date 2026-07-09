@@ -2,7 +2,7 @@ import {
   GraphPlugin,
   WithLifecycle,
   WithTheme,
-} from '@magic/graph-plugins-shared/plugins';
+} from '@graph/plugins-shared/plugins';
 
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';

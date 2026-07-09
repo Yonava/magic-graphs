@@ -21,7 +21,7 @@ const config: StorybookConfig = {
       plugins: [vue()],
       resolve: {
         alias: {
-          "@magic/graph-core/": r("../../graph/src"),
+          "@graph/core/": r("../../graph/src"),
           "@magic/utils": r("../../utils/src"),
           "@magic/ui": r("../../ui/src"),
           "@magic/shapes": r("../../shapes/src"),

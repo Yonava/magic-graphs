@@ -1,4 +1,4 @@
-import { TransactionPayload } from '@magic/graph-primitives/transactions/types';
+import { TransactionPayload } from '@graph/primitives/transactions/types';
 
 export function createEmptyPayload() {
   const payload: TransactionPayload = {

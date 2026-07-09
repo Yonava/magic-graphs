@@ -1,7 +1,7 @@
 import {
   GraphPlugin,
   WithLifecycle,
-} from '@magic/graph-plugins-shared/plugins';
+} from '@graph/plugins-shared/plugins';
 import { MaybeGetter } from '@magic/utils/maybeGetter/index';
 
 import { CanvasPlugin } from '../canvas/types.ts';
