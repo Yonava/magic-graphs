@@ -287,15 +287,15 @@ importers:
 
   packages/graph-vue:
     dependencies:
+      '@graph/create-graph':
+        specifier: workspace:*
+        version: link:../create-graph
       '@graph/plugins':
         specifier: workspace:*
         version: link:../graph-plugins
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
-      '@magic/create-graph':
-        specifier: workspace:*
-        version: link:../create-graph
       primevue:
         specifier: ^4.2.4
         version: 4.5.5(vue@3.5.39(typescript@6.0.3))
@@ -308,6 +308,9 @@ importers:
       '@graph/core':
         specifier: workspace:*
         version: link:../graph-core
+      '@graph/create-graph':
+        specifier: workspace:*
+        version: link:../create-graph
       '@graph/plugins':
         specifier: workspace:*
         version: link:../graph-plugins
@@ -326,9 +329,6 @@ importers:
       '@magic/canvas':
         specifier: workspace:*
         version: link:../canvas
-      '@magic/create-graph':
-        specifier: workspace:*
-        version: link:../create-graph
       '@magic/shapes':
         specifier: workspace:*
         version: link:../shapes

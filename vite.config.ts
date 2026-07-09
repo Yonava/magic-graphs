@@ -18,7 +18,7 @@ export default defineConfig({
       '@magic/shapes': r('packages/shapes/src'),
       '@magic/canvas': r('packages/canvas/src'),
       '@magic/products': r('packages/products/src'),
-      '@magic/create-graph': r('packages/create-graph/src'),
+      '@graph/create-graph': r('packages/create-graph/src'),
       '@graph/algorithms': r('packages/graph-algorithms/src'),
       '@graph/core': r('packages/graph-core/src'),
       '@graph/plugins': r('packages/graph-plugins/src'),

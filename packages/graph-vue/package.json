@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@graph/primitives": "workspace:*",
-    "@magic/create-graph": "workspace:*",
+    "@graph/create-graph": "workspace:*",
     "@graph/plugins": "workspace:*",
     "vue": "catalog:"
   },

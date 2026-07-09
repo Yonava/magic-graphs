@@ -1,4 +1,4 @@
-import { Graph } from '@magic/create-graph/index';
+import { Graph } from '@graph/create-graph/index';
 import { AdjacencyListsPlugin } from '@graph/plugins/adjacency-lists/types';
 import { CharacteristicsPlugin } from '@graph/plugins/characteristics/index';
 

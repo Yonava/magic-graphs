@@ -1,4 +1,4 @@
-import { Graph } from '@magic/create-graph/index';
+import { Graph } from '@graph/create-graph/index';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { computed, ComputedRef, ref, Ref, watch } from 'vue';

@@ -1,5 +1,5 @@
 import type { MagicCanvasProps } from '@magic/canvas/types';
-import { createGraph } from '@magic/create-graph/index';
+import { createGraph } from '@graph/create-graph/index';
 import { CoreOptions } from '@graph/core/options';
 import { adjacencyLists } from '@graph/plugins/adjacency-lists/index';
 import { anchors } from '@graph/plugins/anchors/index';
