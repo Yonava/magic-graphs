@@ -17,6 +17,7 @@
     { "path": "./packages/core-ui" },
     { "path": "./packages/core-utils" },
     { "path": "./packages/core-components" },
-    { "path": "./packages/magic-ui" }
+    { "path": "./packages/magic-ui" },
+    { "path": "./packages/magic-shared" }
   ]
 }

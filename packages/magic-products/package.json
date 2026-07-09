@@ -12,9 +12,10 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "peerDependencies": {
-    "primevue": "^4.2.4",
     "vue": "^3.5.18"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@magic/shared": "workspace:*"
+  },
   "devDependencies": {}
 }

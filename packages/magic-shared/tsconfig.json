@@ -5,6 +5,6 @@
     "rootDir": "./src",
     "rewriteRelativeImportExtensions": false
   },
-  "references": [{ "path": "../core-components" }, { "path": "../magic-shared" }],
+  "references": [],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

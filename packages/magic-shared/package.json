@@ -1,5 +1,5 @@
 {
-  "name": "@magic/ui",
+  "name": "@magic/shared",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -19,10 +19,7 @@
   "peerDependencies": {
     "vue": "^3.5.18"
   },
-  "dependencies": {
-    "@core/components": "workspace:*",
-    "@magic/shared": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "vue": "catalog:"
   }
