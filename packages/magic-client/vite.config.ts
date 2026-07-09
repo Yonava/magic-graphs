@@ -16,7 +16,7 @@ export default defineConfig({
   },
 
   build: {
-    outDir: r('../magic-server/dist/public'),
+    outDir: r('dist'),
     emptyOutDir: true,
   },
 

@@ -1,6 +1,3 @@
-import SandboxInfo from '@magic/products/sandbox/info.ts';
-import { productRoutes } from '@magic/products/utils.ts';
-
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -17,11 +14,6 @@ const router = createRouter({
       component: () => import('./404View.vue'),
     },
   ],
-});
-
-router.beforeEach((to, from) => {
-  // prevents route from changing if only the query params are different
-  if (to.path === from.path) return;
 });
 
 export default router;

@@ -1,11 +1,8 @@
-<script setup lang="ts">
-  import Toast from 'primevue/toast';
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="h-[100vh]">
     <router-view />
-    <Toast />
   </div>
 </template>
 
