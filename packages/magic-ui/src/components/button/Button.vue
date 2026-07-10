@@ -7,10 +7,18 @@
     dark: 'bg-gray-900',
     light: 'bg-gray-200 text-gray-900 hover:bg-gray-100 active:bg-gray-100',
   });
+
+  defineSlots<{
+    default: () => unknown;
+    start?: () => unknown;
+    end?: () => unknown;
+  }>();
 </script>
 
 <template>
   <Button :class="classes">
-    <slot></slot>
+    <template #start><slot name="start" /></template>
+    <slot />
+    <template #end><slot name="end" /></template>
   </Button>
 </template>

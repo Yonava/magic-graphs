@@ -311,9 +311,6 @@ importers:
 
   packages/magic-products:
     dependencies:
-      '@core/components':
-        specifier: workspace:*
-        version: link:../core-components
       '@magic/shared':
         specifier: workspace:*
         version: link:../magic-shared

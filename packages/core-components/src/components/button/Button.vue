@@ -25,7 +25,15 @@
 
   const attrClass = useAttrClass();
 
-  const classes = computed(() => cn(base, buttonVariants[props.variant], attrClass.value));
+  const classes = computed(() =>
+    cn(base, buttonVariants[props.variant], attrClass.value),
+  );
+
+  defineSlots<{
+    default: () => unknown;
+    start?: () => unknown;
+    end?: () => unknown;
+  }>();
 </script>
 
 <template>
