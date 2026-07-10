@@ -4,7 +4,7 @@
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
 
   const classes = useThemeToClasses({
-    dark: 'bg-gray-800',
+    dark: 'bg-gray-800 text-white',
     light: 'bg-gray-300',
   });
 </script>

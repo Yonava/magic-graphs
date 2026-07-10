@@ -7,6 +7,8 @@
   import ToggleButton from '@magic/ui/ToggleButton';
   import Well from '@magic/ui/Well';
 
+  import { defineAsyncComponent, h } from 'vue';
+
   const graph = useProvidedGraph();
 
   const toggleTheme = () => {
@@ -18,17 +20,18 @@
     canvas: {
       'node.default.color': 'red',
     },
-    anchors: {
-      'anchors.default.radius': 2,
-    },
   });
 
   const nodeLens: Lens = {
     id: 'node-color',
     components: [
       {
-        component: {},
+        component: defineAsyncComponent(() => import('./NodeLens.vue')),
         position: 'left',
+      },
+      {
+        component: defineAsyncComponent(() => import('./NodeLens.vue')),
+        position: 'right',
       },
     ],
     setup: themer.activate,
