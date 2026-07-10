@@ -345,6 +345,9 @@ importers:
         specifier: workspace:*
         version: link:../graph-vue
     devDependencies:
+      ts-essentials:
+        specifier: ^10.2.1
+        version: 10.2.1(typescript@6.0.3)
       vue:
         specifier: 'catalog:'
         version: 3.5.39(typescript@6.0.3)

@@ -29,6 +29,7 @@
     "@core/utils": "workspace:*"
   },
   "devDependencies": {
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "ts-essentials": "^10.2.1"
   }
 }

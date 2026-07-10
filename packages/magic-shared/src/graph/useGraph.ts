@@ -1,4 +1,5 @@
 import { useCanvas } from '@canvas/surface/index';
+import { CanvasProps } from '@canvas/surface/types';
 import { CoreOptions } from '@graph/core/options';
 import { createGraph } from '@graph/create-graph/index';
 import { adjacencyLists } from '@graph/plugins/adjacency-lists/index';
@@ -25,29 +26,38 @@ export type UseGraphOptions = {
   interactive?: Partial<InteractiveOptions>;
 };
 
-export const useGraph = (options: UseGraphOptions = {}) => {
-  const canvasSurface = useCanvas();
+const graphPlugins = (
+  options: UseGraphOptions & { canvasSurface: CanvasProps },
+) => [
+  canvas(options.canvasSurface),
+  history,
+  focus,
+  marquee,
+  anchors,
+  nodeDrag,
+  nodeLabel,
+  adjacencyLists,
+  transitionMatrix,
+  characteristics,
+  interactive(options.interactive ?? {}),
+];
 
-  const graph = createGraph({
+const createGraphWithPlugins = (
+  options: UseGraphOptions & { canvasSurface: CanvasProps },
+) =>
+  createGraph({
     options: options.core ?? {},
-    plugins: [
-      canvas(canvasSurface),
-      history,
-      focus,
-      marquee,
-      anchors,
-      nodeDrag,
-      nodeLabel,
-      adjacencyLists,
-      transitionMatrix,
-      characteristics,
-      interactive(options.interactive ?? {}),
-    ],
+    plugins: graphPlugins(options),
     themePresets: {
       dark,
       light,
     },
   });
+
+export const useGraph = (options: UseGraphOptions = {}) => {
+  const canvasSurface = useCanvas();
+
+  const graph = createGraphWithPlugins({ ...options, canvasSurface });
 
   canvasSurface.draw.content.value = graph.canvas.aggregator.draw;
 
