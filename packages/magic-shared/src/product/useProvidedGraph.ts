@@ -2,15 +2,24 @@ import { nullThrows } from '@core/utils/assert';
 
 import { inject, provide } from 'vue';
 
+import { ComponentSlotControls } from '../component-slot/useComponentSlots.ts';
 import { Graph } from '../graph/types.ts';
+import { LensControls } from '../lens/createLensState.ts';
 
 const KEY = 'PRODUCT_GRAPH';
 
-export const provideGraph = (graph: Graph) => {
+export type MagicGraph = Graph & {
+  magic: {
+    lens: LensControls;
+    componentSlots: ComponentSlotControls;
+  };
+};
+
+export const provideGraph = (graph: MagicGraph) => {
   provide(KEY, graph);
 };
 
 export const useProvidedGraph = () => {
-  const graph = nullThrows(inject<Graph>(KEY), 'graph not provided!');
+  const graph = nullThrows(inject<MagicGraph>(KEY), 'graph not provided!');
   return graph;
 };

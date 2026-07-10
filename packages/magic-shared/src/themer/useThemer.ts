@@ -3,6 +3,8 @@ import { generateId } from '@core/utils/id';
 import type { PluginThemes } from '@graph/plugins-shared/plugins';
 import type { DeepPartial } from 'ts-essentials';
 
+import { ref } from 'vue';
+
 import { Graph, GraphPlugins } from '../graph/types.ts';
 import { useProvidedGraph } from '../product/useProvidedGraph.ts';
 import { Themer } from './types.ts';
@@ -20,6 +22,7 @@ export const useThemer = (
   themeId = generateId(),
 ): Themer => {
   const graph = useProvidedGraph();
+  let isActive = false;
 
   const pluginNames = Object.keys(themeOverrides) as (keyof ThemeOverrides)[];
 
@@ -30,6 +33,7 @@ export const useThemer = (
   }
 
   const activate = () => {
+    isActive = true;
     for (const pluginName of pluginNames) {
       const layer = nullThrows(
         layers[pluginName],
@@ -40,6 +44,8 @@ export const useThemer = (
       if (!pluginOverrides) continue;
 
       for (const [tokenName, themeValue] of Object.entries(pluginOverrides)) {
+        // DeepPartial allows explicit `undefined` values, so guard even though no real caller would pass one
+        if (themeValue === undefined) continue;
         // @ts-expect-error dynamic stuff like this is a known typescript inference limitation
         layer.set(tokenName, themeValue);
       }
@@ -47,6 +53,7 @@ export const useThemer = (
   };
 
   const deactivate = () => {
+    isActive = false;
     for (const pluginName of pluginNames) {
       const layer = nullThrows(
         layers[pluginName],
@@ -60,5 +67,6 @@ export const useThemer = (
   return {
     activate,
     deactivate,
+    isActive: () => isActive,
   };
 };

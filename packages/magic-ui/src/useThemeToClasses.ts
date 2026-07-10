@@ -1,5 +1,5 @@
-import { ThemePreset } from '@magic/shared/graph/types';
-import { useProvidedGraph } from '@magic/shared/product/useProvidedGraph';
+import { ThemePreset } from '@magic/shared/graph';
+import { useProvidedGraph } from '@magic/shared/product';
 
 import { computed } from 'vue';
 

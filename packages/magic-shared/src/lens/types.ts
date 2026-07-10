@@ -5,8 +5,9 @@ import { ComponentSlot } from '../component-slot/types.ts';
  * Defines component slots plus setup/teardown for whatever effects that perspective requires.
  */
 export type Lens = {
+  id: string;
   /** Component slots this lens renders into the GUI. */
-  components: ComponentSlot[];
+  components?: ComponentSlot[];
   /** Applies whatever this lens does when it becomes active. Not restricted to theming, can be any side effect in the spirit of a lens. */
   setup: () => void;
   /** Reverses everything setup did, restoring prior state when the lens becomes inactive. */

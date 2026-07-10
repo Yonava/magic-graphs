@@ -4,4 +4,5 @@ export type Themer = {
   activate: () => void;
   /** Removes the theme overrides from graph. */
   deactivate: () => void;
+  isActive: () => boolean;
 };

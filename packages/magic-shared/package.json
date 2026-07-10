@@ -4,13 +4,29 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./*.vue": {
-      "types": "./dist/types/*.vue.d.ts",
-      "default": "./src/*.vue"
+    "./component-slot": {
+      "types": "./dist/types/component-slot/index.d.ts",
+      "default": "./src/component-slot/index.ts"
     },
-    "./*": {
-      "types": "./dist/types/*.d.ts",
-      "default": "./src/*.ts"
+    "./graph": {
+      "types": "./dist/types/graph/index.d.ts",
+      "default": "./src/graph/index.ts"
+    },
+    "./lens": {
+      "types": "./dist/types/lens/index.d.ts",
+      "default": "./src/lens/index.ts"
+    },
+    "./product": {
+      "types": "./dist/types/product/index.d.ts",
+      "default": "./src/product/index.ts"
+    },
+    "./simulation": {
+      "types": "./dist/types/simulation/index.d.ts",
+      "default": "./src/simulation/index.ts"
+    },
+    "./themer": {
+      "types": "./dist/types/themer/index.d.ts",
+      "default": "./src/themer/index.ts"
     }
   },
   "scripts": {
