@@ -1,18 +1,11 @@
 <script setup lang="ts">
   import Button from '@core/components/Button';
-  import { ThemePreset } from '@magic/shared/graph/types';
-  import { useProvidedGraph } from '@magic/shared/product/useProvidedGraph';
 
-  import { computed } from 'vue';
+  import { useThemeToClasses } from '../../useThemeToClasses.ts';
 
-  const themeToClasses: Record<ThemePreset, string> = {
-    dark: 'bg-blue-500',
-    light: 'bg-red-500',
-  };
-
-  const graph = useProvidedGraph();
-  const classes = computed(() => {
-    return themeToClasses[graph.activePreset.value];
+  const classes = useThemeToClasses({
+    dark: 'bg-gray-900',
+    light: 'bg-gray-200 text-gray-900 hover:bg-gray-100 active:bg-gray-100',
   });
 </script>
 

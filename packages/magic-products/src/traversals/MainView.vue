@@ -3,6 +3,7 @@
   import GraphProduct from '@magic/shared/product/GraphProduct.vue';
   import { useGraphProduct } from '@magic/shared/product/useGraphProduct';
   import Button from '@magic/ui/Button';
+  import Well from '@magic/ui/Well';
 
   const graph = useGraphProduct();
 
@@ -14,9 +15,11 @@
 
 <template>
   <GraphProduct>
-    <HStack>
-      <Button> Hello </Button>
-      <Button @click="toggleTheme"> Change Theme </Button>
-    </HStack>
+    <Well>
+      <HStack>
+        <Button> Hello </Button>
+        <Button @click="toggleTheme"> Change Theme </Button>
+      </HStack>
+    </Well>
   </GraphProduct>
 </template>

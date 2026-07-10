@@ -44,8 +44,8 @@ export const useGraph = (options: UseGraphOptions = {}) => {
       interactive(options.interactive ?? {}),
     ],
     themePresets: {
-      light,
       dark,
+      light,
     },
   });
 

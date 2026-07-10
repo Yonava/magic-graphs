@@ -8,6 +8,10 @@
       "types": "./dist/types/components/button/Button.vue.d.ts",
       "default": "./src/components/button/Button.vue"
     },
+    "./Well": {
+      "types": "./dist/types/components/layout/Well.vue.d.ts",
+      "default": "./src/components/layout/Well.vue"
+    },
     "./*": {
       "types": "./dist/types/*.d.ts",
       "default": "./src/*.ts"
