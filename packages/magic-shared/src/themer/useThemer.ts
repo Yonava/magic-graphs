@@ -5,14 +5,20 @@ import type { DeepPartial } from 'ts-essentials';
 
 import { Graph, GraphPlugins } from '../graph/types.ts';
 import { useProvidedGraph } from '../product/useProvidedGraph.ts';
+import { Themer } from './types.ts';
 
 type ThemeOverrides = DeepPartial<PluginThemes<GraphPlugins>>;
 
 type ThemeLayerRecord = {
-  [Name in keyof ThemeOverrides]: ReturnType<Graph[Name]['theme']['createLayer']>;
+  [Name in keyof ThemeOverrides]: ReturnType<
+    Graph[Name]['theme']['createLayer']
+  >;
 };
 
-export const useThemer = (themeOverrides: ThemeOverrides, themeId = generateId()) => {
+export const useThemer = (
+  themeOverrides: ThemeOverrides,
+  themeId = generateId(),
+): Themer => {
   const graph = useProvidedGraph();
 
   const pluginNames = Object.keys(themeOverrides) as (keyof ThemeOverrides)[];
