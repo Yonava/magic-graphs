@@ -40,6 +40,18 @@
       "types": "./dist/types/components/toggle-button-group/ToggleButtonGroupItem.vue.d.ts",
       "default": "./src/components/toggle-button-group/ToggleButtonGroupItem.vue"
     },
+    "./Well": {
+      "types": "./dist/types/components/layout/Well.vue.d.ts",
+      "default": "./src/components/layout/Well.vue"
+    },
+    "./HStack": {
+      "types": "./dist/types/components/layout/HStack.vue.d.ts",
+      "default": "./src/components/layout/HStack.vue"
+    },
+    "./VStack": {
+      "types": "./dist/types/components/layout/VStack.vue.d.ts",
+      "default": "./src/components/layout/VStack.vue"
+    },
     "./*": {
       "types": "./dist/types/*.d.ts",
       "default": "./src/*.ts"

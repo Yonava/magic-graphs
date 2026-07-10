@@ -20,7 +20,9 @@
     "vue": "^3.5.18"
   },
   "dependencies": {
-    "@magic/shared": "workspace:*"
+    "@magic/shared": "workspace:*",
+    "@magic/ui": "workspace:*",
+    "@core/components": "workspace:*"
   },
   "devDependencies": {}
 }

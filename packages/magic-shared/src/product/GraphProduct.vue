@@ -9,7 +9,11 @@
 </script>
 
 <template>
-  <div :class="[pointerEvents]"></div>
+  <div :class="[pointerEvents]">
+    <div class="absolute bottom-6 -translate-x-1/2 left-1/2">
+      <slot></slot>
+    </div>
+  </div>
 
   <CanvasSurface v-bind="graph.canvas.magicCanvas.ref" />
 </template>

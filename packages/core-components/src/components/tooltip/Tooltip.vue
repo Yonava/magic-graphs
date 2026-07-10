@@ -8,7 +8,12 @@
     TooltipTrigger,
   } from 'reka-ui';
 
+  import { computed, useAttrs } from 'vue';
+
   import { cn } from '../../cn.ts';
+  import { useAttrClass } from '../../composables/useAttrClass.ts';
+
+  defineOptions({ inheritAttrs: false });
 
   interface Props {
     /**
@@ -23,10 +28,17 @@
     side: 'top',
   });
 
-  const classes = cn(
-    'z-50 max-w-xs rounded-md bg-neutral-900 px-3 py-1.5 text-sm text-white shadow-md',
-    'transition-[opacity,scale] duration-200 ease-[cubic-bezier(0.34,1.8,0.64,1)]',
-    'starting:opacity-0 starting:scale-75',
+  const attrs = useAttrs();
+
+  const attrClass = useAttrClass();
+
+  const classes = computed(() =>
+    cn(
+      'z-50 max-w-xs rounded-md bg-neutral-900 px-3 py-1.5 text-sm text-white shadow-md',
+      'transition-[opacity,scale] duration-200 ease-[cubic-bezier(0.34,1.8,0.64,1)]',
+      'starting:opacity-0 starting:scale-75',
+      attrClass.value,
+    ),
   );
 </script>
 
@@ -41,6 +53,7 @@
           :aria-label="label"
           :side="side"
           :side-offset="6"
+          v-bind="{ ...attrs, class: undefined }"
           :class="classes"
         >
           <slot>{{ label }}</slot>

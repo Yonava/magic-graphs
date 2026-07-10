@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./*.vue": {
-      "types": "./dist/types/*.vue.d.ts",
-      "default": "./src/*.vue"
+    "./Button": {
+      "types": "./dist/types/components/button/Button.vue.d.ts",
+      "default": "./src/components/button/Button.vue"
     },
     "./*": {
       "types": "./dist/types/*.d.ts",

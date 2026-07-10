@@ -15,7 +15,6 @@ import { nodeLabel } from '@graph/plugins/node-label/index';
 import { transitionMatrix } from '@graph/plugins/transition-matrix/index';
 import { dark } from '@graph/theme-presets/dark/index';
 import { light } from '@graph/theme-presets/light/index';
-import { pink } from '@graph/theme-presets/pink/index';
 import { useAdjacencyLists } from '@graph/vue/useAdjacencyLists';
 import { useCharacteristics } from '@graph/vue/useCharacteristics';
 import { useCreateGraph } from '@graph/vue/useCreateGraph';
@@ -45,9 +44,8 @@ export const useGraph = (options: UseGraphOptions = {}) => {
       interactive(options.interactive ?? {}),
     ],
     themePresets: {
-      dark,
       light,
-      pink,
+      dark,
     },
   });
 
