@@ -338,6 +338,9 @@ importers:
       '@graph/plugins':
         specifier: workspace:*
         version: link:../graph-plugins
+      '@graph/plugins-shared':
+        specifier: workspace:*
+        version: link:../graph-plugins-shared
       '@graph/theme-presets':
         specifier: workspace:*
         version: link:../graph-theme-presets

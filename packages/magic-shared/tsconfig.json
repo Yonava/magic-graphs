@@ -9,6 +9,7 @@
     { "path": "../graph-core" },
     { "path": "../graph-vue" },
     { "path": "../graph-plugins" },
+    { "path": "../graph-plugins-shared" },
     { "path": "../graph-create-graph" },
     { "path": "../graph-theme-presets" },
     { "path": "../canvas-surface" },
