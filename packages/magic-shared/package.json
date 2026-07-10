@@ -19,7 +19,15 @@
   "peerDependencies": {
     "vue": "^3.5.18"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@graph/core": "workspace:*",
+    "@graph/plugins": "workspace:*",
+    "@graph/create-graph": "workspace:*",
+    "@graph/vue": "workspace:*",
+    "@graph/theme-presets": "workspace:*",
+    "@canvas/surface": "workspace:*",
+    "@core/utils": "workspace:*"
+  },
   "devDependencies": {
     "vue": "catalog:"
   }

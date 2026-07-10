@@ -4,8 +4,13 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./*.vue": {
+      "types": "./dist/types/*.vue.d.ts",
+      "default": "./src/*.vue"
+    },
     "./*": {
-      "types": "./dist/types/*.d.ts"
+      "types": "./dist/types/*.d.ts",
+      "default": "./src/*.ts"
     }
   },
   "scripts": {

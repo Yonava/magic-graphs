@@ -1,11 +1,7 @@
 import type { Ref } from 'vue';
 
 import { usePanAndZoom } from './panZoom.ts';
-import {
-  type TransformOptions,
-  addTransform,
-  getDevicePixelRatio,
-} from './utils.ts';
+import { addTransform, useDevicePixelRatio } from './utils.ts';
 
 export const useCamera = (
   canvas: Ref<HTMLCanvasElement | undefined>,
@@ -15,19 +11,20 @@ export const useCamera = (
     canvas,
     storageKey,
   );
-  const dpr = getDevicePixelRatio();
-
-  const dprTransform: TransformOptions = {
-    scaleX: dpr,
-    scaleY: dpr,
-  };
+  const dpr = useDevicePixelRatio();
 
   return {
     ...rest,
     transformAndClear: (ctx: CanvasRenderingContext2D) => {
       ctx.resetTransform();
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      const transforms = [dprTransform, getPZTransform()];
+      const transforms = [
+        {
+          scaleX: dpr.value,
+          scaleY: dpr.value,
+        },
+        getPZTransform(),
+      ];
       for (const t of transforms) addTransform(ctx, t);
     },
   };

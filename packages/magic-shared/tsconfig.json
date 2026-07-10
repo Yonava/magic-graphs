@@ -5,6 +5,14 @@
     "rootDir": "./src",
     "rewriteRelativeImportExtensions": false
   },
-  "references": [],
+  "references": [
+    { "path": "../graph-core" },
+    { "path": "../graph-vue" },
+    { "path": "../graph-plugins" },
+    { "path": "../graph-create-graph" },
+    { "path": "../graph-theme-presets" },
+    { "path": "../canvas-surface" },
+    { "path": "../core-utils" }
+  ],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }
