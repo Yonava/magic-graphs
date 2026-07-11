@@ -1,6 +1,14 @@
 import { nullThrows } from '@core/utils/assert';
 
-import { ComputedRef, computed, defineAsyncComponent, markRaw, ref } from 'vue';
+import {
+  DeepReadonly,
+  Ref,
+  defineAsyncComponent,
+  markRaw,
+  reactive,
+  readonly,
+  ref,
+} from 'vue';
 
 import { Graph } from '../graph/types.ts';
 import { Lens } from '../lens/types.ts';
@@ -10,7 +18,7 @@ import { InitLensContext, SimulationDefinition } from './types.ts';
 export type SimulationControls = {
   start: <Frame>(definition: SimulationDefinition<Frame>) => void;
   stop: () => void;
-  current: ComputedRef<Simulation<any> | undefined>;
+  current: DeepReadonly<Ref<Simulation<any> | undefined>>;
 };
 
 type Playhead = {
@@ -66,53 +74,35 @@ export const useSimulationState = (
     return definition.initLens(context);
   };
 
-  const initPlayhead = (frames: unknown[]): Playhead => {
-    const isFirst = () => {
-      const sim = getSimulation();
-      return sim.playhead.position === 0;
-    };
-    const isLast = () => {
-      const sim = getSimulation();
-      return sim.playhead.position === frames.length - 1;
-    };
-
-    const initialPlayheadPosition = () => {
-      if (!simulation.value) return 0;
-      const activePosition = simulation.value.playhead.position;
-      const maxValue = frames.length - 1;
-      return Math.min(activePosition, maxValue);
-    };
-
-    return {
-      position: initialPlayheadPosition(),
-      isFirst,
-      isLast,
+  const initPlayhead = (frames: unknown[], previousPosition = 0): Playhead => {
+    const playhead: Playhead = reactive({
+      position: Math.min(previousPosition, frames.length - 1),
+      isFirst: () => playhead.position === 0,
+      isLast: () => playhead.position === frames.length - 1,
       next: () => {
-        const sim = getSimulation();
-        if (isLast()) {
+        if (playhead.isLast()) {
           throw new Error(
-            `playhead.next() called at last frame (${sim.playhead.position} of ${frames.length - 1})`,
+            `playhead.next() called at last frame (${playhead.position} of ${frames.length - 1})`,
           );
         }
-        sim.playhead.position++;
+        playhead.position++;
       },
       prev: () => {
-        const sim = getSimulation();
-        if (isFirst()) {
+        if (playhead.isFirst()) {
           throw new Error(`playhead.prev() called at first frame (position 0)`);
         }
-        sim.playhead.position--;
+        playhead.position--;
       },
       set: (position) => {
-        const sim = getSimulation();
         if (position < 0 || position >= frames.length) {
           throw new Error(
             `playhead.set(${position}) out of range [0, ${frames.length - 1}]`,
           );
         }
-        sim.playhead.position = position;
+        playhead.position = position;
       },
-    };
+    });
+    return playhead;
   };
 
   const start = <Frame>(definition: SimulationDefinition<Frame>) => {
@@ -149,7 +139,7 @@ export const useSimulationState = (
   graph.events.subscribe('onStructureChange', () => {
     if (!simulation.value) return;
     const frames = initFrames(simulation.value.definition);
-    const playhead = initPlayhead(frames);
+    const playhead = initPlayhead(frames, simulation.value.playhead.position);
     simulation.value.frames = frames;
     simulation.value.playhead = playhead;
   });
@@ -157,6 +147,6 @@ export const useSimulationState = (
   return {
     start,
     stop,
-    current: computed(() => simulation.value),
+    current: readonly(simulation),
   };
 };
