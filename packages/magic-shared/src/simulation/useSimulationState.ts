@@ -39,6 +39,8 @@ type Simulation<Frame> = {
   lens: Lens;
   frames: Frame[];
   playhead: Playhead;
+  /** Lens currently shown in place of `lens` while the guard is failing. */
+  guardLens: Lens | undefined;
 };
 
 export const useSimulationState = (
@@ -124,13 +126,6 @@ export const useSimulationState = (
     const { frames, playhead } = computeRun(definition);
     const simLens = initLens(definition);
 
-    simulation.value = {
-      frames,
-      lens: simLens,
-      playhead,
-      definition,
-    };
-
     const lensComponents = simLens.components ?? [];
     lensComponents.push({
       position: 'left',
@@ -138,26 +133,56 @@ export const useSimulationState = (
         defineAsyncComponent(() => import('./SimulationScrubber.vue')),
       ),
     });
-    lens.add({
-      ...simLens,
-      components: lensComponents,
-    });
+    simLens.components = lensComponents;
+
+    simulation.value = {
+      frames,
+      lens: simLens,
+      playhead,
+      definition,
+      guardLens: undefined,
+    };
+
+    const guardOutcome = definition.guard?.(graph);
+    if (guardOutcome?.ok === false) {
+      simulation.value.guardLens = guardOutcome.lens;
+      lens.add(guardOutcome.lens);
+    } else {
+      lens.add(simLens);
+    }
   };
 
   const stop = () => {
     const sim = getSimulation();
-    lens.remove(sim.lens.id);
+    lens.remove((sim.guardLens ?? sim.lens).id);
     simulation.value = undefined;
   };
 
   graph.events.subscribe('onStructureChange', () => {
-    if (!simulation.value) return;
+    const sim = simulation.value;
+    if (!sim) return;
+
+    const guardOutcome = sim.definition.guard?.(graph);
+
+    if (guardOutcome?.ok === false) {
+      lens.remove((sim.guardLens ?? sim.lens).id);
+      sim.guardLens = guardOutcome.lens;
+      lens.add(guardOutcome.lens);
+      return;
+    }
+
+    if (sim.guardLens) {
+      lens.remove(sim.guardLens.id);
+      sim.guardLens = undefined;
+      lens.add(sim.lens);
+    }
+
     const { frames, playhead } = computeRun(
-      simulation.value.definition,
-      simulation.value.playhead.position,
+      sim.definition,
+      sim.playhead.position,
     );
-    simulation.value.frames = frames;
-    simulation.value.playhead = playhead;
+    sim.frames = frames;
+    sim.playhead = playhead;
   });
 
   return {

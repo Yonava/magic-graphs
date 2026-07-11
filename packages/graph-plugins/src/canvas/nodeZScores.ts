@@ -1,5 +1,5 @@
-import { CoreNode } from '@graph/primitives/types';
 import { NodePositionStoreControls } from '@graph/core/positions/types';
+import { CoreNode } from '@graph/primitives/types';
 
 export type NodeZScoreOptions = {
   nodes: readonly CoreNode[];

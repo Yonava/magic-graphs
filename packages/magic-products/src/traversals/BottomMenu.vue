@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import { Lens } from '@magic/shared/lens';
-  import { useProvidedGraph } from '@magic/shared/product';
-  import { useThemer } from '@magic/shared/themer';
   import Button from '@magic/shared/Button';
   import HStack from '@magic/shared/HStack';
   import LensChip from '@magic/shared/LensChip';
   import ToggleButton from '@magic/shared/ToggleButton';
   import Well from '@magic/shared/Well';
+  import { Lens } from '@magic/shared/lens';
+  import { useProvidedGraph } from '@magic/shared/product';
+  import { useThemer } from '@magic/shared/themer';
 
   import { defineAsyncComponent, markRaw } from 'vue';
 
@@ -62,6 +62,19 @@
       simulation.stop();
     }
   };
+
+  graph.events.subscribe('onKeyDown', (e) => {
+    if (e.key === 'Backspace') {
+      // graph.actions.removeElements(
+      //   {
+      //     nodes: graph.focus.focusedNodes(),
+      //     edges: graph.focus.focusedEdges(),
+      //   },
+      //   {},
+      // );
+      graph.actions.removeNode(graph.focus.focusedNodes()[0]);
+    }
+  });
 </script>
 
 <template>

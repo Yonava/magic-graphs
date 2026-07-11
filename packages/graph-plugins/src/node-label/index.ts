@@ -69,8 +69,11 @@ export const nodeLabel: NodeLabelPlugin = ({
         return actions.addNode({ ...options, id });
       },
       removeNode: (options) => {
+        // remove node then delete since removing triggers a transaction which triggered a repaint.
+        // And on that one tick where the repaint happens and the label has already been deleted, the program throws errors
+        const removalPayload = actions.removeNode(options);
         nodeIdToLabel.delete(options.id);
-        return actions.removeNode(options);
+        return removalPayload;
       },
       // TODO add bulk additions and removals!
     },

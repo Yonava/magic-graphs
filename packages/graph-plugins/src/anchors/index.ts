@@ -1,11 +1,11 @@
+import type { CircleSchema } from '@canvas/primitives/shapes/circle/types';
+import type { WithId } from '@canvas/primitives/types/index';
+import { MOUSE_BUTTONS } from '@core/utils/mouse';
 import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
 import { CoreNode } from '@graph/primitives/types';
-import type { CircleSchema } from '@canvas/primitives/shapes/circle/types';
-import type { WithId } from '@canvas/primitives/types/index';
-import { MOUSE_BUTTONS } from '@core/utils/mouse';
 
 import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
@@ -207,7 +207,7 @@ export const anchors: AnchorsPlugin = ({
     return nodeAnchors.find((anchor) => anchor.id === anchorId);
   };
 
-  const resolveLinkPreviewCanvasElement = (_: CanvasElement[]) => {
+  const resolveEdgePreviewCanvasElement = (_: CanvasElement[]) => {
     const draggedAnchor = anchorDragState.getDragState()?.data;
     if (!parentNode || !draggedAnchor) return;
     const { x, y } = draggedAnchor;
@@ -343,7 +343,7 @@ export const anchors: AnchorsPlugin = ({
     if (!parentNode || !draggedAnchor) return aggregator;
 
     const linkPreviewCanvasElement =
-      resolveLinkPreviewCanvasElement(aggregator);
+      resolveEdgePreviewCanvasElement(aggregator);
     if (!linkPreviewCanvasElement) return aggregator;
 
     aggregator.push(linkPreviewCanvasElement);
