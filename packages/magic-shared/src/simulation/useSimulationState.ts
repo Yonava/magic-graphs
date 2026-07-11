@@ -1,6 +1,6 @@
 import { nullThrows } from '@core/utils/assert';
 
-import { ComputedRef, computed, ref } from 'vue';
+import { ComputedRef, computed, defineAsyncComponent, markRaw, ref } from 'vue';
 
 import { Lens } from '../lens/types.ts';
 import { LensControls } from '../lens/useLensState.ts';
@@ -114,7 +114,17 @@ export const useSimulationState = (lens: LensControls): SimulationControls => {
       playhead,
     };
 
-    lens.add(simLens);
+    const lensComponents = simLens.components ?? [];
+    lensComponents.push({
+      position: 'left',
+      component: markRaw(
+        defineAsyncComponent(() => import('./SimulationScrubber.vue')),
+      ),
+    });
+    lens.add({
+      ...simLens,
+      components: lensComponents,
+    });
   };
 
   const stop = () => {
