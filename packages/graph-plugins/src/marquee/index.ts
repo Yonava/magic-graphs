@@ -1,10 +1,10 @@
+import { normalizeBoundingBox } from '@canvas/primitives/helpers';
+import type { BoundingBox, Coordinate } from '@canvas/primitives/types/utility';
+import { MOUSE_BUTTONS } from '@core/utils/mouse';
 import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
-import { normalizeBoundingBox } from '@canvas/primitives/helpers';
-import type { BoundingBox, Coordinate } from '@canvas/primitives/types/utility';
-import { MOUSE_BUTTONS } from '@core/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
@@ -82,6 +82,7 @@ export const marquee: MarqueePlugin = ({
 
   const updateSelectionBox = () => {
     selectionBox = getSelectionBox(controls);
+    console.log('updated box', selectionBox);
   };
 
   const setMarqueeBoxDimensions = (
@@ -159,9 +160,9 @@ export const marquee: MarqueePlugin = ({
     const { width, height } = selectionBox;
     if (width === 0 || height === 0) return aggregator;
 
-    const nodeBoxSchema = getSelectionBoxSchema(selectionBox);
+    const selectionBoxSchema = getSelectionBoxSchema(selectionBox);
 
-    aggregator.push(nodeBoxSchema);
+    aggregator.push(selectionBoxSchema);
     return aggregator;
   };
 
