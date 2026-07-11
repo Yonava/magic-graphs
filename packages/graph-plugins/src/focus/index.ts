@@ -51,7 +51,7 @@ export const focus: FocusPlugin = ({
     );
     if (nonExistingElementIds.size) {
       console.warn(
-        `Attempted to focus non-existent items`,
+        `Attempted to focus non-existent elements`,
         nonExistingElementIds,
       );
     }

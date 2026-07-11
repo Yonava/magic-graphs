@@ -11,6 +11,7 @@ import {
 import { Graph } from '../graph/types.ts';
 import { Lens } from '../lens/types.ts';
 import { LensControls } from '../lens/useLensState.ts';
+import { Violation } from './guard/SimulationGuard.ts';
 import { InitLensContext, SimulationDefinition } from './types.ts';
 
 export type SimulationControls = {
@@ -39,8 +40,8 @@ type Simulation<Frame> = {
   lens: Lens;
   frames: Frame[];
   playhead: Playhead;
-  /** Lens currently shown in place of `lens` while the guard is failing. */
-  guardLens: Lens | undefined;
+  /** Set while the simulation's guard is failing; `undefined` when valid. */
+  violation: Violation | undefined;
 };
 
 export const useSimulationState = (
@@ -56,6 +57,8 @@ export const useSimulationState = (
     const sim = getSimulation();
     return sim.frames[sim.playhead.position];
   };
+
+  const displayedLens = (sim: Simulation<any>) => sim.violation?.lens ?? sim.lens;
 
   const initFrames = <Frame>(definition: SimulationDefinition<Frame>) => {
     const frames: Frame[] = [];
@@ -135,26 +138,22 @@ export const useSimulationState = (
     });
     simLens.components = lensComponents;
 
+    const violation = definition.guard?.runChecks();
+
     simulation.value = {
       frames,
       lens: simLens,
       playhead,
       definition,
-      guardLens: undefined,
+      violation,
     };
 
-    const guardOutcome = definition.guard?.(graph);
-    if (guardOutcome?.ok === false) {
-      simulation.value.guardLens = guardOutcome.lens;
-      lens.add(guardOutcome.lens);
-    } else {
-      lens.add(simLens);
-    }
+    lens.add(violation?.lens ?? simLens);
   };
 
   const stop = () => {
     const sim = getSimulation();
-    lens.remove((sim.guardLens ?? sim.lens).id);
+    lens.remove(displayedLens(sim).id);
     simulation.value = undefined;
   };
 
@@ -162,18 +161,18 @@ export const useSimulationState = (
     const sim = simulation.value;
     if (!sim) return;
 
-    const guardOutcome = sim.definition.guard?.(graph);
+    const violation = sim.definition.guard?.runChecks();
 
-    if (guardOutcome?.ok === false) {
-      lens.remove((sim.guardLens ?? sim.lens).id);
-      sim.guardLens = guardOutcome.lens;
-      lens.add(guardOutcome.lens);
+    if (violation?.lens) {
+      lens.remove(displayedLens(sim).id);
+      sim.violation = violation;
+      lens.add(violation.lens);
       return;
     }
 
-    if (sim.guardLens) {
-      lens.remove(sim.guardLens.id);
-      sim.guardLens = undefined;
+    if (sim.violation) {
+      if (sim.violation.lens) lens.remove(sim.violation.lens.id);
+      sim.violation = undefined;
       lens.add(sim.lens);
     }
 
