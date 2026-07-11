@@ -1,12 +1,12 @@
 import { useComponentSlots } from '../component-slot/useComponentSlots.ts';
 import { UseGraphOptions, useGraph } from '../graph/useGraph.ts';
-import { createLensState } from '../lens/createLensState.ts';
+import { useLensState } from '../lens/useLensState.ts';
 import { MagicGraph, provideGraph } from './useProvidedGraph.ts';
 
 export const useGraphProduct = (options?: UseGraphOptions) => {
   const graph = useGraph(options);
   const componentSlots = useComponentSlots();
-  const lens = createLensState(componentSlots);
+  const lens = useLensState(componentSlots);
 
   const magicGraph: MagicGraph = {
     ...graph,

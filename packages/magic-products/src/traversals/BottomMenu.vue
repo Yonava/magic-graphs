@@ -4,10 +4,10 @@
   import { useThemer } from '@magic/shared/themer';
   import Button from '@magic/ui/Button';
   import HStack from '@magic/ui/HStack';
-  import ToggleButton from '@magic/ui/ToggleButton';
+  import LensChip from '@magic/ui/LensChip';
   import Well from '@magic/ui/Well';
 
-  import { defineAsyncComponent, h } from 'vue';
+  import { defineAsyncComponent, markRaw } from 'vue';
 
   const graph = useProvidedGraph();
 
@@ -26,25 +26,35 @@
     id: 'node-color',
     components: [
       {
-        component: defineAsyncComponent(() => import('./NodeLens.vue')),
-        position: 'left',
+        component: markRaw(
+          defineAsyncComponent(() => import('./NodeLens.vue')),
+        ),
+        position: 'right',
       },
       {
-        component: defineAsyncComponent(() => import('./NodeLens.vue')),
+        component: markRaw(
+          defineAsyncComponent(() => import('./NodeLens.vue')),
+        ),
         position: 'right',
+      },
+      {
+        component: markRaw(
+          defineAsyncComponent(() => import('./NodeLens.vue')),
+        ),
+        position: 'left',
       },
     ],
     setup: themer.activate,
     teardown: themer.deactivate,
   };
-
-  graph.magic.lens.add(nodeLens);
 </script>
 
 <template>
   <Well>
     <HStack>
-      <ToggleButton @click="">Node Lens</ToggleButton>
+      <LensChip
+        v-bind="{ lens: nodeLens, title: 'Tip', tooltipContent: 'content ' }"
+      />
       <Button @click="toggleTheme"> Change Theme </Button>
     </HStack>
   </Well>

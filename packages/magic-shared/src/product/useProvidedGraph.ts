@@ -4,7 +4,7 @@ import { inject, provide } from 'vue';
 
 import { ComponentSlotControls } from '../component-slot/useComponentSlots.ts';
 import { Graph } from '../graph/types.ts';
-import { LensControls } from '../lens/createLensState.ts';
+import { LensControls } from '../lens/useLensState.ts';
 
 const KEY = 'PRODUCT_GRAPH';
 
