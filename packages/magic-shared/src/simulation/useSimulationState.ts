@@ -31,7 +31,7 @@ type Playhead = {
   /** Moves to the next frame. Throws if `isLast()` is true. */
   next: () => void;
   /** Jumps to an arbitrary frame. Throws if out of bounds. */
-  set: (position: number) => void;
+  seek: (position: number) => void;
 };
 
 type Simulation<Frame> = {
@@ -100,10 +100,10 @@ export const useSimulationState = (
         }
         position.value--;
       },
-      set: (value) => {
+      seek: (value: number) => {
         if (value < 0 || value >= frameCount) {
           throw new Error(
-            `playhead.set(${value}) out of range [0, ${frameCount - 1}]`,
+            `playhead.seek(${value}) out of range [0, ${frameCount - 1}]`,
           );
         }
         position.value = value;
@@ -111,7 +111,7 @@ export const useSimulationState = (
     };
   };
 
-  const initRun = <Frame>(
+  const computeRun = <Frame>(
     definition: SimulationDefinition<Frame>,
     previousPosition = 0,
   ) => {
@@ -121,7 +121,7 @@ export const useSimulationState = (
   };
 
   const start = <Frame>(definition: SimulationDefinition<Frame>) => {
-    const { frames, playhead } = initRun(definition);
+    const { frames, playhead } = computeRun(definition);
     const simLens = initLens(definition);
 
     simulation.value = {
@@ -152,7 +152,7 @@ export const useSimulationState = (
 
   graph.events.subscribe('onStructureChange', () => {
     if (!simulation.value) return;
-    const { frames, playhead } = initRun(
+    const { frames, playhead } = computeRun(
       simulation.value.definition,
       simulation.value.playhead.position,
     );
