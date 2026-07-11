@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import { Lens } from '@magic/shared/lens';
-  import { useProvidedGraph } from '@magic/shared/product';
-  import Tooltip from '@magic/ui/Tooltip';
+  import Tooltip from '@magic/shared/Tooltip';
 
   import { ref, watch } from 'vue';
 
   import ToggleButton from '../components/toggle-button/ToggleButton.vue';
+  import { Lens } from '../lens/types.ts';
+  import { useProvidedGraph } from './useProvidedGraph.ts';
 
   type Props = {
     title: string;

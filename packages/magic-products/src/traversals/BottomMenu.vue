@@ -2,11 +2,11 @@
   import { Lens } from '@magic/shared/lens';
   import { useProvidedGraph } from '@magic/shared/product';
   import { useThemer } from '@magic/shared/themer';
-  import Button from '@magic/ui/Button';
-  import HStack from '@magic/ui/HStack';
-  import LensChip from '@magic/ui/LensChip';
-  import ToggleButton from '@magic/ui/ToggleButton';
-  import Well from '@magic/ui/Well';
+  import Button from '@magic/shared/Button';
+  import HStack from '@magic/shared/HStack';
+  import LensChip from '@magic/shared/LensChip';
+  import ToggleButton from '@magic/shared/ToggleButton';
+  import Well from '@magic/shared/Well';
 
   import { defineAsyncComponent, markRaw } from 'vue';
 

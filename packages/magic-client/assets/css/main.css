@@ -1,7 +1,6 @@
 @import 'tailwindcss';
 
 @source '../../../core-components/src/**/*.{vue,ts}';
-@source '../../../magic-ui/src/**/*.{vue,ts}';
 @source '../../../magic-products/src/**/*.{vue,ts}';
 @source '../../../magic-shared//src/**/*.{vue,ts}';
 @source '../../../canvas-surface//src/**/*.{vue,ts}';

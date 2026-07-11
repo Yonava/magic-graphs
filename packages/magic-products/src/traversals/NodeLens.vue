@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import WellVue from '@magic/ui/Well';
+  import Well from '@magic/shared/Well';
 </script>
 
 <template>
-  <WellVue>hello!</WellVue>
+  <Well>hello!</Well>
 </template>
