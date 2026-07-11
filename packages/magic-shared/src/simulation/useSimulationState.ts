@@ -29,6 +29,7 @@ type Playhead = {
 };
 
 type Simulation<Frame> = {
+  definition: SimulationDefinition<Frame>;
   lens: Lens;
   frames: Frame[];
   playhead: Playhead;
@@ -65,25 +66,32 @@ export const useSimulationState = (
     return definition.initLens(context);
   };
 
-  const initPlayhead = (): Playhead => {
+  const initPlayhead = (frames: unknown[]): Playhead => {
     const isFirst = () => {
       const sim = getSimulation();
       return sim.playhead.position === 0;
     };
     const isLast = () => {
       const sim = getSimulation();
-      return sim.playhead.position === sim.frames.length - 1;
+      return sim.playhead.position === frames.length - 1;
+    };
+
+    const initialPlayheadPosition = () => {
+      if (!simulation.value) return 0;
+      const activePosition = simulation.value.playhead.position;
+      const maxValue = frames.length - 1;
+      return Math.min(activePosition, maxValue);
     };
 
     return {
-      position: 0,
+      position: initialPlayheadPosition(),
       isFirst,
       isLast,
       next: () => {
         const sim = getSimulation();
         if (isLast()) {
           throw new Error(
-            `playhead.next() called at last frame (${sim.playhead.position} of ${sim.frames.length - 1})`,
+            `playhead.next() called at last frame (${sim.playhead.position} of ${frames.length - 1})`,
           );
         }
         sim.playhead.position++;
@@ -97,9 +105,9 @@ export const useSimulationState = (
       },
       set: (position) => {
         const sim = getSimulation();
-        if (position < 0 || position >= sim.frames.length) {
+        if (position < 0 || position >= frames.length) {
           throw new Error(
-            `playhead.set(${position}) out of range [0, ${sim.frames.length - 1}]`,
+            `playhead.set(${position}) out of range [0, ${frames.length - 1}]`,
           );
         }
         sim.playhead.position = position;
@@ -110,12 +118,13 @@ export const useSimulationState = (
   const start = <Frame>(definition: SimulationDefinition<Frame>) => {
     const frames = initFrames(definition);
     const simLens = initLens(definition);
-    const playhead = initPlayhead();
+    const playhead = initPlayhead(frames);
 
     simulation.value = {
       frames,
       lens: simLens,
       playhead,
+      definition,
     };
 
     const lensComponents = simLens.components ?? [];
@@ -137,12 +146,13 @@ export const useSimulationState = (
     simulation.value = undefined;
   };
 
-  // graph.events.subscribe('onStructureChange', () => {
-  //   if (!runningSimulation.value) return;
-  //   const frames = initFrames(simulation);
-  //   const playhead = initPlayhead();
-  //   console.log('structure changed');
-  // });
+  graph.events.subscribe('onStructureChange', () => {
+    if (!simulation.value) return;
+    const frames = initFrames(simulation.value.definition);
+    const playhead = initPlayhead(frames);
+    simulation.value.frames = frames;
+    simulation.value.playhead = playhead;
+  });
 
   return {
     start,
