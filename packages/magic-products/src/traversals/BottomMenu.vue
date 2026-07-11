@@ -65,14 +65,13 @@
 
   graph.events.subscribe('onKeyDown', (e) => {
     if (e.key === 'Backspace') {
-      // graph.actions.removeElements(
-      //   {
-      //     nodes: graph.focus.focusedNodes(),
-      //     edges: graph.focus.focusedEdges(),
-      //   },
-      //   {},
-      // );
-      graph.actions.removeNode(graph.focus.focusedNodes()[0]);
+      graph.actions.removeElements(
+        {
+          nodes: graph.focus.focusedNodes(),
+          edges: graph.focus.focusedEdges(),
+        },
+        {},
+      );
     }
   });
 </script>

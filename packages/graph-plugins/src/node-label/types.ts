@@ -36,6 +36,9 @@ type LabelOption = {
 
 type NodeLabelActions = {
   addNode: Partial<LabelOption>;
+  addElements: {
+    nodes: Partial<LabelOption>;
+  };
 };
 
 type NodeLabelGetters = {
