@@ -2,14 +2,15 @@ import { nullThrows } from '@core/utils/assert';
 
 import { ComputedRef, computed, defineAsyncComponent, markRaw, ref } from 'vue';
 
+import { Graph } from '../graph/types.ts';
 import { Lens } from '../lens/types.ts';
 import { LensControls } from '../lens/useLensState.ts';
-import { InitLensContext, Simulation } from './types.ts';
+import { InitLensContext, SimulationDefinition } from './types.ts';
 
 export type SimulationControls = {
-  start: <Frame>(simulation: Simulation<Frame>) => void;
+  start: <Frame>(definition: SimulationDefinition<Frame>) => void;
   stop: () => void;
-  runningSimulation: ComputedRef<RunningSimulation<any> | undefined>;
+  current: ComputedRef<Simulation<any> | undefined>;
 };
 
 type Playhead = {
@@ -27,26 +28,29 @@ type Playhead = {
   set: (position: number) => void;
 };
 
-type RunningSimulation<Frame> = {
+type Simulation<Frame> = {
   lens: Lens;
   frames: Frame[];
   playhead: Playhead;
 };
 
-export const useSimulationState = (lens: LensControls): SimulationControls => {
-  const runningSimulation = ref<RunningSimulation<any>>();
+export const useSimulationState = (
+  lens: LensControls,
+  graph: Graph,
+): SimulationControls => {
+  const simulation = ref<Simulation<any>>();
 
-  const getRunningSim = () =>
-    nullThrows(runningSimulation.value, 'no running simulation!');
+  const getSimulation = () =>
+    nullThrows(simulation.value, 'no running simulation!');
 
   const getCurrentFrame = () => {
-    const sim = getRunningSim();
+    const sim = getSimulation();
     return sim.frames[sim.playhead.position];
   };
 
-  const initFrames = <Frame>(simulation: Simulation<Frame>) => {
+  const initFrames = <Frame>(definition: SimulationDefinition<Frame>) => {
     const frames: Frame[] = [];
-    simulation.collectFrames({
+    definition.collectFrames({
       add: (frame) => frames.push(frame),
     });
     nullThrows(
@@ -56,18 +60,18 @@ export const useSimulationState = (lens: LensControls): SimulationControls => {
     return frames;
   };
 
-  const initLens = <Frame>(simulation: Simulation<Frame>) => {
+  const initLens = <Frame>(definition: SimulationDefinition<Frame>) => {
     const context: InitLensContext<Frame> = { getCurrentFrame };
-    return simulation.initLens(context);
+    return definition.initLens(context);
   };
 
   const initPlayhead = (): Playhead => {
     const isFirst = () => {
-      const sim = getRunningSim();
+      const sim = getSimulation();
       return sim.playhead.position === 0;
     };
     const isLast = () => {
-      const sim = getRunningSim();
+      const sim = getSimulation();
       return sim.playhead.position === sim.frames.length - 1;
     };
 
@@ -76,7 +80,7 @@ export const useSimulationState = (lens: LensControls): SimulationControls => {
       isFirst,
       isLast,
       next: () => {
-        const sim = getRunningSim();
+        const sim = getSimulation();
         if (isLast()) {
           throw new Error(
             `playhead.next() called at last frame (${sim.playhead.position} of ${sim.frames.length - 1})`,
@@ -85,14 +89,14 @@ export const useSimulationState = (lens: LensControls): SimulationControls => {
         sim.playhead.position++;
       },
       prev: () => {
-        const sim = getRunningSim();
+        const sim = getSimulation();
         if (isFirst()) {
           throw new Error(`playhead.prev() called at first frame (position 0)`);
         }
         sim.playhead.position--;
       },
       set: (position) => {
-        const sim = getRunningSim();
+        const sim = getSimulation();
         if (position < 0 || position >= sim.frames.length) {
           throw new Error(
             `playhead.set(${position}) out of range [0, ${sim.frames.length - 1}]`,
@@ -103,12 +107,12 @@ export const useSimulationState = (lens: LensControls): SimulationControls => {
     };
   };
 
-  const start = <Frame>(simulation: Simulation<Frame>) => {
-    const frames = initFrames(simulation);
-    const simLens = initLens(simulation);
+  const start = <Frame>(definition: SimulationDefinition<Frame>) => {
+    const frames = initFrames(definition);
+    const simLens = initLens(definition);
     const playhead = initPlayhead();
 
-    runningSimulation.value = {
+    simulation.value = {
       frames,
       lens: simLens,
       playhead,
@@ -128,14 +132,21 @@ export const useSimulationState = (lens: LensControls): SimulationControls => {
   };
 
   const stop = () => {
-    const sim = getRunningSim();
+    const sim = getSimulation();
     lens.remove(sim.lens.id);
-    runningSimulation.value = undefined;
+    simulation.value = undefined;
   };
+
+  // graph.events.subscribe('onStructureChange', () => {
+  //   if (!runningSimulation.value) return;
+  //   const frames = initFrames(simulation);
+  //   const playhead = initPlayhead();
+  //   console.log('structure changed');
+  // });
 
   return {
     start,
     stop,
-    runningSimulation: computed(() => runningSimulation.value),
+    current: computed(() => simulation.value),
   };
 };

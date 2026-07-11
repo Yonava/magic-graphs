@@ -1,6 +1,6 @@
 import { nullThrows } from '@core/utils/assert';
 import { useProvidedGraph } from '@magic/shared/product';
-import { FrameCollector, Simulation } from '@magic/shared/simulation';
+import { FrameCollector, SimulationDefinition } from '@magic/shared/simulation';
 import { useThemer } from '@magic/shared/themer';
 
 import { DeepReadonly } from 'vue';
@@ -34,7 +34,7 @@ const bfs =
 export const useSimulation = () => {
   const graph = useProvidedGraph();
 
-  const simulation: Simulation<BFSFrame> = {
+  const simulation: SimulationDefinition<BFSFrame> = {
     collectFrames: (collector) => {
       const startNode = nullThrows(
         graph.nodes.value.at(0),

@@ -12,7 +12,7 @@
 
   const simulation = computed(() =>
     nullThrows(
-      graph.magic.simulation.runningSimulation.value,
+      graph.magic.simulation.current.value,
       'simulation scrubber requires a running simulation',
     ),
   );

@@ -55,8 +55,8 @@
 
   const toggleSim = () => {
     const { simulation } = graph.magic;
-    const { runningSimulation } = simulation;
-    if (!runningSimulation.value) {
+    const { current } = simulation;
+    if (!current.value) {
       simulation.start(bfsSim);
     } else {
       simulation.stop();
@@ -72,7 +72,7 @@
       />
       <ToggleButton
         @click="toggleSim"
-        :model-value="!!graph.magic.simulation.runningSimulation.value"
+        :model-value="!!graph.magic.simulation.current.value"
         >Hello</ToggleButton
       >
       <Button @click="toggleTheme"> Change Theme </Button>
