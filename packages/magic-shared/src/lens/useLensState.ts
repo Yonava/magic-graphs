@@ -1,6 +1,6 @@
 import { ComputedRef, computed, ref, watch } from 'vue';
 
-import { ComponentSlotControls } from '../component-slot/useComponentSlots.ts';
+import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import type { Lens } from './types.ts';
 
 export type LensControls = {

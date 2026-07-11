@@ -1,1 +1,1 @@
-export type {} from './types.ts';
+export type { FrameCollector, Simulation } from './types.ts';

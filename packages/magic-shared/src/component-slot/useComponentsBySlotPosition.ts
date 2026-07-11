@@ -1,7 +1,7 @@
 import { computed } from 'vue';
 
 import { ComponentSlot, SlotPosition } from './types.ts';
-import { ComponentSlotControls } from './useComponentSlots.ts';
+import { ComponentSlotControls } from './useComponentSlotsState.ts';
 
 type SlotPositionToComponent = Record<
   SlotPosition,

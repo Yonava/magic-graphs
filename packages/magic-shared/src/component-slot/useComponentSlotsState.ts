@@ -7,7 +7,7 @@ export type ComponentSlotControls = {
   set: (v: ComponentSlot[]) => void;
 };
 
-export const useComponentSlots = (): ComponentSlotControls => {
+export const useComponentSlotsState = (): ComponentSlotControls => {
   const componentSlots = ref<ComponentSlot[]>([]);
 
   return {
