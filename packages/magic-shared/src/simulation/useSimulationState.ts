@@ -1,12 +1,10 @@
 import { nullThrows } from '@core/utils/assert';
 
 import {
-  DeepReadonly,
-  Ref,
+  ComputedRef,
+  computed,
   defineAsyncComponent,
   markRaw,
-  reactive,
-  readonly,
   ref,
 } from 'vue';
 
@@ -18,7 +16,7 @@ import { InitLensContext, SimulationDefinition } from './types.ts';
 export type SimulationControls = {
   start: <Frame>(definition: SimulationDefinition<Frame>) => void;
   stop: () => void;
-  current: DeepReadonly<Ref<Simulation<any> | undefined>>;
+  current: ComputedRef<Simulation<any> | undefined>;
 };
 
 type Playhead = {
@@ -74,41 +72,57 @@ export const useSimulationState = (
     return definition.initLens(context);
   };
 
-  const initPlayhead = (frames: unknown[], previousPosition = 0): Playhead => {
-    const playhead: Playhead = reactive({
-      position: Math.min(previousPosition, frames.length - 1),
-      isFirst: () => playhead.position === 0,
-      isLast: () => playhead.position === frames.length - 1,
+  const initPlayhead = (frameCount: number, previousPosition = 0): Playhead => {
+    const position = ref(Math.min(previousPosition, frameCount - 1));
+    const isFirst = () => position.value === 0;
+    const isLast = () => position.value === frameCount - 1;
+
+    return {
+      get position() {
+        return position.value;
+      },
+      set position(value) {
+        position.value = value;
+      },
+      isFirst,
+      isLast,
       next: () => {
-        if (playhead.isLast()) {
+        if (isLast()) {
           throw new Error(
-            `playhead.next() called at last frame (${playhead.position} of ${frames.length - 1})`,
+            `playhead.next() called at last frame (${position.value} of ${frameCount - 1})`,
           );
         }
-        playhead.position++;
+        position.value++;
       },
       prev: () => {
-        if (playhead.isFirst()) {
+        if (isFirst()) {
           throw new Error(`playhead.prev() called at first frame (position 0)`);
         }
-        playhead.position--;
+        position.value--;
       },
-      set: (position) => {
-        if (position < 0 || position >= frames.length) {
+      set: (value) => {
+        if (value < 0 || value >= frameCount) {
           throw new Error(
-            `playhead.set(${position}) out of range [0, ${frames.length - 1}]`,
+            `playhead.set(${value}) out of range [0, ${frameCount - 1}]`,
           );
         }
-        playhead.position = position;
+        position.value = value;
       },
-    });
-    return playhead;
+    };
+  };
+
+  const initRun = <Frame>(
+    definition: SimulationDefinition<Frame>,
+    previousPosition = 0,
+  ) => {
+    const frames = initFrames(definition);
+    const playhead = initPlayhead(frames.length, previousPosition);
+    return { frames, playhead };
   };
 
   const start = <Frame>(definition: SimulationDefinition<Frame>) => {
-    const frames = initFrames(definition);
+    const { frames, playhead } = initRun(definition);
     const simLens = initLens(definition);
-    const playhead = initPlayhead(frames);
 
     simulation.value = {
       frames,
@@ -138,8 +152,10 @@ export const useSimulationState = (
 
   graph.events.subscribe('onStructureChange', () => {
     if (!simulation.value) return;
-    const frames = initFrames(simulation.value.definition);
-    const playhead = initPlayhead(frames, simulation.value.playhead.position);
+    const { frames, playhead } = initRun(
+      simulation.value.definition,
+      simulation.value.playhead.position,
+    );
     simulation.value.frames = frames;
     simulation.value.playhead = playhead;
   });
@@ -147,6 +163,6 @@ export const useSimulationState = (
   return {
     start,
     stop,
-    current: readonly(simulation),
+    current: computed(() => simulation.value),
   };
 };
