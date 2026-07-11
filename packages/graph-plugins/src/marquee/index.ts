@@ -82,7 +82,6 @@ export const marquee: MarqueePlugin = ({
 
   const updateSelectionBox = () => {
     selectionBox = getSelectionBox(controls);
-    console.log('updated box', selectionBox);
   };
 
   const setMarqueeBoxDimensions = (

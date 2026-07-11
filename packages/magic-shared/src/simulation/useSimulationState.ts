@@ -1,12 +1,6 @@
 import { nullThrows } from '@core/utils/assert';
 
-import {
-  ComputedRef,
-  computed,
-  defineAsyncComponent,
-  markRaw,
-  ref,
-} from 'vue';
+import { ComputedRef, computed, defineAsyncComponent, markRaw, ref } from 'vue';
 
 import { Graph } from '../graph/types.ts';
 import { Lens } from '../lens/types.ts';
@@ -58,7 +52,8 @@ export const useSimulationState = (
     return sim.frames[sim.playhead.position];
   };
 
-  const displayedLens = (sim: Simulation<any>) => sim.violation?.lens ?? sim.lens;
+  const displayedLens = (sim: Simulation<any>) =>
+    sim.violation?.lens ?? sim.lens;
 
   const initFrames = <Frame>(definition: SimulationDefinition<Frame>) => {
     const frames: Frame[] = [];
@@ -138,7 +133,7 @@ export const useSimulationState = (
     });
     simLens.components = lensComponents;
 
-    const violation = definition.guard?.runChecks();
+    const violation = definition.guard?.check();
 
     simulation.value = {
       frames,
@@ -161,7 +156,9 @@ export const useSimulationState = (
     const sim = simulation.value;
     if (!sim) return;
 
-    const violation = sim.definition.guard?.runChecks();
+    const violation = sim.definition.guard?.check();
+
+    console.log('violation: ', violation);
 
     if (violation?.lens) {
       lens.remove(displayedLens(sim).id);

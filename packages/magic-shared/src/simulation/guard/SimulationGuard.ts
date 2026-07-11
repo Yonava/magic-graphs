@@ -7,11 +7,11 @@ export type Violation = {
   reason: string;
 };
 
-export type SimulationGuardCheck = () => Violation | undefined;
+export type GuardCheck = () => Violation | undefined;
 
 export class SimulationGuard {
   graph: Graph;
-  checks: SimulationGuardCheck[] = [];
+  checks: GuardCheck[] = [];
 
   constructor(graph: Graph) {
     this.graph = graph;
@@ -23,12 +23,12 @@ export class SimulationGuard {
     return this;
   }
 
-  custom(check: SimulationGuardCheck) {
+  custom(check: GuardCheck) {
     this.checks.push(check);
     return this;
   }
 
-  runChecks() {
+  check() {
     for (const check of this.checks) {
       const violation = check();
       if (violation) return violation;
