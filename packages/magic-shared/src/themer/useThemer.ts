@@ -3,8 +3,6 @@ import { generateId } from '@core/utils/id';
 import type { PluginThemes } from '@graph/plugins-shared/plugins';
 import type { DeepPartial } from 'ts-essentials';
 
-import { ref } from 'vue';
-
 import { Graph, GraphPlugins } from '../graph/types.ts';
 import { useProvidedGraph } from '../product/useProvidedGraph.ts';
 import { Themer } from './types.ts';
@@ -17,11 +15,18 @@ type ThemeLayerRecord = {
   >;
 };
 
+type Options = {
+  graph: Graph;
+  layerId: string;
+};
+
 export const useThemer = (
   themeOverrides: ThemeOverrides,
-  themeId = generateId(),
+  options: Partial<Options> = {},
 ): Themer => {
-  const graph = useProvidedGraph();
+  const graph = options.graph ?? useProvidedGraph();
+  const layerId = options.layerId ?? generateId();
+
   let isActive = false;
 
   const pluginNames = Object.keys(themeOverrides) as (keyof ThemeOverrides)[];
@@ -29,16 +34,16 @@ export const useThemer = (
   const layers = {} as ThemeLayerRecord;
   for (const pluginName of pluginNames) {
     // @ts-expect-error dynamic stuff like this is a known typescript inference limitation
-    layers[pluginName] = graph[pluginName].theme.createLayer(themeId);
+    layers[pluginName] = graph[pluginName].theme.createLayer(layerId);
   }
+
+  const getLayer = (pluginName: keyof ThemeOverrides) =>
+    nullThrows(layers[pluginName], 'layers is created with pluginNames');
 
   const activate = () => {
     isActive = true;
     for (const pluginName of pluginNames) {
-      const layer = nullThrows(
-        layers[pluginName],
-        'layers is created with pluginNames',
-      );
+      const layer = getLayer(pluginName);
 
       const pluginOverrides = themeOverrides[pluginName];
       if (!pluginOverrides) continue;
@@ -55,12 +60,7 @@ export const useThemer = (
   const deactivate = () => {
     isActive = false;
     for (const pluginName of pluginNames) {
-      const layer = nullThrows(
-        layers[pluginName],
-        'layers is created with pluginNames',
-      );
-
-      layer.removeAll();
+      getLayer(pluginName).removeAll();
     }
   };
 

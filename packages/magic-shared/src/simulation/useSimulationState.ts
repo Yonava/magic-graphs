@@ -45,10 +45,12 @@ export const useSimulationState = (lens: LensControls): SimulationControls => {
   };
 
   const initFrames = <Frame>(simulation: Simulation<Frame>) => {
+    console.log('collecting');
     const frames: Frame[] = [];
     simulation.collectFrames({
       add: (frame) => frames.push(frame),
     });
+    console.log('collected frames');
     nullThrows(
       frames.at(0),
       'simulation must produce at least one frame to be valid!',

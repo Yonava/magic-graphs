@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "@magic/shared": "workspace:*",
-    "@magic/ui": "workspace:*"
+    "@magic/ui": "workspace:*",
+    "@core/utils": "workspace:*"
   },
   "devDependencies": {}
 }

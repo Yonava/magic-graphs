@@ -5,9 +5,12 @@
   import Button from '@magic/ui/Button';
   import HStack from '@magic/ui/HStack';
   import LensChip from '@magic/ui/LensChip';
+  import ToggleButton from '@magic/ui/ToggleButton';
   import Well from '@magic/ui/Well';
 
   import { defineAsyncComponent, markRaw } from 'vue';
+
+  import { useSimulation } from './simulations/bfs.ts';
 
   const graph = useProvidedGraph();
 
@@ -47,6 +50,18 @@
     setup: themer.activate,
     teardown: themer.deactivate,
   };
+
+  const bfsSim = useSimulation();
+
+  const toggleSim = () => {
+    const { simulation } = graph.magic;
+    const { runningSimulation } = simulation;
+    if (!runningSimulation.value) {
+      simulation.start(bfsSim);
+    } else {
+      simulation.stop();
+    }
+  };
 </script>
 
 <template>
@@ -55,6 +70,11 @@
       <LensChip
         v-bind="{ lens: nodeLens, title: 'Tip', tooltipContent: 'content ' }"
       />
+      <ToggleButton
+        @click="toggleSim"
+        :model-value="!!graph.magic.simulation.runningSimulation.value"
+        >Hello</ToggleButton
+      >
       <Button @click="toggleTheme"> Change Theme </Button>
     </HStack>
   </Well>

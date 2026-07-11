@@ -1,3 +1,4 @@
+import { nullThrows } from '@core/utils/assert';
 import { useProvidedGraph } from '@magic/shared/product';
 import { FrameCollector, Simulation } from '@magic/shared/simulation';
 import { useThemer } from '@magic/shared/themer';
@@ -34,11 +35,13 @@ export const useSimulation = () => {
   const graph = useProvidedGraph();
 
   const simulation: Simulation<BFSFrame> = {
-    collectFrames: (collector) =>
-      bfs(
-        graph.adjacencyLists.standard.value,
-        graph.nodes.value[0].id,
-      )(collector),
+    collectFrames: (collector) => {
+      const startNode = nullThrows(
+        graph.nodes.value.at(0),
+        'no nodes in graph!',
+      );
+      bfs(graph.adjacencyLists.standard.value, startNode.id)(collector);
+    },
     initLens: (context) => {
       const id = 'bfs-sim';
       const themer = useThemer(
@@ -48,7 +51,10 @@ export const useSimulation = () => {
               context.getCurrentFrame() === id ? 'red' : undefined,
           },
         },
-        id,
+        {
+          layerId: id,
+          graph,
+        },
       );
 
       return {
