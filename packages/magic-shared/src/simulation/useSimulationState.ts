@@ -52,9 +52,6 @@ export const useSimulationState = (
     return sim.frames[sim.playhead.position];
   };
 
-  const displayedLens = (sim: Simulation<any>) =>
-    sim.violation?.lens ?? sim.lens;
-
   const initFrames = <Frame>(definition: SimulationDefinition<Frame>) => {
     const frames: Frame[] = [];
     definition.collectFrames({
@@ -121,6 +118,13 @@ export const useSimulationState = (
   };
 
   const start = <Frame>(definition: SimulationDefinition<Frame>) => {
+    const violation = definition.guard?.check();
+    if (violation) {
+      throw new Error(
+        `cannot start simulation: guard is already failing (${violation.reason})`,
+      );
+    }
+
     const { frames, playhead } = computeRun(definition);
     const simLens = initLens(definition);
 
@@ -133,23 +137,52 @@ export const useSimulationState = (
     });
     simLens.components = lensComponents;
 
-    const violation = definition.guard?.check();
-
     simulation.value = {
       frames,
       lens: simLens,
       playhead,
       definition,
-      violation,
+      violation: undefined,
     };
 
-    lens.add(violation?.lens ?? simLens);
+    lens.add(simLens);
   };
 
   const stop = () => {
     const sim = getSimulation();
-    lens.remove(displayedLens(sim).id);
+
+    // if running sim had an active violation lens, remove the lens
+    if (sim.violation?.lens) lens.remove(sim.violation.lens.id);
+    lens.remove(sim.lens.id);
     simulation.value = undefined;
+  };
+
+  // reconciles sim.violation with a fresh guard check, swapping the
+  // displayed lens as needed. returns true while the graph is still
+  // invalid, so the caller knows not to recompute frames against it.
+  const syncViolation = (sim: Simulation<any>, violation?: Violation) => {
+    if (violation) {
+      // same violation as last check, nothing to swap
+      const isNewViolation = violation.id !== sim.violation?.id;
+      if (isNewViolation) {
+        // swap out whatever lens was displayed for this one
+        const previousViolationLens = sim.violation?.lens;
+        if (previousViolationLens) lens.remove(previousViolationLens.id);
+        if (violation.lens) lens.add(violation.lens);
+      }
+      sim.violation = violation;
+      return true;
+    }
+
+    // no violation this time, but there was a violation before.
+    // moving from violation state -> no violation state
+    const previousViolation = sim.violation;
+    if (previousViolation) {
+      if (previousViolation.lens) lens.remove(previousViolation.lens.id);
+      sim.violation = undefined;
+    }
+
+    return false;
   };
 
   graph.events.subscribe('onStructureChange', () => {
@@ -157,21 +190,8 @@ export const useSimulationState = (
     if (!sim) return;
 
     const violation = sim.definition.guard?.check();
-
-    console.log('violation: ', violation);
-
-    if (violation?.lens) {
-      lens.remove(displayedLens(sim).id);
-      sim.violation = violation;
-      lens.add(violation.lens);
-      return;
-    }
-
-    if (sim.violation) {
-      if (sim.violation.lens) lens.remove(sim.violation.lens.id);
-      sim.violation = undefined;
-      lens.add(sim.lens);
-    }
+    // graph is invalid, don't recompute frames against it
+    if (syncViolation(sim, violation)) return;
 
     const { frames, playhead } = computeRun(
       sim.definition,

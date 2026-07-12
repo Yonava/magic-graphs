@@ -3,6 +3,7 @@ import { Lens } from '../../lens/types.ts';
 import { createHasNodeCheck } from './checks/hasNodes.ts';
 
 export type Violation = {
+  id: string;
   lens?: Lens;
   reason: string;
 };

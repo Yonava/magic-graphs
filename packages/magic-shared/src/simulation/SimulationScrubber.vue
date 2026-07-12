@@ -16,10 +16,12 @@
       'simulation scrubber requires a running simulation',
     ),
   );
+
+  const invalid = computed(() => !!simulation.value.violation);
 </script>
 
 <template>
-  <Well>
+  <Well :class="invalid ? 'bg-red-600' : ''">
     <HStack>
       <Button
         :disabled="simulation.playhead.isFirst()"
