@@ -17,11 +17,12 @@
     ),
   );
 
-  const invalid = computed(() => !!simulation.value.violation);
+  const violation = computed(() => simulation.value.violation);
 </script>
 
 <template>
-  <Well :class="invalid ? 'bg-red-600' : ''">
+  <Well :class="violation ? 'bg-red-600' : ''">
+    <div v-if="violation">{{ violation.reason }}</div>
     <HStack>
       <Button
         :disabled="simulation.playhead.isFirst()"

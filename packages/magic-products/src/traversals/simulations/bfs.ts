@@ -38,8 +38,29 @@ const bfs =
 export const useSimulation = () => {
   const graph = useProvidedGraph();
 
+  const themer = useThemer({
+    canvas: {
+      'node.default.border.color': 'green',
+    },
+    focus: {
+      'node.focus.size': 40,
+    },
+  });
+
   const simulation: SimulationDefinition<BFSFrame> = {
-    guard: new SimulationGuard(graph).minNodes(1),
+    guard: new SimulationGuard(graph).minNodes(1).custom(() => {
+      if (graph.nodes.value.length === 4) {
+        return {
+          id: 'rule-of-4',
+          reason: '4 NODES!',
+          lens: {
+            id: 'rule-of-4-lens',
+            setup: themer.activate,
+            teardown: themer.deactivate,
+          },
+        };
+      }
+    }),
     collectFrames: (collector) => {
       const startNode = nullThrows(
         graph.nodes.value.at(0),
