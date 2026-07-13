@@ -8,7 +8,7 @@
   import { useProvidedGraph } from '@magic/shared/product';
   import { useThemer } from '@magic/shared/themer';
 
-  import { defineAsyncComponent, markRaw } from 'vue';
+  import { defineAsyncComponent } from 'vue';
 
   import { useSimulation } from './simulations/bfs.ts';
 
@@ -29,21 +29,15 @@
     id: 'node-color',
     components: [
       {
-        component: markRaw(
-          defineAsyncComponent(() => import('./NodeLens.vue')),
-        ),
+        component: defineAsyncComponent(() => import('./NodeLens.vue')),
         position: 'right',
       },
       {
-        component: markRaw(
-          defineAsyncComponent(() => import('./NodeLens.vue')),
-        ),
+        component: defineAsyncComponent(() => import('./NodeLens.vue')),
         position: 'right',
       },
       {
-        component: markRaw(
-          defineAsyncComponent(() => import('./NodeLens.vue')),
-        ),
+        component: defineAsyncComponent(() => import('./NodeLens.vue')),
         position: 'left',
       },
     ],

@@ -1,4 +1,4 @@
-import { ComputedRef, computed, ref } from 'vue';
+import { ComputedRef, computed, markRaw, ref } from 'vue';
 
 import { ComponentSlot } from './types.ts';
 
@@ -12,6 +12,10 @@ export const useComponentSlotsState = (): ComponentSlotControls => {
 
   return {
     entries: computed(() => componentSlots.value),
-    set: (v) => (componentSlots.value = v),
+    set: (v) =>
+      (componentSlots.value = v.map((slot) => ({
+        ...slot,
+        component: markRaw(slot.component),
+      }))),
   };
 };

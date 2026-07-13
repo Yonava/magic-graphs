@@ -131,9 +131,7 @@ export const useSimulationState = (
     const lensComponents = simLens.components ?? [];
     lensComponents.push({
       position: 'left',
-      component: markRaw(
-        defineAsyncComponent(() => import('./SimulationScrubber.vue')),
-      ),
+      component: defineAsyncComponent(() => import('./SimulationScrubber.vue')),
     });
     simLens.components = lensComponents;
 
