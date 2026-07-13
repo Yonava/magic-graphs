@@ -1,5 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 import { getCtx } from '@core/utils/ctx/index';
+import { getValue } from '@core/utils/maybeGetter/index';
+import Fraction from 'fraction.js';
 
 import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { DEFAULT_INTERACTIVE_OPTIONS, InteractiveOptions } from './options.ts';
@@ -109,10 +111,14 @@ export const interactive =
       const canCreateEdge = doesEdgeConformToRules(sourceNode, targetNode);
       if (!canCreateEdge) return;
 
+      const numberWeight = getValue(
+        optionsWithDefaults.addedEdgeWeight,
+      ).valueOf();
+
       actions.addEdge({
         source: sourceNode.id,
         target: targetNode.id,
-        weight: optionsWithDefaults.addedEdgeWeight(),
+        weight: new Fraction(numberWeight),
       });
     };
 

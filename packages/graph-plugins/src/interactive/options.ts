@@ -1,11 +1,12 @@
+import { MaybeGetter } from '@core/utils/maybeGetter/index';
 import Fraction from 'fraction.js';
 
 export type InteractiveOptions = {
   /**
-   * the default {@link CoreEdge.weight | weight} assigned to edges when created using the UI
-   * @default new Fraction(1)
+   * the weight assigned to an edge when added via node anchor drop
+   * @default 1
    */
-  addedEdgeWeight: () => Fraction;
+  addedEdgeWeight: MaybeGetter<Fraction | number>;
   /**
    * whether to allow self loops.
    * relevant on directed graphs where a node can have an edge to itself
@@ -33,7 +34,7 @@ export const DEFAULT_INTERACTIVE_OPTIONS: InteractiveOptions = {
       return new Fraction(input);
     } catch {}
   },
-  addedEdgeWeight: () => new Fraction(1),
+  addedEdgeWeight: 1,
   addedEdgeRuleNoSelfLoops: false,
   addedEdgeRuleOneEdgePerPath: false,
 };
