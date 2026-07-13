@@ -16,7 +16,7 @@
         collector.add(nodeId);
       }
     },
-    initLens: (context) => {
+    setup: (context) => {
       const fn = (
         { id: nodeId }: { id: string },
         resolveUnderneath: () => number,
@@ -44,8 +44,8 @@
 
       const lens: Lens = {
         id: 'lens-id',
-        setup: themer.activate,
-        teardown: themer.deactivate,
+        activate: themer.activate,
+        deactivate: themer.deactivate,
         components: [
           {
             position: 'center-left',
@@ -54,7 +54,7 @@
         ],
       };
 
-      return lens;
+      return { lens };
     },
   };
 

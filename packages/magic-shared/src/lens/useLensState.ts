@@ -27,11 +27,11 @@ export const useLensState = (
 
   watch(activeLens, (newLens, oldLens) => {
     if (oldLens) {
-      oldLens.teardown();
+      oldLens.deactivate();
       componentSlots.remove(oldLens.id);
     }
     if (newLens) {
-      newLens.setup();
+      newLens.activate();
       const components = newLens.components;
       if (components) {
         const lensComponentSlots = components.map((component) => ({

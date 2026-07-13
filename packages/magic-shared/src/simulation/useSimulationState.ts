@@ -7,7 +7,7 @@ import { Graph } from '../graph/types.ts';
 import { Lens } from '../lens/types.ts';
 import { LensControls } from '../lens/useLensState.ts';
 import { Violation } from './guard/SimulationGuardBuilder.ts';
-import { InitLensContext, SimulationDefinition } from './types.ts';
+import { SetupContext, SimulationDefinition } from './types.ts';
 
 export type SimulationControls = {
   start: <Frame>(definition: SimulationDefinition<Frame>) => void;
@@ -32,7 +32,7 @@ type Playhead = {
 
 type Simulation<Frame> = {
   definition: SimulationDefinition<Frame>;
-  lens: Lens;
+  lens?: Lens;
   frames: Frame[];
   playhead: Playhead;
   /** Set while the simulation's guard is failing; `undefined` when valid. */
@@ -66,11 +66,6 @@ export const useSimulationState = (
       'simulation must produce at least one frame to be valid!',
     );
     return frames;
-  };
-
-  const initLens = <Frame>(definition: SimulationDefinition<Frame>) => {
-    const context: InitLensContext<Frame> = { getCurrentFrame };
-    return definition.initLens(context);
   };
 
   const initPlayhead = (frameCount: number, previousPosition = 0): Playhead => {
@@ -130,14 +125,16 @@ export const useSimulationState = (
     }
 
     const { frames, playhead } = computeRun(definition);
-    const lens = initLens(definition);
+
+    const setupContext: SetupContext<Frame> = { getCurrentFrame };
+    const setupOutput = definition.setup(setupContext);
 
     simulation.value = {
       frames,
-      lens,
       playhead,
       definition,
       violation: undefined,
+      ...setupOutput,
     };
 
     componentSlotControls.add({
@@ -145,7 +142,10 @@ export const useSimulationState = (
       component: defineAsyncComponent(() => import('./SimulationScrubber.vue')),
       position: 'top-middle',
     });
-    lensControls.add(lens);
+
+    if (simulation.value.lens) {
+      lensControls.add(simulation.value.lens);
+    }
   };
 
   const stop = () => {
@@ -154,7 +154,7 @@ export const useSimulationState = (
     // if running sim had an active violation lens, remove the lens
     if (sim.violation?.lens) lensControls.remove(sim.violation.lens.id);
     componentSlotControls.remove(SCRUBBER_COMPONENT_ID);
-    lensControls.remove(sim.lens.id);
+    if (sim.lens) lensControls.remove(sim.lens.id);
     simulation.value = undefined;
   };
 

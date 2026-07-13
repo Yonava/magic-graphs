@@ -49,8 +49,8 @@
         position: 'top-middle',
       },
     ],
-    setup: themer.activate,
-    teardown: themer.deactivate,
+    activate: themer.activate,
+    deactivate: themer.deactivate,
   };
 
   const bfsSim = useSimulation();

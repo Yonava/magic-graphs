@@ -27,8 +27,8 @@
 
   const customLens: Lens = {
     id: 'custom-lens',
-    setup: themer.activate,
-    teardown: themer.deactivate,
+    activate: themer.activate,
+    deactivate: themer.deactivate,
     components: [
       {
         component: defineAsyncComponent(() => import('./NodeAColor.vue')),

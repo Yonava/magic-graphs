@@ -1,4 +1,5 @@
 import { nullThrows } from '@core/utils/assert';
+import { Lens } from '@magic/shared/lens';
 import { useProvidedGraph } from '@magic/shared/product';
 import {
   FrameCollector,
@@ -38,15 +39,6 @@ const bfs =
 export const useSimulation = () => {
   const graph = useProvidedGraph();
 
-  const themer = useThemer({
-    canvas: {
-      'node.default.border.color': 'green',
-    },
-    focus: {
-      'node.focus.size': 40,
-    },
-  });
-
   const simulation: SimulationDefinition<BFSFrame> = {
     guard: new SimulationGuardBuilder(graph).minNodes(1).build(),
     collectFrames: (collector) => {
@@ -56,7 +48,7 @@ export const useSimulation = () => {
       );
       bfs(graph.adjacencyLists.standard.value, startNode.id)(collector);
     },
-    initLens: (context) => {
+    setup: (context) => {
       const id = 'bfs-sim';
       const themer = useThemer(
         {
@@ -71,10 +63,14 @@ export const useSimulation = () => {
         },
       );
 
-      return {
+      const bfsLens: Lens = {
         id,
-        setup: themer.activate,
-        teardown: themer.deactivate,
+        activate: themer.activate,
+        deactivate: themer.deactivate,
+      };
+
+      return {
+        lens: bfsLens,
       };
     },
   };

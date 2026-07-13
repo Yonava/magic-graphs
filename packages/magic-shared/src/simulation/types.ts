@@ -5,8 +5,12 @@ export type FrameCollector<Frame> = {
   add: (frame: Frame) => void;
 };
 
-export type InitLensContext<Frame> = {
+export type SetupContext<Frame> = {
   getCurrentFrame: () => Frame;
+};
+
+type SetupOutput = {
+  lens?: Lens;
 };
 
 export type SimulationDefinition<Frame> = {
@@ -18,7 +22,6 @@ export type SimulationDefinition<Frame> = {
    */
   guard?: GuardCheck;
   collectFrames: (collector: FrameCollector<Frame>) => void;
-  // TODO roll into a lifecycle: { setup, teardown } shape, mirroring the lens API's setup/teardown vocabulary
-  initLens: (context: InitLensContext<Frame>) => Lens;
+  setup: (context: SetupContext<Frame>) => SetupOutput | undefined;
   // add: mutations (add, remove, move etc) that may occur at a given step
 };
