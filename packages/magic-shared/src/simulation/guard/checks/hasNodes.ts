@@ -1,5 +1,5 @@
 import { Graph } from '../../../graph/types.ts';
-import { GuardCheck } from '../SimulationGuard.ts';
+import { GuardCheck } from '../SimulationGuardBuilder.ts';
 
 export const createHasNodeCheck =
   (graph: Graph, minNodes: number): GuardCheck =>

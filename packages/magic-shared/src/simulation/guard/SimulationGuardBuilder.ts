@@ -10,7 +10,7 @@ export type Violation = {
 
 export type GuardCheck = () => Violation | undefined;
 
-export class SimulationGuard {
+export class SimulationGuardBuilder {
   graph: Graph;
   checks: GuardCheck[] = [];
 
@@ -29,10 +29,12 @@ export class SimulationGuard {
     return this;
   }
 
-  check() {
-    for (const check of this.checks) {
-      const violation = check();
-      if (violation) return violation;
-    }
+  build(): GuardCheck {
+    return () => {
+      for (const check of this.checks) {
+        const violation = check();
+        if (violation) return violation;
+      }
+    };
   }
 }

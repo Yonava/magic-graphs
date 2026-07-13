@@ -6,7 +6,7 @@ import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.
 import { Graph } from '../graph/types.ts';
 import { Lens } from '../lens/types.ts';
 import { LensControls } from '../lens/useLensState.ts';
-import { Violation } from './guard/SimulationGuard.ts';
+import { Violation } from './guard/SimulationGuardBuilder.ts';
 import { InitLensContext, SimulationDefinition } from './types.ts';
 
 export type SimulationControls = {
@@ -122,7 +122,7 @@ export const useSimulationState = (
   };
 
   const start = <Frame>(definition: SimulationDefinition<Frame>) => {
-    const violation = definition.guard?.check();
+    const violation = definition.guard?.();
     if (violation) {
       throw new Error(
         `cannot start simulation: guard is already failing (${violation.reason})`,
@@ -193,7 +193,7 @@ export const useSimulationState = (
     const sim = simulation.value;
     if (!sim) return;
 
-    const violation = sim.definition.guard?.check();
+    const violation = sim.definition.guard?.();
     // graph is invalid, don't recompute frames against it
     if (syncViolation(sim, violation)) return;
 

@@ -1,2 +1,2 @@
 export type { FrameCollector, SimulationDefinition } from './types.ts';
-export { SimulationGuard } from './guard/SimulationGuard.ts';
+export { SimulationGuardBuilder } from './guard/SimulationGuardBuilder.ts';
