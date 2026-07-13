@@ -10,7 +10,7 @@ export type LensControls = {
 };
 
 export const useLensState = (
-  componentSlots: Pick<ComponentSlotControls, 'set'>,
+  componentSlots: ComponentSlotControls,
 ): LensControls => {
   const lenses = ref<Lens[]>([]);
 
@@ -28,11 +28,18 @@ export const useLensState = (
   watch(activeLens, (newLens, oldLens) => {
     if (oldLens) {
       oldLens.teardown();
-      componentSlots.set([]);
+      componentSlots.remove(oldLens.id);
     }
     if (newLens) {
       newLens.setup();
-      componentSlots.set(newLens.components ?? []);
+      const components = newLens.components;
+      if (components) {
+        const lensComponentSlots = components.map((component) => ({
+          ...component,
+          id: newLens.id,
+        }));
+        componentSlots.add(lensComponentSlots);
+      }
     }
   });
 

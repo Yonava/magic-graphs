@@ -6,7 +6,7 @@
   import { useProvidedGraph } from '@magic/shared/product';
   import { useThemer } from '@magic/shared/themer';
 
-  import { defineAsyncComponent, ref } from 'vue';
+  import { defineAsyncComponent } from 'vue';
 
   import SimulationButton from './SimulationButton.vue';
 

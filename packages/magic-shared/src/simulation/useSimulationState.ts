@@ -128,13 +128,6 @@ export const useSimulationState = (
     const { frames, playhead } = computeRun(definition);
     const simLens = initLens(definition);
 
-    const lensComponents = simLens.components ?? [];
-    lensComponents.push({
-      position: 'left',
-      component: defineAsyncComponent(() => import('./SimulationScrubber.vue')),
-    });
-    simLens.components = lensComponents;
-
     simulation.value = {
       frames,
       lens: simLens,

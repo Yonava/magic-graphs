@@ -4,7 +4,8 @@ import { ComponentSlot } from './types.ts';
 
 export type ComponentSlotControls = {
   entries: ComputedRef<ComponentSlot[]>;
-  set: (v: ComponentSlot[]) => void;
+  add: (slots: ComponentSlot[]) => void;
+  remove: (slotId: string) => void;
 };
 
 export const useComponentSlotsState = (): ComponentSlotControls => {
@@ -12,10 +13,17 @@ export const useComponentSlotsState = (): ComponentSlotControls => {
 
   return {
     entries: computed(() => componentSlots.value),
-    set: (v) =>
-      (componentSlots.value = v.map((slot) => ({
+    add: (slots) => {
+      const markedSlots = slots.map((slot) => ({
         ...slot,
         component: markRaw(slot.component),
-      }))),
+      }));
+      componentSlots.value.push(...markedSlots);
+    },
+    remove: (slotId) => {
+      componentSlots.value = componentSlots.value.filter(
+        (slot) => slot.id !== slotId,
+      );
+    },
   };
 };
