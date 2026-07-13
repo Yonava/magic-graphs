@@ -5,6 +5,8 @@ export default defineNuxtConfig({
 
   ssr: true,
 
+  devtools: { enabled: false },
+
   nitro: {
     prerender: {
       crawlLinks: true,

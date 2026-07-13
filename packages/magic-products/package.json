@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "@magic/shared": "workspace:*",
-    "@core/utils": "workspace:*"
+    "@core/utils": "workspace:*",
+    "fraction.js": "^5.3.4"
   },
   "devDependencies": {}
 }

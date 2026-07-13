@@ -317,6 +317,9 @@ importers:
       '@magic/shared':
         specifier: workspace:*
         version: link:../magic-shared
+      fraction.js:
+        specifier: ^5.3.4
+        version: 5.3.4
       vue:
         specifier: ^3.5.18
         version: 3.5.39(typescript@6.0.3)

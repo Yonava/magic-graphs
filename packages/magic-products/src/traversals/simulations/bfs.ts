@@ -7,7 +7,7 @@ import {
 } from '@magic/shared/simulation';
 import { useThemer } from '@magic/shared/themer';
 
-import { DeepReadonly } from 'vue';
+import { DeepReadonly, defineAsyncComponent } from 'vue';
 
 type BFSFrame = string;
 
@@ -49,15 +49,16 @@ export const useSimulation = () => {
 
   const simulation: SimulationDefinition<BFSFrame> = {
     guard: new SimulationGuard(graph).minNodes(1).custom(() => {
+      const labels = graph.nodes.value.map((n) => graph.nodeLabel.get(n.id));
+      if (labels.includes('E'))
+        return {
+          id: 'EEE',
+          reason: 'EEEEE',
+        };
       if (graph.nodes.value.length === 4) {
         return {
           id: 'rule-of-4',
           reason: '4 NODES!',
-          lens: {
-            id: 'rule-of-4-lens',
-            setup: themer.activate,
-            teardown: themer.deactivate,
-          },
         };
       }
     }),

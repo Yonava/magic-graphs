@@ -1,9 +1,9 @@
-import { CoreNode } from '@graph/primitives/types';
-import { CompoundTokenResolver } from '@graph/plugins-shared/computed-tokens';
-import { CanvasControls } from '@graph/plugins/canvas/types';
-import { CoreControls } from '@graph/core/types';
 import { Shape } from '@canvas/primitives/types/index';
 import { nullThrows } from '@core/utils/assert';
+import { CoreControls } from '@graph/core/types';
+import { CompoundTokenResolver } from '@graph/plugins-shared/computed-tokens';
+import { CanvasControls } from '@graph/plugins/canvas/types';
+import { CoreNode } from '@graph/primitives/types';
 
 type Props = {
   resolver: CompoundTokenResolver;
@@ -37,15 +37,11 @@ export const nodeRenderer: NodeRenderer = ({ resolver, node, controls }) => {
   );
   const styles = resolveNodeComputedTokens(resolver)(node);
 
-  return controls.canvas.shapes.shapes.circle({
-    id: node.id,
-    at: position,
-    radius: styles.size,
+  return controls.canvas.shapes.shapes.star({
+    innerRadius: styles.size + 15,
+    outerRadius: styles.size - 15,
+    points: 5,
     fillColor: styles.color,
-    stroke: {
-      color: styles.border.color,
-      lineWidth: styles.border.width,
-    },
     textArea: {
       color: 'transparent',
       textBlock: {
@@ -55,5 +51,28 @@ export const nodeRenderer: NodeRenderer = ({ resolver, node, controls }) => {
         color: styles.text.color,
       },
     },
+    rotation: Math.PI,
+    id: node.id,
+    at: position,
   });
+
+  // return controls.canvas.shapes.shapes.circle({
+  //   id: node.id,
+  //   at: position,
+  //   radius: styles.size,
+  //   fillColor: styles.color,
+  //   stroke: {
+  //     color: styles.border.color,
+  //     lineWidth: styles.border.width,
+  //   },
+  //   textArea: {
+  //     color: 'transparent',
+  //     textBlock: {
+  //       content: styles.text.content,
+  //       fontSize: styles.text.size,
+  //       fontWeight: styles.text.fontWeight,
+  //       color: styles.text.color,
+  //     },
+  //   },
+  // });
 };

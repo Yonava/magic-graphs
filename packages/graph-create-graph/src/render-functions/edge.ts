@@ -1,11 +1,11 @@
-import { CoreControls } from '@graph/core/types';
-import { CompoundTokenResolver } from '@graph/plugins-shared/computed-tokens';
-import { CanvasControls } from '@graph/plugins/canvas/types';
-import { CoreEdge } from '@graph/primitives/types';
 import { getLargestAngularSpaceBisector } from '@canvas/primitives/helpers';
 import { Shape } from '@canvas/primitives/types/index';
 import { nullThrows } from '@core/utils/assert';
 import { GOLDEN_RATIO } from '@core/utils/math';
+import { CoreControls } from '@graph/core/types';
+import { CompoundTokenResolver } from '@graph/plugins-shared/computed-tokens';
+import { CanvasControls } from '@graph/plugins/canvas/types';
+import { CoreEdge } from '@graph/primitives/types';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
@@ -119,7 +119,7 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
 
   const textArea = isGraphWeighted
     ? {
-        color: 'none' as const,
+        color: 'none',
         activeColor: controls.canvas.theme._resolveToken('canvas.color'),
         textBlock: {
           content: styles.text.content,
