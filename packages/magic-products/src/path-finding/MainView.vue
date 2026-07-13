@@ -4,7 +4,7 @@
 
   import BottomPanel from './BottomPanel.vue';
 
-  useGraphProduct({
+  const graph = useGraphProduct({
     core: {},
     interactive: {
       edgeInputToWeight: (input) => {
@@ -17,10 +17,14 @@
       addedEdgeRuleOneEdgePerPath: false,
     },
   });
+
+  graph.magic.componentSlots.add({
+    id: 'panel',
+    component: BottomPanel,
+    position: 'bottom-middle',
+  });
 </script>
 
 <template>
-  <GraphProduct>
-    <BottomPanel />
-  </GraphProduct>
+  <GraphProduct />
 </template>

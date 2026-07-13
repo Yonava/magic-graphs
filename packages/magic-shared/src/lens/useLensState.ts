@@ -38,7 +38,7 @@ export const useLensState = (
           ...component,
           id: newLens.id,
         }));
-        componentSlots.add(lensComponentSlots);
+        componentSlots.addMany(lensComponentSlots);
       }
     }
   });

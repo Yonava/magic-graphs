@@ -32,19 +32,19 @@
     components: [
       {
         component: defineAsyncComponent(() => import('./NodeAColor.vue')),
-        position: 'bottom-left',
+        position: 'center-left',
       },
       {
         component: defineAsyncComponent(() => import('./NodeAColor.vue')),
-        position: 'bottom-left',
+        position: 'center-right',
       },
       {
         component: defineAsyncComponent(() => import('./NodeAColor.vue')),
-        position: 'bottom-left',
+        position: 'top-middle',
       },
       {
         component: defineAsyncComponent(() => import('./NodeAColor.vue')),
-        position: 'bottom-left',
+        position: 'top-right',
       },
     ],
   };
