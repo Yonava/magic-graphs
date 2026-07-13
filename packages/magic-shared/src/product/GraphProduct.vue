@@ -8,19 +8,22 @@
   const graph = useProvidedGraph();
   const pointerEvents = useDisablePointerEvents(graph);
 
-  const slotSharedClasses =
-    'absolute -translate-y-1/2 top-1/2 flex flex-col gap-2';
+  const slotSharedClasses = 'absolute flex flex-col gap-2';
+  const slotCenterClasses = `${slotSharedClasses} top-1/2 -translate-y-1/2`;
 </script>
 
 <template>
   <div :class="[pointerEvents]">
     <ComponentSlots
-      :left="`${slotSharedClasses} left-6`"
-      :right="`${slotSharedClasses} right-6`"
+      :top-left="`${slotSharedClasses} top-6 left-6`"
+      :top-middle="`${slotSharedClasses} top-6 left-1/2 -translate-x-1/2`"
+      :top-right="`${slotSharedClasses} top-6 right-6`"
+      :center-left="`${slotCenterClasses} left-6`"
+      :center-right="`${slotCenterClasses} right-6`"
+      :bottom-left="`${slotSharedClasses} bottom-6 left-6`"
+      :bottom-middle="`${slotSharedClasses} bottom-6 left-1/2 -translate-x-1/2`"
+      :bottom-right="`${slotSharedClasses} bottom-6 right-6`"
     />
-    <div class="absolute bottom-6 -translate-x-1/2 left-1/2">
-      <slot></slot>
-    </div>
   </div>
 
   <CanvasSurface v-bind="graph.canvas.magicCanvas.ref" />

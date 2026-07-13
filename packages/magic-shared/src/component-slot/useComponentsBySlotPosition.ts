@@ -12,8 +12,14 @@ const groupBySlotPosition = (
   componentSlots: readonly ComponentSlot[],
 ): SlotPositionToComponent => {
   const slots: SlotPositionToComponent = {
-    left: [],
-    right: [],
+    'top-left': [],
+    'top-middle': [],
+    'top-right': [],
+    'center-left': [],
+    'center-right': [],
+    'bottom-left': [],
+    'bottom-middle': [],
+    'bottom-right': [],
   };
 
   for (const { position, component } of componentSlots) {

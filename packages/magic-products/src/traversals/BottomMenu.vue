@@ -30,15 +30,15 @@
     components: [
       {
         component: defineAsyncComponent(() => import('./NodeLens.vue')),
-        position: 'right',
+        position: 'bottom-right',
       },
       {
         component: defineAsyncComponent(() => import('./NodeLens.vue')),
-        position: 'right',
+        position: 'bottom-right',
       },
       {
         component: defineAsyncComponent(() => import('./NodeLens.vue')),
-        position: 'left',
+        position: 'bottom-left',
       },
     ],
     setup: themer.activate,

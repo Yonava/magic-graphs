@@ -48,7 +48,7 @@
         teardown: themer.deactivate,
         components: [
           {
-            position: 'left',
+            position: 'bottom-left',
             component: defineAsyncComponent(() => import('./NodeAColor.vue')),
           },
         ],
