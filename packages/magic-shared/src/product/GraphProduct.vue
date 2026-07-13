@@ -10,19 +10,22 @@
 
   const slotSharedClasses = 'absolute flex flex-col gap-2';
   const slotCenterClasses = `${slotSharedClasses} top-1/2 -translate-y-1/2`;
+  const alignStart = 'items-start';
+  const alignEnd = 'items-end';
+  const alignCenter = 'items-center';
 </script>
 
 <template>
   <div :class="[pointerEvents]">
     <ComponentSlots
-      :top-left="`${slotSharedClasses} top-6 left-6`"
-      :top-middle="`${slotSharedClasses} top-6 left-1/2 -translate-x-1/2`"
-      :top-right="`${slotSharedClasses} top-6 right-6`"
-      :center-left="`${slotCenterClasses} left-6`"
-      :center-right="`${slotCenterClasses} right-6`"
-      :bottom-left="`${slotSharedClasses} bottom-6 left-6`"
-      :bottom-middle="`${slotSharedClasses} bottom-6 left-1/2 -translate-x-1/2`"
-      :bottom-right="`${slotSharedClasses} bottom-6 right-6`"
+      :top-left="`${slotSharedClasses} ${alignStart} top-6 left-6`"
+      :top-middle="`${slotSharedClasses} ${alignCenter} top-6 left-1/2 -translate-x-1/2`"
+      :top-right="`${slotSharedClasses} ${alignEnd} top-6 right-6`"
+      :center-left="`${slotCenterClasses} ${alignStart} left-6`"
+      :center-right="`${slotCenterClasses} ${alignEnd} right-6`"
+      :bottom-left="`${slotSharedClasses} ${alignStart} bottom-6 left-6`"
+      :bottom-middle="`${slotSharedClasses} ${alignCenter} bottom-6 left-1/2 -translate-x-1/2`"
+      :bottom-right="`${slotSharedClasses} ${alignEnd} bottom-6 right-6`"
     />
   </div>
 

@@ -9,7 +9,7 @@ export const useGraphProduct = (options?: UseGraphOptions) => {
 
   const componentSlots = useComponentSlotsState();
   const lens = useLensState(componentSlots);
-  const simulation = useSimulationState(lens, graph);
+  const simulation = useSimulationState(graph, componentSlots, lens);
 
   const magicGraph: MagicGraph = {
     ...graph,

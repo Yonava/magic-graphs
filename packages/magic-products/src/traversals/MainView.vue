@@ -3,11 +3,14 @@
 
   import BottomMenu from './BottomMenu.vue';
 
-  useGraphProduct();
+  const graph = useGraphProduct();
+  graph.magic.componentSlots.add({
+    id: 'bottom-menu',
+    component: BottomMenu,
+    position: 'bottom-middle',
+  });
 </script>
 
 <template>
-  <GraphProduct>
-    <BottomMenu />
-  </GraphProduct>
+  <GraphProduct />
 </template>

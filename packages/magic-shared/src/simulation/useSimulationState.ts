@@ -2,6 +2,7 @@ import { nullThrows } from '@core/utils/assert';
 
 import { ComputedRef, computed, defineAsyncComponent, markRaw, ref } from 'vue';
 
+import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import { Graph } from '../graph/types.ts';
 import { Lens } from '../lens/types.ts';
 import { LensControls } from '../lens/useLensState.ts';
@@ -38,9 +39,12 @@ type Simulation<Frame> = {
   violation: Violation | undefined;
 };
 
+const SCRUBBER_COMPONENT_ID = 'simulation-scrubber';
+
 export const useSimulationState = (
-  lens: LensControls,
   graph: Graph,
+  componentSlotControls: ComponentSlotControls,
+  lensControls: LensControls,
 ): SimulationControls => {
   const simulation = ref<Simulation<any>>();
 
@@ -126,25 +130,31 @@ export const useSimulationState = (
     }
 
     const { frames, playhead } = computeRun(definition);
-    const simLens = initLens(definition);
+    const lens = initLens(definition);
 
     simulation.value = {
       frames,
-      lens: simLens,
+      lens,
       playhead,
       definition,
       violation: undefined,
     };
 
-    lens.add(simLens);
+    componentSlotControls.add({
+      id: SCRUBBER_COMPONENT_ID,
+      component: defineAsyncComponent(() => import('./SimulationScrubber.vue')),
+      position: 'top-middle',
+    });
+    lensControls.add(lens);
   };
 
   const stop = () => {
     const sim = getSimulation();
 
     // if running sim had an active violation lens, remove the lens
-    if (sim.violation?.lens) lens.remove(sim.violation.lens.id);
-    lens.remove(sim.lens.id);
+    if (sim.violation?.lens) lensControls.remove(sim.violation.lens.id);
+    componentSlotControls.remove(SCRUBBER_COMPONENT_ID);
+    lensControls.remove(sim.lens.id);
     simulation.value = undefined;
   };
 
@@ -158,8 +168,9 @@ export const useSimulationState = (
       if (isNewViolation) {
         // swap out whatever lens was displayed for this one
         const previousViolationLens = sim.violation?.lens;
-        if (previousViolationLens) lens.remove(previousViolationLens.id);
-        if (violation.lens) lens.add(violation.lens);
+        if (previousViolationLens)
+          lensControls.remove(previousViolationLens.id);
+        if (violation.lens) lensControls.add(violation.lens);
       }
       sim.violation = violation;
       return true;
@@ -169,7 +180,9 @@ export const useSimulationState = (
     // moving from violation state -> no violation state
     const previousViolation = sim.violation;
     if (previousViolation) {
-      if (previousViolation.lens) lens.remove(previousViolation.lens.id);
+      if (previousViolation.lens) {
+        lensControls.remove(previousViolation.lens.id);
+      }
       sim.violation = undefined;
     }
 

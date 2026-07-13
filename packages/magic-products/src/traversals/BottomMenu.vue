@@ -34,11 +34,19 @@
       },
       {
         component: defineAsyncComponent(() => import('./NodeLens.vue')),
-        position: 'bottom-right',
+        position: 'top-right',
       },
       {
         component: defineAsyncComponent(() => import('./NodeLens.vue')),
         position: 'bottom-left',
+      },
+      {
+        component: defineAsyncComponent(() => import('./NodeLens.vue')),
+        position: 'top-left',
+      },
+      {
+        component: defineAsyncComponent(() => import('./NodeLens.vue')),
+        position: 'top-middle',
       },
     ],
     setup: themer.activate,
@@ -74,12 +82,16 @@
   <Well>
     <HStack>
       <LensChip
-        v-bind="{ lens: nodeLens, title: 'Tip', tooltipContent: 'content ' }"
+        v-bind="{
+          lens: nodeLens,
+          title: 'Lens Chip',
+          tooltipContent: 'This is a lens chip',
+        }"
       />
       <ToggleButton
         @click="toggleSim"
         :model-value="!!graph.magic.simulation.current.value"
-        >Hello</ToggleButton
+        >Toggle Simulation</ToggleButton
       >
       <Button @click="toggleTheme"> Change Theme </Button>
     </HStack>
