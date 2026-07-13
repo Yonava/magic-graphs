@@ -99,6 +99,7 @@
     "@graph/create-graph": "workspace:*",
     "@graph/plugins": "workspace:*",
     "@graph/plugins-shared": "workspace:*",
+    "@graph/primitives": "workspace:*",
     "@graph/theme-presets": "workspace:*",
     "@graph/vue": "workspace:*"
   },

@@ -5,6 +5,12 @@
     "rootDir": "./src",
     "rewriteRelativeImportExtensions": false
   },
-  "references": [{ "path": "../magic-shared" }, { "path": "../core-utils" }],
+  "references": [
+    { "path": "../magic-shared" },
+    { "path": "../core-utils" },
+    { "path": "../graph-core" },
+    { "path": "../graph-plugins" },
+    { "path": "../graph-primitives" }
+  ],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

@@ -314,6 +314,15 @@ importers:
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils
+      '@graph/core':
+        specifier: workspace:*
+        version: link:../graph-core
+      '@graph/plugins':
+        specifier: workspace:*
+        version: link:../graph-plugins
+      '@graph/primitives':
+        specifier: workspace:*
+        version: link:../graph-primitives
       '@magic/shared':
         specifier: workspace:*
         version: link:../magic-shared
@@ -347,6 +356,9 @@ importers:
       '@graph/plugins-shared':
         specifier: workspace:*
         version: link:../graph-plugins-shared
+      '@graph/primitives':
+        specifier: workspace:*
+        version: link:../graph-primitives
       '@graph/theme-presets':
         specifier: workspace:*
         version: link:../graph-theme-presets

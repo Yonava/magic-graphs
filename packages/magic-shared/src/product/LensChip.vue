@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import Tooltip from '@magic/shared/Tooltip';
-
   import { ref, watch } from 'vue';
 
   import ToggleButton from '../components/toggle-button/ToggleButton.vue';
+  import Tooltip from '../components/tooltip/Tooltip.vue';
   import { Lens } from '../lens/types.ts';
   import { useProvidedGraph } from './useProvidedGraph.ts';
 
