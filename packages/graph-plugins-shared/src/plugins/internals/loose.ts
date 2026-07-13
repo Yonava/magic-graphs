@@ -7,10 +7,7 @@ import {
 } from '@graph/primitives/actions/types';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { GenericEventMap } from '@graph/primitives/events/types';
-import {
-  BaseGetters,
-  GraphGetters,
-} from '@graph/primitives/getters/types';
+import { BaseGetters, GraphGetters } from '@graph/primitives/getters/types';
 
 export type LoosePluginSchema = {
   name: string;

@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { Primitive, type PrimitiveProps } from 'reka-ui';
+
   import { computed, useAttrs } from 'vue';
 
   import { cn } from '../../cn.ts';

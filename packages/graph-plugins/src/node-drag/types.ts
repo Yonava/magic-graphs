@@ -1,8 +1,5 @@
 import { Coordinate } from '@canvas/surface/types';
-import {
-  GraphPlugin,
-  WithLifecycle,
-} from '@graph/plugins-shared/plugins';
+import { GraphPlugin, WithLifecycle } from '@graph/plugins-shared/plugins';
 import { CoreNode } from '@graph/primitives/types';
 
 import { CanvasPlugin } from '../canvas/types.ts';

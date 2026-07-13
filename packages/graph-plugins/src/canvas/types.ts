@@ -1,6 +1,6 @@
-import { Coordinate, CanvasProps } from '@canvas/surface/types';
-import { GraphPlugin, WithTheme } from '@graph/plugins-shared/plugins';
 import { AnimatedShapeControls } from '@canvas/primitives/animation/index';
+import { CanvasProps, Coordinate } from '@canvas/surface/types';
+import { GraphPlugin, WithTheme } from '@graph/plugins-shared/plugins';
 import { DeepReadonly } from 'ts-essentials';
 
 import { AggregatorControls } from './aggregator/createAggregator.ts';

@@ -12,7 +12,10 @@
 </script>
 
 <template>
-  <ToggleButtonGroup v-model="selected" :class="classes">
+  <ToggleButtonGroup
+    v-model="selected"
+    :class="classes"
+  >
     <slot />
   </ToggleButtonGroup>
 </template>

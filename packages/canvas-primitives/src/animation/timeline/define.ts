@@ -85,8 +85,7 @@ type WithCustomOption<TSchema> = {
 
 type WithObjectOption<TSchema> = {
   [TProp in keyof TSchema]:
-    | TSchema[TProp]
-    | { value: TSchema[TProp]; easing?: EasingOption };
+    TSchema[TProp] | { value: TSchema[TProp]; easing?: EasingOption };
 };
 
 type TimelinePropsWithCustomOption<TSchema> = WithObjectOption<

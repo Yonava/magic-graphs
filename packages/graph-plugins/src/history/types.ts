@@ -1,7 +1,4 @@
-import {
-  GraphPlugin,
-  WithLifecycle,
-} from '@graph/plugins-shared/plugins';
+import { GraphPlugin, WithLifecycle } from '@graph/plugins-shared/plugins';
 import { DeepReadonly } from 'ts-essentials';
 
 import { HistoryEventMap } from './events.ts';

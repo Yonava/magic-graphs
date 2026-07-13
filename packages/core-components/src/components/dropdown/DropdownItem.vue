@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { DropdownMenuItem } from 'reka-ui';
+
   import { computed, useAttrs } from 'vue';
 
   import { cn } from '../../cn.ts';
@@ -21,7 +22,11 @@
 </script>
 
 <template>
-  <DropdownMenuItem as-child v-bind="{ ...attrs, class: undefined }" :class="classes">
+  <DropdownMenuItem
+    as-child
+    v-bind="{ ...attrs, class: undefined }"
+    :class="classes"
+  >
     <slot />
   </DropdownMenuItem>
 </template>

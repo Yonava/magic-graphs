@@ -1,8 +1,5 @@
-import {
-  GraphPlugin,
-  WithLifecycle,
-} from '@graph/plugins-shared/plugins';
 import { MaybeGetter } from '@core/utils/maybeGetter/index';
+import { GraphPlugin, WithLifecycle } from '@graph/plugins-shared/plugins';
 
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';

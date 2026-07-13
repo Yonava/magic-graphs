@@ -1,5 +1,5 @@
-import { PluginOptions } from '@graph/plugins-shared/plugins';
 import type { BoundingBox } from '@canvas/primitives/types/utility';
+import { PluginOptions } from '@graph/plugins-shared/plugins';
 
 import { MarqueePlugin } from './types.ts';
 

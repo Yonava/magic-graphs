@@ -1,5 +1,5 @@
-import { createDragState, DragStateControls } from '@graph/plugins-shared/drag';
 import { nullThrows } from '@core/utils/assert';
+import { DragStateControls, createDragState } from '@graph/plugins-shared/drag';
 
 import { NodeAnchor } from './types.ts';
 

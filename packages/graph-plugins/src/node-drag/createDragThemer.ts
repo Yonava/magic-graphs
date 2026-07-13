@@ -1,7 +1,7 @@
 import { DragStateControls } from '@graph/plugins-shared/drag';
+import { PluginOptions } from '@graph/plugins-shared/plugins';
 import { CURSOR } from '@graph/plugins-shared/theme';
 
-import { PluginOptions } from '@graph/plugins-shared/plugins';
 import { NODE_DRAG_PLUGIN_ID } from './constants.ts';
 import { NodeDragPlugin, NodeIdDragState } from './types.ts';
 

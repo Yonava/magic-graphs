@@ -8,19 +8,15 @@ export const interpolateCoordinate: InterpolationFunction<Coordinate> = (
   fallback,
 ) => {
   return (progress) => {
-    const xKeyframes = keyframes.map(
-      (kf): NumberKeyframe => ({
-        value: kf.value.x,
-        progress: kf.progress,
-      }),
-    );
+    const xKeyframes = keyframes.map((kf): NumberKeyframe => ({
+      value: kf.value.x,
+      progress: kf.progress,
+    }));
 
-    const yKeyframes = keyframes.map(
-      (kf): NumberKeyframe => ({
-        value: kf.value.y,
-        progress: kf.progress,
-      }),
-    );
+    const yKeyframes = keyframes.map((kf): NumberKeyframe => ({
+      value: kf.value.y,
+      progress: kf.progress,
+    }));
 
     const x = interpolateNumber(xKeyframes, defaultEasing, fallback.x);
     const y = interpolateNumber(yKeyframes, defaultEasing, fallback.y);

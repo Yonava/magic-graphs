@@ -1,6 +1,6 @@
+import { drawGroup } from '@canvas/primitives/drawGroup';
 import { Coordinate } from '@graph/plugins-shared/drag';
 import { EventHub } from '@graph/primitives/events/createEventHub';
-import { drawGroup } from '@canvas/primitives/drawGroup';
 import { DeepReadonly } from 'ts-essentials';
 
 import { CanvasEventMap } from '../events.ts';

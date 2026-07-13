@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { Primitive, type PrimitiveProps } from 'reka-ui';
+
   import { computed, useAttrs } from 'vue';
 
   import { cn } from '../../cn.ts';
@@ -31,7 +32,9 @@
 
   const attrClass = useAttrClass();
 
-  const classes = computed(() => cn('flex flex-col', gapClasses[props.gap], attrClass.value));
+  const classes = computed(() =>
+    cn('flex flex-col', gapClasses[props.gap], attrClass.value),
+  );
 </script>
 
 <template>

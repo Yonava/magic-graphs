@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ToggleGroupItem } from 'reka-ui';
+
   import { computed, useAttrs } from 'vue';
 
   import { cn } from '../../cn.ts';
@@ -20,7 +21,11 @@
   const attrClass = useAttrClass();
 
   const classes = computed(() =>
-    cn(toggleButtonBaseClasses, 'focus-visible:z-10 focus-visible:ring-offset-0', attrClass.value),
+    cn(
+      toggleButtonBaseClasses,
+      'focus-visible:z-10 focus-visible:ring-offset-0',
+      attrClass.value,
+    ),
   );
 </script>
 

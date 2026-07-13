@@ -1,7 +1,4 @@
-import {
-  GraphPlugin,
-  PluginOptions,
-} from '@graph/plugins-shared/plugins';
+import { GraphPlugin, PluginOptions } from '@graph/plugins-shared/plugins';
 import { CoreEdge } from '@graph/primitives/types';
 
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';

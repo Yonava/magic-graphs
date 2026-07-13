@@ -1,5 +1,5 @@
-import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { getCtx } from '@core/utils/ctx/index';
+import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { useElementSize } from '@vueuse/core';
 
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
@@ -29,9 +29,7 @@ export const useCanvas: UseCanvas = (options = {}) => {
   const drawContent = ref<DrawContent>(() => {});
   const drawBackgroundPattern = ref<DrawPattern>(() => {});
 
-  const lifecycleEvents = createEventHub(
-    createCanvasLifecycleEventRegistry(),
-  );
+  const lifecycleEvents = createEventHub(createCanvasLifecycleEventRegistry());
 
   let repaintInterval: NodeJS.Timeout;
 

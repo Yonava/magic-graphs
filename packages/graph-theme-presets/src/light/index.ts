@@ -1,15 +1,12 @@
-import {
-  CURSOR,
-  CURSOR_FALLBACK,
-} from '@graph/plugins-shared/theme';
+import colors from '@core/utils/colors';
+import { PluginThemes } from '@graph/plugins-shared/plugins';
+import { CURSOR, CURSOR_FALLBACK } from '@graph/plugins-shared/theme';
 import { AnchorsPlugin } from '@graph/plugins/anchors/types';
 import { CanvasPlugin } from '@graph/plugins/canvas/types';
 import { FocusPlugin } from '@graph/plugins/focus/types';
 import { MarqueePlugin } from '@graph/plugins/marquee/types';
-import colors from '@core/utils/colors';
 
 import { shared } from './shared.ts';
-import { PluginThemes } from '@graph/plugins-shared/plugins';
 
 type LightPreset = PluginThemes<
   [CanvasPlugin, FocusPlugin, MarqueePlugin, AnchorsPlugin]
