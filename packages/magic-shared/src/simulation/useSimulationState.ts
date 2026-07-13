@@ -4,10 +4,13 @@ import { ComputedRef, computed, defineAsyncComponent, markRaw, ref } from 'vue';
 
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import { Graph } from '../graph/types.ts';
-import { Lens } from '../lens/types.ts';
 import { LensControls } from '../lens/useLensState.ts';
 import { Violation } from './guard/SimulationGuardBuilder.ts';
-import { SetupContext, SimulationDefinition } from './types.ts';
+import {
+  SetupContext,
+  SimulationDefinition,
+  SimulationEffects,
+} from './types.ts';
 
 export type SimulationControls = {
   start: <Frame>(definition: SimulationDefinition<Frame>) => void;
@@ -32,12 +35,11 @@ type Playhead = {
 
 type Simulation<Frame> = {
   definition: SimulationDefinition<Frame>;
-  lens?: Lens;
   frames: Frame[];
   playhead: Playhead;
   /** Set while the simulation's guard is failing; `undefined` when valid. */
   violation: Violation | undefined;
-};
+} & SimulationEffects<Frame>;
 
 const SCRUBBER_COMPONENT_ID = 'simulation-scrubber';
 
@@ -127,14 +129,14 @@ export const useSimulationState = (
     const { frames, playhead } = computeRun(definition);
 
     const setupContext: SetupContext<Frame> = { getCurrentFrame };
-    const setupOutput = definition.setup(setupContext);
+    const simulationEffects = definition.setup(setupContext);
 
     simulation.value = {
       frames,
       playhead,
       definition,
       violation: undefined,
-      ...setupOutput,
+      ...simulationEffects,
     };
 
     componentSlotControls.add({

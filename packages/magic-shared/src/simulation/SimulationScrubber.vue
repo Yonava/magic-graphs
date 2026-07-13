@@ -18,11 +18,17 @@
   );
 
   const violation = computed(() => simulation.value.violation);
+  const explainer = computed(() =>
+    simulation.value.explainer?.(
+      simulation.value.frames[simulation.value.playhead.position],
+    ),
+  );
 </script>
 
 <template>
   <Well :class="violation ? 'bg-red-600' : ''">
     <div v-if="violation">{{ violation.reason }}</div>
+    <div v-if="explainer">{{ explainer }}</div>
     <HStack>
       <Button
         :disabled="simulation.playhead.isFirst()"

@@ -54,7 +54,13 @@
         ],
       };
 
-      return { lens };
+      return {
+        lens,
+        explainer: (nodeId) => {
+          const nodeLabel = graph.nodeLabel.get(nodeId);
+          return `Looking at Node ${nodeLabel}`;
+        },
+      };
     },
   };
 

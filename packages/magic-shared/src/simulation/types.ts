@@ -9,8 +9,9 @@ export type SetupContext<Frame> = {
   getCurrentFrame: () => Frame;
 };
 
-type SetupOutput = {
+export type SimulationEffects<Frame> = {
   lens?: Lens;
+  explainer?: (frame: Frame) => string;
 };
 
 export type SimulationDefinition<Frame> = {
@@ -22,6 +23,6 @@ export type SimulationDefinition<Frame> = {
    */
   guard?: GuardCheck;
   collectFrames: (collector: FrameCollector<Frame>) => void;
-  setup: (context: SetupContext<Frame>) => SetupOutput | undefined;
+  setup: (context: SetupContext<Frame>) => SimulationEffects<Frame> | undefined;
   // add: mutations (add, remove, move etc) that may occur at a given step
 };
