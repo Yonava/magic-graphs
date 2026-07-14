@@ -119,6 +119,12 @@ export const useSimulationState = (
   };
 
   const start = <Frame>(definition: SimulationDefinition<Frame>) => {
+    if (simulation.value) {
+      throw new Error(
+        'cannot start simulation: a simulation is already active!',
+      );
+    }
+
     const violation = definition.guard?.();
     if (violation) {
       throw new Error(
@@ -141,7 +147,9 @@ export const useSimulationState = (
 
     componentSlotControls.add({
       id: SCRUBBER_COMPONENT_ID,
-      component: defineAsyncComponent(() => import('./SimulationScrubber.vue')),
+      component: defineAsyncComponent(
+        () => import('./scrubber/SimulationScrubber.vue'),
+      ),
       position: 'top-middle',
     });
 
@@ -157,6 +165,7 @@ export const useSimulationState = (
     if (sim.violation?.lens) lensControls.remove(sim.violation.lens.id);
     componentSlotControls.remove(SCRUBBER_COMPONENT_ID);
     if (sim.lens) lensControls.remove(sim.lens.id);
+    sim.definition.teardown?.();
     simulation.value = undefined;
   };
 

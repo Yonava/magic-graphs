@@ -73,8 +73,8 @@
 <template>
   <Well>
     <HStack>
-      <ButtonVue @click="toggleTheme"> Hello </ButtonVue>
-      <ButtonVue @click="applyLens"> Lens </ButtonVue>
+      <ButtonVue @click="toggleTheme"> Toggle Theme </ButtonVue>
+      <ButtonVue @click="applyLens"> Toggle Custom Lens </ButtonVue>
       <SimulationButton />
     </HStack>
   </Well>

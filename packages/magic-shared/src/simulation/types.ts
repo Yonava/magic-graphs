@@ -9,9 +9,21 @@ export type SetupContext<Frame> = {
   getCurrentFrame: () => Frame;
 };
 
+export type ExplainerHighlight = {
+  activate: () => void;
+  deactivate: () => void;
+  tooltipContent?: string;
+  classes?: string;
+};
+
+export type Explainer = {
+  content: string;
+  highlights: ExplainerHighlight[];
+};
+
 export type SimulationEffects<Frame> = {
   lens?: Lens;
-  explainer?: (frame: Frame) => string;
+  explainer?: (frame: Frame) => Explainer;
 };
 
 export type SimulationDefinition<Frame> = {
@@ -24,5 +36,6 @@ export type SimulationDefinition<Frame> = {
   guard?: GuardCheck;
   collectFrames: (collector: FrameCollector<Frame>) => void;
   setup: (context: SetupContext<Frame>) => SimulationEffects<Frame> | undefined;
+  teardown?: () => void;
   // add: mutations (add, remove, move etc) that may occur at a given step
 };

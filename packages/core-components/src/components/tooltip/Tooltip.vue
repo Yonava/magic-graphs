@@ -20,7 +20,7 @@
      * required, plain-text description used for the accessible name/description.
      * always what screen readers announce, regardless of what's slotted visually.
      */
-    label: string;
+    label: string | undefined;
     side?: TooltipContentProps['side'];
   }
 
@@ -50,6 +50,7 @@
       </TooltipTrigger>
       <TooltipPortal>
         <TooltipContent
+          v-if="label"
           :aria-label="label"
           :side="side"
           :side-offset="6"
