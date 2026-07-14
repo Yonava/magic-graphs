@@ -165,6 +165,7 @@ export const useSimulationState = (
     if (sim.violation?.lens) lensControls.remove(sim.violation.lens.id);
     componentSlotControls.remove(SCRUBBER_COMPONENT_ID);
     if (sim.lens) lensControls.remove(sim.lens.id);
+    sim.definition.teardown?.();
     simulation.value = undefined;
   };
 

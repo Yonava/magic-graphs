@@ -10,6 +10,14 @@
 
   const graph = useProvidedGraph();
 
+  const nodeIdBox = { value: '' };
+  const explainerThemer = createThemer(graph, {
+    canvas: {
+      'node.default.border.color': ({ id }) =>
+        nodeIdBox.value === id ? colors.AMBER_500 : undefined,
+    },
+  });
+
   const simulation: SimulationDefinition<string> = {
     collectFrames: (collector) => {
       const nodeIds = graph.nodes.value.map((n) => n.id);
@@ -54,35 +62,21 @@
         lens,
         explainer: (nodeId) => {
           const nodeLabel = graph.nodeLabel.get(nodeId);
-          const orange = colors.ORANGE_500;
-          const themer = createThemer(graph, {
-            canvas: {
-              'node.default.border.color': ({ id }) =>
-                nodeId === id ? orange : undefined,
-              'canvas.color': orange,
-            },
-          });
-          const themer2 = createThemer(graph, {
-            canvas: {
-              'canvas.patternColor': orange,
-            },
-          });
+          nodeIdBox.value = nodeId;
           return {
-            content: `[Looking] [at] Node ${nodeLabel}`,
-            data: [
+            content: `Looking at [Node ${nodeLabel}]`,
+            highlights: [
               {
-                ...themer,
+                ...explainerThemer,
                 classes: 'bg-red-500 hover:bg-blue-500',
-              },
-              {
-                ...themer2,
-                classes: 'bg-orange-500',
-                tooltipContent: '2!',
               },
             ],
           };
         },
       };
+    },
+    teardown: () => {
+      explainerThemer.deactivate();
     },
   };
 
