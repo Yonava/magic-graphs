@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/types",
+    "rootDir": "./src",
+    "rewriteRelativeImportExtensions": false
+  },
+  "references": [
+    { "path": "../core-components" },
+    { "path": "../core-utils" },
+    { "path": "../graph-core" },
+    { "path": "../graph-vue" },
+    { "path": "../graph-plugins" },
+    { "path": "../graph-plugins-shared" },
+    { "path": "../graph-primitives" },
+    { "path": "../graph-create-graph" },
+    { "path": "../graph-theme-presets" },
+    { "path": "../canvas-surface" }
+  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
+}

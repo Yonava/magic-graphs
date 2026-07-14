@@ -1,5 +1,5 @@
-import { CURSOR } from '@graph/plugins-shared/theme';
 import colors from '@core/utils/colors';
+import { CURSOR } from '@graph/plugins-shared/theme';
 
 const sharedText = {
   content: '?',

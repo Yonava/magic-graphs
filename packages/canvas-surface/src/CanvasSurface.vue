@@ -26,7 +26,7 @@
   <canvas
     v-bind="{
       ...$attrs,
-      class: twMerge($attrs.class as ClassNameValue, ['w-full', 'h-full']),
+      class: twMerge($attrs.class as ClassNameValue, ['w-screen', 'h-screen']),
     }"
     ref="canvas"
   >

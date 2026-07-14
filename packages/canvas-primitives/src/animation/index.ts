@@ -139,8 +139,9 @@ export const useAnimatedShapes = () => {
           const animations = activeAnimations.get(schema.id);
 
           const defaultResolver:
-            | ((schema: LooseSchema) => LooseSchema)
-            | undefined = (getSchemaWithDefaults as any)?.[shapeName];
+            ((schema: LooseSchema) => LooseSchema) | undefined = (
+            getSchemaWithDefaults as any
+          )?.[shapeName];
           if (!defaultResolver)
             throw new Error(`cant find defaults for ${shapeName}`);
           const schemaWithDefaults = defaultResolver(schema);

@@ -1,12 +1,12 @@
-import { EventHub } from '@graph/primitives/events/createEventHub';
-import { GraphGetters } from '@graph/primitives/getters/types';
+import { CoreGetters } from '@graph/core/getters';
 import {
   CURSOR,
   CURSOR_FALLBACK,
   Cursor,
   isValidCursor,
 } from '@graph/plugins-shared/theme';
-import { CoreGetters } from '@graph/core/getters';
+import { EventHub } from '@graph/primitives/events/createEventHub';
+import { GraphGetters } from '@graph/primitives/getters/types';
 
 import { CanvasEventMap } from './events.ts';
 import { CanvasControls } from './types.ts';

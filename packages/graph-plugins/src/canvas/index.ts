@@ -1,11 +1,11 @@
+import { useAnimatedShapes } from '@canvas/primitives/animation/index';
+import { cross } from '@canvas/primitives/shapes/cross/index';
 import { CanvasProps } from '@canvas/surface/types';
+import { KeyboardEventEntries, MouseEventEntries } from '@core/utils/types';
 import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
-import { useAnimatedShapes } from '@canvas/primitives/animation/index';
-import { cross } from '@canvas/primitives/shapes/cross/index';
-import { KeyboardEventEntries, MouseEventEntries } from '@core/utils/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import { createAggregator } from './aggregator/createAggregator.ts';

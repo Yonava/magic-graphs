@@ -12,10 +12,11 @@
     { "path": "./packages/graph-theme-presets" },
     { "path": "./packages/graph-vue" },
     { "path": "./packages/magic-products" },
-    { "path": "./packages/magic-server" },
     { "path": "./packages/canvas-primitives" },
     { "path": "./packages/canvas-primitives/tsconfig.storybook.json" },
     { "path": "./packages/core-ui" },
-    { "path": "./packages/core-utils" }
+    { "path": "./packages/core-utils" },
+    { "path": "./packages/core-components" },
+    { "path": "./packages/magic-shared" }
   ]
 }

@@ -1,9 +1,9 @@
+import { MOUSE_BUTTONS } from '@core/utils/mouse';
 import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
 import { ElementRemovalPayload } from '@graph/primitives/transactions/types';
-import { MOUSE_BUTTONS } from '@core/utils/mouse';
 import { DeepReadonly } from 'ts-essentials';
 
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
@@ -29,7 +29,9 @@ export const focus: FocusPlugin = ({
   let focusedElementIds = new Set<string>();
 
   const setFocus = (ids: string[]) => {
-    const elementsAlreadyFocused = ids.every((id) => focusedElementIds.has(id));
+    const elementsAlreadyFocused =
+      ids.length === focusedElementIds.size &&
+      ids.every((id) => focusedElementIds.has(id));
     if (ids.length > 0 && elementsAlreadyFocused) return;
 
     const oldIds = new Set([...focusedElementIds]);
@@ -49,7 +51,7 @@ export const focus: FocusPlugin = ({
     );
     if (nonExistingElementIds.size) {
       console.warn(
-        `Attempted to focus non-existent items`,
+        `Attempted to focus non-existent elements`,
         nonExistingElementIds,
       );
     }
@@ -132,7 +134,6 @@ export const focus: FocusPlugin = ({
   enable();
 
   const extendedActions: ReturnType<FocusPlugin>['actions'] = {
-    ...actions,
     addNode: (options) => {
       const addedNode = actions.addNode(options);
       const focusOnAdded = options?.focus ?? true;
@@ -145,6 +146,22 @@ export const focus: FocusPlugin = ({
       if (focusOnAdded) setFocus([addedEdge.id]);
       return addedEdge;
     },
+    removeNode: (options) => {
+      const removedNode = actions.removeNode(options);
+      clearRemovedElementsFromFocus({
+        removedNodeIds: removedNode.removedNodeIds,
+        removedEdgeIds: removedNode.removedEdgeIds,
+      });
+      return removedNode;
+    },
+    removeEdge: (options) => {
+      const removedEdgeId = actions.removeEdge(options);
+      clearRemovedElementsFromFocus({
+        removedNodeIds: [],
+        removedEdgeIds: [removedEdgeId],
+      });
+      return removedEdgeId;
+    },
     addElements: (options, shared) => {
       const updatedElements = actions.addElements(options, shared);
       const focusOnAdded = shared?.focus ?? true;
@@ -155,6 +172,14 @@ export const focus: FocusPlugin = ({
         ]);
       }
       return updatedElements;
+    },
+    removeElements: (options, shared) => {
+      const removedElements = actions.removeElements(options, shared);
+      clearRemovedElementsFromFocus({
+        removedNodeIds: removedElements.removedNodeIds,
+        removedEdgeIds: removedElements.removedEdgeIds,
+      });
+      return removedElements;
     },
   };
 

@@ -33,9 +33,9 @@ export const nodeLabel: NodeLabelPlugin = ({
 
   const generateLabel = createLabelGenerator({
     getLabels: () =>
-      // TODO breaks when multiple nodes are added in bulk. Needs to change
-      // https://github.com/Yonava/magic-graphs/issues/700
-      controls.nodes.map((n) => getNodeLabelWithAssert(n.id)),
+      controls.nodes
+        .map((n) => getNodeLabel(n.id))
+        .filter((label): label is string => label !== undefined),
     sequence: UPPERCASE_ALPHABET,
   });
 
@@ -69,10 +69,29 @@ export const nodeLabel: NodeLabelPlugin = ({
         return actions.addNode({ ...options, id });
       },
       removeNode: (options) => {
+        // remove node then delete since removing triggers a transaction which triggered a repaint.
+        // And on that one tick where the repaint happens and the label has already been deleted, the program throws errors
+        const removalPayload = actions.removeNode(options);
         nodeIdToLabel.delete(options.id);
-        return actions.removeNode(options);
+        return removalPayload;
       },
-      // TODO add bulk additions and removals!
+      addElements: (options, shared) => {
+        const addedElements = actions.addElements(options, shared);
+        setNodeLabels(
+          addedElements.addedNodes.map((node, i) => ({
+            nodeId: node.id,
+            label: options.nodes?.[i]?.label ?? generateLabel(),
+          })),
+        );
+        return addedElements;
+      },
+      removeElements: (options, shared) => {
+        const removedElements = actions.removeElements(options, shared);
+        for (const nodeId of removedElements.removedNodeIds) {
+          nodeIdToLabel.delete(nodeId);
+        }
+        return removedElements;
+      },
     },
     controls: {
       get: getNodeLabelWithAssert,

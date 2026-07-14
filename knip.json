@@ -8,10 +8,18 @@
       "ignore": ["env.d.ts"]
     },
     "packages/magic-products": {
-      "ignoreDependencies": ["fraction.js"]
+      "ignoreDependencies": [
+        "fraction.js",
+        "@graph/core",
+        "@graph/plugins",
+        "@graph/primitives"
+      ]
     },
     "packages/graph-core": {
       "ignoreDependencies": ["fraction.js"]
+    },
+    "packages/magic-shared": {
+      "ignoreDependencies": ["@graph/primitives"]
     }
   }
 }

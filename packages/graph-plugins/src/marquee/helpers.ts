@@ -1,5 +1,5 @@
-import { PluginOptions } from '@graph/plugins-shared/plugins';
 import type { BoundingBox } from '@canvas/primitives/types/utility';
+import { PluginOptions } from '@graph/plugins-shared/plugins';
 
 import { MarqueePlugin } from './types.ts';
 
@@ -17,14 +17,15 @@ export const getSelectionBox = (
     height: 0,
   };
 
-  if (controls.focus.focusedNodes().length < 2) return selectionBox;
+  const focusedNodes = controls.focus.focusedNodes();
+  if (focusedNodes.length < 2) return selectionBox;
 
   let minX = Infinity,
     minY = Infinity;
   let maxX = -Infinity,
     maxY = -Infinity;
 
-  for (const node of controls.nodes) {
+  for (const node of focusedNodes) {
     const nodeRadius = controls.canvas.theme._resolveToken(
       'node.default.size',
       node,

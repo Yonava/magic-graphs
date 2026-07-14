@@ -31,9 +31,9 @@ export type RemoveAnyArray<T extends unknown[]> = Exclude<
 type HTMLElementEventName = keyof HTMLElementEventMap;
 
 type FilterEventName<EventType> = {
-  [EventName in HTMLElementEventName]: HTMLElementEventMap[EventName] extends EventType
-    ? EventName
-    : never;
+  [
+    EventName in HTMLElementEventName
+  ]: HTMLElementEventMap[EventName] extends EventType ? EventName : never;
 }[HTMLElementEventName];
 
 type MouseEventName = FilterEventName<MouseEvent>;

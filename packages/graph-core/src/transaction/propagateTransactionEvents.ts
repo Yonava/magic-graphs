@@ -56,6 +56,8 @@ export const propagateTransactionEvents = (
   payload: TransactionPayload,
   emit: EventHub<CoreEventMap>['emit'],
 ) => {
+  emit('onTransactionComplete', payload);
+
   (Object.keys(eventNameToPredicateMap) as (keyof CoreEventMap)[]).forEach(
     (event) => {
       const predicate = eventNameToPredicateMap[event];
@@ -67,5 +69,4 @@ export const propagateTransactionEvents = (
       }
     },
   );
-  emit('onTransactionComplete', payload);
 };

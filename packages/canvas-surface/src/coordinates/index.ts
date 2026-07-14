@@ -73,9 +73,7 @@ export const getClientCoordinates = (
   };
 };
 
-export const useCoordinates = (
-  canvas: Ref<HTMLCanvasElement | undefined>,
-) => {
+export const useCoordinates = (canvas: Ref<HTMLCanvasElement | undefined>) => {
   const coordinates = ref<Coords>({ x: 0, y: 0 });
   const captureCoords = (ev: MouseEvent) =>
     (coordinates.value = getCoordinates(ev, getCtx(canvas)));

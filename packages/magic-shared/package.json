@@ -1,0 +1,110 @@
+{
+  "name": "@magic/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./Button": {
+      "types": "./dist/types/components/button/Button.vue.d.ts",
+      "default": "./src/components/button/Button.vue"
+    },
+    "./Well": {
+      "types": "./dist/types/components/layout/Well.vue.d.ts",
+      "default": "./src/components/layout/Well.vue"
+    },
+    "./HStack": {
+      "types": "./dist/types/components/layout/HStack.vue.d.ts",
+      "default": "./src/components/layout/HStack.vue"
+    },
+    "./VStack": {
+      "types": "./dist/types/components/layout/VStack.vue.d.ts",
+      "default": "./src/components/layout/VStack.vue"
+    },
+    "./Icon": {
+      "types": "./dist/types/components/icon/Icon.vue.d.ts",
+      "default": "./src/components/icon/Icon.vue"
+    },
+    "./IconButton": {
+      "types": "./dist/types/components/icon-button/IconButton.vue.d.ts",
+      "default": "./src/components/icon-button/IconButton.vue"
+    },
+    "./Tooltip": {
+      "types": "./dist/types/components/tooltip/Tooltip.vue.d.ts",
+      "default": "./src/components/tooltip/Tooltip.vue"
+    },
+    "./Dropdown": {
+      "types": "./dist/types/components/dropdown/Dropdown.vue.d.ts",
+      "default": "./src/components/dropdown/Dropdown.vue"
+    },
+    "./DropdownItem": {
+      "types": "./dist/types/components/dropdown/DropdownItem.vue.d.ts",
+      "default": "./src/components/dropdown/DropdownItem.vue"
+    },
+    "./ToggleButton": {
+      "types": "./dist/types/components/toggle-button/ToggleButton.vue.d.ts",
+      "default": "./src/components/toggle-button/ToggleButton.vue"
+    },
+    "./ToggleButtonGroup": {
+      "types": "./dist/types/components/toggle-button-group/ToggleButtonGroup.vue.d.ts",
+      "default": "./src/components/toggle-button-group/ToggleButtonGroup.vue"
+    },
+    "./ToggleButtonGroupItem": {
+      "types": "./dist/types/components/toggle-button-group/ToggleButtonGroupItem.vue.d.ts",
+      "default": "./src/components/toggle-button-group/ToggleButtonGroupItem.vue"
+    },
+    "./LensChip": {
+      "types": "./dist/types/product/LensChip.vue.d.ts",
+      "default": "./src/product/LensChip.vue"
+    },
+    "./component-slot": {
+      "types": "./dist/types/component-slot/index.d.ts",
+      "default": "./src/component-slot/index.ts"
+    },
+    "./graph": {
+      "types": "./dist/types/graph/index.d.ts",
+      "default": "./src/graph/index.ts"
+    },
+    "./lens": {
+      "types": "./dist/types/lens/index.d.ts",
+      "default": "./src/lens/index.ts"
+    },
+    "./product": {
+      "types": "./dist/types/product/index.d.ts",
+      "default": "./src/product/index.ts"
+    },
+    "./simulation": {
+      "types": "./dist/types/simulation/index.d.ts",
+      "default": "./src/simulation/index.ts"
+    },
+    "./themer": {
+      "types": "./dist/types/themer/index.d.ts",
+      "default": "./src/themer/index.ts"
+    },
+    "./*": {
+      "types": "./dist/types/*.d.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "build:types": "vue-tsc -b tsconfig.json"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.18"
+  },
+  "dependencies": {
+    "@canvas/surface": "workspace:*",
+    "@core/components": "workspace:*",
+    "@core/utils": "workspace:*",
+    "@graph/core": "workspace:*",
+    "@graph/create-graph": "workspace:*",
+    "@graph/plugins": "workspace:*",
+    "@graph/plugins-shared": "workspace:*",
+    "@graph/primitives": "workspace:*",
+    "@graph/theme-presets": "workspace:*",
+    "@graph/vue": "workspace:*"
+  },
+  "devDependencies": {
+    "vue": "catalog:",
+    "ts-essentials": "^10.2.1"
+  }
+}

@@ -83,9 +83,13 @@ export type MergeActions<Actions extends PartialBaseActions[]> =
   Actions extends []
     ? BaseActions
     : {
-        [ActionsField in keyof BaseActions]: ActionsField extends BulkActionsField
+        [
+          ActionsField in keyof BaseActions
+        ]: ActionsField extends BulkActionsField
           ? {
-              [ActionsSubField in keyof BaseActions[ActionsField]]: UnionToIntersection<
+              [
+                ActionsSubField in keyof BaseActions[ActionsField]
+              ]: UnionToIntersection<
                 DistributeResolveActions<
                   Actions[number]
                 >[ActionsField][ActionsSubField]

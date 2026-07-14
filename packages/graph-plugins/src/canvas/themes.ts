@@ -1,14 +1,14 @@
-import { CoreEdge, CoreNode } from '@graph/primitives/types';
+import type { FontWeight } from '@canvas/primitives/text/types';
+import { Color } from '@core/utils/colors';
 import { ComputedTokenDetectorMap } from '@graph/plugins-shared/computed-tokens';
 import {
-  TokenResolver,
   Cursor,
   CursorFallback,
   ThemeOverrides,
   ThemeValue,
+  TokenResolver,
 } from '@graph/plugins-shared/theme';
-import type { FontWeight } from '@canvas/primitives/text/types';
-import { Color } from '@core/utils/colors';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 type TextStyleValues = {
   text: string;

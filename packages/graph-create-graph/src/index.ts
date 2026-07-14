@@ -1,3 +1,4 @@
+import { nullThrows } from '@core/utils/assert';
 import { core as createCore } from '@graph/core/index';
 import { CoreOptions } from '@graph/core/options';
 import { CoreControls } from '@graph/core/types';
@@ -21,7 +22,6 @@ import { GraphActions } from '@graph/primitives/actions/types';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { GraphGetters } from '@graph/primitives/getters/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
-import { nullThrows } from '@core/utils/assert';
 import type { Prettify } from 'ts-essentials';
 
 import {

@@ -1,7 +1,7 @@
 import { Graph } from '@graph/create-graph/index';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
-import { computed, ComputedRef, ref, Ref, watch } from 'vue';
+import { ComputedRef, Ref, computed, ref, watch } from 'vue';
 
 type CoreGraph<PresetName extends string> = Graph<{
   plugins: [];
@@ -26,6 +26,7 @@ export const useCreateGraph = <PresetName extends string>(
     edges.value = [...graph.edges];
   });
 
+  // TODO ensure that consumers only have access to either ref setters or ag-graph setters for ref syncing
   const activePreset = ref(graph.theme.activePresetName()) as Ref<PresetName>;
 
   watch(activePreset, (v) => {

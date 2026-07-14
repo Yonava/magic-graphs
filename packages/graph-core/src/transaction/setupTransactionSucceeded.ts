@@ -20,8 +20,13 @@ export const setupTransactionSucceeded = ({
       const removedNodeIds = new Set(payload.removedNodeIds);
       const removedEdgeIds = new Set(payload.removedEdgeIds);
 
-      nodes = nodes.filter((n) => !removedNodeIds.has(n.id));
-      edges = edges.filter((e) => !removedEdgeIds.has(e.id));
+      const remainingNodes = nodes.filter((n) => !removedNodeIds.has(n.id));
+      nodes.length = 0;
+      nodes.push(...remainingNodes);
+
+      const remainingEdges = edges.filter((e) => !removedEdgeIds.has(e.id));
+      edges.length = 0;
+      edges.push(...remainingEdges);
     }
 
     nodes.push(...payload.addedNodes);
