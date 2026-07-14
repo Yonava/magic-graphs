@@ -1,4 +1,4 @@
-import { ComputedRef, computed, markRaw, ref } from 'vue';
+import { ComputedRef, computed, markRaw, shallowRef } from 'vue';
 
 import { ComponentSlot } from './types.ts';
 
@@ -10,14 +10,14 @@ export type ComponentSlotControls = {
 };
 
 export const useComponentSlotsState = (): ComponentSlotControls => {
-  const componentSlots = ref<ComponentSlot[]>([]);
+  const componentSlots = shallowRef<ComponentSlot[]>([]);
 
   const addMany = (slots: ComponentSlot[]) => {
-    const markedSlots = slots.map((slot) => ({
+    const newSlots = slots.map((slot) => ({
       ...slot,
       component: markRaw(slot.component),
     }));
-    componentSlots.value.push(...markedSlots);
+    componentSlots.value = [...componentSlots.value, ...newSlots];
   };
 
   return {

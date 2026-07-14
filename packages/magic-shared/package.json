@@ -52,10 +52,6 @@
       "types": "./dist/types/components/toggle-button-group/ToggleButtonGroupItem.vue.d.ts",
       "default": "./src/components/toggle-button-group/ToggleButtonGroupItem.vue"
     },
-    "./LensChip": {
-      "types": "./dist/types/product/LensChip.vue.d.ts",
-      "default": "./src/product/LensChip.vue"
-    },
     "./component-slot": {
       "types": "./dist/types/component-slot/index.d.ts",
       "default": "./src/component-slot/index.ts"

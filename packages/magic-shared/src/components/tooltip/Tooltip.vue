@@ -11,7 +11,11 @@
 
 <template>
   <Tooltip :class="classes">
-    <template #trigger><slot name="trigger" /></template>
+    <template #trigger>
+      <div>
+        <slot name="trigger" />
+      </div>
+    </template>
     <slot />
   </Tooltip>
 </template>

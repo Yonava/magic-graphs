@@ -3,5 +3,5 @@
 </script>
 
 <template>
-  <Well>Red Lens Active!</Well>
+  <Well>Blue Lens Active!</Well>
 </template>
