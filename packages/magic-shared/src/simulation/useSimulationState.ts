@@ -141,7 +141,9 @@ export const useSimulationState = (
 
     componentSlotControls.add({
       id: SCRUBBER_COMPONENT_ID,
-      component: defineAsyncComponent(() => import('./SimulationScrubber.vue')),
+      component: defineAsyncComponent(
+        () => import('./scrubber/SimulationScrubber.vue'),
+      ),
       position: 'top-middle',
     });
 
