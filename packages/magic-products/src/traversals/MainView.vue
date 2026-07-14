@@ -1,14 +1,15 @@
 <script setup lang="ts">
-  import {
-    GraphProduct,
-    LensChipGroup,
-    useGraphProduct,
-  } from '@magic/shared/product';
+  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import ToggleSimulation from './ToggleSimulation.vue';
   import ToggleTheme from './ToggleTheme.vue';
+  import { lensChips } from './lensChips.ts';
 
-  const graph = useGraphProduct();
+  const graph = useGraphProduct({
+    product: {
+      lensChips,
+    },
+  });
 
   graph.magic.componentSlots.addMany([
     {
@@ -20,11 +21,6 @@
       id: 'toggle-theme',
       component: ToggleTheme,
       position: 'bottom-right',
-    },
-    {
-      id: 'chip-group',
-      component: LensChipGroup,
-      position: 'bottom-middle',
     },
   ]);
 

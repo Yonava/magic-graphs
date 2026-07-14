@@ -5,65 +5,20 @@
 
   import HStack from '../../components/layout/HStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import { Lens } from '../../lens/types.ts';
-  import { useThemer } from '../../themer/useThemer.ts';
   import { useProvidedGraph } from '../useProvidedGraph.ts';
   import LensChip from './LensChip.vue';
-  import NodeLens2 from './NodeLens2.vue';
-  import NodeLens from './NodeLens.vue';
-  import { LensChipDefinition } from './types.ts';
 
   const graph = useProvidedGraph();
 
   const activeLensId = ref<string>();
   const hoveredLensId = ref<string>();
 
-  const nodeThemer = useThemer({
-    canvas: {
-      'node.default.color': 'red',
-    },
-  });
-
-  const nodeThemer2 = useThemer({
-    canvas: {
-      'node.default.color': 'blue',
-    },
-  });
-
-  const nodeLens: Lens = {
-    id: 'lens-1',
-    components: [
-      {
-        component: NodeLens,
-        position: 'center-left',
-      },
-    ],
-    ...nodeThemer,
-  };
-
-  const nodeLens2: Lens = {
-    id: 'lens-2',
-    components: [
-      {
-        component: NodeLens2,
-        position: 'center-left',
-      },
-    ],
-    ...nodeThemer2,
-  };
-
-  const chips: LensChipDefinition[] = [
-    {
-      lens: nodeLens,
-      title: 'Red Nodes',
-      tooltipContent: 'Red Nodes',
-    },
-    {
-      lens: nodeLens2,
-      title: 'Blue Nodes',
-      tooltipContent: 'Blue Nodes',
-    },
-  ];
+  const chips = computed(() =>
+    nullThrows(
+      graph.magic.product.lensChips,
+      'rendered lens chip group without chips!',
+    ),
+  );
 
   const toggleActiveLens = (lensId: string) => {
     if (lensId === activeLensId.value) {
@@ -81,7 +36,7 @@
   const activeChip = computed(() => {
     if (!activeChipId.value) return;
     return nullThrows(
-      chips.find((c) => c.lens.id === activeChipId.value),
+      chips.value.find((c) => c.lens.id === activeChipId.value),
       'active chip ID not in the chips array!',
     );
   });
