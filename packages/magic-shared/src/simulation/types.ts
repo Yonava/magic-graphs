@@ -13,7 +13,7 @@ type ExplainerContentData = {
   activate: () => void;
   deactivate: () => void;
   tooltipContent?: string;
-  color?: string;
+  classes?: string;
 };
 
 type Explainer = {

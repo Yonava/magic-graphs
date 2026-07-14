@@ -70,3 +70,9 @@ export const useThemer = (
     isActive: () => isActive,
   };
 };
+
+export const createThemer = (
+  graph: Graph,
+  themeOverrides: ThemeOverrides,
+  layerId = generateId(),
+) => useThemer(themeOverrides, { graph, layerId });

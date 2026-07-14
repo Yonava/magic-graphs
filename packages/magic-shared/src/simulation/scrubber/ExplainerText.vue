@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { cn } from '@core/components/cn';
   import { nullThrows } from '@core/utils/assert';
 
   import { computed } from 'vue';
@@ -8,6 +9,8 @@
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
   import { useRunningSimulation } from '../useRunningSimulation.ts';
 
+  type Part = { text: string; highlighted: boolean };
+
   const { explainer } = useRunningSimulation();
 
   const classes = useThemeToClasses({
@@ -16,32 +19,40 @@
   });
 
   const explainerParts = computed(() => {
-    const text = explainer.value?.content ?? '';
-    const parts: { text: string; highlighted: boolean }[] = [];
+    if (!explainer.value) return [];
+
+    const text = explainer.value.content;
+
+    const parts: Part[] = [];
     let lastIndex = 0;
 
-    for (const match of text.matchAll(/\[([^\]]*)\]/g)) {
+    const squareBracketRegex = /\[([^\]]*)\]/g;
+    const matches = text.matchAll(squareBracketRegex);
+
+    for (const match of matches) {
       const index = match.index ?? 0;
-      if (index > lastIndex)
+      if (index > lastIndex) {
         parts.push({ text: text.slice(lastIndex, index), highlighted: false });
+      }
       parts.push({ text: match[1], highlighted: true });
       lastIndex = index + match[0].length;
     }
-    if (lastIndex < text.length)
+    if (lastIndex < text.length) {
       parts.push({ text: text.slice(lastIndex), highlighted: false });
+    }
 
     return parts;
   });
 
-  const data = (i: number) => {
-    const map: Record<number, number> = {
-      0: 0,
-      1: 0,
-      2: 1,
-      3: 0,
-    };
-    return nullThrows(explainer.value?.data[map[i]], 'defined');
-  };
+  const explainerPartsWithData = computed(() => {
+    let i = 0;
+    return explainerParts.value.map((e) => ({
+      ...e,
+      data: e.highlighted
+        ? nullThrows(explainer.value?.data[i++], 'defined')
+        : undefined,
+    }));
+  });
 </script>
 
 <template>
@@ -50,16 +61,16 @@
     :class="`${classes} text-2xl font-bold`"
   >
     <template
-      v-for="(part, i) in explainerParts"
+      v-for="(part, i) in explainerPartsWithData"
       :key="i"
     >
       <template v-if="part.highlighted">
-        <Tooltip :label="data(i).tooltipContent">
+        <Tooltip :label="part.data?.tooltipContent">
           <template #trigger>
             <Button
-              @mouseenter="data(i).activate"
-              @mouseleave="data(i).deactivate"
-              class="bg-orange-500 text-2xl font-bold px-2 py-0"
+              @mouseenter="part.data?.activate"
+              @mouseleave="part.data?.deactivate"
+              :class="cn('text-2xl font-bold px-2 py-0', part.data?.classes)"
               >{{ part.text }}</Button
             >
           </template>
