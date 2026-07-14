@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue';
 
-  import ToggleButton from '../components/toggle-button/ToggleButton.vue';
-  import Tooltip from '../components/tooltip/Tooltip.vue';
-  import { Lens } from '../lens/types.ts';
-  import { useProvidedGraph } from './useProvidedGraph.ts';
+  import ToggleButton from '../../components/toggle-button/ToggleButton.vue';
+  import Tooltip from '../../components/tooltip/Tooltip.vue';
+  import { Lens } from '../../lens/types.ts';
+  import { useProvidedGraph } from '../useProvidedGraph.ts';
 
   type Props = {
     title: string;
