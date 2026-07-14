@@ -70,5 +70,5 @@
 </script>
 
 <template>
-  <ButtonVue @click="runSimulation">Sim</ButtonVue>
+  <ButtonVue @click="runSimulation">Start Simulation</ButtonVue>
 </template>

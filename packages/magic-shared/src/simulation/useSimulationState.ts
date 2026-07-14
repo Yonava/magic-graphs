@@ -119,6 +119,12 @@ export const useSimulationState = (
   };
 
   const start = <Frame>(definition: SimulationDefinition<Frame>) => {
+    if (simulation.value) {
+      throw new Error(
+        'cannot start simulation: a simulation is already active!',
+      );
+    }
+
     const violation = definition.guard?.();
     if (violation) {
       throw new Error(
