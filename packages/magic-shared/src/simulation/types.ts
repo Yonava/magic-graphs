@@ -9,9 +9,21 @@ export type SetupContext<Frame> = {
   getCurrentFrame: () => Frame;
 };
 
+type ExplainerContentData = {
+  activate: () => void;
+  deactivate: () => void;
+  tooltipContent?: string;
+  color?: string;
+};
+
+type Explainer = {
+  content: string;
+  data: ExplainerContentData[];
+};
+
 export type SimulationEffects<Frame> = {
   lens?: Lens;
-  explainer?: (frame: Frame) => string;
+  explainer?: (frame: Frame) => Explainer;
 };
 
 export type SimulationDefinition<Frame> = {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import colors from '@core/utils/colors';
   import ButtonVue from '@magic/shared/Button';
   import { Lens } from '@magic/shared/lens';
   import { useProvidedGraph } from '@magic/shared/product';
@@ -58,7 +59,39 @@
         lens,
         explainer: (nodeId) => {
           const nodeLabel = graph.nodeLabel.get(nodeId);
-          return `Looking at Node ${nodeLabel}`;
+          const orange = colors.ORANGE_500;
+          const themer = useThemer(
+            {
+              canvas: {
+                'node.default.border.color': ({ id }) =>
+                  nodeId === id ? orange : undefined,
+                'canvas.color': orange,
+              },
+            },
+            { graph },
+          );
+          const themer2 = useThemer(
+            {
+              canvas: {
+                'canvas.patternColor': orange,
+              },
+            },
+            { graph },
+          );
+          return {
+            content: `[Looking] [at] Node ${nodeLabel}`,
+            data: [
+              {
+                ...themer,
+                color: orange,
+              },
+              {
+                ...themer2,
+                color: orange,
+                tooltipContent: '2!',
+              },
+            ],
+          };
         },
       };
     },

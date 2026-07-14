@@ -10,7 +10,7 @@
 </script>
 
 <template>
-  <VStack>
+  <VStack class="items-center">
     <Well :class="violation ? 'bg-red-600' : ''">
       <HStack>
         <Button
@@ -26,6 +26,8 @@
       </HStack>
     </Well>
 
-    <ExplainerText />
+    <div>
+      <ExplainerText />
+    </div>
   </VStack>
 </template>
