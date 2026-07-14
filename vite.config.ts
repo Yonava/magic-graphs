@@ -14,7 +14,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@core/utils': r('packages/core-utils/src'),
-      '@core/ui': r('packages/core-ui/src'),
       '@canvas/primitives': r('packages/canvas-primitives/src'),
       '@canvas/surface': r('packages/canvas-surface/src'),
       '@magic/products': r('packages/magic-products/src'),

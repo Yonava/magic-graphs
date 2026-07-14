@@ -23,7 +23,6 @@ const config: StorybookConfig = {
         alias: {
           "@graph/core/": r("../../graph-core/src"),
           "@core/utils": r("../../core-utils/src"),
-          "@core/ui": r("../../core-ui/src"),
           "@canvas/primitives": r("../../canvas-primitives/src"),
           "@canvas/surface": r("../../canvas-surface/src"),
           "@magic/products": r("../../magic-products/src"),
