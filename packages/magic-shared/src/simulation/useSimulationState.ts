@@ -132,6 +132,11 @@ export const useSimulationState = (
       );
     }
 
+    const slots = componentSlotControls.entries.value.filter((s) =>
+      s.id.startsWith('product/'),
+    );
+    for (const _slot of slots) componentSlotControls.remove(_slot.id);
+
     const { frames, playhead } = computeRun(definition);
 
     const setupContext: SetupContext<Frame> = { getCurrentFrame };

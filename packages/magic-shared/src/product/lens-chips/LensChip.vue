@@ -1,20 +1,23 @@
 <script setup lang="ts">
+  import { getValue } from '@core/utils/maybeGetter/index';
+
   import ToggleButton from '../../components/toggle-button/ToggleButton.vue';
   import Tooltip from '../../components/tooltip/Tooltip.vue';
+  import { LensChipDefinition } from './types.ts';
 
-  const props = defineProps<{ tooltipContent: string; title: string }>();
+  const props = defineProps<LensChipDefinition>();
 
   const model = defineModel<boolean>();
 </script>
 
 <template>
-  <Tooltip :label="tooltipContent">
+  <Tooltip :label="getValue(tooltipContent)">
     <template #trigger>
       <ToggleButton
         v-bind="$attrs"
         v-model="model"
       >
-        {{ title }}
+        {{ getValue(title) }}
       </ToggleButton>
     </template>
   </Tooltip>

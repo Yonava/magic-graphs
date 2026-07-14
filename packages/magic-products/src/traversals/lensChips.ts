@@ -1,3 +1,4 @@
+import { capitalize } from '@core/utils/string';
 import { Lens } from '@magic/shared/lens';
 import { MagicProductOptions } from '@magic/shared/product';
 import { createThemer } from '@magic/shared/themer/useThemer';
@@ -42,13 +43,13 @@ export const lensChips: MagicProductOptions['lensChips'] = (graph) => {
   return [
     {
       lens: nodeLens,
-      title: 'Red Nodes',
+      title: () => 'Red Nodes: ' + graph.nodes.value.length,
       tooltipContent: 'Red!',
     },
     {
       lens: nodeLens2,
       title: 'Blue Nodes',
-      tooltipContent: 'Blue!',
+      tooltipContent: () => 'Theme? ' + capitalize(graph.activePreset.value),
     },
   ];
 };

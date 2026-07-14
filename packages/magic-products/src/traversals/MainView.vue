@@ -18,7 +18,7 @@
       position: 'top-right',
     },
     {
-      id: 'toggle-theme',
+      id: 'product/toggle-theme',
       component: ToggleTheme,
       position: 'bottom-right',
     },
