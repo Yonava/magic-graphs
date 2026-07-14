@@ -16,7 +16,7 @@ export type ExplainerHighlight = {
   classes?: string;
 };
 
-type Explainer = {
+export type Explainer = {
   content: string;
   highlights: ExplainerHighlight[];
 };
