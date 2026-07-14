@@ -8,33 +8,15 @@
 
   const props = defineProps<LensChipDefinition>();
 
-  const graph = useProvidedGraph();
-
-  const hovered = ref(false);
-  const active = ref(false);
-
-  const toggleActive = () => {
-    active.value = !active.value;
-  };
-
-  watch(hovered, () => {
-    if (hovered.value) {
-      return graph.magic.lens.add(props.lens);
-    }
-    if (!hovered.value && !active.value) {
-      graph.magic.lens.remove(props.lens.id);
-    }
-  });
+  const model = defineModel<boolean>();
 </script>
 
 <template>
   <Tooltip :label="tooltipContent">
     <template #trigger>
       <ToggleButton
-        @click="toggleActive"
-        :model-value="active"
-        @mouseenter="hovered = true"
-        @mouseleave="hovered = false"
+        v-bind="$attrs"
+        v-model="model"
       >
         {{ title }}
       </ToggleButton>
