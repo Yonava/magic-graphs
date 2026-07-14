@@ -36,7 +36,11 @@ describe(explainerSegments, () => {
 
     const segments = explainerSegments(explainer);
 
-    expect(segments.map((s) => s.text)).toEqual(['Looking at ', 'Node A', ' now']);
+    expect(segments.map((s) => s.text)).toEqual([
+      'Looking at ',
+      'Node A',
+      ' now',
+    ]);
     expect(segments[0].highlight).toBeUndefined();
     expect(segments[1].highlight).toBe(h);
     expect(segments[2].highlight).toBeUndefined();
