@@ -7,41 +7,39 @@
   import Well from '../../components/layout/Well.vue';
   import { useProvidedGraph } from '../useProvidedGraph.ts';
   import LensChip from './LensChip.vue';
+  import { LensChipDefinition } from './types.ts';
+
+  const chipId = (chip: LensChipDefinition) => chip.lens.id;
 
   const graph = useProvidedGraph();
 
-  const activeLensId = ref<string>();
+  const pinnedLensId = ref<string>();
   const hoveredLensId = ref<string>();
 
   const chips = computed(() =>
     nullThrows(
       graph.magic.product.lensChips,
-      'rendered lens chip group without chips!',
+      'LensChipGroup is being rendered without chips!',
     ),
   );
 
-  const toggleActiveLens = (lensId: string) => {
-    if (lensId === activeLensId.value) {
-      activeLensId.value = undefined;
-      return;
-    }
-
-    activeLensId.value = lensId;
+  const togglePinnedLens = (lensId: string) => {
+    pinnedLensId.value = lensId === pinnedLensId.value ? undefined : lensId;
   };
 
-  const activeChipId = computed(
-    () => hoveredLensId.value ?? activeLensId.value,
+  const displayedChipId = computed(
+    () => hoveredLensId.value ?? pinnedLensId.value,
   );
 
-  const activeChip = computed(() => {
-    if (!activeChipId.value) return;
+  const displayedChip = computed(() => {
+    if (!displayedChipId.value) return;
     return nullThrows(
-      chips.value.find((c) => c.lens.id === activeChipId.value),
-      'active chip ID not in the chips array!',
+      chips.value.find((c) => c.lens.id === displayedChipId.value),
+      `no chip found for lens ID "${displayedChipId.value}"`,
     );
   });
 
-  watch(activeChip, (newChip, oldChip) => {
+  watch(displayedChip, (newChip, oldChip) => {
     if (oldChip) {
       graph.magic.lens.remove(oldChip.lens.id);
     }
@@ -57,12 +55,12 @@
       <template v-for="chip of chips">
         <LensChip
           v-bind="chip"
-          @click="() => toggleActiveLens(chip.lens.id)"
-          @focus="hoveredLensId = chip.lens.id"
+          @click="togglePinnedLens(chipId(chip))"
+          @focus="hoveredLensId = chipId(chip)"
           @blur="hoveredLensId = undefined"
-          @mouseenter="hoveredLensId = chip.lens.id"
+          @mouseenter="hoveredLensId = chipId(chip)"
           @mouseleave="hoveredLensId = undefined"
-          :model-value="chip.lens.id === activeLensId"
+          :model-value="chipId(chip) === pinnedLensId"
         />
       </template>
     </HStack>

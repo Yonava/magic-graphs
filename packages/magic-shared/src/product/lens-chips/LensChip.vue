@@ -11,7 +11,7 @@
 </script>
 
 <template>
-  <Tooltip :label="getValue(tooltipContent)">
+  <Tooltip :label="getValue(tooltipLabel)">
     <template #trigger>
       <ToggleButton
         v-bind="$attrs"

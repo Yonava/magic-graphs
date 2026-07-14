@@ -44,12 +44,12 @@ export const lensChips: MagicProductOptions['lensChips'] = (graph) => {
     {
       lens: nodeLens,
       title: () => 'Red Nodes: ' + graph.nodes.value.length,
-      tooltipContent: 'Red!',
+      tooltipLabel: 'Red!',
     },
     {
       lens: nodeLens2,
       title: 'Blue Nodes',
-      tooltipContent: () => 'Theme? ' + capitalize(graph.activePreset.value),
+      tooltipLabel: () => 'Theme? ' + capitalize(graph.activePreset.value),
     },
   ];
 };

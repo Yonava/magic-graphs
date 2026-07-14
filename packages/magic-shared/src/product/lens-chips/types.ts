@@ -4,6 +4,6 @@ import { Lens } from '../../lens/types.ts';
 
 export type LensChipDefinition = {
   title: MaybeGetter<string>;
-  tooltipContent: MaybeGetter<string>;
+  tooltipLabel: MaybeGetter<string>;
   lens: Lens;
 };
