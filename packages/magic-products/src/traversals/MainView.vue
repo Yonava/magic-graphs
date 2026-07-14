@@ -4,11 +4,28 @@
   import BottomMenu from './BottomMenu.vue';
 
   const graph = useGraphProduct();
-  graph.magic.componentSlots.add({
-    id: 'bottom-menu',
-    component: BottomMenu,
-    position: 'bottom-middle',
-  });
+
+  graph.magic.componentSlots.addMany([
+    {
+      id: 'bottom-menu',
+      component: BottomMenu,
+      position: 'bottom-middle',
+    },
+    {
+      id: 'bottom-menu',
+      component: BottomMenu,
+      position: 'bottom-middle',
+    },
+    {
+      id: 'bottom-menu-removal',
+      component: BottomMenu,
+      position: 'bottom-middle',
+    },
+  ]);
+
+  setTimeout(() => {
+    graph.magic.componentSlots.remove('bottom-menu-removal');
+  }, 3_000);
 </script>
 
 <template>

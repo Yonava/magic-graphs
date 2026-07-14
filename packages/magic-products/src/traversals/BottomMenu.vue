@@ -19,9 +19,15 @@
     graph.activePreset.value = preset === 'dark' ? 'light' : 'dark';
   };
 
+  const fn = ({ id }: { id: string }) =>
+    graph.nodes.value.at(0)?.id === id ? 'blue' : 'red';
+
   const themer = useThemer({
     canvas: {
-      'node.default.color': 'red',
+      'node.default.color': fn,
+    },
+    anchors: {
+      'anchors.default.color': fn,
     },
   });
 
@@ -49,8 +55,7 @@
         position: 'top-middle',
       },
     ],
-    activate: themer.activate,
-    deactivate: themer.deactivate,
+    ...themer,
   };
 
   const bfsSim = useSimulation();
