@@ -1,9 +1,13 @@
 <script setup lang="ts">
   import { defineAsyncComponent } from 'vue';
 
+  import HStack from '../../components/layout/HStack.vue';
+  import Well from '../../components/layout/Well.vue';
   import { Lens } from '../../lens/types.ts';
   import { useThemer } from '../../themer/useThemer.ts';
   import { useProvidedGraph } from '../useProvidedGraph.ts';
+  import LensChip from './LensChip.vue';
+  import NodeLens from './NodeLens.vue';
   import { LensChipDefinition } from './types.ts';
 
   const graph = useProvidedGraph();
@@ -24,30 +28,29 @@
     id: 'node-color',
     components: [
       {
-        component: defineAsyncComponent(() => import('./NodeLens.vue')),
+        component: NodeLens,
         position: 'bottom-right',
-      },
-      {
-        component: defineAsyncComponent(() => import('./NodeLens.vue')),
-        position: 'top-right',
-      },
-      {
-        component: defineAsyncComponent(() => import('./NodeLens.vue')),
-        position: 'bottom-left',
-      },
-      {
-        component: defineAsyncComponent(() => import('./NodeLens.vue')),
-        position: 'top-left',
-      },
-      {
-        component: defineAsyncComponent(() => import('./NodeLens.vue')),
-        position: 'top-middle',
       },
     ],
     ...themer,
   };
 
-  const chips: LensChipDefinition[] = [];
+  const chips: LensChipDefinition[] = [
+    {
+      lens: nodeLens,
+      title: 'Node Lens',
+      tooltipContent: 'Red Nodes',
+    },
+  ];
 </script>
 
-<template></template>
+<template>
+  <Well>
+    <HStack>
+      <LensChip
+        v-for="chip of chips"
+        v-bind="chip"
+      />
+    </HStack>
+  </Well>
+</template>

@@ -1,4 +1,4 @@
-import { ComputedRef, computed, ref, watch } from 'vue';
+import { ComputedRef, computed, shallowRef, watch } from 'vue';
 
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import type { Lens } from './types.ts';
@@ -12,7 +12,7 @@ export type LensControls = {
 export const useLensState = (
   componentSlots: ComponentSlotControls,
 ): LensControls => {
-  const lenses = ref<Lens[]>([]);
+  const lenses = shallowRef<Lens[]>([]);
 
   const removeLens = (id: Lens['id']) => {
     lenses.value = lenses.value.filter((l) => l.id !== id);
@@ -20,7 +20,7 @@ export const useLensState = (
 
   const addLens = (lens: Lens) => {
     removeLens(lens.id);
-    lenses.value.push(lens);
+    lenses.value = [...lenses.value, lens];
   };
 
   const activeLens = computed(() => lenses.value.at(-1));
