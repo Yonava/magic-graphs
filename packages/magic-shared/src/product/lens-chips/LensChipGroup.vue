@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import { defineAsyncComponent } from 'vue';
-
   import HStack from '../../components/layout/HStack.vue';
   import Well from '../../components/layout/Well.vue';
   import { Lens } from '../../lens/types.ts';
@@ -12,15 +10,15 @@
 
   const graph = useProvidedGraph();
 
-  const fn = ({ id }: { id: string }) =>
-    graph.nodes.value.at(0)?.id === id ? 'blue' : 'red';
-
-  const themer = useThemer({
+  const nodeThemer = useThemer({
     canvas: {
-      'node.default.color': fn,
+      'node.default.color': 'red',
     },
-    anchors: {
-      'anchors.default.color': fn,
+  });
+
+  const nodeThemer2 = useThemer({
+    canvas: {
+      'node.default.color': 'blue',
     },
   });
 
@@ -29,17 +27,33 @@
     components: [
       {
         component: NodeLens,
-        position: 'bottom-right',
+        position: 'center-left',
       },
     ],
-    ...themer,
+    ...nodeThemer,
+  };
+
+  const nodeLens2: Lens = {
+    id: 'node-color',
+    components: [
+      {
+        component: NodeLens,
+        position: 'center-left',
+      },
+    ],
+    ...nodeThemer2,
   };
 
   const chips: LensChipDefinition[] = [
     {
       lens: nodeLens,
-      title: 'Node Lens',
+      title: 'Red Nodes',
       tooltipContent: 'Red Nodes',
+    },
+    {
+      lens: nodeLens2,
+      title: 'Blue Nodes',
+      tooltipContent: 'Blue Nodes',
     },
   ];
 </script>
