@@ -3,16 +3,10 @@
 
   import ToggleButton from '../../components/toggle-button/ToggleButton.vue';
   import Tooltip from '../../components/tooltip/Tooltip.vue';
-  import { Lens } from '../../lens/types.ts';
   import { useProvidedGraph } from '../useProvidedGraph.ts';
+  import { LensChipDefinition } from './types.ts';
 
-  type Props = {
-    title: string;
-    tooltipContent: string;
-    lens: Lens;
-  };
-
-  const props = defineProps<Props>();
+  const props = defineProps<LensChipDefinition>();
 
   const graph = useProvidedGraph();
 
