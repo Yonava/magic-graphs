@@ -6,7 +6,6 @@
     "node:(.*)$",
     "<THIRD_PARTY_MODULES>",
     "^vue$",
-    "^vue-router$",
     "^[./]"
   ],
   "importOrderSeparation": true,
