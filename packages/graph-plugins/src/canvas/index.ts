@@ -184,13 +184,27 @@ export const canvas =
           detectors: createCanvasDetectors(theme._resolveToken),
         },
       },
-      encode: () => {
-        const camera = magicCanvas.camera.state;
-        return {
-          panX: camera.panX.value,
-          panY: camera.panY.value,
-          zoom: camera.zoom.value,
-        };
+      transit: {
+        encode: () => {
+          const camera = magicCanvas.camera.state;
+          return {
+            panX: camera.panX.value,
+            panY: camera.panY.value,
+            zoom: camera.zoom.value,
+          };
+        },
+        decode: (data) => {
+          const camera = magicCanvas.camera.state;
+          camera.panX.value = data.panX;
+          camera.panY.value = data.panY;
+          camera.zoom.value = data.zoom;
+        },
+        validate: (data) =>
+          typeof data === 'object' &&
+          data !== null &&
+          typeof data.panX === 'number' &&
+          typeof data.panY === 'number' &&
+          typeof data.zoom === 'number',
       },
       actions,
       events,

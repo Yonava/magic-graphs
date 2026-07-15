@@ -49,11 +49,25 @@ export const nodeLabel: NodeLabelPlugin = ({
   return {
     name: 'nodeLabel',
     events,
-    encode: () =>
-      Array.from(nodeIdToLabel).map(([nodeId, label]) => ({
-        nodeId,
-        label,
-      })),
+    transit: {
+      encode: () =>
+        Array.from(nodeIdToLabel).map(([nodeId, label]) => ({
+          nodeId,
+          label,
+        })),
+      decode: (data) => {
+        setNodeLabels(data);
+      },
+      validate: (data) =>
+        Array.isArray(data) &&
+        data.every(
+          (entry) =>
+            typeof entry === 'object' &&
+            entry !== null &&
+            typeof entry.nodeId === 'string' &&
+            typeof entry.label === 'string',
+        ),
+    },
     getters: {
       ...getters,
       getNode: (id) => {

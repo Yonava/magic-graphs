@@ -21,6 +21,7 @@ import { CanvasControls } from '@graph/plugins/canvas/types';
 import { GraphActions } from '@graph/primitives/actions/types';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { GraphGetters } from '@graph/primitives/getters/types';
+import { TransitControls } from '@graph/primitives/transit/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 import type { Prettify } from 'ts-essentials';
 
@@ -69,8 +70,8 @@ export const createGraph = <
   // plugin name to the registered detectors
   let evolvingThemeDetectors: PluginThemeField<any>['theme']['detectors'] = {};
 
-  const encodingFns: { pluginName: string; encode: () => any }[] = [
-    { pluginName: 'core', encode: core.encode },
+  const encodingFns: { pluginName: string; transit: TransitControls<any> }[] = [
+    { pluginName: 'core', transit: core.transit },
   ];
 
   for (const plugin of plugins) {
@@ -88,9 +89,9 @@ export const createGraph = <
     evolvingActions = { ...evolvingActions, ...pluginResult.actions };
     evolvingGetters = { ...evolvingGetters, ...pluginResult.getters };
 
-    const encodeFn = pluginResult.encode;
-    if (encodeFn) {
-      encodingFns.push({ pluginName: pluginResult.name, encode: encodeFn });
+    const transit = pluginResult.transit;
+    if (transit) {
+      encodingFns.push({ pluginName: pluginResult.name, transit });
     }
 
     const pluginThemeField: PluginThemeField<any>['theme'] | undefined = (
@@ -206,9 +207,9 @@ export const createGraph = <
     events,
     encode: () => {
       return encodingFns.reduce(
-        (result, pluginEncode) => ({
+        (result, { pluginName, transit }) => ({
           ...result,
-          [pluginEncode.pluginName]: pluginEncode.encode(),
+          [pluginName]: transit.encode(),
         }),
         {} as Record<string, any>,
       );

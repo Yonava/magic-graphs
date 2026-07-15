@@ -51,7 +51,7 @@ type BaseCanvasControls = {
 
 export type CanvasControls = WithTheme<BaseCanvasControls, CanvasThemes>;
 
-type CanvasEncode = {
+type CanvasTransitPayload = {
   panX: number;
   panY: number;
   zoom: number;
@@ -60,6 +60,6 @@ type CanvasEncode = {
 export type CanvasPlugin = GraphPlugin<{
   name: 'canvas';
   controls: CanvasControls;
-  encode: CanvasEncode;
+  transit: CanvasTransitPayload;
   events: CanvasEventMap;
 }>;

@@ -9,7 +9,7 @@ import { CoreOptions, DEFAULT_CORE_OPTIONS } from './options.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
 import { createCommitTransaction } from './transaction/createCommitTransaction.ts';
 import { setupTransactionSucceeded } from './transaction/setupTransactionSucceeded.ts';
-import type { CoreControls } from './types.ts';
+import type { CoreControls, CoreTransit } from './types.ts';
 import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
 
 export const core = (options: Partial<CoreOptions>) => {
@@ -85,15 +85,11 @@ export const core = (options: Partial<CoreOptions>) => {
     weights: edgeWeightStore,
   };
 
-  return {
-    controls: coreControls,
-    actions: coreActions,
-    getters: coreGetters,
-    events: coreEventHub,
+  const coreTransit: CoreTransit = {
     encode: () => {
       const edgeWeights = Array.from(
         edgeWeightStore._internal.edgeIdToEdgeWeight,
-      ).map(([edgeId, weight]) => ({ edgeId, weight }));
+      ).map(([edgeId, weight]) => ({ edgeId, weight: weight.toString() }));
 
       const nodePositions = Array.from(
         nodePositionStore._internal.nodeIdToNodePosition,
@@ -101,5 +97,15 @@ export const core = (options: Partial<CoreOptions>) => {
 
       return { nodes, edges, edgeWeights, nodePositions };
     },
+    decode: (data) => {},
+    validate: (data) => true,
+  };
+
+  return {
+    controls: coreControls,
+    actions: coreActions,
+    getters: coreGetters,
+    events: coreEventHub,
+    transit: coreTransit,
   };
 };

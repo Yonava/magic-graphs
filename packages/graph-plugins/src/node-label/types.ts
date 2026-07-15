@@ -52,7 +52,7 @@ export type NodeLabelPlugin = GraphPlugin<{
   controls: WithLifecycle<NodeLabelControls>;
   actions: NodeLabelActions;
   getters: NodeLabelGetters;
-  encode: NodeLabelEncode[];
+  transit: NodeLabelEncode[];
   dependsOn: [CanvasPlugin];
   optionalDependsOn: [FocusPlugin];
 }>;

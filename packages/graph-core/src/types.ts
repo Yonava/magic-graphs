@@ -1,8 +1,10 @@
+import { TransitControls } from '@graph/primitives/transit/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
+import Fraction from 'fraction.js';
 
 import { CoreGraphHelpers } from './helpers/types.ts';
 import { CoreOptions } from './options.ts';
-import { NodePositionStoreControls } from './positions/types.ts';
+import { NodePositionStoreControls, Position } from './positions/types.ts';
 import { EdgeWeightStoreControls } from './weights/types.ts';
 
 export type CoreControls = {
@@ -21,3 +23,20 @@ export type CoreControls = {
   positions: NodePositionStoreControls;
   weights: EdgeWeightStoreControls;
 };
+
+type NodePositionTransitEncode = {
+  nodeId: string;
+  position: Position;
+};
+
+type EdgeWeightsTransitEncode = {
+  edgeId: string;
+  weight: string; // serialized fraction encoding
+};
+
+export type CoreTransit = TransitControls<{
+  nodes: CoreNode[];
+  edges: CoreEdge[];
+  nodePositions: NodePositionTransitEncode[];
+  edgeWeights: EdgeWeightsTransitEncode[];
+}>;

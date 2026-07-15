@@ -8,7 +8,7 @@ export type PluginSchemaDefaults = {
   events: {};
   getters: {};
   actions: {};
-  encode: never;
+  transit: never;
   dependsOn: [];
   optionalDependsOn: [];
 };
