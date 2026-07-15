@@ -26,7 +26,7 @@ import { createAnnotationThemer } from './createAnnotationThemer.ts';
 import { useAnnotationHistory } from './history.ts';
 import type { Annotation } from './types.ts';
 
-export const useGraphAnnotations = (graph: Graph) => {
+export const useAnnotationsState = (graph: Graph) => {
   const selectedColor = ref<Color>(COLORS[0]);
   const selectedBrushWeight = ref(BRUSH_WEIGHTS[1]);
   const isErasing = ref(false);
@@ -322,4 +322,4 @@ export const useGraphAnnotations = (graph: Graph) => {
   };
 };
 
-export type GraphAnnotationsControls = ReturnType<typeof useGraphAnnotations>;
+export type AnnotationsControls = ReturnType<typeof useAnnotationsState>;
