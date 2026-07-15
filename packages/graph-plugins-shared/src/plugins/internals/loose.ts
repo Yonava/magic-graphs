@@ -15,6 +15,7 @@ export type LoosePluginSchema = {
   events: GenericEventMap;
   getters: Partial<BaseGetters>;
   actions: PartialBaseActions;
+  encode: any;
   dependsOn: LooseGraphPlugin[];
   optionalDependsOn: LooseGraphPlugin[];
 };

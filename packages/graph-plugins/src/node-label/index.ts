@@ -49,6 +49,9 @@ export const nodeLabel: NodeLabelPlugin = ({
   return {
     name: 'nodeLabel',
     events,
+    encode: () => {
+      return [];
+    },
     getters: {
       ...getters,
       getNode: (id) => {
