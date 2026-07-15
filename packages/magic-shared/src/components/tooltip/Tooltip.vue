@@ -12,9 +12,9 @@
 <template>
   <Tooltip :class="classes">
     <template #trigger>
-      <div>
+      <span>
         <slot name="trigger" />
-      </div>
+      </span>
     </template>
     <slot />
   </Tooltip>
