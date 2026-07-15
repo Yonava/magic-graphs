@@ -5,7 +5,7 @@
 
   import HStack from '../../components/layout/HStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import { useProvidedGraph } from '../useProvidedGraph.ts';
+  import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import LensChip from './LensChip.vue';
   import { LensChipDefinition } from './types.ts';
 
@@ -18,7 +18,7 @@
 
   const chips = computed(() =>
     nullThrows(
-      graph.magic.product.lensChips,
+      graph.magic.ui.data.lensChips,
       'LensChipGroup is being rendered without chips!',
     ),
   );

@@ -16,4 +16,5 @@ export type ComponentSlot = {
   id: string;
   position: SlotPosition;
   component: Component;
+  priority?: number;
 };

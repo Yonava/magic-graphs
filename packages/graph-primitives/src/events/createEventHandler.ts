@@ -16,9 +16,10 @@ export type HandlerId =
   | 'plugins/history'
   | 'plugins/marquee'
   | 'plugins/focus'
-  | 'plugins/annotations';
+  | 'plugins/annotations'
+  | 'plugins/interactive';
 
-type WithConsume<Callback extends AnyFunction> = (
+export type WithConsume<Callback extends AnyFunction> = (
   ...args: [...Parameters<Callback>, consume: () => void]
 ) => ReturnType<Callback>;
 

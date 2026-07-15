@@ -9,6 +9,8 @@ export type LensControls = {
   activeId: ComputedRef<string | undefined>;
 };
 
+const LENS_COMPONENT_ID_PREFIX = (lensId: string) => `lens/${lensId}`;
+
 export const useLensState = (
   componentSlots: ComponentSlotControls,
 ): LensControls => {
@@ -28,15 +30,20 @@ export const useLensState = (
   watch(activeLens, (newLens, oldLens) => {
     if (oldLens) {
       oldLens.deactivate();
-      componentSlots.remove(oldLens.id);
+      const slotsBelongingToLens = componentSlots.entries.value.filter(
+        (slots) => slots.id.startsWith(LENS_COMPONENT_ID_PREFIX(oldLens.id)),
+      );
+      for (const slot of slotsBelongingToLens) {
+        componentSlots.remove(slot.id);
+      }
     }
     if (newLens) {
       newLens.activate();
       const components = newLens.components;
       if (components) {
-        const lensComponentSlots = components.map((component) => ({
+        const lensComponentSlots = components.map((component, i) => ({
           ...component,
-          id: newLens.id,
+          id: `${LENS_COMPONENT_ID_PREFIX(newLens.id)}/slot-${i}`,
         }));
         componentSlots.addMany(lensComponentSlots);
       }

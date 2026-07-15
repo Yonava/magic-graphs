@@ -9,6 +9,9 @@
       addedEdgeWeight: 0.5,
       addedEdgeRuleOneEdgePerPath: false,
     },
+    ui: {
+      annotations: true,
+    },
   });
 
   graph.magic.componentSlots.add({

@@ -89,6 +89,7 @@
   },
   "dependencies": {
     "@canvas/surface": "workspace:*",
+    "@canvas/primitives": "workspace:*",
     "@core/components": "workspace:*",
     "@core/utils": "workspace:*",
     "@graph/core": "workspace:*",
@@ -97,7 +98,8 @@
     "@graph/plugins-shared": "workspace:*",
     "@graph/primitives": "workspace:*",
     "@graph/theme-presets": "workspace:*",
-    "@graph/vue": "workspace:*"
+    "@graph/vue": "workspace:*",
+    "@mdi/js": "^7.4.47"
   },
   "devDependencies": {
     "vue": "catalog:",
