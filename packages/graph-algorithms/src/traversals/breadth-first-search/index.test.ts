@@ -45,6 +45,42 @@ describe(breadthFirstSearch, () => {
     };
     expect(breadthFirstSearch(graph, 'A')).toEqual(['A', 'B']);
   });
+
+  test('ignores self-loops', () => {
+    const graph = {
+      A: ['A', 'B'],
+      B: [],
+    };
+    expect(breadthFirstSearch(graph, 'A')).toEqual(['A', 'B']);
+  });
+
+  test('handles neighbors that are not keys in the graph', () => {
+    const graph = {
+      A: ['B'],
+    };
+    expect(breadthFirstSearch(graph, 'A')).toEqual(['A', 'B']);
+  });
+
+  test('does not revisit a node reached via duplicate edges', () => {
+    const graph = {
+      A: ['B', 'B', 'C'],
+      B: [],
+      C: [],
+    };
+    expect(breadthFirstSearch(graph, 'A')).toEqual(['A', 'B', 'C']);
+  });
+
+  test('does not mutate the input graph', () => {
+    const graph = {
+      A: ['A', 'B'],
+      B: [],
+    };
+    const snapshot = JSON.parse(JSON.stringify(graph));
+
+    breadthFirstSearch(graph, 'A');
+
+    expect(graph).toEqual(snapshot);
+  });
 });
 
 describe('properties', () => {
