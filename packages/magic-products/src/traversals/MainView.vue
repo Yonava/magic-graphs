@@ -8,6 +8,7 @@
   const graph = useGraphProduct({
     ui: {
       lensChips,
+      annotations: true,
     },
   });
 
