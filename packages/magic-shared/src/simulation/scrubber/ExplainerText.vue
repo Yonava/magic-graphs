@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { cn } from '@core/components/cn';
+  import { getValue } from '@core/utils/maybeGetter/index';
 
   import { computed } from 'vue';
 
@@ -29,13 +30,16 @@
       :key="i"
     >
       <template v-if="segment.highlight">
-        <Tooltip :label="segment.highlight.tooltipContent">
+        <Tooltip :label="getValue(segment.highlight.tooltipLabel)">
           <template #trigger>
             <Button
               @mouseenter="segment.highlight.activate"
               @mouseleave="segment.highlight.deactivate"
               :class="
-                cn('text-2xl font-bold px-2 py-0', segment.highlight.classes)
+                cn(
+                  'text-2xl font-bold px-2 py-0',
+                  getValue(segment.highlight.classes),
+                )
               "
               >{{ segment.text }}</Button
             >

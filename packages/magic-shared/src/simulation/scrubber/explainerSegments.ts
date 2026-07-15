@@ -1,4 +1,5 @@
 import { nullThrows } from '@core/utils/assert';
+import { getValue } from '@core/utils/maybeGetter/index';
 
 import { Explainer, ExplainerHighlight } from '../types.ts';
 
@@ -14,25 +15,28 @@ export const explainerSegments = (
 
   const { content: text, highlights } = explainer;
 
+  const textValue = getValue(text);
+  const highlightsValue = getValue(highlights);
+
   const parts: ExplainerSegment[] = [];
   let lastIndex = 0;
   let highlightIndex = 0;
 
   const bracketPattern = /\[([^\]]*)\]/g;
-  const matches = text.matchAll(bracketPattern);
+  const matches = textValue.matchAll(bracketPattern);
 
   for (const match of matches) {
     const index = match.index ?? 0;
     if (index > lastIndex) {
       parts.push({
-        text: text.slice(lastIndex, index),
+        text: textValue.slice(lastIndex, index),
         highlight: undefined,
       });
     }
     parts.push({
       text: match[1],
       highlight: nullThrows(
-        highlights[highlightIndex++],
+        highlightsValue[highlightIndex++],
         `explainer content has more [bracketed] segments than highlights (expected highlights[${highlightIndex}])`,
       ),
     });
@@ -40,7 +44,7 @@ export const explainerSegments = (
   }
   if (lastIndex < text.length) {
     parts.push({
-      text: text.slice(lastIndex),
+      text: textValue.slice(lastIndex),
       highlight: undefined,
     });
   }

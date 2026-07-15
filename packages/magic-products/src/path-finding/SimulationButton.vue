@@ -3,7 +3,10 @@
   import ButtonVue from '@magic/shared/Button';
   import { Lens } from '@magic/shared/lens';
   import { useProvidedGraph } from '@magic/shared/product';
-  import { SimulationDefinition } from '@magic/shared/simulation';
+  import {
+    ExplainerHighlight,
+    SimulationDefinition,
+  } from '@magic/shared/simulation';
   import { createThemer } from '@magic/shared/themer/useThemer';
 
   import { defineAsyncComponent } from 'vue';
@@ -64,12 +67,25 @@
           const nodeLabel = graph.nodeLabel.get(nodeId);
           nodeIdBox.value = nodeId;
           return {
-            content: `Looking at [Node ${nodeLabel}]`,
-            highlights: [
+            content: () =>
+              `Looking at [Node ${nodeLabel}]. All Nodes: ${graph.nodes.value.map((n) => `[${graph.getNode(n.id).label}]`)}`,
+            highlights: () => [
               {
                 ...explainerThemer,
-                classes: 'bg-red-500 hover:bg-blue-500',
+                classes: () =>
+                  graph.activePreset.value === 'light'
+                    ? 'bg-purple-500 hover:bg-pink-500'
+                    : 'bg-red-500 hover:bg-blue-500',
+                tooltipLabel: () => graph.edges.value.length.toString(),
               },
+              ...graph.nodes.value.map((n): ExplainerHighlight => ({
+                activate: () => {
+                  nodeIdBox.value = n.id;
+                  explainerThemer.activate();
+                },
+                deactivate: explainerThemer.deactivate,
+                classes: nodeId === n.id ? 'bg-red-500' : undefined,
+              })),
             ],
           };
         },

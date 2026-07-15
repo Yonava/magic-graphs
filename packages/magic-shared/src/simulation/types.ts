@@ -1,3 +1,5 @@
+import { MaybeGetter } from '@core/utils/maybeGetter/index';
+
 import { Lens } from '../lens/types.ts';
 import { GuardCheck } from './guard/SimulationGuardBuilder.ts';
 
@@ -12,13 +14,13 @@ export type SetupContext<Frame> = {
 export type ExplainerHighlight = {
   activate: () => void;
   deactivate: () => void;
-  tooltipContent?: string;
-  classes?: string;
+  tooltipLabel?: MaybeGetter<string>;
+  classes?: MaybeGetter<string>;
 };
 
 export type Explainer = {
-  content: string;
-  highlights: ExplainerHighlight[];
+  content: MaybeGetter<string>;
+  highlights: MaybeGetter<ExplainerHighlight[]>;
 };
 
 export type SimulationEffects<Frame> = {
