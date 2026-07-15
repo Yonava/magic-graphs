@@ -14,7 +14,6 @@
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^24.2.1",
     "@vitejs/plugin-vue": "^5.0.5",
-    "fast-check": "^4.9.0",
     "jsdom": "^29.1.1",
     "prettier": "^3.4.2",
     "typescript": "~6.0.3",
