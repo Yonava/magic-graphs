@@ -2,7 +2,10 @@ import fc from 'fast-check';
 import Fraction from 'fraction.js';
 import { describe, expect, it } from 'vitest';
 
-import { graphArbitrary } from '../graphGenerator.ts';
+import {
+  disconnectedGraphArbitrary,
+  graphArbitrary,
+} from '../graphGenerator.ts';
 import { hasCycle } from '../helpers.ts';
 import type { Edge, Node } from '../types.ts';
 import { prims } from './index.ts';
@@ -85,6 +88,49 @@ describe(prims, () => {
     expect(result.edges).toEqual([]);
     expect(result.totalWeight.equals(new Fraction(0))).toBe(true);
   });
+
+  it('ignores self-loops', () => {
+    const nodes: Node[] = [{ id: 'A' }, { id: 'B' }];
+
+    const edges: Edge[] = [
+      { id: 'AA', source: 'A', target: 'A', weight: new Fraction(-1) },
+      { id: 'AB', source: 'A', target: 'B', weight: new Fraction(1) },
+    ];
+
+    const result = prims(nodes, edges);
+
+    expect(result.edges.map((e) => e.id)).toEqual(['AB']);
+    expect(result.totalWeight.equals(new Fraction(1))).toBe(true);
+  });
+
+  it('picks the cheapest of parallel edges between the same nodes', () => {
+    const nodes: Node[] = [{ id: 'A' }, { id: 'B' }, { id: 'C' }];
+
+    const edges: Edge[] = [
+      { id: 'AB-expensive', source: 'A', target: 'B', weight: new Fraction(5) },
+      { id: 'AB-cheap', source: 'A', target: 'B', weight: new Fraction(1) },
+      { id: 'BC', source: 'B', target: 'C', weight: new Fraction(2) },
+    ];
+
+    const result = prims(nodes, edges);
+
+    expect(result.edges.map((e) => e.id)).toEqual(['AB-cheap', 'BC']);
+    expect(result.totalWeight.equals(new Fraction(3))).toBe(true);
+  });
+
+  it('does not mutate the input nodes or edges', () => {
+    const nodes: Node[] = [{ id: 'A' }, { id: 'B' }];
+    const edges: Edge[] = [
+      { id: 'AB', source: 'A', target: 'B', weight: new Fraction(1) },
+    ];
+    const nodesSnapshot = structuredClone(nodes);
+    const edgesSnapshot = edges.map((edge) => ({ ...edge }));
+
+    prims(nodes, edges);
+
+    expect(nodes).toEqual(nodesSnapshot);
+    expect(edges.map((edge) => ({ ...edge }))).toEqual(edgesSnapshot);
+  });
 });
 
 describe('properties', () => {
@@ -159,6 +205,20 @@ it('ignores unnecessary expensive edges', () => {
       const after = prims(nodes, [...edges, expensiveEdge]);
 
       expect(after.totalWeight.equals(before.totalWeight)).toBe(true);
+    }),
+    { numRuns: 10 },
+  );
+});
+
+it('builds a minimum spanning forest for disconnected graphs', () => {
+  fc.assert(
+    fc.property(disconnectedGraphArbitrary, ({ nodes, edges }) => {
+      const result = prims(nodes, edges);
+
+      expect(result.connected).toBe(false);
+      expect(hasCycle(nodes, result.edges)).toBe(false);
+      // exactly two components, so the forest has n - 2 edges
+      expect(result.edges.length).toBe(nodes.length - 2);
     }),
     { numRuns: 10 },
   );
