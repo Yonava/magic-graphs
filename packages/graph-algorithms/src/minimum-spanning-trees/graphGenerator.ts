@@ -1,7 +1,7 @@
 import fc from 'fast-check';
 import Fraction from 'fraction.js';
 
-import type { Edge, Node } from '../minimum-spanning-trees/kruskals/index.ts';
+import type { Edge, Node } from './types.ts';
 
 type Graph = {
   nodes: Node[];

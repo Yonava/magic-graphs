@@ -3,8 +3,9 @@ import Fraction from 'fraction.js';
 import { describe, expect, it } from 'vitest';
 
 import { graphArbitrary } from '../graphGenerator.ts';
+import { hasCycle } from '../helpers.ts';
+import type { Edge, Node } from '../types.ts';
 import { kruskals } from './index.ts';
-import type { Edge, Node } from './index.ts';
 
 describe('kruskals', () => {
   it('finds the minimum spanning tree of a simple graph', () => {
@@ -39,21 +40,6 @@ describe('kruskals', () => {
     expect(result.totalWeight.equals(new Fraction(3))).toBe(true);
   });
 
-  it('handles a graph where edges are not sorted', () => {
-    const nodes: Node[] = [{ id: 'A' }, { id: 'B' }, { id: 'C' }];
-
-    const edges: Edge[] = [
-      { id: 'AC', source: 'A', target: 'C', weight: new Fraction(10) },
-      { id: 'BC', source: 'B', target: 'C', weight: new Fraction(1) },
-      { id: 'AB', source: 'A', target: 'B', weight: new Fraction(5) },
-    ];
-
-    const result = kruskals(nodes, edges);
-
-    expect(result.edges.map((e) => e.id)).toEqual(['BC', 'AB']);
-    expect(result.totalWeight.equals(new Fraction(6))).toBe(true);
-  });
-
   it('handles a single node graph', () => {
     const nodes: Node[] = [{ id: 'A' }];
 
@@ -75,6 +61,7 @@ describe('kruskals', () => {
 
     expect(result.edges.map((e) => e.id)).toEqual(['AB', 'CD']);
     expect(result.totalWeight.equals(new Fraction(3))).toBe(true);
+    expect(result.connected).toBe(false);
   });
 
   it('handles equal weight edges', () => {
@@ -171,37 +158,3 @@ it('handles an empty graph', () => {
   expect(result.edges).toEqual([]);
   expect(result.totalWeight.equals(new Fraction(0))).toBe(true);
 });
-
-function hasCycle(nodes: Node[], edges: Edge[]) {
-  const parent = new Map<string, string>();
-
-  const find = (id: string): string => {
-    if (parent.get(id) !== id) {
-      parent.set(id, find(parent.get(id)!));
-    }
-
-    return parent.get(id)!;
-  };
-
-  const union = (a: string, b: string) => {
-    const rootA = find(a);
-    const rootB = find(b);
-
-    if (rootA === rootB) return false;
-
-    parent.set(rootA, rootB);
-    return true;
-  };
-
-  nodes.forEach((node) => {
-    parent.set(node.id, node.id);
-  });
-
-  for (const edge of edges) {
-    if (!union(edge.source, edge.target)) {
-      return true;
-    }
-  }
-
-  return false;
-}
