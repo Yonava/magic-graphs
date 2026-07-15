@@ -5,7 +5,7 @@ import { ComponentSlotControls } from './useComponentSlotsState.ts';
 
 type SlotPositionToComponent = Record<
   SlotPosition,
-  ComponentSlot['component'][]
+  Omit<ComponentSlot, 'position'>[]
 >;
 
 const groupBySlotPosition = (
@@ -22,7 +22,7 @@ const groupBySlotPosition = (
     'bottom-right': [],
   };
 
-  for (const { position, component } of componentSlots) {
+  for (const { position, ...component } of componentSlots) {
     slots[position].push(component);
   }
 

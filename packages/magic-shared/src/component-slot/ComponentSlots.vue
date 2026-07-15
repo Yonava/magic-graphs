@@ -34,10 +34,12 @@
 <template>
   <div
     v-for="(components, position) of componentSlots"
+    :key="position"
     :class="props[propKeyByPosition[position]]"
   >
     <component
-      v-for="component of components"
+      v-for="{ component, id } of components"
+      :key="id"
       :is="component"
     />
   </div>
