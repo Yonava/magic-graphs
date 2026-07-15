@@ -6,7 +6,7 @@
   import { lensChips } from './lensChips.ts';
 
   const graph = useGraphProduct({
-    product: {
+    ui: {
       lensChips,
     },
   });

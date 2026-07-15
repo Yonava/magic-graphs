@@ -6,16 +6,20 @@ import { useLensState } from '../lens/useLensState.ts';
 import { LensControls } from '../lens/useLensState.ts';
 import { useSimulationState } from '../simulation/useSimulationState.ts';
 import { SimulationControls } from '../simulation/useSimulationState.ts';
-import LensChipGroup from './lens-chips/LensChipGroup.vue';
-import { LensChipDefinition } from './lens-chips/types.ts';
+import LensChipGroup from '../ui/lens-chips/LensChipGroup.vue';
+import { LensChipDefinition } from '../ui/lens-chips/types.ts';
 import { provideGraph } from './useProvidedGraph.ts';
 
-export type MagicProductOptions = {
+export type UIOptions = {
   lensChips?: (graph: Graph) => LensChipDefinition[];
 };
 
 type GraphProductOptions = UseGraphOptions & {
-  product?: MagicProductOptions;
+  ui?: UIOptions;
+};
+
+type UIControls = {
+  lensChips: LensChipDefinition[];
 };
 
 export type MagicGraph = Graph & {
@@ -23,7 +27,7 @@ export type MagicGraph = Graph & {
     lens: LensControls;
     componentSlots: ComponentSlotControls;
     simulation: SimulationControls;
-    product: { lensChips: LensChipDefinition[] };
+    ui: UIControls;
   };
 };
 
@@ -40,15 +44,15 @@ export const useGraphProduct = (options?: GraphProductOptions) => {
       lens,
       componentSlots,
       simulation,
-      product: {
-        lensChips: options?.product?.lensChips?.(graph) ?? [],
+      ui: {
+        lensChips: options?.ui?.lensChips?.(graph) ?? [],
       },
     },
   };
 
   provideGraph(magicGraph);
 
-  if (options?.product?.lensChips) {
+  if (options?.ui?.lensChips) {
     componentSlots.add({
       id: 'product/lens-chips',
       component: LensChipGroup,
