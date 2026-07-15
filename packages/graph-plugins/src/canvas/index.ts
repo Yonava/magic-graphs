@@ -184,6 +184,14 @@ export const canvas =
           detectors: createCanvasDetectors(theme._resolveToken),
         },
       },
+      encode: () => {
+        const camera = magicCanvas.camera.state;
+        return {
+          panX: camera.panX.value,
+          panY: camera.panY.value,
+          zoom: camera.zoom.value,
+        };
+      },
       actions,
       events,
       onAfterInit: () => {
