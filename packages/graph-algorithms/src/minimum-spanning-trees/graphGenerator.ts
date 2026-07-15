@@ -14,7 +14,7 @@ const nodeArbitrary = fc.uniqueArray(fc.stringMatching(/^[A-Z]$/), {
 });
 
 const weightArbitrary = fc
-  .tuple(fc.integer({ min: 1, max: 100 }), fc.integer({ min: 1, max: 20 }))
+  .tuple(fc.integer({ min: -100, max: 100 }), fc.integer({ min: 1, max: 20 }))
   .map(([numerator, denominator]) => new Fraction(numerator, denominator));
 
 export const graphArbitrary: fc.Arbitrary<Graph> = nodeArbitrary.chain(
