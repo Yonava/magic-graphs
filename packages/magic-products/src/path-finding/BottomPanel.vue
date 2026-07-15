@@ -70,8 +70,9 @@
   });
 
   const printEncode = () => {
-    const encoding = graph.encode();
-    console.log(encoding);
+    const encoding = graph.transit.encode();
+    console.log('encoding', encoding);
+    graph.transit.decode(encoding);
   };
 </script>
 

@@ -199,12 +199,7 @@ export const canvas =
           camera.panY.value = data.panY;
           camera.zoom.value = data.zoom;
         },
-        validate: (data) =>
-          typeof data === 'object' &&
-          data !== null &&
-          typeof data.panX === 'number' &&
-          typeof data.panY === 'number' &&
-          typeof data.zoom === 'number',
+        validate: (data) => true,
       },
       actions,
       events,

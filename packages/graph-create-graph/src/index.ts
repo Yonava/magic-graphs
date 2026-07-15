@@ -34,6 +34,7 @@ import {
   nodeRenderer,
   resolveNodeComputedTokens,
 } from './render-functions/node.ts';
+import { GraphTransit } from './types.ts';
 
 type CreateGraphOptions<
   TPlugins extends LooseGraphPlugin[],
@@ -71,9 +72,10 @@ export const createGraph = <
   // plugin name to the registered detectors
   let evolvingThemeDetectors: PluginThemeField<any>['theme']['detectors'] = {};
 
-  const encodingFns: { pluginName: string; transit: TransitControls<any> }[] = [
-    { pluginName: 'core', transit: core.transit },
-  ];
+  const pluginTransitControls: {
+    pluginName: string;
+    transit: TransitControls<any>;
+  }[] = [{ pluginName: 'core', transit: core.transit }];
 
   for (const plugin of plugins) {
     const pluginResult = plugin({
@@ -92,7 +94,7 @@ export const createGraph = <
 
     const transit = pluginResult.transit;
     if (transit) {
-      encodingFns.push({ pluginName: pluginResult.name, transit });
+      pluginTransitControls.push({ pluginName: pluginResult.name, transit });
     }
 
     const pluginThemeField: PluginThemeField<any>['theme'] | undefined = (
@@ -201,20 +203,41 @@ export const createGraph = <
   const resolveNodeStyles = resolveNodeComputedTokens(tokenResolver);
   const resolveEdgeStyles = resolveEdgeComputedTokens(tokenResolver);
 
+  type GraphTransitControls = GraphTransit<
+    Prettify<ExtractTransitPayload<NoInfer<TPlugins>>>
+  >;
+
+  const transit: GraphTransitControls = {
+    encode: () =>
+      pluginTransitControls.reduce(
+        (result, { pluginName, transit }) => ({
+          ...result,
+          [pluginName]: transit.encode(),
+        }),
+        {} as ReturnType<GraphTransitControls['encode']>,
+      ),
+    decode: (data) => {
+      const pluginsFailingValidation = pluginTransitControls.filter(
+        ({ pluginName, transit }) =>
+          !transit.validate((data as any)[pluginName]),
+      );
+      if (pluginsFailingValidation.length > 0) {
+        const namesOfFailures = pluginsFailingValidation
+          .map((p) => p.pluginName)
+          .join(', ');
+        throw new Error(
+          `Data decode validation failed for: ${namesOfFailures}`,
+        );
+      }
+    },
+  };
+
   return {
     ...controls,
     ...getters,
     actions,
     events,
-    encode: () => {
-      return encodingFns.reduce(
-        (result, { pluginName, transit }) => ({
-          ...result,
-          [pluginName]: transit.encode(),
-        }),
-        {} as Prettify<ExtractTransitPayload<NoInfer<TPlugins>>>,
-      );
-    },
+    transit,
     theme: {
       tokenResolver,
       resolveNodeStyles,

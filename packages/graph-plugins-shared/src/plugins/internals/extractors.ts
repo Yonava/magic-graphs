@@ -1,11 +1,7 @@
 import { CoreActions } from '@graph/core/actions/types';
 import { CoreEventMap } from '@graph/core/events';
 import { CoreGetters } from '@graph/core/getters';
-import {
-  CoreControls,
-  CoreTransitControls,
-  CoreTransitPayload,
-} from '@graph/core/types';
+import { CoreControls, CoreTransitPayload } from '@graph/core/types';
 import { GraphActions } from '@graph/primitives/actions/types';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { BaseGetters } from '@graph/primitives/getters/types';
