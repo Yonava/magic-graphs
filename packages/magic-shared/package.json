@@ -89,6 +89,7 @@
   },
   "dependencies": {
     "@canvas/surface": "workspace:*",
+    "@canvas/primitives": "workspace:*",
     "@core/components": "workspace:*",
     "@core/utils": "workspace:*",
     "@graph/core": "workspace:*",

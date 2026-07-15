@@ -15,7 +15,8 @@
     { "path": "../graph-primitives" },
     { "path": "../graph-create-graph" },
     { "path": "../graph-theme-presets" },
-    { "path": "../canvas-surface" }
+    { "path": "../canvas-surface" },
+    { "path": "../canvas-primitives" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }
