@@ -30,11 +30,4 @@ export type CanvasProps = {
   lifecycleEvents: Omit<EventHub<CanvasLifecycleEvents>, 'emit'>;
 };
 
-export type CanvasOptions = {
-  /**
-   * a key that is used to track the camera state in localStorage
-   */
-  storageKey?: string;
-};
-
-export type UseCanvas = (options?: CanvasOptions) => CanvasProps;
+export type UseCanvas = () => CanvasProps;
