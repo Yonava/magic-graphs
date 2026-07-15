@@ -1,6 +1,7 @@
 import colors, { Color } from '@core/utils/colors';
 import { ANCHOR_PLUGIN_ID } from '@graph/plugins/anchors/constants';
 import { FOCUS_PLUGIN_ID } from '@graph/plugins/focus/constants';
+import { INTERACTIVE_PLUGIN_ID } from '@graph/plugins/interactive/constants';
 import { MARQUEE_PLUGIN_ID } from '@graph/plugins/marquee/constants';
 import { NODE_DRAG_PLUGIN_ID } from '@graph/plugins/node-drag/constants';
 
@@ -30,5 +31,6 @@ export const PRIORITY = {
     NODE_DRAG_PLUGIN_ID,
     ANCHOR_PLUGIN_ID,
     FOCUS_PLUGIN_ID,
+    INTERACTIVE_PLUGIN_ID,
   ],
 } as const;

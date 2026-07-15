@@ -4,6 +4,7 @@ import { getValue } from '@core/utils/maybeGetter/index';
 import Fraction from 'fraction.js';
 
 import { CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { INTERACTIVE_PLUGIN_ID } from './constants.ts';
 import { DEFAULT_INTERACTIVE_OPTIONS, InteractiveOptions } from './options.ts';
 import { InteractivePlugin } from './types.ts';
 
@@ -124,13 +125,13 @@ export const interactive =
 
     const enable = () => {
       events.subscribe('onMouseDown', handleEdgeTextArea);
-      events.subscribe('onClick', handleNodeCreation);
+      events.handle('onClick', handleNodeCreation, INTERACTIVE_PLUGIN_ID);
       events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
     };
 
     const disable = () => {
       events.unsubscribe('onMouseDown', handleEdgeTextArea);
-      events.unsubscribe('onClick', handleNodeCreation);
+      events.unhandle('onClick', handleNodeCreation);
       events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
     };
 

@@ -9,6 +9,7 @@ import { MOUSE_BUTTONS } from '@core/utils/mouse';
 import { Aggregator } from '@graph/plugins/canvas/aggregator/types';
 import { CanvasGraphMouseEvent } from '@graph/plugins/canvas/events';
 import { GraphUnderCursor } from '@graph/plugins/canvas/types';
+import { WithConsume } from '@graph/primitives/events/createEventHandler';
 import { DeepReadonly } from 'ts-essentials';
 
 import { computed, ref } from 'vue';
@@ -257,6 +258,11 @@ export const useAnnotationsState = (graph: Graph) => {
 
   graph.canvas.aggregator.transformers.push(addScribblesToAggregator);
 
+  const consume: WithConsume<(ev: CanvasGraphMouseEvent) => void> = (
+    _,
+    consumeFn,
+  ) => consumeFn();
+
   const activate = () => {
     isActive.value = true;
 
@@ -280,6 +286,7 @@ export const useAnnotationsState = (graph: Graph) => {
       ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
+    graph.events.handle('onClick', consume, ANNOTATION_PLUGIN_ID, PRIORITY);
   };
 
   const deactivate = () => {
@@ -291,6 +298,7 @@ export const useAnnotationsState = (graph: Graph) => {
     graph.events.unhandle('onMouseDown', startDrawing);
     graph.events.unhandle('onGraphUnderCursorChange', drawLine);
     graph.events.unhandle('onMouseUp', stopDrawing);
+    graph.events.unhandle('onClick', consume);
   };
 
   const load = (annotations: Annotation[]) => {
