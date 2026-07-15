@@ -1,10 +1,10 @@
 import Fraction from 'fraction.js';
 
-type Node = {
+export type Node = {
   id: string;
 };
 
-type Edge = {
+export type Edge = {
   id: string;
   source: string;
   target: string;
@@ -14,7 +14,7 @@ type Edge = {
 type Parent = Map<string, string>;
 type Rank = Map<string, number>;
 
-const kruskals = (nodes: Node[], edges: Edge[]) => {
+export const kruskals = (nodes: Node[], edges: Edge[]) => {
   const find = (parent: Parent, nodeId: string): string => {
     if (parent.get(nodeId) !== nodeId) {
       parent.set(nodeId, find(parent, parent.get(nodeId)!));
@@ -77,5 +77,3 @@ const kruskals = (nodes: Node[], edges: Edge[]) => {
     connected: mst.length === nodes.length - 1,
   };
 };
-
-export default kruskals;

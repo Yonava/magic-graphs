@@ -1,68 +1,57 @@
 import fc from 'fast-check';
+import Fraction from 'fraction.js';
 import { describe, expect, it } from 'vitest';
 
 import { graphArbitrary } from '../graphGenerator.ts';
-import kruskals from './index.ts';
-
-type Node = {
-  id: string;
-};
-
-type Edge = {
-  id: string;
-  source: string;
-  target: string;
-  weight: number;
-};
+import { kruskals } from './index.ts';
+import type { Edge, Node } from './index.ts';
 
 describe('kruskals', () => {
   it('finds the minimum spanning tree of a simple graph', () => {
     const nodes: Node[] = [{ id: 'A' }, { id: 'B' }, { id: 'C' }, { id: 'D' }];
 
     const edges: Edge[] = [
-      { id: 'AB', source: 'A', target: 'B', weight: 1 },
-      { id: 'AC', source: 'A', target: 'C', weight: 4 },
-      { id: 'BC', source: 'B', target: 'C', weight: 2 },
-      { id: 'BD', source: 'B', target: 'D', weight: 5 },
-      { id: 'CD', source: 'C', target: 'D', weight: 3 },
+      { id: 'AB', source: 'A', target: 'B', weight: new Fraction(1) },
+      { id: 'AC', source: 'A', target: 'C', weight: new Fraction(4) },
+      { id: 'BC', source: 'B', target: 'C', weight: new Fraction(2) },
+      { id: 'BD', source: 'B', target: 'D', weight: new Fraction(5) },
+      { id: 'CD', source: 'C', target: 'D', weight: new Fraction(3) },
     ];
 
     const result = kruskals(nodes, edges);
 
     expect(result.edges.map((e) => e.id)).toEqual(['AB', 'BC', 'CD']);
-
-    expect(result.totalWeight).toBe(6);
+    expect(result.totalWeight.equals(new Fraction(6))).toBe(true);
   });
 
   it('does not include cycles', () => {
     const nodes: Node[] = [{ id: 'A' }, { id: 'B' }, { id: 'C' }];
 
     const edges: Edge[] = [
-      { id: 'AB', source: 'A', target: 'B', weight: 1 },
-      { id: 'BC', source: 'B', target: 'C', weight: 2 },
-      { id: 'AC', source: 'A', target: 'C', weight: 3 },
+      { id: 'AB', source: 'A', target: 'B', weight: new Fraction(1) },
+      { id: 'BC', source: 'B', target: 'C', weight: new Fraction(2) },
+      { id: 'AC', source: 'A', target: 'C', weight: new Fraction(3) },
     ];
 
     const result = kruskals(nodes, edges);
 
     expect(result.edges).toHaveLength(2);
-    expect(result.totalWeight).toBe(3);
+    expect(result.totalWeight.equals(new Fraction(3))).toBe(true);
   });
 
   it('handles a graph where edges are not sorted', () => {
     const nodes: Node[] = [{ id: 'A' }, { id: 'B' }, { id: 'C' }];
 
     const edges: Edge[] = [
-      { id: 'AC', source: 'A', target: 'C', weight: 10 },
-      { id: 'BC', source: 'B', target: 'C', weight: 1 },
-      { id: 'AB', source: 'A', target: 'B', weight: 5 },
+      { id: 'AC', source: 'A', target: 'C', weight: new Fraction(10) },
+      { id: 'BC', source: 'B', target: 'C', weight: new Fraction(1) },
+      { id: 'AB', source: 'A', target: 'B', weight: new Fraction(5) },
     ];
 
     const result = kruskals(nodes, edges);
 
     expect(result.edges.map((e) => e.id)).toEqual(['BC', 'AB']);
-
-    expect(result.totalWeight).toBe(6);
+    expect(result.totalWeight.equals(new Fraction(6))).toBe(true);
   });
 
   it('handles a single node graph', () => {
@@ -71,37 +60,36 @@ describe('kruskals', () => {
     const result = kruskals(nodes, []);
 
     expect(result.edges).toEqual([]);
-    expect(result.totalWeight).toBe(0);
+    expect(result.totalWeight.equals(new Fraction(0))).toBe(true);
   });
 
   it('handles a disconnected graph as a minimum spanning forest', () => {
     const nodes: Node[] = [{ id: 'A' }, { id: 'B' }, { id: 'C' }, { id: 'D' }];
 
     const edges: Edge[] = [
-      { id: 'AB', source: 'A', target: 'B', weight: 1 },
-      { id: 'CD', source: 'C', target: 'D', weight: 2 },
+      { id: 'AB', source: 'A', target: 'B', weight: new Fraction(1) },
+      { id: 'CD', source: 'C', target: 'D', weight: new Fraction(2) },
     ];
 
     const result = kruskals(nodes, edges);
 
     expect(result.edges.map((e) => e.id)).toEqual(['AB', 'CD']);
-
-    expect(result.totalWeight).toBe(3);
+    expect(result.totalWeight.equals(new Fraction(3))).toBe(true);
   });
 
   it('handles equal weight edges', () => {
     const nodes: Node[] = [{ id: 'A' }, { id: 'B' }, { id: 'C' }];
 
     const edges: Edge[] = [
-      { id: 'AB', source: 'A', target: 'B', weight: 1 },
-      { id: 'BC', source: 'B', target: 'C', weight: 1 },
-      { id: 'AC', source: 'A', target: 'C', weight: 1 },
+      { id: 'AB', source: 'A', target: 'B', weight: new Fraction(1) },
+      { id: 'BC', source: 'B', target: 'C', weight: new Fraction(1) },
+      { id: 'AC', source: 'A', target: 'C', weight: new Fraction(1) },
     ];
 
     const result = kruskals(nodes, edges);
 
     expect(result.edges).toHaveLength(2);
-    expect(result.totalWeight).toBe(2);
+    expect(result.totalWeight.equals(new Fraction(2))).toBe(true);
   });
 });
 
@@ -136,11 +124,11 @@ describe('properties', () => {
         const result = kruskals(nodes, edges);
 
         const expected = result.edges.reduce(
-          (sum, edge) => sum + edge.weight,
-          0,
+          (sum, edge) => sum.add(edge.weight),
+          new Fraction(0),
         );
 
-        expect(result.totalWeight).toBe(expected);
+        expect(result.totalWeight.equals(expected)).toBe(true);
       }),
     );
   });
@@ -167,12 +155,12 @@ it('ignores unnecessary expensive edges', () => {
         id: 'expensive',
         source: nodes[0].id,
         target: nodes[1].id,
-        weight: Number.MAX_SAFE_INTEGER,
+        weight: new Fraction(Number.MAX_SAFE_INTEGER),
       };
 
       const after = kruskals(nodes, [...edges, expensiveEdge]);
 
-      expect(after.totalWeight).toBe(before.totalWeight);
+      expect(after.totalWeight.equals(before.totalWeight)).toBe(true);
     }),
   );
 });
@@ -181,7 +169,7 @@ it('handles an empty graph', () => {
   const result = kruskals([], []);
 
   expect(result.edges).toEqual([]);
-  expect(result.totalWeight).toBe(0);
+  expect(result.totalWeight.equals(new Fraction(0))).toBe(true);
 });
 
 function hasCycle(nodes: Node[], edges: Edge[]) {
