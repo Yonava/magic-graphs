@@ -22,7 +22,10 @@ const groupBySlotPosition = (
     'bottom-right': [],
   };
 
-  for (const { position, ...component } of componentSlots) {
+  const prioritizedComponentSlots = componentSlots.toSorted((slotA, slotB) => {
+    return (slotA.priority ?? 0) - (slotB.priority ?? 0);
+  });
+  for (const { position, ...component } of prioritizedComponentSlots) {
     slots[position].push(component);
   }
 

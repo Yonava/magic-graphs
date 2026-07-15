@@ -1,11 +1,12 @@
 import { nullThrows } from '@core/utils/assert';
 
-import { ComputedRef, computed, defineAsyncComponent, markRaw, ref } from 'vue';
+import { ComputedRef, computed, ref } from 'vue';
 
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import { Graph } from '../graph/types.ts';
 import { LensControls } from '../lens/useLensState.ts';
 import { Violation } from './guard/SimulationGuardBuilder.ts';
+import SimulationScrubber from './scrubber/SimulationScrubber.vue';
 import {
   SetupContext,
   SimulationDefinition,
@@ -147,10 +148,9 @@ export const useSimulationState = (
 
     componentSlotControls.add({
       id: SCRUBBER_COMPONENT_ID,
-      component: defineAsyncComponent(
-        () => import('./scrubber/SimulationScrubber.vue'),
-      ),
+      component: SimulationScrubber,
       position: 'top-middle',
+      priority: 1,
     });
 
     if (simulation.value.lens) {

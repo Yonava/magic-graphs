@@ -26,6 +26,7 @@
       id: annotationIslandComponentId,
       component: AnnotationsIsland,
       position: 'top-middle',
+      priority: 2,
     });
   };
 

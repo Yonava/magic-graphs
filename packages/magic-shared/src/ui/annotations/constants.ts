@@ -16,6 +16,8 @@ export const COLORS = [
 
 export const BRUSH_WEIGHTS = [3, 6, 9, 12];
 
+export const ANNOTATION_MODES = ['drawing', 'erasing', 'laser'] as const;
+
 export const THEME_TO_ERASER_OUTLINE: Record<ThemePreset, Color> = {
   light: colors.GRAY_900,
   dark: colors.GRAY_100,
