@@ -9,7 +9,7 @@ import { CoreOptions, DEFAULT_CORE_OPTIONS } from './options.ts';
 import { createNodePositionStore } from './positions/createNodePositionStore.ts';
 import { createCommitTransaction } from './transaction/createCommitTransaction.ts';
 import { setupTransactionSucceeded } from './transaction/setupTransactionSucceeded.ts';
-import type { CoreControls, CoreTransit } from './types.ts';
+import type { CoreControls, CoreTransitControls } from './types.ts';
 import { createEdgeWeightStore } from './weights/createEdgeWeightStore.ts';
 
 export const core = (options: Partial<CoreOptions>) => {
@@ -85,7 +85,7 @@ export const core = (options: Partial<CoreOptions>) => {
     weights: edgeWeightStore,
   };
 
-  const coreTransit: CoreTransit = {
+  const coreTransit: CoreTransitControls = {
     encode: () => {
       const edgeWeights = Array.from(
         edgeWeightStore._internal.edgeIdToEdgeWeight,

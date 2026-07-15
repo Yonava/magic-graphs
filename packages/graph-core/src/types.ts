@@ -34,9 +34,11 @@ type EdgeWeightsTransitEncode = {
   weight: string; // serialized fraction encoding
 };
 
-export type CoreTransit = TransitControls<{
+export type CoreTransitPayload = {
   nodes: CoreNode[];
   edges: CoreEdge[];
   nodePositions: NodePositionTransitEncode[];
   edgeWeights: EdgeWeightsTransitEncode[];
-}>;
+};
+
+export type CoreTransitControls = TransitControls<CoreTransitPayload>;

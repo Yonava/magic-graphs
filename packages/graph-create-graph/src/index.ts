@@ -8,6 +8,7 @@ import {
   ExtractControls,
   ExtractEventMap,
   ExtractGetters,
+  ExtractTransitPayload,
   LooseGraphPlugin,
   PluginThemeField,
   PluginThemes,
@@ -211,7 +212,7 @@ export const createGraph = <
           ...result,
           [pluginName]: transit.encode(),
         }),
-        {} as Record<string, any>,
+        {} as Prettify<ExtractTransitPayload<NoInfer<TPlugins>>>,
       );
     },
     theme: {

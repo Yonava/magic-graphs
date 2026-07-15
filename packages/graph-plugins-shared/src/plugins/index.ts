@@ -37,3 +37,6 @@ export type { ExtractGetters } from './internals/extractors.ts';
 
 /** Extracts the merged actions type from a list of plugins. To build the actions interface. */
 export type { ExtractActions } from './internals/extractors.ts';
+
+/** Extracts the merged transit controls type from a list of plugins. To build the encode/decode interface. */
+export type { ExtractTransitPayload } from './internals/extractors.ts';

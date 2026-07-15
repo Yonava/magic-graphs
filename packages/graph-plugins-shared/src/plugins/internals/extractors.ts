@@ -1,10 +1,15 @@
 import { CoreActions } from '@graph/core/actions/types';
 import { CoreEventMap } from '@graph/core/events';
 import { CoreGetters } from '@graph/core/getters';
-import { CoreControls } from '@graph/core/types';
+import {
+  CoreControls,
+  CoreTransitControls,
+  CoreTransitPayload,
+} from '@graph/core/types';
 import { GraphActions } from '@graph/primitives/actions/types';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { BaseGetters } from '@graph/primitives/getters/types';
+import { TransitControls } from '@graph/primitives/transit/types';
 import { UnionToIntersection } from 'ts-essentials';
 
 import { LooseGraphPlugin } from './loose.ts';
@@ -19,6 +24,16 @@ type ResolveControls<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
     ? Record<Name, Controls>
     : never
   : never;
+
+type ResolveTransitPayload<Plugin extends LooseGraphPlugin> =
+  Plugin extends Plugin
+    ? ReturnType<Plugin> extends {
+        name: infer Name extends string;
+        transit: TransitControls<infer PayloadData>;
+      }
+      ? Record<Name, PayloadData>
+      : never
+    : never;
 
 export type ExtractControls<TPlugins extends LooseGraphPlugin[]> =
   CoreControls &
@@ -67,3 +82,13 @@ export type ExtractEventMap<TPlugins extends LooseGraphPlugin[]> =
           ? EventMap
           : never
       >;
+
+export type ExtractTransitPayload<TPlugins extends LooseGraphPlugin[]> = Record<
+  'core',
+  CoreTransitPayload
+> &
+  (TPlugins extends never[]
+    ? {}
+    : UnionToIntersection<
+        ResolveTransitPayload<RemoveArray<NoInfer<TPlugins>>>
+      >);
