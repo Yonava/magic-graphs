@@ -14,9 +14,9 @@ it('kruskals and prims agree on total weight and connectivity', () => {
       const kruskalsResult = kruskals(nodes, edges);
       const primsResult = prims(nodes, edges);
 
-      expect(
-        kruskalsResult.totalWeight.equals(primsResult.totalWeight),
-      ).toBe(true);
+      expect(kruskalsResult.totalWeight.equals(primsResult.totalWeight)).toBe(
+        true,
+      );
       expect(kruskalsResult.connected).toBe(primsResult.connected);
       expect(kruskalsResult.edges.length).toBe(primsResult.edges.length);
     }),
@@ -30,9 +30,9 @@ it('kruskals and prims agree on disconnected graphs too', () => {
       const kruskalsResult = kruskals(nodes, edges);
       const primsResult = prims(nodes, edges);
 
-      expect(
-        kruskalsResult.totalWeight.equals(primsResult.totalWeight),
-      ).toBe(true);
+      expect(kruskalsResult.totalWeight.equals(primsResult.totalWeight)).toBe(
+        true,
+      );
       expect(kruskalsResult.connected).toBe(primsResult.connected);
       expect(kruskalsResult.edges.length).toBe(primsResult.edges.length);
     }),
