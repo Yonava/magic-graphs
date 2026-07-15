@@ -18,7 +18,7 @@
 
   const chips = computed(() =>
     nullThrows(
-      graph.magic.ui.lensChips,
+      graph.magic.ui.data.lensChips,
       'LensChipGroup is being rendered without chips!',
     ),
   );

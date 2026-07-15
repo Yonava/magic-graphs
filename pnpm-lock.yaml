@@ -340,6 +340,9 @@ importers:
       '@graph/vue':
         specifier: workspace:*
         version: link:../graph-vue
+      '@mdi/js':
+        specifier: ^7.4.47
+        version: 7.4.47
     devDependencies:
       ts-essentials:
         specifier: ^10.2.1
