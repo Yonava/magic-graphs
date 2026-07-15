@@ -29,8 +29,15 @@ export const setupTransactionSucceeded = ({
       edges.push(...remainingEdges);
     }
 
-    nodes.push(...payload.addedNodes);
-    edges.push(...payload.addedEdges);
+    // map to remove excess properties that may have snuck in due to TS structural typing
+    nodes.push(...payload.addedNodes.map((n): CoreNode => ({ id: n.id })));
+    edges.push(
+      ...payload.addedEdges.map((e): CoreEdge => ({
+        id: e.id,
+        source: e.source,
+        target: e.target,
+      })),
+    );
 
     propagateTransactionEvents(payload, emit);
   };

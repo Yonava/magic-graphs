@@ -90,5 +90,16 @@ export const core = (options: Partial<CoreOptions>) => {
     actions: coreActions,
     getters: coreGetters,
     events: coreEventHub,
+    encode: () => {
+      const edgeWeights = Array.from(
+        edgeWeightStore._internal.edgeIdToEdgeWeight,
+      ).map(([edgeId, weight]) => ({ edgeId, weight }));
+
+      const nodePositions = Array.from(
+        nodePositionStore._internal.nodeIdToNodePosition,
+      ).map(([nodeId, position]) => ({ nodeId, position }));
+
+      return { nodes, edges, edgeWeights, nodePositions };
+    },
   };
 };

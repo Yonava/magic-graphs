@@ -69,7 +69,9 @@ export const createGraph = <
   // plugin name to the registered detectors
   let evolvingThemeDetectors: PluginThemeField<any>['theme']['detectors'] = {};
 
-  const encodingFns: { pluginName: string; encode: () => any }[] = [];
+  const encodingFns: { pluginName: string; encode: () => any }[] = [
+    { pluginName: 'core', encode: core.encode },
+  ];
 
   for (const plugin of plugins) {
     const pluginResult = plugin({
@@ -182,7 +184,7 @@ export const createGraph = <
     };
   };
 
-  // assume we have canvas in controls!
+  // assume we have canvas in controls since this is a theme aware orchestrator!
   const { transformers } = (controls as unknown as { canvas: CanvasControls })
     .canvas.aggregator;
 
