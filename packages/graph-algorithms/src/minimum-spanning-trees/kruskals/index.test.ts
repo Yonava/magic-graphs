@@ -7,7 +7,7 @@ import { hasCycle } from '../helpers.ts';
 import type { Edge, Node } from '../types.ts';
 import { kruskals } from './index.ts';
 
-describe('kruskals', () => {
+describe(kruskals, () => {
   it('finds the minimum spanning tree of a simple graph', () => {
     const nodes: Node[] = [{ id: 'A' }, { id: 'B' }, { id: 'C' }, { id: 'D' }];
 
