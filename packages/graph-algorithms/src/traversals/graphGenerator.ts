@@ -3,13 +3,13 @@ import fc from 'fast-check';
 type Graph = Record<string, string[]>;
 
 export const graphArbitrary = fc
-  .array(fc.stringMatching(/^[A-Z]$/), { minLength: 1, maxLength: 10 })
+  .array(fc.stringMatching(/^[A-Z]$/), { minLength: 1, maxLength: 20 })
   .map((nodes) => [...new Set(nodes)])
   .chain((nodes) => {
     const edges = fc.array(
       fc.tuple(fc.constantFrom(...nodes), fc.constantFrom(...nodes)),
       {
-        maxLength: nodes.length * 3,
+        maxLength: nodes.length * 20,
       },
     );
 

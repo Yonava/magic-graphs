@@ -10,7 +10,7 @@ type Graph = {
 
 const nodeArbitrary = fc.uniqueArray(fc.stringMatching(/^[A-Z]$/), {
   minLength: 1,
-  maxLength: 8,
+  maxLength: 20,
 });
 
 const weightArbitrary = fc

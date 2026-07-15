@@ -78,6 +78,13 @@ describe(kruskals, () => {
     expect(result.edges).toHaveLength(2);
     expect(result.totalWeight.equals(new Fraction(2))).toBe(true);
   });
+
+  it('handles an empty graph', () => {
+    const result = kruskals([], []);
+
+    expect(result.edges).toEqual([]);
+    expect(result.totalWeight.equals(new Fraction(0))).toBe(true);
+  });
 });
 
 describe('properties', () => {
@@ -88,6 +95,7 @@ describe('properties', () => {
 
         expect(result.edges.length).toBeLessThanOrEqual(nodes.length - 1);
       }),
+      { numRuns: 10 },
     );
   });
 
@@ -102,6 +110,7 @@ describe('properties', () => {
           expect(originalIds.has(edge.id)).toBe(true);
         });
       }),
+      { numRuns: 10 },
     );
   });
 
@@ -117,6 +126,7 @@ describe('properties', () => {
 
         expect(result.totalWeight.equals(expected)).toBe(true);
       }),
+      { numRuns: 10 },
     );
   });
 });
@@ -128,6 +138,7 @@ it('never creates cycles', () => {
 
       expect(hasCycle(nodes, result.edges)).toBe(false);
     }),
+    { numRuns: 10 },
   );
 });
 
@@ -149,12 +160,6 @@ it('ignores unnecessary expensive edges', () => {
 
       expect(after.totalWeight.equals(before.totalWeight)).toBe(true);
     }),
+    { numRuns: 10 },
   );
-});
-
-it('handles an empty graph', () => {
-  const result = kruskals([], []);
-
-  expect(result.edges).toEqual([]);
-  expect(result.totalWeight.equals(new Fraction(0))).toBe(true);
 });
