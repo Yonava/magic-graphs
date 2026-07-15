@@ -229,6 +229,9 @@ export const createGraph = <
           `Data decode validation failed for: ${namesOfFailures}`,
         );
       }
+      for (const { pluginName, transit } of pluginTransitControls) {
+        transit.decode((data as any)[pluginName]);
+      }
     },
   };
 
