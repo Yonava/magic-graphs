@@ -68,6 +68,11 @@
       );
     }
   });
+
+  const printEncode = () => {
+    const encoding = graph.encode();
+    console.log(encoding);
+  };
 </script>
 
 <template>
@@ -75,6 +80,7 @@
     <HStack>
       <ButtonVue @click="toggleTheme"> Toggle Theme </ButtonVue>
       <ButtonVue @click="applyLens"> Toggle Custom Lens </ButtonVue>
+      <ButtonVue @click="printEncode">Print Encoding</ButtonVue>
       <SimulationButton />
     </HStack>
   </Well>

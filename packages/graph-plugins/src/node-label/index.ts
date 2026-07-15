@@ -49,9 +49,11 @@ export const nodeLabel: NodeLabelPlugin = ({
   return {
     name: 'nodeLabel',
     events,
-    encode: () => {
-      return [];
-    },
+    encode: () =>
+      Array.from(nodeIdToLabel).map(([nodeId, label]) => ({
+        nodeId,
+        label,
+      })),
     getters: {
       ...getters,
       getNode: (id) => {

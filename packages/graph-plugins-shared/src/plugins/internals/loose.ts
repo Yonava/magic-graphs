@@ -35,6 +35,7 @@ type LoosePluginOutput = {
   actions: GraphActions<any>;
   getters: GraphGetters<any>;
   onAfterInit?: () => void;
+  encode?: () => any;
 };
 
 export type LooseGraphPlugin = (options: LoosePluginInput) => LoosePluginOutput;

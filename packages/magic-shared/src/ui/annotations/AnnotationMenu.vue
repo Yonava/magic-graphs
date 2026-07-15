@@ -40,6 +40,7 @@
   <Well>
     <HStack>
       <IconButton
+        label="Annotations"
         :path="mdiPencil"
         :class="controls.isActive.value ? classes : 'border border-transparent'"
         @click="toggle"

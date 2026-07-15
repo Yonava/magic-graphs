@@ -69,6 +69,8 @@ export const createGraph = <
   // plugin name to the registered detectors
   let evolvingThemeDetectors: PluginThemeField<any>['theme']['detectors'] = {};
 
+  const encodingFns: { pluginName: string; encode: () => any }[] = [];
+
   for (const plugin of plugins) {
     const pluginResult = plugin({
       controls: evolvingControls,
@@ -83,6 +85,11 @@ export const createGraph = <
     evolvingEvents = pluginResult.events;
     evolvingActions = { ...evolvingActions, ...pluginResult.actions };
     evolvingGetters = { ...evolvingGetters, ...pluginResult.getters };
+
+    const encodeFn = pluginResult.encode;
+    if (encodeFn) {
+      encodingFns.push({ pluginName: pluginResult.name, encode: encodeFn });
+    }
 
     const pluginThemeField: PluginThemeField<any>['theme'] | undefined = (
       pluginResult.controls as any
@@ -195,6 +202,15 @@ export const createGraph = <
     ...getters,
     actions,
     events,
+    encode: () => {
+      return encodingFns.reduce(
+        (result, pluginEncode) => ({
+          ...result,
+          [pluginEncode.pluginName]: pluginEncode.encode(),
+        }),
+        {} as Record<string, any>,
+      );
+    },
     theme: {
       tokenResolver,
       resolveNodeStyles,
