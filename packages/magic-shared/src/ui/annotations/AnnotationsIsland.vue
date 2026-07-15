@@ -1,20 +1,25 @@
 <script setup lang="ts">
-  import { mdiEraser, mdiLaserPointer } from '@mdi/js';
+  import {
+    mdiAbjadArabic,
+    mdiEraser,
+    mdiLaserPointer,
+    mdiPencil,
+  } from '@mdi/js';
 
   import IconButton from '../../components/icon-button/IconButton.vue';
   import HStack from '../../components/layout/HStack.vue';
   import Well from '../../components/layout/Well.vue';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
+  import { AnnotationMode } from './types.ts';
   import { useAnnotationControls } from './useAnnotationControls.ts';
 
   const controls = useAnnotationControls();
 
-  const toggleEraser = () => {
-    controls.isErasing.value = !controls.isErasing.value;
-  };
-
-  const toggleLaser = () => {
-    controls.isLaserPointing.value = !controls.isLaserPointing.value;
+  const modes: AnnotationMode[] = ['drawing', 'erasing', 'laser'];
+  const modeToIcon: Record<AnnotationMode, string> = {
+    drawing: mdiPencil,
+    erasing: mdiEraser,
+    laser: mdiLaserPointer,
   };
 
   const classes = useThemeToClasses({
@@ -27,18 +32,12 @@
   <Well>
     <HStack>
       <IconButton
-        :path="mdiEraser"
+        v-for="mode of modes"
+        :path="modeToIcon[mode]"
         :class="
-          controls.isErasing.value ? classes : 'border border-transparent'
+          controls.mode() === mode ? classes : 'border border-transparent'
         "
-        @click="toggleEraser"
-      />
-      <IconButton
-        :path="mdiLaserPointer"
-        :class="
-          controls.isLaserPointing.value ? classes : 'border border-transparent'
-        "
-        @click="toggleLaser"
+        @click="controls.setMode(mode)"
       />
     </HStack>
   </Well>

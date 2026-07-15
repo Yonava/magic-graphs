@@ -25,13 +25,18 @@ import {
 } from './constants.ts';
 import { createAnnotationThemer } from './createAnnotationThemer.ts';
 import { useAnnotationHistory } from './history.ts';
-import type { Annotation } from './types.ts';
+import type { Annotation, AnnotationMode } from './types.ts';
 
 export const useAnnotationsState = (graph: Graph) => {
   const selectedColor = ref<Color>(COLORS[0]);
   const selectedBrushWeight = ref(BRUSH_WEIGHTS[1]);
-  const isErasing = ref(false);
-  const isLaserPointing = ref(false);
+  const mode = ref<AnnotationMode>('drawing');
+  const getMode = () => mode.value;
+  const setMode = (next: AnnotationMode) => {
+    mode.value = next;
+  };
+  const isErasing = computed(() => mode.value === 'erasing');
+  const isLaserPointing = computed(() => mode.value === 'laser');
   const laserDecayInterval = ref<NodeJS.Timeout>();
   const lastMoveTime = ref(Date.now());
   const erasedScribbleIds = ref(new Set<string>());
@@ -291,7 +296,7 @@ export const useAnnotationsState = (graph: Graph) => {
 
   const deactivate = () => {
     isActive.value = false;
-    isErasing.value = false;
+    mode.value = 'drawing';
 
     cursorTheme.deactivate();
 
@@ -311,8 +316,8 @@ export const useAnnotationsState = (graph: Graph) => {
 
     annotations: scribbles,
 
-    isLaserPointing,
-    isErasing,
+    mode: getMode,
+    setMode: setMode,
     color: selectedColor,
     brushWeight: selectedBrushWeight,
 
