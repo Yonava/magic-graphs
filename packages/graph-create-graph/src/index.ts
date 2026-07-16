@@ -52,7 +52,7 @@ export const createGraph = <
     coreOptions,
     plugins,
     themePresets,
-    activePresetName,
+    () => activePresetName,
   );
 
   const events = folded.events as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;

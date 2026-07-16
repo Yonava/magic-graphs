@@ -32,11 +32,19 @@ type FoldedPlugins = {
 
 const applyThemePreset = (
   pluginThemeField: PluginThemeField<any>['theme'],
-  presetTokens: Record<string, any>,
+  themePresets: Record<string, any>,
+  getActivePresetName: () => string,
+  pluginName: string,
 ) => {
   const { set } = pluginThemeField.createLayer('create-graph/theme-presets');
-  for (const token of Object.keys(presetTokens)) {
-    set(token, (...args: any[]) => getValue(presetTokens[token], ...args));
+  const tokens = Object.keys(themePresets[getActivePresetName()][pluginName]);
+  for (const token of tokens) {
+    set(token, (...args: any[]) =>
+      getValue(
+        themePresets[getActivePresetName()][pluginName][token],
+        ...args,
+      ),
+    );
   }
 };
 
@@ -45,7 +53,7 @@ export const foldPlugins = (
   coreOptions: Partial<CoreOptions>,
   plugins: LooseGraphPlugin[],
   themePresets: Record<string, any>,
-  activePresetName: string,
+  getActivePresetName: () => string,
 ): FoldedPlugins => {
   const core = createCore(coreOptions);
 
@@ -98,7 +106,9 @@ export const foldPlugins = (
     if (pluginThemeField) {
       applyThemePreset(
         pluginThemeField,
-        themePresets[activePresetName][pluginResult.name],
+        themePresets,
+        getActivePresetName,
+        pluginResult.name,
       );
       themeDetectors = { ...themeDetectors, ...pluginThemeField.detectors };
     }

@@ -54,7 +54,7 @@ describe('finalActions', () => {
         createTriggeringPlugin((t) => (trigger = t)),
       ],
       {},
-      'default',
+      () => 'default',
     );
 
     let labelAtEmitTime: string | undefined;
@@ -76,7 +76,7 @@ describe('foldPlugins structural events', () => {
       {},
       [createLabelingPlugin(nodeIdToLabel)],
       {},
-      'default',
+      () => 'default',
     );
 
     let labelAtEmitTime: string | undefined;
@@ -90,7 +90,7 @@ describe('foldPlugins structural events', () => {
   });
 
   it('fires onStructureChange exactly once per structural action', () => {
-    const folded = foldPlugins({}, [], {}, 'default');
+    const folded = foldPlugins({}, [], {}, () => 'default');
 
     const onStructureChange = vi.fn();
     folded.events.subscribe('onStructureChange', onStructureChange);
@@ -101,7 +101,7 @@ describe('foldPlugins structural events', () => {
   });
 
   it('does not fire structural events when nothing changed', () => {
-    const folded = foldPlugins({}, [], {}, 'default');
+    const folded = foldPlugins({}, [], {}, () => 'default');
 
     const onNodesAdded = vi.fn();
     const onStructureChange = vi.fn();
@@ -116,7 +116,7 @@ describe('foldPlugins structural events', () => {
   });
 
   it('derives onStructureChange from edge weight commits, independent of action wrapping', () => {
-    const folded = foldPlugins({}, [], {}, 'default');
+    const folded = foldPlugins({}, [], {}, () => 'default');
 
     const nodeA = folded.actions.addNode({});
     const nodeB = folded.actions.addNode({});
