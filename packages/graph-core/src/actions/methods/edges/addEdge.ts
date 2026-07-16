@@ -1,25 +1,18 @@
 import { nullThrows } from '@core/utils/assert';
 import { generateId } from '@core/utils/id';
-import { CoreEdge } from '@graph/primitives/types';
 
 import { CreateCoreAction } from '../../types.ts';
-
-export const edgeDefaults = () =>
-  ({
-    id: generateId(),
-  }) as const satisfies Partial<CoreEdge>;
 
 export const createAddEdgeHandler: CreateCoreAction<'addEdge'> =
   ({ graph, commitTransaction }) =>
   (edge) => {
-    const edgeWithDefaults = {
-      ...edgeDefaults(),
-      ...edge,
-    };
+    const newEdge = { id: generateId(), ...edge };
 
-    graph.weights._internal.add([edgeWithDefaults]);
+    graph.weights._internal.add([newEdge]);
 
-    const { addedEdges } = commitTransaction({ addEdges: [edgeWithDefaults] });
+    const { addedEdges } = commitTransaction({
+      addEdges: [newEdge],
+    });
 
     const telemetryEdge = nullThrows(
       addedEdges[0],

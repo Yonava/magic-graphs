@@ -1,9 +1,6 @@
 import { MOUSE_BUTTONS } from '@core/utils/mouse';
-import { useLocalStorage } from '@vueuse/core';
 
-import { type Ref, onMounted } from 'vue';
-
-import { localKeys } from '../localStorage.ts';
+import { type Ref, onMounted, ref } from 'vue';
 
 export const MIN_ZOOM = 0.2;
 export const MAX_ZOOM = 10;
@@ -11,13 +8,10 @@ export const MAX_ZOOM = 10;
 export const ZOOM_SENSITIVITY = 0.02;
 export const PAN_SENSITIVITY = 1;
 
-export const usePanAndZoom = (
-  canvas: Ref<HTMLCanvasElement | undefined>,
-  storageKey: string,
-) => {
-  const panX = useLocalStorage(localKeys.cameraPanX(storageKey), 0);
-  const panY = useLocalStorage(localKeys.cameraPanY(storageKey), 0);
-  const zoom = useLocalStorage(localKeys.cameraZoom(storageKey), 1);
+export const usePanAndZoom = (canvas: Ref<HTMLCanvasElement | undefined>) => {
+  const panX = ref(0);
+  const panY = ref(0);
+  const zoom = ref(1);
 
   const setZoom = (ev: Pick<WheelEvent, 'clientX' | 'clientY' | 'deltaY'>) => {
     const rect = canvas.value!.getBoundingClientRect();

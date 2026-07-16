@@ -22,7 +22,7 @@ const initCanvasWidthHeight = (canvas: HTMLCanvasElement | undefined) => {
   canvas.height = rect.height * dpr;
 };
 
-export const useCanvas: UseCanvas = (options = {}) => {
+export const useCanvas: UseCanvas = () => {
   const canvas = ref<HTMLCanvasElement>();
   const canvasBoxSize = useElementSize(canvas);
 
@@ -47,10 +47,7 @@ export const useCanvas: UseCanvas = (options = {}) => {
     initCanvasWidthHeight(canvas.value),
   );
 
-  const { cleanup: cleanupCamera, ...camera } = useCamera(
-    canvas,
-    options?.storageKey ?? '[default-storage-key]',
-  );
+  const { cleanup: cleanupCamera, ...camera } = useCamera(canvas);
   const { coordinates: cursorCoordinates, cleanup: cleanupCoords } =
     useCoordinates(canvas);
 

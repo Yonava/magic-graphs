@@ -17,6 +17,8 @@ export type Graph = ReturnType<typeof useGraph>;
 export type GNode = ReturnType<Graph['getNode']>;
 export type GEdge = ReturnType<Graph['getEdge']>;
 
+export type GraphEncode = ReturnType<Graph['transit']['encode']>;
+
 export type ThemePreset = ReturnType<Graph['theme']['activePresetName']>;
 
 // TODO this mirrors graphPlugins exactly, we have to duplicate for now because we want the

@@ -45,7 +45,9 @@ export type NodePositionStoreControls = {
   createStream: () => NodePositionStreamControls;
   /** @internal */
   _internal: {
-    add: (positions: (Pick<CoreNode, 'id'> & Partial<Position>)[]) => void;
+    add: (
+      positions: { id: CoreNode['id']; position?: Partial<Position> }[],
+    ) => void;
     remove: (nodeIds: CoreNode['id'][]) => void;
     nodeIdToNodePosition: Map<string, Position>;
   };

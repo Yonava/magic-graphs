@@ -15,6 +15,7 @@ export type LoosePluginSchema = {
   events: GenericEventMap;
   getters: Partial<BaseGetters>;
   actions: PartialBaseActions;
+  transit: any;
   dependsOn: LooseGraphPlugin[];
   optionalDependsOn: LooseGraphPlugin[];
 };
@@ -34,6 +35,11 @@ type LoosePluginOutput = {
   actions: GraphActions<any>;
   getters: GraphGetters<any>;
   onAfterInit?: () => void;
+  transit?: {
+    encode: () => any;
+    decode: (data: any) => void;
+    validate: (data: any) => boolean;
+  };
 };
 
 export type LooseGraphPlugin = (options: LoosePluginInput) => LoosePluginOutput;

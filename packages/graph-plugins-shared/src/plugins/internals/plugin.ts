@@ -5,10 +5,12 @@ import { CoreControls } from '@graph/core/types';
 import { GraphActions, MergeActions } from '@graph/primitives/actions/types';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { GraphGetters, MergeGetters } from '@graph/primitives/getters/types';
+import { IsNever } from 'ts-essentials';
 
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls, ExtractEventMap } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';
+import { TransitField } from './transit.ts';
 
 export type GraphPlugin<PluginSchema extends PluginSchemaInput> =
   ResolvedGraphPlugin<ResolvePluginSchema<PluginSchema>>;
@@ -45,7 +47,7 @@ type PluginOutput<PluginSchema extends LoosePluginSchema> = {
   getters: GraphGetters<MergeGetters<[PluginSchema['getters'], CoreGetters]>>;
   actions: GraphActions<MergeActions<[PluginSchema['actions'], CoreActions]>>;
   onAfterInit?: () => void;
-};
+} & TransitField<PluginSchema['transit']>;
 
 type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
   options: PluginInput<PluginSchema>,

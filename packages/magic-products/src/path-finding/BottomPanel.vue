@@ -1,12 +1,15 @@
 <script setup lang="ts">
-  import ButtonVue from '@magic/shared/Button';
+  import Button from '@magic/shared/Button';
   import HStack from '@magic/shared/HStack';
+  import Tooltip from '@magic/shared/Tooltip';
   import Well from '@magic/shared/Well';
+  import { GraphEncode } from '@magic/shared/graph/types';
   import { Lens } from '@magic/shared/lens';
   import { useProvidedGraph } from '@magic/shared/product';
   import { useThemer } from '@magic/shared/themer';
+  import { useLocalStorage } from '@vueuse/core';
 
-  import { defineAsyncComponent } from 'vue';
+  import { defineAsyncComponent, ref } from 'vue';
 
   import SimulationButton from './SimulationButton.vue';
 
@@ -73,8 +76,8 @@
 <template>
   <Well>
     <HStack>
-      <ButtonVue @click="toggleTheme"> Toggle Theme </ButtonVue>
-      <ButtonVue @click="applyLens"> Toggle Custom Lens </ButtonVue>
+      <Button @click="toggleTheme"> Toggle Theme </Button>
+      <Button @click="applyLens"> Toggle Custom Lens </Button>
       <SimulationButton />
     </HStack>
   </Well>

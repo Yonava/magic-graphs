@@ -6,7 +6,6 @@ import { useLensState } from '../lens/useLensState.ts';
 import { LensControls } from '../lens/useLensState.ts';
 import { useSimulationState } from '../simulation/useSimulationState.ts';
 import { SimulationControls } from '../simulation/useSimulationState.ts';
-import { LensChipDefinition } from '../ui/lens-chips/types.ts';
 import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
 import { provideGraph } from './useProvidedGraph.ts';
 

@@ -3,14 +3,8 @@ import type { Ref } from 'vue';
 import { usePanAndZoom } from './panZoom.ts';
 import { addTransform, useDevicePixelRatio } from './utils.ts';
 
-export const useCamera = (
-  canvas: Ref<HTMLCanvasElement | undefined>,
-  storageKey: string,
-) => {
-  const { getTransform: getPZTransform, ...rest } = usePanAndZoom(
-    canvas,
-    storageKey,
-  );
+export const useCamera = (canvas: Ref<HTMLCanvasElement | undefined>) => {
+  const { getTransform: getPZTransform, ...rest } = usePanAndZoom(canvas);
   const dpr = useDevicePixelRatio();
 
   return {

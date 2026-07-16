@@ -34,7 +34,7 @@ export const interactive =
       const topElement = elements.at(-1);
       if (topElement && controls.isNode(topElement.id)) return;
 
-      actions.addNode({ x: coords.x, y: coords.y });
+      actions.addNode({ position: { x: coords.x, y: coords.y } });
     };
 
     const handleEdgeTextArea = ({

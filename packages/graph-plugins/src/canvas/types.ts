@@ -1,4 +1,5 @@
 import { AnimatedShapeControls } from '@canvas/primitives/animation/index';
+import { Camera } from '@canvas/surface/camera/index';
 import { CanvasProps, Coordinate } from '@canvas/surface/types';
 import { GraphPlugin, WithTheme } from '@graph/plugins-shared/plugins';
 import { DeepReadonly } from 'ts-essentials';
@@ -50,8 +51,15 @@ type BaseCanvasControls = {
 
 export type CanvasControls = WithTheme<BaseCanvasControls, CanvasThemes>;
 
+type CanvasTransitPayload = {
+  panX: number;
+  panY: number;
+  zoom: number;
+};
+
 export type CanvasPlugin = GraphPlugin<{
   name: 'canvas';
   controls: CanvasControls;
+  transit: CanvasTransitPayload;
   events: CanvasEventMap;
 }>;

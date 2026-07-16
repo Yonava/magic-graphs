@@ -42,11 +42,17 @@ type NodeLabelGetters = {
   getNode: LabelOption;
 };
 
+type NodeLabelEncode = {
+  nodeId: string;
+  label: string;
+};
+
 export type NodeLabelPlugin = GraphPlugin<{
   name: 'nodeLabel';
   controls: WithLifecycle<NodeLabelControls>;
   actions: NodeLabelActions;
   getters: NodeLabelGetters;
+  transit: NodeLabelEncode[];
   dependsOn: [CanvasPlugin];
   optionalDependsOn: [FocusPlugin];
 }>;

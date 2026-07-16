@@ -21,15 +21,15 @@ describe(createNodePositionStore, () => {
 
     it('registers nodes with partial position overrides', () => {
       const { store } = makeStore();
-      store._internal.add([{ id: 'a', x: 10, y: 20 }]);
+      store._internal.add([{ id: 'a', position: { x: 10, y: 20 } }]);
       expect(store.get('a')).toEqual({ ...DEFAULT_POSITION, x: 10, y: 20 });
     });
 
     it('registers multiple nodes independently', () => {
       const { store } = makeStore();
       store._internal.add([
-        { id: 'a', x: 1 },
-        { id: 'b', x: 2 },
+        { id: 'a', position: { x: 1 } },
+        { id: 'b', position: { x: 2 } },
       ]);
       expect(store.get('a').x).toBe(1);
       expect(store.get('b').x).toBe(2);
@@ -93,14 +93,14 @@ describe(createNodePositionStore, () => {
 
     it('correctly sets x, y, and z to 0', () => {
       const { store } = makeStore();
-      store._internal.add([{ id: 'a', x: 5, y: 5, z: 5 }]);
+      store._internal.add([{ id: 'a', position: { x: 5, y: 5, z: 5 } }]);
       store.set({ nodeId: 'a', update: { x: 0, y: 0, z: 0 } });
       expect(store.get('a')).toMatchObject({ x: 0, y: 0, z: 0 });
     });
 
     it('accepts a getter function for the update', () => {
       const { store } = makeStore();
-      store._internal.add([{ id: 'a', x: 5 }]);
+      store._internal.add([{ id: 'a', position: { x: 5 } }]);
       store.set({ nodeId: 'a', update: (current) => ({ x: current.x + 10 }) });
       expect(store.get('a').x).toBe(15);
     });
@@ -116,7 +116,7 @@ describe(createNodePositionStore, () => {
 
     it('returns a snapshot so subsequent mutations do not affect the emitted entry', () => {
       const { store, hub } = makeStore();
-      store._internal.add([{ id: 'a', x: 1 }]);
+      store._internal.add([{ id: 'a', position: { x: 1 } }]);
       store.set({ nodeId: 'a', update: { x: 5 } });
       const [[, committed]] = hub.emit.mock.calls.filter(
         (args: unknown[]) => args[0] === 'onNodePositionsCommitted',

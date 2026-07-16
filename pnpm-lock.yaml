@@ -298,6 +298,9 @@ importers:
       '@magic/shared':
         specifier: workspace:*
         version: link:../magic-shared
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 13.9.0(vue@3.5.39(typescript@6.0.3))
       fraction.js:
         specifier: ^5.3.4
         version: 5.3.4
