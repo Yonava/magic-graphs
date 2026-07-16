@@ -1,4 +1,5 @@
 import type { FontWeight } from '@canvas/primitives/text/types';
+import { Coordinate } from '@canvas/surface/types';
 import { Color } from '@core/utils/colors';
 import { ComputedTokenDetectorMap } from '@graph/plugins-shared/computed-tokens';
 import {
@@ -47,7 +48,7 @@ export type EdgeThemeValues = {
 
 type CanvasThemeValues = {
   color: ThemeValue<string>;
-  patternColor: ThemeValue<string>;
+  patternColor: ThemeValue<string, [Coordinate, alpha: string]>;
   cursor: ThemeValue<Cursor | CursorFallback>;
 };
 
