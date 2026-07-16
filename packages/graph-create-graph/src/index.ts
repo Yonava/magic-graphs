@@ -166,7 +166,7 @@ export const createGraph = <
   };
 
   const edgeCanvasElement = (edge: CoreEdge): CanvasElement | undefined => {
-    // assume we have canvas plugin!
+    // assume we have canvas in controls since this is a theme aware orchestrator!
     const castControls = controls as unknown as CoreControls & {
       canvas: CanvasControls;
     };

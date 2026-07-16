@@ -1,5 +1,3 @@
-import { nullThrows } from '@core/utils/assert';
-import { generateId } from '@core/utils/id';
 import { getValue } from '@core/utils/maybeGetter/index';
 
 import { UPPERCASE_ALPHABET } from './constants.ts';
@@ -15,12 +13,8 @@ export const nodeLabel: NodeLabelPlugin = ({
 }) => {
   const nodeIdToLabel = new Map<string, string>();
 
-  const getNodeLabel = (nodeId: string) => nodeIdToLabel.get(nodeId);
-  const getNodeLabelWithAssert: NodeLabelControls['get'] = (nodeId) =>
-    nullThrows(
-      getNodeLabel(nodeId),
-      'could not find label on node with id:' + nodeId,
-    );
+  const getNodeLabel: NodeLabelControls['get'] = (nodeId: string) =>
+    nodeIdToLabel.get(nodeId) ?? '?';
 
   const setNodeLabels: NodeLabelControls['setMany'] = (labels) => {
     return labels.map(({ nodeId, label: labelOrLabelGetter }) => {
@@ -39,7 +33,7 @@ export const nodeLabel: NodeLabelPlugin = ({
     sequence: UPPERCASE_ALPHABET,
   });
 
-  const themer = createLabelThemer(controls, getNodeLabelWithAssert);
+  const themer = createLabelThemer(controls, getNodeLabel);
 
   const enable = themer.enable;
   const disable = themer.disable;
@@ -55,33 +49,27 @@ export const nodeLabel: NodeLabelPlugin = ({
           nodeId,
           label,
         })),
-      decode: (data) => {
-        setNodeLabels(data);
-      },
+      decode: (data) => setNodeLabels(data),
       validate: (data) => true,
     },
     getters: {
       ...getters,
       getNode: (id) => {
         const node = getters.getNode(id);
-        const label = getNodeLabelWithAssert(node.id);
+        const label = getNodeLabel(node.id);
         return { ...node, label };
       },
     },
     actions: {
       ...actions,
       addNode: (options) => {
-        const id = options?.id ?? generateId();
-        // TODO addNode transaction might fail, and if it does it will
-        // leave dangling labels in memory
+        const node = actions.addNode(options);
         setNodeLabels([
-          { label: options.label ?? generateLabel(), nodeId: id },
+          { label: options.label ?? generateLabel(), nodeId: node.id },
         ]);
-        return actions.addNode({ ...options, id });
+        return node;
       },
       removeNode: (options) => {
-        // remove node then delete since removing triggers a transaction which triggered a repaint.
-        // And on that one tick where the repaint happens and the label has already been deleted, the program throws errors
         const removalPayload = actions.removeNode(options);
         nodeIdToLabel.delete(options.id);
         return removalPayload;
@@ -105,7 +93,7 @@ export const nodeLabel: NodeLabelPlugin = ({
       },
     },
     controls: {
-      get: getNodeLabelWithAssert,
+      get: getNodeLabel,
       set: (label) => setNodeLabels([label]),
       setMany: setNodeLabels,
       lifecycle: {
