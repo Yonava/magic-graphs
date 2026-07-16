@@ -1,18 +1,12 @@
 import { nullThrows } from '@core/utils/assert';
 import { generateId } from '@core/utils/id';
-import { CoreNode } from '@graph/primitives/types';
 
 import { CreateCoreAction } from '../../types.ts';
-
-export const nodeDefaults = () =>
-  ({
-    id: generateId(),
-  }) as const satisfies Partial<CoreNode>;
 
 export const createAddNodeHandler: CreateCoreAction<'addNode'> =
   ({ graph, commitTransaction }) =>
   (node) => {
-    const nodeWithDefaults = { ...nodeDefaults(), ...node };
+    const newNode = { id: generateId(), ...node };
 
     // https://github.com/Yonava/magic-graphs/issues/685
     // must be before commitTransaction because
@@ -23,9 +17,9 @@ export const createAddNodeHandler: CreateCoreAction<'addNode'> =
     // is successful because if the transaction fails, node
     // positioning system will hold a reference to a node id that
     // doesn't exist in the graph
-    graph.positions._internal.add([nodeWithDefaults]);
+    graph.positions._internal.add([newNode]);
 
-    const { addedNodes } = commitTransaction({ addNodes: [nodeWithDefaults] });
+    const { addedNodes } = commitTransaction({ addNodes: [newNode] });
 
     const telemetryNode = nullThrows(
       addedNodes[0],

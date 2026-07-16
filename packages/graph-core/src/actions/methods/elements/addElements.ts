@@ -1,17 +1,17 @@
+import { generateId } from '@core/utils/id';
+
 import { CreateCoreAction } from '../../types.ts';
-import { edgeDefaults } from '../edges/addEdge.ts';
-import { nodeDefaults } from '../nodes/addNode.ts';
 
 export const createAddElementsHandler: CreateCoreAction<'addElements'> =
   ({ graph, commitTransaction }) =>
   ({ nodes = [], edges = [] }) => {
-    const edgesWithDefaults = edges.map((edge) => ({
-      ...edgeDefaults(),
-      ...edge,
+    const newNodes = nodes.map((n) => ({
+      id: generateId(),
+      ...n,
     }));
-    const nodesWithDefaults = nodes.map((node) => ({
-      ...nodeDefaults(),
-      ...node,
+    const newEdges = edges.map((e) => ({
+      id: generateId(),
+      ...e,
     }));
 
     // https://github.com/Yonava/magic-graphs/issues/685
@@ -23,12 +23,12 @@ export const createAddElementsHandler: CreateCoreAction<'addElements'> =
     // is successful because if the transaction fails, node
     // positioning system will hold a reference to a node id that
     // doesn't exist in the graph
-    graph.positions._internal.add(nodesWithDefaults);
-    graph.weights._internal.add(edgesWithDefaults);
+    graph.positions._internal.add(newNodes);
+    graph.weights._internal.add(newEdges);
 
     const { addedEdges, addedNodes } = commitTransaction({
-      addNodes: nodesWithDefaults,
-      addEdges: edgesWithDefaults,
+      addNodes: newNodes,
+      addEdges: newEdges,
     });
 
     return { addedEdges, addedNodes };

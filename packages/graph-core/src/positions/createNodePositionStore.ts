@@ -108,7 +108,7 @@ export const createNodePositionStore = (
     _internal: {
       nodeIdToNodePosition,
       add: (nodePositions) => {
-        for (const { id, ...position } of nodePositions) {
+        for (const { id, position } of nodePositions) {
           nodeIdToNodePosition.set(id, {
             ...DEFAULT_POSITION,
             ...position,

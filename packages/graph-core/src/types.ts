@@ -25,12 +25,12 @@ export type CoreControls = {
 };
 
 type NodePositionTransitEncode = {
-  nodeId: string;
+  id: string;
   position: Position;
 };
 
 type EdgeWeightsTransitEncode = {
-  edgeId: string;
+  id: string;
   weight: string; // serialized fraction encoding
 };
 
