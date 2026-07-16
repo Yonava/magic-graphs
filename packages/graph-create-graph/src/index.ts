@@ -1,4 +1,5 @@
 import { nullThrows } from '@core/utils/assert';
+import { getValue } from '@core/utils/maybeGetter/index';
 import { core as createCore } from '@graph/core/index';
 import { CoreOptions } from '@graph/core/options';
 import { CoreControls } from '@graph/core/types';
@@ -109,10 +110,11 @@ export const createGraph = <
         (themePresets as any)[activePresetName][pluginResult.name],
       );
       for (const token of tokens) {
-        set(
-          token,
-          () =>
+        set(token, (...args: any[]) =>
+          getValue(
             (themePresets as any)[activePresetName][pluginResult.name][token],
+            ...args,
+          ),
         );
       }
 

@@ -140,6 +140,15 @@ export const canvas =
       }
     });
 
+    magicCanvas.draw.backgroundPattern.value = (ctx, at, alpha) => {
+      cross({
+        at,
+        size: 12,
+        lineWidth: 1,
+        fillColor: theme._resolveToken('canvas.patternColor', at, alpha),
+      }).draw(ctx);
+    };
+
     events.subscribe('onDraw', () => {
       const canvas = magicCanvas.canvas.value;
       if (!canvas) return;
@@ -156,14 +165,6 @@ export const canvas =
         positions: controls.positions,
       });
     });
-
-    magicCanvas.draw.backgroundPattern.value = (ctx, at, alpha) =>
-      cross({
-        at,
-        size: 12,
-        lineWidth: 1,
-        fillColor: theme._resolveToken('canvas.patternColor') + alpha,
-      }).draw(ctx);
 
     return {
       name: 'canvas',

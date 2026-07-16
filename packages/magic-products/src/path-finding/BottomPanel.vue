@@ -1,15 +1,13 @@
 <script setup lang="ts">
+  import colors from '@core/utils/colors';
   import Button from '@magic/shared/Button';
   import HStack from '@magic/shared/HStack';
-  import Tooltip from '@magic/shared/Tooltip';
   import Well from '@magic/shared/Well';
-  import { GraphEncode } from '@magic/shared/graph/types';
   import { Lens } from '@magic/shared/lens';
   import { useProvidedGraph } from '@magic/shared/product';
   import { useThemer } from '@magic/shared/themer';
-  import { useLocalStorage } from '@vueuse/core';
 
-  import { defineAsyncComponent, ref } from 'vue';
+  import { defineAsyncComponent } from 'vue';
 
   import SimulationButton from './SimulationButton.vue';
 
@@ -22,7 +20,10 @@
 
   const themer = useThemer({
     canvas: {
-      'canvas.patternColor': 'red',
+      'canvas.patternColor': (at, alpha) => {
+        if (at.x >= 110) return;
+        return colors.AMBER_500 + alpha;
+      },
       'node.default.border.color': 'blue',
     },
     focus: {},
