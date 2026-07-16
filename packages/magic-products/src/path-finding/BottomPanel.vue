@@ -54,7 +54,7 @@
   };
 
   const applyLens = () => {
-    if (graph.magic.lens.activeId.value) {
+    if (graph.magic.lens.activeId.value === customLens.id) {
       graph.magic.lens.remove(customLens.id);
       return;
     }
