@@ -5,6 +5,7 @@ import { CoreControls, CoreTransitPayload } from '@graph/core/types';
 import { GraphActions } from '@graph/primitives/actions/types';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { BaseGetters } from '@graph/primitives/getters/types';
+import { StructuralEventMap } from '@graph/primitives/transactions/types';
 import { TransitControls } from '@graph/primitives/transit/types';
 import { UnionToIntersection } from 'ts-essentials';
 
@@ -69,8 +70,9 @@ export type ExtractGetters<TPlugins extends LooseGraphPlugin[]> =
 
 export type ExtractEventMap<TPlugins extends LooseGraphPlugin[]> =
   TPlugins extends never[]
-    ? // all plugins come pre-baked with core events
-      CoreEventMap
+    ? // all plugins come pre-baked with core events, plus the structural events
+      // create-graph merges in before folding begins
+      CoreEventMap & StructuralEventMap
     : UnionToIntersection<
         ReturnType<RemoveArray<NoInfer<TPlugins>>> extends {
           events: EventHub<infer EventMap>;

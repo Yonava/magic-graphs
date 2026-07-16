@@ -5,6 +5,7 @@ import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
+import { StructuralEventMap } from '@graph/primitives/transactions/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
@@ -30,7 +31,7 @@ export const marquee: MarqueePlugin = ({
   const marqueeEventHub = createEventHub(marqueeEventRegistry);
   const events = mergeEventHubs<
     MarqueeEventMap,
-    CoreEventMap & CanvasEventMap & FocusEventMap
+    CoreEventMap & StructuralEventMap & CanvasEventMap & FocusEventMap
   >(marqueeEventHub, graphEventMap);
 
   const theme = createThemeController(createMarqueeThemeOverrides());

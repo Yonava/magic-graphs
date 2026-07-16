@@ -39,7 +39,7 @@ export const createGraph = <
 >({
   plugins,
   themePresets,
-  options = {},
+  options: coreOptions = {},
 }: CreateGraphOptions<TPlugins, PresetName>) => {
   const presetNames = Object.keys(themePresets) as PresetName[];
 
@@ -48,7 +48,12 @@ export const createGraph = <
     'createGraph requires at least 1 theme preset!',
   );
 
-  const folded = foldPlugins(options, plugins, themePresets, activePresetName);
+  const folded = foldPlugins(
+    coreOptions,
+    plugins,
+    themePresets,
+    activePresetName,
+  );
 
   const events = folded.events as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
 

@@ -22,4 +22,17 @@ export const useLocalStorageGraphSync = (graph: Graph) => {
 
   graph.events.subscribe('onStructureChange', save);
   graph.events.subscribe('onNodeDrop', save);
+
+  graph.events.subscribe('onStructureChange', () => {
+    console.log('structure changed');
+  });
+  graph.events.subscribe('onNodesAdded', () => {
+    console.log('nodes added');
+  });
+  graph.events.subscribe('onEdgesAdded', () => {
+    console.log('edges added');
+  });
+  graph.events.subscribe('onEdgeWeightsCommitted', () => {
+    console.log('weight changed');
+  });
 };

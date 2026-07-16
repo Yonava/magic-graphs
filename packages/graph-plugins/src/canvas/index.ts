@@ -6,6 +6,7 @@ import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
+import { StructuralEventMap } from '@graph/primitives/transactions/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import { createAggregator } from './aggregator/createAggregator.ts';
@@ -27,7 +28,7 @@ export const canvas =
   ({ controls, events: graphEventHub, actions, getters }) => {
     const canvasEventRegistry = createCanvasEventRegistry();
     const canvasEventHub = createEventHub(canvasEventRegistry);
-    const events = mergeEventHubs<CanvasEventMap, CoreEventMap>(
+    const events = mergeEventHubs<CanvasEventMap, CoreEventMap & StructuralEventMap>(
       canvasEventHub,
       graphEventHub,
     );

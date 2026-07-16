@@ -5,6 +5,7 @@ import { NodePositionStreamControls } from '@graph/core/positions/types';
 import { createDragState } from '@graph/plugins-shared/drag';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
+import { StructuralEventMap } from '@graph/primitives/transactions/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
@@ -31,7 +32,11 @@ export const nodeDrag: NodeDragPlugin = ({
   const nodeDragEventHub = createEventHub(nodeDragEventRegistry);
   const events = mergeEventHubs<
     NodeDragEventMap,
-    CoreEventMap & CanvasEventMap & MarqueeEventMap & FocusEventMap
+    CoreEventMap &
+      StructuralEventMap &
+      CanvasEventMap &
+      MarqueeEventMap &
+      FocusEventMap
   >(nodeDragEventHub, graphEventMap);
 
   const dragState = createDragState<NodeIdDragState>();

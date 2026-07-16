@@ -2,7 +2,6 @@ import { EventHub } from '@graph/primitives/events/createEventHub';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { CoreEventMap } from '../events.ts';
-import { propagateTransactionEvents } from './propagateTransactionEvents.ts';
 import { TransactionOptions } from './types.ts';
 
 type TransactionSucceededOptions = Pick<EventHub<CoreEventMap>, 'emit'> & {
@@ -39,6 +38,6 @@ export const setupTransactionSucceeded = ({
       })),
     );
 
-    propagateTransactionEvents(payload, emit);
+    emit('onTransactionComplete', payload);
   };
 };

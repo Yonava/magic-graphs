@@ -4,6 +4,7 @@ import { CoreControls } from '@graph/core/types';
 import { GraphPlugin } from '@graph/plugins-shared/plugins';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { GraphGetters } from '@graph/primitives/getters/types';
+import { StructuralEventMap } from '@graph/primitives/transactions/types';
 import { CoreNode } from '@graph/primitives/types';
 import { DeepReadonly } from 'ts-essentials';
 
@@ -20,7 +21,7 @@ export type Graph = Pick<
   CoreControls,
   'metadata' | 'nodes' | 'edges' | 'helpers'
 > & {
-  events: EventHub<CoreEventMap>;
+  events: EventHub<CoreEventMap & StructuralEventMap>;
 } & GraphGetters<CoreGetters>;
 
 /**

@@ -1,6 +1,7 @@
 import { CoreEventMap } from '@graph/core/events';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
+import { StructuralEventMap } from '@graph/primitives/transactions/types';
 
 import { MAX_HISTORY } from './constants.ts';
 import { HistoryEventMap, createHistoryEventRegistry } from './events.ts';
@@ -13,7 +14,10 @@ export const history: HistoryPlugin = ({
 }) => {
   const historyRegistry = createHistoryEventRegistry();
   const historyEventHub = createEventHub(historyRegistry);
-  const events = mergeEventHubs<HistoryEventMap, CoreEventMap>(
+  const events = mergeEventHubs<
+    HistoryEventMap,
+    CoreEventMap & StructuralEventMap
+  >(
     historyEventHub,
     graphEventHub,
   );

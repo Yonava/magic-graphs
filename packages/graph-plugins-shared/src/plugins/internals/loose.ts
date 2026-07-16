@@ -8,6 +8,7 @@ import {
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { GenericEventMap } from '@graph/primitives/events/types';
 import { BaseGetters, GraphGetters } from '@graph/primitives/getters/types';
+import { StructuralEventMap } from '@graph/primitives/transactions/types';
 
 export type LoosePluginSchema = {
   name: string;
@@ -22,8 +23,11 @@ export type LoosePluginSchema = {
 
 type LoosePluginInput = {
   controls: any;
-  events: EventHub<CoreEventMap>;
+  events: EventHub<CoreEventMap & StructuralEventMap>;
   actions: GraphActions<CoreActions>;
+  // see [2] in ./plugin.ts — a stable accessor for the fully-composed graph
+  // actions, safe to capture in a closure and invoke after folding completes
+  finalActions: GraphActions<CoreActions>;
   getters: GraphGetters<CoreGetters>;
 };
 
@@ -31,7 +35,7 @@ type LoosePluginOutput = {
   name: LooseGraphPlugin['name'];
   controls: LoosePluginSchema['controls'];
   // [1]
-  events: EventHub<CoreEventMap & LoosePluginSchema['events']>;
+  events: EventHub<CoreEventMap & StructuralEventMap & LoosePluginSchema['events']>;
   actions: GraphActions<any>;
   getters: GraphGetters<any>;
   onAfterInit?: () => void;
