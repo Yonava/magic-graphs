@@ -6,6 +6,11 @@ export const UNRECOGNIZED_KEY = (eventName: string) =>
 const UNRECOGNIZED_KEY_WARNING = (eventName: string) =>
   console.warn(UNRECOGNIZED_KEY(eventName));
 
+// EventMap1/EventMap2 only appear in contravariant (parameter) positions across
+// EventHub's methods (subscribe/unsubscribe/handle/emit all take `keyof T`).
+// TS can't reliably infer a generic from contravariant-only sites, so callers
+// with non-trivial maps (e.g. intersections) usually need to pass the type
+// params explicitly rather than relying on inference from the hub arguments.
 export const mergeEventHubs = <
   EventMap1 extends GenericEventMap,
   EventMap2 extends GenericEventMap,
