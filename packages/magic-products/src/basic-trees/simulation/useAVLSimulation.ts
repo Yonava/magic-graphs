@@ -138,6 +138,29 @@ export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
         highlights: [{}],
       };
     }
+    if (frame.action === 'compare-removal') {
+      return {
+        content:
+          `Comparing [${frame.targetNode}] to [${frame.comparedNode}]` +
+          (frame.targetNode === frame.comparedNode ? '. Found It!' : ''),
+        highlights: [
+          {
+            activate: () => {
+              nodeId.value = frame.targetNode.toString();
+              themer.activate();
+            },
+            deactivate: themer.deactivate,
+          },
+          {
+            activate: () => {
+              nodeId.value = frame.comparedNode.toString();
+              themer.activate();
+            },
+            deactivate: themer.deactivate,
+          },
+        ],
+      };
+    }
   };
 
   const definition: SimulationDefinition<AVLFrame> = {

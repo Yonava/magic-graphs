@@ -1,8 +1,8 @@
 import { nullThrows } from '@core/utils/assert';
 import { FrameCollector } from '@magic/shared/simulation';
 
-import { getTreeHeight } from './simulation/getTreeHeight.ts';
 import { TreeNode } from './simulation/TreeNode.ts';
+import { getTreeHeight } from './simulation/getTreeHeight.ts';
 import { AVLFrame, AVLFrameNoRoot } from './simulation/types.ts';
 
 const getBalance = (node: TreeNode) =>
@@ -25,7 +25,7 @@ export class AVLTree {
 
     collector.add({
       ...entry,
-      root: JSON.parse(JSON.stringify(this.root)),
+      root: this.root ? JSON.parse(JSON.stringify(this.root)) : undefined,
     });
   }
 
@@ -78,7 +78,7 @@ export class AVLTree {
 
       if (!targetFound) {
         this.addFrame({
-          action: 'compare',
+          action: 'compare-removal',
           targetNode: value,
           comparedNode: node.value,
         });

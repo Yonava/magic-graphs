@@ -20,6 +20,11 @@ type CompareFrame = {
   comparedNode: TreeNode['value'];
 } & TargetNode;
 
+type CompareForRemovalFrame = {
+  action: 'compare-removal';
+  comparedNode: TreeNode['value'];
+} & TargetNode;
+
 type BalanceFrame = {
   action: 'balance';
   method: BalanceMethod;
@@ -34,7 +39,11 @@ type RemoveFrame = {
 } & TargetNode;
 
 export type AVLFrameNoRoot =
-  CompareFrame | BalanceFrame | InsertFrame | RemoveFrame;
+  | CompareFrame
+  | CompareForRemovalFrame
+  | BalanceFrame
+  | InsertFrame
+  | RemoveFrame;
 
 export type AVLFrame = AVLFrameNoRoot & { root: TreeNode | undefined };
 
