@@ -2,7 +2,6 @@
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import BottomPanel from './BottomPanel.vue';
-  import { useLocalStorageGraphSync } from './useLocalStorageGraphSync.ts';
 
   const graph = useGraphProduct({
     interactive: {
@@ -14,8 +13,6 @@
       annotations: true,
     },
   });
-
-  useLocalStorageGraphSync(graph);
 
   graph.magic.componentSlots.add({
     id: 'panel',

@@ -7,6 +7,7 @@ import { LensControls } from '../lens/useLensState.ts';
 import { useSimulationState } from '../simulation/useSimulationState.ts';
 import { SimulationControls } from '../simulation/useSimulationState.ts';
 import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
+import { useLocalStorageGraphSync } from './useLocalStorageGraphSync.ts';
 import { provideGraph } from './useProvidedGraph.ts';
 
 type GraphProductOptions = UseGraphOptions & {
@@ -41,6 +42,7 @@ export const useGraphProduct = (options?: GraphProductOptions) => {
     },
   };
 
+  useLocalStorageGraphSync(graph);
   provideGraph(magicGraph);
 
   return magicGraph;

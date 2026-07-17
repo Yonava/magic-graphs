@@ -1,6 +1,6 @@
-import { Graph } from '@magic/shared/graph';
-
 import { onMounted } from 'vue';
+
+import { Graph } from '../graph/types.ts';
 
 const localStorageKey = 'graph-data';
 
