@@ -8,40 +8,38 @@ type BalanceMethod = 'left-left' | 'right-right' | 'left-right' | 'right-left';
  *
  * Each index in the array is the tree node value at that position, or `undefined` if no node exists at that position.
  */
-type TreeNodeValueArray = (TreeNode['value'] | undefined)[];
+export type TreeNodeValueArray = (TreeNode['value'] | undefined)[];
 
 type TargetNode = {
   targetNode: TreeNode['value'];
 };
 
-type TreeState = {
-  /**
-   * the state of the tree in array form
-   */
-  treeState: TreeNodeValueArray;
-};
-
 type CompareFrame = {
   action: 'compare';
   comparedNode: TreeNode['value'];
-} & TargetNode &
-  TreeState;
+} & TargetNode;
 
 type BalanceFrame = {
   action: 'balance';
   method: BalanceMethod;
-} & TreeState;
+};
 
 type InsertFrame = {
   action: 'insert';
-} & TargetNode &
-  TreeState;
+} & TargetNode;
 
 type RemoveFrame = {
   action: 'remove';
-} & TargetNode &
-  TreeState;
+} & TargetNode;
 
-export type AVLFrame = CompareFrame | BalanceFrame | InsertFrame | RemoveFrame;
+export type AVLFrameNoRoot =
+  CompareFrame | BalanceFrame | InsertFrame | RemoveFrame;
+
+export type AVLFrame = AVLFrameNoRoot & { root: TreeNode | undefined };
 
 export type AVLMode = 'insert' | 'remove';
+
+export type Coordinate = {
+  x: number;
+  y: number;
+};

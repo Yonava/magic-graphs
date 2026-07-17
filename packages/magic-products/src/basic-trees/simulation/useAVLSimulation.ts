@@ -1,18 +1,23 @@
 import { nullThrows } from '@core/utils/assert';
-import { generateId } from '@core/utils/id';
 import { useProvidedGraph } from '@magic/shared/product';
 import { SimulationDefinition } from '@magic/shared/simulation';
 
-import { Ref, computed, ref } from 'vue';
+import { ComputedRef, Ref, ref } from 'vue';
 
 import { AVLTree } from '../AVLTree.ts';
+import { TreeNode } from './TreeNode.ts';
+import { treeArrayToGraph } from './treeArrayToGraph.ts';
 import { AVLFrame, AVLMode } from './types.ts';
+
+const ROOT_POSITION = {
+  x: 800,
+  y: 400,
+};
 
 type Controls = {
   mode: Ref<AVLMode>;
   targetNodeValue: Ref<number>;
   definition: SimulationDefinition<AVLFrame>;
-  nodeValue: (nodeId: string) => number;
 };
 
 export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
@@ -23,12 +28,7 @@ export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
 
   const tree = new AVLTree();
 
-  const nodeIdToValue = ref<Map<string, number>>(new Map());
-
-  const nodeValue = (nodeId: string) =>
-    nullThrows(nodeIdToValue.value.get(nodeId), 'no value found!');
-
-  const sync = () => {
+  const sync = (root: TreeNode | undefined) => {
     graph.actions.removeElements(
       {
         nodes: graph.nodes.value,
@@ -37,50 +37,32 @@ export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
       {},
     );
 
-    const nodesInTree = tree.toArray();
-    const definedNodes = nodesInTree.filter((v) => v !== undefined);
+    const graphState = treeArrayToGraph(root, ROOT_POSITION);
 
-    const newMap: Map<string, number> = new Map();
-
-    const newNodes = definedNodes.map((v) => ({
-      label: v.toString(),
-      id: generateId(),
-    }));
-
-    for (const node of newNodes) {
-      newMap.set(node.id, Number(node.label));
-    }
-
-    nodeIdToValue.value = newMap;
-
-    graph.actions.addElements(
-      {
-        nodes: newNodes,
-        edges: [],
-      },
-      { focus: false },
-    );
+    graph.actions.addElements(graphState, { focus: false });
   };
 
   const definition: SimulationDefinition<AVLFrame> = {
     collectFrames: (collector) => {
-      tree.attachCollector(collector);
+      tree.attachFrameCollector(collector);
       if (mode.value === 'insert') {
         tree.insert(targetNodeValue.value);
       } else {
         tree.remove(targetNodeValue.value);
       }
     },
-    setup: () => {
+    setup: (context) => {
+      const { currentFrame, frames } = context;
       return {
         explainer: (frame) => ({
           content: frame.action,
         }),
+        onSetupCompleted: () => sync(currentFrame.value.root),
+        onFrameTransition: () => sync(currentFrame.value.root),
+        onBeforeTeardown: () =>
+          sync(nullThrows(frames.value.at(-1)?.root, 'last frame undefined')),
       };
     },
-    onSetupCompleted: sync,
-    onFrameTransition: sync,
-    onTeardownCompleted: sync,
     recomputeFramesOnStructureChange: false,
   };
 
@@ -88,6 +70,5 @@ export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
     targetNodeValue,
     mode,
     definition,
-    nodeValue,
   };
 };

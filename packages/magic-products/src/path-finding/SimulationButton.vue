@@ -9,8 +9,6 @@
   } from '@magic/shared/simulation';
   import { createThemer } from '@magic/shared/themer/useThemer';
 
-  import { defineAsyncComponent } from 'vue';
-
   const graph = useProvidedGraph();
 
   const nodeIdBox = { value: '' };
@@ -58,6 +56,15 @@
       };
 
       return {
+        onTeardownCompleted: () => {
+          console.log('Torn Down!');
+          explainerThemer.deactivate();
+        },
+        onFrameTransition: (newFrame, oldFrame) => {
+          console.log(
+            `${graph.nodeLabel.get(oldFrame)} -> ${graph.nodeLabel.get(newFrame)}`,
+          );
+        },
         lens,
         explainer: (nodeId) => {
           const nodeLabel = graph.nodeLabel.get(nodeId);
@@ -86,15 +93,6 @@
           };
         },
       };
-    },
-    onTeardownCompleted: () => {
-      console.log('Torn Down!');
-      explainerThemer.deactivate();
-    },
-    onFrameTransition: (newFrame, oldFrame) => {
-      console.log(
-        `${graph.nodeLabel.get(oldFrame)} -> ${graph.nodeLabel.get(newFrame)}`,
-      );
     },
   };
 

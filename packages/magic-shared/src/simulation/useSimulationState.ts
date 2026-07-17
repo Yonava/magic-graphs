@@ -35,7 +35,7 @@ type Playhead = {
   seek: (position: number) => void;
 };
 
-type Simulation<Frame> = {
+export type Simulation<Frame> = {
   definition: SimulationDefinition<Frame>;
   frames: Frame[];
   playhead: Playhead;
@@ -55,8 +55,10 @@ export const useSimulationState = (
   const getSimulation = () =>
     nullThrows(simulation.value, 'no running simulation!');
 
+  const allFrames = computed(() => getSimulation().frames);
+
   const getFrame = (index: number) =>
-    nullThrows(getSimulation().frames[index], `no frame at position ${index}`);
+    nullThrows(allFrames.value[index], `no frame at position ${index}`);
 
   const currentFrame = computed(() => {
     const sim = simulation.value;
@@ -87,10 +89,7 @@ export const useSimulationState = (
       position.value = newPosition;
 
       const sim = getSimulation();
-      sim.definition.onFrameTransition?.(
-        getFrame(newPosition),
-        getFrame(oldPosition),
-      );
+      sim.onFrameTransition?.(getFrame(newPosition), getFrame(oldPosition));
     };
 
     return {
@@ -154,7 +153,10 @@ export const useSimulationState = (
 
     const { frames, playhead } = computeRun(definition);
 
-    const setupContext: SetupContext<Frame> = { currentFrame };
+    const setupContext: SetupContext<Frame> = {
+      currentFrame,
+      frames: allFrames,
+    };
     const simulationEffects = definition.setup(setupContext);
 
     simulation.value = {
@@ -176,17 +178,17 @@ export const useSimulationState = (
       lensControls.add(simulation.value.lens);
     }
 
-    definition.onSetupCompleted?.();
+    simulation.value.onSetupCompleted?.();
   };
 
   const stop = () => {
     const sim = getSimulation();
-
+    sim.onBeforeTeardown?.();
     // if running sim had an active violation lens, remove the lens
     if (sim.violation?.lens) lensControls.remove(sim.violation.lens.id);
     componentSlotControls.remove(SCRUBBER_COMPONENT_ID);
     if (sim.lens) lensControls.remove(sim.lens.id);
-    sim.definition.onTeardownCompleted?.();
+    sim.onTeardownCompleted?.();
     simulation.value = undefined;
   };
 
@@ -245,7 +247,7 @@ export const useSimulationState = (
     const newFrame = currentFrame.value;
 
     const diff = delta(oldFrame, newFrame);
-    if (diff !== null) sim.definition.onFrameTransition?.(newFrame, oldFrame);
+    if (diff !== null) sim.onFrameTransition?.(newFrame, oldFrame);
   });
 
   return {

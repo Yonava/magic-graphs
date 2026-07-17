@@ -10,6 +10,7 @@ export type FrameCollector<Frame> = {
 };
 
 export type SetupContext<Frame> = {
+  frames: ComputedRef<Frame[]>;
   currentFrame: ComputedRef<Frame>;
 };
 
@@ -25,10 +26,17 @@ export type Explainer = {
   highlights?: MaybeGetter<ExplainerHighlight[]>;
 };
 
+export type SimulationLifecycle<Frame> = {
+  onSetupCompleted?: () => void;
+  onBeforeTeardown?: () => void;
+  onTeardownCompleted?: () => void;
+  onFrameTransition?: (newFrame: Frame, oldFrame: Frame) => void;
+};
+
 export type SimulationEffects<Frame> = {
   lens?: Lens;
   explainer?: (frame: Frame) => Explainer;
-};
+} & SimulationLifecycle<Frame>;
 
 export type SimulationDefinition<Frame> = {
   /**
@@ -43,9 +51,5 @@ export type SimulationDefinition<Frame> = {
   setup: (context: SetupContext<Frame>) => SimulationEffects<Frame> | undefined;
 
   recomputeFramesOnStructureChange?: boolean;
-
-  onSetupCompleted?: () => void;
-  onTeardownCompleted?: () => void;
-  onFrameTransition?: (newFrame: Frame, oldFrame: Frame) => void;
   // add: mutations (add, remove, move etc) that may occur at a given step
 };

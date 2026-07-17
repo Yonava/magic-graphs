@@ -1,16 +1,12 @@
+import { nullThrows } from '@core/utils/assert';
 import { FrameCollector } from '@magic/shared/simulation';
 
 import { TreeNode } from './simulation/TreeNode.ts';
-import { treeToArray } from './simulation/treeToArray.ts';
-import { AVLFrame } from './simulation/types.ts';
-
-const getHeight = (node: TreeNode | undefined) => {
-  return node ? node.height : 0;
-};
+import { AVLFrame, AVLFrameNoRoot } from './simulation/types.ts';
 
 const getBalance = (node: TreeNode) => {
-  const leftHeight = getHeight(node?.left);
-  const rightHeight = getHeight(node?.right);
+  const leftHeight = node?.left?.height ?? 0;
+  const rightHeight = node?.right?.height ?? 0;
   return leftHeight - rightHeight;
 };
 
@@ -22,8 +18,17 @@ export class AVLTree {
     this.root = root;
   }
 
-  attachCollector(frameCollector: FrameCollector<AVLFrame>) {
+  attachFrameCollector(frameCollector: FrameCollector<AVLFrame>) {
     this.frameCollector = frameCollector;
+  }
+
+  private addFrame(entry: AVLFrameNoRoot) {
+    const collector = nullThrows(this.frameCollector, 'collector is undefined');
+
+    collector.add({
+      ...entry,
+      root: JSON.parse(JSON.stringify(this.root)),
+    });
   }
 
   reset() {
@@ -45,7 +50,7 @@ export class AVLTree {
   }
 
   private updateHeight(node: TreeNode): void {
-    node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
+    node.height = Math.max(node.left?.height ?? 0, node.right?.height ?? 0) + 1;
   }
 
   private removeMin(node: TreeNode): TreeNode | undefined {
@@ -79,11 +84,10 @@ export class AVLTree {
       }
 
       if (!targetFound) {
-        this.frameCollector?.add({
+        this.addFrame({
           action: 'compare',
           targetNode: value,
           comparedNode: node.value,
-          treeState: this.toArray(),
         });
       }
 
@@ -126,10 +130,9 @@ export class AVLTree {
           this.root = replacementNode;
         }
 
-        this.frameCollector?.add({
+        this.addFrame({
           action: 'remove',
           targetNode: value,
-          treeState: this.toArray(),
         });
 
         // Restore the tree for further processing
@@ -171,10 +174,9 @@ export class AVLTree {
       } else {
         this.root = result;
       }
-      this.frameCollector?.add({
+      this.addFrame({
         action: 'balance',
         method: 'left-left',
-        treeState: this.toArray(),
       });
       if (parent) {
         if (isLeft) parent.left = node;
@@ -194,10 +196,9 @@ export class AVLTree {
       } else {
         this.root = result;
       }
-      this.frameCollector?.add({
+      this.addFrame({
         action: 'balance',
         method: 'right-right',
-        treeState: this.toArray(),
       });
       if (parent) {
         if (isLeft) parent.left = node;
@@ -218,10 +219,9 @@ export class AVLTree {
       } else {
         this.root = result;
       }
-      this.frameCollector?.add({
+      this.addFrame({
         action: 'balance',
         method: 'left-right',
-        treeState: this.toArray(),
       });
       if (parent) {
         if (isLeft) parent.left = node;
@@ -242,10 +242,9 @@ export class AVLTree {
       } else {
         this.root = result;
       }
-      this.frameCollector?.add({
+      this.addFrame({
         action: 'balance',
         method: 'right-left',
-        treeState: this.toArray(),
       });
       if (parent) {
         if (isLeft) parent.left = node;
@@ -281,13 +280,6 @@ export class AVLTree {
     this.root = balanceNode(undefined, this.root, false);
   }
 
-  toArray() {
-    return treeToArray({
-      root: this.root,
-      treeDepth: getHeight(this.root),
-    }).map((node) => node?.value);
-  }
-
   private rotateRight(y: TreeNode): TreeNode {
     const x = y.left!;
     const T2 = x.right;
@@ -317,10 +309,9 @@ export class AVLTree {
   insert(value: number, rebalance = true) {
     if (!this.root) {
       this.root = new TreeNode(value);
-      this.frameCollector?.add({
+      this.addFrame({
         action: 'insert',
         targetNode: value,
-        treeState: this.toArray(),
       });
       return this.root;
     }
@@ -339,30 +330,27 @@ export class AVLTree {
         return newNode;
       }
 
-      this.frameCollector?.add({
+      this.addFrame({
         action: 'compare',
         comparedNode: node.value,
         targetNode: value,
-        treeState: this.toArray(),
       });
 
       if (value < node.value) {
         node.left = insertHelper(node, node.left, value, true);
         if (justInserted) {
-          this.frameCollector?.add({
+          this.addFrame({
             action: 'insert',
             targetNode: value,
-            treeState: this.toArray(),
           });
           justInserted = false;
         }
       } else if (value > node.value) {
         node.right = insertHelper(node, node.right, value, false);
         if (justInserted) {
-          this.frameCollector?.add({
+          this.addFrame({
             action: 'insert',
             targetNode: value,
-            treeState: this.toArray(),
           });
           justInserted = false;
         }

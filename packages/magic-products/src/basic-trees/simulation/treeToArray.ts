@@ -8,19 +8,15 @@ export type TreeArray = (TreeNode | undefined)[];
 /**
  * @returns a tree array where the index of the array corresponds to the tree index
  */
-export const treeToArray = ({
-  root,
-  treeDepth,
-}: {
-  root: TreeNode | undefined;
-  treeDepth: number;
-}) => {
+export const treeToArray = (root: TreeNode | undefined) => {
+  if (!root) return [];
+
   const treeIndexToNodeId: TreeArray = [];
   if (!root) return treeIndexToNodeId;
 
   let nodesAtDepth: TreeArray = [root];
 
-  for (let i = 0; i <= treeDepth; i++) {
+  for (let i = 0; i <= root.height; i++) {
     const nodesAtNextDepth: TreeArray = [];
 
     for (const maybeTreeNode of nodesAtDepth) {

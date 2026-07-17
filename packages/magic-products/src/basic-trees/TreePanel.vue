@@ -18,7 +18,6 @@
     definition: simDefinition,
     mode,
     targetNodeValue,
-    nodeValue,
   } = useAVLSimulationDefinition(50);
 
   const stopSim = () => {
@@ -52,9 +51,9 @@
       <Button @click="addNodeToAvl"> Add Node {{ targetNodeValue }} </Button>
       <Button
         v-for="node in graph.nodes.value"
-        @click="removeNodeFromAvl(nodeValue(node.id))"
+        @click="removeNodeFromAvl(Number(node.id))"
       >
-        Remove Node {{ nodeValue(node.id) }}
+        Remove Node {{ node.id }}
       </Button>
     </HStack>
   </Well>
