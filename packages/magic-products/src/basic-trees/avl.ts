@@ -1,3 +1,5 @@
+import { FrameCollector } from '@magic/shared/simulation';
+
 import { treeToArray } from './treeToArray.ts';
 
 /**
@@ -60,7 +62,7 @@ export type RemoveStep = {
 } & TargetNode &
   TreeState;
 
-export type TreeTraceStep = CompareStep | BalanceStep | InsertStep | RemoveStep;
+export type AVLFrame = CompareStep | BalanceStep | InsertStep | RemoveStep;
 
 export const getHeight = (node: TreeNode | undefined) => {
   return node ? node.height : 0;
@@ -73,9 +75,11 @@ export const getBalance = (node: TreeNode) => {
 };
 
 export class AVLTree {
+  frameCollector: FrameCollector<AVLFrame>;
   root: TreeNode | undefined;
 
-  constructor() {
+  constructor(frameCollector: FrameCollector<AVLFrame>) {
+    this.frameCollector = frameCollector;
     this.root = undefined;
   }
 
@@ -116,12 +120,11 @@ export class AVLTree {
     return current;
   }
 
-  remove(value: number): TreeTraceStep[] {
+  remove(value: number) {
     if (!this.root) {
       return [];
     }
 
-    const trace: TreeTraceStep[] = [];
     let targetFound = false;
 
     const removeHelper = (
@@ -135,7 +138,7 @@ export class AVLTree {
       }
 
       if (!targetFound) {
-        trace.push({
+        this.frameCollector.add({
           action: 'compare',
           targetNode: value,
           comparedNode: node.value,
@@ -182,7 +185,7 @@ export class AVLTree {
           this.root = replacementNode;
         }
 
-        trace.push({
+        this.frameCollector.add({
           action: 'remove',
           targetNode: value,
           treeState: this.toArray(),
@@ -201,21 +204,19 @@ export class AVLTree {
 
       if (node) {
         this.updateHeight(node);
-        return this.rebalance(parent, node, isLeft, trace);
+        return this.rebalance(parent, node, isLeft);
       }
 
       return node;
     };
 
     this.root = removeHelper(undefined, this.root, value, false);
-    return trace;
   }
 
   private rebalance(
     parent: TreeNode | undefined,
     node: TreeNode,
     isLeft: boolean,
-    trace: TreeTraceStep[],
   ): TreeNode {
     const balance = getBalance(node);
 
@@ -228,7 +229,7 @@ export class AVLTree {
       } else {
         this.root = result;
       }
-      trace.push({
+      this.frameCollector.add({
         action: 'balance',
         method: 'left-left',
         treeState: this.toArray(),
@@ -251,7 +252,7 @@ export class AVLTree {
       } else {
         this.root = result;
       }
-      trace.push({
+      this.frameCollector.add({
         action: 'balance',
         method: 'right-right',
         treeState: this.toArray(),
@@ -275,7 +276,7 @@ export class AVLTree {
       } else {
         this.root = result;
       }
-      trace.push({
+      this.frameCollector.add({
         action: 'balance',
         method: 'left-right',
         treeState: this.toArray(),
@@ -299,7 +300,7 @@ export class AVLTree {
       } else {
         this.root = result;
       }
-      trace.push({
+      this.frameCollector.add({
         action: 'balance',
         method: 'right-left',
         treeState: this.toArray(),
@@ -316,9 +317,7 @@ export class AVLTree {
     return node;
   }
 
-  balance(): TreeTraceStep[] {
-    const trace: TreeTraceStep[] = [];
-
+  balance() {
     const balanceNode = (
       parent: TreeNode | undefined,
       node: TreeNode | undefined,
@@ -334,11 +333,10 @@ export class AVLTree {
       this.updateHeight(node);
 
       // Use existing rebalance method
-      return this.rebalance(parent, node, isLeft, trace);
+      return this.rebalance(parent, node, isLeft);
     };
 
     this.root = balanceNode(undefined, this.root, false);
-    return trace;
   }
 
   toArray() {
@@ -374,7 +372,7 @@ export class AVLTree {
     return y;
   }
 
-  insert(value: number, rebalance = true): TreeTraceStep[] {
+  insert(value: number, rebalance = true) {
     if (!this.root) {
       this.root = new TreeNode(value);
       return [
@@ -386,7 +384,6 @@ export class AVLTree {
       ];
     }
 
-    const trace: TreeTraceStep[] = [];
     let justInserted = false;
 
     const insertHelper = (
@@ -401,7 +398,7 @@ export class AVLTree {
         return newNode;
       }
 
-      trace.push({
+      this.frameCollector.add({
         action: 'compare',
         comparedNode: node.value,
         targetNode: value,
@@ -411,7 +408,7 @@ export class AVLTree {
       if (value < node.value) {
         node.left = insertHelper(node, node.left, value, true);
         if (justInserted) {
-          trace.push({
+          this.frameCollector.add({
             action: 'insert',
             targetNode: value,
             treeState: this.toArray(),
@@ -421,7 +418,7 @@ export class AVLTree {
       } else if (value > node.value) {
         node.right = insertHelper(node, node.right, value, false);
         if (justInserted) {
-          trace.push({
+          this.frameCollector.add({
             action: 'insert',
             targetNode: value,
             treeState: this.toArray(),
@@ -434,10 +431,9 @@ export class AVLTree {
 
       this.updateHeight(node);
 
-      return rebalance ? this.rebalance(parent, node, isLeft, trace) : node;
+      return rebalance ? this.rebalance(parent, node, isLeft) : node;
     };
 
     this.root = insertHelper(undefined, this.root, value, false);
-    return trace;
   }
 }
