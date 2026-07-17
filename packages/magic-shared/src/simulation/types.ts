@@ -1,5 +1,7 @@
 import { MaybeGetter } from '@core/utils/maybeGetter/index';
 
+import { ComputedRef } from 'vue';
+
 import { Lens } from '../lens/types.ts';
 import { GuardCheck } from './guard/SimulationGuardBuilder.ts';
 
@@ -8,7 +10,7 @@ export type FrameCollector<Frame> = {
 };
 
 export type SetupContext<Frame> = {
-  getCurrentFrame: () => Frame;
+  currentFrame: ComputedRef<Frame>;
 };
 
 export type ExplainerHighlight = {
@@ -20,7 +22,7 @@ export type ExplainerHighlight = {
 
 export type Explainer = {
   content: MaybeGetter<string>;
-  highlights: MaybeGetter<ExplainerHighlight[]>;
+  highlights?: MaybeGetter<ExplainerHighlight[]>;
 };
 
 export type SimulationEffects<Frame> = {
@@ -38,6 +40,7 @@ export type SimulationDefinition<Frame> = {
   guard?: GuardCheck;
   collectFrames: (collector: FrameCollector<Frame>) => void;
   setup: (context: SetupContext<Frame>) => SimulationEffects<Frame> | undefined;
-  teardown?: () => void;
+  onFrameTransition?: () => void;
+  onTeardown?: () => void;
   // add: mutations (add, remove, move etc) that may occur at a given step
 };

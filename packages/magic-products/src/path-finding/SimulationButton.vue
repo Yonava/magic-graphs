@@ -33,7 +33,7 @@
         { id: nodeId }: { id: string },
         resolveUnderneath: () => number,
       ) => {
-        const frameNodeId = context.getCurrentFrame();
+        const frameNodeId = context.currentFrame.value;
         if (nodeId === frameNodeId) return resolveUnderneath() + 20;
       };
       const themer = createThemer(graph, {
@@ -91,7 +91,7 @@
         },
       };
     },
-    teardown: () => {
+    onTeardown: () => {
       explainerThemer.deactivate();
     },
   };

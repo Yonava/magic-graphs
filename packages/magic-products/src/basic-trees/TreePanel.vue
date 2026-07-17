@@ -1,24 +1,55 @@
 <script setup lang="ts">
+  import { nullThrows } from '@core/utils/assert';
   import { getRandomInRange } from '@core/utils/random';
-  import ButtonVue from '@magic/shared/Button';
-  import HStackVue from '@magic/shared/HStack';
-  import WellVue from '@magic/shared/Well';
+  import Button from '@magic/shared/Button';
+  import HStack from '@magic/shared/HStack';
+  import Well from '@magic/shared/Well';
+  import { useProvidedGraph } from '@magic/shared/product';
 
   import { ref } from 'vue';
 
-  const getNodeValue = () => getRandomInRange(1, 99);
+  import { useAVLSimulationDefinition } from './simulation/useAVLSimulation.ts';
 
-  const newNodeValue = ref(getNodeValue());
+  const randomNodeValue = () => getRandomInRange(1, 99);
+
+  const graph = useProvidedGraph();
+
+  const {
+    definition: simDefinition,
+    mode,
+    targetNodeValue,
+  } = useAVLSimulationDefinition(randomNodeValue());
+
+  const nodeIdToValue = ref<Map<string, number>>(new Map());
+
+  const nodeValue = (nodeId: string) =>
+    nullThrows(nodeIdToValue.value.get(nodeId), 'no value found!');
 
   const addNodeToAvl = () => {
-    newNodeValue.value = getNodeValue();
+    mode.value = 'insert';
+    graph.magic.simulation.start(simDefinition);
+    targetNodeValue.value = randomNodeValue();
+  };
+
+  const removeNodeFromAvl = (target: number) => {
+    mode.value = 'remove';
+    const prevTarget = targetNodeValue.value;
+    targetNodeValue.value = target;
+    graph.magic.simulation.start(simDefinition);
+    targetNodeValue.value = prevTarget;
   };
 </script>
 
 <template>
-  <WellVue>
-    <HStackVue>
-      <ButtonVue @click="addNodeToAvl"> Add {{ newNodeValue }} </ButtonVue>
-    </HStackVue>
-  </WellVue>
+  <Well>
+    <HStack>
+      <Button @click="addNodeToAvl"> Add Node {{ targetNodeValue }} </Button>
+      <Button
+        v-for="node in graph.nodes.value"
+        @click="removeNodeFromAvl(nodeValue(node.id))"
+      >
+        Remove Node {{ nodeValue(node.id) }}
+      </Button>
+    </HStack>
+  </Well>
 </template>

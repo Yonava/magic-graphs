@@ -1,4 +1,4 @@
-import type { TreeNode } from './avl.ts';
+import { TreeNode } from './TreeNode.ts';
 
 /**
  * the node at the index of the tree or undefined if the tree index is empty

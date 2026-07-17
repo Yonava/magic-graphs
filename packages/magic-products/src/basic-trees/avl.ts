@@ -1,68 +1,8 @@
 import { FrameCollector } from '@magic/shared/simulation';
 
-import { treeToArray } from './treeToArray.ts';
-
-/**
- * Represents a node in a binary/avl tree
- */
-export class TreeNode {
-  value: number;
-  left: TreeNode | undefined;
-  right: TreeNode | undefined;
-  height: number;
-
-  constructor(value: number) {
-    this.value = value;
-    this.left = undefined;
-    this.right = undefined;
-    this.height = 1;
-  }
-}
-
-/**
- * An array representation of a binary tree, where each index corresponds to a tree position:
- * index 0 is the root, index 1 is the left child, index 2 is the right child, etc.
- *
- * Each index in the array is the tree node value at that position, or `undefined` if no node exists at that position.
- */
-export type TreeNodeValueArray = (TreeNode['value'] | undefined)[];
-
-export type BalanceMethod =
-  'left-left' | 'right-right' | 'left-right' | 'right-left';
-
-type TargetNode = {
-  targetNode: TreeNode['value'];
-};
-
-type TreeState = {
-  /**
-   * the state of the tree in array form
-   */
-  treeState: TreeNodeValueArray;
-};
-
-export type CompareFrame = {
-  action: 'compare';
-  comparedNode: TreeNode['value'];
-} & TargetNode &
-  TreeState;
-
-export type BalanceFrame = {
-  action: 'balance';
-  method: BalanceMethod;
-} & TreeState;
-
-export type InsertFrame = {
-  action: 'insert';
-} & TargetNode &
-  TreeState;
-
-export type RemoveFrame = {
-  action: 'remove';
-} & TargetNode &
-  TreeState;
-
-export type AVLFrame = CompareFrame | BalanceFrame | InsertFrame | RemoveFrame;
+import { TreeNode } from './simulation/TreeNode.ts';
+import { treeToArray } from './simulation/treeToArray.ts';
+import { AVLFrame } from './simulation/types.ts';
 
 export const getHeight = (node: TreeNode | undefined) => {
   return node ? node.height : 0;
@@ -124,9 +64,7 @@ export class AVLTree {
   }
 
   remove(value: number) {
-    if (!this.root) {
-      return [];
-    }
+    if (!this.root) return;
 
     let targetFound = false;
 
@@ -214,6 +152,7 @@ export class AVLTree {
     };
 
     this.root = removeHelper(undefined, this.root, value, false);
+    return this.root;
   }
 
   private rebalance(
@@ -378,13 +317,12 @@ export class AVLTree {
   insert(value: number, rebalance = true) {
     if (!this.root) {
       this.root = new TreeNode(value);
-      return [
-        {
-          action: 'insert',
-          targetNode: value,
-          treeState: this.toArray(),
-        },
-      ];
+      this.frameCollector.add({
+        action: 'insert',
+        targetNode: value,
+        treeState: this.toArray(),
+      });
+      return this.root;
     }
 
     let justInserted = false;
@@ -438,5 +376,6 @@ export class AVLTree {
     };
 
     this.root = insertHelper(undefined, this.root, value, false);
+    return this.root;
   }
 }

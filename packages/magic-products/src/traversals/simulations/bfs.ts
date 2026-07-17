@@ -54,7 +54,7 @@ export const useSimulation = () => {
         {
           canvas: {
             'node.default.border.color': ({ id }) =>
-              context.getCurrentFrame() === id ? 'red' : undefined,
+              context.currentFrame.value === id ? 'red' : undefined,
           },
         },
         {

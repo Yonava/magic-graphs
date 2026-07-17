@@ -54,10 +54,11 @@ export const useSimulationState = (
   const getSimulation = () =>
     nullThrows(simulation.value, 'no running simulation!');
 
-  const getCurrentFrame = () => {
-    const sim = getSimulation();
+  const currentFrame = computed(() => {
+    const sim = simulation.value;
+    if (!sim) return;
     return sim.frames[sim.playhead.position];
-  };
+  });
 
   const initFrames = <Frame>(definition: SimulationDefinition<Frame>) => {
     const frames: Frame[] = [];
@@ -135,7 +136,7 @@ export const useSimulationState = (
 
     const { frames, playhead } = computeRun(definition);
 
-    const setupContext: SetupContext<Frame> = { getCurrentFrame };
+    const setupContext: SetupContext<Frame> = { currentFrame };
     const simulationEffects = definition.setup(setupContext);
 
     simulation.value = {
@@ -165,7 +166,7 @@ export const useSimulationState = (
     if (sim.violation?.lens) lensControls.remove(sim.violation.lens.id);
     componentSlotControls.remove(SCRUBBER_COMPONENT_ID);
     if (sim.lens) lensControls.remove(sim.lens.id);
-    sim.definition.teardown?.();
+    sim.definition.onTeardown?.();
     simulation.value = undefined;
   };
 
