@@ -32,11 +32,16 @@ type FoldedPlugins = {
 
 const applyThemePreset = (
   pluginThemeField: PluginThemeField<any>['theme'],
-  presetTokens: Record<string, any>,
+  themePresets: Record<string, any>,
+  getActivePresetName: () => string,
+  pluginName: string,
 ) => {
   const { set } = pluginThemeField.createLayer('create-graph/theme-presets');
-  for (const token of Object.keys(presetTokens)) {
-    set(token, (...args: any[]) => getValue(presetTokens[token], ...args));
+  const tokens = Object.keys(themePresets[getActivePresetName()][pluginName]);
+  for (const token of tokens) {
+    set(token, (...args: any[]) =>
+      getValue(themePresets[getActivePresetName()][pluginName][token], ...args),
+    );
   }
 };
 
@@ -45,7 +50,7 @@ export const foldPlugins = (
   coreGraph: ReturnType<typeof core>,
   plugins: LooseGraphPlugin[],
   themePresets: Record<string, any>,
-  activePresetName: () => string,
+  getActivePresetName: () => string,
 ): FoldedPlugins => {
   // create-graph owns the coarse structural events (onNodesAdded, onStructureChange, etc.)
   // since only it knows when a fully-composed plugin action has finished, not just the
@@ -96,7 +101,9 @@ export const foldPlugins = (
     if (pluginThemeField) {
       applyThemePreset(
         pluginThemeField,
-        themePresets[activePresetName()][pluginResult.name],
+        themePresets,
+        getActivePresetName,
+        pluginResult.name,
       );
       themeDetectors = { ...themeDetectors, ...pluginThemeField.detectors };
     }
