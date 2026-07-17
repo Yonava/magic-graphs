@@ -46,5 +46,17 @@ export const useGraphProduct = (options: GraphProductOptions) => {
   useLocalStorageGraphSync(graph, options.productId);
   provideGraph(magicGraph);
 
+  // temporary until we get something real to handle this!
+  graph.events.subscribe('onKeyDown', (e) => {
+    if (e.key !== 'Backspace') return;
+    graph.actions.removeElements(
+      {
+        nodes: graph.focus.focusedNodes(),
+        edges: graph.focus.focusedEdges(),
+      },
+      {},
+    );
+  });
+
   return magicGraph;
 };

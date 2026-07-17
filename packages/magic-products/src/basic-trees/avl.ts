@@ -41,28 +41,28 @@ type TreeState = {
   treeState: TreeNodeValueArray;
 };
 
-export type CompareStep = {
+export type CompareFrame = {
   action: 'compare';
   comparedNode: TreeNode['value'];
 } & TargetNode &
   TreeState;
 
-export type BalanceStep = {
+export type BalanceFrame = {
   action: 'balance';
   method: BalanceMethod;
 } & TreeState;
 
-export type InsertStep = {
+export type InsertFrame = {
   action: 'insert';
 } & TargetNode &
   TreeState;
 
-export type RemoveStep = {
+export type RemoveFrame = {
   action: 'remove';
 } & TargetNode &
   TreeState;
 
-export type AVLFrame = CompareStep | BalanceStep | InsertStep | RemoveStep;
+export type AVLFrame = CompareFrame | BalanceFrame | InsertFrame | RemoveFrame;
 
 export const getHeight = (node: TreeNode | undefined) => {
   return node ? node.height : 0;
@@ -78,9 +78,12 @@ export class AVLTree {
   frameCollector: FrameCollector<AVLFrame>;
   root: TreeNode | undefined;
 
-  constructor(frameCollector: FrameCollector<AVLFrame>) {
+  constructor(
+    root: TreeNode | undefined,
+    frameCollector: FrameCollector<AVLFrame>,
+  ) {
     this.frameCollector = frameCollector;
-    this.root = undefined;
+    this.root = root;
   }
 
   reset() {

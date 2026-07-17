@@ -60,18 +60,6 @@
     }
     graph.magic.lens.add(customLens);
   };
-
-  graph.events.subscribe('onKeyDown', (e) => {
-    if (e.key === 'Backspace') {
-      graph.actions.removeElements(
-        {
-          nodes: graph.focus.focusedNodes(),
-          edges: graph.focus.focusedEdges(),
-        },
-        {},
-      );
-    }
-  });
 </script>
 
 <template>
