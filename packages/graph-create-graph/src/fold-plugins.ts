@@ -1,7 +1,6 @@
 import { getValue } from '@core/utils/maybeGetter/index';
 import { CoreEventMap } from '@graph/core/events';
-import { core, core as createCore } from '@graph/core/index';
-import { CoreOptions } from '@graph/core/options';
+import { core } from '@graph/core/index';
 import {
   LooseGraphPlugin,
   PluginThemeField,
@@ -28,21 +27,6 @@ type FoldedPlugins = {
   getters: any;
   themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']>;
   pluginTransitControls: PluginTransitControl[];
-};
-
-const applyThemePreset = (
-  pluginThemeField: PluginThemeField<any>['theme'],
-  themePresets: Record<string, any>,
-  getActivePresetName: () => string,
-  pluginName: string,
-) => {
-  const { set } = pluginThemeField.createLayer('create-graph/theme-presets');
-  const tokens = Object.keys(themePresets[getActivePresetName()][pluginName]);
-  for (const token of tokens) {
-    set(token, (...args: any[]) =>
-      getValue(themePresets[getActivePresetName()][pluginName][token], ...args),
-    );
-  }
 };
 
 // TODO add topo sort and explicit error handling for missing plugin dependencies
@@ -99,12 +83,20 @@ export const foldPlugins = (
     )?.theme;
 
     if (pluginThemeField) {
-      applyThemePreset(
-        pluginThemeField,
-        themePresets,
-        getActivePresetName,
-        pluginResult.name,
+      const { set } = pluginThemeField.createLayer(
+        'create-graph/theme-presets',
       );
+      const tokens = Object.keys(
+        themePresets[getActivePresetName()][pluginResult.name],
+      );
+      for (const token of tokens) {
+        set(token, (...args: any[]) =>
+          getValue(
+            themePresets[getActivePresetName()][pluginResult.name][token],
+            ...args,
+          ),
+        );
+      }
       themeDetectors = { ...themeDetectors, ...pluginThemeField.detectors };
     }
 
