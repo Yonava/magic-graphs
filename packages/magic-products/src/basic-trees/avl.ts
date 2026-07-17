@@ -4,13 +4,13 @@ import { treeToArray } from './treeToArray.ts';
  * Represents a node in a binary/avl tree
  */
 export class TreeNode {
-  key: number;
+  value: number;
   left: TreeNode | undefined;
   right: TreeNode | undefined;
   height: number;
 
-  constructor(key: number) {
-    this.key = key;
+  constructor(value: number) {
+    this.value = value;
     this.left = undefined;
     this.right = undefined;
     this.height = 1;
@@ -21,31 +21,27 @@ export class TreeNode {
  * An array representation of a binary tree, where each index corresponds to a tree position:
  * index 0 is the root, index 1 is the left child, index 2 is the right child, etc.
  *
- * Each value is the tree node key at that position, or `undefined` if no node exists at that position.
- * The tree node key is both the `id` and `label` of a `GNode` within the tree.
+ * Each index in the array is the tree node value at that position, or `undefined` if no node exists at that position.
  */
-export type TreeNodeKeyArray = (TreeNode['key'] | undefined)[];
+export type TreeNodeValueArray = (TreeNode['value'] | undefined)[];
 
 export type BalanceMethod =
   'left-left' | 'right-right' | 'left-right' | 'right-left';
 
 type TargetNode = {
-  /**
-   * the key of the targeted node
-   */
-  targetNode: TreeNode['key'];
+  targetNode: TreeNode['value'];
 };
 
 type TreeState = {
   /**
    * the state of the tree in array form
    */
-  treeState: TreeNodeKeyArray;
+  treeState: TreeNodeValueArray;
 };
 
 export type CompareStep = {
   action: 'compare';
-  comparedNode: TreeNode['key'];
+  comparedNode: TreeNode['value'];
 } & TargetNode &
   TreeState;
 
@@ -87,12 +83,12 @@ export class AVLTree {
     this.root = undefined;
   }
 
-  getNode(key: number): TreeNode | undefined {
+  getNode(value: number): TreeNode | undefined {
     let current = this.root;
     while (current) {
-      if (key === current.key) {
+      if (value === current.value) {
         return current;
-      } else if (key < current.key) {
+      } else if (value < current.value) {
         current = current.left;
       } else {
         current = current.right;
@@ -120,7 +116,7 @@ export class AVLTree {
     return current;
   }
 
-  remove(key: number): TreeTraceStep[] {
+  remove(value: number): TreeTraceStep[] {
     if (!this.root) {
       return [];
     }
@@ -131,7 +127,7 @@ export class AVLTree {
     const removeHelper = (
       parent: TreeNode | undefined,
       node: TreeNode | undefined,
-      key: number,
+      value: number,
       isLeft: boolean,
     ): TreeNode | undefined => {
       if (!node) {
@@ -141,16 +137,16 @@ export class AVLTree {
       if (!targetFound) {
         trace.push({
           action: 'compare',
-          targetNode: key,
-          comparedNode: node.key,
+          targetNode: value,
+          comparedNode: node.value,
           treeState: this.toArray(),
         });
       }
 
-      if (key < node.key && !targetFound) {
-        node.left = removeHelper(node, node.left, key, true);
-      } else if (key > node.key && !targetFound) {
-        node.right = removeHelper(node, node.right, key, false);
+      if (value < node.value && !targetFound) {
+        node.left = removeHelper(node, node.left, value, true);
+      } else if (value > node.value && !targetFound) {
+        node.right = removeHelper(node, node.right, value, false);
       } else {
         targetFound = true;
 
@@ -170,8 +166,8 @@ export class AVLTree {
           // Case 4: Two children
           const successor = this.findMin(node.right);
 
-          // Create a new node with the successor's key
-          replacementNode = new TreeNode(successor.key);
+          // Create a new node with the successor's value
+          replacementNode = new TreeNode(successor.value);
           replacementNode.left = node.left;
           // Remove the successor and attach the remaining right subtree
           replacementNode.right = this.removeMin(node.right);
@@ -188,7 +184,7 @@ export class AVLTree {
 
         trace.push({
           action: 'remove',
-          targetNode: key,
+          targetNode: value,
           treeState: this.toArray(),
         });
 
@@ -211,7 +207,7 @@ export class AVLTree {
       return node;
     };
 
-    this.root = removeHelper(undefined, this.root, key, false);
+    this.root = removeHelper(undefined, this.root, value, false);
     return trace;
   }
 
@@ -349,7 +345,7 @@ export class AVLTree {
     return treeToArray({
       root: this.root,
       treeDepth: getHeight(this.root),
-    }).map((node) => node?.key);
+    }).map((node) => node?.value);
   }
 
   private rotateRight(y: TreeNode): TreeNode {
@@ -378,13 +374,13 @@ export class AVLTree {
     return y;
   }
 
-  insert(key: number, rebalance = true): TreeTraceStep[] {
+  insert(value: number, rebalance = true): TreeTraceStep[] {
     if (!this.root) {
-      this.root = new TreeNode(key);
+      this.root = new TreeNode(value);
       return [
         {
           action: 'insert',
-          targetNode: key,
+          targetNode: value,
           treeState: this.toArray(),
         },
       ];
@@ -396,38 +392,38 @@ export class AVLTree {
     const insertHelper = (
       parent: TreeNode | undefined,
       node: TreeNode | undefined,
-      key: number,
+      value: number,
       isLeft: boolean,
     ): TreeNode => {
       if (!node) {
-        const newNode = new TreeNode(key);
+        const newNode = new TreeNode(value);
         justInserted = true;
         return newNode;
       }
 
       trace.push({
         action: 'compare',
-        comparedNode: node.key,
-        targetNode: key,
+        comparedNode: node.value,
+        targetNode: value,
         treeState: this.toArray(),
       });
 
-      if (key < node.key) {
-        node.left = insertHelper(node, node.left, key, true);
+      if (value < node.value) {
+        node.left = insertHelper(node, node.left, value, true);
         if (justInserted) {
           trace.push({
             action: 'insert',
-            targetNode: key,
+            targetNode: value,
             treeState: this.toArray(),
           });
           justInserted = false;
         }
-      } else if (key > node.key) {
-        node.right = insertHelper(node, node.right, key, false);
+      } else if (value > node.value) {
+        node.right = insertHelper(node, node.right, value, false);
         if (justInserted) {
           trace.push({
             action: 'insert',
-            targetNode: key,
+            targetNode: value,
             treeState: this.toArray(),
           });
           justInserted = false;
@@ -441,7 +437,7 @@ export class AVLTree {
       return rebalance ? this.rebalance(parent, node, isLeft, trace) : node;
     };
 
-    this.root = insertHelper(undefined, this.root, key, false);
+    this.root = insertHelper(undefined, this.root, value, false);
     return trace;
   }
 }
