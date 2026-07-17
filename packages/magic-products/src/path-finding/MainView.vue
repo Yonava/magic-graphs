@@ -4,6 +4,7 @@
   import BottomPanel from './BottomPanel.vue';
 
   const graph = useGraphProduct({
+    productId: 'path-finding',
     interactive: {
       addedEdgeRuleNoSelfLoops: true,
       addedEdgeWeight: 0.5,

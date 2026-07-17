@@ -2,18 +2,18 @@ import { onMounted } from 'vue';
 
 import { Graph } from '../graph/types.ts';
 
-const localStorageKey = 'graph-data';
+const localStorageKey = (id: string) => 'graph-data-' + id;
 
-export const useLocalStorageGraphSync = (graph: Graph) => {
+export const useLocalStorageGraphSync = (graph: Graph, productId: string) => {
   const save = () => {
     window?.localStorage.setItem(
-      localStorageKey,
+      localStorageKey(productId),
       JSON.stringify(graph.transit.encode()),
     );
   };
 
   const sync = () => {
-    const data = window?.localStorage.getItem(localStorageKey);
+    const data = window?.localStorage.getItem(localStorageKey(productId));
     if (!data) return;
     graph.transit.decode(JSON.parse(data));
   };

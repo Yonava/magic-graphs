@@ -11,6 +11,7 @@ import { useLocalStorageGraphSync } from './useLocalStorageGraphSync.ts';
 import { provideGraph } from './useProvidedGraph.ts';
 
 type GraphProductOptions = UseGraphOptions & {
+  productId: string;
   ui?: UIOptions;
 };
 
@@ -23,7 +24,7 @@ export type MagicGraph = Graph & {
   };
 };
 
-export const useGraphProduct = (options?: GraphProductOptions) => {
+export const useGraphProduct = (options: GraphProductOptions) => {
   const graph = useGraph(options);
 
   const componentSlots = useComponentSlotsState();
@@ -42,7 +43,7 @@ export const useGraphProduct = (options?: GraphProductOptions) => {
     },
   };
 
-  useLocalStorageGraphSync(graph);
+  useLocalStorageGraphSync(graph, options.productId);
   provideGraph(magicGraph);
 
   return magicGraph;

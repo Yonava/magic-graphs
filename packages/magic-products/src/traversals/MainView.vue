@@ -6,6 +6,7 @@
   import { lensChips } from './lensChips.ts';
 
   const graph = useGraphProduct({
+    productId: 'traversals',
     ui: {
       lensChips,
       annotations: true,
