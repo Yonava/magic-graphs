@@ -1,6 +1,7 @@
 import { TreeNode } from './TreeNode.ts';
 
-type BalanceMethod = 'left-left' | 'right-right' | 'left-right' | 'right-left';
+export type BalanceMethod =
+  'left-left' | 'right-right' | 'left-right' | 'right-left';
 
 /**
  * An array representation of a binary tree, where each index corresponds to a tree position:

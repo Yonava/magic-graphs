@@ -1,3 +1,4 @@
+import { getTreeHeight } from './getTreeHeight.ts';
 import { TreeNode } from './TreeNode.ts';
 
 /**
@@ -16,7 +17,7 @@ export const treeToArray = (root: TreeNode | undefined) => {
 
   let nodesAtDepth: TreeArray = [root];
 
-  for (let i = 0; i <= root.height; i++) {
+  for (let i = 0; i <= getTreeHeight(root); i++) {
     const nodesAtNextDepth: TreeArray = [];
 
     for (const maybeTreeNode of nodesAtDepth) {

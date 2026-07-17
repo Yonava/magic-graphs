@@ -15,8 +15,8 @@ export type SetupContext<Frame> = {
 };
 
 export type ExplainerHighlight = {
-  activate: () => void;
-  deactivate: () => void;
+  activate?: () => void;
+  deactivate?: () => void;
   tooltipLabel?: MaybeGetter<string>;
   classes?: MaybeGetter<string>;
 };
@@ -35,7 +35,7 @@ export type SimulationLifecycle<Frame> = {
 
 export type SimulationEffects<Frame> = {
   lens?: Lens;
-  explainer?: (frame: Frame) => Explainer;
+  explainer?: (frame: Frame) => Explainer | undefined;
 } & SimulationLifecycle<Frame>;
 
 export type SimulationDefinition<Frame> = {

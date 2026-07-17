@@ -1,14 +1,12 @@
 import { nullThrows } from '@core/utils/assert';
 import { FrameCollector } from '@magic/shared/simulation';
 
+import { getTreeHeight } from './simulation/getTreeHeight.ts';
 import { TreeNode } from './simulation/TreeNode.ts';
 import { AVLFrame, AVLFrameNoRoot } from './simulation/types.ts';
 
-const getBalance = (node: TreeNode) => {
-  const leftHeight = node?.left?.height ?? 0;
-  const rightHeight = node?.right?.height ?? 0;
-  return leftHeight - rightHeight;
-};
+const getBalance = (node: TreeNode) =>
+  getTreeHeight(node.left) - getTreeHeight(node.right);
 
 export class AVLTree {
   root: TreeNode | undefined;
@@ -49,14 +47,9 @@ export class AVLTree {
     return undefined;
   }
 
-  private updateHeight(node: TreeNode): void {
-    node.height = Math.max(node.left?.height ?? 0, node.right?.height ?? 0) + 1;
-  }
-
   private removeMin(node: TreeNode): TreeNode | undefined {
     if (!node.left) return node.right;
     node.left = this.removeMin(node.left);
-    this.updateHeight(node);
     return node;
   }
 
@@ -119,7 +112,6 @@ export class AVLTree {
           replacementNode.left = node.left;
           // Remove the successor and attach the remaining right subtree
           replacementNode.right = this.removeMin(node.right);
-          replacementNode.height = node.height;
         }
 
         // Update the parent or root reference
@@ -147,7 +139,6 @@ export class AVLTree {
       }
 
       if (node) {
-        this.updateHeight(node);
         return this.rebalance(parent, node, isLeft);
       }
 
@@ -270,9 +261,6 @@ export class AVLTree {
       node.left = balanceNode(node, node.left, true);
       node.right = balanceNode(node, node.right, false);
 
-      // Update height after recursive calls
-      this.updateHeight(node);
-
       // Use existing rebalance method
       return this.rebalance(parent, node, isLeft);
     };
@@ -287,9 +275,6 @@ export class AVLTree {
     x.right = y;
     y.left = T2;
 
-    this.updateHeight(y);
-    this.updateHeight(x);
-
     return x;
   }
 
@@ -299,9 +284,6 @@ export class AVLTree {
 
     y.left = x;
     x.right = T2;
-
-    this.updateHeight(x);
-    this.updateHeight(y);
 
     return y;
   }
@@ -357,8 +339,6 @@ export class AVLTree {
       } else {
         return node;
       }
-
-      this.updateHeight(node);
 
       return rebalance ? this.rebalance(parent, node, isLeft) : node;
     };

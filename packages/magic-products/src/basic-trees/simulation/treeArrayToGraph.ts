@@ -1,16 +1,12 @@
 import { AddGEdgeOptions, AddGNodeOptions } from '@magic/shared/graph/types';
 
-import { AVLTree } from '../AVLTree.ts';
 import { TreeNode } from './TreeNode.ts';
-import { getTreeIndexToPosition } from './getTreeIndexToPosition.ts';
+import { getTreeNodePositions } from './getTreeNodePositions.ts';
 import { treeToArray } from './treeToArray.ts';
 import type { Coordinate, TreeNodeValueArray } from './types.ts';
 
-const DEPTH_TO_X_OFFSET: Record<number, number> = {
-  2: 175,
-  3: 135,
-  4: 100,
-};
+const X_OFFSET = 160;
+const Y_OFFSET = 200;
 
 const newEdge = (source: number, target: number): AddGEdgeOptions => ({
   source: source.toString(),
@@ -46,24 +42,25 @@ export const treeArrayToGraph = (
 ): GraphState => {
   if (!root) return { edges: [], nodes: [] };
 
-  const positions = getTreeIndexToPosition({
+  const positions = getTreeNodePositions({
+    root,
     rootNodeCoordinates: rootPosition,
-    xOffset: DEPTH_TO_X_OFFSET[root.height] ?? 80,
-    yOffset: 200,
-    treeDepth: root.height,
+    xOffset: X_OFFSET,
+    yOffset: Y_OFFSET,
   });
 
-  const treeArray = treeToArray(root).map((t) => t?.value);
+  const treeNodeArray = treeToArray(root);
+  const treeArray = treeNodeArray.map((t) => t?.value);
 
   return {
     edges: edgesInTree(treeArray),
-    nodes: treeArray
-      .map((v, i): AddGNodeOptions | undefined =>
-        v !== undefined
+    nodes: treeNodeArray
+      .map((node): AddGNodeOptions | undefined =>
+        node !== undefined
           ? {
-              id: v.toString(),
-              label: v.toString(),
-              position: positions[i],
+              id: node.value.toString(),
+              label: node.value.toString(),
+              position: positions.get(node),
             }
           : undefined,
       )
