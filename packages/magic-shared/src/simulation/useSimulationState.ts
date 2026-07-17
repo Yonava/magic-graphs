@@ -175,6 +175,8 @@ export const useSimulationState = (
     if (simulation.value.lens) {
       lensControls.add(simulation.value.lens);
     }
+
+    definition.onSetupCompleted?.();
   };
 
   const stop = () => {
@@ -184,7 +186,7 @@ export const useSimulationState = (
     if (sim.violation?.lens) lensControls.remove(sim.violation.lens.id);
     componentSlotControls.remove(SCRUBBER_COMPONENT_ID);
     if (sim.lens) lensControls.remove(sim.lens.id);
-    sim.definition.onTeardown?.();
+    sim.definition.onTeardownCompleted?.();
     simulation.value = undefined;
   };
 
@@ -222,6 +224,9 @@ export const useSimulationState = (
   graph.events.subscribe('onStructureChange', () => {
     const sim = simulation.value;
     if (!sim) return;
+
+    const shouldRecompute = sim.definition.recomputeFramesOnStructureChange;
+    if (shouldRecompute === false) return;
 
     const violation = sim.definition.guard?.();
     // graph is invalid, don't recompute frames against it

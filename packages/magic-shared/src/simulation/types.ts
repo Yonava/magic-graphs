@@ -38,9 +38,14 @@ export type SimulationDefinition<Frame> = {
    * simulation's lens, until a later structure change makes every check pass.
    */
   guard?: GuardCheck;
+
   collectFrames: (collector: FrameCollector<Frame>) => void;
   setup: (context: SetupContext<Frame>) => SimulationEffects<Frame> | undefined;
+
+  recomputeFramesOnStructureChange?: boolean;
+
+  onSetupCompleted?: () => void;
+  onTeardownCompleted?: () => void;
   onFrameTransition?: (newFrame: Frame, oldFrame: Frame) => void;
-  onTeardown?: () => void;
   // add: mutations (add, remove, move etc) that may occur at a given step
 };

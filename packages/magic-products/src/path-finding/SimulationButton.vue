@@ -87,7 +87,7 @@
         },
       };
     },
-    onTeardown: () => {
+    onTeardownCompleted: () => {
       console.log('Torn Down!');
       explainerThemer.deactivate();
     },

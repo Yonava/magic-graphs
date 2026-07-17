@@ -21,24 +21,34 @@
     nodeValue,
   } = useAVLSimulationDefinition(50);
 
+  const stopSim = () => {
+    graph.magic.simulation.stop();
+  };
+
   const addNodeToAvl = () => {
     mode.value = 'insert';
     graph.magic.simulation.start(simDefinition);
-    // targetNodeValue.value = randomNodeValue();
+    targetNodeValue.value = randomNodeValue();
   };
 
   const removeNodeFromAvl = (target: number) => {
     mode.value = 'remove';
-    // const prevTarget = targetNodeValue.value;
+    const prevTarget = targetNodeValue.value;
     targetNodeValue.value = target;
     graph.magic.simulation.start(simDefinition);
-    // targetNodeValue.value = prevTarget;
+    targetNodeValue.value = prevTarget;
   };
 </script>
 
 <template>
   <Well>
     <HStack>
+      <Button
+        @click="stopSim"
+        :disabled="!graph.magic.simulation.current.value"
+      >
+        Stop Sim
+      </Button>
       <Button @click="addNodeToAvl"> Add Node {{ targetNodeValue }} </Button>
       <Button
         v-for="node in graph.nodes.value"

@@ -1,8 +1,9 @@
 import { nullThrows } from '@core/utils/assert';
+import { generateId } from '@core/utils/id';
 import { useProvidedGraph } from '@magic/shared/product';
 import { SimulationDefinition } from '@magic/shared/simulation';
 
-import { Ref, ref } from 'vue';
+import { Ref, computed, ref } from 'vue';
 
 import { AVLTree } from '../AVLTree.ts';
 import { AVLFrame, AVLMode } from './types.ts';
@@ -27,6 +28,40 @@ export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
   const nodeValue = (nodeId: string) =>
     nullThrows(nodeIdToValue.value.get(nodeId), 'no value found!');
 
+  const sync = () => {
+    graph.actions.removeElements(
+      {
+        nodes: graph.nodes.value,
+        edges: [],
+      },
+      {},
+    );
+
+    const nodesInTree = tree.toArray();
+    const definedNodes = nodesInTree.filter((v) => v !== undefined);
+
+    const newMap: Map<string, number> = new Map();
+
+    const newNodes = definedNodes.map((v) => ({
+      label: v.toString(),
+      id: generateId(),
+    }));
+
+    for (const node of newNodes) {
+      newMap.set(node.id, Number(node.label));
+    }
+
+    nodeIdToValue.value = newMap;
+
+    graph.actions.addElements(
+      {
+        nodes: newNodes,
+        edges: [],
+      },
+      { focus: false },
+    );
+  };
+
   const definition: SimulationDefinition<AVLFrame> = {
     collectFrames: (collector) => {
       tree.attachCollector(collector);
@@ -36,25 +71,6 @@ export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
         tree.remove(targetNodeValue.value);
       }
     },
-    onFrameTransition: () => {
-      graph.actions.removeElements(
-        {
-          nodes: graph.nodes.value,
-          edges: [],
-        },
-        {},
-      );
-
-      const nodesInTree = tree.toArray();
-
-      graph.actions.addElements(
-        {
-          nodes: nodesInTree.filter((v) => !!v).map((v) => ({})),
-          edges: [],
-        },
-        {},
-      );
-    },
     setup: () => {
       return {
         explainer: (frame) => ({
@@ -62,6 +78,10 @@ export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
         }),
       };
     },
+    onSetupCompleted: sync,
+    onFrameTransition: sync,
+    onTeardownCompleted: sync,
+    recomputeFramesOnStructureChange: false,
   };
 
   return {
