@@ -5,6 +5,7 @@ import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
+import { StructuralEventMap } from '@graph/primitives/transactions/types';
 import { CoreNode } from '@graph/primitives/types';
 
 import { CanvasElement } from '../canvas/aggregator/types.ts';
@@ -43,7 +44,7 @@ export const anchors: AnchorsPlugin = ({
   const anchorsEventHub = createEventHub(anchorsEventRegistry);
   const events = mergeEventHubs<
     AnchorsEventMap,
-    CoreEventMap & CanvasEventMap & FocusEventMap
+    CoreEventMap & StructuralEventMap & CanvasEventMap & FocusEventMap
   >(anchorsEventHub, graphEventHub);
 
   const theme = createThemeController(createAnchorsThemeOverrides());

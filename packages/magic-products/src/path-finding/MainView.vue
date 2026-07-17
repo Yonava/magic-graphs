@@ -2,7 +2,7 @@
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import BottomPanel from './BottomPanel.vue';
-  import { useLocalStorageGraphSync } from './createLocalStorageGraphSync.ts';
+  import { useLocalStorageGraphSync } from './useLocalStorageGraphSync.ts';
 
   const graph = useGraphProduct({
     interactive: {

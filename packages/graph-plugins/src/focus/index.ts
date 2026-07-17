@@ -3,7 +3,10 @@ import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
-import { ElementRemovalPayload } from '@graph/primitives/transactions/types';
+import {
+  ElementRemovalPayload,
+  StructuralEventMap,
+} from '@graph/primitives/transactions/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
@@ -21,10 +24,10 @@ export const focus: FocusPlugin = ({
 }) => {
   const focusEventRegistry = createFocusEventRegistry();
   const focusEventHub = createEventHub(focusEventRegistry);
-  const events = mergeEventHubs<FocusEventMap, CoreEventMap & CanvasEventMap>(
-    focusEventHub,
-    graphEventHub,
-  );
+  const events = mergeEventHubs<
+    FocusEventMap,
+    CoreEventMap & StructuralEventMap & CanvasEventMap
+  >(focusEventHub, graphEventHub);
 
   let focusedElementIds = new Set<string>();
 

@@ -13,7 +13,7 @@ import { InteractivePlugin } from './types.ts';
  */
 export const interactive =
   (options: Partial<InteractiveOptions>): InteractivePlugin =>
-  ({ controls, actions, events, getters }) => {
+  ({ controls, actions, finalActions, events, getters }) => {
     const optionsWithDefaults = {
       ...DEFAULT_INTERACTIVE_OPTIONS,
       ...options,
@@ -34,7 +34,9 @@ export const interactive =
       const topElement = elements.at(-1);
       if (topElement && controls.isNode(topElement.id)) return;
 
-      actions.addNode({ position: { x: coords.x, y: coords.y } });
+      // finalActions, not actions: this fires later, on a real click, so it
+      // needs the fully-composed action, not the fold-time snapshot
+      finalActions.addNode({ position: { x: coords.x, y: coords.y } });
     };
 
     const handleEdgeTextArea = ({
@@ -116,7 +118,9 @@ export const interactive =
         optionsWithDefaults.addedEdgeWeight,
       ).valueOf();
 
-      actions.addEdge({
+      // finalActions, not actions: this fires later, on anchor drop, so it
+      // needs the fully-composed action, not the fold-time snapshot
+      finalActions.addEdge({
         source: sourceNode.id,
         target: targetNode.id,
         weight: new Fraction(numberWeight),
