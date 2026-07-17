@@ -1,4 +1,5 @@
 import { nullThrows } from '@core/utils/assert';
+import { delta } from '@core/utils/delta/index';
 
 import { ComputedRef, computed, ref } from 'vue';
 
@@ -54,10 +55,13 @@ export const useSimulationState = (
   const getSimulation = () =>
     nullThrows(simulation.value, 'no running simulation!');
 
+  const getFrame = (index: number) =>
+    nullThrows(getSimulation().frames[index], `no frame at position ${index}`);
+
   const currentFrame = computed(() => {
     const sim = simulation.value;
     if (!sim) return;
-    return sim.frames[sim.playhead.position];
+    return getFrame(sim.playhead.position);
   });
 
   const initFrames = <Frame>(definition: SimulationDefinition<Frame>) => {
@@ -77,12 +81,25 @@ export const useSimulationState = (
     const isFirst = () => position.value === 0;
     const isLast = () => position.value === frameCount - 1;
 
+    const updatePosition = (newPosition: number) => {
+      const oldPosition = position.value;
+      position.value = newPosition;
+
+      const sim = getSimulation();
+      sim.definition.onFrameTransition?.(
+        getFrame(newPosition),
+        getFrame(oldPosition),
+      );
+    };
+
     return {
       get position() {
         return position.value;
       },
-      set position(value) {
-        position.value = value;
+      set position(_) {
+        throw new Error(
+          'Cannot set position directly. Use: prev, next, or seek methods',
+        );
       },
       isFirst,
       isLast,
@@ -92,13 +109,13 @@ export const useSimulationState = (
             `playhead.next() called at last frame (${position.value} of ${frameCount - 1})`,
           );
         }
-        position.value++;
+        updatePosition(position.value + 1);
       },
       prev: () => {
         if (isFirst()) {
           throw new Error(`playhead.prev() called at first frame (position 0)`);
         }
-        position.value--;
+        updatePosition(position.value - 1);
       },
       seek: (value: number) => {
         if (value < 0 || value >= frameCount) {
@@ -106,7 +123,7 @@ export const useSimulationState = (
             `playhead.seek(${value}) out of range [0, ${frameCount - 1}]`,
           );
         }
-        position.value = value;
+        updatePosition(value);
       },
     };
   };
@@ -213,8 +230,16 @@ export const useSimulationState = (
       sim.definition,
       sim.playhead.position,
     );
+
+    const oldFrame = currentFrame.value;
+
     sim.frames = frames;
     sim.playhead = playhead;
+
+    const newFrame = currentFrame.value;
+
+    const diff = delta(oldFrame, newFrame);
+    if (diff !== null) sim.definition.onFrameTransition?.(newFrame, oldFrame);
   });
 
   return {

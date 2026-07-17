@@ -29,6 +29,8 @@
       }
     },
     setup: (context) => {
+      console.log('Setup!');
+
       const fn = (
         { id: nodeId }: { id: string },
         resolveUnderneath: () => number,
@@ -53,12 +55,6 @@
         id: 'lens-id',
         activate: themer.activate,
         deactivate: themer.deactivate,
-        components: [
-          {
-            position: 'center-left',
-            component: defineAsyncComponent(() => import('./NodeAColor.vue')),
-          },
-        ],
       };
 
       return {
@@ -92,15 +88,30 @@
       };
     },
     onTeardown: () => {
+      console.log('Torn Down!');
       explainerThemer.deactivate();
+    },
+    onFrameTransition: (newFrame, oldFrame) => {
+      console.log(
+        `${graph.nodeLabel.get(oldFrame)} -> ${graph.nodeLabel.get(newFrame)}`,
+      );
     },
   };
 
-  const runSimulation = () => {
+  const toggleSim = () => {
+    if (graph.magic.simulation.current.value) {
+      graph.magic.simulation.stop();
+      return;
+    }
     graph.magic.simulation.start(simulation);
   };
 </script>
 
 <template>
-  <ButtonVue @click="runSimulation">Start Simulation</ButtonVue>
+  <ButtonVue @click="toggleSim"
+    >{{
+      graph.magic.simulation.current.value ? 'Stop' : 'Start'
+    }}
+    Simulation</ButtonVue
+  >
 </template>
