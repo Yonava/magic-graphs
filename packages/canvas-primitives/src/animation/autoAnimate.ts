@@ -95,7 +95,7 @@ export const useAutoAnimate = (
      * @returns A function that, when called, finalizes the capture and triggers animation.
      *
      * @example
-     * const finalize = autoAnimate.captureFrame(ids, () => draw());
+     * const finalize = autoAnimate.captureFrame(() => draw());
      * mutateShapes();
      * finalize(); // triggers animation between captured states
      */

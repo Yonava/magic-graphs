@@ -1,4 +1,5 @@
 import { nullThrows } from '@core/utils/assert';
+import { getCtx } from '@core/utils/ctx/index';
 import { useProvidedGraph } from '@magic/shared/product';
 import { Explainer, SimulationDefinition } from '@magic/shared/simulation';
 import { useNodeThemer } from '@magic/shared/themer';
@@ -49,6 +50,10 @@ export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
   const tree = new AVLTree();
 
   const sync = (frame: AVLFrame) => {
+    const finalize = graph.canvas.shapes.autoAnimate.captureFrame(() =>
+      graph.canvas.aggregator.draw(getCtx(graph.canvas.magicCanvas.canvas)),
+    );
+
     graph.actions.removeElements(
       {
         nodes: graph.nodes.value,
@@ -84,6 +89,8 @@ export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
     }
 
     graph.actions.addElements(graphState, { focus: false });
+
+    finalize();
   };
 
   const getExplanation = (frame: AVLFrame): Explainer | undefined => {
