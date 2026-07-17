@@ -1,4 +1,5 @@
 import { nullThrows } from '@core/utils/assert';
+import { delta } from '@core/utils/delta/index';
 
 import { ComputedRef, computed, ref } from 'vue';
 
@@ -34,7 +35,7 @@ type Playhead = {
   seek: (position: number) => void;
 };
 
-type Simulation<Frame> = {
+export type Simulation<Frame> = {
   definition: SimulationDefinition<Frame>;
   frames: Frame[];
   playhead: Playhead;
@@ -54,10 +55,16 @@ export const useSimulationState = (
   const getSimulation = () =>
     nullThrows(simulation.value, 'no running simulation!');
 
-  const getCurrentFrame = () => {
-    const sim = getSimulation();
-    return sim.frames[sim.playhead.position];
-  };
+  const allFrames = computed(() => getSimulation().frames);
+
+  const getFrame = (index: number) =>
+    nullThrows(allFrames.value[index], `no frame at position ${index}`);
+
+  const currentFrame = computed(() => {
+    const sim = simulation.value;
+    if (!sim) return;
+    return getFrame(sim.playhead.position);
+  });
 
   const initFrames = <Frame>(definition: SimulationDefinition<Frame>) => {
     const frames: Frame[] = [];
@@ -76,12 +83,23 @@ export const useSimulationState = (
     const isFirst = () => position.value === 0;
     const isLast = () => position.value === frameCount - 1;
 
+    const updatePosition = (newPosition: number) => {
+      if (position.value === newPosition) return;
+      const oldPosition = position.value;
+      position.value = newPosition;
+
+      const sim = getSimulation();
+      sim.onFrameTransition?.(getFrame(newPosition), getFrame(oldPosition));
+    };
+
     return {
       get position() {
         return position.value;
       },
-      set position(value) {
-        position.value = value;
+      set position(_) {
+        throw new Error(
+          'Cannot set position directly. Use: prev, next, or seek methods',
+        );
       },
       isFirst,
       isLast,
@@ -91,13 +109,13 @@ export const useSimulationState = (
             `playhead.next() called at last frame (${position.value} of ${frameCount - 1})`,
           );
         }
-        position.value++;
+        updatePosition(position.value + 1);
       },
       prev: () => {
         if (isFirst()) {
           throw new Error(`playhead.prev() called at first frame (position 0)`);
         }
-        position.value--;
+        updatePosition(position.value - 1);
       },
       seek: (value: number) => {
         if (value < 0 || value >= frameCount) {
@@ -105,7 +123,7 @@ export const useSimulationState = (
             `playhead.seek(${value}) out of range [0, ${frameCount - 1}]`,
           );
         }
-        position.value = value;
+        updatePosition(value);
       },
     };
   };
@@ -135,7 +153,10 @@ export const useSimulationState = (
 
     const { frames, playhead } = computeRun(definition);
 
-    const setupContext: SetupContext<Frame> = { getCurrentFrame };
+    const setupContext: SetupContext<Frame> = {
+      currentFrame,
+      frames: allFrames,
+    };
     const simulationEffects = definition.setup(setupContext);
 
     simulation.value = {
@@ -156,16 +177,18 @@ export const useSimulationState = (
     if (simulation.value.lens) {
       lensControls.add(simulation.value.lens);
     }
+
+    simulation.value.onSetupCompleted?.();
   };
 
   const stop = () => {
     const sim = getSimulation();
-
+    sim.onBeforeTeardown?.();
     // if running sim had an active violation lens, remove the lens
     if (sim.violation?.lens) lensControls.remove(sim.violation.lens.id);
     componentSlotControls.remove(SCRUBBER_COMPONENT_ID);
     if (sim.lens) lensControls.remove(sim.lens.id);
-    sim.definition.teardown?.();
+    sim.onTeardownCompleted?.();
     simulation.value = undefined;
   };
 
@@ -204,6 +227,9 @@ export const useSimulationState = (
     const sim = simulation.value;
     if (!sim) return;
 
+    const shouldRecompute = sim.definition.recomputeFramesOnStructureChange;
+    if (shouldRecompute === false) return;
+
     const violation = sim.definition.guard?.();
     // graph is invalid, don't recompute frames against it
     if (syncViolation(sim, violation)) return;
@@ -212,8 +238,16 @@ export const useSimulationState = (
       sim.definition,
       sim.playhead.position,
     );
+
+    const oldFrame = currentFrame.value;
+
     sim.frames = frames;
     sim.playhead = playhead;
+
+    const newFrame = currentFrame.value;
+
+    const diff = delta(oldFrame, newFrame);
+    if (diff !== null) sim.onFrameTransition?.(newFrame, oldFrame);
   });
 
   return {

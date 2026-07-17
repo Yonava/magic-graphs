@@ -9,8 +9,6 @@
   } from '@magic/shared/simulation';
   import { createThemer } from '@magic/shared/themer/useThemer';
 
-  import { defineAsyncComponent } from 'vue';
-
   const graph = useProvidedGraph();
 
   const nodeIdBox = { value: '' };
@@ -29,11 +27,13 @@
       }
     },
     setup: (context) => {
+      console.log('Setup!');
+
       const fn = (
         { id: nodeId }: { id: string },
         resolveUnderneath: () => number,
       ) => {
-        const frameNodeId = context.getCurrentFrame();
+        const frameNodeId = context.currentFrame.value;
         if (nodeId === frameNodeId) return resolveUnderneath() + 20;
       };
       const themer = createThemer(graph, {
@@ -53,15 +53,18 @@
         id: 'lens-id',
         activate: themer.activate,
         deactivate: themer.deactivate,
-        components: [
-          {
-            position: 'center-left',
-            component: defineAsyncComponent(() => import('./NodeAColor.vue')),
-          },
-        ],
       };
 
       return {
+        onTeardownCompleted: () => {
+          console.log('Torn Down!');
+          explainerThemer.deactivate();
+        },
+        onFrameTransition: (newFrame, oldFrame) => {
+          console.log(
+            `${graph.nodeLabel.get(oldFrame)} -> ${graph.nodeLabel.get(newFrame)}`,
+          );
+        },
         lens,
         explainer: (nodeId) => {
           const nodeLabel = graph.nodeLabel.get(nodeId);
@@ -91,16 +94,22 @@
         },
       };
     },
-    teardown: () => {
-      explainerThemer.deactivate();
-    },
   };
 
-  const runSimulation = () => {
+  const toggleSim = () => {
+    if (graph.magic.simulation.current.value) {
+      graph.magic.simulation.stop();
+      return;
+    }
     graph.magic.simulation.start(simulation);
   };
 </script>
 
 <template>
-  <ButtonVue @click="runSimulation">Start Simulation</ButtonVue>
+  <ButtonVue @click="toggleSim"
+    >{{
+      graph.magic.simulation.current.value ? 'Stop' : 'Start'
+    }}
+    Simulation</ButtonVue
+  >
 </template>

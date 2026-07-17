@@ -1,23 +1,23 @@
 <script setup lang="ts">
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
-  import BottomPanel from './BottomPanel.vue';
+  import TreePanel from './TreePanel.vue';
 
   const graph = useGraphProduct({
-    productId: 'path-finding',
-    interactive: {
-      addedEdgeRuleNoSelfLoops: true,
-      addedEdgeWeight: 0.5,
-      addedEdgeRuleOneEdgePerPath: false,
+    productId: 'basic-trees',
+    localStorage: false,
+    core: {
+      weighted: false,
     },
     ui: {
       annotations: true,
+      debug: true,
     },
   });
 
   graph.magic.componentSlots.add({
-    id: 'panel',
-    component: BottomPanel,
+    id: 'tree-panel',
+    component: TreePanel,
     position: 'bottom-middle',
   });
 </script>

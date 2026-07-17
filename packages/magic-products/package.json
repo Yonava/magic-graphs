@@ -25,7 +25,6 @@
     "@graph/plugins": "workspace:*",
     "@graph/primitives": "workspace:*",
     "@magic/shared": "workspace:*",
-    "@vueuse/core": "catalog:",
     "fraction.js": "^5.3.4"
   }
 }

@@ -1,5 +1,7 @@
 import { MaybeGetter } from '@core/utils/maybeGetter/index';
 
+import { ComputedRef } from 'vue';
+
 import { Lens } from '../lens/types.ts';
 import { GuardCheck } from './guard/SimulationGuardBuilder.ts';
 
@@ -8,25 +10,33 @@ export type FrameCollector<Frame> = {
 };
 
 export type SetupContext<Frame> = {
-  getCurrentFrame: () => Frame;
+  frames: ComputedRef<Frame[]>;
+  currentFrame: ComputedRef<Frame>;
 };
 
 export type ExplainerHighlight = {
-  activate: () => void;
-  deactivate: () => void;
+  activate?: () => void;
+  deactivate?: () => void;
   tooltipLabel?: MaybeGetter<string>;
   classes?: MaybeGetter<string>;
 };
 
 export type Explainer = {
   content: MaybeGetter<string>;
-  highlights: MaybeGetter<ExplainerHighlight[]>;
+  highlights?: MaybeGetter<ExplainerHighlight[]>;
+};
+
+export type SimulationLifecycle<Frame> = {
+  onSetupCompleted?: () => void;
+  onBeforeTeardown?: () => void;
+  onTeardownCompleted?: () => void;
+  onFrameTransition?: (newFrame: Frame, oldFrame: Frame) => void;
 };
 
 export type SimulationEffects<Frame> = {
   lens?: Lens;
-  explainer?: (frame: Frame) => Explainer;
-};
+  explainer?: (frame: Frame) => Explainer | undefined;
+} & SimulationLifecycle<Frame>;
 
 export type SimulationDefinition<Frame> = {
   /**
@@ -36,8 +46,10 @@ export type SimulationDefinition<Frame> = {
    * simulation's lens, until a later structure change makes every check pass.
    */
   guard?: GuardCheck;
+
   collectFrames: (collector: FrameCollector<Frame>) => void;
   setup: (context: SetupContext<Frame>) => SimulationEffects<Frame> | undefined;
-  teardown?: () => void;
+
+  recomputeFramesOnStructureChange?: boolean;
   // add: mutations (add, remove, move etc) that may occur at a given step
 };

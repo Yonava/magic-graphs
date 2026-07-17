@@ -7,9 +7,12 @@ import { LensControls } from '../lens/useLensState.ts';
 import { useSimulationState } from '../simulation/useSimulationState.ts';
 import { SimulationControls } from '../simulation/useSimulationState.ts';
 import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
+import { useLocalStorageGraphSync } from './useLocalStorageGraphSync.ts';
 import { provideGraph } from './useProvidedGraph.ts';
 
 type GraphProductOptions = UseGraphOptions & {
+  productId: string;
+  localStorage?: boolean;
   ui?: UIOptions;
 };
 
@@ -22,7 +25,7 @@ export type MagicGraph = Graph & {
   };
 };
 
-export const useGraphProduct = (options?: GraphProductOptions) => {
+export const useGraphProduct = (options: GraphProductOptions) => {
   const graph = useGraph(options);
 
   const componentSlots = useComponentSlotsState();
@@ -41,7 +44,23 @@ export const useGraphProduct = (options?: GraphProductOptions) => {
     },
   };
 
+  if (options.localStorage !== false) {
+    useLocalStorageGraphSync(graph, options.productId);
+  }
+
   provideGraph(magicGraph);
+
+  // temporary until we get something real to handle this!
+  graph.events.subscribe('onKeyDown', (e) => {
+    if (e.key !== 'Backspace') return;
+    graph.actions.removeElements(
+      {
+        nodes: graph.focus.focusedNodes(),
+        edges: graph.focus.focusedEdges(),
+      },
+      {},
+    );
+  });
 
   return magicGraph;
 };

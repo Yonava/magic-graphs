@@ -6,6 +6,7 @@
   import { lensChips } from './lensChips.ts';
 
   const graph = useGraphProduct({
+    productId: 'traversals',
     ui: {
       lensChips,
       annotations: true,
@@ -24,17 +25,6 @@
       position: 'bottom-right',
     },
   ]);
-
-  graph.events.subscribe('onKeyDown', (e) => {
-    if (e.key !== 'Backspace') return;
-    graph.actions.removeElements(
-      {
-        nodes: graph.focus.focusedNodes(),
-        edges: graph.focus.focusedEdges(),
-      },
-      {},
-    );
-  });
 </script>
 
 <template>

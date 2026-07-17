@@ -16,7 +16,7 @@ export const explainerSegments = (
   const { content: text, highlights } = explainer;
 
   const textValue = getValue(text);
-  const highlightsValue = getValue(highlights);
+  const highlightsValue = getValue(highlights) ?? [];
 
   const parts: ExplainerSegment[] = [];
   let lastIndex = 0;
