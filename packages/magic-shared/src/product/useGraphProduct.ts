@@ -12,6 +12,7 @@ import { provideGraph } from './useProvidedGraph.ts';
 
 type GraphProductOptions = UseGraphOptions & {
   productId: string;
+  localStorage?: boolean;
   ui?: UIOptions;
 };
 
@@ -43,7 +44,10 @@ export const useGraphProduct = (options: GraphProductOptions) => {
     },
   };
 
-  useLocalStorageGraphSync(graph, options.productId);
+  if (options.localStorage !== false) {
+    useLocalStorageGraphSync(graph, options.productId);
+  }
+
   provideGraph(magicGraph);
 
   // temporary until we get something real to handle this!

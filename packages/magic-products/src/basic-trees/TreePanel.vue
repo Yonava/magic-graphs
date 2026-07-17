@@ -18,25 +18,21 @@
     definition: simDefinition,
     mode,
     targetNodeValue,
-  } = useAVLSimulationDefinition(randomNodeValue());
-
-  const nodeIdToValue = ref<Map<string, number>>(new Map());
-
-  const nodeValue = (nodeId: string) =>
-    nullThrows(nodeIdToValue.value.get(nodeId), 'no value found!');
+    nodeValue,
+  } = useAVLSimulationDefinition(50);
 
   const addNodeToAvl = () => {
     mode.value = 'insert';
     graph.magic.simulation.start(simDefinition);
-    targetNodeValue.value = randomNodeValue();
+    // targetNodeValue.value = randomNodeValue();
   };
 
   const removeNodeFromAvl = (target: number) => {
     mode.value = 'remove';
-    const prevTarget = targetNodeValue.value;
+    // const prevTarget = targetNodeValue.value;
     targetNodeValue.value = target;
     graph.magic.simulation.start(simDefinition);
-    targetNodeValue.value = prevTarget;
+    // targetNodeValue.value = prevTarget;
   };
 </script>
 

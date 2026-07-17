@@ -1,5 +1,6 @@
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import { Graph } from '../graph/types.ts';
+import CursorCoordinates from '../product/debug/CursorCoordinates.vue';
 import LensChipGroup from '../ui/lens-chips/LensChipGroup.vue';
 import AnnotationMenu from './annotations/AnnotationMenu.vue';
 import {
@@ -11,6 +12,7 @@ import { LensChipDefinition } from './lens-chips/types.ts';
 export type UIOptions = {
   lensChips?: (graph: Graph) => LensChipDefinition[];
   annotations?: boolean;
+  debug?: boolean;
 };
 
 export type UIControls = {
@@ -37,6 +39,14 @@ export const useProductUI = (
     componentSlots.add({
       id: 'product/annotations',
       component: AnnotationMenu,
+      position: 'bottom-right',
+    });
+  }
+
+  if (options.debug) {
+    componentSlots.add({
+      id: 'product/debug/cursor-coordinates',
+      component: CursorCoordinates,
       position: 'bottom-right',
     });
   }

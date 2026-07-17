@@ -82,6 +82,7 @@ export const useSimulationState = (
     const isLast = () => position.value === frameCount - 1;
 
     const updatePosition = (newPosition: number) => {
+      if (position.value === newPosition) return;
       const oldPosition = position.value;
       position.value = newPosition;
 

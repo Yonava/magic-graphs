@@ -5,11 +5,13 @@
 
   const graph = useGraphProduct({
     productId: 'basic-trees',
+    localStorage: false,
     core: {
       weighted: false,
     },
     ui: {
       annotations: true,
+      debug: true,
     },
   });
 
