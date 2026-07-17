@@ -28,10 +28,10 @@ export const canvas =
   ({ controls, events: graphEventHub, actions, getters }) => {
     const canvasEventRegistry = createCanvasEventRegistry();
     const canvasEventHub = createEventHub(canvasEventRegistry);
-    const events = mergeEventHubs<CanvasEventMap, CoreEventMap & StructuralEventMap>(
-      canvasEventHub,
-      graphEventHub,
-    );
+    const events = mergeEventHubs<
+      CanvasEventMap,
+      CoreEventMap & StructuralEventMap
+    >(canvasEventHub, graphEventHub);
 
     const aggregator = createAggregator({ emit: events.emit });
 

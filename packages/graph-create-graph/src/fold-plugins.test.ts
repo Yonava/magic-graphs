@@ -27,9 +27,8 @@ const createLabelingPlugin =
 // mimics the interactive plugin: doesn't extend the action pipeline, just
 // captures a reference at fold time to call later, in response to something
 // external (here, a manually-invoked callback instead of a real click).
-const createTriggeringPlugin = (
-  onReady: (trigger: () => any) => void,
-): LooseGraphPlugin =>
+const createTriggeringPlugin =
+  (onReady: (trigger: () => any) => void): LooseGraphPlugin =>
   ({ actions, finalActions, events, getters }) => {
     onReady(() => finalActions.addNode({}));
 

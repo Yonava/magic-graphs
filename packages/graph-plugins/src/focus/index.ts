@@ -27,10 +27,7 @@ export const focus: FocusPlugin = ({
   const events = mergeEventHubs<
     FocusEventMap,
     CoreEventMap & StructuralEventMap & CanvasEventMap
-  >(
-    focusEventHub,
-    graphEventHub,
-  );
+  >(focusEventHub, graphEventHub);
 
   let focusedElementIds = new Set<string>();
 

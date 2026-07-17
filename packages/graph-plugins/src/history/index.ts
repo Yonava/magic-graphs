@@ -17,10 +17,7 @@ export const history: HistoryPlugin = ({
   const events = mergeEventHubs<
     HistoryEventMap,
     CoreEventMap & StructuralEventMap
-  >(
-    historyEventHub,
-    graphEventHub,
-  );
+  >(historyEventHub, graphEventHub);
 
   let undoStack: any[] = [];
   let redoStack: any[] = [];

@@ -1,4 +1,5 @@
 import { nullThrows } from '@core/utils/assert';
+import { core } from '@graph/core/index';
 import { CoreOptions } from '@graph/core/options';
 import { CoreControls } from '@graph/core/types';
 import { createComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
@@ -22,6 +23,7 @@ import { createCanvasElementFactories } from './canvas-elements.ts';
 import { foldPlugins } from './fold-plugins.ts';
 import { resolveEdgeComputedTokens } from './render-functions/edge.ts';
 import { resolveNodeComputedTokens } from './render-functions/node.ts';
+import { emitStructuralEvents } from './structural-events.ts';
 import { GraphTransit } from './types.ts';
 
 type CreateGraphOptions<
@@ -48,8 +50,10 @@ export const createGraph = <
     'createGraph requires at least 1 theme preset!',
   );
 
+  const coreGraph = core(coreOptions);
+
   const folded = foldPlugins(
-    coreOptions,
+    coreGraph,
     plugins,
     themePresets,
     () => activePresetName,
@@ -122,9 +126,21 @@ export const createGraph = <
           `Data decode validation failed for: ${namesOfFailures}`,
         );
       }
+      const oldNodeIds = coreGraph.controls.nodes.map((n) => n.id);
+      const oldEdgeIds = coreGraph.controls.edges.map((e) => e.id);
       for (const { pluginName, transit } of pluginTransitControls) {
         transit.decode((data as any)[pluginName]);
       }
+
+      emitStructuralEvents(
+        {
+          addedEdges: data.core.edges,
+          addedNodes: data.core.nodes,
+          removedEdgeIds: oldEdgeIds,
+          removedNodeIds: oldNodeIds,
+        },
+        events.emit as any,
+      );
     },
   };
 

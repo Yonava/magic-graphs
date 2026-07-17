@@ -27,7 +27,8 @@ export type StructuralEventHub = ReturnType<typeof createStructuralEventHub>;
 export const createStructuralEventHub = () =>
   createEventHub<StructuralEventMap>(createStructuralEventRegistry());
 
-const hasItems = (...arrays: unknown[][]) => arrays.some((arr) => arr.length > 0);
+const hasItems = (...arrays: unknown[][]) =>
+  arrays.some((arr) => arr.length > 0);
 
 type NonStructureChangeEvent = Exclude<
   keyof StructuralEventMap,
@@ -64,7 +65,7 @@ const eventNameToPredicateMap: {
   },
 };
 
-const emitStructuralEvents = (
+export const emitStructuralEvents = (
   payload: TransactionPayload,
   emit: StructuralEventHub['emit'],
 ) => {
@@ -110,7 +111,9 @@ const actionResultToPartialPayload = {
 // capture in a closure for later invocation, even though the real thing doesn't
 // exist until folding (and the structural-event wrap above) finishes. every call
 // dispatches through `resolve`'s argument, whatever it ends up being.
-export const createFinalActionsProxy = <Actions extends GraphActions<any>>() => {
+export const createFinalActionsProxy = <
+  Actions extends GraphActions<any>,
+>() => {
   let resolved: Actions | undefined;
 
   const dispatch =
@@ -141,7 +144,9 @@ export const createFinalActionsProxy = <Actions extends GraphActions<any>>() => 
   };
 };
 
-export const wrapActionsWithStructuralEvents = <Actions extends GraphActions<any>>(
+export const wrapActionsWithStructuralEvents = <
+  Actions extends GraphActions<any>,
+>(
   actions: Actions,
   hub: StructuralEventHub,
 ): Actions => {
@@ -155,9 +160,7 @@ export const wrapActionsWithStructuralEvents = <Actions extends GraphActions<any
 
     (wrapped as any)[key] = (...args: any[]) => {
       const result = (action as any)(...args);
-      const partialPayload = (actionResultToPartialPayload[key] as any)(
-        result,
-      );
+      const partialPayload = (actionResultToPartialPayload[key] as any)(result);
       emitStructuralEvents(
         {
           addedNodes: [],

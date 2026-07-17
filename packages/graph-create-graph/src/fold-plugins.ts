@@ -1,6 +1,6 @@
 import { getValue } from '@core/utils/maybeGetter/index';
-import { core as createCore } from '@graph/core/index';
 import { CoreEventMap } from '@graph/core/events';
+import { core, core as createCore } from '@graph/core/index';
 import { CoreOptions } from '@graph/core/options';
 import {
   LooseGraphPlugin,
@@ -32,52 +32,42 @@ type FoldedPlugins = {
 
 const applyThemePreset = (
   pluginThemeField: PluginThemeField<any>['theme'],
-  themePresets: Record<string, any>,
-  getActivePresetName: () => string,
-  pluginName: string,
+  presetTokens: Record<string, any>,
 ) => {
   const { set } = pluginThemeField.createLayer('create-graph/theme-presets');
-  const tokens = Object.keys(themePresets[getActivePresetName()][pluginName]);
-  for (const token of tokens) {
-    set(token, (...args: any[]) =>
-      getValue(
-        themePresets[getActivePresetName()][pluginName][token],
-        ...args,
-      ),
-    );
+  for (const token of Object.keys(presetTokens)) {
+    set(token, (...args: any[]) => getValue(presetTokens[token], ...args));
   }
 };
 
 // TODO add topo sort and explicit error handling for missing plugin dependencies
 export const foldPlugins = (
-  coreOptions: Partial<CoreOptions>,
+  coreGraph: ReturnType<typeof core>,
   plugins: LooseGraphPlugin[],
   themePresets: Record<string, any>,
-  getActivePresetName: () => string,
+  activePresetName: () => string,
 ): FoldedPlugins => {
-  const core = createCore(coreOptions);
-
   // create-graph owns the coarse structural events (onNodesAdded, onStructureChange, etc.)
   // since only it knows when a fully-composed plugin action has finished, not just the
   // underlying core transaction. merged in up front so plugins can subscribe during setup.
   const structuralEvents = createStructuralEventHub();
-  core.events.subscribe('onEdgeWeightsCommitted', () =>
+  coreGraph.events.subscribe('onEdgeWeightsCommitted', () =>
     structuralEvents.emit('onStructureChange'),
   );
 
-  let controls = core.controls;
+  let controls = coreGraph.controls;
   let events: any = mergeEventHubs<CoreEventMap, StructuralEventMap>(
-    core.events,
+    coreGraph.events,
     structuralEvents,
   );
-  let actions = core.actions;
-  let getters = core.getters;
+  let actions = coreGraph.actions;
+  let getters = coreGraph.getters;
   const { finalActions, resolveFinalActions } = createFinalActionsProxy();
   let themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']> =
     {};
 
   const pluginTransitControls: PluginTransitControl[] = [
-    { pluginName: 'core', transit: core.transit },
+    { pluginName: 'core', transit: coreGraph.transit },
   ];
 
   for (const plugin of plugins) {
@@ -106,9 +96,7 @@ export const foldPlugins = (
     if (pluginThemeField) {
       applyThemePreset(
         pluginThemeField,
-        themePresets,
-        getActivePresetName,
-        pluginResult.name,
+        themePresets[activePresetName()][pluginResult.name],
       );
       themeDetectors = { ...themeDetectors, ...pluginThemeField.detectors };
     }

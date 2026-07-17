@@ -35,7 +35,9 @@ type LoosePluginOutput = {
   name: LooseGraphPlugin['name'];
   controls: LoosePluginSchema['controls'];
   // [1]
-  events: EventHub<CoreEventMap & StructuralEventMap & LoosePluginSchema['events']>;
+  events: EventHub<
+    CoreEventMap & StructuralEventMap & LoosePluginSchema['events']
+  >;
   actions: GraphActions<any>;
   getters: GraphGetters<any>;
   onAfterInit?: () => void;
