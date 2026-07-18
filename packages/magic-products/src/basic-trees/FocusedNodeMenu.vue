@@ -2,6 +2,7 @@
   import Button from '@magic/shared/Button';
   import HStack from '@magic/shared/HStack';
   import Well from '@magic/shared/Well';
+  import { GNode } from '@magic/shared/graph';
   import { useProvidedGraph } from '@magic/shared/product';
 
   import { computed } from 'vue';
@@ -18,18 +19,17 @@
     graph.magic.simulation.start(avl.definition);
   };
 
-  const nodesToRemove = computed(() => {
-    return graph.nodes.value
-      .filter((n) => !avl.suggested.ids.value.has(n.id))
-      .map((n) => graph.getNode(n.id));
+  const node = computed<GNode | undefined>(() => {
+    const focusedNodes = graph.focus.focusedNodes.value;
+    if (focusedNodes.length !== 1) return;
+    return graph.getNode(focusedNodes[0].id);
   });
 </script>
 
 <template>
-  <Well v-if="nodesToRemove.length > 0">
+  <Well v-if="node">
     <HStack>
       <Button
-        v-for="node in nodesToRemove"
         @click="removeNodeFromAvl(node.id)"
         :disabled="!!graph.magic.simulation.current.value"
       >

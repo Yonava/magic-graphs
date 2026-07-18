@@ -41,11 +41,13 @@ export const useAVLSimulationDefinition = (): Controls => {
   const definition: SimulationDefinition<AVLFrame> = {
     collectFrames: (collector) => {
       tree.attachFrameCollector(collector);
+
       const targetId = nullThrows(
         avlControls.target.value,
         'cant start sim without a target node id',
       );
       const targetValue = Number(graph.getNode(targetId).label);
+
       if (avlControls.mode.value === 'insert') {
         tree.insert({ id: targetId, value: targetValue });
       } else {

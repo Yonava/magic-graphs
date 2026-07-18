@@ -20,6 +20,7 @@ import { light } from '@graph/theme-presets/light/index';
 import { useAdjacencyLists } from '@graph/vue/useAdjacencyLists';
 import { useCharacteristics } from '@graph/vue/useCharacteristics';
 import { useCreateGraph } from '@graph/vue/useCreateGraph';
+import { useFocus } from '@graph/vue/useFocus';
 import { useTransitionMatrix } from '@graph/vue/useTransitionMatrix';
 
 export type UseGraphOptions = {
@@ -71,12 +72,15 @@ export const useGraph = (options: UseGraphOptions = {}) => {
   const vueCharacteristics = useCharacteristics(graph);
   // @ts-expect-error event hub type contravariance causing issues with strong typing
   const vueTransitionMatrix = useTransitionMatrix(graph);
+  // @ts-expect-error event hub type contravariance causing issues with strong typing
+  const vueFocus = useFocus(graph);
 
   return {
     ...graph,
     adjacencyLists: vueAdjacencyLists,
     characteristics: vueCharacteristics,
     transitionMatrix: vueTransitionMatrix,
+    focus: vueFocus,
     ...vueCoreWrapper,
   };
 };

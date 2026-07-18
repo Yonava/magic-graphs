@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
-  import StopSim from './StopSim.vue';
   // import AnimationTest from './AnimationTest.vue';
-  import TreePanel from './TreePanel.vue';
+  import FocusedNodeMenu from './FocusedNodeMenu.vue';
+  import StopSim from './StopSim.vue';
 
   const graph = useGraphProduct({
     productId: 'basic-trees',
@@ -18,8 +18,8 @@
   });
 
   graph.magic.componentSlots.add({
-    id: 'tree-panel',
-    component: TreePanel,
+    id: 'focused-node-menu',
+    component: FocusedNodeMenu,
     position: 'bottom-middle',
   });
 
