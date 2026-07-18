@@ -3,7 +3,7 @@ import { useProvidedGraph } from '@magic/shared/product';
 import { SimulationDefinition } from '@magic/shared/simulation';
 import { useNodeThemer } from '@magic/shared/themer';
 
-import { Ref, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { AVLTree } from '../AVLTree.ts';
 import { createSync } from './createSync.ts';
@@ -16,7 +16,7 @@ type Controls = {
   controls: AVLControls;
 };
 
-export const useAVLControls = () => {
+const useAVLControls = () => {
   const target = ref<string>();
   const mode = ref<AVLMode>('insert');
   return { target, mode };
@@ -37,20 +37,19 @@ export const useAVLSimulationDefinition = (): Controls => {
   const definition: SimulationDefinition<AVLFrame> = {
     collectFrames: (collector) => {
       tree.attachFrameCollector(collector);
-      const target = nullThrows(
+      const targetId = nullThrows(
         avlControls.target.value,
         'cant start sim without a target node id',
       );
-      const nodeValue = Number(graph.getNode(target).label);
+      const targetValue = Number(graph.getNode(targetId).label);
       if (avlControls.mode.value === 'insert') {
-        tree.insert(nodeValue);
+        tree.insert({ id: targetId, value: targetValue });
       } else {
-        tree.remove(nodeValue);
+        tree.remove(targetValue);
       }
     },
     setup: (context) => {
       const { currentFrame, frames } = context;
-      suggested.remove();
       return {
         explainer: explainer(highlightNode),
         onSetupCompleted: () => sync(currentFrame.value),

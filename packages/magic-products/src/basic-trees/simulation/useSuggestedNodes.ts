@@ -30,7 +30,7 @@ export const useSuggestedNodes = (
     }));
     const { addedNodes } = graph.actions.addElements(
       { nodes: nodeData, edges: [] },
-      {},
+      { focus: false },
     );
     suggestedNodeIds.value = new Set(addedNodes.map((n) => n.id));
   };

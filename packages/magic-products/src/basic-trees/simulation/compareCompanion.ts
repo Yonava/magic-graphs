@@ -4,25 +4,20 @@ import { GraphState } from './treeArrayToGraph.ts';
 import { CompareFrame } from './types.ts';
 
 export const compareCompanion = (frame: CompareFrame, state: GraphState) => {
-  const node = frame.targetNode;
-  const compareNode = nullThrows(
-    state.nodes.find((n) => n.id === frame.comparedNode.toString()),
+  const nodeWeAreAdding = frame.targetNode;
+  const nodeWeAreComparing = frame.comparedNode;
+
+  const pos = nullThrows(
+    state.nodes.find((n) => n.id === nodeWeAreComparing.id)?.position,
     'comparator node not found',
   );
-  const compareNodeX = nullThrows(
-    compareNode.position?.x,
-    'compare node missing X',
-  );
-  const compareNodeY = nullThrows(
-    compareNode.position?.y,
-    'compare node missing Y',
-  );
+
   state.nodes.push({
-    id: node.toString() + '-compare',
-    label: node.toString(),
+    id: nodeWeAreAdding.id,
+    label: nodeWeAreAdding.value.toString(),
     position: {
-      x: compareNodeX - 100,
-      y: compareNodeY,
+      x: nullThrows(pos?.x, 'compare node missing X') - 100,
+      y: nullThrows(pos?.y, 'compare node missing Y'),
     },
   });
 };

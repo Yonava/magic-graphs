@@ -26,18 +26,18 @@ export const explainer =
   (frame: AVLFrame): Explainer | undefined => {
     if (frame.action === 'compare') {
       return {
-        content: `Comparing [${frame.targetNode}] to [${frame.comparedNode}]`,
+        content: `Comparing [${frame.targetNode?.value}] to [${frame.comparedNode?.value}]`,
         highlights: [
           {
             activate: () => {
-              nodeId.value = frame.targetNode.toString();
+              nodeId.value = frame.targetNode?.id;
               themer.activate();
             },
             deactivate: themer.deactivate,
           },
           {
             activate: () => {
-              nodeId.value = frame.comparedNode.toString();
+              nodeId.value = frame.comparedNode?.id;
               themer.activate();
             },
             deactivate: themer.deactivate,
@@ -57,11 +57,11 @@ export const explainer =
     }
     if (frame.action === 'insert') {
       return {
-        content: `Inserting [${frame.targetNode}]`,
+        content: `Inserting [${frame.targetNode?.value}]`,
         highlights: [
           {
             activate: () => {
-              nodeId.value = frame.targetNode.toString();
+              nodeId.value = frame.targetNode?.id;
               themer.activate();
             },
             deactivate: themer.deactivate,
@@ -71,26 +71,28 @@ export const explainer =
     }
     if (frame.action === 'remove') {
       return {
-        content: `Removing [${frame.targetNode}]`,
+        content: `Removing [${frame.targetNode?.value}]`,
         highlights: [{}],
       };
     }
     if (frame.action === 'compare-removal') {
       return {
         content:
-          `Comparing [${frame.targetNode}] to [${frame.comparedNode}]` +
-          (frame.targetNode === frame.comparedNode ? '. Found It!' : ''),
+          `Comparing [${frame.targetNode?.value}] to [${frame.comparedNode?.value}]` +
+          (frame.targetNode?.id === frame.comparedNode?.id
+            ? '. Found It!'
+            : ''),
         highlights: [
           {
             activate: () => {
-              nodeId.value = frame.targetNode.toString();
+              nodeId.value = frame.targetNode?.id;
               themer.activate();
             },
             deactivate: themer.deactivate,
           },
           {
             activate: () => {
-              nodeId.value = frame.comparedNode.toString();
+              nodeId.value = frame.comparedNode?.id;
               themer.activate();
             },
             deactivate: themer.deactivate,

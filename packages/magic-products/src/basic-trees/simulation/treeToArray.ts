@@ -1,9 +1,13 @@
-import { getTreeHeight } from './getTreeHeight.ts';
 import { TreeNode } from './TreeNode.ts';
+import { getTreeHeight } from './getTreeHeight.ts';
 
 /**
- * the node at the index of the tree or undefined if the tree index is empty
+ * An array representation of a binary tree, where each index corresponds to a tree position:
+ * index 0 is the root, index 1 is the left child, index 2 is the right child, etc.
+ *
+ * Each index in the array is the TreeNode at that position, or `undefined` if no node exists at that position.
  */
+
 export type TreeArray = (TreeNode | undefined)[];
 
 /**
