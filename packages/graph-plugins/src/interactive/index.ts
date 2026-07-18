@@ -38,7 +38,6 @@ export const interactive =
       // needs the fully-composed action, not the fold-time snapshot
       finalActions.addNode({
         position: { x: coords.x, y: coords.y },
-        animate: true,
       });
     };
 
@@ -130,13 +129,26 @@ export const interactive =
       });
     };
 
+    const removeFocusedElements = (e: KeyboardEvent) => {
+      if (e.key !== 'Backspace') return;
+      finalActions.removeElements(
+        {
+          nodes: controls.focus?.focusedNodes() ?? [],
+          edges: controls.focus?.focusedEdges() ?? [],
+        },
+        {},
+      );
+    };
+
     const enable = () => {
+      events.subscribe('onKeyDown', removeFocusedElements);
       events.subscribe('onMouseDown', handleEdgeTextArea);
       events.handle('onClick', handleNodeCreation, INTERACTIVE_PLUGIN_ID);
       events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
     };
 
     const disable = () => {
+      events.unsubscribe('onKeyDown', removeFocusedElements);
       events.unsubscribe('onMouseDown', handleEdgeTextArea);
       events.unhandle('onClick', handleNodeCreation);
       events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);

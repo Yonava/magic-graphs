@@ -416,6 +416,7 @@ export const anchors: AnchorsPlugin = ({
     events.unhandle('onNodesRemoved', clearAnchorStateIfParentRemoved);
     events.unhandle('onNodeMoveStreamStart', clearAnchorState);
     events.unhandle('onGraphUnderCursorChange', checkForParentNodeUpdate);
+    events.unhandle('onMouseUp', checkForParentNodeUpdate);
     events.unhandle('onMouseMove', updateCurrentlyDraggingAnchorPosition);
     events.unhandle('onMouseMove', updateHoveredNodeAnchorId);
     events.unhandle('onMouseDown', setCurrentlyDraggingAnchor);
