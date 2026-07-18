@@ -50,9 +50,7 @@ export const useAVLSimulationDefinition = (initialTarget: number): Controls => {
   const tree = new AVLTree();
 
   const sync = (frame: AVLFrame) => {
-    const finalize = graph.canvas.shapes.autoAnimate.captureFrame(() =>
-      graph.canvas.aggregator.draw(getCtx(graph.canvas.magicCanvas.canvas)),
-    );
+    const finalize = graph.animation.auto();
 
     graph.actions.removeElements(
       {

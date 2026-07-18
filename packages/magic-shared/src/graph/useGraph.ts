@@ -4,6 +4,7 @@ import { CoreOptions } from '@graph/core/options';
 import { createGraph } from '@graph/create-graph/index';
 import { adjacencyLists } from '@graph/plugins/adjacency-lists/index';
 import { anchors } from '@graph/plugins/anchors/index';
+import { animation } from '@graph/plugins/animation/index';
 import { canvas } from '@graph/plugins/canvas/index';
 import { characteristics } from '@graph/plugins/characteristics/index';
 import { focus } from '@graph/plugins/focus/index';
@@ -40,6 +41,7 @@ const graphPlugins = (
   transitionMatrix,
   characteristics,
   interactive(options.interactive ?? {}),
+  animation,
 ];
 
 const createGraphWithPlugins = (
