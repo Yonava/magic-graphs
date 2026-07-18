@@ -1,7 +1,10 @@
 import { AnimatedShapeControls } from '@canvas/primitives/animation/index';
-import { Camera } from '@canvas/surface/camera/index';
 import { CanvasProps, Coordinate } from '@canvas/surface/types';
-import { GraphPlugin, WithTheme } from '@graph/plugins-shared/plugins';
+import {
+  GraphPlugin,
+  WithEvents,
+  WithTheme,
+} from '@graph/plugins-shared/plugins';
 import { DeepReadonly } from 'ts-essentials';
 
 import { AggregatorControls } from './aggregator/createAggregator.ts';
@@ -49,7 +52,10 @@ type BaseCanvasControls = {
   getNodePriority: () => (nodeId: string) => number;
 };
 
-export type CanvasControls = WithTheme<BaseCanvasControls, CanvasThemes>;
+export type CanvasControls = WithEvents<
+  WithTheme<BaseCanvasControls, CanvasThemes>,
+  CanvasEventMap
+>;
 
 type CanvasTransitPayload = {
   panX: number;

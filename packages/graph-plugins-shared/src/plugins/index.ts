@@ -8,6 +8,8 @@ export type { GraphPlugin } from './internals/plugin.ts';
 /** Wraps a plugin's controls with lifecycle methods (enable/disable). */
 export type { WithLifecycle } from './internals/lifecycle.ts';
 
+export type { WithEvents } from './internals/events.ts';
+
 /** Wraps a plugin's controls with a theme controller. */
 export type { WithTheme, PluginThemeField } from './internals/themes.ts';
 
@@ -28,9 +30,6 @@ export type { PluginThemes } from './internals/themes.ts';
 
 /** Extracts the merged controls type from a list of plugins. To assemble the graph controls. */
 export type { ExtractControls } from './internals/extractors.ts';
-
-/** Extracts the merged event map from a list of plugins. To wire the event hub. */
-export type { ExtractEventMap } from './internals/extractors.ts';
 
 /** Extracts the merged getters type from a list of plugins. To build the getters interface. */
 export type { ExtractGetters } from './internals/extractors.ts';

@@ -73,13 +73,14 @@ export const createEventHub = <EventMap extends GenericEventMap>(
       }
       fireHandlers(eventName, ...callbackArgs);
     },
-    /**
-     * all the keys of the provided event map
-     */
-    keys: new Set(Object.keys(eventRegistry) as (keyof EventMap)[]),
   };
 };
 
 export type EventHub<EventMap extends GenericEventMap> = ReturnType<
   typeof createEventHub<EventMap>
+>;
+
+export type ReadonlyEventHub<EventMap extends GenericEventMap> = Omit<
+  EventHub<EventMap>,
+  'emit'
 >;
