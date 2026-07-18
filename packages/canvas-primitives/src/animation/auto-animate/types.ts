@@ -1,0 +1,5 @@
+import { SchemaId, ShapeName } from '../../types/index.ts';
+import { LooseSchema } from '../types.ts';
+
+export type LooseSchemaWithName = LooseSchema & { shapeName: ShapeName };
+export type StopperKey = `${SchemaId}-${string}`;

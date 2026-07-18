@@ -12,7 +12,7 @@ import type {
   WithId,
 } from '../types/index.ts';
 import { shapeProps } from '../types/index.ts';
-import { useAutoAnimate } from './autoAnimate.ts';
+import { createAutoAnimate } from './auto-animate/createAutoAnimate.ts';
 import { useDefineTimeline } from './timeline/define.ts';
 import type { ActiveAnimation, LooseSchema } from './types.ts';
 import { getAnimationProgress, getCurrentRunCount } from './utils.ts';
@@ -124,7 +124,7 @@ export const useAnimatedShapes = () => {
     return outputSchema;
   };
 
-  const autoAnimate = useAutoAnimate(defineTimeline, getAnimatedSchema);
+  const autoAnimate = createAutoAnimate(defineTimeline, getAnimatedSchema);
 
   function animatedFactory<T extends Omit<LooseSchema, 'id'>>(
     factory: ShapeFactory<T>,

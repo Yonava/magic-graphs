@@ -1,3 +1,4 @@
+import { jsonClone } from '@core/utils/clone';
 import { delta } from '@core/utils/delta/index';
 import { DeepPartial } from 'ts-essentials';
 
@@ -5,32 +6,17 @@ import type {
   EverySchemaPropName,
   SchemaId,
   ShapeName,
-} from '../types/index.ts';
-import type { GetAnimatedSchema } from './index.ts';
-import type { DefineTimeline } from './timeline/define.ts';
-import type { LooseSchema, LooseSchemaValue } from './types.ts';
+} from '../../types/index.ts';
+import type { GetAnimatedSchema } from '../index.ts';
+import type { DefineTimeline } from '../timeline/define.ts';
+import type { LooseSchema, LooseSchemaValue } from '../types.ts';
+import {
+  AUTO_ANIMATED_PROPERTIES,
+  AUTO_ANIMATE_DURATION_MS,
+} from './constants.ts';
+import { LooseSchemaWithName, StopperKey } from './types.ts';
 
-export const AUTO_ANIMATE_DURATION_MS = 500;
-/**
- * properties supported by the auto animate feature.
- *
- * ⚠️ **only properties listed here will be animated with `useAutoAnimate`**
- */
-const AUTO_ANIMATED_PROPERTIES = new Set<EverySchemaPropName>([
-  'at',
-  'start',
-  'end',
-  'lineWidth',
-  'radius',
-  'fillColor',
-]);
-
-type LooseSchemaWithName = LooseSchema & { shapeName: ShapeName };
-type StopperKey = `${SchemaId}-${string}`;
-
-const clone = <T>(obj: T) => JSON.parse(JSON.stringify(obj)) as T;
-
-export const useAutoAnimate = (
+export const createAutoAnimate = (
   defineTimeline: DefineTimeline,
   getAnimatedSchema: GetAnimatedSchema,
 ) => {
@@ -77,7 +63,7 @@ export const useAutoAnimate = (
   return {
     captureSchemaState: (schema: LooseSchema, shapeName: ShapeName) => {
       if (!activelyCapturingSchemas) return;
-      capturedSchemas.push(clone({ ...schema, shapeName }));
+      capturedSchemas.push(jsonClone({ ...schema, shapeName }));
     },
     snapshotMap,
 
@@ -113,7 +99,7 @@ export const useAutoAnimate = (
           const liveSchema = getAnimatedSchema(schema.id);
           snapshotMap.set(schema.id, {
             ...shapeSchemaEntry,
-            [state]: clone(liveSchema ?? schema),
+            [state]: jsonClone(liveSchema ?? schema),
           });
         }
       };
@@ -134,9 +120,11 @@ export const useAutoAnimate = (
         for (const snapshot of schemasCapturedInSnapshots) {
           const { beforeSchema, afterSchema } = snapshot;
 
-          // if a shape schema was added/removed during the snapshot
-          // we are missing a start/end position for it, therefore it cannot be animated
-          if (!beforeSchema || !afterSchema) continue;
+          // this shape was added
+          if (!beforeSchema) continue;
+
+          // this shape was removed
+          if (!afterSchema) continue;
 
           // if a shapes schema has not changed between snapshots, we dont need to animate it
           const schemaDifference: DeepPartial<LooseSchemaWithName> | null =
