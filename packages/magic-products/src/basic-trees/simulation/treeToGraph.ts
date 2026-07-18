@@ -36,7 +36,7 @@ export type GraphState = {
   edges: AddGEdgeOptions[];
 };
 
-export const treeArrayToGraph = (
+export const treeToGraph = (
   root: TreeNode | undefined,
   rootPosition: Coordinate,
 ): GraphState => {

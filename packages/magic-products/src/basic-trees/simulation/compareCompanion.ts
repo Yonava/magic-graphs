@@ -1,6 +1,6 @@
 import { nullThrows } from '@core/utils/assert';
 
-import { GraphState } from './treeArrayToGraph.ts';
+import { GraphState } from './treeToGraph.ts';
 import { CompareFrame } from './types.ts';
 
 export const compareCompanion = (frame: CompareFrame, state: GraphState) => {

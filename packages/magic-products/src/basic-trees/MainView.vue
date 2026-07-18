@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
+  import StopSim from './StopSim.vue';
   // import AnimationTest from './AnimationTest.vue';
   import TreePanel from './TreePanel.vue';
 
@@ -20,6 +21,12 @@
     id: 'tree-panel',
     component: TreePanel,
     position: 'bottom-middle',
+  });
+
+  graph.magic.componentSlots.add({
+    id: 'stop-sim',
+    component: StopSim,
+    position: 'top-right',
   });
 
   graph.anchors.lifecycle.disable();

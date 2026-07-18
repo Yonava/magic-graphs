@@ -9,11 +9,15 @@ import { AVLTree } from '../AVLTree.ts';
 import { createSync } from './createSync.ts';
 import { explainer } from './explainer.ts';
 import { AVLFrame, AVLMode } from './types.ts';
-import { useSuggestedNodes } from './useSuggestedNodes.ts';
+import {
+  SuggestedNodesControls,
+  useSuggestedNodes,
+} from './useSuggestedNodes.ts';
 
 type Controls = {
   definition: SimulationDefinition<AVLFrame>;
   controls: AVLControls;
+  suggested: SuggestedNodesControls;
 };
 
 const useAVLControls = () => {
@@ -50,6 +54,7 @@ export const useAVLSimulationDefinition = (): Controls => {
     },
     setup: (context) => {
       const { currentFrame, frames } = context;
+      suggested.remove();
       return {
         explainer: explainer(highlightNode),
         onSetupCompleted: () => sync(currentFrame.value),
@@ -68,5 +73,6 @@ export const useAVLSimulationDefinition = (): Controls => {
   return {
     definition,
     controls: avlControls,
+    suggested,
   };
 };

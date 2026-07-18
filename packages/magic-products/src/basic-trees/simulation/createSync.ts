@@ -1,7 +1,7 @@
 import { Graph } from '@magic/shared/graph';
 
 import { compareCompanion } from './compareCompanion.ts';
-import { treeArrayToGraph } from './treeArrayToGraph.ts';
+import { treeToGraph } from './treeToGraph.ts';
 import { AVLFrame } from './types.ts';
 
 const ROOT_POSITION = {
@@ -20,7 +20,7 @@ export const createSync = (graph: Graph) => (frame: AVLFrame) => {
     {},
   );
 
-  const graphState = treeArrayToGraph(frame.root, ROOT_POSITION);
+  const graphState = treeToGraph(frame.root, ROOT_POSITION);
   if (frame.action === 'compare') compareCompanion(frame, graphState);
 
   graph.actions.addElements(graphState, { focus: false });

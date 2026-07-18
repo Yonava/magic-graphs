@@ -4,6 +4,8 @@
   import Well from '@magic/shared/Well';
   import { useProvidedGraph } from '@magic/shared/product';
 
+  import { computed } from 'vue';
+
   import { useAVLSimulationDefinition } from './simulation/useAVLSimulation.ts';
 
   const graph = useProvidedGraph();
@@ -15,22 +17,23 @@
     avl.controls.target.value = target;
     graph.magic.simulation.start(avl.definition);
   };
+
+  const nodesToRemove = computed(() => {
+    return graph.nodes.value
+      .filter((n) => !avl.suggested.ids.value.has(n.id))
+      .map((n) => graph.getNode(n.id));
+  });
 </script>
 
 <template>
-  <Well>
+  <Well v-if="nodesToRemove.length > 0">
     <HStack>
       <Button
-        @click="graph.magic.simulation.stop()"
-        :disabled="!graph.magic.simulation.current.value"
-      >
-        Stop Sim
-      </Button>
-      <Button
-        v-for="node in graph.nodes.value"
+        v-for="node in nodesToRemove"
         @click="removeNodeFromAvl(node.id)"
+        :disabled="!!graph.magic.simulation.current.value"
       >
-        Remove Node {{ node.id }}
+        Remove {{ node.label }}
       </Button>
     </HStack>
   </Well>

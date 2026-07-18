@@ -10,10 +10,15 @@ import { computed, ref } from 'vue';
 import { AVLFrame } from './types.ts';
 import { AVLControls } from './useAVLSimulation.ts';
 
+const Y = 250;
+const X = 800;
+
 const POSITIONS = [
-  { x: 700, y: 300 },
-  { x: 800, y: 300 },
-  { x: 900, y: 300 },
+  { x: X - 200, y: Y },
+  { x: X - 100, y: Y },
+  { x: X, y: Y },
+  { x: X + 100, y: Y },
+  { x: X + 200, y: Y },
 ];
 
 export const useSuggestedNodes = (
@@ -25,7 +30,7 @@ export const useSuggestedNodes = (
 
   const addSuggestedNodes = () => {
     const nodeData = POSITIONS.map((v): AddGNodeOptions => ({
-      label: getRandomInRange(1, 10).toString(),
+      label: getRandomInRange(1, 99).toString(),
       position: v,
     }));
     const { addedNodes } = graph.actions.addElements(
@@ -36,7 +41,9 @@ export const useSuggestedNodes = (
   };
 
   const removeSuggestedNodes = () => {
-    const nodes = Array.from(suggestedNodeIds.value).map((id) => ({ id }));
+    const nodes = Array.from(suggestedNodeIds.value)
+      .filter((id) => id !== controls.target.value)
+      .map((id) => ({ id }));
     graph.actions.removeElements({ nodes: nodes, edges: [] }, {});
     suggestedNodeIds.value.clear();
   };
@@ -72,3 +79,5 @@ export const useSuggestedNodes = (
     ids: computed(() => suggestedNodeIds.value),
   };
 };
+
+export type SuggestedNodesControls = ReturnType<typeof useSuggestedNodes>;
