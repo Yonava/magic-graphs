@@ -1,3 +1,4 @@
+import { nullThrows } from '@core/utils/assert';
 import { jsonClone } from '@core/utils/clone';
 import { delta } from '@core/utils/delta/index';
 import { DeepPartial } from 'ts-essentials';
@@ -8,64 +9,99 @@ import type {
   ShapeName,
 } from '../../types/index.ts';
 import type { GetAnimatedSchema } from '../index.ts';
-import type { DefineTimeline } from '../timeline/define.ts';
+import type { DefineTimeline, Timeline } from '../timeline/define.ts';
 import type { LooseSchema, LooseSchemaValue } from '../types.ts';
+import { arrowAdd } from './arrow/add.ts';
+import { circleAdd } from './circle/add.ts';
 import {
   AUTO_ANIMATED_PROPERTIES,
   AUTO_ANIMATE_DURATION_MS,
 } from './constants.ts';
-import { LooseSchemaWithName, StopperKey } from './types.ts';
+import { LooseSchemaWithName } from './types.ts';
+
+type CreateTimelineValue = {
+  startValue: LooseSchemaValue;
+  endValue: LooseSchemaValue;
+  schemaPropertyName: EverySchemaPropName;
+};
 
 export const createAutoAnimate = (
   defineTimeline: DefineTimeline,
   getAnimatedSchema: GetAnimatedSchema,
 ) => {
-  let capturedSchemas: LooseSchemaWithName[] = [];
+  let capturedSchemas: Map<SchemaId, LooseSchemaWithName> = new Map();
   let activelyCapturingSchemas = false;
 
   const snapshotMap: Map<
     SchemaId,
     Partial<{ before: LooseSchemaWithName; after: LooseSchemaWithName }>
   > = new Map();
-  const animationStopper: Map<StopperKey, () => void> = new Map();
+  const shapeIdToAnimationStopper: Map<string, () => void> = new Map();
 
-  const applyAnimation = (
-    startVal: LooseSchemaValue,
-    endVal: LooseSchemaValue,
-    propName: EverySchemaPropName,
-    id: SchemaId,
+  const createTimeline = (
     shapeName: ShapeName,
+    values: CreateTimelineValue[],
   ) => {
-    const stopKey: StopperKey = `${id}-${propName}`;
-    const stopper = animationStopper.get(stopKey);
-    if (stopper) stopper();
+    const startingValues: Record<string, LooseSchemaValue> = {};
+    const endingValues: Record<string, LooseSchemaValue> = {};
 
-    const { play, stop } = defineTimeline({
+    for (const value of values) {
+      startingValues[value.schemaPropertyName] = value.startValue;
+      endingValues[value.schemaPropertyName] = value.endValue;
+    }
+
+    return {
       forShapes: [shapeName],
       durationMs: AUTO_ANIMATE_DURATION_MS,
-      easing: { [propName]: 'in-out' },
       keyframes: [
         {
           progress: 0,
-          properties: { [propName]: startVal },
+          properties: startingValues,
         },
         {
           progress: 1,
-          properties: { [propName]: endVal },
+          properties: endingValues,
         },
       ],
-    });
+    };
+  };
 
-    play({ shapeId: id, runCount: 1 });
-    animationStopper.set(stopKey, () => stop({ shapeId: id }));
+  const runAnimation = (timeline: Timeline<any>, shapeId: string) => {
+    const stopper = shapeIdToAnimationStopper.get(shapeId);
+    stopper?.();
+
+    const { play, stop } = defineTimeline(timeline);
+    play({ shapeId, runCount: 1 });
+    shapeIdToAnimationStopper.set(shapeId, () => stop({ shapeId }));
   };
 
   return {
     captureSchemaState: (schema: LooseSchema, shapeName: ShapeName) => {
       if (!activelyCapturingSchemas) return;
-      capturedSchemas.push(jsonClone({ ...schema, shapeName }));
+      // we only care about capturing each schema once, the rest of the calls should be ignored
+      if (capturedSchemas.has(schema.id)) return;
+      // const liveSchema = getAnimatedSchema(schema.id) ?? schema;
+      capturedSchemas.set(schema.id, { ...schema, shapeName });
     },
-    snapshotMap,
+
+    /**
+     * While a capture window is open (between captureFrame's before/after snapshots),
+     * shape rendering must not jump to live/mutated values or the transition
+     * being diffed for animation will visibly pop. This freezes rendering on the
+     * pre-mutation schema, or suppresses it entirely for a shape with no "before"
+     * (i.e. one newly added during this capture).
+     */
+    getCaptureOverride: (
+      schemaId: SchemaId,
+    ): { schema: LooseSchemaWithName } | 'suppress' | undefined => {
+      const snapshotMapEntry = snapshotMap.get(schemaId);
+      if (!snapshotMapEntry) return undefined;
+
+      const { before: beforeSnapshot } = snapshotMapEntry;
+      if (!beforeSnapshot) return 'suppress';
+
+      return { schema: beforeSnapshot };
+    },
 
     /**
      * Captures a pair of "before" and "after" snapshots of the given shapes' schemas
@@ -90,16 +126,16 @@ export const createAutoAnimate = (
       snapshotMap.clear();
 
       const takeSnapshot = (state: 'before' | 'after') => {
-        capturedSchemas = [];
+        capturedSchemas = new Map();
         activelyCapturingSchemas = true;
         flushDraw();
         activelyCapturingSchemas = false;
-        for (const schema of capturedSchemas) {
-          const shapeSchemaEntry = snapshotMap.get(schema.id) ?? {};
-          const liveSchema = getAnimatedSchema(schema.id);
-          snapshotMap.set(schema.id, {
+        for (const [schemaId, schema] of capturedSchemas) {
+          const shapeSchemaEntry = snapshotMap.get(schemaId) ?? {};
+
+          snapshotMap.set(schemaId, {
             ...shapeSchemaEntry,
-            [state]: jsonClone(liveSchema ?? schema),
+            [state]: schema,
           });
         }
       };
@@ -121,7 +157,19 @@ export const createAutoAnimate = (
           const { beforeSchema, afterSchema } = snapshot;
 
           // this shape was added
-          if (!beforeSchema) continue;
+          if (!beforeSchema) {
+            const schema = nullThrows(
+              afterSchema,
+              'after schema must be defined',
+            );
+            if (schema.shapeName === 'circle') {
+              runAnimation(circleAdd, schema.id);
+            }
+            if (schema.shapeName === 'arrow') {
+              runAnimation(arrowAdd, schema.id);
+            }
+            continue;
+          }
 
           // this shape was removed
           if (!afterSchema) continue;
@@ -144,20 +192,24 @@ export const createAutoAnimate = (
             schemaDifference,
           ) as EverySchemaPropName[];
 
-          for (const propName of schemaPropNames) {
-            // ignore all unsupported shape properties on the schema
-            const schemaPropertySupported =
-              AUTO_ANIMATED_PROPERTIES.has(propName);
-            if (!schemaPropertySupported) continue;
+          const supportedSchemaProperties = schemaPropNames.filter((name) =>
+            AUTO_ANIMATED_PROPERTIES.has(name),
+          );
 
-            applyAnimation(
-              beforeSchema[propName],
-              afterSchema[propName],
-              propName,
-              afterSchema.id,
-              afterSchema.shapeName,
-            );
-          }
+          const timelineValues = supportedSchemaProperties.map(
+            (name): CreateTimelineValue => ({
+              schemaPropertyName: name,
+              startValue: beforeSchema[name],
+              endValue: afterSchema[name],
+            }),
+          );
+
+          const timeline = createTimeline(
+            afterSchema.shapeName,
+            timelineValues,
+          );
+
+          runAnimation(timeline, afterSchema.id);
         }
 
         snapshotMap.clear();

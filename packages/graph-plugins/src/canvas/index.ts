@@ -1,4 +1,4 @@
-import { useAnimatedShapes } from '@canvas/primitives/animation/index';
+import { createAnimatedShapes } from '@canvas/primitives/animation/index';
 import { cross } from '@canvas/primitives/shapes/cross/index';
 import { CanvasProps } from '@canvas/surface/types';
 import { KeyboardEventEntries, MouseEventEntries } from '@core/utils/types';
@@ -103,7 +103,7 @@ export const canvas =
 
     const keyboardEvents = emitKeyboardEvents(events.emit);
 
-    const shapes = useAnimatedShapes();
+    const shapes = createAnimatedShapes();
 
     magicCanvas.lifecycleEvents.subscribe('onMounted', () => {
       if (!magicCanvas.canvas.value) {

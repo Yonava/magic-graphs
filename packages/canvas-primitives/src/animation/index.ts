@@ -1,3 +1,4 @@
+import { nullThrows } from '@core/utils/assert';
 import type { UnionToIntersection } from 'ts-essentials';
 
 import { getSchemaWithDefaults } from '../defaults/shapes.ts';
@@ -13,14 +14,29 @@ import type {
 } from '../types/index.ts';
 import { shapeProps } from '../types/index.ts';
 import { createAutoAnimate } from './auto-animate/createAutoAnimate.ts';
-import { useDefineTimeline } from './timeline/define.ts';
+import { createDefineTimeline } from './timeline/define.ts';
 import type { ActiveAnimation, LooseSchema } from './types.ts';
 import { getAnimationProgress, getCurrentRunCount } from './utils.ts';
 
 type ActiveAnimationsMap = Map<SchemaId, ActiveAnimation[]>;
 export type GetAnimatedSchema = (schemaId: SchemaId) => LooseSchema | undefined;
 
-export const useAnimatedShapes = () => {
+/**
+ * a version of the shape whose properties are all defined but whose draw
+ * methods are no-ops, for shapes that must not render anything yet (no
+ * "before" state exists to fall back to during an auto-animate capture)
+ */
+const withoutDrawing = (shape: Shape): Shape => ({
+  ...shape,
+  draw: () => {},
+  drawShape: () => {},
+  drawText: () => {},
+  drawTextArea: () => {},
+  drawTextAreaHole: () => {},
+  drawTextAreaMatte: () => {},
+});
+
+export const createAnimatedShapes = () => {
   /**
    * a mapping between shapes (via ids) and the animations currently
    * active/running on those shapes
@@ -28,7 +44,7 @@ export const useAnimatedShapes = () => {
   const activeAnimations: ActiveAnimationsMap = new Map();
   const schemaIdToShapeName: Map<SchemaId, ShapeName> = new Map();
 
-  const { defineTimeline, timelineIdToTimeline } = useDefineTimeline({
+  const { defineTimeline, timelineIdToTimeline } = createDefineTimeline({
     play: ({ shapeId, timelineId, synchronize, runCount = Infinity }) => {
       const newAnimation: ActiveAnimation = {
         runCount: synchronize ? Infinity : runCount,
@@ -63,23 +79,21 @@ export const useAnimatedShapes = () => {
     const animations = activeAnimations.get(schemaId);
     if (!animations || animations.length === 0) return;
 
-    let outputSchema = animations[0].schemaWithDefaults;
+    let outputSchema = nullThrows(
+      animations[0].schemaWithDefaults,
+      'animation set without a schema. this should never happen!',
+    );
 
-    if (!outputSchema) {
-      console.warn('animation set without a schema. this should never happen!');
-      return;
-    }
-
-    const shapeName = schemaIdToShapeName.get(schemaId);
-    if (!shapeName) {
-      throw new Error(
-        '(Internal Error) Animation set without shape name mapping. this should never happen!',
-      );
-    }
+    const shapeName = nullThrows(
+      schemaIdToShapeName.get(schemaId),
+      '(Internal Error) Animation set without shape name mapping. this should never happen!',
+    );
 
     for (const animation of animations) {
-      const timeline = timelineIdToTimeline.get(animation.timelineId);
-      if (!timeline) throw new Error('animation activated without a timeline!');
+      const timeline = nullThrows(
+        timelineIdToTimeline.get(animation.timelineId),
+        'animation activated without a timeline!',
+      );
 
       const animationWithTimeline = {
         ...timeline,
@@ -148,14 +162,17 @@ export const useAnimatedShapes = () => {
 
           autoAnimate.captureSchemaState(schemaWithDefaults, shapeName);
 
-          const snapshotMapEntry = autoAnimate.snapshotMap.get(schema.id);
+          // auto-animate may be in the middle of comparing this shape's old and new
+          // schema, so keep showing the old state for now instead of the update
+          // that just happened, otherwise it'll flash instead of animate
+          const captureOverride = autoAnimate.getCaptureOverride(schema.id);
 
-          if (snapshotMapEntry) {
-            const { before: beforeSnapshot } = snapshotMapEntry;
-            if (beforeSnapshot) {
-              const { shapeName: _, ...targetMapSchema } = beforeSnapshot;
-              return factory(targetMapSchema as WithId<T>)[prop];
-            }
+          if (captureOverride) {
+            if (captureOverride === 'suppress')
+              return withoutDrawing(target)[prop];
+            // auto-animate wants this schema rendered instead of the current schema
+            const { shapeName: _, ...targetMapSchema } = captureOverride.schema;
+            return factory(targetMapSchema as WithId<T>)[prop];
           }
 
           if (!animations || animations.length === 0) return target[prop];
@@ -274,4 +291,4 @@ export const useAnimatedShapes = () => {
   };
 };
 
-export type AnimatedShapeControls = ReturnType<typeof useAnimatedShapes>;
+export type AnimatedShapeControls = ReturnType<typeof createAnimatedShapes>;
