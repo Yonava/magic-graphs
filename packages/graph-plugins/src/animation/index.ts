@@ -13,6 +13,18 @@ export const animation: AnimationPlugin = ({ controls, ...stuff }) => {
   return {
     name: 'animation',
     ...stuff,
+    actions: {
+      ...stuff.actions,
+      addNode: (options) => {
+        if (options.animate) {
+          const finalize = autoAnimate();
+          const node = stuff.actions.addNode(options);
+          finalize();
+          return node;
+        }
+        return stuff.actions.addNode(options);
+      },
+    },
     controls: {
       auto: autoAnimate,
     },

@@ -25,12 +25,14 @@ type CreateTimelineValue = {
   schemaPropertyName: EverySchemaPropName;
 };
 
+type CaptureState = 'before' | 'after' | undefined;
+
 export const createAutoAnimate = (
   defineTimeline: DefineTimeline,
   getAnimatedSchema: GetAnimatedSchema,
 ) => {
   let capturedSchemas: Map<SchemaId, LooseSchemaWithName> = new Map();
-  let activelyCapturingSchemas = false;
+  let captureState: CaptureState;
 
   const snapshotMap: Map<
     SchemaId,
@@ -66,22 +68,36 @@ export const createAutoAnimate = (
     };
   };
 
-  const runAnimation = (timeline: Timeline<any>, shapeId: string) => {
-    const stopper = shapeIdToAnimationStopper.get(shapeId);
+  const runAnimation = (timeline: Timeline<any>, schemaId: string) => {
+    const stopper = shapeIdToAnimationStopper.get(schemaId);
     stopper?.();
 
     const { play, stop } = defineTimeline(timeline);
-    play({ shapeId, runCount: 1 });
-    shapeIdToAnimationStopper.set(shapeId, () => stop({ shapeId }));
+    play({ shapeId: schemaId, runCount: 1 });
+    shapeIdToAnimationStopper.set(schemaId, () => stop({ shapeId: schemaId }));
   };
 
   return {
     captureSchemaState: (schema: LooseSchema, shapeName: ShapeName) => {
-      if (!activelyCapturingSchemas) return;
+      if (!captureState) return;
       // we only care about capturing each schema once, the rest of the calls should be ignored
       if (capturedSchemas.has(schema.id)) return;
-      // const liveSchema = getAnimatedSchema(schema.id) ?? schema;
-      capturedSchemas.set(schema.id, { ...schema, shapeName });
+      // if capture state is "before", use the shape's live (currently animating) schema instead, to prevent snap-backs.
+      const liveSchema =
+        captureState === 'before'
+          ? (getAnimatedSchema(schema.id) ?? schema)
+          : schema;
+      const capturedSchema = jsonClone({ ...liveSchema, shapeName });
+      capturedSchemas.set(schema.id, capturedSchema);
+
+      // write into snapshotMap immediately (not after flushDraw finishes) so
+      // getCaptureOverride sees this shape's entry within the same draw pass,
+      // suppressing newly added shapes before they get a chance to flash.
+      const shapeSchemaEntry = snapshotMap.get(schema.id) ?? {};
+      snapshotMap.set(schema.id, {
+        ...shapeSchemaEntry,
+        [captureState]: capturedSchema,
+      });
     },
 
     /**
@@ -127,17 +143,9 @@ export const createAutoAnimate = (
 
       const takeSnapshot = (state: 'before' | 'after') => {
         capturedSchemas = new Map();
-        activelyCapturingSchemas = true;
+        captureState = state;
         flushDraw();
-        activelyCapturingSchemas = false;
-        for (const [schemaId, schema] of capturedSchemas) {
-          const shapeSchemaEntry = snapshotMap.get(schemaId) ?? {};
-
-          snapshotMap.set(schemaId, {
-            ...shapeSchemaEntry,
-            [state]: schema,
-          });
-        }
+        captureState = undefined;
       };
 
       takeSnapshot('before');

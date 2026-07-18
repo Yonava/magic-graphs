@@ -9,16 +9,25 @@
 
   const ID = '123';
 
-  const POS = { x: 800, y: 400 };
+  const POS = { x: 400, y: 400 };
+
+  let toggle = true;
 
   const addNode = () => {
-    graph.actions.addNode({ id: ID, focus: false, position: POS });
+    graph.actions.addNode({
+      id: ID,
+      focus: false,
+      position: POS,
+      animate: true,
+    });
   };
 
   const moveNode = () => {
-    const randomX = getRandomInRange(POS.x - 400, POS.x + 400);
-    const randomY = getRandomInRange(POS.y - 400, POS.y + 400);
-    graph.positions.set({ nodeId: ID, update: { x: randomX, y: randomY } });
+    toggle = !toggle;
+
+    const finalize = graph.animation.auto();
+    graph.positions.set({ nodeId: ID, update: { x: toggle ? 400 : 600 } });
+    finalize();
   };
 </script>
 

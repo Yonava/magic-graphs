@@ -36,7 +36,10 @@ export const interactive =
 
       // finalActions, not actions: this fires later, on a real click, so it
       // needs the fully-composed action, not the fold-time snapshot
-      finalActions.addNode({ position: { x: coords.x, y: coords.y } });
+      finalActions.addNode({
+        position: { x: coords.x, y: coords.y },
+        animate: true,
+      });
     };
 
     const handleEdgeTextArea = ({
