@@ -31,7 +31,7 @@ const edgesInTree = (treeArray: TreeNodeValueArray) => {
   return edges;
 };
 
-type GraphState = {
+export type GraphState = {
   nodes: AddGNodeOptions[];
   edges: AddGEdgeOptions[];
 };

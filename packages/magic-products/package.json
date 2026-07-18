@@ -24,7 +24,12 @@
     "@graph/core": "workspace:*",
     "@graph/plugins": "workspace:*",
     "@graph/primitives": "workspace:*",
+    "@graph/create-graph": "workspace:*",
     "@magic/shared": "workspace:*",
-    "fraction.js": "^5.3.4"
+    "fraction.js": "^5.3.4",
+    "tinycolor2": "catalog:"
+  },
+  "devDependencies": {
+    "@types/tinycolor2": "catalog:"
   }
 }

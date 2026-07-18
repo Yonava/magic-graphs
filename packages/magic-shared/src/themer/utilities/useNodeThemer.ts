@@ -1,11 +1,17 @@
 import colors from '@core/utils/colors';
 
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 
 import { Graph } from '../../graph/types.ts';
+import { Themer } from '../types.ts';
 import { createThemer } from '../useThemer.ts';
 
-export const useNodeThemer = (graph: Graph) => {
+export type NodeThemer = {
+  themer: Themer;
+  nodeId: Ref<string | undefined>;
+};
+
+export const useNodeThemer = (graph: Graph): NodeThemer => {
   const nodeId = ref<string>();
   const themer = createThemer(graph, {
     canvas: {

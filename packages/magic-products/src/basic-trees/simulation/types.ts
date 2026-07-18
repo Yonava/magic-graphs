@@ -15,7 +15,7 @@ type TargetNode = {
   targetNode: TreeNode['value'];
 };
 
-type CompareFrame = {
+export type CompareFrame = {
   action: 'compare';
   comparedNode: TreeNode['value'];
 } & TargetNode;

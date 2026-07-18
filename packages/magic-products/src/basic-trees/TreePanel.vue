@@ -1,41 +1,19 @@
 <script setup lang="ts">
-  import { nullThrows } from '@core/utils/assert';
-  import { getRandomInRange } from '@core/utils/random';
   import Button from '@magic/shared/Button';
   import HStack from '@magic/shared/HStack';
   import Well from '@magic/shared/Well';
   import { useProvidedGraph } from '@magic/shared/product';
 
-  import { ref } from 'vue';
-
   import { useAVLSimulationDefinition } from './simulation/useAVLSimulation.ts';
-
-  const randomNodeValue = () => getRandomInRange(1, 99);
 
   const graph = useProvidedGraph();
 
-  const {
-    definition: simDefinition,
-    mode,
-    targetNodeValue,
-  } = useAVLSimulationDefinition(50);
+  const avl = useAVLSimulationDefinition();
 
-  const stopSim = () => {
-    graph.magic.simulation.stop();
-  };
-
-  const addNodeToAvl = () => {
-    mode.value = 'insert';
-    graph.magic.simulation.start(simDefinition);
-    targetNodeValue.value = randomNodeValue();
-  };
-
-  const removeNodeFromAvl = (target: number) => {
-    mode.value = 'remove';
-    const prevTarget = targetNodeValue.value;
-    targetNodeValue.value = target;
-    graph.magic.simulation.start(simDefinition);
-    targetNodeValue.value = prevTarget;
+  const removeNodeFromAvl = (target: string) => {
+    avl.controls.mode.value = 'remove';
+    avl.controls.target.value = target;
+    graph.magic.simulation.start(avl.definition);
   };
 </script>
 
@@ -43,15 +21,14 @@
   <Well>
     <HStack>
       <Button
-        @click="stopSim"
+        @click="graph.magic.simulation.stop()"
         :disabled="!graph.magic.simulation.current.value"
       >
         Stop Sim
       </Button>
-      <Button @click="addNodeToAvl"> Add Node {{ targetNodeValue }} </Button>
       <Button
         v-for="node in graph.nodes.value"
-        @click="removeNodeFromAvl(Number(node.id))"
+        @click="removeNodeFromAvl(node.id)"
       >
         Remove Node {{ node.id }}
       </Button>
