@@ -4,6 +4,7 @@ import { CoreOptions } from '@graph/core/options';
 import { createGraph } from '@graph/create-graph/index';
 import { adjacencyLists } from '@graph/plugins/adjacency-lists/index';
 import { anchors } from '@graph/plugins/anchors/index';
+import { animation } from '@graph/plugins/animation/index';
 import { canvas } from '@graph/plugins/canvas/index';
 import { characteristics } from '@graph/plugins/characteristics/index';
 import { focus } from '@graph/plugins/focus/index';
@@ -19,6 +20,7 @@ import { light } from '@graph/theme-presets/light/index';
 import { useAdjacencyLists } from '@graph/vue/useAdjacencyLists';
 import { useCharacteristics } from '@graph/vue/useCharacteristics';
 import { useCreateGraph } from '@graph/vue/useCreateGraph';
+import { useFocus } from '@graph/vue/useFocus';
 import { useTransitionMatrix } from '@graph/vue/useTransitionMatrix';
 
 export type UseGraphOptions = {
@@ -40,6 +42,7 @@ const graphPlugins = (
   transitionMatrix,
   characteristics,
   interactive(options.interactive ?? {}),
+  animation,
 ];
 
 const createGraphWithPlugins = (
@@ -69,12 +72,15 @@ export const useGraph = (options: UseGraphOptions = {}) => {
   const vueCharacteristics = useCharacteristics(graph);
   // @ts-expect-error event hub type contravariance causing issues with strong typing
   const vueTransitionMatrix = useTransitionMatrix(graph);
+  // @ts-expect-error event hub type contravariance causing issues with strong typing
+  const vueFocus = useFocus(graph);
 
   return {
     ...graph,
     adjacencyLists: vueAdjacencyLists,
     characteristics: vueCharacteristics,
     transitionMatrix: vueTransitionMatrix,
+    focus: vueFocus,
     ...vueCoreWrapper,
   };
 };

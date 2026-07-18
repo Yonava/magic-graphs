@@ -1,7 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 import { FrameCollector } from '@magic/shared/simulation';
 
-import { TreeNode } from './simulation/TreeNode.ts';
+import { NodePayload, TreeNode } from './simulation/TreeNode.ts';
 import { getTreeHeight } from './simulation/getTreeHeight.ts';
 import { AVLFrame, AVLFrameNoRoot } from './simulation/types.ts';
 
@@ -33,20 +33,6 @@ export class AVLTree {
     this.root = undefined;
   }
 
-  getNode(value: number): TreeNode | undefined {
-    let current = this.root;
-    while (current) {
-      if (value === current.value) {
-        return current;
-      } else if (value < current.value) {
-        current = current.left;
-      } else {
-        current = current.right;
-      }
-    }
-    return undefined;
-  }
-
   private removeMin(node: TreeNode): TreeNode | undefined {
     if (!node.left) return node.right;
     node.left = this.removeMin(node.left);
@@ -59,6 +45,26 @@ export class AVLTree {
       current = current.left;
     }
     return current;
+  }
+
+  getNodeById(id: string): TreeNode | undefined {
+    const search = (node: TreeNode | undefined): TreeNode | undefined => {
+      if (!node) return undefined;
+      if (node.id === id) return node;
+      return search(node.left) ?? search(node.right);
+    };
+
+    return search(this.root);
+  }
+
+  getNodeByValue(value: number): TreeNode | undefined {
+    const search = (node: TreeNode | undefined): TreeNode | undefined => {
+      if (!node) return undefined;
+      if (node.value === value) return node;
+      return search(node.left) ?? search(node.right);
+    };
+
+    return search(this.root);
   }
 
   remove(value: number) {
@@ -79,8 +85,8 @@ export class AVLTree {
       if (!targetFound) {
         this.addFrame({
           action: 'compare-removal',
-          targetNode: value,
-          comparedNode: node.value,
+          targetNode: this.getNodeByValue(value),
+          comparedNode: node,
         });
       }
 
@@ -108,7 +114,7 @@ export class AVLTree {
           const successor = this.findMin(node.right);
 
           // Create a new node with the successor's value
-          replacementNode = new TreeNode(successor.value);
+          replacementNode = new TreeNode(successor);
           replacementNode.left = node.left;
           // Remove the successor and attach the remaining right subtree
           replacementNode.right = this.removeMin(node.right);
@@ -124,7 +130,7 @@ export class AVLTree {
 
         this.addFrame({
           action: 'remove',
-          targetNode: value,
+          targetNode: this.getNodeByValue(value),
         });
 
         // Restore the tree for further processing
@@ -288,12 +294,12 @@ export class AVLTree {
     return y;
   }
 
-  insert(value: number, rebalance = true) {
+  insert(payload: NodePayload, rebalance = true) {
     if (!this.root) {
-      this.root = new TreeNode(value);
+      this.root = new TreeNode(payload);
       this.addFrame({
         action: 'insert',
-        targetNode: value,
+        targetNode: this.root,
       });
       return this.root;
     }
@@ -303,36 +309,36 @@ export class AVLTree {
     const insertHelper = (
       parent: TreeNode | undefined,
       node: TreeNode | undefined,
-      value: number,
+      payload: NodePayload,
       isLeft: boolean,
     ): TreeNode => {
       if (!node) {
-        const newNode = new TreeNode(value);
+        const newNode = new TreeNode(payload);
         justInserted = true;
         return newNode;
       }
 
       this.addFrame({
         action: 'compare',
-        comparedNode: node.value,
-        targetNode: value,
+        comparedNode: node,
+        targetNode: payload,
       });
 
-      if (value < node.value) {
-        node.left = insertHelper(node, node.left, value, true);
+      if (payload.value < node.value) {
+        node.left = insertHelper(node, node.left, payload, true);
         if (justInserted) {
           this.addFrame({
             action: 'insert',
-            targetNode: value,
+            targetNode: payload,
           });
           justInserted = false;
         }
-      } else if (value > node.value) {
-        node.right = insertHelper(node, node.right, value, false);
+      } else if (payload.value > node.value) {
+        node.right = insertHelper(node, node.right, payload, false);
         if (justInserted) {
           this.addFrame({
             action: 'insert',
-            targetNode: value,
+            targetNode: payload,
           });
           justInserted = false;
         }
@@ -343,7 +349,7 @@ export class AVLTree {
       return rebalance ? this.rebalance(parent, node, isLeft) : node;
     };
 
-    this.root = insertHelper(undefined, this.root, value, false);
+    this.root = insertHelper(undefined, this.root, payload, false);
     return this.root;
   }
 }
