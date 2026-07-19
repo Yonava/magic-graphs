@@ -148,7 +148,7 @@ export type Timeline<T extends keyof ShapeNameToSchema> = DeepReadonly<
     TimelineCustomInterpolations<SchemaWithDefaults[NoInfer<T>]>
 >;
 
-export const useDefineTimeline = (controls: UseDefineTimelineOptions) => {
+export const createDefineTimeline = (controls: UseDefineTimelineOptions) => {
   const timelineIdToTimeline: Map<TimelineId, CompiledTimeline> = new Map();
 
   const defineTimeline = <T extends keyof ShapeNameToSchema>(
@@ -180,5 +180,5 @@ export const useDefineTimeline = (controls: UseDefineTimelineOptions) => {
 };
 
 export type DefineTimeline = ReturnType<
-  typeof useDefineTimeline
+  typeof createDefineTimeline
 >['defineTimeline'];

@@ -36,7 +36,9 @@ export const interactive =
 
       // finalActions, not actions: this fires later, on a real click, so it
       // needs the fully-composed action, not the fold-time snapshot
-      finalActions.addNode({ position: { x: coords.x, y: coords.y } });
+      finalActions.addNode({
+        position: { x: coords.x, y: coords.y },
+      });
     };
 
     const handleEdgeTextArea = ({
@@ -127,6 +129,17 @@ export const interactive =
       });
     };
 
+    const removeFocusedElements = (e: KeyboardEvent) => {
+      if (e.key !== 'Backspace') return;
+      finalActions.removeElements(
+        {
+          nodes: controls.focus?.focusedNodes() ?? [],
+          edges: controls.focus?.focusedEdges() ?? [],
+        },
+        {},
+      );
+    };
+
     const enable = () => {
       controls.canvas.events.subscribe('onMouseDown', handleEdgeTextArea);
       controls.canvas.events.handle(
@@ -134,7 +147,11 @@ export const interactive =
         handleNodeCreation,
         INTERACTIVE_PLUGIN_ID,
       );
-      controls.anchors?.events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
+      controls.anchors?.events.subscribe(
+        'onNodeAnchorDrop',
+        handleEdgeCreation,
+      );
+      controls.canvas.events.subscribe('onKeyDown', removeFocusedElements);
     };
 
     const disable = () => {
@@ -144,6 +161,7 @@ export const interactive =
         'onNodeAnchorDrop',
         handleEdgeCreation,
       );
+      controls.canvas.events.unsubscribe('onKeyDown', removeFocusedElements);
     };
 
     enable();

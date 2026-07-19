@@ -23,7 +23,7 @@
 <template>
   <div
     v-if="explainer"
-    :class="cn(parentClasses, 'text-2xl font-bold')"
+    :class="cn(parentClasses, 'text-2xl font-bold text-center')"
   >
     <template
       v-for="(segment, i) in segments"

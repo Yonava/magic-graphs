@@ -1,5 +1,5 @@
-import { getTreeHeight } from './getTreeHeight.ts';
 import type { TreeNode } from './TreeNode.ts';
+import { getTreeHeight } from './getTreeHeight.ts';
 import type { Coordinate } from './types.ts';
 
 /**

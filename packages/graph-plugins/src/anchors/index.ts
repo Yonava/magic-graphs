@@ -30,7 +30,12 @@ const isAnchor = (id: string) => id.endsWith(ANCHOR_ID_POSTFIX);
  * - Parent Node: The node which anchors actively orbit around.
  * - Link Preview: The line that appears between the parent node and the anchor when the anchor is being dragged.
  */
-export const anchors: AnchorsPlugin = ({ controls, events, actions, getters }) => {
+export const anchors: AnchorsPlugin = ({
+  controls,
+  events,
+  actions,
+  getters,
+}) => {
   const anchorsEventRegistry = createAnchorsEventRegistry();
   const anchorsEventHub = createEventHub(anchorsEventRegistry);
 
@@ -421,6 +426,7 @@ export const anchors: AnchorsPlugin = ({ controls, events, actions, getters }) =
       clearAnchorStateIfParentRemoved,
     );
     events.core.unhandle('onNodeMoveStreamStart', clearAnchorState);
+    controls.canvas.events.unhandle('onMouseUp', checkForParentNodeUpdate);
     controls.canvas.events.unhandle(
       'onGraphUnderCursorChange',
       checkForParentNodeUpdate,
@@ -430,10 +436,7 @@ export const anchors: AnchorsPlugin = ({ controls, events, actions, getters }) =
       updateCurrentlyDraggingAnchorPosition,
     );
     controls.canvas.events.unhandle('onMouseMove', updateHoveredNodeAnchorId);
-    controls.canvas.events.unhandle(
-      'onMouseDown',
-      setCurrentlyDraggingAnchor,
-    );
+    controls.canvas.events.unhandle('onMouseDown', setCurrentlyDraggingAnchor);
     controls.canvas.events.unhandle('onMouseUp', dropAnchor);
     controls.canvas.events.unhandle(
       'onHoveredElementChange',
