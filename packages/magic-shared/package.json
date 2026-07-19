@@ -85,7 +85,8 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "peerDependencies": {
-    "vue": "^3.5.18"
+    "vue": "^3.5.18",
+    "nuxt": "^4.1.2"
   },
   "dependencies": {
     "@canvas/surface": "workspace:*",
@@ -103,6 +104,7 @@
   },
   "devDependencies": {
     "vue": "catalog:",
+    "nuxt": "^4.1.2",
     "ts-essentials": "^10.2.1"
   }
 }

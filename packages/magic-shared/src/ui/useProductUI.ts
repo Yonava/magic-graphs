@@ -8,6 +8,7 @@ import {
   useAnnotationsState,
 } from './annotations/useAnnotationsState.ts';
 import { LensChipDefinition } from './lens-chips/types.ts';
+import NavigationMenu from './navigation-menu/NavigationMenu.vue';
 
 export type UIOptions = {
   lensChips?: (graph: Graph) => LensChipDefinition[];
@@ -50,6 +51,12 @@ export const useProductUI = (
       position: 'bottom-right',
     });
   }
+
+  componentSlots.add({
+    id: 'product/navigation-menu',
+    component: NavigationMenu,
+    position: 'top-left',
+  });
 
   return {
     data: {

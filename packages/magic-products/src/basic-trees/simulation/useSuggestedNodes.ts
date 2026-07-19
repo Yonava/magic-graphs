@@ -1,5 +1,6 @@
 import { getRandomInRange } from '@core/utils/random';
-import { AddGNodeOptions } from '@magic/shared/graph/types';
+import { CoreNode } from '@graph/primitives/types';
+import { AddGNodeOptions, GNode } from '@magic/shared/graph/types';
 import { MagicGraph } from '@magic/shared/product/useGraphProduct';
 import { SimulationDefinition } from '@magic/shared/simulation';
 import { createThemer } from '@magic/shared/themer/useThemer';
@@ -48,10 +49,7 @@ export const useSuggestedNodes = (
     suggestedNodeIds.value.clear();
   };
 
-  const dimSuggested = (
-    { id }: { id: string },
-    resolveUnderneath: () => string,
-  ) => {
+  const dimSuggested = ({ id }: CoreNode, resolveUnderneath: () => string) => {
     const isSuggested = suggestedNodeIds.value.has(id);
     if (!isSuggested) return;
     const tinycolorRes = tinycolor(resolveUnderneath());
