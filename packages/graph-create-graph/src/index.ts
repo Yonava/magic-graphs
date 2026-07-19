@@ -18,10 +18,10 @@ import { GraphGetters } from '@graph/primitives/getters/types';
 import type { Prettify } from 'ts-essentials';
 
 import { createCanvasElementFactories } from './canvas-elements.ts';
+import { emitConsumerEvents } from './consumer-events.ts';
 import { foldPlugins } from './fold-plugins.ts';
 import { resolveEdgeComputedTokens } from './render-functions/edge.ts';
 import { resolveNodeComputedTokens } from './render-functions/node.ts';
-import { emitStructuralEvents } from './structural-events.ts';
 import { GraphTransit } from './types.ts';
 
 type CreateGraphOptions<
@@ -71,7 +71,7 @@ export const createGraph = <
     ExtractGetters<NoInfer<TPlugins>>
   >;
 
-  const { pluginTransitControls, structuralEvents } = folded;
+  const { pluginTransitControls, consumerEvents } = folded;
 
   const tokenResolver = createComputedTokenResolver(folded.themeDetectors);
 
@@ -130,14 +130,14 @@ export const createGraph = <
         transit.decode((data as any)[pluginName]);
       }
 
-      emitStructuralEvents(
+      emitConsumerEvents(
         {
           addedEdges: data.core.edges,
           addedNodes: data.core.nodes,
           removedEdgeIds: oldEdgeIds,
           removedNodeIds: oldNodeIds,
         },
-        structuralEvents.emit,
+        consumerEvents.emit,
       );
     },
   };

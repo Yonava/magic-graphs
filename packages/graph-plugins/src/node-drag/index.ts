@@ -122,15 +122,25 @@ export const nodeDrag: NodeDragPlugin = ({ controls, actions, getters }) => {
   const cursorTheme = createDragThemer(controls, dragState);
 
   const enable = () => {
-    controls.canvas.events.handle('onMouseDown', beginDrag, NODE_DRAG_PLUGIN_ID, {
-      before: [ANCHOR_PLUGIN_ID],
-    });
+    controls.canvas.events.handle(
+      'onMouseDown',
+      beginDrag,
+      NODE_DRAG_PLUGIN_ID,
+      {
+        before: [ANCHOR_PLUGIN_ID],
+      },
+    );
     controls.canvas.events.handle('onMouseUp', drop, NODE_DRAG_PLUGIN_ID, {
       before: [ANCHOR_PLUGIN_ID],
     });
-    controls.canvas.events.handle('onGraphUnderCursorChange', drag, NODE_DRAG_PLUGIN_ID, {
-      before: [ANCHOR_PLUGIN_ID],
-    });
+    controls.canvas.events.handle(
+      'onGraphUnderCursorChange',
+      drag,
+      NODE_DRAG_PLUGIN_ID,
+      {
+        before: [ANCHOR_PLUGIN_ID],
+      },
+    );
     cursorTheme.enable();
   };
 

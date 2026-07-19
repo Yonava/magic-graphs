@@ -1,11 +1,11 @@
-import { StructuralEventMap } from '@graph/create-graph/structural-events';
+import { ConsumerEventMap } from '@graph/create-graph/consumer-events';
 import { AdjacencyListsControls } from '@graph/plugins/adjacency-lists/types';
 import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 
 import { computed, shallowRef } from 'vue';
 
 export const useAdjacencyLists = (
-  events: ReadonlyEventHub<StructuralEventMap>,
+  events: ReadonlyEventHub<ConsumerEventMap>,
   adjacencyLists: AdjacencyListsControls,
 ) => {
   const refresh = shallowRef(0);

@@ -17,7 +17,12 @@ import { getSelectionBox, getSurfaceArea } from './helpers.ts';
 import { createMarqueeThemeOverrides } from './themes.ts';
 import { MarqueePlugin } from './types.ts';
 
-export const marquee: MarqueePlugin = ({ controls, events, actions, getters }) => {
+export const marquee: MarqueePlugin = ({
+  controls,
+  events,
+  actions,
+  getters,
+}) => {
   const marqueeEventRegistry = createMarqueeEventRegistry();
   const marqueeEventHub = createEventHub(marqueeEventRegistry);
 
@@ -183,7 +188,10 @@ export const marquee: MarqueePlugin = ({ controls, events, actions, getters }) =
       { before: [ANCHOR_PLUGIN_ID] },
     );
 
-    events.core.subscribe('onNodeMoveStream', updateSelectionBox);
+    events._internal.coreEvents.subscribe(
+      'onNodeMoveStream',
+      updateSelectionBox,
+    );
   };
 
   const disable = () => {
@@ -194,7 +202,10 @@ export const marquee: MarqueePlugin = ({ controls, events, actions, getters }) =
     controls.canvas.events.unhandle('onContextMenu', disengageMarqueeBox);
     controls.canvas.events.unhandle('onMouseMove', setMarqueeBoxDimensions);
 
-    events.core.unsubscribe('onNodeMoveStream', updateSelectionBox);
+    events._internal.coreEvents.unsubscribe(
+      'onNodeMoveStream',
+      updateSelectionBox,
+    );
 
     disengageMarqueeBox();
   };

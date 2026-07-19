@@ -66,17 +66,17 @@ export const useGraph = (options: UseGraphOptions = {}) => {
   canvasSurface.draw.content.value = graph.canvas.aggregator.draw;
 
   const vueThemeWrapper = useCreateGraphTheme(graph.theme);
-  const vueNodesEdges = useNodesEdges(graph.events.structural, graph);
+  const vueNodesEdges = useNodesEdges(graph.events, graph);
   const vueAdjacencyLists = useAdjacencyLists(
-    graph.events.structural,
+    graph.events,
     graph.adjacencyLists,
   );
   const vueCharacteristics = useCharacteristics(
-    graph.events.structural,
+    graph.events,
     graph.characteristics,
   );
   const vueTransitionMatrix = useTransitionMatrix(
-    graph.events.structural,
+    graph.events,
     graph.transitionMatrix,
   );
   const vueFocus = useFocus(graph.focus);

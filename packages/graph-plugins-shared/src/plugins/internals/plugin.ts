@@ -1,11 +1,9 @@
 import { CoreActions } from '@graph/core/actions/types';
-import { CoreEventMap } from '@graph/core/events';
+import { ConsumerEventsHub } from '@graph/core/consumer-events';
 import { CoreGetters } from '@graph/core/getters';
 import { CoreControls } from '@graph/core/types';
 import { GraphActions, MergeActions } from '@graph/primitives/actions/types';
-import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 import { GraphGetters, MergeGetters } from '@graph/primitives/getters/types';
-import { StructuralEventMap } from '@graph/primitives/transactions/types';
 
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls } from './extractors.ts';
@@ -22,10 +20,7 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
       ? {}
       : Partial<ExtractControls<PluginSchema['optionalDependsOn']>>);
   actions: GraphActions<CoreActions>;
-  events: {
-    core: ReadonlyEventHub<CoreEventMap>;
-    structural: ReadonlyEventHub<StructuralEventMap>;
-  };
+  events: ConsumerEventsHub;
   // [1]
   finalActions: GraphActions<CoreActions>;
   getters: GraphGetters<CoreGetters>;

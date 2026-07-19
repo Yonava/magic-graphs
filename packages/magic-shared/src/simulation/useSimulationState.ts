@@ -223,7 +223,7 @@ export const useSimulationState = (
     return false;
   };
 
-  graph.events.structural.subscribe('onStructureChange', () => {
+  graph.events.subscribe('onStructureChange', () => {
     const sim = simulation.value;
     if (!sim) return;
 

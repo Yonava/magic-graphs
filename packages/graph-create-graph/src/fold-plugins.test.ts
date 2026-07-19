@@ -58,7 +58,7 @@ describe('finalActions', () => {
     );
 
     let labelAtEmitTime: string | undefined;
-    folded.events.structural.subscribe('onNodesAdded', (nodes) => {
+    folded.events.subscribe('onNodesAdded', (nodes) => {
       labelAtEmitTime = nodeIdToLabel.get(nodes[0].id);
     });
 
@@ -80,7 +80,7 @@ describe('foldPlugins structural events', () => {
     );
 
     let labelAtEmitTime: string | undefined;
-    folded.events.structural.subscribe('onNodesAdded', (nodes) => {
+    folded.events.subscribe('onNodesAdded', (nodes) => {
       labelAtEmitTime = nodeIdToLabel.get(nodes[0].id);
     });
 
@@ -90,11 +90,10 @@ describe('foldPlugins structural events', () => {
   });
 
   it('fires onStructureChange exactly once per structural action', () => {
-    const folded = foldPlugins(
-      core({}), [], {}, () => 'default');
+    const folded = foldPlugins(core({}), [], {}, () => 'default');
 
     const onStructureChange = vi.fn();
-    folded.events.structural.subscribe('onStructureChange', onStructureChange);
+    folded.events.subscribe('onStructureChange', onStructureChange);
 
     folded.actions.addNode({});
 
@@ -102,13 +101,12 @@ describe('foldPlugins structural events', () => {
   });
 
   it('does not fire structural events when nothing changed', () => {
-    const folded = foldPlugins(
-      core({}), [], {}, () => 'default');
+    const folded = foldPlugins(core({}), [], {}, () => 'default');
 
     const onNodesAdded = vi.fn();
     const onStructureChange = vi.fn();
-    folded.events.structural.subscribe('onNodesAdded', onNodesAdded);
-    folded.events.structural.subscribe('onStructureChange', onStructureChange);
+    folded.events.subscribe('onNodesAdded', onNodesAdded);
+    folded.events.subscribe('onStructureChange', onStructureChange);
 
     // an empty bulk add is a no-op: nothing was actually added
     folded.actions.addElements({ nodes: [], edges: [] } as any);
@@ -118,8 +116,7 @@ describe('foldPlugins structural events', () => {
   });
 
   it('derives onStructureChange from edge weight commits, independent of action wrapping', () => {
-    const folded = foldPlugins(
-      core({}), [], {}, () => 'default');
+    const folded = foldPlugins(core({}), [], {}, () => 'default');
 
     const nodeA = folded.actions.addNode({});
     const nodeB = folded.actions.addNode({});
@@ -129,7 +126,7 @@ describe('foldPlugins structural events', () => {
     } as any);
 
     const onStructureChange = vi.fn();
-    folded.events.structural.subscribe('onStructureChange', onStructureChange);
+    folded.events.subscribe('onStructureChange', onStructureChange);
 
     // weight is set directly on controls, bypassing the wrapped actions entirely
     folded.controls.weights.set({ edgeId: edge.id, update: 5 as any });

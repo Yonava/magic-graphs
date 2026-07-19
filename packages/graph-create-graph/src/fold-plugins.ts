@@ -1,20 +1,19 @@
 import { getValue } from '@core/utils/maybeGetter/index';
-import { CoreEventMap } from '@graph/core/events';
+import { ConsumerEventsHub } from '@graph/core/consumer-events';
 import { core } from '@graph/core/index';
 import {
   LooseGraphPlugin,
   PluginThemeField,
 } from '@graph/plugins-shared/plugins';
-import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 import { TransitControls } from '@graph/primitives/transit/types';
 
 import {
-  StructuralEventHub,
-  StructuralEventMap,
+  ConsumerEventHub,
+  createConsumerEventHub,
   createFinalActionsProxy,
-  createStructuralEventHub,
-  wrapActionsWithStructuralEvents,
-} from './structural-events.ts';
+  wrapActionsWithConsumerEvents,
+  wrapWeightsControlsWithConsumerEvents,
+} from './consumer-events.ts';
 
 type PluginTransitControl = {
   pluginName: string;
@@ -23,11 +22,8 @@ type PluginTransitControl = {
 
 type FoldedPlugins = {
   controls: any;
-  events: {
-    core: ReadonlyEventHub<CoreEventMap>;
-    structural: ReadonlyEventHub<StructuralEventMap>;
-  };
-  structuralEvents: StructuralEventHub;
+  events: ConsumerEventsHub;
+  consumerEvents: ConsumerEventHub;
   actions: any;
   getters: any;
   themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']>;
@@ -41,18 +37,29 @@ export const foldPlugins = (
   themePresets: Record<string, any>,
   getActivePresetName: () => string,
 ): FoldedPlugins => {
-  // create-graph owns the coarse structural events (onNodesAdded, onStructureChange, etc.)
-  // since only it knows when a fully-composed plugin action has finished, not just the
-  // underlying core transaction. merged in up front so plugins can subscribe during setup.
-  const structuralEvents = createStructuralEventHub();
-  coreGraph.events.subscribe('onEdgeWeightsCommitted', () =>
-    structuralEvents.emit('onStructureChange'),
-  );
+  // create-graph owns the consumer event vocabulary (onNodesAdded, onStructureChange,
+  // onEdgeWeightsChanged, etc.) since only it knows when a fully-composed plugin action
+  // has finished, not just the underlying core transaction. it derives these by wrapping
+  // the calls it has authority over (actions below, weight controls here) — never by
+  // subscribing to core's own event hub. merged in up front so plugins can subscribe
+  // during setup.
+  const consumerEvents = createConsumerEventHub();
 
-  let controls = coreGraph.controls;
-  const events = {
-    core: coreGraph.events,
-    structural: structuralEvents,
+  let controls = {
+    ...coreGraph.controls,
+    weights: wrapWeightsControlsWithConsumerEvents(
+      coreGraph.controls.weights,
+      consumerEvents,
+    ),
+  };
+  // consumer events are the primary surface — spread directly onto the top-level
+  // `events` field. raw core events are still reachable, but namespaced under
+  // `_internal` so they don't crowd the default autocomplete (see ConsumerEventsHub).
+  const events: ConsumerEventsHub = {
+    ...consumerEvents,
+    _internal: {
+      coreEvents: coreGraph.events,
+    },
   };
   let actions = coreGraph.actions;
   let getters = coreGraph.getters;
@@ -107,16 +114,13 @@ export const foldPlugins = (
     pluginResult.onAfterInit?.();
   }
 
-  const wrappedActions = wrapActionsWithStructuralEvents(
-    actions,
-    structuralEvents,
-  );
+  const wrappedActions = wrapActionsWithConsumerEvents(actions, consumerEvents);
   resolveFinalActions(wrappedActions);
 
   return {
     controls,
     events,
-    structuralEvents,
+    consumerEvents,
     actions: wrappedActions,
     getters,
     themeDetectors,

@@ -1,11 +1,11 @@
 import { CoreControls } from '@graph/core/types';
-import { StructuralEventMap } from '@graph/create-graph/structural-events';
+import { ConsumerEventMap } from '@graph/create-graph/consumer-events';
 import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 
 import { computed, shallowRef } from 'vue';
 
 export const useNodesEdges = (
-  events: ReadonlyEventHub<StructuralEventMap>,
+  events: ReadonlyEventHub<ConsumerEventMap>,
   core: Pick<CoreControls, 'nodes' | 'edges'>,
 ) => {
   const refresh = shallowRef(0);

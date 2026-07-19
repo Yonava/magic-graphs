@@ -1,14 +1,12 @@
 import { CoreActions } from '@graph/core/actions/types';
-import { CoreEventMap } from '@graph/core/events';
+import { ConsumerEventsHub } from '@graph/core/consumer-events';
 import { CoreGetters } from '@graph/core/getters';
 import {
   GraphActions,
   PartialBaseActions,
 } from '@graph/primitives/actions/types';
-import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 import { GenericEventMap } from '@graph/primitives/events/types';
 import { BaseGetters, GraphGetters } from '@graph/primitives/getters/types';
-import { StructuralEventMap } from '@graph/primitives/transactions/types';
 
 export type LoosePluginSchema = {
   name: string;
@@ -23,10 +21,7 @@ export type LoosePluginSchema = {
 
 type LoosePluginInput = {
   controls: any;
-  events: {
-    core: ReadonlyEventHub<CoreEventMap>;
-    structural: ReadonlyEventHub<StructuralEventMap>;
-  };
+  events: ConsumerEventsHub;
   actions: GraphActions<CoreActions>;
   // see [1] in ./plugin.ts — a stable accessor for the fully-composed graph
   // actions, safe to capture in a closure and invoke after folding completes

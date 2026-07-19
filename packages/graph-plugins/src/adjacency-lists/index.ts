@@ -97,7 +97,7 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
 
   update();
 
-  events.structural.subscribe('onStructureChange', update);
+  events.subscribe('onStructureChange', update);
 
   return {
     name: 'adjacencyLists',

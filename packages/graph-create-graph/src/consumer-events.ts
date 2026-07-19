@@ -1,18 +1,22 @@
+import { ConsumerEventMap } from '@graph/core/consumer-events';
+import {
+  EdgeWeightEntry,
+  EdgeWeightStoreControls,
+} from '@graph/core/weights/types';
 import { GraphActions } from '@graph/primitives/actions/types';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { EventMapToEventRegistry } from '@graph/primitives/events/types';
 import {
   ElementAdditionPayload,
   ElementRemovalPayload,
-  StructuralEventMap,
   TransactionPayload,
 } from '@graph/primitives/transactions/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
-export type { StructuralEventMap };
+export type { ConsumerEventMap };
 
-const createStructuralEventRegistry =
-  (): EventMapToEventRegistry<StructuralEventMap> => ({
+const createConsumerEventRegistry =
+  (): EventMapToEventRegistry<ConsumerEventMap> => ({
     onStructureChange: new Set(),
     onNodesAdded: new Set(),
     onNodesRemoved: new Set(),
@@ -20,25 +24,28 @@ const createStructuralEventRegistry =
     onEdgesRemoved: new Set(),
     onElementsAdded: new Set(),
     onElementsRemoved: new Set(),
+    onEdgeWeightsChanged: new Set(),
   });
 
-export type StructuralEventHub = ReturnType<typeof createStructuralEventHub>;
+export type ConsumerEventHub = ReturnType<typeof createConsumerEventHub>;
 
-export const createStructuralEventHub = () =>
-  createEventHub<StructuralEventMap>(createStructuralEventRegistry());
+export const createConsumerEventHub = () =>
+  createEventHub<ConsumerEventMap>(createConsumerEventRegistry());
 
 const hasItems = (...arrays: unknown[][]) =>
   arrays.some((arr) => arr.length > 0);
 
+// onEdgeWeightsChanged is derived by wrapWeightsControlsWithConsumerEvents, not
+// from a TransactionPayload — weight sets aren't one of the wrapped actions above.
 type NonStructureChangeEvent = Exclude<
-  keyof StructuralEventMap,
-  'onStructureChange'
+  keyof ConsumerEventMap,
+  'onStructureChange' | 'onEdgeWeightsChanged'
 >;
 
 const eventNameToPredicateMap: {
   [EventName in NonStructureChangeEvent]: (
     payload: TransactionPayload,
-  ) => { args: Parameters<StructuralEventMap[EventName]> } | void;
+  ) => { args: Parameters<ConsumerEventMap[EventName]> } | void;
 } = {
   onNodesAdded: ({ addedNodes }) => {
     if (addedNodes.length > 0) return { args: [addedNodes] };
@@ -65,9 +72,9 @@ const eventNameToPredicateMap: {
   },
 };
 
-export const emitStructuralEvents = (
+export const emitConsumerEvents = (
   payload: TransactionPayload,
-  emit: StructuralEventHub['emit'],
+  emit: ConsumerEventHub['emit'],
 ) => {
   const hasStructuralChanges = hasItems(
     payload.addedNodes,
@@ -109,7 +116,7 @@ const actionResultToPartialPayload = {
 // see [2] in graph-plugins-shared/plugins/internals/plugin.ts — a stable stand-in
 // for "the fully-composed graph actions," safe to hand to plugins during fold and
 // capture in a closure for later invocation, even though the real thing doesn't
-// exist until folding (and the structural-event wrap above) finishes. every call
+// exist until folding (and the consumer-event wrap above) finishes. every call
 // dispatches through `resolve`'s argument, whatever it ends up being.
 export const createFinalActionsProxy = <
   Actions extends GraphActions<any>,
@@ -144,11 +151,11 @@ export const createFinalActionsProxy = <
   };
 };
 
-export const wrapActionsWithStructuralEvents = <
+export const wrapActionsWithConsumerEvents = <
   Actions extends GraphActions<any>,
 >(
   actions: Actions,
-  hub: StructuralEventHub,
+  hub: ConsumerEventHub,
 ): Actions => {
   const wrapped = { ...actions };
 
@@ -161,7 +168,7 @@ export const wrapActionsWithStructuralEvents = <
     (wrapped as any)[key] = (...args: any[]) => {
       const result = (action as any)(...args);
       const partialPayload = (actionResultToPartialPayload[key] as any)(result);
-      emitStructuralEvents(
+      emitConsumerEvents(
         {
           addedNodes: [],
           addedEdges: [],
@@ -176,4 +183,32 @@ export const wrapActionsWithStructuralEvents = <
   }
 
   return wrapped;
+};
+
+// weight changes don't go through an action (no addNode/removeNode-style call for
+// setting a weight), so they can't be picked up by wrapActionsWithConsumerEvents.
+// create-graph gets the same derivation authority here by wrapping the weight
+// controls themselves — never by subscribing to core's own event hub.
+export const wrapWeightsControlsWithConsumerEvents = (
+  weights: EdgeWeightStoreControls,
+  hub: ConsumerEventHub,
+): EdgeWeightStoreControls => {
+  const emitChange = (entries: EdgeWeightEntry[]) => {
+    hub.emit('onEdgeWeightsChanged', entries);
+    hub.emit('onStructureChange');
+  };
+
+  return {
+    ...weights,
+    set: (update) => {
+      const entry = weights.set(update);
+      emitChange([entry]);
+      return entry;
+    },
+    setMany: (updates) => {
+      const entries = weights.setMany(updates);
+      emitChange(entries);
+      return entries;
+    },
+  };
 };

@@ -29,7 +29,7 @@ export const canvas =
       elements: [],
     };
 
-    events.core.subscribe('onTransactionComplete', () => {
+    events._internal.coreEvents.subscribe('onTransactionComplete', () => {
       forceUpdateGraphUnderCursor();
     });
 
