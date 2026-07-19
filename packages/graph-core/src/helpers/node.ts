@@ -42,14 +42,14 @@ const getParents: CurriedNodeHelpers['getParents'] = (graph) => (nodeId) => {
   const inboundEdges = getInboundEdges(graph);
   return inboundEdges(nodeId)
     .map((edge) => edge.source)
-    .map((nodeId) => graph.getNode(nodeId)!);
+    .map((nodeId) => graph.getNode(nodeId));
 };
 
 const getChildren: CurriedNodeHelpers['getChildren'] = (graph) => (nodeId) => {
   const outboundEdges = getOutboundEdges(graph);
   return outboundEdges(nodeId)
     .map((edge) => edge.target)
-    .map((nodeId) => graph.getNode(nodeId)!);
+    .map((nodeId) => graph.getNode(nodeId));
 };
 
 const getConnectedEdges: CurriedNodeHelpers['getConnectedEdges'] =
