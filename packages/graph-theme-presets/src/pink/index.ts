@@ -26,6 +26,14 @@ export const pink: PinkPreset = {
     'edge.default.text.size': shared.edge.text.size,
     'edge.default.width': shared.edge.width,
 
+    'edge.hover.color': colors.PINK_600,
+    'edge.hover.cursor': shared.edge.cursor,
+    'edge.hover.text.color': shared.edge.text.color,
+    'edge.hover.text.content': shared.edge.text.content,
+    'edge.hover.text.fontWeight': shared.edge.text.fontWeight,
+    'edge.hover.text.size': shared.edge.text.size,
+    'edge.hover.width': shared.edge.width,
+
     'node.default.border.color': colors.PINK_400,
     'node.default.border.width': shared.node.borderWidth,
     'node.default.color': colors.PINK_100,
@@ -35,6 +43,16 @@ export const pink: PinkPreset = {
     'node.default.text.content': shared.node.text.content,
     'node.default.text.fontWeight': shared.node.text.fontWeight,
     'node.default.text.size': shared.node.text.size,
+
+    'node.hover.border.color': colors.PINK_400,
+    'node.hover.border.width': shared.node.borderWidth,
+    'node.hover.color': colors.PINK_100,
+    'node.hover.cursor': shared.node.cursor,
+    'node.hover.size': shared.node.size,
+    'node.hover.text.color': shared.node.text.color,
+    'node.hover.text.content': shared.node.text.content,
+    'node.hover.text.fontWeight': shared.node.text.fontWeight,
+    'node.hover.text.size': shared.node.text.size,
   },
   focus: {
     'edge.focus.color': colors.PURPLE_600,

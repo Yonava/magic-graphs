@@ -31,10 +31,10 @@ export type EdgeComputedTokens = {
  * the first active state in the list wins.
  */
 export const computedTokenStatePrecedence = [
-  'hovered',
   'error',
   'focus',
   'disabled',
+  'hovered',
   'default',
 ] as const;
 
