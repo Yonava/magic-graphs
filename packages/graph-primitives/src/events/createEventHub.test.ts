@@ -60,10 +60,4 @@ describe(createEventHub, () => {
   it('does not throw or fail when emitting an event with no subscribers', () => {
     expect(() => hub.emit('onNodesAdded', [{ id: '1' }])).not.toThrow();
   });
-
-  it('exposes a Set containing all unique event names in the keys property', () => {
-    expect(hub.keys).toBeInstanceOf(Set);
-    expect(hub.keys).toContain('onNodesAdded');
-    expect(hub.keys).toContain('onStructureChange');
-  });
 });

@@ -97,13 +97,12 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
 
   update();
 
-  events.subscribe('onStructureChange', update);
+  events.structural.subscribe('onStructureChange', update);
 
   return {
     name: 'adjacencyLists',
     actions,
     getters,
-    events,
     controls: {
       standard: () => standard,
       weighted: () => weighted,

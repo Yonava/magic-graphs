@@ -11,7 +11,7 @@ type CharacteristicsGraph = Graph<{
 
 export const useCharacteristics = (graph: CharacteristicsGraph) => {
   const refresh = shallowRef(0);
-  graph.events.subscribe('onStructureChange', () => refresh.value++);
+  graph.events.structural.subscribe('onStructureChange', () => refresh.value++);
 
   return {
     isComplete: computed(() => {

@@ -21,7 +21,7 @@ export const useCreateGraph = <PresetName extends string>(
   const nodes = ref<CoreNode[]>([...graph.nodes]);
   const edges = ref<CoreEdge[]>([...graph.edges]);
 
-  graph.events.subscribe('onTransactionComplete', () => {
+  graph.events.core.subscribe('onTransactionComplete', () => {
     nodes.value = [...graph.nodes];
     edges.value = [...graph.edges];
   });

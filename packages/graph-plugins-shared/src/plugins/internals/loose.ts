@@ -5,7 +5,7 @@ import {
   GraphActions,
   PartialBaseActions,
 } from '@graph/primitives/actions/types';
-import { EventHub } from '@graph/primitives/events/createEventHub';
+import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 import { GenericEventMap } from '@graph/primitives/events/types';
 import { BaseGetters, GraphGetters } from '@graph/primitives/getters/types';
 import { StructuralEventMap } from '@graph/primitives/transactions/types';
@@ -23,9 +23,12 @@ export type LoosePluginSchema = {
 
 type LoosePluginInput = {
   controls: any;
-  events: EventHub<CoreEventMap & StructuralEventMap>;
+  events: {
+    core: ReadonlyEventHub<CoreEventMap>;
+    structural: ReadonlyEventHub<StructuralEventMap>;
+  };
   actions: GraphActions<CoreActions>;
-  // see [2] in ./plugin.ts — a stable accessor for the fully-composed graph
+  // see [1] in ./plugin.ts — a stable accessor for the fully-composed graph
   // actions, safe to capture in a closure and invoke after folding completes
   finalActions: GraphActions<CoreActions>;
   getters: GraphGetters<CoreGetters>;
@@ -34,10 +37,6 @@ type LoosePluginInput = {
 type LoosePluginOutput = {
   name: LooseGraphPlugin['name'];
   controls: LoosePluginSchema['controls'];
-  // [1]
-  events: EventHub<
-    CoreEventMap & StructuralEventMap & LoosePluginSchema['events']
-  >;
   actions: GraphActions<any>;
   getters: GraphGetters<any>;
   onAfterInit?: () => void;
@@ -49,11 +48,3 @@ type LoosePluginOutput = {
 };
 
 export type LooseGraphPlugin = (options: LoosePluginInput) => LoosePluginOutput;
-
-// [1] `CoreEventMap` is intersected into the return type (not just the events
-// param) to keep the "merge yourself" contract honest at the type level: every
-// plugin must hand back a hub that still carries everything core (and upstream
-// plugins) emit, not just its own events. dropping this intersection would let
-// a plugin's loosely-typed return shape claim to satisfy `LooseGraphPlugin`
-// while actually losing `CoreEventMap` from the threaded hub, which is exactly
-// the failure mode `ExtractEventMap` relies on this type to rule out.

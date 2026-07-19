@@ -10,7 +10,7 @@ type AdjacencyListGraph = Graph<{
 
 export const useAdjacencyLists = (graph: AdjacencyListGraph) => {
   const refresh = shallowRef(0);
-  graph.events.subscribe('onStructureChange', () => refresh.value++);
+  graph.events.structural.subscribe('onStructureChange', () => refresh.value++);
 
   return {
     standard: computed(() => {

@@ -51,7 +51,7 @@ export const useGraphProduct = (options: GraphProductOptions) => {
   provideGraph(magicGraph);
 
   // temporary until we get something real to handle this!
-  graph.events.subscribe('onKeyDown', (e) => {
+  graph.canvas.events.subscribe('onKeyDown', (e) => {
     if (e.key !== 'Backspace') return;
     graph.actions.removeElements(
       {

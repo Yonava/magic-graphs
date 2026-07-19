@@ -12,7 +12,7 @@
     return color;
   };
 
-  graph.events.subscribe('onDraw', () => (color.value = nodeAsColor()));
+  graph.canvas.events.subscribe('onDraw', () => (color.value = nodeAsColor()));
 
   const color = ref<string>();
 </script>

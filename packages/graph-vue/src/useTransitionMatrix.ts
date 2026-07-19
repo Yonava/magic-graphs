@@ -11,7 +11,7 @@ type TransitionMatrixGraph = Graph<{
 
 export const useTransitionMatrix = (graph: TransitionMatrixGraph) => {
   const refresh = shallowRef(0);
-  graph.events.subscribe('onStructureChange', () => refresh.value++);
+  graph.events.structural.subscribe('onStructureChange', () => refresh.value++);
 
   return computed(() => {
     refresh.value;

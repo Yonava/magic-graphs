@@ -273,25 +273,25 @@ export const useAnnotationsState = (graph: Graph) => {
 
     cursorTheme.activate();
 
-    graph.events.handle(
+    graph.canvas.events.handle(
       'onMouseDown',
       startDrawing,
       ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
-    graph.events.handle(
+    graph.canvas.events.handle(
       'onGraphUnderCursorChange',
       drawLine,
       ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
-    graph.events.handle(
+    graph.canvas.events.handle(
       'onMouseUp',
       stopDrawing,
       ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
-    graph.events.handle('onClick', consume, ANNOTATION_PLUGIN_ID, PRIORITY);
+    graph.canvas.events.handle('onClick', consume, ANNOTATION_PLUGIN_ID, PRIORITY);
   };
 
   const deactivate = () => {
@@ -300,10 +300,10 @@ export const useAnnotationsState = (graph: Graph) => {
 
     cursorTheme.deactivate();
 
-    graph.events.unhandle('onMouseDown', startDrawing);
-    graph.events.unhandle('onGraphUnderCursorChange', drawLine);
-    graph.events.unhandle('onMouseUp', stopDrawing);
-    graph.events.unhandle('onClick', consume);
+    graph.canvas.events.unhandle('onMouseDown', startDrawing);
+    graph.canvas.events.unhandle('onGraphUnderCursorChange', drawLine);
+    graph.canvas.events.unhandle('onMouseUp', stopDrawing);
+    graph.canvas.events.unhandle('onClick', consume);
   };
 
   const load = (annotations: Annotation[]) => {

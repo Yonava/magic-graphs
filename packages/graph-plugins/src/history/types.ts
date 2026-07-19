@@ -1,4 +1,8 @@
-import { GraphPlugin, WithLifecycle } from '@graph/plugins-shared/plugins';
+import {
+  GraphPlugin,
+  WithEvents,
+  WithLifecycle,
+} from '@graph/plugins-shared/plugins';
 import { DeepReadonly } from 'ts-essentials';
 
 import { HistoryEventMap } from './events.ts';
@@ -45,7 +49,7 @@ type HistoryControls = {
 
 export type HistoryPlugin = GraphPlugin<{
   name: 'history';
-  controls: WithLifecycle<HistoryControls>;
+  controls: WithLifecycle<WithEvents<HistoryControls, HistoryEventMap>>;
   events: HistoryEventMap;
   actions: HistoryActions;
   dependsOn: [];

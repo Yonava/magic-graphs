@@ -6,7 +6,6 @@ import { createComputedTokenResolver } from '@graph/plugins-shared/computed-toke
 import {
   ExtractActions,
   ExtractControls,
-  ExtractEventMap,
   ExtractGetters,
   ExtractTransitPayload,
   LooseGraphPlugin,
@@ -15,7 +14,6 @@ import {
 import { AggregatorTransformer } from '@graph/plugins/canvas/aggregator/types';
 import { CanvasControls } from '@graph/plugins/canvas/types';
 import { GraphActions } from '@graph/primitives/actions/types';
-import { EventHub } from '@graph/primitives/events/createEventHub';
 import { GraphGetters } from '@graph/primitives/getters/types';
 import type { Prettify } from 'ts-essentials';
 
@@ -59,7 +57,7 @@ export const createGraph = <
     () => activePresetName,
   );
 
-  const events = folded.events as EventHub<ExtractEventMap<NoInfer<TPlugins>>>;
+  const events = folded.events;
 
   const controls = folded.controls as Prettify<
     ExtractControls<NoInfer<TPlugins>>
@@ -73,7 +71,7 @@ export const createGraph = <
     ExtractGetters<NoInfer<TPlugins>>
   >;
 
-  const { pluginTransitControls } = folded;
+  const { pluginTransitControls, structuralEvents } = folded;
 
   const tokenResolver = createComputedTokenResolver(folded.themeDetectors);
 
@@ -139,7 +137,7 @@ export const createGraph = <
           removedEdgeIds: oldEdgeIds,
           removedNodeIds: oldNodeIds,
         },
-        events.emit as any,
+        structuralEvents.emit,
       );
     },
   };

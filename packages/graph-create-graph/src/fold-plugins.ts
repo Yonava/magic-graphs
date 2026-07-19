@@ -5,10 +5,11 @@ import {
   LooseGraphPlugin,
   PluginThemeField,
 } from '@graph/plugins-shared/plugins';
-import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
+import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 import { TransitControls } from '@graph/primitives/transit/types';
 
 import {
+  StructuralEventHub,
   StructuralEventMap,
   createFinalActionsProxy,
   createStructuralEventHub,
@@ -22,7 +23,11 @@ type PluginTransitControl = {
 
 type FoldedPlugins = {
   controls: any;
-  events: any;
+  events: {
+    core: ReadonlyEventHub<CoreEventMap>;
+    structural: ReadonlyEventHub<StructuralEventMap>;
+  };
+  structuralEvents: StructuralEventHub;
   actions: any;
   getters: any;
   themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']>;
@@ -45,10 +50,10 @@ export const foldPlugins = (
   );
 
   let controls = coreGraph.controls;
-  let events: any = mergeEventHubs<CoreEventMap, StructuralEventMap>(
-    coreGraph.events,
-    structuralEvents,
-  );
+  const events = {
+    core: coreGraph.events,
+    structural: structuralEvents,
+  };
   let actions = coreGraph.actions;
   let getters = coreGraph.getters;
   const { finalActions, resolveFinalActions } = createFinalActionsProxy();
@@ -69,7 +74,6 @@ export const foldPlugins = (
     });
 
     controls = { ...controls, [pluginResult.name]: pluginResult.controls };
-    events = pluginResult.events;
     actions = { ...actions, ...pluginResult.actions };
     getters = { ...getters, ...pluginResult.getters };
 
@@ -112,6 +116,7 @@ export const foldPlugins = (
   return {
     controls,
     events,
+    structuralEvents,
     actions: wrappedActions,
     getters,
     themeDetectors,

@@ -2,7 +2,7 @@ import { CoreEventMap } from '@graph/core/events';
 import { CoreGetters } from '@graph/core/getters';
 import { CoreControls } from '@graph/core/types';
 import { GraphPlugin } from '@graph/plugins-shared/plugins';
-import { EventHub } from '@graph/primitives/events/createEventHub';
+import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 import { GraphGetters } from '@graph/primitives/getters/types';
 import { StructuralEventMap } from '@graph/primitives/transactions/types';
 import { CoreNode } from '@graph/primitives/types';
@@ -21,7 +21,10 @@ export type Graph = Pick<
   CoreControls,
   'metadata' | 'nodes' | 'edges' | 'helpers'
 > & {
-  events: EventHub<CoreEventMap & StructuralEventMap>;
+  events: {
+    core: ReadonlyEventHub<CoreEventMap>;
+    structural: ReadonlyEventHub<StructuralEventMap>;
+  };
 } & GraphGetters<CoreGetters>;
 
 /**

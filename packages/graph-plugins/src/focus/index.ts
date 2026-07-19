@@ -1,33 +1,19 @@
 import { MOUSE_BUTTONS } from '@core/utils/mouse';
-import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
-import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
-import {
-  ElementRemovalPayload,
-  StructuralEventMap,
-} from '@graph/primitives/transactions/types';
+import { ElementRemovalPayload } from '@graph/primitives/transactions/types';
 import { DeepReadonly } from 'ts-essentials';
 
-import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
 import { FOCUS_PLUGIN_ID } from './constants.ts';
-import { FocusEventMap, createFocusEventRegistry } from './events.ts';
+import { createFocusEventRegistry } from './events.ts';
 import { createFocusDetectors, createFocusThemeOverrides } from './themes.ts';
 import { FocusPlugin } from './types.ts';
 
-export const focus: FocusPlugin = ({
-  controls,
-  events: graphEventHub,
-  actions,
-  getters,
-}) => {
+export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
   const focusEventRegistry = createFocusEventRegistry();
   const focusEventHub = createEventHub(focusEventRegistry);
-  const events = mergeEventHubs<
-    FocusEventMap,
-    CoreEventMap & StructuralEventMap & CanvasEventMap
-  >(focusEventHub, graphEventHub);
 
   let focusedElementIds = new Set<string>();
 
@@ -40,7 +26,7 @@ export const focus: FocusPlugin = ({
     const oldIds = new Set([...focusedElementIds]);
     focusedElementIds = new Set(ids);
 
-    events.emit('onFocusChange', focusedElementIds, oldIds);
+    focusEventHub.emit('onFocusChange', focusedElementIds, oldIds);
   };
 
   const clearFocus = () => setFocus([]);
@@ -70,7 +56,7 @@ export const focus: FocusPlugin = ({
       ...previousFocusedElementIds,
     ]);
     focusedElementIds = newFocusedElementIds;
-    events.emit(
+    focusEventHub.emit(
       'onFocusChange',
       newFocusedElementIds,
       previousFocusedElementIds,
@@ -119,18 +105,18 @@ export const focus: FocusPlugin = ({
 
   const enable = () => {
     // focus a node when clicked, or clear focus if background is clicked
-    events.handle('onMouseDown', handleMouseDown, FOCUS_PLUGIN_ID, {
+    controls.canvas.events.handle('onMouseDown', handleMouseDown, FOCUS_PLUGIN_ID, {
       before: [NODE_DRAG_PLUGIN_ID],
     });
 
     // clean up the focus so removed elements aren't in the state
-    events.subscribe('onElementsRemoved', clearRemovedElementsFromFocus);
+    events.structural.subscribe('onElementsRemoved', clearRemovedElementsFromFocus);
   };
 
   const disable = () => {
-    events.unhandle('onMouseDown', handleMouseDown);
+    controls.canvas.events.unhandle('onMouseDown', handleMouseDown);
 
-    events.unsubscribe('onElementsRemoved', clearRemovedElementsFromFocus);
+    events.structural.unsubscribe('onElementsRemoved', clearRemovedElementsFromFocus);
     clearFocus();
   };
 
@@ -190,7 +176,6 @@ export const focus: FocusPlugin = ({
 
   return {
     name: 'focus',
-    events,
     actions: extendedActions,
     getters,
     controls: {
@@ -201,6 +186,7 @@ export const focus: FocusPlugin = ({
       isFocused,
       focusedNodes: () => controls.nodes.filter((node) => isFocused(node.id)),
       focusedEdges: () => controls.edges.filter((edge) => isFocused(edge.id)),
+      events: focusEventHub,
       theme: {
         ...theme,
         detectors: createFocusDetectors(isFocused, theme._resolveToken),
