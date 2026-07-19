@@ -1,11 +1,12 @@
 import { Graph } from '../../graph/types.ts';
 import { Lens } from '../../lens/types.ts';
+import { Explainer } from '../types.ts';
 import { createHasNodeCheck } from './checks/hasNodes.ts';
 
 export type Violation = {
   id: string;
   lens?: Lens;
-  reason: string;
+  explainer: Explainer;
 };
 
 export type GuardCheck = () => Violation | undefined;

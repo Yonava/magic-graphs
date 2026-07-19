@@ -58,7 +58,7 @@ const getConnectedEdges: CurriedNodeHelpers['getConnectedEdges'] =
       (edge) => edge.target === nodeId || edge.source === nodeId,
     );
 
-// TODO needs to become isGraphDirected aware still
+// TODO needs to become core.options.directed aware still
 // which means hardening them to infinite recursive loop edge cases
 // see https://github.com/Yonava/magic-graphs/issues/575
 const getAncestors: CurriedNodeHelpers['getAncestors'] =

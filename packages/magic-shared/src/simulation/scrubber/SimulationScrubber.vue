@@ -1,5 +1,11 @@
 <script setup lang="ts">
+  import { cn } from '@core/components/cn';
+  import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
+
+  import { computed } from 'vue';
+
   import Button from '../../components/button/Button.vue';
+  import IconButton from '../../components/icon-button/IconButton.vue';
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
@@ -7,27 +13,68 @@
   import ExplainerText from './ExplainerText.vue';
 
   const { simulation, violation } = useRunningSimulation();
+
+  const violationClasses = computed(() => {
+    return violation.value ? 'bg-red-700 border-red-700' : '';
+  });
+
+  const baseWellClasses = 'p-0 rounded-full';
+
+  const wellClass = computed(() => cn(violationClasses.value, baseWellClasses));
+  const size = 48;
+
+  const iconButtonClasses = 'bg-transparent px-8 rounded-full';
+
+  const percentageComplete = computed(() => {
+    const totalFrames = simulation.value.frames.length;
+    const playhead = simulation.value.playhead.position;
+    return (playhead / (totalFrames - 1)) * 100;
+  });
 </script>
 
 <template>
-  <VStack class="items-center">
-    <Well :class="violation ? 'bg-red-600' : ''">
-      <HStack>
-        <Button
-          :disabled="simulation.playhead.isFirst()"
-          @click="simulation.playhead.prev()"
-          >Prev</Button
-        >
-        <Button
-          :disabled="simulation.playhead.isLast()"
-          @click="simulation.playhead.next()"
-          >Next</Button
-        >
-      </HStack>
-    </Well>
-
+  <VStack class="items-center gap-5">
     <div>
       <ExplainerText />
     </div>
+
+    <div class="w-90 h-4">
+      <div class="absolute rounded-full">
+        <div
+          :class="
+            cn(
+              'absolute w-90 h-4 border-2 rounded-full border-gray-800 overflow-hidden',
+              violationClasses,
+            )
+          "
+        >
+          <div
+            :class="cn('h-4 bg-gray-800', violationClasses)"
+            :style="{ width: `${percentageComplete}%` }"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <HStack>
+      <Well :class="wellClass">
+        <IconButton
+          :path="mdiChevronLeft"
+          :size="size"
+          :class="iconButtonClasses"
+          :disabled="simulation.playhead.isFirst()"
+          @click="simulation.playhead.prev()"
+        />
+      </Well>
+      <Well :class="wellClass">
+        <IconButton
+          :size="size"
+          :class="iconButtonClasses"
+          :disabled="simulation.playhead.isLast()"
+          @click="simulation.playhead.next()"
+          :path="mdiChevronRight"
+        />
+      </Well>
+    </HStack>
   </VStack>
 </template>

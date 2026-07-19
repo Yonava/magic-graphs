@@ -32,7 +32,7 @@ export const useProductUI = (
     componentSlots.add({
       id: 'product/lens-chips',
       component: LensChipGroup,
-      position: 'bottom-middle',
+      position: 'top-middle',
     });
   }
 

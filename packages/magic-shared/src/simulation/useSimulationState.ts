@@ -147,7 +147,7 @@ export const useSimulationState = (
     const violation = definition.guard?.();
     if (violation) {
       throw new Error(
-        `cannot start simulation: guard is already failing (${violation.reason})`,
+        `cannot start simulation: guard is already failing (${violation.id})`,
       );
     }
 
@@ -170,7 +170,7 @@ export const useSimulationState = (
     componentSlotControls.add({
       id: SCRUBBER_COMPONENT_ID,
       component: SimulationScrubber,
-      position: 'top-middle',
+      position: 'bottom-middle',
       priority: 1,
     });
 
