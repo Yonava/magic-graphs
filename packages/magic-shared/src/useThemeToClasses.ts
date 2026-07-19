@@ -7,5 +7,5 @@ export const useThemeToClasses = (
   themeToClasses: Record<ThemePreset, string>,
 ) => {
   const graph = useProvidedGraph();
-  return computed(() => themeToClasses[graph.activePreset.value]);
+  return computed(() => themeToClasses[graph.theme.activePresetName.value]);
 };

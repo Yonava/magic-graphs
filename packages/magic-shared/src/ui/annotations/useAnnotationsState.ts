@@ -205,7 +205,7 @@ export const useAnnotationsState = (graph: Graph) => {
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
-          color: THEME_TO_ERASER_OUTLINE[graph.activePreset.value],
+          color: THEME_TO_ERASER_OUTLINE[graph.theme.activePresetName.value],
           lineWidth: 2,
         },
       });
@@ -291,7 +291,12 @@ export const useAnnotationsState = (graph: Graph) => {
       ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
-    graph.canvas.events.handle('onClick', consume, ANNOTATION_PLUGIN_ID, PRIORITY);
+    graph.canvas.events.handle(
+      'onClick',
+      consume,
+      ANNOTATION_PLUGIN_ID,
+      PRIORITY,
+    );
   };
 
   const deactivate = () => {

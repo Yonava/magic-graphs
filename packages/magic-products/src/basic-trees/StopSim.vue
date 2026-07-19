@@ -5,7 +5,7 @@
 
   const graph = useProvidedGraph();
 
-  graph.events.subscribe('onKeyDown', (e) => {
+  graph.canvas.events.subscribe('onKeyDown', (e) => {
     if (e.key === 'Escape') graph.magic.simulation.stop();
   });
 </script>

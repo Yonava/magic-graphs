@@ -49,7 +49,8 @@ export const lensChips: UIOptions['lensChips'] = (graph) => {
     {
       lens: nodeLens2,
       title: 'Blue Nodes',
-      tooltipLabel: () => 'Theme? ' + capitalize(graph.activePreset.value),
+      tooltipLabel: () =>
+        'Theme? ' + capitalize(graph.theme.activePresetName.value),
     },
   ];
 };

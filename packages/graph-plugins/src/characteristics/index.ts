@@ -13,7 +13,7 @@ import {
   getStronglyConnectedComponentsData,
 } from './scc.ts';
 
-type CharacteristicsControls = {
+export type CharacteristicsControls = {
   isComplete: () => boolean;
   getCycles: () => CycleData;
   sccs: () => StronglyConnectedComponentsData;

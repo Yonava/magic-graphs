@@ -19,8 +19,9 @@ import { dark } from '@graph/theme-presets/dark/index';
 import { light } from '@graph/theme-presets/light/index';
 import { useAdjacencyLists } from '@graph/vue/useAdjacencyLists';
 import { useCharacteristics } from '@graph/vue/useCharacteristics';
-import { useCreateGraph } from '@graph/vue/useCreateGraph';
+import { useCreateGraphTheme } from '@graph/vue/useCreateGraphTheme';
 import { useFocus } from '@graph/vue/useFocus';
+import { useNodesEdges } from '@graph/vue/useNodesEdges';
 import { useTransitionMatrix } from '@graph/vue/useTransitionMatrix';
 
 export type UseGraphOptions = {
@@ -64,23 +65,29 @@ export const useGraph = (options: UseGraphOptions = {}) => {
 
   canvasSurface.draw.content.value = graph.canvas.aggregator.draw;
 
-  // @ts-expect-error event hub type contravariance causing issues with strong typing
-  const vueCoreWrapper = useCreateGraph(graph);
-  // @ts-expect-error event hub type contravariance causing issues with strong typing
-  const vueAdjacencyLists = useAdjacencyLists(graph);
-  // @ts-expect-error event hub type contravariance causing issues with strong typing
-  const vueCharacteristics = useCharacteristics(graph);
-  // @ts-expect-error event hub type contravariance causing issues with strong typing
-  const vueTransitionMatrix = useTransitionMatrix(graph);
-  // @ts-expect-error event hub type contravariance causing issues with strong typing
-  const vueFocus = useFocus(graph);
+  const vueThemeWrapper = useCreateGraphTheme(graph.theme);
+  const vueNodesEdges = useNodesEdges(graph.events.structural, graph);
+  const vueAdjacencyLists = useAdjacencyLists(
+    graph.events.structural,
+    graph.adjacencyLists,
+  );
+  const vueCharacteristics = useCharacteristics(
+    graph.events.structural,
+    graph.characteristics,
+  );
+  const vueTransitionMatrix = useTransitionMatrix(
+    graph.events.structural,
+    graph.transitionMatrix,
+  );
+  const vueFocus = useFocus(graph.focus);
 
   return {
     ...graph,
+    ...vueNodesEdges,
     adjacencyLists: vueAdjacencyLists,
     characteristics: vueCharacteristics,
     transitionMatrix: vueTransitionMatrix,
     focus: vueFocus,
-    ...vueCoreWrapper,
+    theme: vueThemeWrapper,
   };
 };
