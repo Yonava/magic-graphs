@@ -1,3 +1,4 @@
+import { core } from '@graph/core/index';
 import { LooseGraphPlugin } from '@graph/plugins-shared/plugins';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -47,7 +48,7 @@ describe('finalActions', () => {
     let trigger: (() => any) | undefined;
 
     const folded = foldPlugins(
-      {},
+      core({}),
       [
         createLabelingPlugin(nodeIdToLabel),
         createTriggeringPlugin((t) => (trigger = t)),
@@ -57,7 +58,7 @@ describe('finalActions', () => {
     );
 
     let labelAtEmitTime: string | undefined;
-    folded.events.subscribe('onNodesAdded', (nodes: any[]) => {
+    folded.events.subscribe('onNodesAdded', (nodes) => {
       labelAtEmitTime = nodeIdToLabel.get(nodes[0].id);
     });
 
@@ -72,14 +73,14 @@ describe('foldPlugins structural events', () => {
   it('fires onNodesAdded only after the fully-composed action finishes', () => {
     const nodeIdToLabel = new Map<string, string>();
     const folded = foldPlugins(
-      {},
+      core({}),
       [createLabelingPlugin(nodeIdToLabel)],
       {},
       () => 'default',
     );
 
     let labelAtEmitTime: string | undefined;
-    folded.events.subscribe('onNodesAdded', (nodes: any[]) => {
+    folded.events.subscribe('onNodesAdded', (nodes) => {
       labelAtEmitTime = nodeIdToLabel.get(nodes[0].id);
     });
 
@@ -89,7 +90,7 @@ describe('foldPlugins structural events', () => {
   });
 
   it('fires onStructureChange exactly once per structural action', () => {
-    const folded = foldPlugins({}, [], {}, () => 'default');
+    const folded = foldPlugins(core({}), [], {}, () => 'default');
 
     const onStructureChange = vi.fn();
     folded.events.subscribe('onStructureChange', onStructureChange);
@@ -100,7 +101,7 @@ describe('foldPlugins structural events', () => {
   });
 
   it('does not fire structural events when nothing changed', () => {
-    const folded = foldPlugins({}, [], {}, () => 'default');
+    const folded = foldPlugins(core({}), [], {}, () => 'default');
 
     const onNodesAdded = vi.fn();
     const onStructureChange = vi.fn();
@@ -115,7 +116,7 @@ describe('foldPlugins structural events', () => {
   });
 
   it('derives onStructureChange from edge weight commits, independent of action wrapping', () => {
-    const folded = foldPlugins({}, [], {}, () => 'default');
+    const folded = foldPlugins(core({}), [], {}, () => 'default');
 
     const nodeA = folded.actions.addNode({});
     const nodeB = folded.actions.addNode({});

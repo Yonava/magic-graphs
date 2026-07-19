@@ -9,8 +9,10 @@ import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
  */
 export type TransitionMatrix = CoreGetters['getEdge']['weight'][][];
 
+export type TransitionMatrixControls = () => TransitionMatrix;
+
 export type TransitionMatrixPlugin = GraphPlugin<{
   name: 'transitionMatrix';
-  controls: () => TransitionMatrix;
+  controls: TransitionMatrixControls;
   dependsOn: [AdjacencyListsPlugin];
 }>;

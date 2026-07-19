@@ -13,7 +13,7 @@ import { InteractivePlugin } from './types.ts';
  */
 export const interactive =
   (options: Partial<InteractiveOptions>): InteractivePlugin =>
-  ({ controls, actions, finalActions, events, getters }) => {
+  ({ controls, actions, finalActions, getters }) => {
     const optionsWithDefaults = {
       ...DEFAULT_INTERACTIVE_OPTIONS,
       ...options,
@@ -141,17 +141,27 @@ export const interactive =
     };
 
     const enable = () => {
-      events.subscribe('onKeyDown', removeFocusedElements);
-      events.subscribe('onMouseDown', handleEdgeTextArea);
-      events.handle('onClick', handleNodeCreation, INTERACTIVE_PLUGIN_ID);
-      events.subscribe('onNodeAnchorDrop', handleEdgeCreation);
+      controls.canvas.events.subscribe('onMouseDown', handleEdgeTextArea);
+      controls.canvas.events.handle(
+        'onClick',
+        handleNodeCreation,
+        INTERACTIVE_PLUGIN_ID,
+      );
+      controls.anchors?.events.subscribe(
+        'onNodeAnchorDrop',
+        handleEdgeCreation,
+      );
+      controls.canvas.events.subscribe('onKeyDown', removeFocusedElements);
     };
 
     const disable = () => {
-      events.unsubscribe('onKeyDown', removeFocusedElements);
-      events.unsubscribe('onMouseDown', handleEdgeTextArea);
-      events.unhandle('onClick', handleNodeCreation);
-      events.unsubscribe('onNodeAnchorDrop', handleEdgeCreation);
+      controls.canvas.events.unsubscribe('onMouseDown', handleEdgeTextArea);
+      controls.canvas.events.unhandle('onClick', handleNodeCreation);
+      controls.anchors?.events.unsubscribe(
+        'onNodeAnchorDrop',
+        handleEdgeCreation,
+      );
+      controls.canvas.events.unsubscribe('onKeyDown', removeFocusedElements);
     };
 
     enable();
@@ -159,7 +169,6 @@ export const interactive =
     return {
       name: 'interactive',
       actions,
-      events,
       getters,
       controls: {
         lifecycle: {

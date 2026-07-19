@@ -6,9 +6,9 @@ import { createCoreEventRegistry } from '../events.ts';
 import { DEFAULT_WEIGHT } from './constants.ts';
 import { createEdgeWeightStore } from './createEdgeWeightStore.ts';
 
-const makeStore = (isGraphWeighted = true) => {
+const makeStore = (weighted = true) => {
   const hub = createMockEventHub(createCoreEventRegistry());
-  const options = { isGraphWeighted } as any;
+  const options = { weighted } as any;
   const store = createEdgeWeightStore(hub, options);
   return { store, hub };
 };

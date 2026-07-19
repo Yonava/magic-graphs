@@ -14,8 +14,8 @@
   const graph = useProvidedGraph();
 
   const toggleTheme = () => {
-    const preset = graph.activePreset.value;
-    graph.activePreset.value = preset === 'dark' ? 'light' : 'dark';
+    const preset = graph.theme.activePresetName.value;
+    graph.theme.activePresetName.value = preset === 'dark' ? 'light' : 'dark';
   };
 
   const themer = useThemer({

@@ -10,6 +10,8 @@ import { NodeDragPlugin } from '@graph/plugins/node-drag/types';
 import { NodeLabelPlugin } from '@graph/plugins/node-label/types';
 import { TransitionMatrixPlugin } from '@graph/plugins/transition-matrix/types';
 
+import { UnwrapRef } from 'vue';
+
 import { useGraph } from './useGraph.ts';
 
 export type Graph = ReturnType<typeof useGraph>;
@@ -22,7 +24,7 @@ export type AddGEdgeOptions = Parameters<Graph['actions']['addEdge']>[0];
 
 export type GraphEncode = ReturnType<Graph['transit']['encode']>;
 
-export type ThemePreset = ReturnType<Graph['theme']['activePresetName']>;
+export type ThemePreset = UnwrapRef<Graph['theme']['activePresetName']>;
 
 // TODO this mirrors graphPlugins exactly, we have to duplicate for now because we want the
 // readonly typing but would need to retrofit the entire graph typing system to be compatible

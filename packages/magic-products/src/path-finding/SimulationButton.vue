@@ -76,7 +76,7 @@
               {
                 ...explainerThemer,
                 classes: () =>
-                  graph.activePreset.value === 'light'
+                  graph.theme.activePresetName.value === 'light'
                     ? 'bg-purple-500 hover:bg-pink-500'
                     : 'bg-red-500 hover:bg-blue-500',
                 tooltipLabel: () => graph.edges.value.length.toString(),

@@ -1,42 +1,40 @@
-import { Graph } from '@graph/create-graph/index';
-import { AdjacencyListsPlugin } from '@graph/plugins/adjacency-lists/types';
-import { CharacteristicsPlugin } from '@graph/plugins/characteristics/index';
+import { ConsumerEventMap } from '@graph/create-graph/consumer-events';
+import { CharacteristicsControls } from '@graph/plugins/characteristics/index';
+import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 
 import { computed, shallowRef } from 'vue';
 
-type CharacteristicsGraph = Graph<{
-  plugins: [CharacteristicsPlugin, AdjacencyListsPlugin];
-  presetName: string;
-}>;
-
-export const useCharacteristics = (graph: CharacteristicsGraph) => {
+export const useCharacteristics = (
+  events: ReadonlyEventHub<ConsumerEventMap>,
+  characteristics: CharacteristicsControls,
+) => {
   const refresh = shallowRef(0);
-  graph.events.subscribe('onStructureChange', () => refresh.value++);
+  events.subscribe('onStructureChange', () => refresh.value++);
 
   return {
     isComplete: computed(() => {
       refresh.value;
-      return graph.characteristics.isComplete();
+      return characteristics.isComplete();
     }),
     cycles: computed(() => {
       refresh.value;
-      return graph.characteristics.getCycles();
+      return characteristics.getCycles();
     }),
     sccs: computed(() => {
       refresh.value;
-      return graph.characteristics.sccs();
+      return characteristics.sccs();
     }),
     bidirectionalEdges: computed(() => {
       refresh.value;
-      return graph.characteristics.bidirectionalEdges();
+      return characteristics.bidirectionalEdges();
     }),
     bipartite: computed(() => {
       refresh.value;
-      return graph.characteristics.bipartite();
+      return characteristics.bipartite();
     }),
     connected: computed(() => {
       refresh.value;
-      return graph.characteristics.connected();
+      return characteristics.connected();
     }),
   };
 };

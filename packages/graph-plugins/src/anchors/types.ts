@@ -1,5 +1,6 @@
 import {
   GraphPlugin,
+  WithEvents,
   WithLifecycle,
   WithTheme,
 } from '@graph/plugins-shared/plugins';
@@ -33,7 +34,10 @@ export type NodeAnchor = {
   id: string;
 };
 
-export type AnchorsControls = WithTheme<{}, AnchorsThemes>;
+export type AnchorsControls = WithEvents<
+  WithTheme<{}, AnchorsThemes>,
+  AnchorsEventMap
+>;
 
 export type AnchorsPlugin = GraphPlugin<{
   name: 'anchors';

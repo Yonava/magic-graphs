@@ -1,43 +1,25 @@
 import { nullThrows } from '@core/utils/assert';
 import { MOUSE_BUTTONS } from '@core/utils/mouse';
-import { CoreEventMap } from '@graph/core/events';
 import { NodePositionStreamControls } from '@graph/core/positions/types';
 import { createDragState } from '@graph/plugins-shared/drag';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
-import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
-import { StructuralEventMap } from '@graph/primitives/transactions/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import { ANCHOR_PLUGIN_ID } from '../anchors/constants.ts';
-import { CanvasEventMap, CanvasGraphMouseEvent } from '../canvas/events.ts';
+import { CanvasGraphMouseEvent } from '../canvas/events.ts';
 import { GraphUnderCursor } from '../canvas/types.ts';
-import { FocusEventMap } from '../focus/events.ts';
-import { MarqueeEventMap } from '../marquee/events.ts';
 import {
   NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD,
   NODE_DRAG_PLUGIN_ID,
 } from './constants.ts';
 import { createDragThemer } from './createDragThemer.ts';
-import { NodeDragEventMap, createNodeDragEventRegistry } from './events.ts';
+import { createNodeDragEventRegistry } from './events.ts';
 import { NodeDragPlugin, NodeIdDragState } from './types.ts';
 import { validateNodeIds } from './validateNodeIds.ts';
 
-export const nodeDrag: NodeDragPlugin = ({
-  controls,
-  events: graphEventMap,
-  actions,
-  getters,
-}) => {
+export const nodeDrag: NodeDragPlugin = ({ controls, actions, getters }) => {
   const nodeDragEventRegistry = createNodeDragEventRegistry();
   const nodeDragEventHub = createEventHub(nodeDragEventRegistry);
-  const events = mergeEventHubs<
-    NodeDragEventMap,
-    CoreEventMap &
-      StructuralEventMap &
-      CanvasEventMap &
-      MarqueeEventMap &
-      FocusEventMap
-  >(nodeDragEventHub, graphEventMap);
 
   const dragState = createDragState<NodeIdDragState>();
   let nodePositionStream: NodePositionStreamControls | undefined;
@@ -84,7 +66,7 @@ export const nodeDrag: NodeDragPlugin = ({
     }
     dragState.startDrag(coords, { nodeIds: nodeIdsToDrag });
     nodePositionStream = controls.positions.createStream();
-    events.emit('onNodeDragStart', nodes);
+    nodeDragEventHub.emit('onNodeDragStart', nodes);
   };
 
   const drop = () => {
@@ -96,7 +78,7 @@ export const nodeDrag: NodeDragPlugin = ({
     );
     stream.stop();
     nodePositionStream = undefined;
-    events.emit(
+    nodeDragEventHub.emit(
       'onNodeDrop',
       data.nodeIds.map((nodeId) =>
         nullThrows(getters.getNode(nodeId), 'dropped node not found'),
@@ -140,22 +122,32 @@ export const nodeDrag: NodeDragPlugin = ({
   const cursorTheme = createDragThemer(controls, dragState);
 
   const enable = () => {
-    events.handle('onMouseDown', beginDrag, NODE_DRAG_PLUGIN_ID, {
+    controls.canvas.events.handle(
+      'onMouseDown',
+      beginDrag,
+      NODE_DRAG_PLUGIN_ID,
+      {
+        before: [ANCHOR_PLUGIN_ID],
+      },
+    );
+    controls.canvas.events.handle('onMouseUp', drop, NODE_DRAG_PLUGIN_ID, {
       before: [ANCHOR_PLUGIN_ID],
     });
-    events.handle('onMouseUp', drop, NODE_DRAG_PLUGIN_ID, {
-      before: [ANCHOR_PLUGIN_ID],
-    });
-    events.handle('onGraphUnderCursorChange', drag, NODE_DRAG_PLUGIN_ID, {
-      before: [ANCHOR_PLUGIN_ID],
-    });
+    controls.canvas.events.handle(
+      'onGraphUnderCursorChange',
+      drag,
+      NODE_DRAG_PLUGIN_ID,
+      {
+        before: [ANCHOR_PLUGIN_ID],
+      },
+    );
     cursorTheme.enable();
   };
 
   const disable = () => {
-    events.unhandle('onMouseDown', beginDrag);
-    events.unhandle('onMouseUp', drop);
-    events.unhandle('onGraphUnderCursorChange', drag);
+    controls.canvas.events.unhandle('onMouseDown', beginDrag);
+    controls.canvas.events.unhandle('onMouseUp', drop);
+    controls.canvas.events.unhandle('onGraphUnderCursorChange', drag);
     cursorTheme.disable();
     drop();
   };
@@ -164,10 +156,10 @@ export const nodeDrag: NodeDragPlugin = ({
 
   return {
     name: 'nodeDrag',
-    events,
     getters,
     actions,
     controls: {
+      events: nodeDragEventHub,
       lifecycle: {
         enable,
         disable,

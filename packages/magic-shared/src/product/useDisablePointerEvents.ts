@@ -13,13 +13,13 @@ export const useDisablePointerEvents = (graph: Graph) => {
   const startPointerEvents = () => (disableUIPointerEvents.value = false);
 
   onMounted(() => {
-    graph.events.subscribe('onMouseDown', stopPointerEvents);
-    graph.events.subscribe('onMouseUp', startPointerEvents);
+    graph.canvas.events.subscribe('onMouseDown', stopPointerEvents);
+    graph.canvas.events.subscribe('onMouseUp', startPointerEvents);
   });
 
   onUnmounted(() => {
-    graph.events.unsubscribe('onMouseDown', stopPointerEvents);
-    graph.events.unsubscribe('onMouseUp', startPointerEvents);
+    graph.canvas.events.unsubscribe('onMouseDown', stopPointerEvents);
+    graph.canvas.events.unsubscribe('onMouseUp', startPointerEvents);
   });
 
   return pointerEvents;

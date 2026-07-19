@@ -1,33 +1,32 @@
-import { Graph } from '@graph/create-graph/index';
-import { AdjacencyListsPlugin } from '@graph/plugins/adjacency-lists/types';
+import { ConsumerEventMap } from '@graph/create-graph/consumer-events';
+import { AdjacencyListsControls } from '@graph/plugins/adjacency-lists/types';
+import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 
 import { computed, shallowRef } from 'vue';
 
-type AdjacencyListGraph = Graph<{
-  plugins: [AdjacencyListsPlugin];
-  presetName: string;
-}>;
-
-export const useAdjacencyLists = (graph: AdjacencyListGraph) => {
+export const useAdjacencyLists = (
+  events: ReadonlyEventHub<ConsumerEventMap>,
+  adjacencyLists: AdjacencyListsControls,
+) => {
   const refresh = shallowRef(0);
-  graph.events.subscribe('onStructureChange', () => refresh.value++);
+  events.subscribe('onStructureChange', () => refresh.value++);
 
   return {
     standard: computed(() => {
       refresh.value;
-      return graph.adjacencyLists.standard();
+      return adjacencyLists.standard();
     }),
     directed: computed(() => {
       refresh.value;
-      return graph.adjacencyLists.directed();
+      return adjacencyLists.directed();
     }),
     undirected: computed(() => {
       refresh.value;
-      return graph.adjacencyLists.undirected();
+      return adjacencyLists.undirected();
     }),
     weighted: computed(() => {
       refresh.value;
-      return graph.adjacencyLists.weighted();
+      return adjacencyLists.weighted();
     }),
   };
 };

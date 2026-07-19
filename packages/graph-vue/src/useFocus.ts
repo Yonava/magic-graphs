@@ -1,23 +1,17 @@
-import { Graph } from '@graph/create-graph/index';
-import { FocusPlugin } from '@graph/plugins/focus/types';
+import { FocusControls } from '@graph/plugins/focus/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { ref } from 'vue';
 
-type FocusGraph = Graph<{
-  plugins: [FocusPlugin];
-  presetName: string;
-}>;
-
-export const useFocus = (graph: FocusGraph) => {
-  const focusedNodes = ref<CoreNode[]>([...graph.focus.focusedNodes()]);
-  const focusedEdges = ref<CoreEdge[]>([...graph.focus.focusedEdges()]);
-  graph.events.subscribe('onFocusChange', () => {
-    focusedNodes.value = [...graph.focus.focusedNodes()];
-    focusedEdges.value = [...graph.focus.focusedEdges()];
+export const useFocus = (focus: FocusControls) => {
+  const focusedNodes = ref<CoreNode[]>([...focus.focusedNodes()]);
+  const focusedEdges = ref<CoreEdge[]>([...focus.focusedEdges()]);
+  focus.events.subscribe('onFocusChange', () => {
+    focusedNodes.value = [...focus.focusedNodes()];
+    focusedEdges.value = [...focus.focusedEdges()];
   });
   return {
-    ...graph.focus,
+    ...focus,
     focusedNodes,
     focusedEdges,
   };

@@ -1,5 +1,9 @@
 import { Coordinate } from '@canvas/surface/types';
-import { GraphPlugin, WithLifecycle } from '@graph/plugins-shared/plugins';
+import {
+  GraphPlugin,
+  WithEvents,
+  WithLifecycle,
+} from '@graph/plugins-shared/plugins';
 import { CoreNode } from '@graph/primitives/types';
 
 import { CanvasPlugin } from '../canvas/types.ts';
@@ -17,9 +21,11 @@ export type ActiveDragNode = {
   coords: Coordinate;
 };
 
+export type NodeDragControls = WithEvents<{}, NodeDragEventMap>;
+
 export type NodeDragPlugin = GraphPlugin<{
   name: 'nodeDrag';
-  controls: WithLifecycle<{}>;
+  controls: WithLifecycle<NodeDragControls>;
   events: NodeDragEventMap;
   dependsOn: [CanvasPlugin];
   optionalDependsOn: [FocusPlugin, MarqueePlugin];

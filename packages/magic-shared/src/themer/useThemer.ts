@@ -33,7 +33,7 @@ export const useThemer = (
 
   const layers = {} as ThemeLayerRecord;
   for (const pluginName of pluginNames) {
-    // @ts-expect-error dynamic stuff like this is a known typescript inference limitation
+    // @ts-ignore dynamic stuff like this is a known typescript inference limitation
     layers[pluginName] = graph[pluginName].theme.createLayer(layerId);
   }
 
@@ -51,7 +51,7 @@ export const useThemer = (
       for (const [tokenName, themeValue] of Object.entries(pluginOverrides)) {
         // DeepPartial allows explicit `undefined` values, so guard even though no real caller would pass one
         if (themeValue === undefined) continue;
-        // @ts-expect-error dynamic stuff like this is a known typescript inference limitation
+        // @ts-ignore dynamic stuff like this is a known typescript inference limitation
         layer.set(tokenName, themeValue);
       }
     }

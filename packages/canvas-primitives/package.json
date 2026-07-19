@@ -28,7 +28,7 @@
     "@vitejs/plugin-vue": "^5.0.5",
     "ts-essentials": "^10.2.0",
     "storybook": "^9.0.1",
-    "vite": "^7.1.10",
+    "vite": "^8.1.4",
     "vue": "catalog:"
   }
 }

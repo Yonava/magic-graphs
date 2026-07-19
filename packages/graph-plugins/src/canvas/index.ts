@@ -2,21 +2,14 @@ import { createAnimatedShapes } from '@canvas/primitives/animation/index';
 import { cross } from '@canvas/primitives/shapes/cross/index';
 import { CanvasProps } from '@canvas/surface/types';
 import { KeyboardEventEntries, MouseEventEntries } from '@core/utils/types';
-import { CoreEventMap } from '@graph/core/events';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
-import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
-import { StructuralEventMap } from '@graph/primitives/transactions/types';
 import { DeepReadonly } from 'ts-essentials';
 
 import { createAggregator } from './aggregator/createAggregator.ts';
 import { CANVAS_PLUGIN_ID } from './constants.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
-import {
-  CanvasEventMap,
-  CanvasGraphMouseEvent,
-  createCanvasEventRegistry,
-} from './events.ts';
+import { CanvasGraphMouseEvent, createCanvasEventRegistry } from './events.ts';
 import { createNodeCanvasElementPriorityGetter } from './nodeCanvasElementPriority.ts';
 import { setupCanvasCursor } from './setupCanvasCursor.ts';
 import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
@@ -25,22 +18,18 @@ import { CanvasPlugin, GraphUnderCursor } from './types.ts';
 
 export const canvas =
   (magicCanvas: CanvasProps): CanvasPlugin =>
-  ({ controls, events: graphEventHub, actions, getters }) => {
+  ({ controls, events, actions, getters }) => {
     const canvasEventRegistry = createCanvasEventRegistry();
-    const canvasEventHub = createEventHub(canvasEventRegistry);
-    const events = mergeEventHubs<
-      CanvasEventMap,
-      CoreEventMap & StructuralEventMap
-    >(canvasEventHub, graphEventHub);
+    const canvasEvents = createEventHub(canvasEventRegistry);
 
-    const aggregator = createAggregator({ emit: events.emit });
+    const aggregator = createAggregator(canvasEvents);
 
     const graphUnderCursor: GraphUnderCursor = {
       coords: { x: 0, y: 0 },
       elements: [],
     };
 
-    events.subscribe('onTransactionComplete', () => {
+    events._internal.coreEvents.subscribe('onTransactionComplete', () => {
       forceUpdateGraphUnderCursor();
     });
 
@@ -48,13 +37,13 @@ export const canvas =
 
     setupCanvasCursor({
       canvas: magicCanvas.canvas,
-      subscribe: events.subscribe,
       getNode: getters.getNode,
+      subscribe: canvasEvents.subscribe,
       resolveToken: theme._resolveToken,
       graphUnderCursor,
     });
 
-    setupOnHoveredElementChangeEvent(events);
+    setupOnHoveredElementChangeEvent(canvasEvents);
 
     // went with max+1 instead of closed rotation for node hovers since rotation requires
     // redistributing z values across all nodes, which breaks when new nodes arrive with a default z that
@@ -68,7 +57,7 @@ export const canvas =
       controls.positions.set({ nodeId, update: { z: maxZ + 1 } });
     };
 
-    events.handle(
+    canvasEvents.handle(
       'onHoveredElementChange',
       (hoveredEl) => {
         if (!hoveredEl) return;
@@ -86,7 +75,7 @@ export const canvas =
       const newElements = aggregator.getCanvasElementsAtCoordinate(coords);
       graphUnderCursor.elements = newElements;
 
-      events.emit('onGraphUnderCursorChange', graphUnderCursor);
+      canvasEvents.emit('onGraphUnderCursorChange', graphUnderCursor);
       return graphUnderCursor;
     };
 
@@ -97,11 +86,11 @@ export const canvas =
 
     const mouseEvents = emitMouseEvents(
       graphMouseEvent,
-      events.emit,
+      canvasEvents.emit,
       forceUpdateGraphUnderCursor,
     );
 
-    const keyboardEvents = emitKeyboardEvents(events.emit);
+    const keyboardEvents = emitKeyboardEvents(canvasEvents.emit);
 
     const shapes = createAnimatedShapes();
 
@@ -150,7 +139,7 @@ export const canvas =
       }).draw(ctx);
     };
 
-    events.subscribe('onDraw', () => {
+    canvasEvents.subscribe('onDraw', () => {
       const canvas = magicCanvas.canvas.value;
       if (!canvas) return;
       canvas.style.backgroundColor = theme._resolveToken('canvas.color');
@@ -160,7 +149,7 @@ export const canvas =
       nodes: controls.nodes,
       positions: controls.positions,
     });
-    events.subscribe('onBeforeDraw', () => {
+    canvasEvents.subscribe('onBeforeDraw', () => {
       getNodePriority = createNodeCanvasElementPriorityGetter({
         nodes: controls.nodes,
         positions: controls.positions,
@@ -173,6 +162,7 @@ export const canvas =
       controls: {
         aggregator,
         shapes,
+        events: canvasEvents,
 
         magicCanvas,
 
@@ -204,7 +194,6 @@ export const canvas =
         validate: (data) => true,
       },
       actions,
-      events,
       onAfterInit: () => {
         const weightLayer = theme.createLayer(
           CANVAS_PLUGIN_ID + '/theme/edge-weight',

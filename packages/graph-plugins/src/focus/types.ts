@@ -1,5 +1,6 @@
 import {
   GraphPlugin,
+  WithEvents,
   WithLifecycle,
   WithTheme,
 } from '@graph/plugins-shared/plugins';
@@ -63,7 +64,10 @@ export type FocusActions = {
   };
 };
 
-export type FocusControls = WithTheme<BaseFocusControls, FocusThemes>;
+export type FocusControls = WithEvents<
+  WithTheme<BaseFocusControls, FocusThemes>,
+  FocusEventMap
+>;
 
 export type FocusPlugin = GraphPlugin<{
   name: 'focus';

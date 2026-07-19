@@ -21,5 +21,5 @@ export const useLocalStorageGraphSync = (graph: Graph, productId: string) => {
   onMounted(sync);
 
   graph.events.subscribe('onStructureChange', save);
-  graph.events.subscribe('onNodeDrop', save);
+  graph.nodeDrag.events.subscribe('onNodeDrop', save);
 };

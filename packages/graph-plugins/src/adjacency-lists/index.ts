@@ -103,7 +103,6 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
     name: 'adjacencyLists',
     actions,
     getters,
-    events,
     controls: {
       standard: () => standard,
       weighted: () => weighted,

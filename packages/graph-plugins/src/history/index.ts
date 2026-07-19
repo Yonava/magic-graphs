@@ -1,23 +1,12 @@
-import { CoreEventMap } from '@graph/core/events';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
-import { mergeEventHubs } from '@graph/primitives/events/mergeEventHubs';
-import { StructuralEventMap } from '@graph/primitives/transactions/types';
 
 import { MAX_HISTORY } from './constants.ts';
-import { HistoryEventMap, createHistoryEventRegistry } from './events.ts';
+import { createHistoryEventRegistry } from './events.ts';
 import { HistoryPlugin } from './types.ts';
 
-export const history: HistoryPlugin = ({
-  events: graphEventHub,
-  actions,
-  getters,
-}) => {
+export const history: HistoryPlugin = ({ actions, getters }) => {
   const historyRegistry = createHistoryEventRegistry();
   const historyEventHub = createEventHub(historyRegistry);
-  const events = mergeEventHubs<
-    HistoryEventMap,
-    CoreEventMap & StructuralEventMap
-  >(historyEventHub, graphEventHub);
 
   let undoStack: any[] = [];
   let redoStack: any[] = [];
@@ -42,7 +31,7 @@ export const history: HistoryPlugin = ({
 
     addToRedoStack(record);
     undoHistoryRecord(record);
-    events.emit('onUndo');
+    historyEventHub.emit('onUndo');
 
     return record;
   };
@@ -53,7 +42,7 @@ export const history: HistoryPlugin = ({
 
     addToUndoStack(record);
     redoHistoryRecord(record);
-    events.emit('onRedo');
+    historyEventHub.emit('onRedo');
 
     return record;
   };
@@ -75,7 +64,6 @@ export const history: HistoryPlugin = ({
         return actions.addNode(options);
       },
     },
-    events,
     controls: {
       undo,
       redo,
@@ -84,6 +72,7 @@ export const history: HistoryPlugin = ({
       undoStack,
       redoStack,
       clearHistory,
+      events: historyEventHub,
       lifecycle: {
         enable: () => {
           console.warn('not implemented');

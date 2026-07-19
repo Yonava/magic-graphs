@@ -66,7 +66,7 @@ export const useSuggestedNodes = (
     },
   }).activate();
 
-  graph.events.subscribe('onClick', ({ elements }) => {
+  graph.canvas.events.subscribe('onClick', ({ elements }) => {
     const topElement = elements.at(-1);
     if (!topElement || !suggestedNodeIds.value.has(topElement.id)) return;
     controls.target.value = graph.getNode(topElement.id).id;
