@@ -78,7 +78,7 @@
         </Button>
       </Well>
     </template>
-    <Well class="p-1">
+    <Well class="p-1 bg-transparent">
       <VStack>
         <template
           v-for="product in products"

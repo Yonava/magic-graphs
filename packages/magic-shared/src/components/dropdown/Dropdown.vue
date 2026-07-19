@@ -5,7 +5,7 @@
 
   const classes = useThemeToClasses({
     dark: 'bg-gray-800 border-gray-700 text-white',
-    light: 'bg-white border-gray-200 text-gray-900',
+    light: 'bg-gray-300 border-gray-200 text-gray-900',
   });
 </script>
 
