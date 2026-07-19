@@ -38,6 +38,7 @@ export const canvas =
     setupCanvasCursor({
       canvas: magicCanvas.canvas,
       getNode: getters.getNode,
+      subscribe: canvasEvents.subscribe,
       resolveToken: theme._resolveToken,
       graphUnderCursor,
     });
