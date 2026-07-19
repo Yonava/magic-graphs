@@ -173,7 +173,10 @@ export const canvas =
 
         theme: {
           ...theme,
-          detectors: createCanvasDetectors(theme._resolveToken),
+          detectors: createCanvasDetectors(
+            theme._resolveToken,
+            graphUnderCursor,
+          ),
         },
       },
       transit: {

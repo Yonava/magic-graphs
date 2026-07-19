@@ -30,6 +30,14 @@ export const dark: DarkPreset = {
     'edge.default.text.size': shared.edge.text.size,
     'edge.default.width': shared.edge.width,
 
+    'edge.hover.color': colors.STONE_900,
+    'edge.hover.cursor': shared.edge.cursor,
+    'edge.hover.text.color': shared.edge.text.color,
+    'edge.hover.text.content': shared.edge.text.content,
+    'edge.hover.text.fontWeight': shared.edge.text.fontWeight,
+    'edge.hover.text.size': shared.edge.text.size,
+    'edge.hover.width': shared.edge.width,
+
     'node.default.border.color': colors.GRAY_900,
     'node.default.border.width': shared.node.borderWidth,
     'node.default.color': colors.STONE_600,
@@ -39,6 +47,16 @@ export const dark: DarkPreset = {
     'node.default.text.content': shared.node.text.content,
     'node.default.text.fontWeight': shared.node.text.fontWeight,
     'node.default.text.size': shared.node.text.size,
+
+    'node.hover.border.color': colors.GRAY_900,
+    'node.hover.border.width': shared.node.borderWidth,
+    'node.hover.color': colors.STONE_600,
+    'node.hover.cursor': shared.node.cursor,
+    'node.hover.size': shared.node.size,
+    'node.hover.text.color': shared.node.text.color,
+    'node.hover.text.content': shared.node.text.content,
+    'node.hover.text.fontWeight': shared.node.text.fontWeight,
+    'node.hover.text.size': shared.node.text.size,
   },
   focus: {
     'edge.focus.color': colors.RED_700,

@@ -1,4 +1,5 @@
 import { PluginOptions } from '@graph/plugins-shared/plugins';
+import { CoreNode } from '@graph/primitives/types';
 
 import { NODE_DRAG_PLUGIN_ID } from '../node-drag/constants.ts';
 import { NodeLabelControls, NodeLabelPlugin } from './types.ts';
@@ -12,9 +13,12 @@ export const createLabelThemer = (
   const canvas = controls.canvas.theme.createLayer(layerId);
   const focus = controls.focus?.theme.createLayer(layerId);
 
+  const label = (node: CoreNode) => getLabel(node.id);
+
   const enable = () => {
-    canvas.set('node.default.text.content', (n) => getLabel(n.id));
-    focus?.set('node.focus.text.content', (n) => getLabel(n.id));
+    canvas.set('node.default.text.content', label);
+    canvas.set('node.hover.text.content', label);
+    focus?.set('node.focus.text.content', label);
   };
 
   const disable = () => {
