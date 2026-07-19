@@ -19,7 +19,7 @@
   });
 
   const base =
-    'inline-flex cursor-pointer items-center justify-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100';
+    'inline-flex cursor-pointer items-center justify-center gap-1 rounded-md px-3 py-2 text-md font-bold transition-colors active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100';
 
   const attrs = useAttrs();
 
