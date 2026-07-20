@@ -6,7 +6,6 @@ import {
   SimulationDefinition,
   SimulationGuardBuilder,
 } from '@magic/shared/simulation';
-import { useThemer } from '@magic/shared/themer';
 
 import { DeepReadonly } from 'vue';
 
@@ -49,22 +48,15 @@ export const useSimulation = () => {
       bfs(graph.adjacencyLists.standard.value, startNode.id)(collector);
     },
     setup: (context) => {
-      const id = 'bfs-sim';
-      const themer = useThemer(
-        {
-          canvas: {
-            'node.default.border.color': ({ id }) =>
-              context.currentFrame.value === id ? 'red' : undefined,
-          },
+      const themer = graph.theme.createThemer({
+        canvas: {
+          'node.default.border.color': ({ id }) =>
+            context.currentFrame.value === id ? 'red' : undefined,
         },
-        {
-          layerId: id,
-          graph,
-        },
-      );
+      });
 
       const bfsLens: Lens = {
-        id,
+        id: 'bfs-sim',
         activate: themer.activate,
         deactivate: themer.deactivate,
       };

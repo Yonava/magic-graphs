@@ -3,7 +3,6 @@ import { CoreNode } from '@graph/primitives/types';
 import { AddGNodeOptions, GNode } from '@magic/shared/graph/types';
 import { MagicGraph } from '@magic/shared/product/useGraphProduct';
 import { SimulationDefinition } from '@magic/shared/simulation';
-import { createThemer } from '@magic/shared/themer/useThemer';
 import tinycolor from 'tinycolor2';
 
 import { computed, ref } from 'vue';
@@ -56,13 +55,15 @@ export const useSuggestedNodes = (
     return tinycolorRes.setAlpha(0.5).toHex8String();
   };
 
-  createThemer(graph, {
-    canvas: {
-      'node.default.color': dimSuggested,
-      'node.default.text.color': dimSuggested,
-      'node.default.border.color': dimSuggested,
-    },
-  }).activate();
+  graph.theme
+    .createThemer({
+      canvas: {
+        'node.default.color': dimSuggested,
+        'node.default.text.color': dimSuggested,
+        'node.default.border.color': dimSuggested,
+      },
+    })
+    .activate();
 
   graph.canvas.events.subscribe('onClick', ({ elements }) => {
     const topElement = elements.at(-1);

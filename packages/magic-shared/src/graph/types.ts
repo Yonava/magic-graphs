@@ -25,20 +25,3 @@ export type AddGEdgeOptions = Parameters<Graph['actions']['addEdge']>[0];
 export type GraphEncode = ReturnType<Graph['transit']['encode']>;
 
 export type ThemePreset = UnwrapRef<Graph['theme']['activePresetName']>;
-
-// TODO this mirrors graphPlugins exactly, we have to duplicate for now because we want the
-// readonly typing but would need to retrofit the entire graph typing system to be compatible
-// with readonly plugin arrays which is a big lift refactor!!!
-export type GraphPlugins = [
-  CanvasPlugin,
-  HistoryPlugin,
-  FocusPlugin,
-  MarqueePlugin,
-  AnchorsPlugin,
-  NodeDragPlugin,
-  NodeLabelPlugin,
-  AdjacencyListsPlugin,
-  TransitionMatrixPlugin,
-  CharacteristicsPlugin,
-  InteractivePlugin,
-];
