@@ -10,6 +10,7 @@ export const nodeLabel: NodeLabelPlugin = ({
   events,
   actions,
   getters,
+  invalidateGetters,
 }) => {
   const nodeIdToLabel = new Map<string, string>();
 
@@ -17,12 +18,16 @@ export const nodeLabel: NodeLabelPlugin = ({
     nodeIdToLabel.get(nodeId) ?? '?';
 
   const setNodeLabels: NodeLabelControls['setMany'] = (labels) => {
-    return labels.map(({ nodeId, label: labelOrLabelGetter }) => {
+    const result = labels.map(({ nodeId, label: labelOrLabelGetter }) => {
       const currentLabel = getNodeLabel(nodeId);
       const label = getValue(labelOrLabelGetter, currentLabel);
       nodeIdToLabel.set(nodeId, label);
       return { nodeId, label };
     });
+    // getNode reads from nodeIdToLabel above, so any change to it can change what
+    // getNode returns for that node — create-graph has no way to know that on its own
+    invalidateGetters();
+    return result;
   };
 
   const generateLabel = createLabelGenerator({

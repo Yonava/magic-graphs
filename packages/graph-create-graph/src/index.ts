@@ -71,7 +71,7 @@ export const createGraph = <
     ExtractGetters<NoInfer<TPlugins>>
   >;
 
-  const { pluginTransitControls, consumerEvents } = folded;
+  const { pluginTransitControls, consumerEvents, getNodes, getEdges } = folded;
 
   const tokenResolver = createComputedTokenResolver(folded.themeDetectors);
 
@@ -142,12 +142,18 @@ export const createGraph = <
     },
   };
 
+  // nodes/edges are exposed as getNodes()/getEdges() rather than the raw core arrays —
+  // see getters-cache.ts. omit the core fields here so nothing shadows the getters below.
+  const { nodes: _coreNodes, edges: _coreEdges, ...restControls } = controls;
+
   return {
-    ...controls,
+    ...restControls,
     ...getters,
     actions,
     events,
     transit,
+    getNodes: getNodes as () => ReturnType<typeof getters.getNode>[],
+    getEdges: getEdges as () => ReturnType<typeof getters.getEdge>[],
     theme: {
       tokenResolver,
       resolveNodeStyles,

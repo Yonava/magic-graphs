@@ -27,6 +27,9 @@ type LoosePluginInput = {
   // actions, safe to capture in a closure and invoke after folding completes
   finalActions: GraphActions<CoreActions>;
   getters: GraphGetters<CoreGetters>;
+  // see [2] in ./plugin.ts — call after mutating any plugin-local state a getter
+  // reads from, so create-graph knows to recompute getNodes()/getEdges()
+  invalidateGetters: () => void;
 };
 
 type LoosePluginOutput = {

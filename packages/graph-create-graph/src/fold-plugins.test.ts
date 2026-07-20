@@ -42,6 +42,36 @@ const createTriggeringPlugin =
     };
   };
 
+// mimics nodeLabel: decorates getNode with plugin-local state, and calls
+// invalidateGetters after mutating that state so getNodes() stays in sync.
+const createLabelingGetterPlugin =
+  (nodeIdToLabel: Map<string, string>): LooseGraphPlugin =>
+  ({ events, actions, getters, invalidateGetters }) => ({
+    name: 'labelingGetter',
+    controls: {
+      setLabel: (id: string, label: string) => {
+        nodeIdToLabel.set(id, label);
+        invalidateGetters();
+      },
+    },
+    events,
+    getters: {
+      ...getters,
+      getNode: (id: string) => ({
+        ...getters.getNode(id),
+        label: nodeIdToLabel.get(id) ?? '?',
+      }),
+    },
+    actions: {
+      ...actions,
+      addNode: (options: any) => {
+        const node = actions.addNode(options);
+        nodeIdToLabel.set(node.id, `label-${node.id}`);
+        return node;
+      },
+    },
+  });
+
 describe('finalActions', () => {
   it('resolves to the fully-composed action, unlike a captured `actions` snapshot', () => {
     const nodeIdToLabel = new Map<string, string>();
@@ -132,5 +162,73 @@ describe('foldPlugins structural events', () => {
     folded.controls.weights.set({ edgeId: edge.id, update: 5 as any });
 
     expect(onStructureChange).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('getters cache', () => {
+  it('starts populated (empty) right after folding, without waiting on an invalidateGetters() call', () => {
+    const folded = foldPlugins(core({}), [], {}, () => 'default');
+
+    expect(folded.getNodes()).toEqual([]);
+    expect(folded.getEdges()).toEqual([]);
+  });
+
+  it('auto-invalidates on structural changes without any plugin calling invalidateGetters', async () => {
+    const folded = foldPlugins(core({}), [], {}, () => 'default');
+
+    const node = folded.actions.addNode({});
+    await Promise.resolve();
+
+    expect(folded.getNodes().map((n: any) => n.id)).toContain(node.id);
+  });
+
+  it('reflects a plugin-local state change after that plugin calls invalidateGetters', async () => {
+    const nodeIdToLabel = new Map<string, string>();
+    const folded = foldPlugins(
+      core({}),
+      [createLabelingGetterPlugin(nodeIdToLabel)],
+      {},
+      () => 'default',
+    );
+
+    const node = folded.actions.addNode({});
+    await Promise.resolve();
+
+    (folded.controls as any).labelingGetter.setLabel(node.id, 'renamed');
+    await Promise.resolve();
+
+    const found = folded.getNodes().find((n: any) => n.id === node.id) as any;
+    expect(found.label).toBe('renamed');
+  });
+
+  it('coalesces multiple invalidateGetters() calls in the same tick into one onGettersInvalidated emission', async () => {
+    const nodeIdToLabel = new Map<string, string>();
+    const folded = foldPlugins(
+      core({}),
+      [createLabelingGetterPlugin(nodeIdToLabel)],
+      {},
+      () => 'default',
+    );
+
+    const node = folded.actions.addNode({});
+    await Promise.resolve();
+
+    const onGettersInvalidated = vi.fn();
+    folded.events._internal.gettersInvalidation.subscribe(
+      'onGettersInvalidated',
+      onGettersInvalidated,
+    );
+
+    const labeling = (folded.controls as any).labelingGetter;
+    labeling.setLabel(node.id, 'a');
+    labeling.setLabel(node.id, 'b');
+    labeling.setLabel(node.id, 'c');
+
+    expect(onGettersInvalidated).not.toHaveBeenCalled();
+    await Promise.resolve();
+
+    expect(onGettersInvalidated).toHaveBeenCalledTimes(1);
+    const found = folded.getNodes().find((n: any) => n.id === node.id) as any;
+    expect(found.label).toBe('c');
   });
 });
