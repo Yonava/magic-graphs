@@ -76,9 +76,8 @@ export const foldPlugins = (
   let themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']> =
     {};
 
-  // closes over the `getters` binding above, so it always reads whatever plugins have
-  // folded into it by the time a recompute actually runs (invalidateGetters() is
-  // deferred to a microtask, and the initial recompute() below only runs once folding
+  // closes over the `getters` binding above, so any recompute reads whatever plugins have
+  // folded into it by that point (the initial recompute() below only runs once folding
   // is done).
   const gettersCache = createGettersCache(
     {

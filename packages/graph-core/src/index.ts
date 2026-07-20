@@ -54,7 +54,6 @@ export const core = (options: Partial<CoreOptions>) => {
 
   const commitTransaction = createCommitTransaction({
     getGraph: () => ({ nodes, edges }),
-    getters: coreGetters,
     onTransactionSucceeded,
   });
 

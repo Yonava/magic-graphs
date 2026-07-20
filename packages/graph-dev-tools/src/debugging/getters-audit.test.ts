@@ -2,6 +2,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 import {
   DISCREPANCY_CHECK_INTERVAL_MS,
+  IdentifiableElement,
   startGettersDiscrepancyAudit,
 } from './getters-audit.ts';
 
@@ -24,7 +25,7 @@ const createStaleableGraph = (label: { current: string }) => {
     getNode: (id: string) => ({ id, label: label.current }),
     getEdge: (id: string) => ({ id }),
     getNodes: () => cachedNodes,
-    getEdges: () => [] as { id: string }[],
+    getEdges: () => [] as IdentifiableElement[],
     // simulates a correctly-behaving plugin's invalidateGetters() eventually resolving
     recompute: () => {
       cachedNodes = [{ id: '1', label: label.current }];

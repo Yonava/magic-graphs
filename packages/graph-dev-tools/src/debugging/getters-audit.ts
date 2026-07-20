@@ -1,6 +1,6 @@
 import { delta } from '@core/utils/delta/index';
 
-type IdentifiableElement = { id: string };
+export type IdentifiableElement = { id: string };
 
 // deliberately duck-typed against createGraph()'s public return, not imported from
 // @graph/create-graph — this package is an opt-in consumer of the SDK surface, not
@@ -45,21 +45,16 @@ const checkForDiscrepancy = (graph: GettersAuditGraph) => {
   }
 };
 
-// safety net for the invalidateGetters() convention every plugin in @graph/create-graph
-// is handed (see plugin.ts [2] there). strictly opt-in: import and start this yourself
-// in your own product code, and stop it yourself (e.g. onUnmounted) — create-graph never
-// starts this on your behalf, so consumers who trust their plugins pay nothing for it,
-// not in bundle size and not in lifecycle complexity.
+// Safety net for the invalidateGetters() convention (see plugin.ts [2] in
+// @graph/create-graph). Strictly opt-in — start and stop it yourself (e.g. onUnmounted);
+// create-graph never runs this for you.
 //
-// runs on a real, independent setInterval, deliberately not gated on the graph's own
-// getNodes()/getEdges() calls or its onGettersInvalidated notification — both of those
-// are downstream of the very recompute that would already have fixed any drift, so
-// triggering off of them would almost never observe a genuine discrepancy. this needs
-// its own clock to have a real chance of catching a getter that changed without a
-// matching invalidateGetters() call before something unrelated fixes it first.
+// Uses its own setInterval rather than hooking getNodes()/getEdges() or
+// onGettersInvalidated, since those only run after a recompute already happened —
+// checking on those would rarely catch a genuine miss.
 //
-// assumes getters are pure functions of stable internal state (no Date.now(), no
-// randomness); anything else will false-positive here.
+// Assumes getters are pure functions of stable state; getters using Date.now() or
+// randomness will false-positive here.
 export const startGettersDiscrepancyAudit = (graph: GettersAuditGraph) => {
   const interval = setInterval(() => {
     checkForDiscrepancy(graph);

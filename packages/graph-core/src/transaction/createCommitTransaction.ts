@@ -8,17 +8,16 @@ import type { TransactionOptions } from './types.ts';
 // 3. ✅ Commit Payload and Return Confirmation
 export function createCommitTransaction({
   getGraph,
-  getters,
   onTransactionSucceeded,
 }: TransactionOptions): CommitTransaction {
   return (draft) => {
-    const { edges } = getGraph();
+    const { edges, nodes } = getGraph();
     const payload = createEmptyPayload();
 
     // PROCESS REMOVALS - edges first, then nodes to ensure references don't hang
     if (draft.removeEdgeIds) {
       for (const edgeId of draft.removeEdgeIds) {
-        const edge = getters.getEdge(edgeId);
+        const edge = edges.find((e) => e.id === edgeId);
         if (!edge) continue;
         payload.removedEdgeIds.push(edge.id);
       }
@@ -26,7 +25,7 @@ export function createCommitTransaction({
 
     if (draft.removeNodeIds) {
       for (const nodeId of draft.removeNodeIds) {
-        const node = getters.getNode(nodeId);
+        const node = nodes.find((n) => n.id === nodeId);
         if (!node) continue;
         payload.removedNodeIds.push(node.id);
         const orphanedEdgeIds = edges

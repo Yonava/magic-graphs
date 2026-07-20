@@ -20,7 +20,6 @@ export const createGettersCache = <Getters extends GraphGetters<any>>(
 ) => {
   let nodesCache: ReturnType<Getters['getNode']>[] = [];
   let edgesCache: ReturnType<Getters['getEdge']>[] = [];
-  let flushScheduled = false;
 
   const recompute = () => {
     const getters = resolveGetters();
@@ -28,16 +27,13 @@ export const createGettersCache = <Getters extends GraphGetters<any>>(
     edgesCache = ids.edgeIds().map((id) => getters.getEdge(id));
   };
 
-  // idempotent and coalesced: however many times invalidateGetters() is called within
-  // the same tick, the cache is recomputed and onGettersInvalidated emitted exactly once.
+  // recomputes and emits synchronously, every time. Graphs are small (10-50 nodes/edges),
+  // so paying for extra recomputes within a tick is cheaper than the staleness footgun of
+  // deferring the cache refresh — callers reading getNodes()/getEdges() right after an
+  // action always see the result of that action, not last tick's state.
   const invalidateGetters = () => {
-    if (flushScheduled) return;
-    flushScheduled = true;
-    queueMicrotask(() => {
-      flushScheduled = false;
-      recompute();
-      gettersInvalidationEvents.emit('onGettersInvalidated');
-    });
+    recompute();
+    gettersInvalidationEvents.emit('onGettersInvalidated');
   };
 
   return {

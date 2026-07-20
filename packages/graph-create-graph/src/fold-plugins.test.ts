@@ -201,7 +201,7 @@ describe('getters cache', () => {
     expect(found.label).toBe('renamed');
   });
 
-  it('coalesces multiple invalidateGetters() calls in the same tick into one onGettersInvalidated emission', async () => {
+  it('recomputes and emits onGettersInvalidated synchronously on every invalidateGetters() call', async () => {
     const nodeIdToLabel = new Map<string, string>();
     const folded = foldPlugins(
       core({}),
@@ -221,14 +221,15 @@ describe('getters cache', () => {
 
     const labeling = (folded.controls as any).labelingGetter;
     labeling.setLabel(node.id, 'a');
+    expect(onGettersInvalidated).toHaveBeenCalledTimes(1);
+    let found = folded.getNodes().find((n: any) => n.id === node.id) as any;
+    expect(found.label).toBe('a');
+
     labeling.setLabel(node.id, 'b');
     labeling.setLabel(node.id, 'c');
 
-    expect(onGettersInvalidated).not.toHaveBeenCalled();
-    await Promise.resolve();
-
-    expect(onGettersInvalidated).toHaveBeenCalledTimes(1);
-    const found = folded.getNodes().find((n: any) => n.id === node.id) as any;
+    expect(onGettersInvalidated).toHaveBeenCalledTimes(3);
+    found = folded.getNodes().find((n: any) => n.id === node.id) as any;
     expect(found.label).toBe('c');
   });
 });

@@ -69,6 +69,7 @@
           :class="iconButtonClasses"
           :disabled="simulation.playhead.isFirst()"
           @click="simulation.playhead.prev()"
+          label="Previous"
         />
       </Well>
       <Well :class="wellClass">
@@ -78,6 +79,7 @@
           :disabled="simulation.playhead.isLast()"
           @click="simulation.playhead.next()"
           :path="mdiChevronRight"
+          label="Next"
         />
       </Well>
     </HStack>

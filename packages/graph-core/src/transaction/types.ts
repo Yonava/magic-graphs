@@ -7,9 +7,5 @@ export type GraphState = Pick<CoreControls, 'nodes' | 'edges'>;
 
 export type TransactionOptions = {
   getGraph: () => GraphState;
-  getters: {
-    getEdge: (id: string) => CoreEdge;
-    getNode: (id: string) => CoreNode;
-  };
   onTransactionSucceeded: (payload: TransactionPayload) => void;
 };
