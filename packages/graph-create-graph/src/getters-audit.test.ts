@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 import {
+  createGettersAuditTrigger,
   DISCREPANCY_CHECK_INTERVAL_MS,
-  startGettersDiscrepancyAudit,
 } from './getters-audit.ts';
 
 beforeEach(() => {
@@ -30,16 +30,16 @@ it('does not warn when nothing changed', () => {
     getEdges: () => [] as { id: string }[],
   };
 
-  const stop = startGettersDiscrepancyAudit(
+  const triggerAudit = createGettersAuditTrigger(
     { nodeIds: () => ['1'], edgeIds: () => [] },
     () => getters,
     cache,
   );
 
-  vi.advanceTimersByTime(DISCREPANCY_CHECK_INTERVAL_MS);
+  triggerAudit();
+  vi.runAllTimers();
 
   expect(errorSpy).not.toHaveBeenCalled();
-  stop();
 });
 
 it('warns when a getter reads state that changed without invalidateGetters()', () => {
@@ -54,22 +54,23 @@ it('warns when a getter reads state that changed without invalidateGetters()', (
     getEdges: () => [] as { id: string }[],
   };
 
-  const stop = startGettersDiscrepancyAudit(
+  const triggerAudit = createGettersAuditTrigger(
     { nodeIds: () => ['1'], edgeIds: () => [] },
     () => getters,
     cache,
   );
 
-  // simulate the plugin mutating its local state directly, without invalidateGetters()
+  // simulate the plugin mutating its local state directly, without invalidateGetters(),
+  // then a consumer reading getNodes()/getEdges() — that read is what triggers a check
   label.current = 'b';
-  vi.advanceTimersByTime(DISCREPANCY_CHECK_INTERVAL_MS);
+  triggerAudit();
+  vi.runAllTimers();
 
   expect(errorSpy).toHaveBeenCalledTimes(1);
   expect(errorSpy.mock.calls[0][0]).toMatch(/getNodes\(\) is stale/);
-  stop();
 });
 
-it('stops checking once the returned stop function is called', () => {
+it('throttles: repeated calls within the interval only check once', () => {
   const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   const label = { current: 'a' };
   const getters = createGetters(label);
@@ -79,15 +80,49 @@ it('stops checking once the returned stop function is called', () => {
     getEdges: () => [] as { id: string }[],
   };
 
-  const stop = startGettersDiscrepancyAudit(
+  const triggerAudit = createGettersAuditTrigger(
     { nodeIds: () => ['1'], edgeIds: () => [] },
     () => getters,
     cache,
   );
 
-  stop();
   label.current = 'b';
-  vi.advanceTimersByTime(DISCREPANCY_CHECK_INTERVAL_MS * 3);
+  triggerAudit();
+  triggerAudit();
+  triggerAudit();
+  vi.runAllTimers();
 
+  expect(errorSpy).toHaveBeenCalledTimes(1);
+
+  // a second state change, but well within the throttle window — no new check yet
+  label.current = 'c';
+  triggerAudit();
+  vi.advanceTimersByTime(DISCREPANCY_CHECK_INTERVAL_MS / 2);
+
+  expect(errorSpy).toHaveBeenCalledTimes(1);
+
+  // once the window has fully elapsed, the next call checks again
+  vi.advanceTimersByTime(DISCREPANCY_CHECK_INTERVAL_MS);
+  triggerAudit();
+  vi.runAllTimers();
+
+  expect(errorSpy).toHaveBeenCalledTimes(2);
+});
+
+it('never calls getNodes()/getEdges() on the passed-in cache before it is due — no work happens without a caller', () => {
+  const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  const getNodes = vi.fn(() => []);
+  const getEdges = vi.fn(() => []);
+
+  createGettersAuditTrigger(
+    { nodeIds: () => [], edgeIds: () => [] },
+    () => ({ getNode: () => ({ id: '1' }), getEdge: () => ({ id: '1' }) }),
+    { getNodes, getEdges },
+  );
+
+  vi.advanceTimersByTime(DISCREPANCY_CHECK_INTERVAL_MS * 10);
+
+  expect(getNodes).not.toHaveBeenCalled();
+  expect(getEdges).not.toHaveBeenCalled();
   expect(errorSpy).not.toHaveBeenCalled();
 });

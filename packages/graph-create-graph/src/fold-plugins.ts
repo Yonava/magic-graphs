@@ -15,7 +15,6 @@ import {
   wrapActionsWithConsumerEvents,
   wrapWeightsControlsWithConsumerEvents,
 } from './consumer-events.ts';
-import { startGettersDiscrepancyAudit } from './getters-audit.ts';
 import { createGettersCache } from './getters-cache.ts';
 
 type PluginTransitControl = {
@@ -33,7 +32,6 @@ type FoldedPlugins = {
   pluginTransitControls: PluginTransitControl[];
   getNodes: () => any[];
   getEdges: () => any[];
-  stopGettersAudit: () => void;
 };
 
 // TODO add topo sort and explicit error handling for missing plugin dependencies
@@ -152,17 +150,6 @@ export const foldPlugins = (
   // never come if nothing mutates before a consumer reads getNodes()/getEdges().
   gettersCache.recompute();
 
-  // dev-only safety net — see getters-audit.ts for why this doesn't need to know
-  // which plugin (if any) forgot to call invalidateGetters.
-  const stopGettersAudit = startGettersDiscrepancyAudit(
-    {
-      nodeIds: () => coreGraph.controls.nodes.map((n) => n.id),
-      edgeIds: () => coreGraph.controls.edges.map((e) => e.id),
-    },
-    () => getters,
-    gettersCache,
-  );
-
   return {
     controls,
     events,
@@ -173,6 +160,5 @@ export const foldPlugins = (
     pluginTransitControls,
     getNodes: gettersCache.getNodes,
     getEdges: gettersCache.getEdges,
-    stopGettersAudit,
   };
 };

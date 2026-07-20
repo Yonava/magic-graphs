@@ -71,8 +71,7 @@ export const createGraph = <
     ExtractGetters<NoInfer<TPlugins>>
   >;
 
-  const { pluginTransitControls, consumerEvents, getNodes, getEdges, stopGettersAudit } =
-    folded;
+  const { pluginTransitControls, consumerEvents, getNodes, getEdges } = folded;
 
   const tokenResolver = createComputedTokenResolver(folded.themeDetectors);
 
@@ -164,13 +163,6 @@ export const createGraph = <
       setActivePreset: (newPresetName: PresetName) => {
         return (activePresetName = newPresetName);
       },
-    },
-    // the consumer is responsible for calling this once they're done with the graph
-    // (e.g. onUnmounted in a Vue component) — otherwise the dev-only discrepancy audit's
-    // setInterval keeps running and keeps the whole graph alive as a GC root. currently
-    // just stops that interval, but this is the place future teardown needs fold in too.
-    dispose: () => {
-      stopGettersAudit();
     },
   };
 };

@@ -24,8 +24,6 @@ import { useFocus } from '@graph/vue/useFocus';
 import { useNodesEdges } from '@graph/vue/useNodesEdges';
 import { useTransitionMatrix } from '@graph/vue/useTransitionMatrix';
 
-import { onUnmounted } from 'vue';
-
 export type UseGraphOptions = {
   core?: Partial<CoreOptions>;
   interactive?: Partial<InteractiveOptions>;
@@ -82,12 +80,6 @@ export const useGraph = (options: UseGraphOptions = {}) => {
     graph.transitionMatrix,
   );
   const vueFocus = useFocus(graph.focus);
-
-  // create-graph has no lifecycle of its own to hook into — the consumer is
-  // responsible for calling dispose() once the graph goes out of scope, or its
-  // dev-only discrepancy audit keeps running and leaks the whole graph (see
-  // createGraph's dispose doc comment).
-  onUnmounted(() => graph.dispose());
 
   return {
     ...graph,

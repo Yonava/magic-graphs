@@ -2,6 +2,7 @@ import { GraphGetters } from '@graph/primitives/getters/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { GettersInvalidationEventHub } from './consumer-events.ts';
+import { createGettersAuditTrigger } from './getters-audit.ts';
 
 type NodeEdgeIdSource = {
   nodeIds: () => CoreNode['id'][];
@@ -45,10 +46,26 @@ export const createGettersCache = <Getters extends GraphGetters<any>>(
     });
   };
 
+  const getNodes = () => nodesCache;
+  const getEdges = () => edgesCache;
+
+  // see getters-audit.ts — triggered by getNodes()/getEdges() calls rather than a
+  // standing timer, so it never needs disposal.
+  const triggerAudit = createGettersAuditTrigger(ids, resolveGetters, {
+    getNodes,
+    getEdges,
+  });
+
   return {
     invalidateGetters,
     recompute,
-    getNodes: () => nodesCache,
-    getEdges: () => edgesCache,
+    getNodes: () => {
+      triggerAudit();
+      return getNodes();
+    },
+    getEdges: () => {
+      triggerAudit();
+      return getEdges();
+    },
   };
 };
