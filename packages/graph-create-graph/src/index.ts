@@ -19,6 +19,7 @@ import type { Prettify } from 'ts-essentials';
 
 import { createCanvasElementFactories } from './canvas-elements.ts';
 import { emitConsumerEvents } from './consumer-events.ts';
+import { createThemer } from './createThemer.ts';
 import { foldPlugins } from './fold-plugins.ts';
 import { resolveEdgeComputedTokens } from './render-functions/edge.ts';
 import { resolveNodeComputedTokens } from './render-functions/node.ts';
@@ -155,6 +156,7 @@ export const createGraph = <
     getNodes: getNodes as () => ReturnType<typeof getters.getNode>[],
     getEdges: getEdges as () => ReturnType<typeof getters.getEdge>[],
     theme: {
+      createThemer: createThemer<TPlugins>(controls),
       tokenResolver,
       resolveNodeStyles,
       resolveEdgeStyles,

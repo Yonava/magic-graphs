@@ -5,7 +5,6 @@
   import Well from '@magic/shared/Well';
   import { Lens } from '@magic/shared/lens';
   import { useProvidedGraph } from '@magic/shared/product';
-  import { useThemer } from '@magic/shared/themer';
 
   import { defineAsyncComponent } from 'vue';
 
@@ -18,7 +17,7 @@
     graph.theme.activePresetName.value = preset === 'dark' ? 'light' : 'dark';
   };
 
-  const themer = useThemer({
+  const themer = graph.theme.createThemer({
     canvas: {
       'canvas.patternColor': (at, alpha) => {
         if (at.x >= 110) return;

@@ -7,12 +7,11 @@
     ExplainerHighlight,
     SimulationDefinition,
   } from '@magic/shared/simulation';
-  import { createThemer } from '@magic/shared/themer/useThemer';
 
   const graph = useProvidedGraph();
 
   const nodeIdBox = { value: '' };
-  const explainerThemer = createThemer(graph, {
+  const explainerThemer = graph.theme.createThemer({
     canvas: {
       'node.default.border.color': ({ id }) =>
         nodeIdBox.value === id ? colors.AMBER_500 : undefined,
@@ -36,7 +35,7 @@
         const frameNodeId = context.currentFrame.value;
         if (nodeId === frameNodeId) return resolveUnderneath() + 20;
       };
-      const themer = createThemer(graph, {
+      const themer = graph.theme.createThemer({
         canvas: {
           'node.default.size': fn,
         },

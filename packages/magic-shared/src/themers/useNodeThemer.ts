@@ -1,10 +1,9 @@
 import colors from '@core/utils/colors';
+import { Themer } from '@graph/create-graph/createThemer';
 
 import { Ref, ref } from 'vue';
 
-import { Graph } from '../../graph/types.ts';
-import { Themer } from '../types.ts';
-import { createThemer } from '../useThemer.ts';
+import { Graph } from '../graph/types.ts';
 
 export type NodeThemer = {
   themer: Themer;
@@ -13,7 +12,7 @@ export type NodeThemer = {
 
 export const useNodeThemer = (graph: Graph): NodeThemer => {
   const nodeId = ref<string>();
-  const themer = createThemer(graph, {
+  const themer = graph.theme.createThemer({
     canvas: {
       'node.default.border.color': ({ id }) =>
         nodeId.value === id ? colors.AMBER_500 : undefined,

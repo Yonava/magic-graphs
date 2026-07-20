@@ -1,7 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 import { useProvidedGraph } from '@magic/shared/product';
 import { SimulationDefinition } from '@magic/shared/simulation';
-import { useNodeThemer } from '@magic/shared/themer';
+import { useNodeThemer } from '@magic/shared/themers/index';
 
 import { onMounted, ref } from 'vue';
 

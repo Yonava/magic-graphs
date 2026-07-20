@@ -1,19 +1,18 @@
 import { capitalize } from '@core/utils/string';
 import { Lens } from '@magic/shared/lens';
-import { createThemer } from '@magic/shared/themer/useThemer';
 import { UIOptions } from '@magic/shared/ui/useProductUI';
 
 import NodeLens2 from './NodeLens2.vue';
 import NodeLens from './NodeLens.vue';
 
 export const lensChips: UIOptions['lensChips'] = (graph) => {
-  const nodeThemer = createThemer(graph, {
+  const nodeThemer = graph.theme.createThemer({
     canvas: {
       'node.default.color': 'red',
     },
   });
 
-  const nodeThemer2 = createThemer(graph, {
+  const nodeThemer2 = graph.theme.createThemer({
     canvas: {
       'node.default.color': 'blue',
     },

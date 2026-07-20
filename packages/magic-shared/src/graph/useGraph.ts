@@ -19,7 +19,7 @@ import { dark } from '@graph/theme-presets/dark/index';
 import { light } from '@graph/theme-presets/light/index';
 import { useAdjacencyLists } from '@graph/vue/useAdjacencyLists';
 import { useCharacteristics } from '@graph/vue/useCharacteristics';
-import { useCreateGraphTheme } from '@graph/vue/useCreateGraphTheme';
+import { useCreateGraphActivePreset } from '@graph/vue/useCreateGraphActivePreset';
 import { useFocus } from '@graph/vue/useFocus';
 import { useGraphEvents } from '@graph/vue/useGraphEvents';
 import { useNodesEdges } from '@graph/vue/useNodesEdges';
@@ -70,7 +70,7 @@ export const useGraph = (options: UseGraphOptions = {}) => {
 
   canvasSurface.draw.content.value = graph.canvas.aggregator.draw;
 
-  const vueThemeWrapper = useCreateGraphTheme(graph.theme);
+  const vueActivePreset = useCreateGraphActivePreset(graph.theme);
   const vueNodesEdges = useNodesEdges(graph.events, graph);
   const vueAdjacencyLists = useAdjacencyLists(
     graph.events,
@@ -95,7 +95,10 @@ export const useGraph = (options: UseGraphOptions = {}) => {
     characteristics: vueCharacteristics,
     transitionMatrix: vueTransitionMatrix,
     focus: vueFocus,
-    theme: vueThemeWrapper,
+    theme: {
+      ...graph.theme,
+      ...vueActivePreset,
+    },
     events: vueEvents,
   };
 };

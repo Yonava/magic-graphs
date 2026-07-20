@@ -1,5 +1,5 @@
 import { Explainer } from '@magic/shared/simulation';
-import { NodeThemer } from '@magic/shared/themer/utilities/useNodeThemer';
+import { NodeThemer } from '@magic/shared/themers/index';
 
 import { AVLFrame, BalanceMethod } from './types.ts';
 
