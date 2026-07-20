@@ -65,8 +65,7 @@ export const useSuggestedNodes = (
     })
     .activate();
 
-  graph.canvas.events.subscribe('onClick', ({ elements }) => {
-    const topElement = elements.at(-1);
+  graph.canvas.events.subscribe('onClick', ({ topElement }) => {
     if (!topElement || !suggestedNodeIds.value.has(topElement.id)) return;
     controls.target.value = graph.getNode(topElement.id).id;
     graph.magic.simulation.start(simDefinition);

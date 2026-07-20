@@ -27,6 +27,9 @@ export const canvas =
     const graphUnderCursor: GraphUnderCursor = {
       coords: { x: 0, y: 0 },
       elements: [],
+      get topElement() {
+        return this.elements.at(-1);
+      },
     };
 
     events._internal.coreEvents.subscribe('onTransactionComplete', () => {
