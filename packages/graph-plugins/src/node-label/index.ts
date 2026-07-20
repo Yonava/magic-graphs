@@ -10,6 +10,7 @@ export const nodeLabel: NodeLabelPlugin = ({
   events,
   actions,
   getters,
+  invalidateGetters,
 }) => {
   const nodeIdToLabel = new Map<string, string>();
 
@@ -17,12 +18,14 @@ export const nodeLabel: NodeLabelPlugin = ({
     nodeIdToLabel.get(nodeId) ?? '?';
 
   const setNodeLabels: NodeLabelControls['setMany'] = (labels) => {
-    return labels.map(({ nodeId, label: labelOrLabelGetter }) => {
+    const result = labels.map(({ nodeId, label: labelOrLabelGetter }) => {
       const currentLabel = getNodeLabel(nodeId);
       const label = getValue(labelOrLabelGetter, currentLabel);
       nodeIdToLabel.set(nodeId, label);
       return { nodeId, label };
     });
+    invalidateGetters();
+    return result;
   };
 
   const generateLabel = createLabelGenerator({

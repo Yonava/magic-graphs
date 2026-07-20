@@ -1,0 +1,49 @@
+import { GraphGetters } from '@graph/primitives/getters/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
+
+import { GettersInvalidationEventHub } from './consumer-events.ts';
+
+type NodeEdgeIdSource = {
+  nodeIds: () => CoreNode['id'][];
+  edgeIds: () => CoreEdge['id'][];
+};
+
+// getNodes()/getEdges() are a cache over the per-id getters, not a live view — the cache
+// is only as fresh as the last recompute. create-graph keeps it fresh in two ways: it
+// invalidates automatically on its own structural/weight consumer events, and it hands
+// every plugin an `invalidateGetters` function to call whenever a mutation of its own
+// state (e.g. nodeLabel's nodeIdToLabel map) would change what a getter returns.
+export const createGettersCache = <Getters extends GraphGetters<any>>(
+  ids: NodeEdgeIdSource,
+  resolveGetters: () => Getters,
+  gettersInvalidationEvents: GettersInvalidationEventHub,
+) => {
+  let nodesCache: ReturnType<Getters['getNode']>[] = [];
+  let edgesCache: ReturnType<Getters['getEdge']>[] = [];
+  let flushScheduled = false;
+
+  const recompute = () => {
+    const getters = resolveGetters();
+    nodesCache = ids.nodeIds().map((id) => getters.getNode(id));
+    edgesCache = ids.edgeIds().map((id) => getters.getEdge(id));
+  };
+
+  // idempotent and coalesced: however many times invalidateGetters() is called within
+  // the same tick, the cache is recomputed and onGettersInvalidated emitted exactly once.
+  const invalidateGetters = () => {
+    if (flushScheduled) return;
+    flushScheduled = true;
+    queueMicrotask(() => {
+      flushScheduled = false;
+      recompute();
+      gettersInvalidationEvents.emit('onGettersInvalidated');
+    });
+  };
+
+  return {
+    invalidateGetters,
+    recompute,
+    getNodes: () => nodesCache,
+    getEdges: () => edgesCache,
+  };
+};

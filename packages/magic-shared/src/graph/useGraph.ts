@@ -21,8 +21,11 @@ import { useAdjacencyLists } from '@graph/vue/useAdjacencyLists';
 import { useCharacteristics } from '@graph/vue/useCharacteristics';
 import { useCreateGraphTheme } from '@graph/vue/useCreateGraphTheme';
 import { useFocus } from '@graph/vue/useFocus';
+import { useGraphEvents } from '@graph/vue/useGraphEvents';
 import { useNodesEdges } from '@graph/vue/useNodesEdges';
 import { useTransitionMatrix } from '@graph/vue/useTransitionMatrix';
+
+import { useGraphDevTools } from './useGraphDevTools.ts';
 
 export type UseGraphOptions = {
   core?: Partial<CoreOptions>;
@@ -63,6 +66,8 @@ export const useGraph = (options: UseGraphOptions = {}) => {
 
   const graph = createGraphWithPlugins({ ...options, canvasSurface });
 
+  useGraphDevTools(graph);
+
   canvasSurface.draw.content.value = graph.canvas.aggregator.draw;
 
   const vueThemeWrapper = useCreateGraphTheme(graph.theme);
@@ -81,6 +86,8 @@ export const useGraph = (options: UseGraphOptions = {}) => {
   );
   const vueFocus = useFocus(graph.focus);
 
+  const vueEvents = useGraphEvents(graph.events);
+
   return {
     ...graph,
     ...vueNodesEdges,
@@ -89,5 +96,6 @@ export const useGraph = (options: UseGraphOptions = {}) => {
     transitionMatrix: vueTransitionMatrix,
     focus: vueFocus,
     theme: vueThemeWrapper,
+    events: vueEvents,
   };
 };

@@ -1,24 +1,33 @@
-import { CoreControls } from '@graph/core/types';
-import { ConsumerEventMap } from '@graph/create-graph/consumer-events';
-import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
+import { ConsumerEventsHub } from '@graph/core/consumer-events';
 
 import { computed, shallowRef } from 'vue';
 
-export const useNodesEdges = (
-  events: ReadonlyEventHub<ConsumerEventMap>,
-  core: Pick<CoreControls, 'nodes' | 'edges'>,
+type NodesEdgesGetters<Node, Edge> = {
+  getNodes: () => Node[];
+  getEdges: () => Edge[];
+};
+
+export const useNodesEdges = <Node, Edge>(
+  events: ConsumerEventsHub,
+  graph: NodesEdgesGetters<Node, Edge>,
 ) => {
   const refresh = shallowRef(0);
-  events.subscribe('onStructureChange', () => refresh.value++);
+  // onGettersInvalidated lives off the curated consumer hub on purpose (see
+  // ConsumerEventsHub) — this wrapper is exactly the kind of plugin-adjacent internal
+  // consumer it's meant for, not part of the app-facing event vocabulary.
+  events._internal.gettersInvalidation.subscribe(
+    'onGettersInvalidated',
+    () => refresh.value++,
+  );
 
   return {
     nodes: computed(() => {
       refresh.value;
-      return [...core.nodes];
+      return graph.getNodes();
     }),
     edges: computed(() => {
       refresh.value;
-      return [...core.edges];
+      return graph.getEdges();
     }),
   };
 };

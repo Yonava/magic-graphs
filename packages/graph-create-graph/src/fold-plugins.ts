@@ -11,9 +11,11 @@ import {
   ConsumerEventHub,
   createConsumerEventHub,
   createFinalActionsProxy,
+  createGettersInvalidationEventHub,
   wrapActionsWithConsumerEvents,
   wrapWeightsControlsWithConsumerEvents,
 } from './consumer-events.ts';
+import { createGettersCache } from './getters-cache.ts';
 
 type PluginTransitControl = {
   pluginName: string;
@@ -28,6 +30,8 @@ type FoldedPlugins = {
   getters: any;
   themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']>;
   pluginTransitControls: PluginTransitControl[];
+  getNodes: () => any[];
+  getEdges: () => any[];
 };
 
 // TODO add topo sort and explicit error handling for missing plugin dependencies
@@ -44,6 +48,10 @@ export const foldPlugins = (
   // subscribing to core's own event hub. merged in up front so plugins can subscribe
   // during setup.
   const consumerEvents = createConsumerEventHub();
+  // separate from consumerEvents on purpose — onGettersInvalidated is internal
+  // plumbing for getNodes()/getEdges() staleness, not part of the curated consumer
+  // vocabulary. only reachable via events._internal.gettersInvalidation.
+  const gettersInvalidationEvents = createGettersInvalidationEventHub();
 
   let controls = {
     ...coreGraph.controls,
@@ -59,6 +67,7 @@ export const foldPlugins = (
     ...consumerEvents,
     _internal: {
       coreEvents: coreGraph.events,
+      gettersInvalidation: gettersInvalidationEvents,
     },
   };
   let actions = coreGraph.actions;
@@ -66,6 +75,24 @@ export const foldPlugins = (
   const { finalActions, resolveFinalActions } = createFinalActionsProxy();
   let themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']> =
     {};
+
+  // closes over the `getters` binding above, so it always reads whatever plugins have
+  // folded into it by the time a recompute actually runs (invalidateGetters() is
+  // deferred to a microtask, and the initial recompute() below only runs once folding
+  // is done).
+  const gettersCache = createGettersCache(
+    {
+      nodeIds: () => coreGraph.controls.nodes.map((n) => n.id),
+      edgeIds: () => coreGraph.controls.edges.map((e) => e.id),
+    },
+    () => getters,
+    gettersInvalidationEvents,
+  );
+  // structural and weight changes are known to create-graph itself, so they invalidate
+  // the getters cache automatically — no plugin author needs to remember to do this for
+  // core mutations, only for their own plugin-local state (see nodeLabel for example).
+  consumerEvents.subscribe('onStructureChange', gettersCache.invalidateGetters);
+  consumerEvents.subscribe('onEdgeWeightsChanged', gettersCache.invalidateGetters);
 
   const pluginTransitControls: PluginTransitControl[] = [
     { pluginName: 'core', transit: coreGraph.transit },
@@ -78,6 +105,7 @@ export const foldPlugins = (
       actions,
       finalActions,
       getters,
+      invalidateGetters: gettersCache.invalidateGetters,
     });
 
     controls = { ...controls, [pluginResult.name]: pluginResult.controls };
@@ -117,6 +145,11 @@ export const foldPlugins = (
   const wrappedActions = wrapActionsWithConsumerEvents(actions, consumerEvents);
   resolveFinalActions(wrappedActions);
 
+  // folding is done and `getters` has its final, fully-decorated shape — populate the
+  // cache now rather than waiting for the first invalidateGetters() call, which may
+  // never come if nothing mutates before a consumer reads getNodes()/getEdges().
+  gettersCache.recompute();
+
   return {
     controls,
     events,
@@ -125,5 +158,7 @@ export const foldPlugins = (
     getters,
     themeDetectors,
     pluginTransitControls,
+    getNodes: gettersCache.getNodes,
+    getEdges: gettersCache.getEdges,
   };
 };
