@@ -44,8 +44,6 @@
   const classes = computed(() =>
     cn(base, buttonVariants[props.variant], attrClass.value),
   );
-
-  console.log(props.label);
 </script>
 
 <template>

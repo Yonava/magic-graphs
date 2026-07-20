@@ -2,11 +2,11 @@
   import ToggleIconButton from '@core/components/ToggleIconButton';
 
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
-  import { toggleButton } from '../toggle-button/classes.ts';
+  import { toggleIconButton } from './classes.ts';
 
   const pressed = defineModel<boolean>();
 
-  const classes = useThemeToClasses(toggleButton);
+  const classes = useThemeToClasses(toggleIconButton);
 </script>
 
 <template>

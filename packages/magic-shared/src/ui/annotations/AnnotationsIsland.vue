@@ -32,7 +32,7 @@
         :path="modeToIcon[mode]"
         :model-value="controls.mode() === mode"
         @click="controls.setMode(mode)"
-        :aria-label="modeToLabel[mode]"
+        :label="modeToLabel[mode]"
       />
       <IconButton
         :path="mdiTrashCan"
