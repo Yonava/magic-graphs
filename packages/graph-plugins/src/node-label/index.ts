@@ -24,8 +24,9 @@ export const nodeLabel: NodeLabelPlugin = ({
       nodeIdToLabel.set(nodeId, label);
       return { nodeId, label };
     });
-    // getNode reads from nodeIdToLabel above, so any change to it can change what
-    // getNode returns for that node — create-graph has no way to know that on its own
+    invalidateGetters();
+    invalidateGetters();
+    invalidateGetters();
     invalidateGetters();
     return result;
   };

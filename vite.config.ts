@@ -18,6 +18,7 @@ export default defineConfig({
       '@canvas/surface': r('packages/canvas-surface/src'),
       '@magic/products': r('packages/magic-products/src'),
       '@graph/create-graph': r('packages/graph-create-graph/src'),
+      '@graph/dev-tools': r('packages/graph-dev-tools/src'),
       '@graph/algorithms': r('packages/graph-algorithms/src'),
       '@graph/core': r('packages/graph-core/src'),
       '@graph/plugins': r('packages/graph-plugins/src'),

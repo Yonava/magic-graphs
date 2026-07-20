@@ -2,6 +2,7 @@ import { useCanvas } from '@canvas/surface/index';
 import { CanvasProps } from '@canvas/surface/types';
 import { CoreOptions } from '@graph/core/options';
 import { createGraph } from '@graph/create-graph/index';
+import { startGettersDiscrepancyAudit } from '@graph/dev-tools/debugging/getters-audit';
 import { adjacencyLists } from '@graph/plugins/adjacency-lists/index';
 import { anchors } from '@graph/plugins/anchors/index';
 import { animation } from '@graph/plugins/animation/index';
@@ -23,6 +24,10 @@ import { useCreateGraphTheme } from '@graph/vue/useCreateGraphTheme';
 import { useFocus } from '@graph/vue/useFocus';
 import { useNodesEdges } from '@graph/vue/useNodesEdges';
 import { useTransitionMatrix } from '@graph/vue/useTransitionMatrix';
+
+import { onBeforeUnmount, onMounted } from 'vue';
+
+import { useGraphDevTools } from './useGraphDevTools.ts';
 
 export type UseGraphOptions = {
   core?: Partial<CoreOptions>;
@@ -62,6 +67,8 @@ export const useGraph = (options: UseGraphOptions = {}) => {
   const canvasSurface = useCanvas();
 
   const graph = createGraphWithPlugins({ ...options, canvasSurface });
+
+  useGraphDevTools(graph);
 
   canvasSurface.draw.content.value = graph.canvas.aggregator.draw;
 

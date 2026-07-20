@@ -7,7 +7,7 @@
   graph.events._internal.gettersInvalidation.subscribe(
     'onGettersInvalidated',
     () => {
-      console.log(graph.nodes.value[0].label);
+      console.log('Getters Invalidated', graph.nodes.value[0].label);
     },
   );
 </script>

@@ -4,6 +4,7 @@
     { "path": "./packages/canvas-surface" },
     { "path": "./packages/magic-client" },
     { "path": "./packages/graph-create-graph" },
+    { "path": "./packages/graph-dev-tools" },
     { "path": "./packages/graph-algorithms" },
     { "path": "./packages/graph-core" },
     { "path": "./packages/graph-plugins-shared" },
