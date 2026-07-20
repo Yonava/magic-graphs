@@ -2,7 +2,6 @@ import { useCanvas } from '@canvas/surface/index';
 import { CanvasProps } from '@canvas/surface/types';
 import { CoreOptions } from '@graph/core/options';
 import { createGraph } from '@graph/create-graph/index';
-import { startGettersDiscrepancyAudit } from '@graph/dev-tools/debugging/getters-audit';
 import { adjacencyLists } from '@graph/plugins/adjacency-lists/index';
 import { anchors } from '@graph/plugins/anchors/index';
 import { animation } from '@graph/plugins/animation/index';
@@ -22,10 +21,9 @@ import { useAdjacencyLists } from '@graph/vue/useAdjacencyLists';
 import { useCharacteristics } from '@graph/vue/useCharacteristics';
 import { useCreateGraphTheme } from '@graph/vue/useCreateGraphTheme';
 import { useFocus } from '@graph/vue/useFocus';
+import { useGraphEvents } from '@graph/vue/useGraphEvents';
 import { useNodesEdges } from '@graph/vue/useNodesEdges';
 import { useTransitionMatrix } from '@graph/vue/useTransitionMatrix';
-
-import { onBeforeUnmount, onMounted } from 'vue';
 
 import { useGraphDevTools } from './useGraphDevTools.ts';
 
@@ -88,6 +86,8 @@ export const useGraph = (options: UseGraphOptions = {}) => {
   );
   const vueFocus = useFocus(graph.focus);
 
+  const vueEvents = useGraphEvents(graph.events);
+
   return {
     ...graph,
     ...vueNodesEdges,
@@ -96,5 +96,6 @@ export const useGraph = (options: UseGraphOptions = {}) => {
     transitionMatrix: vueTransitionMatrix,
     focus: vueFocus,
     theme: vueThemeWrapper,
+    events: vueEvents,
   };
 };

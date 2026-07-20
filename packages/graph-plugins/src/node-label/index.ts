@@ -25,9 +25,6 @@ export const nodeLabel: NodeLabelPlugin = ({
       return { nodeId, label };
     });
     invalidateGetters();
-    invalidateGetters();
-    invalidateGetters();
-    invalidateGetters();
     return result;
   };
 
