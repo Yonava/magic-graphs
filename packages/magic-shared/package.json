@@ -44,6 +44,10 @@
       "types": "./dist/types/components/toggle-button/ToggleButton.vue.d.ts",
       "default": "./src/components/toggle-button/ToggleButton.vue"
     },
+    "./ToggleIconButton": {
+      "types": "./dist/types/components/toggle-icon-button/ToggleIconButton.vue.d.ts",
+      "default": "./src/components/toggle-icon-button/ToggleIconButton.vue"
+    },
     "./ToggleButtonGroup": {
       "types": "./dist/types/components/toggle-button-group/ToggleButtonGroup.vue.d.ts",
       "default": "./src/components/toggle-button-group/ToggleButtonGroup.vue"
@@ -85,7 +89,8 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "peerDependencies": {
-    "vue": "^3.5.18"
+    "vue": "^3.5.18",
+    "nuxt": "^4.1.2"
   },
   "dependencies": {
     "@canvas/surface": "workspace:*",
@@ -103,6 +108,7 @@
   },
   "devDependencies": {
     "vue": "catalog:",
+    "nuxt": "^4.1.2",
     "ts-essentials": "^10.2.1"
   }
 }

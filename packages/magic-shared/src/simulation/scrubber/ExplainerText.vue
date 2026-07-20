@@ -10,19 +10,21 @@
   import { useRunningSimulation } from '../useRunningSimulation.ts';
   import { explainerSegments } from './explainerSegments.ts';
 
-  const { explainer } = useRunningSimulation();
+  const { explainer, violation } = useRunningSimulation();
 
   const parentClasses = useThemeToClasses({
     dark: 'text-white',
     light: 'text-black',
   });
 
-  const segments = computed(() => explainerSegments(explainer.value));
+  const segments = computed(() =>
+    explainerSegments(violation.value?.explainer ?? explainer.value),
+  );
 </script>
 
 <template>
   <div
-    v-if="explainer"
+    v-if="segments"
     :class="cn(parentClasses, 'text-2xl font-bold text-center')"
   >
     <template

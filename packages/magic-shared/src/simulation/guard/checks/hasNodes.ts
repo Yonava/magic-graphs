@@ -8,6 +8,8 @@ export const createHasNodeCheck =
     if (nodeCount >= minNodes) return;
     return {
       id: 'min-nodes',
-      reason: `Need at least ${minNodes} nodes. Graph has ${nodeCount} nodes!`,
+      explainer: {
+        content: `Need at least ${minNodes} nodes. Graph has ${nodeCount} nodes!`,
+      },
     };
   };

@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { getValue } from '@core/utils/maybeGetter/index';
+  import { mdiInformationOutline } from '@mdi/js';
 
+  import Icon from '../../components/icon/Icon.vue';
   import ToggleButton from '../../components/toggle-button/ToggleButton.vue';
   import Tooltip from '../../components/tooltip/Tooltip.vue';
   import { LensChipDefinition } from './types.ts';
@@ -16,8 +18,12 @@
       <ToggleButton
         v-bind="$attrs"
         v-model="model"
+        class="gap-2"
       >
-        {{ getValue(title) }}
+        <span>
+          {{ getValue(title) }}
+        </span>
+        <Icon :path="mdiInformationOutline" />
       </ToggleButton>
     </template>
   </Tooltip>

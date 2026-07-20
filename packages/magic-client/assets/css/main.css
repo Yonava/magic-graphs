@@ -4,3 +4,23 @@
 @source '../../../magic-products/src/**/*.{vue,ts}';
 @source '../../../magic-shared//src/**/*.{vue,ts}';
 @source '../../../canvas-surface//src/**/*.{vue,ts}';
+
+/* our branded text color */
+@utility text-magic {
+  @apply bg-linear-to-tr from-purple-500 to-orange-500 text-transparent bg-clip-text;
+}
+
+/* our branded background color */
+@utility bg-magic {
+  @apply bg-linear-to-tr from-purple-500 to-orange-500;
+}
+
+/* our branded background color (for pink theme) */
+@utility bg-pink-magic {
+  @apply bg-linear-to-tr from-purple-300 to-pink-100;
+}
+
+/* our branded text color (for pink theme) */
+@utility text-pink-magic {
+  @apply bg-linear-to-tr from-purple-300 to-pink-100 text-transparent bg-clip-text;
+}

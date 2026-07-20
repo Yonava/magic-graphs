@@ -4,7 +4,7 @@
   import IconButton from '../../components/icon-button/IconButton.vue';
   import HStack from '../../components/layout/HStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import { useThemeToClasses } from '../../useThemeToClasses.ts';
+  import ToggleIconButton from '../../components/toggle-icon-button/ToggleIconButton.vue';
   import { ANNOTATION_MODES } from './constants.ts';
   import { AnnotationMode } from './types.ts';
   import { useAnnotationControls } from './useAnnotationControls.ts';
@@ -17,26 +17,27 @@
     laser: mdiLaserPointer,
   };
 
-  const classes = useThemeToClasses({
-    dark: 'border border-white',
-    light: 'border border-black',
-  });
+  const modeToLabel: Record<AnnotationMode, string> = {
+    drawing: 'Draw',
+    erasing: 'Erase',
+    laser: 'Laser Pointer',
+  };
 </script>
 
 <template>
   <Well>
     <HStack>
-      <IconButton
+      <ToggleIconButton
         v-for="mode of ANNOTATION_MODES"
         :path="modeToIcon[mode]"
-        :class="
-          controls.mode() === mode ? classes : 'border border-transparent'
-        "
+        :model-value="controls.mode() === mode"
         @click="controls.setMode(mode)"
+        :label="modeToLabel[mode]"
       />
       <IconButton
         :path="mdiTrashCan"
         @click="controls.clear()"
+        label="Remove All Annotations"
       />
     </HStack>
   </Well>

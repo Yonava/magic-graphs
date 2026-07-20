@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { mdiPencil } from '@mdi/js';
 
-  import IconButton from '../../components/icon-button/IconButton.vue';
   import HStack from '../../components/layout/HStack.vue';
   import Well from '../../components/layout/Well.vue';
+  import ToggleIconButton from '../../components/toggle-icon-button/ToggleIconButton.vue';
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
   import AnnotationsIsland from './AnnotationsIsland.vue';
@@ -39,10 +39,9 @@
 <template>
   <Well>
     <HStack>
-      <IconButton
+      <ToggleIconButton
         label="Annotations"
         :path="mdiPencil"
-        :class="controls.isActive.value ? classes : 'border border-transparent'"
         @click="toggle"
       />
     </HStack>

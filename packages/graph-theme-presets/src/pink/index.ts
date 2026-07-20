@@ -16,7 +16,7 @@ export const pink: PinkPreset = {
   canvas: {
     'canvas.color': colors.PINK_300,
     'canvas.cursor': CURSOR_FALLBACK,
-    'canvas.patternColor': colors.PURPLE_200,
+    'canvas.patternColor': (_, alpha) => colors.PURPLE_200 + alpha,
 
     'edge.default.color': colors.PINK_600,
     'edge.default.cursor': shared.edge.cursor,
