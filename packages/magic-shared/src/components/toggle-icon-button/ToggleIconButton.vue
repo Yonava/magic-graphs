@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import ToggleButton from '@core/components/ToggleButton';
+  import ToggleIconButton from '@core/components/ToggleIconButton';
 
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
-  import { toggleButton } from './classes.ts';
+  import { toggleButton } from '../toggle-button/classes.ts';
 
   const pressed = defineModel<boolean>();
 
@@ -10,10 +10,8 @@
 </script>
 
 <template>
-  <ToggleButton
+  <ToggleIconButton
     v-model="pressed"
     :class="classes"
-  >
-    <slot />
-  </ToggleButton>
+  />
 </template>

@@ -4,19 +4,24 @@
 
   import { computed } from 'vue';
 
-  import Button from '../../components/button/Button.vue';
   import IconButton from '../../components/icon-button/IconButton.vue';
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
+  import { useThemeToClasses } from '../../useThemeToClasses.ts';
   import { useRunningSimulation } from '../useRunningSimulation.ts';
   import ExplainerText from './ExplainerText.vue';
 
   const { simulation, violation } = useRunningSimulation();
 
-  const violationClasses = computed(() => {
-    return violation.value ? 'bg-red-700 border-red-700' : '';
+  const violationThemeClasses = useThemeToClasses({
+    dark: 'bg-red-900 border-red-900',
+    light: 'bg-red-400 border-red-400',
   });
+
+  const violationClasses = computed(() =>
+    violation.value ? violationThemeClasses.value : '',
+  );
 
   const baseWellClasses = 'p-0 rounded-full';
 

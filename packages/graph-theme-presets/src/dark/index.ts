@@ -18,9 +18,7 @@ export const dark: DarkPreset = {
   canvas: {
     'canvas.color': colors.GRAY_600,
     'canvas.cursor': CURSOR_FALLBACK,
-    'canvas.patternColor': (at, alpha) => {
-      return colors.GRAY_500 + alpha;
-    },
+    'canvas.patternColor': (_, alpha) => colors.GRAY_500 + alpha,
 
     'edge.default.color': colors.STONE_900,
     'edge.default.cursor': shared.edge.cursor,

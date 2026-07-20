@@ -204,6 +204,9 @@ export const canvas =
         weightLayer.set('edge.default.text.content', (edge) =>
           getters.getEdge(edge.id).weight.toFraction(),
         );
+        weightLayer.set('edge.hover.text.content', (edge) =>
+          getters.getEdge(edge.id).weight.toFraction(),
+        );
       },
     };
   };

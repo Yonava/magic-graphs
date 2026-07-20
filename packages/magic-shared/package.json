@@ -44,6 +44,10 @@
       "types": "./dist/types/components/toggle-button/ToggleButton.vue.d.ts",
       "default": "./src/components/toggle-button/ToggleButton.vue"
     },
+    "./ToggleIconButton": {
+      "types": "./dist/types/components/toggle-icon-button/ToggleIconButton.vue.d.ts",
+      "default": "./src/components/toggle-icon-button/ToggleIconButton.vue"
+    },
     "./ToggleButtonGroup": {
       "types": "./dist/types/components/toggle-button-group/ToggleButtonGroup.vue.d.ts",
       "default": "./src/components/toggle-button-group/ToggleButtonGroup.vue"
