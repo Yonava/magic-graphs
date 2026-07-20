@@ -1,8 +1,22 @@
 import { core } from '@graph/core/index';
 import { LooseGraphPlugin } from '@graph/plugins-shared/plugins';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { foldPlugins } from './fold-plugins.ts';
+import { foldPlugins as foldPluginsRaw } from './fold-plugins.ts';
+
+// startGettersDiscrepancyAudit starts a real setInterval per foldPlugins() call — clean
+// each one up after its test so the suite doesn't leak live timers.
+const stopAuditsAfterEachTest: (() => void)[] = [];
+afterEach(() => {
+  for (const stop of stopAuditsAfterEachTest) stop();
+  stopAuditsAfterEachTest.length = 0;
+});
+
+const foldPlugins: typeof foldPluginsRaw = (...args) => {
+  const folded = foldPluginsRaw(...args);
+  stopAuditsAfterEachTest.push(folded.stopGettersAudit);
+  return folded;
+};
 
 // mimics real plugins like node-label: wraps addNode by calling the inbound
 // action first, then mutating its own local state afterward, outside any

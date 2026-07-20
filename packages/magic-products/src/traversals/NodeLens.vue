@@ -4,11 +4,12 @@
 
   const graph = useProvidedGraph();
 
-  graph.events.subscribe('', () => {
-    console.log(graph.nodes.value[0].label);
-  });
-
-  graph.
+  graph.events._internal.gettersInvalidation.subscribe(
+    'onGettersInvalidated',
+    () => {
+      console.log(graph.nodes.value[0].label);
+    },
+  );
 </script>
 
 <template>
