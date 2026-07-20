@@ -23,7 +23,7 @@ export const interactive =
 
     const handleNodeCreation = ({
       coords,
-      elements,
+      topElement,
     }: CanvasGraphMouseEvent) => {
       const ABOUT_A_FEW_HUNDRED_MS = 350;
       const timeDiff = Date.now() - lastClickTime;
@@ -31,7 +31,6 @@ export const interactive =
       if (!closeEnoughInTime) return (lastClickTime = Date.now());
       lastClickTime = 0;
 
-      const topElement = elements.at(-1);
       if (topElement && controls.isNode(topElement.id)) return;
 
       // finalActions, not actions: this fires later, on a real click, so it
@@ -42,10 +41,9 @@ export const interactive =
     };
 
     const handleEdgeTextArea = ({
-      elements,
+      topElement,
       coords,
     }: CanvasGraphMouseEvent) => {
-      const topElement = elements.at(-1);
       if (
         !topElement ||
         !topElement.shape.textHitbox?.(coords) ||

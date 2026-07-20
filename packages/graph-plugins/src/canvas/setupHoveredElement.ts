@@ -17,8 +17,7 @@ export const setupOnHoveredElementChangeEvent: SetupHoveredElement = (
     value: undefined,
   };
 
-  events.subscribe('onGraphUnderCursorChange', ({ elements }) => {
-    const newHoveredElement = elements.at(-1);
+  events.subscribe('onGraphUnderCursorChange', ({ topElement: newHoveredElement }) => {
 
     const processChange = () => {
       const previousHoveredElement = hoveredElement.value;

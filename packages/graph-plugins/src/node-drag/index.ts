@@ -25,12 +25,11 @@ export const nodeDrag: NodeDragPlugin = ({ controls, actions, getters }) => {
   let nodePositionStream: NodePositionStreamControls | undefined;
 
   const beginDrag = (
-    { elements, coords, event }: CanvasGraphMouseEvent,
+    { topElement, coords, event }: CanvasGraphMouseEvent,
     consume: () => void,
   ) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
 
-    const topElement = elements.at(-1);
     if (!topElement) return;
 
     const nodeIdsToDrag = [];

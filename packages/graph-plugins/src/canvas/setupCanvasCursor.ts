@@ -34,7 +34,7 @@ export const setupCanvasCursor = ({
     const canvasTheme = resolveToken('canvas.cursor');
     if (canvasTheme !== CURSOR_FALLBACK) return canvasTheme;
 
-    const topElement = graphUnderCursor.elements.at(-1);
+    const topElement = graphUnderCursor.topElement;
     if (!topElement) return CURSOR.DEFAULT;
 
     const elementCursor = topElement.data?.[CANVAS_ELEMENT_CURSOR_FIELD_KEY];

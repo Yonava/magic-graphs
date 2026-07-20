@@ -101,7 +101,7 @@ export const createCanvasDetectors = (
   resolveToken: TokenResolver<CanvasThemes>,
   graphUnderCursor: DeepReadonly<GraphUnderCursor>,
 ): ComputedTokenDetectorMap => {
-  const hovered = (id: string) => graphUnderCursor.elements.at(-1)?.id === id;
+  const hovered = (id: string) => graphUnderCursor.topElement?.id === id;
   return {
     hovered: {
       node: {

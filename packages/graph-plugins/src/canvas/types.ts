@@ -21,6 +21,10 @@ export type GraphUnderCursor = {
    * the canvas elements under the cursor
    */
   elements: CanvasElement[];
+  /**
+   * the topmost (active) canvas element under the cursor, equivalent to `elements.at(-1)`.
+   */
+  readonly topElement: CanvasElement | undefined;
 };
 
 type BaseCanvasControls = {

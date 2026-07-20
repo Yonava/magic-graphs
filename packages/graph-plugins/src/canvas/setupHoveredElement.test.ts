@@ -15,6 +15,7 @@ const triggerCursorChange = (
 ) => {
   events.emit('onGraphUnderCursorChange', {
     elements,
+    topElement: elements.at(-1),
     position: { x: 0, y: 0 },
   } as any);
 };

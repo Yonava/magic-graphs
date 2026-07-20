@@ -35,13 +35,12 @@ export const marquee: MarqueePlugin = ({
    * given a mouse event, engages or disengages the marquee box
    */
   const handleMarqueeEngagement = ({
-    elements,
+    topElement,
     coords,
     event,
   }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
-    const topItem = elements.at(-1);
-    if (!topItem) engageMarqueeBox(coords);
+    if (!topElement) engageMarqueeBox(coords);
   };
 
   const engageMarqueeBox = (startingCoords: Coordinate) => {
