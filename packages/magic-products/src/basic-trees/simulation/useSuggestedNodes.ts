@@ -67,6 +67,7 @@ export const useSuggestedNodes = (
 
   graph.canvas.events.subscribe('onClick', ({ topElement }) => {
     if (!topElement || !suggestedNodeIds.value.has(topElement.id)) return;
+    controls.mode.value = 'insert';
     controls.target.value = graph.getNode(topElement.id).id;
     graph.magic.simulation.start(simDefinition);
   });

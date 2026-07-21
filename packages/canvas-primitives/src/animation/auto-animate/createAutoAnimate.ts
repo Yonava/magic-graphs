@@ -214,6 +214,52 @@ export const createAutoAnimate = (
               afterSchema,
               'after schema must be defined',
             );
+
+            // this id is re-appearing while its remove animation was still
+            // playing (e.g. removed then immediately re-added). treat it as
+            // a continuation from wherever the ghost currently is instead of
+            // a fresh entrance animation, so it doesn't snap straight to its
+            // final state
+            const ghost = ghosts.get(schema.id);
+            if (ghost) {
+              // getAnimatedSchema returns a bare LooseSchema (no shapeName);
+              // re-attach it so it doesn't register as a spurious diff below
+              const ghostLiveSchema: LooseSchemaWithName = {
+                ...(getAnimatedSchema(schema.id) ?? ghost.schema),
+                shapeName: ghost.schema.shapeName,
+              };
+              const schemaDifference: DeepPartial<LooseSchemaWithName> | null =
+                delta(ghostLiveSchema, schema);
+
+              if (schemaDifference && !schemaDifference.shapeName) {
+                const schemaPropNames = Object.keys(
+                  schemaDifference,
+                ) as EverySchemaPropName[];
+                const supportedSchemaProperties = schemaPropNames.filter(
+                  (name) => AUTO_ANIMATED_PROPERTIES.has(name),
+                );
+                const timelineValues = supportedSchemaProperties.map(
+                  (name): CreateTimelineValue => ({
+                    schemaPropertyName: name,
+                    startValue: ghostLiveSchema[name],
+                    endValue: schema[name],
+                  }),
+                );
+                const timeline = createTimeline(
+                  schema.shapeName,
+                  timelineValues,
+                );
+                // also stops the ghost's remove animation and clears it via
+                // its onOver, since this timeline takes over from here
+                runAnimation(timeline, schema.id);
+              } else {
+                // no meaningful difference (or an unsupported shape change):
+                // just stop the remove animation and clear the ghost
+                stopAllAnimations(schema.id);
+              }
+              continue;
+            }
+
             if (schema.shapeName === 'circle') {
               runAnimation(circleAdd, schema.id);
             }
@@ -247,6 +293,9 @@ export const createAutoAnimate = (
           // if a shapes schema has not changed between snapshots, we dont need to animate it
           const schemaDifference: DeepPartial<LooseSchemaWithName> | null =
             delta(beforeSchema, afterSchema);
+
+          // TODO known issue: only check for properties in the schema difference we care about
+          // otherwise we could be starting an animation based on an unknown junk property
           if (!schemaDifference) continue;
 
           // animation between shapes is not supported
@@ -292,5 +341,13 @@ export const createAutoAnimate = (
      */
     getGhosts: (): GhostShape[] =>
       Array.from(ghosts.values()).sort((a, b) => a.orderIndex - b.orderIndex),
+
+    /**
+     * whether this schema is currently a ghost (removed from the graph but
+     * still mid-removal-animation). must be checked before calling
+     * `getAnimatedSchema`, which can synchronously clear the ghost via its
+     * `onOver` callback once the remove animation's runCount is exhausted.
+     */
+    isGhost: (schemaId: SchemaId): boolean => ghosts.has(schemaId),
   };
 };

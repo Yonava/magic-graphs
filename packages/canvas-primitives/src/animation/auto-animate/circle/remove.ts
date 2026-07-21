@@ -9,6 +9,12 @@ export const circleRemove: Timeline<'circle'> = {
   easing: { radius: 'in-out' },
   keyframes: [
     {
+      progress: 0,
+      properties: {
+        radius: (r) => r,
+      },
+    },
+    {
       progress: 1,
       properties: {
         radius: 0,

@@ -151,7 +151,6 @@ export const createAnimatedShapes = () => {
         expired.push(animation);
         animation.onComplete?.();
         animation.onOver?.();
-        console.log('animation for', schemaId, 'is over');
         continue;
       }
 
@@ -206,19 +205,33 @@ export const createAnimatedShapes = () => {
           // lookup all actively running animations on this shape
           const animations = activeAnimations.get(schema.id);
 
-          autoAnimate.captureSchemaState(schema, shapeName);
+          // ghosts are a rendering-only artifact of a shape that's already
+          // gone from the graph, redrawn every frame purely to finish its
+          // remove animation. they must never enter the before/after diffing
+          // used to auto-generate animations for real graph elements: since
+          // a ghost's schema is constantly changing mid-animation, any other
+          // add/remove action's capture pass would see that as a "property
+          // changed" and start a second, untracked animation on the same
+          // schema id, clobbering the actual remove animation via
+          // `stopAllAnimations` before it can finish.
+          const isGhost = autoAnimate.isGhost(schema.id);
 
-          // auto-animate may be in the middle of comparing this shape's old and new
-          // schema, so keep showing the old state for now instead of the update
-          // that just happened, otherwise it'll flash instead of animate
-          const captureOverride = autoAnimate.getCaptureOverride(schema.id);
+          if (!isGhost) {
+            autoAnimate.captureSchemaState(schema, shapeName);
 
-          if (captureOverride) {
-            if (captureOverride === 'suppress')
-              return withoutDrawing(target)[prop];
-            // auto-animate wants this schema rendered instead of the current schema
-            const { shapeName: _, ...targetMapSchema } = captureOverride.schema;
-            return factory(targetMapSchema as WithId<T>)[prop];
+            // auto-animate may be in the middle of comparing this shape's old and new
+            // schema, so keep showing the old state for now instead of the update
+            // that just happened, otherwise it'll flash instead of animate
+            const captureOverride = autoAnimate.getCaptureOverride(schema.id);
+
+            if (captureOverride) {
+              if (captureOverride === 'suppress')
+                return withoutDrawing(target)[prop];
+              // auto-animate wants this schema rendered instead of the current schema
+              const { shapeName: _, ...targetMapSchema } =
+                captureOverride.schema;
+              return factory(targetMapSchema as WithId<T>)[prop];
+            }
           }
 
           if (!animations || animations.length === 0) return target[prop];
@@ -244,12 +257,13 @@ export const createAnimatedShapes = () => {
             'animations present but getAnimatedSchema returned nothing. this should never happen!',
           );
 
-          // getAnimatedSchema may have just expired this shape's last animation
-          // and fired onOver/onComplete for it; render at-rest instead of
-          // treating this tick as still animating
-          if (!activeAnimations.has(schema.id)) return target[prop];
-
-          console.log('animating for', schema.id);
+          if (!activeAnimations.has(schema.id)) {
+            // a ghost with no animation left has finished its remove
+            // sequence and no longer has a "real" state to fall back to;
+            // draw nothing instead of popping back to its frozen full schema
+            if (isGhost) return withoutDrawing(target)[prop];
+            return target[prop];
+          }
 
           return factory(animatedSchema as WithId<T>)[prop];
         },
@@ -279,10 +293,15 @@ export const createAnimatedShapes = () => {
    * re-enters the same animated-shape proxy and therefore still resolves the
    * remove timeline's live (in-progress) property values.
    */
-  const getGhostShapes = (): { orderIndex: number; shape: Shape }[] =>
-    autoAnimate.getGhosts().map(({ schema, orderIndex }) => {
+  const getGhostShapes = (): {
+    id: SchemaId;
+    orderIndex: number;
+    shape: Shape;
+  }[] =>
+    autoAnimate.getGhosts().map(({ id, schema, orderIndex }) => {
       const { shapeName, ...rest } = schema;
       return {
+        id,
         orderIndex,
         shape: animatedShapes[shapeName](rest as WithId<any>),
       };
@@ -299,8 +318,15 @@ export const createAnimatedShapes = () => {
    * already knows a new draw pass is starting.
    */
   let shapesDrawnThisFrame = 0;
+  // ghosts already placed into a group this frame, so a ghost whose captured
+  // orderIndex sits right on a group boundary (removing a shape shrinks the
+  // total by one, so a ghost that was last overall now has an orderIndex
+  // equal to, not less than, every group's new end) is claimed by exactly
+  // one group instead of falling through every group's exclusive range
+  const ghostsPlacedThisFrame = new Set<SchemaId>();
   const beginFrame = () => {
     shapesDrawnThisFrame = 0;
+    ghostsPlacedThisFrame.clear();
   };
 
   const drawGroup = (ctx: CanvasRenderingContext2D, groupShapes: Shape[]) => {
@@ -308,11 +334,15 @@ export const createAnimatedShapes = () => {
     const groupEnd = groupStart + groupShapes.length;
 
     const ghostsInGroup = getGhostShapes().filter(
-      ({ orderIndex }) => orderIndex >= groupStart && orderIndex < groupEnd,
+      ({ id, orderIndex }) =>
+        !ghostsPlacedThisFrame.has(id) &&
+        orderIndex >= groupStart &&
+        orderIndex <= groupEnd,
     );
 
     const shapesWithGhosts = [...groupShapes];
     for (const ghost of ghostsInGroup) {
+      ghostsPlacedThisFrame.add(ghost.id);
       shapesWithGhosts.splice(
         Math.min(ghost.orderIndex - groupStart, shapesWithGhosts.length),
         0,
@@ -325,10 +355,35 @@ export const createAnimatedShapes = () => {
     drawGroupPure(ctx, shapesWithGhosts);
   };
 
+  /**
+   * a ghost whose priority tier has no surviving live elements this frame
+   * (e.g. removing the last node in the graph, or the last shape at a given
+   * priority) never gets a `drawGroup` call to be spliced into at all, since
+   * the caller only invokes `drawGroup` for priority tiers that still have
+   * live elements. call this once per frame, after all real `drawGroup`
+   * calls, to draw any ghosts that were never claimed by one.
+   */
+  const endFrame = (ctx: CanvasRenderingContext2D) => {
+    const unclaimedGhosts = getGhostShapes().filter(
+      ({ id }) => !ghostsPlacedThisFrame.has(id),
+    );
+    if (unclaimedGhosts.length === 0) return;
+
+    for (const ghost of unclaimedGhosts) ghostsPlacedThisFrame.add(ghost.id);
+
+    drawGroupPure(
+      ctx,
+      unclaimedGhosts
+        .sort((a, b) => a.orderIndex - b.orderIndex)
+        .map((ghost) => ghost.shape),
+    );
+  };
+
   return {
     shapes: animatedShapes,
     drawGroup,
     beginFrame,
+    endFrame,
     defineTimeline,
     autoAnimate: { captureFrame: autoAnimate.captureFrame },
     getAnimatedSchema,

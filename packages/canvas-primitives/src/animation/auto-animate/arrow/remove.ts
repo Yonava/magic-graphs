@@ -12,23 +12,10 @@ export const arrowRemove: Timeline<'arrow'> = {
   },
   keyframes: [
     {
-      progress: 0.1,
+      progress: 0,
       properties: {
         end: (end) => end,
         lineWidth: (lw) => lw,
-      },
-    },
-    {
-      progress: 0.67,
-      properties: {
-        textArea: (ta) => ({
-          color: tinycolor(ta.color).setAlpha(0).toRgbString(),
-          activeColor: ta.activeColor,
-          textBlock: {
-            ...ta.textBlock,
-            color: 'transparent',
-          },
-        }),
       },
     },
     {

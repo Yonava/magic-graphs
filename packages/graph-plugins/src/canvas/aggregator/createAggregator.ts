@@ -16,7 +16,7 @@ export type AggregatorControls = {
 
 export const createAggregator = (
   { emit }: Pick<EventHub<CanvasEventMap>, 'emit'>,
-  shapes: Pick<AnimatedShapeControls, 'drawGroup' | 'beginFrame'>,
+  shapes: Pick<AnimatedShapeControls, 'drawGroup' | 'beginFrame' | 'endFrame'>,
 ): AggregatorControls => {
   let aggregator: Aggregator = [];
   const transformers: AggregatorTransformer[] = [];
@@ -53,6 +53,7 @@ export const createAggregator = (
         group.map((item) => item.shape),
       );
     }
+    shapes.endFrame(ctx);
 
     emit('onDraw', ctx);
   };

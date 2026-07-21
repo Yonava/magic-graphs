@@ -26,25 +26,5 @@ export const arrowAdd: Timeline<'arrow'> = {
         }),
       },
     },
-    {
-      progress: 0.33,
-      properties: {
-        textArea: (ta) => ({
-          color: tinycolor(ta.color).setAlpha(0).toRgbString(),
-          activeColor: ta.activeColor,
-          textBlock: {
-            ...ta.textBlock,
-            color: 'transparent',
-          },
-        }),
-      },
-    },
-    {
-      progress: 0.9,
-      properties: {
-        end: (end) => end,
-        lineWidth: (lw) => lw,
-      },
-    },
   ],
 };
