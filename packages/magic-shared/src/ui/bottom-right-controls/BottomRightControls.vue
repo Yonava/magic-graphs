@@ -16,7 +16,7 @@
 
 <template>
   <HStack>
-    <AnnotationToggle v-if="graph.magic.ui.data.annotations" />
+    <AnnotationToggle v-if="graph.magic.ui.annotations" />
 
     <Well class="p-0 rounded-full overflow-hidden">
       <Dropdown

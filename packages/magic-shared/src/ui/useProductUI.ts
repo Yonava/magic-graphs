@@ -18,10 +18,8 @@ export type UIOptions = {
 };
 
 export type UIControls = {
-  data: {
-    lensChips?: LensChipDefinition[];
-    annotations?: AnnotationsControls;
-  };
+  lensChips?: LensChipDefinition[];
+  annotations?: AnnotationsControls;
 };
 
 export const useProductUI = (
@@ -61,11 +59,11 @@ export const useProductUI = (
   const definedSlots = slots.filter((s) => !!s);
   componentSlots.addMany(definedSlots);
 
+  const annotations =
+    options.annotations === false ? undefined : useAnnotationsState(graph);
+
   return {
-    data: {
-      annotations:
-        options.annotations === false ? undefined : useAnnotationsState(graph),
-      lensChips,
-    },
+    annotations,
+    lensChips,
   };
 };
