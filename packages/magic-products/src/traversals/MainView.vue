@@ -11,13 +11,11 @@
     },
   });
 
-  graph.magic.componentSlots.addMany([
-    {
-      id: 'toggle-sim',
-      component: ToggleSimulation,
-      position: 'top-right',
-    },
-  ]);
+  graph.magic.componentSlots.add({
+    id: 'toggle-sim',
+    component: ToggleSimulation,
+    position: 'top-right',
+  });
 </script>
 
 <template>
