@@ -134,7 +134,7 @@ export const interactive =
           nodes: controls.focus?.focusedNodes() ?? [],
           edges: controls.focus?.focusedEdges() ?? [],
         },
-        { animate: true },
+        {},
       );
     };
 
