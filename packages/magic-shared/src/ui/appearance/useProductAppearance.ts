@@ -31,7 +31,7 @@ export const useProductAppearance = (graph: Graph) => {
     graph.theme.activePresetName.value = appearanceValue;
   };
 
-  watch(appearance, setValue);
+  watch(appearance.state, setValue);
 
   onMounted(setValue);
 

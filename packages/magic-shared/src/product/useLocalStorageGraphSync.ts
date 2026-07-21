@@ -8,7 +8,6 @@ const localStorageKey = (id: string) => 'graph-data-' + id;
 
 export const useLocalStorageGraphSync = (graph: Graph, productId: string) => {
   const save = debounce(() => {
-    console.log('saving');
     window?.localStorage.setItem(
       localStorageKey(productId),
       JSON.stringify(graph.transit.encode()),
