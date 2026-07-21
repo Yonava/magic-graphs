@@ -2,10 +2,8 @@
   import Button from '@magic/shared/Button';
   import HStack from '@magic/shared/HStack';
   import Well from '@magic/shared/Well';
-  import { GNode } from '@magic/shared/graph';
   import { useProvidedGraph } from '@magic/shared/product';
-
-  import { computed } from 'vue';
+  import { useFocusedNode } from '@magic/shared/utilities/useFocusedNode';
 
   import { useAVLSimulationDefinition } from './simulation/useAVLSimulation.ts';
 
@@ -19,11 +17,7 @@
     graph.magic.simulation.start(avl.definition);
   };
 
-  const node = computed<GNode | undefined>(() => {
-    const focusedNodes = graph.focus.focusedNodes.value;
-    if (focusedNodes.length !== 1) return;
-    return graph.getNode(focusedNodes[0].id);
-  });
+  const node = useFocusedNode(graph);
 </script>
 
 <template>

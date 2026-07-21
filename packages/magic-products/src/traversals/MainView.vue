@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
-  import ToggleSimulation from './ToggleSimulation.vue';
+  import NodeMenu from './NodeMenu.vue';
   import { lensChips } from './lensChips.ts';
 
   const graph = useGraphProduct({
@@ -12,9 +12,9 @@
   });
 
   graph.magic.componentSlots.add({
-    id: 'toggle-sim',
-    component: ToggleSimulation,
-    position: 'top-right',
+    id: 'node-menu',
+    component: NodeMenu,
+    position: 'bottom-middle',
   });
 </script>
 

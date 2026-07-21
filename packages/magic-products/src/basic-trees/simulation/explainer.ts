@@ -1,7 +1,7 @@
 import { Explainer } from '@magic/shared/simulation';
-import { NodeThemer } from '@magic/shared/themers/index';
 
 import { AVLFrame, BalanceMethod } from './types.ts';
+import { NodeThemer } from '@magic/shared/utilities';
 
 const BALANCE_METHOD_TO_STRING: Record<BalanceMethod, string> = {
   'left-left': 'Left Left',
