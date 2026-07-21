@@ -1,25 +1,12 @@
 <script setup lang="ts">
-  import {
-    mdiBrightnessAuto,
-    mdiCog,
-    mdiDesktopTower,
-    mdiDesktopTowerMonitor,
-    mdiFullscreen,
-    mdiPencil,
-    mdiThemeLightDark,
-    mdiWeatherNight,
-    mdiWhiteBalanceSunny,
-  } from '@mdi/js';
+  import { mdiCog, mdiPencil } from '@mdi/js';
 
-  import Button from '../../components/button/Button.vue';
   import Dropdown from '../../components/dropdown/Dropdown.vue';
-  import Icon from '../../components/icon/Icon.vue';
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import ToggleButtonGroup from '../../components/toggle-button-group/ToggleButtonGroup.vue';
-  import ToggleButtonGroupItem from '../../components/toggle-button-group/ToggleButtonGroupItem.vue';
   import ToggleIconButton from '../../components/toggle-icon-button/ToggleIconButton.vue';
+  import AppearanceToggle from '../appearance/AppearanceToggle.vue';
   import FullscreenButton from '../fullscreen/FullscreenButton.vue';
   import AnnotationsIsland from './AnnotationsIsland.vue';
   import { useAnnotationControls } from './useAnnotationControls.ts';
@@ -69,34 +56,7 @@
             class="w-full bg-white opacity-10"
             :style="{ height: '1px' }"
           ></div>
-          <VStack class="py-2">
-            <HStack class="px-2 font-bold bg-transparent w-full justify-start">
-              <Icon :path="mdiThemeLightDark" />
-              Appearance
-            </HStack>
-            <div>
-              <ToggleButtonGroup>
-                <ToggleButtonGroupItem value="left">
-                  <Icon
-                    :size="18"
-                    :path="mdiWhiteBalanceSunny"
-                  />
-                </ToggleButtonGroupItem>
-                <ToggleButtonGroupItem value="center">
-                  <Icon
-                    :size="18"
-                    :path="mdiWeatherNight"
-                  />
-                </ToggleButtonGroupItem>
-                <ToggleButtonGroupItem value="right">
-                  <Icon
-                    :size="18"
-                    :path="mdiDesktopTower"
-                  />
-                </ToggleButtonGroupItem>
-              </ToggleButtonGroup>
-            </div>
-          </VStack>
+          <AppearanceToggle />
         </VStack>
       </Dropdown>
     </Well>
