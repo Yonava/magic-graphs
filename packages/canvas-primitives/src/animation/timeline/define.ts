@@ -30,6 +30,18 @@ type TimelinePlayOptions = ShapeTarget & {
    * @default Infinity
    */
   runCount?: number;
+  /**
+   * called the moment this animation naturally exhausts its `runCount` (the
+   * same tick the animation system cleans it up internally). Not called if
+   * the animation is interrupted early via `stop`.
+   */
+  onComplete?: () => void;
+  /**
+   * called the moment this animation stops playing for any reason: natural
+   * completion, an explicit `stop`, or being displaced by another animation.
+   * Prefer this over `onComplete` for cleanup that must always run.
+   */
+  onOver?: () => void;
 };
 
 export type UseDefineTimelineOptions = {

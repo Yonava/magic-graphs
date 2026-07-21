@@ -22,6 +22,18 @@ import { getAnimationProgress, getCurrentRunCount } from './utils.ts';
 type ActiveAnimationsMap = Map<SchemaId, ActiveAnimation[]>;
 export type GetAnimatedSchema = (schemaId: SchemaId) => LooseSchema | undefined;
 
+export const resolveSchemaWithDefaults = (
+  schema: LooseSchema,
+  shapeName: ShapeName,
+) => {
+  const defaultResolver = nullThrows(
+    (getSchemaWithDefaults as any)?.[shapeName] as
+      ((schema: LooseSchema) => LooseSchema) | undefined,
+    `cant find defaults for ${shapeName}`,
+  );
+  return defaultResolver(schema);
+};
+
 /**
  * a version of the shape whose properties are all defined but whose draw
  * methods are no-ops, for shapes that must not render anything yet (no
@@ -46,11 +58,20 @@ export const createAnimatedShapes = () => {
   const schemaIdToShapeName: Map<SchemaId, ShapeName> = new Map();
 
   const { defineTimeline, timelineIdToTimeline } = createDefineTimeline({
-    play: ({ shapeId, timelineId, synchronize, runCount = Infinity }) => {
+    play: ({
+      shapeId,
+      timelineId,
+      synchronize,
+      runCount = Infinity,
+      onComplete,
+      onOver,
+    }) => {
       const newAnimation: ActiveAnimation = {
         runCount: synchronize ? Infinity : runCount,
         startedAt: synchronize ? 0 : Date.now(),
         timelineId,
+        onComplete,
+        onOver,
       };
 
       const currAnimations = activeAnimations.get(shapeId);
@@ -63,11 +84,13 @@ export const createAnimatedShapes = () => {
     stop: ({ shapeId, timelineId }) => {
       const animations = activeAnimations.get(shapeId);
       if (!animations) return;
+      const stopped = animations.filter((a) => a.timelineId === timelineId);
       const stillRunning = animations.filter(
         (a) => a.timelineId !== timelineId,
       );
-      if (stillRunning.length === 0) return activeAnimations.delete(shapeId);
-      activeAnimations.set(shapeId, stillRunning);
+      if (stillRunning.length === 0) activeAnimations.delete(shapeId);
+      else activeAnimations.set(shapeId, stillRunning);
+      for (const animation of stopped) animation.onOver?.();
     },
     pause: () => console.warn('not implemented'),
     resume: () => console.warn('not implemented'),
@@ -78,7 +101,9 @@ export const createAnimatedShapes = () => {
    * timeline started it or whether auto-animate is the one tracking it.
    */
   const stopAllAnimations = (shapeId: SchemaId) => {
+    const animations = activeAnimations.get(shapeId);
     activeAnimations.delete(shapeId);
+    for (const animation of animations ?? []) animation.onOver?.();
   };
 
   /**
@@ -97,6 +122,8 @@ export const createAnimatedShapes = () => {
       schemaIdToShapeName.get(schemaId),
       '(Internal Error) Animation set without shape name mapping. this should never happen!',
     );
+
+    const expired: ActiveAnimation[] = [];
 
     for (const animation of animations) {
       const timeline = nullThrows(
@@ -121,7 +148,10 @@ export const createAnimatedShapes = () => {
       const currentRunCount = getCurrentRunCount(animationWithTimeline);
       const shouldRemove = currentRunCount >= animationWithTimeline.runCount;
       if (shouldRemove) {
-        activeAnimations.delete(schemaId);
+        expired.push(animation);
+        animation.onComplete?.();
+        animation.onOver?.();
+        console.log('animation for', schemaId, 'is over');
         continue;
       }
 
@@ -144,6 +174,14 @@ export const createAnimatedShapes = () => {
       };
     }
 
+    // only drop the animations that actually expired, leaving any others
+    // still running on this shape untouched
+    if (expired.length > 0) {
+      const stillRunning = animations.filter((a) => !expired.includes(a));
+      if (stillRunning.length === 0) activeAnimations.delete(schemaId);
+      else activeAnimations.set(schemaId, stillRunning);
+    }
+
     return outputSchema;
   };
 
@@ -161,19 +199,14 @@ export const createAnimatedShapes = () => {
       new Proxy(factory(schema), {
         get: (target, rawProp) => {
           const prop = rawProp as keyof Shape;
+
+          // if not a recognized shape property, return early
           if (!shapeProps.has(prop)) return target[prop];
 
+          // lookup all actively running animations on this shape
           const animations = activeAnimations.get(schema.id);
 
-          const defaultResolver:
-            ((schema: LooseSchema) => LooseSchema) | undefined = (
-            getSchemaWithDefaults as any
-          )?.[shapeName];
-          if (!defaultResolver)
-            throw new Error(`cant find defaults for ${shapeName}`);
-          const schemaWithDefaults = defaultResolver(schema);
-
-          autoAnimate.captureSchemaState(schemaWithDefaults, shapeName);
+          autoAnimate.captureSchemaState(schema, shapeName);
 
           // auto-animate may be in the middle of comparing this shape's old and new
           // schema, so keep showing the old state for now instead of the update
@@ -189,8 +222,14 @@ export const createAnimatedShapes = () => {
           }
 
           if (!animations || animations.length === 0) return target[prop];
+
+          // lazily capture the baseline schema on the first render after the
+          // animation started, since `play()` has no schema to stash it with
           if (!animations[0]?.schemaWithDefaults) {
-            animations[0].schemaWithDefaults = schemaWithDefaults;
+            animations[0].schemaWithDefaults = resolveSchemaWithDefaults(
+              schema,
+              shapeName,
+            );
           }
 
           if (prop === 'startTextAreaEdit')
@@ -198,11 +237,19 @@ export const createAnimatedShapes = () => {
               'shapes with active animations cannot spawn text inputs',
             );
 
-          const hasShapeName = schemaIdToShapeName.get(schema.id);
-          if (!hasShapeName) schemaIdToShapeName.set(schema.id, shapeName);
+          schemaIdToShapeName.set(schema.id, shapeName);
 
-          const animatedSchema = getAnimatedSchema(schema.id);
-          if (!animatedSchema) return target[prop];
+          const animatedSchema = nullThrows(
+            getAnimatedSchema(schema.id),
+            'animations present but getAnimatedSchema returned nothing. this should never happen!',
+          );
+
+          // getAnimatedSchema may have just expired this shape's last animation
+          // and fired onOver/onComplete for it; render at-rest instead of
+          // treating this tick as still animating
+          if (!activeAnimations.has(schema.id)) return target[prop];
+
+          console.log('animating for', schema.id);
 
           return factory(animatedSchema as WithId<T>)[prop];
         },

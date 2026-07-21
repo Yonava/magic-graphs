@@ -8,7 +8,7 @@ import type {
   SchemaId,
   ShapeName,
 } from '../../types/index.ts';
-import type { GetAnimatedSchema } from '../index.ts';
+import { type GetAnimatedSchema, resolveSchemaWithDefaults } from '../index.ts';
 import type { DefineTimeline, Timeline } from '../timeline/define.ts';
 import type { LooseSchema, LooseSchemaValue } from '../types.ts';
 import { arrowAdd } from './arrow/add.ts';
@@ -56,11 +56,10 @@ export const createAutoAnimate = (
 
   // shapes removed from the graph that are still playing their remove
   // animation. rendering keeps drawing these from their last known schema
-  // (with the remove timeline's live values applied) until the timeout below
-  // clears them, at `orderIndex`'s position relative to everything else drawn.
+  // (with the remove timeline's live values applied) until the remove
+  // timeline's own `onComplete` clears them, at `orderIndex`'s position
+  // relative to everything else drawn.
   const ghosts: Map<SchemaId, GhostShape> = new Map();
-  const ghostTimeouts: Map<SchemaId, ReturnType<typeof setTimeout>> =
-    new Map();
 
   // position of each shape within the overall draw order captured during the
   // most recent "before" snapshot, used to place ghosts back in the right
@@ -96,7 +95,11 @@ export const createAutoAnimate = (
     };
   };
 
-  const runAnimation = (timeline: Timeline<any>, schemaId: string) => {
+  const runAnimation = (
+    timeline: Timeline<any>,
+    schemaId: string,
+    onOver?: () => void,
+  ) => {
     // a shape can carry animations auto-animate never started itself (e.g.
     // one played directly via `defineTimeline` outside auto-animate).
     // leaving any prior animation running lets its properties keep blending
@@ -105,7 +108,7 @@ export const createAutoAnimate = (
     stopAllAnimations(schemaId);
 
     const { play } = defineTimeline(timeline);
-    play({ shapeId: schemaId, runCount: 1 });
+    play({ shapeId: schemaId, runCount: 1, onOver });
   };
 
   return {
@@ -113,11 +116,13 @@ export const createAutoAnimate = (
       if (!captureState) return;
       // we only care about capturing each schema once, the rest of the calls should be ignored
       if (capturedSchemas.has(schema.id)) return;
+      const schemaWithDefaults = resolveSchemaWithDefaults(schema, shapeName);
       // if capture state is "before", use the shape's live (currently animating) schema instead, to prevent snap-backs.
       const liveSchema =
         captureState === 'before'
-          ? (getAnimatedSchema(schema.id) ?? schema)
-          : schema;
+          ? (getAnimatedSchema(schema.id) ?? schemaWithDefaults)
+          : schemaWithDefaults;
+
       const capturedSchema = jsonClone({ ...liveSchema, shapeName });
       capturedSchemas.set(schema.id, capturedSchema);
 
@@ -222,29 +227,19 @@ export const createAutoAnimate = (
           // known schema, in its original draw-order position, for the
           // duration of the remove animation
           if (!afterSchema) {
-            const existingTimeout = ghostTimeouts.get(snapshot.schemaId);
-            if (existingTimeout) clearTimeout(existingTimeout);
-
             ghosts.set(snapshot.schemaId, {
               id: snapshot.schemaId,
               schema: beforeSchema,
               orderIndex: beforeCaptureOrder.get(snapshot.schemaId) ?? 0,
             });
 
+            const clearGhost = () => ghosts.delete(snapshot.schemaId);
             if (beforeSchema.shapeName === 'circle') {
-              runAnimation(circleRemove, snapshot.schemaId);
+              runAnimation(circleRemove, snapshot.schemaId, clearGhost);
             }
             if (beforeSchema.shapeName === 'arrow') {
-              runAnimation(arrowRemove, snapshot.schemaId);
+              runAnimation(arrowRemove, snapshot.schemaId, clearGhost);
             }
-
-            ghostTimeouts.set(
-              snapshot.schemaId,
-              setTimeout(() => {
-                ghosts.delete(snapshot.schemaId);
-                ghostTimeouts.delete(snapshot.schemaId);
-              }, AUTO_ANIMATE_DURATION_MS),
-            );
 
             continue;
           }
