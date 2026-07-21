@@ -26,6 +26,7 @@
     "@graph/primitives": "workspace:*",
     "@graph/create-graph": "workspace:*",
     "@magic/shared": "workspace:*",
+    "@mdi/js": "^7.4.47",
     "fraction.js": "^5.3.4",
     "tinycolor2": "catalog:"
   },

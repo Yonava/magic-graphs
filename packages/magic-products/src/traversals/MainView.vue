@@ -2,7 +2,6 @@
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import ToggleSimulation from './ToggleSimulation.vue';
-  import ToggleTheme from './ToggleTheme.vue';
   import { lensChips } from './lensChips.ts';
 
   const graph = useGraphProduct({
@@ -18,11 +17,6 @@
       id: 'toggle-sim',
       component: ToggleSimulation,
       position: 'top-right',
-    },
-    {
-      id: 'product/toggle-theme',
-      component: ToggleTheme,
-      position: 'bottom-right',
     },
   ]);
 </script>
