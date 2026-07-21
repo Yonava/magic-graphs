@@ -37,7 +37,7 @@ export const useGraphProduct = (options: GraphProductOptions) => {
   const lens = useLensState(componentSlots);
   const simulation = useSimulationState(graph, componentSlots, lens);
 
-  const ui = useProductUI(options?.ui ?? {}, graph, componentSlots);
+  const ui = useProductUI(graph, componentSlots, options.ui);
   const appearance = useProductAppearance(graph);
 
   const magicGraph: MagicGraph = {
