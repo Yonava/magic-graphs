@@ -20,6 +20,7 @@
   import ToggleButtonGroup from '../../components/toggle-button-group/ToggleButtonGroup.vue';
   import ToggleButtonGroupItem from '../../components/toggle-button-group/ToggleButtonGroupItem.vue';
   import ToggleIconButton from '../../components/toggle-icon-button/ToggleIconButton.vue';
+  import FullscreenButton from '../fullscreen/FullscreenButton.vue';
   import AnnotationsIsland from './AnnotationsIsland.vue';
   import { useAnnotationControls } from './useAnnotationControls.ts';
 
@@ -63,12 +64,7 @@
           />
         </template>
         <VStack class="gap-1 px-1">
-          <Button class="px-2 bg-transparent w-full justify-start">
-            <template #start>
-              <Icon :path="mdiFullscreen" />
-            </template>
-            Fullscreen
-          </Button>
+          <FullscreenButton />
           <div
             class="w-full bg-white opacity-10"
             :style="{ height: '1px' }"

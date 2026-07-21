@@ -374,6 +374,9 @@ importers:
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 13.9.0(vue@3.5.40(typescript@6.0.3))
     devDependencies:
       nuxt:
         specifier: ^4.1.2
