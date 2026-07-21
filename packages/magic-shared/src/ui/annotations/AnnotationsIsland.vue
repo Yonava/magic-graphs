@@ -25,20 +25,28 @@
 </script>
 
 <template>
-  <Well>
+  <Well class="p-2 bg-transparent">
     <HStack>
-      <ToggleIconButton
+      <Well
         v-for="mode of ANNOTATION_MODES"
-        :path="modeToIcon[mode]"
-        :model-value="controls.mode() === mode"
-        @click="controls.setMode(mode)"
-        :label="modeToLabel[mode]"
-      />
-      <IconButton
-        :path="mdiTrashCan"
-        @click="controls.clear()"
-        label="Remove All Annotations"
-      />
+        class="p-0"
+      >
+        <ToggleIconButton
+          class="bg-transparent"
+          :path="modeToIcon[mode]"
+          :model-value="controls.mode() === mode"
+          @click="controls.setMode(mode)"
+          :label="modeToLabel[mode]"
+        />
+      </Well>
+      <Well class="p-0">
+        <IconButton
+          class="bg-transparent"
+          :path="mdiTrashCan"
+          @click="controls.clear()"
+          label="Remove All Annotations"
+        />
+      </Well>
     </HStack>
   </Well>
 </template>

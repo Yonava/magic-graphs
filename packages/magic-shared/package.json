@@ -104,6 +104,7 @@
     "@graph/dev-tools": "workspace:*",
     "@graph/primitives": "workspace:*",
     "@graph/theme-presets": "workspace:*",
+    "@vueuse/core": "catalog:",
     "@graph/vue": "workspace:*",
     "@mdi/js": "^7.4.47"
   },

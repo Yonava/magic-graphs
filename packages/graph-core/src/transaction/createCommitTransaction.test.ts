@@ -15,10 +15,6 @@ const options = (
 ): TransactionOptions => {
   return {
     getGraph: () => ({ nodes: state.nodes ?? [], edges: state.edges ?? [] }),
-    getters: {
-      getEdge: (id) => state.edges?.find((e) => e.id === id)!,
-      getNode: (id) => state.nodes?.find((n) => n.id === id)!,
-    },
     onTransactionSucceeded: state.success ?? (() => {}),
   };
 };

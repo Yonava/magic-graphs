@@ -8,7 +8,7 @@
     TooltipTrigger,
   } from 'reka-ui';
 
-  import { type HTMLAttributes, computed, normalizeClass, useAttrs } from 'vue';
+  import { type HTMLAttributes, computed, normalizeClass, useAttrs, useSlots } from 'vue';
 
   import { cn } from '../../cn.ts';
 
@@ -29,6 +29,9 @@
   });
 
   const attrs = useAttrs();
+  const slots = useSlots();
+
+  const hasContent = computed(() => !!props.label || !!slots.default);
 
   const classes = computed(() =>
     cn(
@@ -48,7 +51,7 @@
       </TooltipTrigger>
       <TooltipPortal>
         <TooltipContent
-          v-if="label"
+          v-if="hasContent"
           :aria-label="label"
           :side="side"
           :side-offset="6"
