@@ -1,13 +1,11 @@
 <script setup lang="ts">
   import {
-    mdiDesktopTower,
+    mdiMonitor,
     mdiThemeLightDark,
     mdiWeatherNight,
     mdiWhiteBalanceSunny,
   } from '@mdi/js';
-  import { BasicColorSchema, useColorMode } from '@vueuse/core';
-
-  import { computed, watch } from 'vue';
+  import { type BasicColorSchema } from '@vueuse/core';
 
   import Icon from '../../components/icon/Icon.vue';
   import HStack from '../../components/layout/HStack.vue';
@@ -16,8 +14,7 @@
   import ToggleButtonGroupItem from '../../components/toggle-button-group/ToggleButtonGroupItem.vue';
   import Tooltip from '../../components/tooltip/Tooltip.vue';
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
-
-  const appearances: BasicColorSchema[] = ['light', 'dark', 'auto'];
+  import { appearances } from './appearances.ts';
 
   const appearanceToDisplayString: Record<BasicColorSchema, string> = {
     auto: 'System Preference',
@@ -28,16 +25,10 @@
   const appearanceToIcon: Record<BasicColorSchema, string> = {
     light: mdiWhiteBalanceSunny,
     dark: mdiWeatherNight,
-    auto: mdiDesktopTower,
+    auto: mdiMonitor,
   };
 
-  const activeAppearance = useColorMode({ emitAuto: true });
-
   const graph = useProvidedGraph();
-
-  watch(activeAppearance, () => {
-    graph.theme.activePresetName.value = activeAppearance.state.value;
-  });
 </script>
 
 <template>
@@ -47,7 +38,7 @@
       Appearance
     </HStack>
     <div>
-      <ToggleButtonGroup v-model="activeAppearance">
+      <ToggleButtonGroup v-model="graph.magic.appearance.value">
         <template
           v-for="appearance in appearances"
           :key="appearance"
