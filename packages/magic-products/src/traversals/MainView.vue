@@ -8,7 +8,6 @@
     productId: 'traversals',
     ui: {
       lensChips,
-      annotations: true,
     },
   });
 

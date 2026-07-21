@@ -2,11 +2,11 @@ import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.
 import { Graph } from '../graph/types.ts';
 import CursorCoordinates from '../product/debug/CursorCoordinates.vue';
 import LensChipGroup from '../ui/lens-chips/LensChipGroup.vue';
-import AnnotationMenu from './annotations/AnnotationMenu.vue';
 import {
   AnnotationsControls,
   useAnnotationsState,
 } from './annotations/useAnnotationsState.ts';
+import BottomRightControls from './bottom-right-controls/BottomRightControls.vue';
 import { LensChipDefinition } from './lens-chips/types.ts';
 import NavigationMenu from './navigation-menu/NavigationMenu.vue';
 
@@ -36,13 +36,11 @@ export const useProductUI = (
     });
   }
 
-  if (options.annotations) {
-    componentSlots.add({
-      id: 'product/annotations',
-      component: AnnotationMenu,
-      position: 'bottom-right',
-    });
-  }
+  componentSlots.add({
+    id: 'product/bottom-right-controls',
+    component: BottomRightControls,
+    position: 'bottom-right',
+  });
 
   if (options.debug) {
     componentSlots.add({
@@ -60,7 +58,8 @@ export const useProductUI = (
 
   return {
     data: {
-      annotations: options.annotations ? useAnnotationsState(graph) : undefined,
+      annotations:
+        options.annotations === false ? undefined : useAnnotationsState(graph),
       lensChips: options?.lensChips?.(graph),
     },
   };
