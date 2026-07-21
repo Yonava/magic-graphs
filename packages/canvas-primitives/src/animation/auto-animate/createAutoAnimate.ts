@@ -12,12 +12,26 @@ import type { GetAnimatedSchema } from '../index.ts';
 import type { DefineTimeline, Timeline } from '../timeline/define.ts';
 import type { LooseSchema, LooseSchemaValue } from '../types.ts';
 import { arrowAdd } from './arrow/add.ts';
+import { arrowRemove } from './arrow/remove.ts';
 import { circleAdd } from './circle/add.ts';
+import { circleRemove } from './circle/remove.ts';
 import {
   AUTO_ANIMATED_PROPERTIES,
   AUTO_ANIMATE_DURATION_MS,
 } from './constants.ts';
 import { LooseSchemaWithName } from './types.ts';
+
+/**
+ * a shape that was removed from the graph but is still mid-removal-animation.
+ * `orderIndex` is this shape's position among everything drawn during the
+ * capture's "before" snapshot, so it can be redrawn in the right z-order
+ * relative to shapes still being drawn normally.
+ */
+export type GhostShape = {
+  id: SchemaId;
+  schema: LooseSchemaWithName;
+  orderIndex: number;
+};
 
 type CreateTimelineValue = {
   startValue: LooseSchemaValue;
@@ -30,6 +44,7 @@ type CaptureState = 'before' | 'after' | undefined;
 export const createAutoAnimate = (
   defineTimeline: DefineTimeline,
   getAnimatedSchema: GetAnimatedSchema,
+  stopAllAnimations: (shapeId: SchemaId) => void,
 ) => {
   let capturedSchemas: Map<SchemaId, LooseSchemaWithName> = new Map();
   let captureState: CaptureState;
@@ -38,7 +53,20 @@ export const createAutoAnimate = (
     SchemaId,
     Partial<{ before: LooseSchemaWithName; after: LooseSchemaWithName }>
   > = new Map();
-  const shapeIdToAnimationStopper: Map<string, () => void> = new Map();
+
+  // shapes removed from the graph that are still playing their remove
+  // animation. rendering keeps drawing these from their last known schema
+  // (with the remove timeline's live values applied) until the timeout below
+  // clears them, at `orderIndex`'s position relative to everything else drawn.
+  const ghosts: Map<SchemaId, GhostShape> = new Map();
+  const ghostTimeouts: Map<SchemaId, ReturnType<typeof setTimeout>> =
+    new Map();
+
+  // position of each shape within the overall draw order captured during the
+  // most recent "before" snapshot, used to place ghosts back in the right
+  // z-order once they're no longer drawn as part of the normal draw pass.
+  let beforeCaptureOrder: Map<SchemaId, number> = new Map();
+  let beforeCaptureOrderCounter = 0;
 
   const createTimeline = (
     shapeName: ShapeName,
@@ -69,12 +97,15 @@ export const createAutoAnimate = (
   };
 
   const runAnimation = (timeline: Timeline<any>, schemaId: string) => {
-    const stopper = shapeIdToAnimationStopper.get(schemaId);
-    stopper?.();
+    // a shape can carry animations auto-animate never started itself (e.g.
+    // one played directly via `defineTimeline` outside auto-animate).
+    // leaving any prior animation running lets its properties keep blending
+    // into `getAnimatedSchema`'s output alongside the sequence starting
+    // here, which causes a visible snap/flicker.
+    stopAllAnimations(schemaId);
 
-    const { play, stop } = defineTimeline(timeline);
+    const { play } = defineTimeline(timeline);
     play({ shapeId: schemaId, runCount: 1 });
-    shapeIdToAnimationStopper.set(schemaId, () => stop({ shapeId: schemaId }));
   };
 
   return {
@@ -89,6 +120,10 @@ export const createAutoAnimate = (
           : schema;
       const capturedSchema = jsonClone({ ...liveSchema, shapeName });
       capturedSchemas.set(schema.id, capturedSchema);
+
+      if (captureState === 'before') {
+        beforeCaptureOrder.set(schema.id, beforeCaptureOrderCounter++);
+      }
 
       // write into snapshotMap immediately (not after flushDraw finishes) so
       // getCaptureOverride sees this shape's entry within the same draw pass,
@@ -143,6 +178,10 @@ export const createAutoAnimate = (
 
       const takeSnapshot = (state: 'before' | 'after') => {
         capturedSchemas = new Map();
+        if (state === 'before') {
+          beforeCaptureOrder = new Map();
+          beforeCaptureOrderCounter = 0;
+        }
         captureState = state;
         flushDraw();
         captureState = undefined;
@@ -179,8 +218,36 @@ export const createAutoAnimate = (
             continue;
           }
 
-          // this shape was removed
-          if (!afterSchema) continue;
+          // this shape was removed: keep drawing it as a "ghost" from its last
+          // known schema, in its original draw-order position, for the
+          // duration of the remove animation
+          if (!afterSchema) {
+            const existingTimeout = ghostTimeouts.get(snapshot.schemaId);
+            if (existingTimeout) clearTimeout(existingTimeout);
+
+            ghosts.set(snapshot.schemaId, {
+              id: snapshot.schemaId,
+              schema: beforeSchema,
+              orderIndex: beforeCaptureOrder.get(snapshot.schemaId) ?? 0,
+            });
+
+            if (beforeSchema.shapeName === 'circle') {
+              runAnimation(circleRemove, snapshot.schemaId);
+            }
+            if (beforeSchema.shapeName === 'arrow') {
+              runAnimation(arrowRemove, snapshot.schemaId);
+            }
+
+            ghostTimeouts.set(
+              snapshot.schemaId,
+              setTimeout(() => {
+                ghosts.delete(snapshot.schemaId);
+                ghostTimeouts.delete(snapshot.schemaId);
+              }, AUTO_ANIMATE_DURATION_MS),
+            );
+
+            continue;
+          }
 
           // if a shapes schema has not changed between snapshots, we dont need to animate it
           const schemaDifference: DeepPartial<LooseSchemaWithName> | null =
@@ -223,5 +290,12 @@ export const createAutoAnimate = (
         snapshotMap.clear();
       };
     },
+
+    /**
+     * shapes removed from the graph that are still playing their remove
+     * animation, in their original draw-order position (ascending `orderIndex`).
+     */
+    getGhosts: (): GhostShape[] =>
+      Array.from(ghosts.values()).sort((a, b) => a.orderIndex - b.orderIndex),
   };
 };

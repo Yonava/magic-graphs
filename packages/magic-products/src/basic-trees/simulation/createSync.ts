@@ -20,9 +20,6 @@ export const createSync = (graph: Graph) => (frame: AVLFrame) => {
     {},
   );
 
-  // still the old nodes before the elements were removed
-  console.log(graph.nodes.value);
-
   const graphState = treeToGraph(frame.root, ROOT_POSITION);
   if (frame.action === 'compare') compareCompanion(frame, graphState);
 

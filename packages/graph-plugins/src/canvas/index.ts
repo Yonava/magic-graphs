@@ -22,7 +22,8 @@ export const canvas =
     const canvasEventRegistry = createCanvasEventRegistry();
     const canvasEvents = createEventHub(canvasEventRegistry);
 
-    const aggregator = createAggregator(canvasEvents);
+    const shapes = createAnimatedShapes();
+    const aggregator = createAggregator(canvasEvents, shapes);
 
     const graphUnderCursor: GraphUnderCursor = {
       coords: { x: 0, y: 0 },
@@ -94,8 +95,6 @@ export const canvas =
     );
 
     const keyboardEvents = emitKeyboardEvents(canvasEvents.emit);
-
-    const shapes = createAnimatedShapes();
 
     magicCanvas.lifecycleEvents.subscribe('onMounted', () => {
       if (!magicCanvas.canvas.value) {

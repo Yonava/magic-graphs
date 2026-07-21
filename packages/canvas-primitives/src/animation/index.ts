@@ -2,6 +2,7 @@ import { nullThrows } from '@core/utils/assert';
 import type { UnionToIntersection } from 'ts-essentials';
 
 import { getSchemaWithDefaults } from '../defaults/shapes.ts';
+import { drawGroup as drawGroupPure } from '../drawGroup.ts';
 import { shapes } from '../index.ts';
 import type {
   EverySchemaProp,
@@ -73,6 +74,14 @@ export const createAnimatedShapes = () => {
   });
 
   /**
+   * stops every animation currently running on a shape, regardless of which
+   * timeline started it or whether auto-animate is the one tracking it.
+   */
+  const stopAllAnimations = (shapeId: SchemaId) => {
+    activeAnimations.delete(shapeId);
+  };
+
+  /**
    * if schema is actively being animated, returns the live schema with animated props applied.
    */
   const getAnimatedSchema: GetAnimatedSchema = (schemaId) => {
@@ -138,7 +147,11 @@ export const createAnimatedShapes = () => {
     return outputSchema;
   };
 
-  const autoAnimate = createAutoAnimate(defineTimeline, getAnimatedSchema);
+  const autoAnimate = createAutoAnimate(
+    defineTimeline,
+    getAnimatedSchema,
+    stopAllAnimations,
+  );
 
   function animatedFactory<T extends Omit<LooseSchema, 'id'>>(
     factory: ShapeFactory<T>,
@@ -196,21 +209,79 @@ export const createAnimatedShapes = () => {
       });
   }
 
+  const animatedShapes = {
+    arrow: animatedFactory(shapes.arrow, 'arrow'),
+    circle: animatedFactory(shapes.circle, 'circle'),
+    cross: animatedFactory(shapes.cross, 'cross'),
+    ellipse: animatedFactory(shapes.ellipse, 'ellipse'),
+    image: animatedFactory(shapes.image, 'image'),
+    line: animatedFactory(shapes.line, 'line'),
+    rect: animatedFactory(shapes.rect, 'rect'),
+    scribble: animatedFactory(shapes.scribble, 'scribble'),
+    square: animatedFactory(shapes.square, 'square'),
+    star: animatedFactory(shapes.star, 'star'),
+    triangle: animatedFactory(shapes.triangle, 'triangle'),
+    uturn: animatedFactory(shapes.uturn, 'uturn'),
+  };
+
+  /**
+   * shapes removed from the graph don't come back through `animatedShapes`
+   * naturally (the caller has no reason to keep asking for a shape it just
+   * deleted), so their remove animation would never be visible. this rebuilds
+   * a `Shape` for each in-flight ghost from its last known schema, which
+   * re-enters the same animated-shape proxy and therefore still resolves the
+   * remove timeline's live (in-progress) property values.
+   */
+  const getGhostShapes = (): { orderIndex: number; shape: Shape }[] =>
+    autoAnimate.getGhosts().map(({ schema, orderIndex }) => {
+      const { shapeName, ...rest } = schema;
+      return {
+        orderIndex,
+        shape: animatedShapes[shapeName](rest as WithId<any>),
+      };
+    });
+
+  /**
+   * a `drawGroup` that transparently keeps drawing recently-removed shapes
+   * ("ghosts") for the duration of their remove animation, at the draw
+   * position they held right before removal. `drawGroup` is called once per
+   * priority group, potentially several times per frame, so ghosts must be
+   * placed relative to a running position across the whole frame rather than
+   * reset on every call. `beginFrame` marks where that running count starts
+   * over; the caller invokes it once, at the single point per frame where it
+   * already knows a new draw pass is starting.
+   */
+  let shapesDrawnThisFrame = 0;
+  const beginFrame = () => {
+    shapesDrawnThisFrame = 0;
+  };
+
+  const drawGroup = (ctx: CanvasRenderingContext2D, groupShapes: Shape[]) => {
+    const groupStart = shapesDrawnThisFrame;
+    const groupEnd = groupStart + groupShapes.length;
+
+    const ghostsInGroup = getGhostShapes().filter(
+      ({ orderIndex }) => orderIndex >= groupStart && orderIndex < groupEnd,
+    );
+
+    const shapesWithGhosts = [...groupShapes];
+    for (const ghost of ghostsInGroup) {
+      shapesWithGhosts.splice(
+        Math.min(ghost.orderIndex - groupStart, shapesWithGhosts.length),
+        0,
+        ghost.shape,
+      );
+    }
+
+    shapesDrawnThisFrame = groupEnd;
+
+    drawGroupPure(ctx, shapesWithGhosts);
+  };
+
   return {
-    shapes: {
-      arrow: animatedFactory(shapes.arrow, 'arrow'),
-      circle: animatedFactory(shapes.circle, 'circle'),
-      cross: animatedFactory(shapes.cross, 'cross'),
-      ellipse: animatedFactory(shapes.ellipse, 'ellipse'),
-      image: animatedFactory(shapes.image, 'image'),
-      line: animatedFactory(shapes.line, 'line'),
-      rect: animatedFactory(shapes.rect, 'rect'),
-      scribble: animatedFactory(shapes.scribble, 'scribble'),
-      square: animatedFactory(shapes.square, 'square'),
-      star: animatedFactory(shapes.star, 'star'),
-      triangle: animatedFactory(shapes.triangle, 'triangle'),
-      uturn: animatedFactory(shapes.uturn, 'uturn'),
-    },
+    shapes: animatedShapes,
+    drawGroup,
+    beginFrame,
     defineTimeline,
     autoAnimate: { captureFrame: autoAnimate.captureFrame },
     getAnimatedSchema,
