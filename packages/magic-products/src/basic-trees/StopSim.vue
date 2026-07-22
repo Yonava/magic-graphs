@@ -4,10 +4,6 @@
   import { useProvidedGraph } from '@magic/shared/product';
 
   const graph = useProvidedGraph();
-
-  graph.canvas.events.subscribe('onKeyDown', (e) => {
-    if (e.key === 'Escape') graph.magic.simulation.stop();
-  });
 </script>
 
 <template>

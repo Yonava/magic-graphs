@@ -33,7 +33,8 @@ export const useDFSSimulationDefinition = (
 ): SimulationDefinition<DFSFrame> => {
   return {
     guard: traversalGuardChecker(options),
-    collectFrames: traversalFrameCollector(options, dfs),
+    collectFrames: (collector) =>
+      traversalFrameCollector(options, dfs)(collector),
     setup: (context) => {
       const themer = options.graph.theme.createThemer({
         canvas: {

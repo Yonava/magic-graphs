@@ -34,7 +34,8 @@ export const useBFSSimulationDefinition = (
 ): SimulationDefinition<BFSFrame> => {
   return {
     guard: traversalGuardChecker(options),
-    collectFrames: traversalFrameCollector(options, bfs),
+    collectFrames: (collector) =>
+      traversalFrameCollector(options, bfs)(collector),
     setup: (context) => {
       const themer = options.graph.theme.createThemer({
         canvas: {

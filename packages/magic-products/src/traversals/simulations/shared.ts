@@ -38,7 +38,7 @@ export const traversalGuardChecker = (options: TraversalSimulationOptions) =>
 export const traversalFrameCollector = <Frame>(
   options: TraversalSimulationOptions,
   traversalFunction: TraversalFunction<Frame>,
-) => {
+): FrameCollectorFn<Frame> => {
   return traversalFunction(
     options.graph.adjacencyLists.standard.value,
     nullThrows(options.startNodeId.value, 'start node id not defined'),
