@@ -21,17 +21,11 @@ const union = (parent: Parent, nodeA: string, nodeB: string): boolean => {
   return true;
 };
 
-// An edge from a tied-weight group, labeled with the current (pre-group)
+// An edge from a equal-weight group, labeled with the current (pre-group)
 // component roots of its endpoints, used to detect which edges are still
-// able to connect distinct components once processed together.
+// able to connect distinct components once processed together
 type ComponentEdge = { edge: Edge; a: string; b: string };
 
-// Enumerates every spanning tree that can be built from `pairs` alone,
-// via include/exclude backtracking over a per-branch union-find. `pairs`
-// are assumed to all connect distinct components at the outset (same-weight
-// edges considered simultaneously), so any `vertices.length - 1` of them
-// chosen without creating a cycle necessarily spans all of `vertices`.
-// CAUTION: FUNCTION IS EXPONENTIAL IN THE NUMBER OF TIED EDGES, AND WILL BLOW UP IF GIVEN A LARGE GROUP.
 const allSpanningTrees = (
   vertices: string[],
   pairs: ComponentEdge[],
@@ -68,6 +62,26 @@ const allSpanningTrees = (
   return results;
 };
 
+/**
+ * Finds every minimum spanning tree (MST) of a weighted graph using a
+ * generalized Kruskals algorithm. If the graph is disconnected, returns every
+ * minimum spanning forest instead.
+ *
+ * Processes edges in non-decreasing order of weight. Edges with equal weight
+ * are handled simultaneously: all valid spanning trees within each connected
+ * equal-weight component are enumerated, and the Cartesian product of these
+ * independent choices produces every possible MST.
+ *
+ * @complexity
+ * Time:  O(E log E + T)   Θ(E log E + T)   Ω(E log E)
+ * Space: O(E + T)         Θ(E + T)         Ω(V)
+ *
+ * where V = number of vertices, E = number of edges, and
+ * T = total size of the output (the total number of edges across all
+ * returned minimum spanning trees). In the worst case, the number of
+ * minimum spanning trees is exponential in V.
+ * CAUTION: FUNCTION IS EXPONENTIAL IN THE NUMBER OF EQUAL-WEIGHT EDGES, AND WILL BLOW UP IF GIVEN A LARGE GROUP!
+ */
 export const getAllMsts = (nodes: Node[], edges: Edge[]) => {
   const parent: Parent = new Map(nodes.map((node) => [node.id, node.id]));
 
@@ -86,8 +100,8 @@ export const getAllMsts = (nodes: Node[], edges: Edge[]) => {
   });
 
   // Each entry is one independent choice point (a connected component of a
-  // tied-weight group), holding every spanning tree that component admits.
-  // The final set of MSTs is the Cartesian product of these choice points.
+  // equal-weight group), holding every spanning tree that component admits
+  // The final set of MSTs is the Cartesian product of these choice points
   const choicePoints: Edge[][][] = [];
 
   for (const group of weightGroups) {
@@ -140,7 +154,7 @@ export const getAllMsts = (nodes: Node[], edges: Edge[]) => {
         );
       }
       // Advance the real union-find with one arbitrary valid choice, so
-      // later (strictly higher-weight) groups see the correct components.
+      // later (strictly higher-weight) groups see the correct components
       options[0].forEach((edge) => union(parent, edge.source, edge.target));
     });
   }
@@ -158,7 +172,7 @@ export const getAllMsts = (nodes: Node[], edges: Edge[]) => {
 
   return {
     msts,
-    // the weight of a minimum spanning forest,
+    // the weight of a minimum spanning forest, if applicable
     totalWeight: msts[0].reduce(
       (sum, edge) => sum.add(edge.weight),
       new Fraction(0),
