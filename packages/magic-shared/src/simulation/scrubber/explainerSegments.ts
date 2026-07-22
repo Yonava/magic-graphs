@@ -42,7 +42,7 @@ export const explainerSegments = (
     });
     lastIndex = index + match[0].length;
   }
-  if (lastIndex < text.length) {
+  if (lastIndex < textValue.length) {
     parts.push({
       text: textValue.slice(lastIndex),
       highlight: undefined,

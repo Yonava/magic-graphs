@@ -3,7 +3,7 @@ import { MaybeGetter } from '@core/utils/maybeGetter/index';
 import { ComputedRef } from 'vue';
 
 import { Lens } from '../lens/types.ts';
-import { GuardCheck } from './guard/SimulationGuardBuilder.ts';
+import { GuardCheck, Violation } from './guard/SimulationGuardBuilder.ts';
 
 export type FrameCollector<Frame> = {
   add: (frame: Frame) => void;
@@ -31,12 +31,17 @@ export type SimulationLifecycle<Frame> = {
   onBeforeTeardown?: () => void;
   onTeardownCompleted?: () => void;
   onFrameTransition?: (newFrame: Frame, oldFrame: Frame) => void;
+  onViolation?: (violation: Violation) => void;
 };
 
 export type SimulationEffects<Frame> = {
   lens?: Lens;
   explainer?: (frame: Frame) => Explainer | undefined;
 } & SimulationLifecycle<Frame>;
+
+export type FrameCollectorFn<Frame> = (
+  collector: FrameCollector<Frame>,
+) => void;
 
 export type SimulationDefinition<Frame> = {
   /**
@@ -47,7 +52,7 @@ export type SimulationDefinition<Frame> = {
    */
   guard?: GuardCheck;
 
-  collectFrames: (collector: FrameCollector<Frame>) => void;
+  collectFrames: FrameCollectorFn<Frame>;
   setup: (context: SetupContext<Frame>) => SimulationEffects<Frame> | undefined;
 
   recomputeFramesOnStructureChange?: boolean;

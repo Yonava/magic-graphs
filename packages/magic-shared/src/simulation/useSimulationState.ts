@@ -193,12 +193,15 @@ export const useSimulationState = (
   };
 
   // reconciles sim.violation with a fresh guard check, swapping the
-  // displayed lens as needed. returns true while the graph is still
-  // invalid, so the caller knows not to recompute frames against it.
-  const syncViolation = (sim: Simulation<any>, violation?: Violation) => {
+  // displayed lens as needed. returns the violation id before and after
+  // the check, so the caller can tell whether the graph is still invalid
+  // and whether it just entered a new violation.
+  const syncViolation = (sim: Simulation<any>) => {
+    const previousViolationId = sim.violation?.id;
+    const violation = sim.definition.guard?.();
     if (violation) {
       // same violation as last check, nothing to swap
-      const isNewViolation = violation.id !== sim.violation?.id;
+      const isNewViolation = violation.id !== previousViolationId;
       if (isNewViolation) {
         // swap out whatever lens was displayed for this one
         const previousViolationLens = sim.violation?.lens;
@@ -207,7 +210,7 @@ export const useSimulationState = (
         if (violation.lens) lensControls.add(violation.lens);
       }
       sim.violation = violation;
-      return true;
+      return { previousViolationId, currentViolationId: violation.id };
     }
 
     // no violation this time, but there was a violation before.
@@ -219,8 +222,7 @@ export const useSimulationState = (
       }
       sim.violation = undefined;
     }
-
-    return false;
+    return { previousViolationId, currentViolationId: undefined };
   };
 
   graph.events.subscribe('onStructureChange', () => {
@@ -230,9 +232,14 @@ export const useSimulationState = (
     const shouldRecompute = sim.definition.recomputeFramesOnStructureChange;
     if (shouldRecompute === false) return;
 
-    const violation = sim.definition.guard?.();
+    const { previousViolationId, currentViolationId } = syncViolation(sim);
     // graph is invalid, don't recompute frames against it
-    if (syncViolation(sim, violation)) return;
+    if (currentViolationId) {
+      if (currentViolationId !== previousViolationId) {
+        sim.onViolation?.(nullThrows(sim.violation, 'violation missing'));
+      }
+      return;
+    }
 
     const { frames, playhead } = computeRun(
       sim.definition,

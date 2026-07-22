@@ -1,20 +1,26 @@
 <script setup lang="ts">
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
-  import ToggleSimulation from './ToggleSimulation.vue';
+  import NodeMenu from './NodeMenu.vue';
   import { lensChips } from './lensChips.ts';
 
   const graph = useGraphProduct({
     productId: 'traversals',
+    core: {
+      weighted: false,
+    },
+    interactive: {
+      addedEdgeRuleNoSelfLoops: true,
+    },
     ui: {
       lensChips,
     },
   });
 
   graph.magic.componentSlots.add({
-    id: 'toggle-sim',
-    component: ToggleSimulation,
-    position: 'top-right',
+    id: 'node-menu',
+    component: NodeMenu,
+    position: 'bottom-middle',
   });
 </script>
 

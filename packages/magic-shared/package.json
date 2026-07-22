@@ -80,6 +80,10 @@
       "types": "./dist/types/themer/index.d.ts",
       "default": "./src/themer/index.ts"
     },
+    "./utilities": {
+      "types": "./dist/types/utilities/index.d.ts",
+      "default": "./src/utilities/index.ts"
+    },
     "./*": {
       "types": "./dist/types/*.d.ts",
       "default": "./src/*.ts"

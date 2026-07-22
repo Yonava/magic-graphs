@@ -6,7 +6,7 @@ import { createHasNodeCheck } from './checks/hasNodes.ts';
 export type Violation = {
   id: string;
   lens?: Lens;
-  explainer: Explainer;
+  explainer?: Explainer;
 };
 
 export type GuardCheck = () => Violation | undefined;

@@ -10,47 +10,46 @@ import {
   traversalGuardChecker,
 } from './shared.ts';
 
-type BFSFrame = string;
+type DFSFrame = string;
 
-const bfs: TraversalFunction<BFSFrame> =
-  (adjList, startNodeId) => (frameCollector) => {
-    if (!(startNodeId in adjList)) return;
+const dfs: TraversalFunction<DFSFrame> =
+  (adjList, start) => (frameCollector) => {
+    if (!(start in adjList)) return;
 
-    const visited = new Set<string>([startNodeId]);
-    const queue = [startNodeId];
+    const visited = new Set<string>();
 
-    while (queue.length > 0) {
-      const node = queue.shift()!;
+    const visit = (node: string) => {
+      if (visited.has(node)) return;
+      visited.add(node);
       frameCollector.add(node);
       for (const neighbor of adjList[node] ?? []) {
-        if (!visited.has(neighbor)) {
-          visited.add(neighbor);
-          queue.push(neighbor);
-        }
+        visit(neighbor);
       }
-    }
+    };
+
+    visit(start);
   };
 
-export const useBFSSimulationDefinition = (
+export const useDFSSimulationDefinition = (
   options: TraversalSimulationOptions,
-): SimulationDefinition<BFSFrame> => {
+): SimulationDefinition<DFSFrame> => {
   return {
     guard: traversalGuardChecker(options),
     collectFrames: (collector) =>
-      traversalFrameCollector(options, bfs)(collector),
+      traversalFrameCollector(options, dfs)(collector),
     setup: (context) => {
       const themer = createNodeThemer(options.graph, ({ id }) =>
         context.currentFrame.value === id ? colors.AMBER_500 : undefined,
       );
 
-      const bfsLens: Lens = {
-        id: 'bfs-sim',
+      const dfsLens: Lens = {
+        id: 'dfs-sim',
         activate: themer.activate,
         deactivate: themer.deactivate,
       };
 
       return {
-        lens: bfsLens,
+        lens: dfsLens,
         onViolation: options.graph.magic.simulation.stop,
       };
     },
