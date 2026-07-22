@@ -130,7 +130,7 @@ export class AVLTree {
 
         this.addFrame({
           action: 'remove',
-          targetNode: this.getNodeByValue(value),
+          targetNodeValue: value,
         });
 
         // Restore the tree for further processing

@@ -13,7 +13,7 @@ export const createLabelThemer = (
   const canvas = controls.canvas.theme.createLayer(layerId);
   const focus = controls.focus?.theme.createLayer(layerId);
 
-  const label = (node: CoreNode) => getLabel(node.id);
+  const label = (node: CoreNode) => getLabel(node.id) ?? '?';
 
   const enable = () => {
     canvas.set('node.default.text.content', label);

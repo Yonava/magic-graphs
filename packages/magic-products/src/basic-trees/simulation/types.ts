@@ -27,7 +27,8 @@ type InsertFrame = {
 
 type RemoveFrame = {
   action: 'remove';
-  targetNode: NodePayload | undefined;
+  // node value in this case since node doesn't exist, so we should't be referencing an ID that doest exist
+  targetNodeValue: NodePayload['value'] | undefined;
 };
 
 export type AVLFrameNoRoot =

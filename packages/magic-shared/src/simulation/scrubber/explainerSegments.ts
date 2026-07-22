@@ -1,32 +1,14 @@
 import { nullThrows } from '@core/utils/assert';
 import { MaybeGetter, getValue } from '@core/utils/maybeGetter/index';
 
-import { GNode, Graph } from '../../graph/types.ts';
-import { useNodeStyles } from '../../utilities/useNodeStyles.ts';
-import { useNodeIdThemer } from '../../utilities/useNodeThemer.ts';
+import { Graph } from '../../graph/types.ts';
 import { Explainer, ExplainerHighlight } from '../types.ts';
+import { useNodeIdPart } from './useNodeIdPart.ts';
 
-type ExplainerSegment = {
+export type ExplainerSegment = {
   id: string;
   text: MaybeGetter<string>;
   highlight: ExplainerHighlight | undefined;
-};
-
-const useNodeExplainerHighlight = (
-  graph: Graph,
-  id: GNode['id'],
-): ExplainerHighlight => {
-  const { themer } = useNodeIdThemer(graph, id);
-  const { styles, dispose } = useNodeStyles(graph, id);
-  return {
-    onUnmounted: dispose,
-    activate: themer.activate,
-    deactivate: themer.deactivate,
-    classes: 'text-white',
-    styles: () => ({
-      backgroundColor: styles.value.border.color,
-    }),
-  };
 };
 
 export const explainerSegments = (
@@ -60,11 +42,8 @@ export const explainerSegments = (
     const [, bracketContent, nodeId] = match;
 
     if (nodeId !== undefined) {
-      parts.push({
-        id: crypto.randomUUID(),
-        text: () => graph.nodeLabel.get(nodeId),
-        highlight: useNodeExplainerHighlight(graph, nodeId),
-      });
+      const nodeIdPart = useNodeIdPart(graph, nodeId);
+      parts.push(nodeIdPart);
     } else {
       parts.push({
         id: crypto.randomUUID(),

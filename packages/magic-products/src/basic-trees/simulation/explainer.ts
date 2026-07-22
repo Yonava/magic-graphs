@@ -42,19 +42,16 @@ export const explainer = (frame: AVLFrame): Explainer | undefined => {
     };
   }
   if (frame.action === 'remove') {
-    if (!frame.targetNode) return { content: 'Removing node' };
     return {
-      content: `Removing {${frame.targetNode.id}}`,
+      content: `Removing [${frame.targetNodeValue}]`,
+      highlights: [{}],
     };
   }
   if (frame.action === 'compare-removal') {
-    if (!frame.targetNode) {
-      return { content: `Comparing to {${frame.comparedNode.id}}` };
-    }
     return {
       content:
-        `Comparing {${frame.targetNode.id}} to {${frame.comparedNode.id}}` +
-        (frame.targetNode.id === frame.comparedNode.id ? '. Found It!' : ''),
+        `Comparing {${frame.targetNode?.id}} to {${frame.comparedNode.id}}` +
+        (frame.targetNode?.id === frame.comparedNode.id ? '. Found It!' : ''),
     };
   }
 };

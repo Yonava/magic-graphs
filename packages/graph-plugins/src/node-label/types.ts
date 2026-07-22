@@ -16,7 +16,7 @@ export type NodeLabelUpdate = {
 
 export type NodeLabelControls = {
   /** Returns the label of a node. */
-  get: (nodeId: string) => string;
+  get: (nodeId: string) => string | undefined;
   /** Updates a single node's label. */
   set: (label: NodeLabelUpdate) => void;
   /** Updates multiple nodes' labels. */
