@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import { cn } from '@core/components/cn';
   import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
-  import keys from 'ctrl-keys';
 
-  import { computed, onMounted, onUnmounted } from 'vue';
+  import { computed } from 'vue';
 
   import IconButton from '../../components/icon-button/IconButton.vue';
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
+  import { useCtrlKeys } from '../../utilities/useCtrlKeys.ts';
   import { useRunningSimulation } from '../useRunningSimulation.ts';
   import ExplainerText from './ExplainerText.vue';
 
@@ -37,16 +37,13 @@
     return (playhead / (totalFrames - 1)) * 100;
   });
 
-  const handler = keys()
+  useCtrlKeys()
     .add('left', () => {
       if (!simulation.value.playhead.isFirst()) simulation.value.playhead.prev();
     })
     .add('right', () => {
       if (!simulation.value.playhead.isLast()) simulation.value.playhead.next();
     });
-
-  onMounted(() => window.addEventListener('keydown', handler.handle));
-  onUnmounted(() => window.removeEventListener('keydown', handler.handle));
 </script>
 
 <template>

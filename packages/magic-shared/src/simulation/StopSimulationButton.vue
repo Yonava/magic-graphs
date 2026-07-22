@@ -1,22 +1,14 @@
 <script setup lang="ts">
   import { mdiStop } from '@mdi/js';
 
-  import { onBeforeUnmount } from 'vue';
-
   import Button from '../components/button/Button.vue';
   import Icon from '../components/icon/Icon.vue';
   import { useProvidedGraph } from '../product/useProvidedGraph.ts';
+  import { useCtrlKeys } from '../utilities/useCtrlKeys.ts';
 
   const graph = useProvidedGraph();
 
-  const stopSimulationOnEsc = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') graph.magic.simulation.stop();
-  };
-
-  graph.canvas.events.subscribe('onKeyDown', stopSimulationOnEsc);
-  onBeforeUnmount(() =>
-    graph.canvas.events.unsubscribe('onKeyDown', stopSimulationOnEsc),
-  );
+  useCtrlKeys().add('escape', () => graph.magic.simulation.stop());
 </script>
 
 <template>
