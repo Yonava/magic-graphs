@@ -2,6 +2,20 @@ import Fraction from 'fraction.js';
 
 import type { Edge, Node } from '../types.ts';
 
+/**
+ * Finds a minimum spanning tree (MST) of a weighted graph using Prim's
+ * algorithm. If the graph is disconnected, returns a minimum spanning forest
+ * instead.
+ *
+ * Grows the spanning tree one edge at a time by repeatedly selecting the
+ * minimum-weight edge connecting a visited vertex to an unvisited vertex.
+ *
+ * @complexity
+ * Time:  O(VE)   Θ(VE)   Ω(V)
+ * Space: O(V)    Θ(V)    Ω(V)
+ *
+ * where V = number of vertices and E = number of edges.
+ */
 export const prims = (nodes: Node[], edges: Edge[]) => {
   const getMinEdge = (edges: Edge[], inMST: Set<string>) => {
     let minEdge: Edge | null = null;

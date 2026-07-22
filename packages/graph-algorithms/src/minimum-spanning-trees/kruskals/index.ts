@@ -5,6 +5,21 @@ import type { Edge, Node } from '../types.ts';
 type Parent = Map<string, string>;
 type Rank = Map<string, number>;
 
+/**
+ * Finds a minimum spanning tree (MST) of a weighted graph using Kruskal's
+ * algorithm. If the graph is disconnected, returns a minimum spanning forest
+ * instead.
+ *
+ * Processes edges in non-decreasing order of weight, greedily adding each edge
+ * that connects two previously disconnected components. A union-find data
+ * structure with path compression is used to efficiently detect cycles.
+ *
+ * @complexity
+ * Time:  O(E log E)   Θ(E log E)   Ω(E)
+ * Space: O(V)         Θ(V)         Ω(V)
+ *
+ * where V = number of vertices and E = number of edges.
+ */
 export const kruskals = (nodes: Node[], edges: Edge[]) => {
   const find = (parent: Parent, nodeId: string): string => {
     if (parent.get(nodeId) !== nodeId) {
