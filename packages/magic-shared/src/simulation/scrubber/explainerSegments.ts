@@ -22,6 +22,7 @@ const useNodeExplainerHighlight = (
     onUnmounted: dispose,
     activate: themer.activate,
     deactivate: themer.deactivate,
+    classes: 'text-white',
     styles: () => ({
       backgroundColor: styles.value.border.color,
     }),
