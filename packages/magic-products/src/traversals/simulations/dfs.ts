@@ -1,5 +1,7 @@
+import colors from '@core/utils/colors';
 import { Lens } from '@magic/shared/lens';
 import { SimulationDefinition } from '@magic/shared/simulation';
+import { createNodeThemer } from '@magic/shared/utilities';
 
 import {
   TraversalFunction,
@@ -36,12 +38,9 @@ export const useDFSSimulationDefinition = (
     collectFrames: (collector) =>
       traversalFrameCollector(options, dfs)(collector),
     setup: (context) => {
-      const themer = options.graph.theme.createThemer({
-        canvas: {
-          'node.default.border.color': ({ id }) =>
-            context.currentFrame.value === id ? 'red' : undefined,
-        },
-      });
+      const themer = createNodeThemer(options.graph, ({ id }) =>
+        context.currentFrame.value === id ? colors.AMBER_500 : undefined,
+      );
 
       const dfsLens: Lens = {
         id: 'dfs-sim',

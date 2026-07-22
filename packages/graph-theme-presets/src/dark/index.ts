@@ -8,8 +8,6 @@ import { MarqueePlugin } from '@graph/plugins/marquee/types';
 
 import { shared } from './shared.ts';
 
-const REDDISH_GRAY = 'rgb(100, 60, 70)';
-
 type DarkPreset = PluginThemes<
   [CanvasPlugin, FocusPlugin, MarqueePlugin, AnchorsPlugin]
 >;
@@ -67,7 +65,7 @@ export const dark: DarkPreset = {
 
     'node.focus.border.color': colors.RED_700,
     'node.focus.border.width': shared.node.borderWidth,
-    'node.focus.color': REDDISH_GRAY,
+    'node.focus.color': colors.STONE_600,
     'node.focus.cursor': shared.node.cursor,
     'node.focus.size': shared.node.size,
     'node.focus.text.color': shared.node.text.color,
@@ -97,7 +95,7 @@ export const dark: DarkPreset = {
     'anchors.edge.preview.parentFocused.width':
       shared.anchors.edgePreview.width,
 
-    'anchors.parentFocused.color': colors.RED_900,
+    'anchors.parentFocused.color': colors.RED_700,
     'anchors.parentFocused.cursor': shared.anchors.cursor,
     'anchors.parentFocused.radius': shared.anchors.radius,
   },

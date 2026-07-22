@@ -9,6 +9,9 @@
     core: {
       weighted: false,
     },
+    interactive: {
+      addedEdgeRuleNoSelfLoops: true,
+    },
     ui: {
       lensChips,
     },

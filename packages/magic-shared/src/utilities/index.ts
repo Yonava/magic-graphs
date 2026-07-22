@@ -1,2 +1,6 @@
-export { useNodeThemer, type NodeThemer } from './useNodeThemer.ts';
+export {
+  useNodeIdThemer,
+  type NodeIdThemer,
+  createNodeThemer,
+} from './useNodeThemer.ts';
 export { useFocusedNode } from './useFocusedNode.ts';

@@ -1,7 +1,7 @@
 import { Explainer } from '@magic/shared/simulation';
+import { NodeIdThemer } from '@magic/shared/utilities';
 
 import { AVLFrame, BalanceMethod } from './types.ts';
-import { NodeThemer } from '@magic/shared/utilities';
 
 const BALANCE_METHOD_TO_STRING: Record<BalanceMethod, string> = {
   'left-left': 'Left Left',
@@ -22,7 +22,7 @@ const BALANCE_METHOD_TO_DEFINITION: Record<BalanceMethod, string> = {
 };
 
 export const explainer =
-  ({ nodeId, themer }: NodeThemer) =>
+  ({ nodeId, themer }: NodeIdThemer) =>
   (frame: AVLFrame): Explainer | undefined => {
     if (frame.action === 'compare') {
       return {

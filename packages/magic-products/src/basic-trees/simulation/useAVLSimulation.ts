@@ -1,6 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 import { useProvidedGraph } from '@magic/shared/product';
 import { SimulationDefinition } from '@magic/shared/simulation';
+import { useNodeIdThemer } from '@magic/shared/utilities';
 
 import { onMounted, ref } from 'vue';
 
@@ -12,7 +13,6 @@ import {
   SuggestedNodesControls,
   useSuggestedNodes,
 } from './useSuggestedNodes.ts';
-import { useNodeThemer } from '@magic/shared/utilities';
 
 type Controls = {
   definition: SimulationDefinition<AVLFrame>;
@@ -31,7 +31,7 @@ export type AVLControls = ReturnType<typeof useAVLControls>;
 export const useAVLSimulationDefinition = (): Controls => {
   const graph = useProvidedGraph();
 
-  const highlightNode = useNodeThemer(graph);
+  const highlightNode = useNodeIdThemer(graph);
   const avlControls = useAVLControls();
 
   const tree = new AVLTree();
