@@ -4,7 +4,6 @@
   import { onBeforeUnmount } from 'vue';
 
   import Button from '../components/button/Button.vue';
-  import IconButton from '../components/icon-button/IconButton.vue';
   import Icon from '../components/icon/Icon.vue';
   import { useProvidedGraph } from '../product/useProvidedGraph.ts';
 
