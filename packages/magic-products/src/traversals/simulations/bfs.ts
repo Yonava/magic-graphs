@@ -1,56 +1,42 @@
-import { nullThrows } from '@core/utils/assert';
-import { Graph } from '@magic/shared/graph';
 import { Lens } from '@magic/shared/lens';
+import { SimulationDefinition } from '@magic/shared/simulation';
+
 import {
-  FrameCollector,
-  SimulationDefinition,
-  SimulationGuardBuilder,
-} from '@magic/shared/simulation';
-
-import { DeepReadonly } from 'vue';
-
-import { StartNodeId } from './types.ts';
+  TraversalFunction,
+  TraversalSimulationOptions,
+  traversalFrameCollector,
+  traversalGuardChecker,
+} from './shared.ts';
 
 type BFSFrame = string;
 
-const bfs =
-  (graph: DeepReadonly<Record<string, string[]>>, start: string) =>
-  (frameCollector: FrameCollector<BFSFrame>) => {
-    if (!(start in graph)) return [];
+const bfs: TraversalFunction<BFSFrame> =
+  (adjList, startNodeId) => (frameCollector) => {
+    if (!(startNodeId in adjList)) return;
 
-    const visited = new Set<string>([start]);
-    const queue = [start];
-    const order: string[] = [];
+    const visited = new Set<string>([startNodeId]);
+    const queue = [startNodeId];
 
     while (queue.length > 0) {
       const node = queue.shift()!;
       frameCollector.add(node);
-      order.push(node);
-      for (const neighbor of graph[node] ?? []) {
+      for (const neighbor of adjList[node] ?? []) {
         if (!visited.has(neighbor)) {
           visited.add(neighbor);
           queue.push(neighbor);
         }
       }
     }
-
-    return order;
   };
 
 export const useBFSSimulationDefinition = (
-  graph: Graph,
-  startNodeId: StartNodeId,
+  options: TraversalSimulationOptions,
 ): SimulationDefinition<BFSFrame> => {
   return {
-    guard: new SimulationGuardBuilder(graph).minNodes(1).build(),
-    collectFrames: (collector) => {
-      bfs(
-        graph.adjacencyLists.standard.value,
-        nullThrows(startNodeId.value, 'start node id not defined'),
-      )(collector);
-    },
+    guard: traversalGuardChecker(options),
+    collectFrames: traversalFrameCollector(options, bfs),
     setup: (context) => {
-      const themer = graph.theme.createThemer({
+      const themer = options.graph.theme.createThemer({
         canvas: {
           'node.default.border.color': ({ id }) =>
             context.currentFrame.value === id ? 'red' : undefined,
@@ -65,6 +51,7 @@ export const useBFSSimulationDefinition = (
 
       return {
         lens: bfsLens,
+        onViolation: options.graph.magic.simulation.stop,
       };
     },
   };

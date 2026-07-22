@@ -39,6 +39,10 @@ export type SimulationEffects<Frame> = {
   explainer?: (frame: Frame) => Explainer | undefined;
 } & SimulationLifecycle<Frame>;
 
+export type FrameCollectorFn<Frame> = (
+  collector: FrameCollector<Frame>,
+) => void;
+
 export type SimulationDefinition<Frame> = {
   /**
    * Runs before frames are (re)computed on every graph structure
@@ -48,7 +52,7 @@ export type SimulationDefinition<Frame> = {
    */
   guard?: GuardCheck;
 
-  collectFrames: (collector: FrameCollector<Frame>) => void;
+  collectFrames: FrameCollectorFn<Frame>;
   setup: (context: SetupContext<Frame>) => SimulationEffects<Frame> | undefined;
 
   recomputeFramesOnStructureChange?: boolean;

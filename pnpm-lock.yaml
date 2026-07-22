@@ -332,6 +332,9 @@ importers:
       '@types/tinycolor2':
         specifier: 'catalog:'
         version: 1.4.6
+      ts-essentials:
+        specifier: ^10.2.0
+        version: 10.2.1(typescript@6.0.3)
 
   packages/magic-shared:
     dependencies:

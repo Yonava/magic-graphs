@@ -1,18 +1,18 @@
-import { GNode } from '@magic/shared/graph';
 import { useProvidedGraph } from '@magic/shared/product';
 
 import { ref } from 'vue';
 
 import { useBFSSimulationDefinition } from './bfs.ts';
 import { useDFSSimulationDefinition } from './dfs.ts';
-import { StartNodeId } from './types.ts';
+import { StartNodeId, TraversalSimulationOptions } from './shared.ts';
 
 export const useTraversalSimulations = () => {
   const graph = useProvidedGraph();
-  const startNodeId: StartNodeId = ref<GNode['id'] | undefined>();
+  const startNodeId: StartNodeId = ref();
 
-  const bfs = useBFSSimulationDefinition(graph, startNodeId);
-  const dfs = useDFSSimulationDefinition(graph, startNodeId);
+  const options: TraversalSimulationOptions = { graph, startNodeId };
+  const bfs = useBFSSimulationDefinition(options);
+  const dfs = useDFSSimulationDefinition(options);
 
   return { bfs, dfs, startNodeId };
 };

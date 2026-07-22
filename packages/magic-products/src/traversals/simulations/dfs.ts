@@ -1,66 +1,41 @@
-import { nullThrows } from '@core/utils/assert';
-import { Graph } from '@magic/shared/graph';
 import { Lens } from '@magic/shared/lens';
-import { MagicGraph } from '@magic/shared/product/useGraphProduct';
+import { SimulationDefinition } from '@magic/shared/simulation';
+
 import {
-  FrameCollector,
-  SimulationDefinition,
-  SimulationGuardBuilder,
-} from '@magic/shared/simulation';
-
-import { DeepReadonly } from 'vue';
-
-import { StartNodeId } from './types.ts';
+  TraversalFunction,
+  TraversalSimulationOptions,
+  traversalFrameCollector,
+  traversalGuardChecker,
+} from './shared.ts';
 
 type DFSFrame = string;
 
-const dfs =
-  (graph: DeepReadonly<Record<string, string[]>>, start: string) =>
-  (frameCollector: FrameCollector<DFSFrame>) => {
-    if (!(start in graph)) return [];
+const dfs: TraversalFunction<DFSFrame> =
+  (adjList, start) => (frameCollector) => {
+    if (!(start in adjList)) return;
 
     const visited = new Set<string>();
-    const order: string[] = [];
 
     const visit = (node: string) => {
       if (visited.has(node)) return;
       visited.add(node);
       frameCollector.add(node);
-      order.push(node);
-      for (const neighbor of graph[node] ?? []) {
+      for (const neighbor of adjList[node] ?? []) {
         visit(neighbor);
       }
     };
 
     visit(start);
-
-    return order;
   };
 
 export const useDFSSimulationDefinition = (
-  graph: MagicGraph,
-  startNodeId: StartNodeId,
+  options: TraversalSimulationOptions,
 ): SimulationDefinition<DFSFrame> => {
   return {
-    guard: new SimulationGuardBuilder(graph)
-      .custom(() => {
-        const startNodeInNodes =
-          startNodeId.value &&
-          graph.nodes.value.some((n) => n.id === startNodeId.value);
-        if (!startNodeInNodes)
-          return {
-            id: 'no-start-node',
-          };
-      })
-      .build(),
-    collectFrames: (collector) => {
-      dfs(
-        graph.adjacencyLists.standard.value,
-        nullThrows(startNodeId.value, 'start node id not defined'),
-      )(collector);
-    },
+    guard: traversalGuardChecker(options),
+    collectFrames: traversalFrameCollector(options, dfs),
     setup: (context) => {
-      const themer = graph.theme.createThemer({
+      const themer = options.graph.theme.createThemer({
         canvas: {
           'node.default.border.color': ({ id }) =>
             context.currentFrame.value === id ? 'red' : undefined,
@@ -75,7 +50,7 @@ export const useDFSSimulationDefinition = (
 
       return {
         lens: dfsLens,
-        onViolation: graph.magic.simulation.stop,
+        onViolation: options.graph.magic.simulation.stop,
       };
     },
   };
