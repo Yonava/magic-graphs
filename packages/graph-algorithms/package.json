@@ -14,6 +14,10 @@
     "test": "vitest"
   },
   "devDependencies": {
+    "fast-check": "^4.9.0",
     "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "fraction.js": "^5.3.4"
   }
 }
