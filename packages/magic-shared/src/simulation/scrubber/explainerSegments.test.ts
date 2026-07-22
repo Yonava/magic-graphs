@@ -24,6 +24,7 @@ vi.mock('../../utilities/useNodeStyles.ts', () => ({
 const { explainerSegments } = await import('./explainerSegments.ts');
 
 const graph = {
+  isNode: (_id: string): boolean => true,
   nodeLabel: {
     get: (id: string) => `Label ${id}`,
   },

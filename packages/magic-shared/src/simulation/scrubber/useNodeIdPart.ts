@@ -22,7 +22,7 @@ const useNodeExplainerHighlight = (
   };
 };
 
-export const useNodeIdPart = (
+export const useNodeRefExplainerSegment = (
   graph: Graph,
   id: GNode['id'],
 ): ExplainerSegment => {

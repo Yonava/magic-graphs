@@ -3,7 +3,8 @@ import { MaybeGetter, getValue } from '@core/utils/maybeGetter/index';
 
 import { Graph } from '../../graph/types.ts';
 import { Explainer, ExplainerHighlight } from '../types.ts';
-import { useNodeIdPart } from './useNodeIdPart.ts';
+import { parseTextSegments } from './parseTextSegments.ts';
+import { useNodeRefExplainerSegment } from './useNodeIdPart.ts';
 
 export type ExplainerSegment = {
   id: string;
@@ -17,54 +18,38 @@ export const explainerSegments = (
 ): ExplainerSegment[] => {
   if (!explainer) return [];
 
-  const { content: text, highlights } = explainer;
+  const textValue = getValue(explainer.content);
+  const highlightsValue = getValue(explainer.highlights) ?? [];
 
-  const textValue = getValue(text);
-  const highlightsValue = getValue(highlights) ?? [];
+  const textSegments = parseTextSegments(textValue);
 
-  const parts: ExplainerSegment[] = [];
-  let lastIndex = 0;
+  const explainerSegments: ExplainerSegment[] = [];
+
   let highlightIndex = 0;
-
-  const segmentPattern = /\[([^\]]*)\]|\{([^}]*)\}/g;
-  const matches = textValue.matchAll(segmentPattern);
-
-  for (const match of matches) {
-    const index = match.index ?? 0;
-    if (index > lastIndex) {
-      parts.push({
-        id: crypto.randomUUID(),
-        text: textValue.slice(lastIndex, index),
+  for (const { bracketType, text } of textSegments) {
+    const segmentId = crypto.randomUUID();
+    if (bracketType === undefined) {
+      explainerSegments.push({
+        id: segmentId,
         highlight: undefined,
+        text,
       });
+      continue;
     }
-
-    const [, bracketContent, nodeId] = match;
-
-    if (nodeId !== undefined) {
-      const nodeIdPart = useNodeIdPart(graph, nodeId);
-      parts.push(nodeIdPart);
-    } else {
-      parts.push({
-        id: crypto.randomUUID(),
-        text: bracketContent,
-        highlight: nullThrows(
-          highlightsValue[highlightIndex++],
-          `explainer content has more [bracketed] segments than highlights (expected highlights[${highlightIndex}])`,
-        ),
-      });
+    if (bracketType === 'curly') {
+      explainerSegments.push(useNodeRefExplainerSegment(graph, text));
+      continue;
     }
-
-    lastIndex = index + match[0].length;
-  }
-
-  if (lastIndex < textValue.length) {
-    parts.push({
-      id: crypto.randomUUID(),
-      text: textValue.slice(lastIndex),
-      highlight: undefined,
+    const highlight = nullThrows(
+      highlightsValue.at(highlightIndex++),
+      `explainer content has more [bracketed] segments than highlights (expected highlights[${highlightIndex}])`,
+    );
+    explainerSegments.push({
+      id: segmentId,
+      highlight,
+      text,
     });
   }
 
-  return parts;
+  return explainerSegments;
 };
