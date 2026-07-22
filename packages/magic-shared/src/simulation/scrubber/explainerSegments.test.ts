@@ -107,4 +107,59 @@ describe(explainerSegments, () => {
 
     expect(() => explainerSegments(explainer)).toThrow();
   });
+
+  test('resolves content when it is a getter function', () => {
+    const explainer: Explainer = {
+      content: () => 'no brackets here',
+      highlights: [],
+    };
+
+    expect(explainerSegments(explainer)).toEqual([
+      { text: 'no brackets here', highlight: undefined },
+    ]);
+  });
+
+  test('resolves highlights when it is a getter function', () => {
+    const h = highlight();
+    const explainer: Explainer = {
+      content: 'Looking at [Node A] now',
+      highlights: () => [h],
+    };
+
+    const segments = explainerSegments(explainer);
+
+    expect(segments.map((s) => s.text)).toEqual([
+      'Looking at ',
+      'Node A',
+      ' now',
+    ]);
+    expect(segments[1].highlight).toBe(h);
+  });
+
+  test('resolves both content and highlights when both are getter functions', () => {
+    const h = highlight();
+    const explainer: Explainer = {
+      content: () => 'Looking at [Node A] now',
+      highlights: () => [h],
+    };
+
+    const segments = explainerSegments(explainer);
+
+    expect(segments.map((s) => s.text)).toEqual([
+      'Looking at ',
+      'Node A',
+      ' now',
+    ]);
+    expect(segments[1].highlight).toBe(h);
+  });
+
+  test('defaults to an empty array when highlights is undefined', () => {
+    const explainer: Explainer = {
+      content: 'no brackets here',
+    };
+
+    expect(explainerSegments(explainer)).toEqual([
+      { text: 'no brackets here', highlight: undefined },
+    ]);
+  });
 });

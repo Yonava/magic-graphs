@@ -21,12 +21,9 @@
 </script>
 
 <template>
-  <Well v-if="node">
+  <Well v-if="node && !graph.magic.simulation.current.value">
     <HStack>
-      <Button
-        @click="removeNodeFromAvl(node.id)"
-        :disabled="!!graph.magic.simulation.current.value"
-      >
+      <Button @click="removeNodeFromAvl(node.id)">
         Remove {{ node.label }}
       </Button>
     </HStack>

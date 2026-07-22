@@ -1,6 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 import { Graph } from '@magic/shared/graph';
 import { Lens } from '@magic/shared/lens';
+import { MagicGraph } from '@magic/shared/product/useGraphProduct';
 import {
   FrameCollector,
   SimulationDefinition,
@@ -11,40 +12,49 @@ import { DeepReadonly } from 'vue';
 
 import { StartNodeId } from './types.ts';
 
-type BFSFrame = string;
+type DFSFrame = string;
 
-const bfs =
+const dfs =
   (graph: DeepReadonly<Record<string, string[]>>, start: string) =>
-  (frameCollector: FrameCollector<BFSFrame>) => {
+  (frameCollector: FrameCollector<DFSFrame>) => {
     if (!(start in graph)) return [];
 
-    const visited = new Set<string>([start]);
-    const queue = [start];
+    const visited = new Set<string>();
     const order: string[] = [];
 
-    while (queue.length > 0) {
-      const node = queue.shift()!;
+    const visit = (node: string) => {
+      if (visited.has(node)) return;
+      visited.add(node);
       frameCollector.add(node);
       order.push(node);
       for (const neighbor of graph[node] ?? []) {
-        if (!visited.has(neighbor)) {
-          visited.add(neighbor);
-          queue.push(neighbor);
-        }
+        visit(neighbor);
       }
-    }
+    };
+
+    visit(start);
 
     return order;
   };
 
-export const useBFSSimulationDefinition = (
-  graph: Graph,
+export const useDFSSimulationDefinition = (
+  graph: MagicGraph,
   startNodeId: StartNodeId,
-): SimulationDefinition<BFSFrame> => {
+): SimulationDefinition<DFSFrame> => {
   return {
-    guard: new SimulationGuardBuilder(graph).minNodes(1).build(),
+    guard: new SimulationGuardBuilder(graph)
+      .custom(() => {
+        const startNodeInNodes =
+          startNodeId.value &&
+          graph.nodes.value.some((n) => n.id === startNodeId.value);
+        if (!startNodeInNodes)
+          return {
+            id: 'no-start-node',
+          };
+      })
+      .build(),
     collectFrames: (collector) => {
-      bfs(
+      dfs(
         graph.adjacencyLists.standard.value,
         nullThrows(startNodeId.value, 'start node id not defined'),
       )(collector);
@@ -57,14 +67,15 @@ export const useBFSSimulationDefinition = (
         },
       });
 
-      const bfsLens: Lens = {
-        id: 'bfs-sim',
+      const dfsLens: Lens = {
+        id: 'dfs-sim',
         activate: themer.activate,
         deactivate: themer.deactivate,
       };
 
       return {
-        lens: bfsLens,
+        lens: dfsLens,
+        onViolation: graph.magic.simulation.stop,
       };
     },
   };
