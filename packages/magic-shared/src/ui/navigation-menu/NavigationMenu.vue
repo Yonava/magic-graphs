@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { cn } from '@core/components/cn';
+  import { nullThrows } from '@core/utils/assert';
   import { navigateTo } from 'nuxt/app';
 
   import Button from '../../components/button/Button.vue';
@@ -8,53 +9,10 @@
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import { ThemePreset } from '../../graph/types.ts';
+  import { Thumbnail } from '../../product/manifest.ts';
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
-
-  type Thumbnail = Record<ThemePreset, string>;
-
-  type Product = {
-    id: string;
-    name: string;
-    description: string;
-    thumbnail: Thumbnail;
-    slug: string;
-  };
-
-  const products: Product[] = [
-    {
-      id: 'avl-trees',
-      name: 'AVL Trees',
-      description: 'Learn about how an AVL tree works!',
-      slug: 'trees',
-      thumbnail: {
-        light: '/products/thumbnails/binary-tree.png',
-        dark: '/products/thumbnails/binary-tree.png',
-      },
-    },
-    {
-      id: 'traversals',
-      name: 'Traversals',
-      description: 'Learn about how an traversals like BFS and DFS works!',
-      slug: 'traversals',
-      thumbnail: {
-        light: '/products/sim-thumbnails/bfs.png',
-        dark: '/products/sim-thumbnails/bfs.png',
-      },
-    },
-    {
-      id: 'path-finding',
-      name: 'Path Finding',
-      description:
-        'Learn about how an path finding algorithms like Dijkstras work!',
-      slug: 'path',
-      thumbnail: {
-        light: '/products/thumbnails/dijkstras.png',
-        dark: '/products/thumbnails/dijkstras.png',
-      },
-    },
-  ];
+  import { products } from './productList.ts';
 
   const graph = useProvidedGraph();
 
@@ -67,6 +25,11 @@
     dark: 'text-gray-300',
     light: 'text-gray-800',
   });
+
+  const activeProduct = nullThrows(
+    products.find((product) => graph.magic.manifest.id === product.id),
+    'product id not recognized',
+  );
 </script>
 
 <template>
@@ -74,7 +37,7 @@
     <template #trigger>
       <Well class="p-0">
         <Button class="bg-transparent text-xl p-2 px-4 text-magic">
-          Magic Graphs
+          {{ activeProduct.name }}
         </Button>
       </Well>
     </template>

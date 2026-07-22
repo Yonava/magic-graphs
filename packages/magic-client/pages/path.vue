@@ -1,14 +1,9 @@
 <script setup lang="ts">
-  import { initPathFindingProduct } from '@magic/products/path-finding/index';
+  import { manifest } from '@magic/products/path-finding/manifest';
 
-  const product = initPathFindingProduct();
-
-  useSeoMeta({
-    title: product.meta.title,
-    description: product.meta.description,
-  });
+  useSeoMeta(manifest.meta);
 </script>
 
 <template>
-  <div><component :is="product.component" /></div>
+  <div><component :is="manifest.component" /></div>
 </template>

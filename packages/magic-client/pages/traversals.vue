@@ -1,14 +1,9 @@
 <script setup lang="ts">
-  import { initTraversalsProduct } from '@magic/products/traversals/index';
+  import { manifest } from '@magic/products/traversals/manifest';
 
-  const product = initTraversalsProduct();
-
-  useSeoMeta({
-    title: product.meta.title,
-    description: product.meta.description,
-  });
+  useSeoMeta(manifest.meta);
 </script>
 
 <template>
-  <div><component :is="product.component" /></div>
+  <div><component :is="manifest.component" /></div>
 </template>

@@ -11,17 +11,19 @@ import {
   useProductAppearance,
 } from '../ui/appearance/useProductAppearance.ts';
 import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
+import { MagicProductManifest } from './manifest.ts';
 import { useLocalStorageGraphSync } from './useLocalStorageGraphSync.ts';
 import { provideGraph } from './useProvidedGraph.ts';
 
 type GraphProductOptions = UseGraphOptions & {
-  productId: string;
+  manifest: MagicProductManifest;
   localStorage?: boolean;
   ui?: UIOptions;
 };
 
 export type MagicGraph = Graph & {
   magic: {
+    manifest: MagicProductManifest;
     lens: LensControls;
     componentSlots: ComponentSlotControls;
     simulation: SimulationControls;
@@ -43,6 +45,7 @@ export const useGraphProduct = (options: GraphProductOptions) => {
   const magicGraph: MagicGraph = {
     ...graph,
     magic: {
+      manifest: options.manifest,
       lens,
       componentSlots,
       simulation,
@@ -52,7 +55,7 @@ export const useGraphProduct = (options: GraphProductOptions) => {
   };
 
   if (options.localStorage !== false) {
-    useLocalStorageGraphSync(graph, options.productId);
+    useLocalStorageGraphSync(magicGraph);
   }
 
   provideGraph(magicGraph);

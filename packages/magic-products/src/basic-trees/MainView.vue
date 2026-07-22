@@ -2,9 +2,10 @@
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import FocusedNodeMenu from './FocusedNodeMenu.vue';
+  import { manifest } from './manifest.ts';
 
   const graph = useGraphProduct({
-    productId: 'basic-trees',
+    manifest,
     localStorage: false,
     core: {
       weighted: false,

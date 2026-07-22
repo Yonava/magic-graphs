@@ -2,20 +2,19 @@ import { debounce } from '@core/utils/debounce';
 
 import { onMounted } from 'vue';
 
-import { Graph } from '../graph/types.ts';
+import type { MagicGraph } from './useGraphProduct.ts';
 
 const localStorageKey = (id: string) => 'graph-data-' + id;
 
-export const useLocalStorageGraphSync = (graph: Graph, productId: string) => {
+export const useLocalStorageGraphSync = (graph: MagicGraph) => {
+  const key = localStorageKey(graph.magic.manifest.id);
+
   const save = debounce(() => {
-    window?.localStorage.setItem(
-      localStorageKey(productId),
-      JSON.stringify(graph.transit.encode()),
-    );
+    window?.localStorage.setItem(key, JSON.stringify(graph.transit.encode()));
   }, 500);
 
   const sync = () => {
-    const data = window?.localStorage.getItem(localStorageKey(productId));
+    const data = window?.localStorage.getItem(key);
     if (!data) return;
     graph.transit.decode(JSON.parse(data));
   };

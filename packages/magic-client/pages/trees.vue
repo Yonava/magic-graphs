@@ -1,14 +1,9 @@
 <script setup lang="ts">
-  import { initTreesProduct } from '@magic/products/basic-trees/index';
+  import { manifest } from '@magic/products/basic-trees/manifest';
 
-  const product = initTreesProduct();
-
-  useSeoMeta({
-    title: product.meta.title,
-    description: product.meta.description,
-  });
+  useSeoMeta(manifest.meta);
 </script>
 
 <template>
-  <div><component :is="product.component" /></div>
+  <div><component :is="manifest.component" /></div>
 </template>

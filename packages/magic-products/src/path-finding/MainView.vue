@@ -2,9 +2,10 @@
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import BottomPanel from './BottomPanel.vue';
+  import { manifest } from './manifest.ts';
 
   const graph = useGraphProduct({
-    productId: 'path-finding',
+    manifest,
     interactive: {
       addedEdgeRuleNoSelfLoops: true,
       addedEdgeWeight: 0.5,

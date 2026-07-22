@@ -3,9 +3,10 @@
 
   import NodeMenu from './NodeMenu.vue';
   import { lensChips } from './lensChips.ts';
+  import { manifest } from './manifest.ts';
 
   const graph = useGraphProduct({
-    productId: 'traversals',
+    manifest,
     core: {
       weighted: false,
     },
