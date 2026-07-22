@@ -6,6 +6,9 @@
 
   const graph = useGraphProduct({
     productId: 'traversals',
+    core: {
+      weighted: false,
+    },
     ui: {
       lensChips,
     },
