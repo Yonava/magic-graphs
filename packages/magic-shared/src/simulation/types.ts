@@ -17,8 +17,12 @@ export type SetupContext<Frame> = {
 export type ExplainerHighlight = {
   activate?: () => void;
   deactivate?: () => void;
+  onMounted?: () => void;
+  onUnmounted?: () => void;
   tooltipLabel?: MaybeGetter<string>;
+  // TODO nest classes and styles under attrs field, and have attrs field spread onto button
   classes?: MaybeGetter<string>;
+  styles?: MaybeGetter<CSSStyleValue>;
 };
 
 export type Explainer = {

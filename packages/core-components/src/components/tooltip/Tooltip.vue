@@ -8,7 +8,13 @@
     TooltipTrigger,
   } from 'reka-ui';
 
-  import { type HTMLAttributes, computed, normalizeClass, useAttrs, useSlots } from 'vue';
+  import {
+    type HTMLAttributes,
+    computed,
+    normalizeClass,
+    useAttrs,
+    useSlots,
+  } from 'vue';
 
   import { cn } from '../../cn.ts';
 
@@ -31,7 +37,7 @@
   const attrs = useAttrs();
   const slots = useSlots();
 
-  const hasContent = computed(() => !!props.label || !!slots.default);
+  const hasContent = computed(() => !!props.label);
 
   const classes = computed(() =>
     cn(

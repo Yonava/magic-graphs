@@ -5,7 +5,7 @@ import { CoreNode } from '@graph/primitives/types';
 
 import { Ref, ref } from 'vue';
 
-import { Graph } from '../graph/types.ts';
+import { GNode, Graph } from '../graph/types.ts';
 
 export const createNodeThemer = (
   graph: Graph,
@@ -27,8 +27,11 @@ export type NodeIdThemer = {
   nodeId: Ref<string | undefined>;
 };
 
-export const useNodeIdThemer = (graph: Graph): NodeIdThemer => {
-  const nodeId = ref<string>();
+export const useNodeIdThemer = (
+  graph: Graph,
+  initialId?: GNode['id'],
+): NodeIdThemer => {
+  const nodeId: NodeIdThemer['nodeId'] = ref(initialId);
 
   const fn = ({ id }: CoreNode) =>
     nodeId.value === id ? colors.AMBER_500 : undefined;

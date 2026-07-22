@@ -1,7 +1,33 @@
+import { getValue } from '@core/utils/maybeGetter/index';
+
 import { describe, expect, test, vi } from 'vitest';
 
 import { Explainer, ExplainerHighlight } from '../types.ts';
-import { explainerSegments } from './explainerSegments.ts';
+
+vi.mock('../../utilities/useNodeThemer.ts', () => ({
+  useNodeIdThemer: () => ({
+    themer: {
+      activate: vi.fn(),
+      deactivate: vi.fn(),
+    },
+    nodeId: { value: undefined },
+  }),
+}));
+
+vi.mock('../../utilities/useNodeStyles.ts', () => ({
+  useNodeStyles: () => ({
+    styles: { value: { border: { color: undefined } } },
+    dispose: vi.fn(),
+  }),
+}));
+
+const { explainerSegments } = await import('./explainerSegments.ts');
+
+const graph = {
+  nodeLabel: {
+    get: (id: string) => `Label ${id}`,
+  },
+} as Parameters<typeof explainerSegments>[0];
 
 const highlight = (
   overrides: Partial<ExplainerHighlight> = {},
@@ -13,7 +39,7 @@ const highlight = (
 
 describe(explainerSegments, () => {
   test('returns an empty array when explainer is undefined', () => {
-    expect(explainerSegments(undefined)).toEqual([]);
+    expect(explainerSegments(graph, undefined)).toEqual([]);
   });
 
   test('returns a single unhighlighted segment when there are no brackets', () => {
@@ -22,8 +48,8 @@ describe(explainerSegments, () => {
       highlights: [],
     };
 
-    expect(explainerSegments(explainer)).toEqual([
-      { text: 'no brackets here', highlight: undefined },
+    expect(explainerSegments(graph, explainer)).toEqual([
+      { id: expect.any(String), text: 'no brackets here', highlight: undefined },
     ]);
   });
 
@@ -34,9 +60,9 @@ describe(explainerSegments, () => {
       highlights: [h],
     };
 
-    const segments = explainerSegments(explainer);
+    const segments = explainerSegments(graph, explainer);
 
-    expect(segments.map((s) => s.text)).toEqual([
+    expect(segments.map((s) => getValue(s.text))).toEqual([
       'Looking at ',
       'Node A',
       ' now',
@@ -54,9 +80,9 @@ describe(explainerSegments, () => {
       highlights: [h1, h2],
     };
 
-    const segments = explainerSegments(explainer);
+    const segments = explainerSegments(graph, explainer);
 
-    expect(segments.map((s) => s.text)).toEqual([
+    expect(segments.map((s) => getValue(s.text))).toEqual([
       'Looking',
       ' ',
       'at',
@@ -76,9 +102,9 @@ describe(explainerSegments, () => {
       highlights: [h1, h2],
     };
 
-    const segments = explainerSegments(explainer);
+    const segments = explainerSegments(graph, explainer);
 
-    expect(segments.map((s) => s.text)).toEqual(['Start', ' middle ', 'End']);
+    expect(segments.map((s) => getValue(s.text))).toEqual(['Start', ' middle ', 'End']);
     expect(segments[0].highlight).toBe(h1);
     expect(segments[1].highlight).toBeUndefined();
     expect(segments[2].highlight).toBe(h2);
@@ -92,9 +118,9 @@ describe(explainerSegments, () => {
       highlights: [h1, h2],
     };
 
-    const segments = explainerSegments(explainer);
+    const segments = explainerSegments(graph, explainer);
 
-    expect(segments.map((s) => s.text)).toEqual(['Foo', 'Bar']);
+    expect(segments.map((s) => getValue(s.text))).toEqual(['Foo', 'Bar']);
     expect(segments[0].highlight).toBe(h1);
     expect(segments[1].highlight).toBe(h2);
   });
@@ -105,7 +131,7 @@ describe(explainerSegments, () => {
       highlights: [highlight()],
     };
 
-    expect(() => explainerSegments(explainer)).toThrow();
+    expect(() => explainerSegments(graph, explainer)).toThrow();
   });
 
   test('resolves content when it is a getter function', () => {
@@ -114,8 +140,8 @@ describe(explainerSegments, () => {
       highlights: [],
     };
 
-    expect(explainerSegments(explainer)).toEqual([
-      { text: 'no brackets here', highlight: undefined },
+    expect(explainerSegments(graph, explainer)).toEqual([
+      { id: expect.any(String), text: 'no brackets here', highlight: undefined },
     ]);
   });
 
@@ -126,9 +152,9 @@ describe(explainerSegments, () => {
       highlights: () => [h],
     };
 
-    const segments = explainerSegments(explainer);
+    const segments = explainerSegments(graph, explainer);
 
-    expect(segments.map((s) => s.text)).toEqual([
+    expect(segments.map((s) => getValue(s.text))).toEqual([
       'Looking at ',
       'Node A',
       ' now',
@@ -143,9 +169,9 @@ describe(explainerSegments, () => {
       highlights: () => [h],
     };
 
-    const segments = explainerSegments(explainer);
+    const segments = explainerSegments(graph, explainer);
 
-    expect(segments.map((s) => s.text)).toEqual([
+    expect(segments.map((s) => getValue(s.text))).toEqual([
       'Looking at ',
       'Node A',
       ' now',
@@ -153,13 +179,51 @@ describe(explainerSegments, () => {
     expect(segments[1].highlight).toBe(h);
   });
 
+  test('resolves a curly-braced node id to its label and auto-highlights it', () => {
+    const explainer: Explainer = {
+      content: 'This is Node {node-a} and here is a [highlight]',
+      highlights: [highlight()],
+    };
+
+    const segments = explainerSegments(graph, explainer);
+
+    expect(segments.map((s) => getValue(s.text))).toEqual([
+      'This is Node ',
+      'Label node-a',
+      ' and here is a ',
+      'highlight',
+    ]);
+    expect(segments[1].highlight).toBeDefined();
+    expect(segments[3].highlight).toBeDefined();
+  });
+
+  test('handles multiple curly-braced node ids without consuming bracket highlights', () => {
+    const h = highlight();
+    const explainer: Explainer = {
+      content: 'Comparing {node-a} to {node-b} for [Reason]',
+      highlights: [h],
+    };
+
+    const segments = explainerSegments(graph, explainer);
+
+    expect(segments.map((s) => getValue(s.text))).toEqual([
+      'Comparing ',
+      'Label node-a',
+      ' to ',
+      'Label node-b',
+      ' for ',
+      'Reason',
+    ]);
+    expect(segments.at(-1)?.highlight).toBe(h);
+  });
+
   test('defaults to an empty array when highlights is undefined', () => {
     const explainer: Explainer = {
       content: 'no brackets here',
     };
 
-    expect(explainerSegments(explainer)).toEqual([
-      { text: 'no brackets here', highlight: undefined },
+    expect(explainerSegments(graph, explainer)).toEqual([
+      { id: expect.any(String), text: 'no brackets here', highlight: undefined },
     ]);
   });
 });

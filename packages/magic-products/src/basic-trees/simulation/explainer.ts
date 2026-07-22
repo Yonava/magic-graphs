@@ -1,5 +1,4 @@
 import { Explainer } from '@magic/shared/simulation';
-import { NodeIdThemer } from '@magic/shared/utilities';
 
 import { AVLFrame, BalanceMethod } from './types.ts';
 
@@ -21,83 +20,41 @@ const BALANCE_METHOD_TO_DEFINITION: Record<BalanceMethod, string> = {
     'The node is right-heavy and its right child is also right-heavy (or balanced). A single left rotation on the node restores balance.',
 };
 
-export const explainer =
-  ({ nodeId, themer }: NodeIdThemer) =>
-  (frame: AVLFrame): Explainer | undefined => {
-    if (frame.action === 'compare') {
-      return {
-        content: `Comparing [${frame.targetNode?.value}] to [${frame.comparedNode?.value}]`,
-        highlights: [
-          {
-            activate: () => {
-              nodeId.value = frame.targetNode?.id;
-              themer.activate();
-            },
-            deactivate: themer.deactivate,
-          },
-          {
-            activate: () => {
-              nodeId.value = frame.comparedNode?.id;
-              themer.activate();
-            },
-            deactivate: themer.deactivate,
-          },
-        ],
-      };
+export const explainer = (frame: AVLFrame): Explainer | undefined => {
+  if (frame.action === 'compare') {
+    return {
+      content: `Comparing {${frame.targetNode.id}} to {${frame.comparedNode.id}}`,
+    };
+  }
+  if (frame.action === 'balance') {
+    return {
+      content: `This Tree Unbalanced! Performing a [${BALANCE_METHOD_TO_STRING[frame.method]}] Balancing Maneuver`,
+      highlights: [
+        {
+          tooltipLabel: BALANCE_METHOD_TO_DEFINITION[frame.method],
+        },
+      ],
+    };
+  }
+  if (frame.action === 'insert') {
+    return {
+      content: `Inserting {${frame.targetNode.id}}`,
+    };
+  }
+  if (frame.action === 'remove') {
+    if (!frame.targetNode) return { content: 'Removing node' };
+    return {
+      content: `Removing {${frame.targetNode.id}}`,
+    };
+  }
+  if (frame.action === 'compare-removal') {
+    if (!frame.targetNode) {
+      return { content: `Comparing to {${frame.comparedNode.id}}` };
     }
-    if (frame.action === 'balance') {
-      return {
-        content: `This Tree Unbalanced! Performing a [${BALANCE_METHOD_TO_STRING[frame.method]}] Balancing Maneuver`,
-        highlights: [
-          {
-            tooltipLabel: BALANCE_METHOD_TO_DEFINITION[frame.method],
-          },
-        ],
-      };
-    }
-    if (frame.action === 'insert') {
-      return {
-        content: `Inserting [${frame.targetNode?.value}]`,
-        highlights: [
-          {
-            activate: () => {
-              nodeId.value = frame.targetNode?.id;
-              themer.activate();
-            },
-            deactivate: themer.deactivate,
-          },
-        ],
-      };
-    }
-    if (frame.action === 'remove') {
-      return {
-        content: `Removing [${frame.targetNode?.value}]`,
-        highlights: [{}],
-      };
-    }
-    if (frame.action === 'compare-removal') {
-      return {
-        content:
-          `Comparing [${frame.targetNode?.value}] to [${frame.comparedNode?.value}]` +
-          (frame.targetNode?.id === frame.comparedNode?.id
-            ? '. Found It!'
-            : ''),
-        highlights: [
-          {
-            activate: () => {
-              nodeId.value = frame.targetNode?.id;
-              themer.activate();
-            },
-            deactivate: themer.deactivate,
-          },
-          {
-            activate: () => {
-              nodeId.value = frame.comparedNode?.id;
-              themer.activate();
-            },
-            deactivate: themer.deactivate,
-          },
-        ],
-      };
-    }
-  };
+    return {
+      content:
+        `Comparing {${frame.targetNode.id}} to {${frame.comparedNode.id}}` +
+        (frame.targetNode.id === frame.comparedNode.id ? '. Found It!' : ''),
+    };
+  }
+};

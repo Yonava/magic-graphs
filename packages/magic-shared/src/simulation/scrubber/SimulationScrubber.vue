@@ -9,6 +9,7 @@
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
+  import { useCtrlKeys } from '../../utilities/useCtrlKeys.ts';
   import { useRunningSimulation } from '../useRunningSimulation.ts';
   import ExplainerText from './ExplainerText.vue';
 
@@ -35,6 +36,14 @@
     const playhead = simulation.value.playhead.position;
     return (playhead / (totalFrames - 1)) * 100;
   });
+
+  useCtrlKeys()
+    .add('left', () => {
+      if (!simulation.value.playhead.isFirst()) simulation.value.playhead.prev();
+    })
+    .add('right', () => {
+      if (!simulation.value.playhead.isLast()) simulation.value.playhead.next();
+    });
 </script>
 
 <template>
@@ -69,7 +78,8 @@
           :class="iconButtonClasses"
           :disabled="simulation.playhead.isFirst()"
           @click="simulation.playhead.prev()"
-          label="Previous"
+          label=""
+          aria-label="Previous"
         />
       </Well>
       <Well :class="wellClass">
@@ -79,7 +89,8 @@
           :disabled="simulation.playhead.isLast()"
           @click="simulation.playhead.next()"
           :path="mdiChevronRight"
-          label="Next"
+          label=""
+          aria-label="Next"
         />
       </Well>
     </HStack>
