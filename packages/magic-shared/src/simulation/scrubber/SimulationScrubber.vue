@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import { cn } from '@core/components/cn';
   import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
+  import keys from 'ctrl-keys';
 
-  import { computed } from 'vue';
+  import { computed, onMounted, onUnmounted } from 'vue';
 
   import IconButton from '../../components/icon-button/IconButton.vue';
   import HStack from '../../components/layout/HStack.vue';
@@ -35,6 +36,17 @@
     const playhead = simulation.value.playhead.position;
     return (playhead / (totalFrames - 1)) * 100;
   });
+
+  const handler = keys()
+    .add('left', () => {
+      if (!simulation.value.playhead.isFirst()) simulation.value.playhead.prev();
+    })
+    .add('right', () => {
+      if (!simulation.value.playhead.isLast()) simulation.value.playhead.next();
+    });
+
+  onMounted(() => window.addEventListener('keydown', handler.handle));
+  onUnmounted(() => window.removeEventListener('keydown', handler.handle));
 </script>
 
 <template>
@@ -69,7 +81,8 @@
           :class="iconButtonClasses"
           :disabled="simulation.playhead.isFirst()"
           @click="simulation.playhead.prev()"
-          label="Previous"
+          label=""
+          aria-label="Previous"
         />
       </Well>
       <Well :class="wellClass">
@@ -79,7 +92,8 @@
           :disabled="simulation.playhead.isLast()"
           @click="simulation.playhead.next()"
           :path="mdiChevronRight"
-          label="Next"
+          label=""
+          aria-label="Next"
         />
       </Well>
     </HStack>

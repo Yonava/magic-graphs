@@ -93,28 +93,29 @@
     "build:types": "vue-tsc -b tsconfig.json"
   },
   "peerDependencies": {
-    "vue": "^3.5.18",
-    "nuxt": "^4.1.2"
+    "nuxt": "^4.1.2",
+    "vue": "^3.5.18"
   },
   "dependencies": {
-    "@canvas/surface": "workspace:*",
     "@canvas/primitives": "workspace:*",
+    "@canvas/surface": "workspace:*",
     "@core/components": "workspace:*",
     "@core/utils": "workspace:*",
     "@graph/core": "workspace:*",
     "@graph/create-graph": "workspace:*",
+    "@graph/dev-tools": "workspace:*",
     "@graph/plugins": "workspace:*",
     "@graph/plugins-shared": "workspace:*",
-    "@graph/dev-tools": "workspace:*",
     "@graph/primitives": "workspace:*",
     "@graph/theme-presets": "workspace:*",
-    "@vueuse/core": "catalog:",
     "@graph/vue": "workspace:*",
-    "@mdi/js": "^7.4.47"
+    "@mdi/js": "^7.4.47",
+    "@vueuse/core": "catalog:",
+    "ctrl-keys": "^1.0.6"
   },
   "devDependencies": {
-    "vue": "catalog:",
     "nuxt": "^4.1.2",
-    "ts-essentials": "^10.2.1"
+    "ts-essentials": "^10.2.1",
+    "vue": "catalog:"
   }
 }
