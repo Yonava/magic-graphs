@@ -343,6 +343,10 @@ export class AVLTree {
           justInserted = false;
         }
       } else {
+        this.addFrame({
+          action: 'compare-duplicate-found',
+          preexistingNode: node,
+        });
         return node;
       }
 

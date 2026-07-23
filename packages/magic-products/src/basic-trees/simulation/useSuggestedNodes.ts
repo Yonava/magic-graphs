@@ -30,7 +30,7 @@ export const useSuggestedNodes = (
 
   const addSuggestedNodes = () => {
     const nodeData = POSITIONS.map((v): AddGNodeOptions => ({
-      label: getRandomInRange(1, 99).toString(),
+      label: getRandomInRange(1, 5).toString(),
       position: v,
     }));
     const { addedNodes } = graph.actions.addElements(
