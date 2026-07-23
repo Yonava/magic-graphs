@@ -1,6 +1,13 @@
 packages:
   - 'packages/*'
 
+overrides:
+  vite: ^8.1.4
+
+allowBuilds:
+  esbuild: true
+  vue-demi: true
+
 catalog:
   '@types/tinycolor2': ^1.4.6
   '@vueuse/core': ^13.9.0

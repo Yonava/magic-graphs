@@ -1,11 +1,12 @@
 import { getRandomInRange } from '@core/utils/random';
+import { CanvasElement } from '@graph/plugins/canvas/aggregator/types';
 import { CoreNode } from '@graph/primitives/types';
-import { AddGNodeOptions, GNode } from '@magic/shared/graph/types';
+import { AddGNodeOptions } from '@magic/shared/graph/types';
 import { MagicGraph } from '@magic/shared/product/useGraphProduct';
 import { SimulationDefinition } from '@magic/shared/simulation';
 import tinycolor from 'tinycolor2';
 
-import { computed, ref } from 'vue';
+import { computed, onUnmounted, ref } from 'vue';
 
 import { AVLFrame } from './types.ts';
 import { AVLControls } from './useAVLSimulation.ts';
@@ -65,12 +66,21 @@ export const useSuggestedNodes = (
     })
     .activate();
 
-  graph.canvas.events.subscribe('onClick', ({ topElement }) => {
+  const kickOffNodeInsertion = ({
+    topElement,
+  }: {
+    topElement: CanvasElement | undefined;
+  }) => {
     if (!topElement || !suggestedNodeIds.value.has(topElement.id)) return;
     controls.mode.value = 'insert';
     controls.target.value = graph.getNode(topElement.id).id;
     graph.magic.simulation.start(simDefinition);
-  });
+  };
+
+  graph.canvas.events.subscribe('onClick', kickOffNodeInsertion);
+  onUnmounted(() =>
+    graph.canvas.events.unsubscribe('onClick', kickOffNodeInsertion),
+  );
 
   return {
     add: addSuggestedNodes,
