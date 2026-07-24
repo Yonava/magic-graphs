@@ -68,9 +68,17 @@
       "types": "./dist/types/lens/index.d.ts",
       "default": "./src/lens/index.ts"
     },
-    "./node-theme": {
-      "types": "./dist/types/node-theme/index.d.ts",
-      "default": "./src/node-theme/index.ts"
+    "./theme": {
+      "types": "./dist/types/theme/index.d.ts",
+      "default": "./src/theme/index.ts"
+    },
+    "./theme/node": {
+      "types": "./dist/types/theme/node/index.d.ts",
+      "default": "./src/theme/node/index.ts"
+    },
+    "./theme/edge": {
+      "types": "./dist/types/theme/edge/index.d.ts",
+      "default": "./src/theme/edge/index.ts"
     },
     "./product": {
       "types": "./dist/types/product/index.d.ts",

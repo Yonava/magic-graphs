@@ -3,7 +3,7 @@ import { describe, expect, test, vi } from 'vitest';
 
 import { Explainer, ExplainerHighlight } from '../types.ts';
 
-vi.mock('../../node-theme/index.ts', () => ({
+vi.mock('../../theme/node/index.ts', () => ({
   createNodeIdThemer: () => ({
     themer: {
       activate: vi.fn(),

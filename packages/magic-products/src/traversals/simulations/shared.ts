@@ -1,17 +1,23 @@
 import { nullThrows } from '@core/utils/assert';
 import { GNode, Graph } from '@magic/shared/graph';
 import { Lens } from '@magic/shared/lens';
-import { NodeIdThemer, createNodeIdThemer } from '@magic/shared/node-theme';
 import { SimulationGuardBuilder } from '@magic/shared/simulation';
 import {
   FrameCollectorFn,
   SimulationDefinition,
 } from '@magic/shared/simulation/types';
+import {
+  EdgeIdThemer,
+  NodeIdThemer,
+  createEdgeIdThemer,
+  createNodeIdThemer,
+} from '@magic/shared/theme';
 
 import { Ref } from 'vue';
 
+import { traversalExplainer } from './explainer.ts';
 import { TraversalFrame } from './frame.ts';
-import { TraversalSimulationOptions, nodeRoles } from './index.ts';
+import { TraversalSimulationOptions, edgeRoles, nodeRoles } from './index.ts';
 
 export type StartNodeId = Ref<GNode['id'] | undefined>;
 
@@ -39,6 +45,7 @@ type TraversalThemers = {
   current: NodeIdThemer;
   visited: NodeIdThemer;
   queued: NodeIdThemer;
+  traveled: EdgeIdThemer;
   lens: Lens;
   syncToFrame: (frame: TraversalFrame) => void;
 };
@@ -47,11 +54,13 @@ const traversalThemers = (graph: Graph): TraversalThemers => {
   const current = createNodeIdThemer(graph, nodeRoles.current);
   const visited = createNodeIdThemer(graph, nodeRoles.visited);
   const queued = createNodeIdThemer(graph, nodeRoles.queued);
-  const themers = [current, visited, queued];
+  const traveled = createEdgeIdThemer(graph, edgeRoles.traveled);
+  const themers = [current, visited, queued, traveled];
   return {
     current,
     visited,
     queued,
+    traveled,
     lens: {
       id: 'traversals',
       activate: () => {
@@ -71,9 +80,15 @@ const traversalThemers = (graph: Graph): TraversalThemers => {
         (id) => id !== currentNodeId,
       );
 
-      current.setNodeId(currentNodeId);
-      visited.setNodeIds(visitedNodeIds);
-      queued.setNodeIds(frame.queuedNodeIds ?? []);
+      // only a travel-edge frame names an edge, so every other frame clears the
+      // highlight. the crossing reads as a moment rather than a trail
+      const traveledEdgeId =
+        frame.type === 'travel-edge' ? frame.traveledEdgeId : undefined;
+
+      current.setId(currentNodeId);
+      visited.setIds(visitedNodeIds);
+      queued.setIds(frame.queuedNodeIds ?? []);
+      traveled.setId(traveledEdgeId);
     },
   };
 };
@@ -106,6 +121,7 @@ export const traversalSimulationDefinition = (
       const { lens, syncToFrame } = traversalThemers(options.graph);
       return {
         lens: lens,
+        explainer: traversalExplainer(options.graph, options.startNodeId),
         onSetupCompleted: syncToFrame,
         onFrameTransition: syncToFrame,
         onViolation: options.graph.magic.simulation.stop,

@@ -1,7 +1,8 @@
 import colors, { Color } from '@core/utils/colors';
 
 /**
- * the standardized vocabulary for node highlight colors.
+ * the standardized vocabulary for node highlight colors. see {@link EdgeRole}
+ * for the edge counterpart.
  *
  * a product maps its own domain concept onto a role, so that the same concept
  * wears the same color in every product. roles are named one level above any

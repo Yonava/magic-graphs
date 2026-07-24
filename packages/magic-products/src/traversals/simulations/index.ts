@@ -1,6 +1,6 @@
-import { NodeRole } from '@magic/shared/node-theme';
 import { useProvidedGraph } from '@magic/shared/product';
 import { MagicGraph } from '@magic/shared/product/useGraphProduct';
+import { EdgeRole, NodeRole } from '@magic/shared/theme';
 
 import { ref } from 'vue';
 
@@ -23,6 +23,13 @@ export const nodeRoles = {
   visited: 'settled',
   queued: 'pending',
 } as const satisfies Record<TraversalConcept, NodeRole>;
+
+// traveled = the edge being crossed to reach the current node this frame.
+type TraversalEdgeConcept = 'traveled';
+
+export const edgeRoles = {
+  traveled: 'crossing',
+} as const satisfies Record<TraversalEdgeConcept, EdgeRole>;
 
 export const useTraversalSimulations = () => {
   const graph = useProvidedGraph();

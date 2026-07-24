@@ -1,7 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 
 import { GNode, Graph } from '../../graph/types.ts';
-import { createNodeIdThemer, useNodeStyles } from '../../node-theme/index.ts';
+import { useNodeStyles } from '../../theme/node/index.ts';
 import type { ExplainerHighlight } from '../types.ts';
 import { ExplainerSegment } from './explainerSegments.ts';
 
@@ -9,7 +9,15 @@ const useNodeExplainerHighlight = (
   graph: Graph,
   id: GNode['id'],
 ): ExplainerHighlight => {
-  const { themer } = createNodeIdThemer(graph, 'active', [id]);
+  // proxy nodes default border color to its focus border color
+  const themer = graph.theme.createThemer({
+    canvas: {
+      'node.default.border.color': (node) =>
+        node.id === id
+          ? graph.focus.theme._resolveToken('node.focus.border.color', { id })
+          : undefined,
+    },
+  });
   const { styles, dispose } = useNodeStyles(graph, id);
   return {
     onUnmounted: dispose,
