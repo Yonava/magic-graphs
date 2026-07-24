@@ -31,7 +31,7 @@ export type Explainer = {
 };
 
 export type SimulationLifecycle<Frame> = {
-  onSetupCompleted?: () => void;
+  onSetupCompleted?: (firstFrame: Frame) => void;
   onBeforeTeardown?: () => void;
   onTeardownCompleted?: () => void;
   onFrameTransition?: (newFrame: Frame, oldFrame: Frame) => void;

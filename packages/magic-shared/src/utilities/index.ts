@@ -1,8 +1,8 @@
 export {
-  useNodeIdThemer,
+  createNodeIdThemer as useNodeIdThemer,
   type NodeIdThemer,
   createNodeThemer,
-} from './useNodeThemer.ts';
+} from './createNodeThemer.ts';
 export { useFocusedNode } from './useFocusedNode.ts';
 export { useNodeStyles } from './useNodeStyles.ts';
 export { isTypingTarget } from './isTypingTarget.ts';

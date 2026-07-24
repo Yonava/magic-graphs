@@ -178,7 +178,7 @@ export const useSimulationState = (
       lensControls.add(simulation.value.lens);
     }
 
-    simulation.value.onSetupCompleted?.();
+    simulation.value.onSetupCompleted?.(setupContext.currentFrame.value);
   };
 
   const stop = () => {
