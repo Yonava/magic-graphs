@@ -34,7 +34,7 @@
         @click="startSim('bfs')"
         class="text-lg"
       >
-        Bread-First Search
+        Breadth-First Search
       </Button>
       <Button
         @click="startSim('dfs')"

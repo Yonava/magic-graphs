@@ -1,9 +1,10 @@
-import colors, { Color } from '@core/utils/colors';
+import { Color } from '@core/utils/colors';
 import { Themer } from '@graph/create-graph/createThemer';
 import { ThemeValue } from '@graph/plugins-shared/theme';
 import { CoreNode } from '@graph/primitives/types';
 
 import { GNode, Graph } from '../graph/types.ts';
+import { NodeRole, nodeRoleColors } from './roles.ts';
 
 export const createNodeThemer = (
   graph: Graph,
@@ -27,21 +28,13 @@ export type NodeIdThemer = {
   clearNodeIds: () => void;
 };
 
-const nodeThemeModes = {
-  primary: colors.AMBER_500,
-  secondary: colors.SKY_500,
-  tertiary: colors.PINK_500,
-} as const;
-
-type Mode = keyof typeof nodeThemeModes;
-
 export const createNodeIdThemer = (
   graph: Graph,
-  mode: Mode,
-  initialIds?: GNode['id'][],
+  role: NodeRole,
+  initialIds?: readonly GNode['id'][],
 ): NodeIdThemer => {
   const nodeIds: Set<GNode['id']> = new Set(initialIds);
-  const color = nodeThemeModes[mode];
+  const color = nodeRoleColors[role];
 
   const themer = createNodeThemer(graph, (n) =>
     nodeIds.has(n.id) ? color : undefined,

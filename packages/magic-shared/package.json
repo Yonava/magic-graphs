@@ -68,6 +68,10 @@
       "types": "./dist/types/lens/index.d.ts",
       "default": "./src/lens/index.ts"
     },
+    "./node-theme": {
+      "types": "./dist/types/node-theme/index.d.ts",
+      "default": "./src/node-theme/index.ts"
+    },
     "./product": {
       "types": "./dist/types/product/index.d.ts",
       "default": "./src/product/index.ts"

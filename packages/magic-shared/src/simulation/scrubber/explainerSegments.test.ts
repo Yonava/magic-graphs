@@ -1,20 +1,16 @@
 import { getValue } from '@core/utils/maybeGetter/index';
-
 import { describe, expect, test, vi } from 'vitest';
 
 import { Explainer, ExplainerHighlight } from '../types.ts';
 
-vi.mock('../../utilities/useNodeThemer.ts', () => ({
-  useNodeIdThemer: () => ({
+vi.mock('../../node-theme/index.ts', () => ({
+  createNodeIdThemer: () => ({
     themer: {
       activate: vi.fn(),
       deactivate: vi.fn(),
     },
     nodeId: { value: undefined },
   }),
-}));
-
-vi.mock('../../utilities/useNodeStyles.ts', () => ({
   useNodeStyles: () => ({
     styles: { value: { border: { color: undefined } } },
     dispose: vi.fn(),
@@ -50,7 +46,11 @@ describe(explainerSegments, () => {
     };
 
     expect(explainerSegments(graph, explainer)).toEqual([
-      { id: expect.any(String), text: 'no brackets here', highlight: undefined },
+      {
+        id: expect.any(String),
+        text: 'no brackets here',
+        highlight: undefined,
+      },
     ]);
   });
 
@@ -105,7 +105,11 @@ describe(explainerSegments, () => {
 
     const segments = explainerSegments(graph, explainer);
 
-    expect(segments.map((s) => getValue(s.text))).toEqual(['Start', ' middle ', 'End']);
+    expect(segments.map((s) => getValue(s.text))).toEqual([
+      'Start',
+      ' middle ',
+      'End',
+    ]);
     expect(segments[0].highlight).toBe(h1);
     expect(segments[1].highlight).toBeUndefined();
     expect(segments[2].highlight).toBe(h2);
@@ -142,7 +146,11 @@ describe(explainerSegments, () => {
     };
 
     expect(explainerSegments(graph, explainer)).toEqual([
-      { id: expect.any(String), text: 'no brackets here', highlight: undefined },
+      {
+        id: expect.any(String),
+        text: 'no brackets here',
+        highlight: undefined,
+      },
     ]);
   });
 
@@ -224,7 +232,11 @@ describe(explainerSegments, () => {
     };
 
     expect(explainerSegments(graph, explainer)).toEqual([
-      { id: expect.any(String), text: 'no brackets here', highlight: undefined },
+      {
+        id: expect.any(String),
+        text: 'no brackets here',
+        highlight: undefined,
+      },
     ]);
   });
 });

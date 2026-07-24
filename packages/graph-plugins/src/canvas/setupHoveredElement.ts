@@ -17,29 +17,31 @@ export const setupOnHoveredElementChangeEvent: SetupHoveredElement = (
     value: undefined,
   };
 
-  events.subscribe('onGraphUnderCursorChange', ({ topElement: newHoveredElement }) => {
+  events.subscribe(
+    'onGraphUnderCursorChange',
+    ({ topElement: newHoveredElement }) => {
+      const processChange = () => {
+        const previousHoveredElement = hoveredElement.value;
+        hoveredElement.value = newHoveredElement;
+        events.emit(
+          'onHoveredElementChange',
+          newHoveredElement,
+          previousHoveredElement,
+        );
+      };
 
-    const processChange = () => {
-      const previousHoveredElement = hoveredElement.value;
-      hoveredElement.value = newHoveredElement;
-      events.emit(
-        'onHoveredElementChange',
-        newHoveredElement,
-        previousHoveredElement,
-      );
-    };
+      if (!newHoveredElement) {
+        const hasChanged = hoveredElement.value !== undefined;
+        if (hasChanged) processChange();
+        return;
+      }
 
-    if (!newHoveredElement) {
-      const hasChanged = hoveredElement.value !== undefined;
+      if (!hoveredElement.value) return processChange();
+
+      const hasChanged = hoveredElement.value.id !== newHoveredElement.id;
       if (hasChanged) processChange();
-      return;
-    }
-
-    if (!hoveredElement.value) return processChange();
-
-    const hasChanged = hoveredElement.value.id !== newHoveredElement.id;
-    if (hasChanged) processChange();
-  });
+    },
+  );
 
   return hoveredElement;
 };
