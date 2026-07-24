@@ -15,6 +15,8 @@ import {
 
 import { Ref } from 'vue';
 
+import Queued from './components/Queued.vue';
+import Visited from './components/Visited.vue';
 import { traversalExplainer } from './explainer.ts';
 import { TraversalFrame } from './frame.ts';
 import { TraversalSimulationOptions, edgeRoles, nodeRoles } from './index.ts';
@@ -63,6 +65,10 @@ const traversalThemers = (graph: Graph): TraversalThemers => {
     traveled,
     lens: {
       id: 'traversals',
+      components: [
+        { component: Visited, position: 'top-left' },
+        { component: Queued, position: 'top-right' },
+      ],
       activate: () => {
         for (const { themer } of themers) themer.activate();
       },
@@ -120,7 +126,7 @@ export const traversalSimulationDefinition = (
     setup: () => {
       const { lens, syncToFrame } = traversalThemers(options.graph);
       return {
-        lens: lens,
+        lens,
         explainer: traversalExplainer(options.graph, options.startNodeId),
         onSetupCompleted: syncToFrame,
         onFrameTransition: syncToFrame,
