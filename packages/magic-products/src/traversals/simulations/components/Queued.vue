@@ -160,25 +160,33 @@
 
   /*
     the column height is a variable rather than a utility class because the
-    entrance is measured against it: a node starts one full column above its
-    slot, which puts it past the top edge no matter how deep the stack is, and
-    the well's clipping hides it until it drops into view. offsetting by the
-    node's own height instead would start it mid box on a short queue, since
-    that offset is relative to the node rather than to the container
+    entrance is measured against it: a node starts a whole column away from its
+    slot, which carries it past the edge no matter where in the column the slot
+    sits, and the well's clipping hides it until it travels into view
+
+    the clearance on top is what makes that reliable rather than marginal. a
+    column exactly is only just enough for a slot at the far end of the content,
+    and lands the node flush against the edge for any other slot, which is how
+    it ended up starting inside the box. the extra puts it plainly outside
+
+    an offset in percent would not work here at all: those resolve against the
+    node's own height, so a short queue would start it mid box
   */
   .queue-box {
     --column-height: 50vh;
+    --enter-clearance: 4rem;
+    --enter-distance: calc(var(--column-height) + var(--enter-clearance));
     height: var(--column-height);
   }
 
   .enter-down .queue-enter-from {
-    transform: translateY(calc(-1 * var(--column-height)));
+    transform: translateY(calc(-1 * var(--enter-distance)));
   }
 
-  /* the same column-length offset from below, for a node unshifted onto the
-     front. it rises through the bottom edge, retracing the drop it undoes */
+  /* the same distance from below, for a node unshifted onto the front. it rises
+     through the bottom edge, retracing the drop it undoes */
   .enter-up .queue-enter-from {
-    transform: translateY(var(--column-height));
+    transform: translateY(var(--enter-distance));
   }
 
   /* the drop covers more ground than a shuffle, so it gets longer to do it */
@@ -195,7 +203,7 @@
     out the panel's own slide first so it lands in a box that has stopped moving
   */
   .queue-appear-from {
-    transform: translateY(calc(-1 * var(--column-height)));
+    transform: translateY(calc(-1 * var(--enter-distance)));
   }
 
   .queue-appear-active {
