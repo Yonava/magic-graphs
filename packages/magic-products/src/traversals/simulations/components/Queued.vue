@@ -7,8 +7,8 @@
 
   import { useCurrentFrame } from './useCurrentFrame.ts';
 
-  /** matches the .queue-item transition duration in the style block below + 250ms for a breather gap */
-  const NODE_EXIT_MS = 200 + 250;
+  /** matches the leave duration in the style block below + 250ms for a breather gap */
+  const NODE_EXIT_MS = 350 + 100;
 
   const { currentFrame } = useCurrentFrame();
 
@@ -72,6 +72,42 @@
     },
     { flush: 'sync' },
   );
+
+  /** how far past the edge a node sits when off camera */
+  const CLEARANCE_PX = 64;
+
+  /*
+    every trip takes the same time, so what varies is how fast the node covers
+    it. that only holds up once the distance is the real one: a declared offset
+    is the same number for a node landing at the top of the column and one
+    landing at the bottom, which makes the first cross a column it never needed
+    to cross
+
+    the distance is to whichever edge the node is crossing, measured against the
+    scroll position rather than the content, since the edge that matters is the
+    one the well clips at
+  */
+  const setTravel = (element: Element, edge: 'top' | 'bottom') => {
+    const node = element as HTMLElement;
+    const column = node.parentElement;
+    if (!column) return;
+
+    // offsetTop is layout, so the transform being set here does not feed back in
+    const topWithinView = node.offsetTop - column.scrollTop;
+
+    const distance =
+      edge === 'top'
+        ? topWithinView + node.offsetHeight + CLEARANCE_PX
+        : column.clientHeight - topWithinView + CLEARANCE_PX;
+
+    node.style.setProperty('--travel', `${distance}px`);
+  };
+
+  const onEnter = (element: Element) =>
+    setTravel(element, enterDirection.value === 'down' ? 'top' : 'bottom');
+
+  const onLeave = (element: Element) =>
+    setTravel(element, exitDirection.value === 'up' ? 'top' : 'bottom');
 </script>
 
 <template>
@@ -112,6 +148,8 @@
             exitDirection === 'down' ? 'exit-down' : 'exit-up',
             enterDirection === 'down' ? 'enter-down' : 'enter-up',
           ]"
+          @enter="onEnter"
+          @leave="onLeave"
         >
           <Node
             v-for="nodeId in nodeIds"
@@ -172,27 +210,40 @@
     an offset in percent would not work here at all: those resolve against the
     node's own height, so a short queue would start it mid box
   */
+  /*
+    --travel is written per node by the transition hooks. the
+    fallbacks are what a node crossing the full column would get, so a trip that
+    somehow starts unmeasured still clears the edge rather than stranding a node
+    mid column
+  */
   .queue-box {
     --column-height: 50vh;
-    --enter-clearance: 4rem;
-    --enter-distance: calc(var(--column-height) + var(--enter-clearance));
     height: var(--column-height);
   }
 
   .enter-down .queue-enter-from {
-    transform: translateY(calc(-1 * var(--enter-distance)));
+    transform: translateY(calc(-1 * var(--travel, 50vh)));
   }
 
-  /* the same distance from below, for a node unshifted onto the front. it rises
+  /* the same trip from below, for a node unshifted onto the front. it rises
      through the bottom edge, retracing the drop it undoes */
   .enter-up .queue-enter-from {
-    transform: translateY(var(--enter-distance));
+    transform: translateY(var(--travel, 50vh));
   }
 
-  /* the drop covers more ground than a shuffle, so it gets longer to do it */
+  /*
+    arrivals and exits get longer than the 200ms a shuffle takes, because their
+    distance is not ours to pick: a node has to reach the edge to be hidden, so
+    with the duration pinned the speed follows from geometry. more time is the
+    only way to slow the node down
+
+    it stays a single duration rather than one scaled per trip, so a long trip
+    still moves faster than a short one, just not by as much
+  */
   .queue-enter-active,
-  .queue-appear-active {
-    transition-duration: 300ms;
+  .queue-appear-active,
+  .queue-leave-active {
+    transition-duration: 350ms;
     transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -203,7 +254,7 @@
     out the panel's own slide first so it lands in a box that has stopped moving
   */
   .queue-appear-from {
-    transform: translateY(calc(-1 * var(--enter-distance)));
+    transform: translateY(calc(-1 * var(--travel, 50vh)));
   }
 
   .queue-appear-active {
@@ -211,27 +262,31 @@
   }
 
   /*
-    a leaving node is pulled out of flow so the line closes into the gap during
-    the exit rather than after it. it anchors to whichever edge it is leaving
-    through, since that is the position it held before it was pulled out
+    a dequeued node is pulled out of flow so the line closes into the gap during
+    the exit rather than after it, and anchored to the bottom edge, which is the
+    position the front of the queue already holds
   */
-  .queue-leave-active {
-    position: absolute;
-  }
-
   .exit-down .queue-leave-active {
+    position: absolute;
     bottom: 0;
   }
 
   .exit-down .queue-leave-to {
-    transform: translateY(120%);
+    transform: translateY(var(--travel, 50vh));
   }
 
-  .exit-up .queue-leave-active {
-    top: 0;
-  }
+  /*
+    a node leaving the back stays in flow instead, and lifts out from wherever
+    it is sitting. anchoring it to the top edge the way the front anchors to the
+    bottom would teleport it up the column before it moved, since the back of a
+    short queue is nowhere near the top edge. leaving it in place costs nothing:
+    the column is anchored at the bottom, so the slot it vacates is the one the
+    others are not standing on
 
+    the lift is measured to the top edge, so the node is out of the box before
+    it is dropped. its own height instead left it fading out mid column
+  */
   .exit-up .queue-leave-to {
-    transform: translateY(-120%);
+    transform: translateY(calc(-1 * var(--travel, 50vh)));
   }
 </style>
