@@ -39,24 +39,36 @@
   onUnmounted(() => clearTimeout(hideTimeout));
 
   const exitDirection = ref<'down' | 'up'>('down');
+  const enterDirection = ref<'down' | 'up'>('down');
 
   /*
-    which end a node leaves from is not fixed: playing forward, shift() takes
-    the front and the node drops out the bottom, but scrubbing backwards undoes
-    an enqueue, which takes the back instead. a node that arrived from the top
-    has to leave through the top, or the animation claims the traversal did
-    something it never did
+    neither end of the queue is fixed once the playhead can run backwards.
+    playing forward, shift() takes the front and push() adds to the back, so
+    nodes drop out the bottom and fall in from the top. scrubbing backwards
+    undoes both: an undone enqueue takes the back, and an undone dequeue
+    unshifts onto the front. a node has to enter and leave through the end it
+    actually belongs to, or the animation claims the traversal did something it
+    never did
 
-    the direction is read off the diff rather than the playhead, so a jump
-    across several frames still resolves to the end that actually lost an id.
-    sync flush lands it before the patch that starts the leave
+    both directions are read off the diff rather than the playhead, so a jump
+    across several frames still resolves to the end that actually changed. sync
+    flush lands them before the patch that starts the transitions
   */
   watch(
     nodeIds,
     (next, previous) => {
-      const front = previous?.[0];
-      const frontLeft = front !== undefined && !next.includes(front);
+      const before = previous ?? [];
+
+      const frontLeft = before[0] !== undefined && !next.includes(before[0]);
       exitDirection.value = frontLeft ? 'down' : 'up';
+
+      /*
+        an unshift belongs to the bottom of the column, which is where it will
+        sit. arriving from below means the nodes already in line get pushed up
+        ahead of it rather than shoved aside by something falling past them
+      */
+      const frontGained = next[0] !== undefined && !before.includes(next[0]);
+      enterDirection.value = frontGained ? 'up' : 'down';
     },
     { flush: 'sync' },
   );
@@ -92,7 +104,10 @@
           name="queue"
           tag="div"
           class="relative flex flex-col-reverse items-center gap-2 h-full w-full overflow-y-auto"
-          :class="exitDirection === 'down' ? 'exit-down' : 'exit-up'"
+          :class="[
+            exitDirection === 'down' ? 'exit-down' : 'exit-up',
+            enterDirection === 'down' ? 'enter-down' : 'enter-up',
+          ]"
         >
           <Node
             v-for="nodeId in nodeIds"
@@ -145,8 +160,14 @@
     height: var(--column-height);
   }
 
-  .queue-enter-from {
+  .enter-down .queue-enter-from {
     transform: translateY(calc(-1 * var(--column-height)));
+  }
+
+  /* the same column-length offset from below, for a node unshifted onto the
+     front. it rises through the bottom edge, retracing the drop it undoes */
+  .enter-up .queue-enter-from {
+    transform: translateY(var(--column-height));
   }
 
   /* the drop covers more ground than a shuffle, so it gets longer to do it */
