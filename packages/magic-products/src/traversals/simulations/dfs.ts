@@ -1,57 +1,44 @@
-import colors from '@core/utils/colors';
-import { Lens } from '@magic/shared/lens';
-import { SimulationDefinition } from '@magic/shared/simulation';
-import { createNodeThemer } from '@magic/shared/utilities';
+import { TraversalFunction, edgeBetween } from './shared.ts';
 
-import {
-  TraversalFunction,
-  TraversalSimulationOptions,
-  traversalFrameCollector,
-  traversalGuardChecker,
-} from './shared.ts';
-
-type DFSFrame = string;
-
-const dfs: TraversalFunction<DFSFrame> =
-  (adjList, start) => (frameCollector) => {
-    if (!(start in adjList)) return;
+export const dfs: TraversalFunction =
+  (graph, startNodeId) => (frameCollector) => {
+    const adjList = graph.adjacencyLists.standard.value;
+    if (!(startNodeId in adjList)) return;
 
     const visited = new Set<string>();
 
+    frameCollector.add({
+      type: 'start',
+      visitedNodeIds: [],
+    });
+
     const visit = (node: string) => {
       if (visited.has(node)) return;
+      // arriving at a node visits it. marking here rather than on the way back
+      // up is also what keeps the recursion from running away on a cycle
       visited.add(node);
-      frameCollector.add(node);
+
+      frameCollector.add({
+        type: 'explore-node',
+        currentNodeId: node,
+        visitedNodeIds: [...visited],
+      });
+
       for (const neighbor of adjList[node] ?? []) {
+        frameCollector.add({
+          type: 'travel-edge',
+          traveledEdgeId: edgeBetween(graph, node, neighbor),
+          currentNodeId: node,
+          visitedNodeIds: [...visited],
+        });
         visit(neighbor);
       }
     };
 
-    visit(start);
+    visit(startNodeId);
+
+    frameCollector.add({
+      type: 'end',
+      visitedNodeIds: [...visited],
+    });
   };
-
-export const useDFSSimulationDefinition = (
-  options: TraversalSimulationOptions,
-): SimulationDefinition<DFSFrame> => {
-  return {
-    guard: traversalGuardChecker(options),
-    collectFrames: (collector) =>
-      traversalFrameCollector(options, dfs)(collector),
-    setup: (context) => {
-      const themer = createNodeThemer(options.graph, ({ id }) =>
-        context.currentFrame.value === id ? colors.AMBER_500 : undefined,
-      );
-
-      const dfsLens: Lens = {
-        id: 'dfs-sim',
-        activate: themer.activate,
-        deactivate: themer.deactivate,
-      };
-
-      return {
-        lens: dfsLens,
-        onViolation: options.graph.magic.simulation.stop,
-      };
-    },
-  };
-};

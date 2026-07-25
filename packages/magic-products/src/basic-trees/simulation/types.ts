@@ -15,6 +15,11 @@ type CompareForRemovalFrame = {
   targetNode: NodePayload | undefined;
 };
 
+type CompareDuplicateFound = {
+  action: 'compare-duplicate-found';
+  preexistingNode: TreeNode;
+};
+
 type BalanceFrame = {
   action: 'balance';
   method: BalanceMethod;
@@ -34,6 +39,7 @@ type RemoveFrame = {
 export type AVLFrameNoRoot =
   | CompareFrame
   | CompareForRemovalFrame
+  | CompareDuplicateFound
   | BalanceFrame
   | InsertFrame
   | RemoveFrame;

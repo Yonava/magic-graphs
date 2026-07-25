@@ -6,6 +6,7 @@
     "rewriteRelativeImportExtensions": false
   },
   "references": [
+    { "path": "../graph-core" },
     { "path": "../graph-create-graph" },
     { "path": "../graph-primitives" },
     { "path": "../graph-plugins" }

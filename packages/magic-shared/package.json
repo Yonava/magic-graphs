@@ -8,6 +8,10 @@
       "types": "./dist/types/components/button/Button.vue.d.ts",
       "default": "./src/components/button/Button.vue"
     },
+    "./Node": {
+      "types": "./dist/types/components/magic/Node.vue.d.ts",
+      "default": "./src/components/magic/Node.vue"
+    },
     "./Well": {
       "types": "./dist/types/components/layout/Well.vue.d.ts",
       "default": "./src/components/layout/Well.vue"
@@ -67,6 +71,18 @@
     "./lens": {
       "types": "./dist/types/lens/index.d.ts",
       "default": "./src/lens/index.ts"
+    },
+    "./theme": {
+      "types": "./dist/types/theme/index.d.ts",
+      "default": "./src/theme/index.ts"
+    },
+    "./theme/node": {
+      "types": "./dist/types/theme/node/index.d.ts",
+      "default": "./src/theme/node/index.ts"
+    },
+    "./theme/edge": {
+      "types": "./dist/types/theme/edge/index.d.ts",
+      "default": "./src/theme/edge/index.ts"
     },
     "./product": {
       "types": "./dist/types/product/index.d.ts",

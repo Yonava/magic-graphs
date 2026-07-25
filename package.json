@@ -2,13 +2,14 @@
   "name": "magic-graphs",
   "version": "1.0.0",
   "scripts": {
+    "dev": "pnpm --filter client dev",
     "build": "pnpm --filter client build",
     "test": "vitest",
-    "format": "prettier -w .",
-    "dev": "pnpm --filter client dev",
     "build:types": "vue-tsc -b tsconfig.json",
-    "clean:nuke": "rm -rf node_modules pnpm-lock.yaml packages/*/dist && pnpm i && pnpm build:types",
-    "build:types:force": "vue-tsc -b tsconfig.json --clean && vue-tsc -b tsconfig.json"
+    "format": "prettier -w .",
+    "format:check": "prettier -c .",
+    "clean": "rm -rf packages/*/dist packages/*/*.tsbuildinfo",
+    "clean:nuke": "pnpm clean && rm -rf node_modules packages/*/node_modules && pnpm install && pnpm build:types"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
@@ -20,12 +21,8 @@
     "vitest": "^3.2.4",
     "vue-tsc": "^3.0.7"
   },
+  "packageManager": "pnpm@11.9.0",
   "engines": {
     "node": ">=24.0.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "vite": "^8.1.4"
-    }
   }
 }

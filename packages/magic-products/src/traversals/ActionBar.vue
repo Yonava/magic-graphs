@@ -2,9 +2,12 @@
   import { nullThrows } from '@core/utils/assert';
   import Button from '@magic/shared/Button';
   import HStackVue from '@magic/shared/HStack';
+  import Node from '@magic/shared/Node';
   import Well from '@magic/shared/Well';
   import { useProvidedGraph } from '@magic/shared/product';
   import { useFocusedNode } from '@magic/shared/utilities';
+
+  import { ref } from 'vue';
 
   import { useTraversalSimulations } from './simulations/index.ts';
 
@@ -22,13 +25,34 @@
     graph.magic.simulation.start(simulations[type]);
     graph.focus.clear();
   };
+
+  const scale = ref(1);
 </script>
 
 <template>
-  <Well v-if="node && !graph.magic.simulation.current.value">
-    <HStackVue>
-      <Button @click="startSim('bfs')"> Start BFS on {{ node.label }} </Button>
-      <Button @click="startSim('dfs')"> Start DFS on {{ node.label }} </Button>
+  <div v-if="!graph.magic.simulation.current.value">
+    <HStackVue
+      v-if="node"
+      class="p-1"
+    >
+      <Button
+        @click="startSim('bfs')"
+        class="text-lg"
+      >
+        Breadth-First Search
+      </Button>
+      <Button
+        @click="startSim('dfs')"
+        class="text-lg"
+      >
+        Depth-First Search
+      </Button>
     </HStackVue>
-  </Well>
+    <Well
+      v-else
+      class="font-bold text-xl"
+    >
+      Click a Node to Begin Traversal!
+    </Well>
+  </div>
 </template>

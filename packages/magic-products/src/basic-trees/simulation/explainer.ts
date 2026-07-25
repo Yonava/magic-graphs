@@ -26,6 +26,11 @@ export const explainer = (frame: AVLFrame): Explainer | undefined => {
       content: `Comparing {${frame.targetNode.id}} to {${frame.comparedNode.id}}`,
     };
   }
+  if (frame.action === 'compare-duplicate-found') {
+    return {
+      content: `{${frame.preexistingNode.id}} Already Exists!`,
+    };
+  }
   if (frame.action === 'balance') {
     return {
       content: `This Tree Unbalanced! Performing a [${BALANCE_METHOD_TO_STRING[frame.method]}] Balancing Maneuver`,

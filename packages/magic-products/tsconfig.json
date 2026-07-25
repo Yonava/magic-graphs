@@ -10,7 +10,8 @@
     { "path": "../core-utils" },
     { "path": "../graph-core" },
     { "path": "../graph-plugins" },
-    { "path": "../graph-primitives" }
+    { "path": "../graph-primitives" },
+    { "path": "../graph-create-graph" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }

@@ -39,7 +39,8 @@
 
   useCtrlKeys()
     .add('left', () => {
-      if (!simulation.value.playhead.isFirst()) simulation.value.playhead.prev();
+      if (!simulation.value.playhead.isFirst())
+        simulation.value.playhead.prev();
     })
     .add('right', () => {
       if (!simulation.value.playhead.isLast()) simulation.value.playhead.next();

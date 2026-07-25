@@ -1,6 +1,6 @@
 import { MaybeGetter } from '@core/utils/maybeGetter/index';
 
-import { ComputedRef } from 'vue';
+import { ComputedRef, StyleValue } from 'vue';
 
 import { Lens } from '../lens/types.ts';
 import { GuardCheck, Violation } from './guard/SimulationGuardBuilder.ts';
@@ -22,7 +22,7 @@ export type ExplainerHighlight = {
   tooltipLabel?: MaybeGetter<string>;
   // TODO nest classes and styles under attrs field, and have attrs field spread onto button
   classes?: MaybeGetter<string>;
-  styles?: MaybeGetter<CSSStyleValue>;
+  styles?: MaybeGetter<StyleValue>;
 };
 
 export type Explainer = {
@@ -31,7 +31,7 @@ export type Explainer = {
 };
 
 export type SimulationLifecycle<Frame> = {
-  onSetupCompleted?: () => void;
+  onSetupCompleted?: (firstFrame: Frame) => void;
   onBeforeTeardown?: () => void;
   onTeardownCompleted?: () => void;
   onFrameTransition?: (newFrame: Frame, oldFrame: Frame) => void;

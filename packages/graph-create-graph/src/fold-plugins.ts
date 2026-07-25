@@ -91,7 +91,10 @@ export const foldPlugins = (
   // the getters cache automatically — no plugin author needs to remember to do this for
   // core mutations, only for their own plugin-local state (see nodeLabel for example).
   consumerEvents.subscribe('onStructureChange', gettersCache.invalidateGetters);
-  consumerEvents.subscribe('onEdgeWeightsChanged', gettersCache.invalidateGetters);
+  consumerEvents.subscribe(
+    'onEdgeWeightsChanged',
+    gettersCache.invalidateGetters,
+  );
 
   const pluginTransitControls: PluginTransitControl[] = [
     { pluginName: 'core', transit: coreGraph.transit },

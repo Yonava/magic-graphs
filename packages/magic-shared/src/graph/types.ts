@@ -2,7 +2,8 @@ import { UnwrapRef } from 'vue';
 
 import { useGraph } from './useGraph.ts';
 
-export type Graph = ReturnType<typeof useGraph>;
+// interface as opposed to type alias to get cleaner hoverable type
+export interface Graph extends ReturnType<typeof useGraph> {}
 
 export type GNode = ReturnType<Graph['getNode']>;
 export type GEdge = ReturnType<Graph['getEdge']>;

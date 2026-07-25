@@ -22,10 +22,14 @@ const withAutoUnsubscribe = <EventMap extends GenericEventMap>(
  * unsubscribes automatically onUnmounted. shaped identically to ConsumerEventsHub,
  * so it's a drop-in replacement for the `events` field returned from useGraph.
  */
-export const useGraphEvents = (events: ConsumerEventsHub): ConsumerEventsHub => ({
+export const useGraphEvents = (
+  events: ConsumerEventsHub,
+): ConsumerEventsHub => ({
   ...withAutoUnsubscribe(events),
   _internal: {
     coreEvents: withAutoUnsubscribe(events._internal.coreEvents),
-    gettersInvalidation: withAutoUnsubscribe(events._internal.gettersInvalidation),
+    gettersInvalidation: withAutoUnsubscribe(
+      events._internal.gettersInvalidation,
+    ),
   },
 });

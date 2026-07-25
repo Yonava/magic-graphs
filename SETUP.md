@@ -36,7 +36,9 @@ Runs `nuxt generate` for `@magic/client`, producing a static site in `packages/m
 - `pnpm test` — runs the vitest suite across all packages.
 - `pnpm format` — formats the repo with Prettier.
 - `pnpm build:types` — type-checks and builds declaration files across all workspace packages via TypeScript project references.
-- `pnpm clean:nuke` — wipes `node_modules`, the lockfile, and all `dist` folders, then reinstalls and rebuilds types. Use this if something in the workspace gets into a weird state.
+- `pnpm format:check` — verifies formatting without rewriting files (what CI runs).
+- `pnpm clean` — removes all `dist` folders and TypeScript build caches.
+- `pnpm clean:nuke` — `pnpm clean`, plus wipes `node_modules`, then reinstalls and rebuilds types. Use this if something in the workspace gets into a weird state.
 
 ## Repo structure
 
