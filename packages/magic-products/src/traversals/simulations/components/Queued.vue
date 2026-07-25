@@ -84,7 +84,10 @@
     name="panel"
     appear
   >
-    <Well v-if="panelVisible">
+    <Well
+      v-if="panelVisible"
+      class="queue-panel"
+    >
       <!--
         the box is fixed rather than sized to the contents, so the panel holds
         still while the queue drains and fills. a container that resized every
@@ -103,6 +106,7 @@
         <TransitionGroup
           name="queue"
           tag="div"
+          appear
           class="relative flex flex-col-reverse items-center gap-2 h-full w-full overflow-y-auto"
           :class="[
             exitDirection === 'down' ? 'exit-down' : 'exit-up',
@@ -126,11 +130,18 @@
     the appear classes matter as much as the enter ones: the lens mounts with
     the start node already queued, so the panel's first showing is an initial
     render, which vue leaves unanimated unless asked
+
+    the slide duration is a variable because the first node's drop waits on it.
+    the nodes inherit it from the panel they sit in, so the two cannot drift
   */
+  .queue-panel {
+    --panel-slide: 250ms;
+  }
+
   .panel-enter-active,
   .panel-appear-active,
   .panel-leave-active {
-    transition: transform 250ms cubic-bezier(0.34, 1.4, 0.64, 1);
+    transition: transform var(--panel-slide) cubic-bezier(0.34, 1.4, 0.64, 1);
   }
 
   /*
@@ -171,9 +182,24 @@
   }
 
   /* the drop covers more ground than a shuffle, so it gets longer to do it */
-  .queue-enter-active {
+  .queue-enter-active,
+  .queue-appear-active {
     transition-duration: 300ms;
     transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /*
+    the node that brings the panel back with it mounts alongside the panel, so
+    without an appear it would ride in already seated. it always falls from the
+    top, since a queue coming back from empty is being pushed to, and it waits
+    out the panel's own slide first so it lands in a box that has stopped moving
+  */
+  .queue-appear-from {
+    transform: translateY(calc(-1 * var(--column-height)));
+  }
+
+  .queue-appear-active {
+    transition-delay: var(--panel-slide);
   }
 
   /*
