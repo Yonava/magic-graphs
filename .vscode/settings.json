@@ -37,6 +37,7 @@
     "unlabel",
     "unref",
     "unserialize",
+    "unshifts",
     "usetoast"
   ],
   "editor.formatOnSave": true,

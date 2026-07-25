@@ -66,7 +66,7 @@ const traversalThemers = (graph: Graph): TraversalThemers => {
     lens: {
       id: 'traversals',
       components: [
-        { component: Visited, position: 'top-left' },
+        { component: Visited, position: 'center-left' },
         { component: Queued, position: 'center-right' },
       ],
       activate: () => {
