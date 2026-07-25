@@ -67,7 +67,7 @@ const traversalThemers = (graph: Graph): TraversalThemers => {
       id: 'traversals',
       components: [
         { component: Visited, position: 'top-left' },
-        { component: Queued, position: 'top-right' },
+        { component: Queued, position: 'center-right' },
       ],
       activate: () => {
         for (const { themer } of themers) themer.activate();

@@ -5,10 +5,13 @@
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import { useNodeStyles } from '../../theme/index.ts';
 
-  const props = defineProps<{
-    id: GNode['id'];
-    scale?: number;
-  }>();
+  const props = withDefaults(
+    defineProps<{
+      id: GNode['id'];
+      scale?: number;
+    }>(),
+    { scale: 1 },
+  );
 
   const graph = useProvidedGraph();
 
@@ -17,13 +20,13 @@
   const toPixels = (number: number) => number + 'px';
 
   const nodeStyle = computed<StyleValue>(() => ({
-    width: toPixels(styles.value.size * 2),
-    height: toPixels(styles.value.size * 2),
+    width: toPixels(styles.value.size * 2 * props.scale),
+    height: toPixels(styles.value.size * 2 * props.scale),
     borderStyle: 'solid',
-    borderWidth: toPixels(styles.value.border.width),
+    borderWidth: toPixels(styles.value.border.width * props.scale),
     borderColor: styles.value.border.color,
     backgroundColor: styles.value.color,
-    fontSize: toPixels(styles.value.text.size),
+    fontSize: toPixels(styles.value.text.size * props.scale),
     fontWeight: styles.value.text.fontWeight,
     display: 'grid',
     placeItems: 'center',
@@ -34,7 +37,8 @@
 
 <template>
   <div
-    class="rounded-full"
+    @click="graph.focus.set([id])"
+    class="rounded-full cursor-pointer"
     :style="nodeStyle"
   >
     <span class="label">{{ styles.text.content }}</span>

@@ -7,6 +7,8 @@
   import { useProvidedGraph } from '@magic/shared/product';
   import { useFocusedNode } from '@magic/shared/utilities';
 
+  import { ref } from 'vue';
+
   import { useTraversalSimulations } from './simulations/index.ts';
 
   const graph = useProvidedGraph();
@@ -23,6 +25,8 @@
     graph.magic.simulation.start(simulations[type]);
     graph.focus.clear();
   };
+
+  const scale = ref(1);
 </script>
 
 <template>
@@ -43,12 +47,6 @@
       >
         Depth-First Search
       </Button>
-      <Well>
-        <Node
-          :id="node.id"
-          :size="20"
-        />
-      </Well>
     </HStackVue>
     <Well
       v-else
