@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
-  import NodeMenu from './NodeMenu.vue';
+  import ActionBar from './ActionBar.vue';
   import { lensChips } from './lensChips.ts';
   import { manifest } from './manifest.ts';
 
@@ -19,8 +19,8 @@
   });
 
   graph.magic.componentSlots.add({
-    id: 'node-menu',
-    component: NodeMenu,
+    id: 'action-bar',
+    component: ActionBar,
     position: 'bottom-middle',
   });
 </script>
