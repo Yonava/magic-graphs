@@ -1,5 +1,11 @@
+import fc from 'fast-check';
 import { describe, expect, test } from 'vitest';
 
+import {
+  distances,
+  graphArbitrary,
+  reachableNodes,
+} from '../graphGenerator.ts';
 import { breadthFirstSearch } from './index.ts';
 
 describe(breadthFirstSearch, () => {
@@ -38,5 +44,111 @@ describe(breadthFirstSearch, () => {
       D: [],
     };
     expect(breadthFirstSearch(graph, 'A')).toEqual(['A', 'B']);
+  });
+
+  test('ignores self-loops', () => {
+    const graph = {
+      A: ['A', 'B'],
+      B: [],
+    };
+    expect(breadthFirstSearch(graph, 'A')).toEqual(['A', 'B']);
+  });
+
+  test('handles neighbors that are not keys in the graph', () => {
+    const graph = {
+      A: ['B'],
+    };
+    expect(breadthFirstSearch(graph, 'A')).toEqual(['A', 'B']);
+  });
+
+  test('does not revisit a node reached via duplicate edges', () => {
+    const graph = {
+      A: ['B', 'B', 'C'],
+      B: [],
+      C: [],
+    };
+    expect(breadthFirstSearch(graph, 'A')).toEqual(['A', 'B', 'C']);
+  });
+
+  test('does not mutate the input graph', () => {
+    const graph = {
+      A: ['A', 'B'],
+      B: [],
+    };
+    const snapshot = JSON.parse(JSON.stringify(graph));
+
+    breadthFirstSearch(graph, 'A');
+
+    expect(graph).toEqual(snapshot);
+  });
+});
+
+describe('properties', () => {
+  test('only visits reachable nodes', () => {
+    fc.assert(
+      fc.property(graphArbitrary, (graph) => {
+        const start = Object.keys(graph)[0];
+
+        const result = breadthFirstSearch(graph, start);
+
+        expect(new Set(result)).toEqual(reachableNodes(graph, start));
+      }),
+      { numRuns: 10 },
+    );
+  });
+
+  test('never visits the same node twice', () => {
+    fc.assert(
+      fc.property(graphArbitrary, (graph) => {
+        const start = Object.keys(graph)[0];
+
+        const result = breadthFirstSearch(graph, start);
+
+        expect(new Set(result).size).toBe(result.length);
+      }),
+      { numRuns: 10 },
+    );
+  });
+
+  test('always starts at the starting node', () => {
+    fc.assert(
+      fc.property(graphArbitrary, (graph) => {
+        const start = Object.keys(graph)[0];
+
+        expect(breadthFirstSearch(graph, start)[0]).toBe(start);
+      }),
+      { numRuns: 10 },
+    );
+  });
+
+  test('maintains BFS level ordering', () => {
+    fc.assert(
+      fc.property(graphArbitrary, (graph) => {
+        const start = Object.keys(graph)[0];
+
+        const result = breadthFirstSearch(graph, start);
+
+        const nodeDistances = distances(graph, start);
+
+        const resultDistances = result.map((node) => nodeDistances.get(node)!);
+
+        expect(resultDistances).toEqual(
+          [...resultDistances].sort((a, b) => a - b),
+        );
+      }),
+      { numRuns: 10 },
+    );
+  });
+
+  test('returns empty array for missing start nodes', () => {
+    fc.assert(
+      fc.property(graphArbitrary, (graph) => {
+        const missing = 'Z';
+
+        if (!(missing in graph)) {
+          expect(breadthFirstSearch(graph, missing)).toEqual([]);
+        }
+      }),
+    );
   });
 });
