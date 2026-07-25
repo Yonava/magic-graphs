@@ -8,9 +8,14 @@
   /** matches the leave duration in the style block below + 250ms for a breather gap */
   const NODE_EXIT_MS = 350 + 100;
 
-  const props = defineProps<{
-    ids: readonly string[];
-  }>();
+  const props = withDefaults(
+    defineProps<{
+      ids: readonly string[];
+      /** which edge the panel slides out past when the list empties */
+      exitSide?: 'left' | 'right';
+    }>(),
+    { exitSide: 'right' },
+  );
 
   const { ids: nodeIds } = toRefs(props);
 
@@ -113,8 +118,9 @@
 <template>
   <!--
     an empty queue has nothing to say, so the whole panel leaves rather than
-    sitting there as an empty box. it lives on the right edge, so it slides out
-    past that edge: the panel comes from the side it is anchored to
+    sitting there as an empty box. it slides out past the edge it is anchored
+    to, which is the caller's to name: the panel comes from the side it sits on,
+    and a panel on the left sliding off to the right would cross the canvas
   -->
   <Transition
     name="panel"
@@ -123,6 +129,7 @@
     <Well
       v-if="panelVisible"
       class="queue-panel"
+      :class="exitSide === 'left' ? 'exit-left' : 'exit-right'"
     >
       <!--
         the box is fixed rather than sized to the contents, so the panel holds
@@ -183,13 +190,24 @@
   }
 
   /*
-    the slot sits 1.5rem in from the right edge, so clearing the panel's own
-    width is not enough to get it off screen. the inset has to go too
+    the slot sits 1.5rem in from the edge, so clearing the panel's own width is
+    not enough to get it off screen. the inset has to go too
+
+    the sign is the only thing the side changes, so it is a variable rather than
+    a second copy of the offset
   */
+  .exit-right {
+    --panel-exit: 1;
+  }
+
+  .exit-left {
+    --panel-exit: -1;
+  }
+
   .panel-enter-from,
   .panel-appear-from,
   .panel-leave-to {
-    transform: translateX(calc(100% + 1.5rem));
+    transform: translateX(calc(var(--panel-exit) * (100% + 1.5rem)));
   }
 
   .queue-item {

@@ -9,5 +9,8 @@
 </script>
 
 <template>
-  <NodeList :ids="visited" />
+  <NodeList
+    :ids="visited"
+    exit-side="left"
+  />
 </template>
