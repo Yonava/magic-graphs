@@ -4,15 +4,22 @@ type VisitedNodes = {
   visitedNodeIds?: readonly GNode['id'][];
 };
 
-type CurrentNode = {
-  currentNodeId?: GNode['id'];
+type ExploredNode = {
+  exploredNode?: GNode['id'];
 };
 
 type QueuedNodes = {
   queuedNodeIds?: readonly GNode['id'][];
 };
 
-type TraversalPayload = VisitedNodes & CurrentNode & QueuedNodes;
+type TraveledEdges = {
+  traveledEdgeIds?: GEdge['id'][];
+};
+
+type TraversalPayload = VisitedNodes &
+  ExploredNode &
+  QueuedNodes &
+  TraveledEdges;
 
 type StartTraversalFrame = {
   type: 'start';
@@ -28,20 +35,21 @@ type ExploreNodeFrame = {
 
 type TravelingEdgeFrame = {
   type: 'travel-edge';
-  /**
-   * the edge being crossed to reach {@link CurrentNode.currentNodeId}. required
-   * rather than optional so that a travel-edge frame always names its edge, and
-   * so that reading it forces a narrow on `type` first
-   */
-  traveledEdgeId: GEdge['id'];
 };
 
 type EnqueueNodeFrame = {
   type: 'enqueue-node';
+  node: GNode['id'];
 };
 
-type DequeueNodeFrame = {
-  type: 'dequeue-node';
+type MarkVisitedFrame = {
+  type: 'mark-visited';
+  node: GNode['id'];
+};
+
+type PreviouslyVisited = {
+  type: 'previously-visited';
+  node: GNode['id'];
 };
 
 export type TraversalFrame = (
@@ -50,6 +58,7 @@ export type TraversalFrame = (
   | ExploreNodeFrame
   | TravelingEdgeFrame
   | EnqueueNodeFrame
-  | DequeueNodeFrame
+  | MarkVisitedFrame
+  | PreviouslyVisited
 ) &
   TraversalPayload;

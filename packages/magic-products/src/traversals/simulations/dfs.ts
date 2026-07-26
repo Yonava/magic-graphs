@@ -13,24 +13,43 @@ export const dfs: TraversalFunction =
     });
 
     const visit = (node: string) => {
-      if (visited.has(node)) return;
-      // arriving at a node visits it. marking here rather than on the way back
-      // up is also what keeps the recursion from running away on a cycle
+      frameCollector.add({
+        type: 'explore-node',
+        exploredNode: node,
+        visitedNodeIds: [...visited],
+      });
+
+      // arriving at a node visits it. marking on the way in rather than on the
+      // way back up is also what keeps the recursion from running away on a cycle
       visited.add(node);
 
       frameCollector.add({
-        type: 'explore-node',
-        currentNodeId: node,
+        type: 'mark-visited',
+        node,
         visitedNodeIds: [...visited],
       });
 
       for (const neighbor of adjList[node] ?? []) {
+        // one edge per frame, unlike bfs: a depth first search commits to the
+        // edge it is looking at before it considers the next one
         frameCollector.add({
           type: 'travel-edge',
-          traveledEdgeId: edgeBetween(graph, node, neighbor),
-          currentNodeId: node,
+          traveledEdgeIds: [edgeBetween(graph, node, neighbor)],
+          exploredNode: node,
           visitedNodeIds: [...visited],
         });
+
+        // checked here rather than at the top of visit so the frame can name
+        // the neighbor being skipped
+        if (visited.has(neighbor)) {
+          frameCollector.add({
+            type: 'previously-visited',
+            node: neighbor,
+            visitedNodeIds: [...visited],
+          });
+          continue;
+        }
+
         visit(neighbor);
       }
     };

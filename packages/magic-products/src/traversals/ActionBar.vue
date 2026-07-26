@@ -2,7 +2,6 @@
   import { nullThrows } from '@core/utils/assert';
   import Button from '@magic/shared/Button';
   import HStackVue from '@magic/shared/HStack';
-  import Node from '@magic/shared/Node';
   import Well from '@magic/shared/Well';
   import { useProvidedGraph } from '@magic/shared/product';
   import { useFocusedNode } from '@magic/shared/utilities';

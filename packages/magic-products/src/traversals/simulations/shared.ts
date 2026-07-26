@@ -77,24 +77,10 @@ const traversalThemers = (graph: Graph): TraversalThemers => {
       },
     },
     syncToFrame: (frame) => {
-      const currentNodeId = frame.currentNodeId;
-      // the current node is also a visited one, since arriving at a node visits
-      // it. both themers would claim it and the winner would come down to their
-      // order in the stack, so precedence is settled here instead: being the
-      // node under the cursor outranks having already been seen
-      const visitedNodeIds = (frame.visitedNodeIds ?? []).filter(
-        (id) => id !== currentNodeId,
-      );
-
-      // only a travel-edge frame names an edge, so every other frame clears the
-      // highlight. the crossing reads as a moment rather than a trail
-      const traveledEdgeId =
-        frame.type === 'travel-edge' ? frame.traveledEdgeId : undefined;
-
-      current.setId(currentNodeId);
-      visited.setIds(visitedNodeIds);
+      current.setId(frame.exploredNode);
+      visited.setIds(frame.visitedNodeIds ?? []);
       queued.setIds(frame.queuedNodeIds ?? []);
-      traveled.setId(traveledEdgeId);
+      traveled.setIds(frame.traveledEdgeIds ?? []);
     },
   };
 };
