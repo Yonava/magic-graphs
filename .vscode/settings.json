@@ -10,8 +10,9 @@
     "Directedness",
     "dismissable",
     "gsap",
-    "letterforms",
+    "Highlightable",
     "kruskals",
+    "letterforms",
     "Lichter",
     "Lucidchart",
     "lusolve",
@@ -39,6 +40,7 @@
     "unlabel",
     "unref",
     "unserialize",
+    "unshifted",
     "unshifts",
     "usetoast"
   ],

@@ -12,6 +12,10 @@
       "types": "./dist/types/components/magic/Node.vue.d.ts",
       "default": "./src/components/magic/Node.vue"
     },
+    "./NodeList": {
+      "types": "./dist/types/components/magic/NodeList.vue.d.ts",
+      "default": "./src/components/magic/NodeList.vue"
+    },
     "./Well": {
       "types": "./dist/types/components/layout/Well.vue.d.ts",
       "default": "./src/components/layout/Well.vue"

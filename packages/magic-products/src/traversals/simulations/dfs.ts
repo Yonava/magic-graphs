@@ -6,58 +6,80 @@ export const dfs: TraversalFunction =
     if (!(startNodeId in adjList)) return;
 
     const visited = new Set<string>();
+    const stack = [startNodeId];
 
     frameCollector.add({
       type: 'start',
-      visitedNodeIds: [],
+      node: startNodeId,
+      queuedNodeIds: [...stack],
     });
 
-    const visit = (node: string) => {
+    while (stack.length > 0) {
+      const node = stack.pop()!;
+
       frameCollector.add({
         type: 'explore-node',
         exploredNode: node,
         visitedNodeIds: [...visited],
+        queuedNodeIds: [...stack],
       });
 
-      // arriving at a node visits it. marking on the way in rather than on the
-      // way back up is also what keeps the recursion from running away on a cycle
+      if (visited.has(node)) {
+        frameCollector.add({
+          type: 'dequeued-node-already-visited',
+          node,
+          visitedNodeIds: [...visited],
+          queuedNodeIds: [...stack],
+        });
+        continue;
+      }
+
       visited.add(node);
 
       frameCollector.add({
         type: 'mark-visited',
         node,
         visitedNodeIds: [...visited],
+        queuedNodeIds: [...stack],
       });
 
-      for (const neighbor of adjList[node] ?? []) {
-        // one edge per frame, unlike bfs: a depth first search commits to the
-        // edge it is looking at before it considers the next one
+      const neighbors = adjList[node] ?? [];
+
+      if (neighbors.length > 0) {
         frameCollector.add({
           type: 'travel-edge',
-          traveledEdgeIds: [edgeBetween(graph, node, neighbor)],
-          exploredNode: node,
+          traveledEdgeIds: neighbors.map((neighbor) =>
+            edgeBetween(graph, node, neighbor),
+          ),
           visitedNodeIds: [...visited],
+          queuedNodeIds: [...stack],
         });
+      }
 
-        // checked here rather than at the top of visit so the frame can name
-        // the neighbor being skipped
+      for (const neighbor of neighbors) {
         if (visited.has(neighbor)) {
           frameCollector.add({
             type: 'previously-visited',
             node: neighbor,
             visitedNodeIds: [...visited],
+            queuedNodeIds: [...stack],
           });
           continue;
         }
+        stack.push(neighbor);
 
-        visit(neighbor);
+        frameCollector.add({
+          type: 'enqueue-node',
+          node: neighbor,
+          visitedNodeIds: [...visited],
+          queuedNodeIds: [...stack],
+        });
       }
-    };
-
-    visit(startNodeId);
+    }
 
     frameCollector.add({
       type: 'end',
       visitedNodeIds: [...visited],
+      queuedNodeIds: [...stack],
     });
   };

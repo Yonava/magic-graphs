@@ -4,7 +4,6 @@
   import Button from '../components/button/Button.vue';
   import Icon from '../components/icon/Icon.vue';
   import { useProvidedGraph } from '../product/useProvidedGraph.ts';
-  import { useThemeToClasses } from '../useThemeToClasses.ts';
   import { useCtrlKeys } from '../utilities/useCtrlKeys.ts';
 
   const graph = useProvidedGraph();

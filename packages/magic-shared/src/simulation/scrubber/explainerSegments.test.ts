@@ -4,13 +4,6 @@ import { describe, expect, test, vi } from 'vitest';
 import { Explainer, ExplainerHighlight } from '../types.ts';
 
 vi.mock('../../theme/node/index.ts', () => ({
-  createNodeIdThemer: () => ({
-    themer: {
-      activate: vi.fn(),
-      deactivate: vi.fn(),
-    },
-    nodeId: { value: undefined },
-  }),
   useNodeStyles: () => ({
     styles: { value: { border: { color: undefined } } },
     dispose: vi.fn(),
@@ -24,7 +17,18 @@ const graph = {
   nodeLabel: {
     get: (id: string) => `Label ${id}`,
   },
-} as Parameters<typeof explainerSegments>[0];
+  theme: {
+    createThemer: () => ({
+      activate: vi.fn(),
+      deactivate: vi.fn(),
+    }),
+  },
+  focus: {
+    theme: {
+      _resolveToken: () => undefined,
+    },
+  },
+} as unknown as Parameters<typeof explainerSegments>[0];
 
 const highlight = (
   overrides: Partial<ExplainerHighlight> = {},

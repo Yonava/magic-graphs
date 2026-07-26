@@ -1,9 +1,12 @@
 <script setup lang="ts">
-  import Node from '@magic/shared/Node';
-  import VStack from '@magic/shared/VStack';
-  import Well from '@magic/shared/Well';
+  import { cn } from '@core/components/cn';
 
   import { onUnmounted, ref, toRefs, watch } from 'vue';
+
+  import HighlightableSlot from '../../component-slot/HighlightableSlot.vue';
+  import VStack from '../layout/VStack.vue';
+  import Well from '../layout/Well.vue';
+  import Node from './Node.vue';
 
   /** matches the leave duration in the style block below + 250ms for a breather gap */
   const NODE_EXIT_MS = 350 + 100;
@@ -13,6 +16,7 @@
       ids: readonly string[];
       /** which edge the panel slides out past when the list empties */
       exitSide?: 'left' | 'right';
+      slotId?: string;
     }>(),
     { exitSide: 'right' },
   );
@@ -116,29 +120,39 @@
 </script>
 
 <template>
-  <!--
+  <HighlightableSlot
+    :slot-id="slotId ?? 'undefined'"
+    v-slot="{ highlighted, classes: highlightClasses }"
+    unstyled
+  >
+    <!--
     an empty queue has nothing to say, so the whole panel leaves rather than
     sitting there as an empty box. it slides out past the edge it is anchored
     to, which is the caller's to name: the panel comes from the side it sits on,
     and a panel on the left sliding off to the right would cross the canvas
   -->
-  <Transition
-    name="panel"
-    appear
-  >
-    <Well
-      v-if="panelVisible"
-      class="queue-panel"
-      :class="exitSide === 'left' ? 'exit-left' : 'exit-right'"
+    <Transition
+      name="panel"
+      appear
     >
-      <!--
+      <Well
+        v-if="panelVisible || highlighted"
+        :class="
+          cn(
+            'queue-panel',
+            exitSide === 'left' ? 'exit-left' : 'exit-right',
+            highlightClasses,
+          )
+        "
+      >
+        <!--
         the box is fixed rather than sized to the contents, so the panel holds
         still while the queue drains and fills. a container that resized every
         frame would move the nodes around for reasons that have nothing to do
         with the traversal
       -->
-      <VStack class="queue-box gap-2 items-center w-18">
-        <!--
+        <VStack class="queue-box gap-2 items-center w-18">
+          <!--
           keying each item by node id is what makes the animation smart: vue
           matches the ids across frames, so a shift() is a leave and everything
           behind it gets a FLIP move down. nothing here diffs the array by hand
@@ -146,28 +160,29 @@
           the column is reversed, so index 0 (the front) sits at the bottom and
           the scroller stays anchored there as the back grows past the cap
         -->
-        <TransitionGroup
-          name="queue"
-          tag="div"
-          appear
-          class="relative flex flex-col-reverse items-center gap-2 h-full w-full overflow-y-auto"
-          :class="[
-            exitDirection === 'down' ? 'exit-down' : 'exit-up',
-            enterDirection === 'down' ? 'enter-down' : 'enter-up',
-          ]"
-          @enter="onEnter"
-          @leave="onLeave"
-        >
-          <Node
-            v-for="nodeId in nodeIds"
-            :key="nodeId"
-            :id="nodeId"
-            class="queue-item shrink-0"
-          />
-        </TransitionGroup>
-      </VStack>
-    </Well>
-  </Transition>
+          <TransitionGroup
+            name="queue"
+            tag="div"
+            appear
+            class="relative flex flex-col-reverse items-center gap-2 h-full w-full overflow-y-auto"
+            :class="[
+              exitDirection === 'down' ? 'exit-down' : 'exit-up',
+              enterDirection === 'down' ? 'enter-down' : 'enter-up',
+            ]"
+            @enter="onEnter"
+            @leave="onLeave"
+          >
+            <Node
+              v-for="nodeId in nodeIds"
+              :key="nodeId"
+              :id="nodeId"
+              class="queue-item shrink-0"
+            />
+          </TransitionGroup>
+        </VStack>
+      </Well>
+    </Transition>
+  </HighlightableSlot>
 </template>
 
 <style scoped>

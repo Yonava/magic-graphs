@@ -2,25 +2,36 @@ import { Graph } from '@magic/shared/graph';
 import { Explainer, ExplainerHighlight } from '@magic/shared/simulation';
 
 import { TraversalFrame } from './frame.ts';
-import { StartNodeId } from './shared.ts';
+import { slotIds } from './shared.ts';
+
+const componentSlotHighlight = (
+  slot: keyof typeof slotIds,
+): ExplainerHighlight => ({
+  activate: (graph) => graph.magic.componentSlots.setHighlighted(slotIds[slot]),
+  deactivate: (graph) => graph.magic.componentSlots.clearHighlighted(),
+});
 
 const highlights = {
   queue: {
-    tooltipLabel: 'Queue',
+    tooltipLabel: 'The waiting line. First one in is the first one out',
+    ...componentSlotHighlight('queue'),
   },
   enqueue: {
-    tooltipLabel: 'Enqueue',
+    tooltipLabel: 'Get in the back of the queue!',
+    ...componentSlotHighlight('queue'),
   },
   dequeue: {
-    tooltipLabel: 'Dequeue',
+    tooltipLabel: 'Grab whoever is at the front of the queue',
+    ...componentSlotHighlight('queue'),
   },
   visited: {
-    tooltipLabel: 'Visited',
+    tooltipLabel: 'Nodes we have already seen, nothing new here',
+    ...componentSlotHighlight('visited'),
   },
 } as const satisfies Record<string, ExplainerHighlight>;
 
 export const traversalExplainer =
-  (graph: Graph, startNodeId: StartNodeId) =>
+  (graph: Graph) =>
   (frame: TraversalFrame): Explainer | undefined => {
     if (frame.type === 'start') {
       const queuedNode = frame.queuedNodeIds?.[0];
@@ -30,7 +41,7 @@ export const traversalExplainer =
           highlights: [highlights.queue],
         };
       return {
-        content: `Starting Depth-First Search at {${startNodeId.value}}`,
+        content: `Starting Depth-First Search at {${frame.node}}`,
       };
     }
 
@@ -79,6 +90,13 @@ export const traversalExplainer =
       return {
         content: `{${frame.node}} Is In [Visited]. Therefore, We Ignore It`,
         highlights: [highlights.visited],
+      };
+    }
+
+    if (frame.type === 'dequeued-node-already-visited') {
+      return {
+        content: `It Seems {${frame.node}} Has Been [Visited] Since Being Added to [Queue]! Let's Ignore It`,
+        highlights: [highlights.visited, highlights.queue],
       };
     }
   };

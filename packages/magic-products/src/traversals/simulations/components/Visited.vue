@@ -1,16 +1,20 @@
 <script setup lang="ts">
+  import NodeList from '@magic/shared/NodeList';
+  import { useCurrentFrame } from '@magic/shared/simulation';
+
   import { computed } from 'vue';
 
-  import NodeList from './NodeList.vue';
-  import { useCurrentFrame } from './useCurrentFrame.ts';
+  import { TraversalFrame } from '../frame.ts';
+  import { slotIds } from '../shared.ts';
 
-  const { currentFrame } = useCurrentFrame();
+  const currentFrame = useCurrentFrame<TraversalFrame>();
   const visited = computed(() => currentFrame.value?.visitedNodeIds ?? []);
 </script>
 
 <template>
   <NodeList
     :ids="visited"
+    :slot-id="slotIds.visited"
     exit-side="left"
   />
 </template>

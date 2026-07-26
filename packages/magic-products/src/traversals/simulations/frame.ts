@@ -23,6 +23,7 @@ type TraversalPayload = VisitedNodes &
 
 type StartTraversalFrame = {
   type: 'start';
+  node: GNode['id'];
 };
 
 type EndTraversalFrame = {
@@ -52,6 +53,11 @@ type PreviouslyVisited = {
   node: GNode['id'];
 };
 
+type DequeuedNodeVisitedFrame = {
+  type: 'dequeued-node-already-visited';
+  node: GNode['id'];
+};
+
 export type TraversalFrame = (
   | StartTraversalFrame
   | EndTraversalFrame
@@ -60,5 +66,6 @@ export type TraversalFrame = (
   | EnqueueNodeFrame
   | MarkVisitedFrame
   | PreviouslyVisited
+  | DequeuedNodeVisitedFrame
 ) &
   TraversalPayload;
