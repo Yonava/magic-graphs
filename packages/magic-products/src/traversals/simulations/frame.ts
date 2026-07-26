@@ -13,7 +13,7 @@ type QueuedNodes = {
 };
 
 type TraveledEdges = {
-  traveledEdgeIds?: GEdge['id'][];
+  traveledEdgeIds?: readonly GEdge['id'][];
 };
 
 type TraversalPayload = VisitedNodes &

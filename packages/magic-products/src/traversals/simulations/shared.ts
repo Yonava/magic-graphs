@@ -82,7 +82,7 @@ const traversalThemers = (graph: Graph): TraversalThemers => {
   const queued = createNodeIdThemer(graph, nodeRoles.queued);
   const visited = createNodeIdThemer(graph, nodeRoles.visited);
   const traveled = createEdgeIdThemer(graph, edgeRoles.traveled);
-  // visited theme takes priority over queued, so it must be after queued
+  // order matters: latter elements take priority over earlier ones
   const themers = [queued, visited, current, traveled];
   return {
     current,
