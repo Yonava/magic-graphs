@@ -72,6 +72,11 @@ type TraversalThemers = {
   syncToFrame: (frame: TraversalFrame) => void;
 };
 
+export const slotIds = {
+  visited: 'traversal/visited',
+  queue: 'traversal/queued',
+} as const;
+
 const traversalThemers = (graph: Graph): TraversalThemers => {
   const current = createNodeIdThemer(graph, nodeRoles.current);
   const visited = createNodeIdThemer(graph, nodeRoles.visited);
@@ -86,8 +91,8 @@ const traversalThemers = (graph: Graph): TraversalThemers => {
     lens: {
       id: 'traversals',
       components: [
-        { component: Visited, position: 'center-left' },
-        { component: Queued, position: 'center-right' },
+        { component: Visited, position: 'center-left', id: slotIds.visited },
+        { component: Queued, position: 'center-right', id: slotIds.queue },
       ],
       activate: () => {
         for (const { themer } of themers) themer.activate();

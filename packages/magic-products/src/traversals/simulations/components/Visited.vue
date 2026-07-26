@@ -3,6 +3,7 @@
 
   import { computed } from 'vue';
 
+  import { slotIds } from '../shared.ts';
   import { useCurrentFrame } from './useCurrentFrame.ts';
 
   const { currentFrame } = useCurrentFrame();
@@ -12,7 +13,7 @@
 <template>
   <NodeList
     :ids="visited"
+    :slot-id="slotIds.visited"
     exit-side="left"
-    slot-id="traversals"
   />
 </template>

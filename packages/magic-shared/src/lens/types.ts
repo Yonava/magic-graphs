@@ -1,3 +1,5 @@
+import { PartiallyPartial } from '@core/utils/types';
+
 import { ComponentSlot } from '../component-slot/types.ts';
 
 /**
@@ -7,7 +9,7 @@ import { ComponentSlot } from '../component-slot/types.ts';
 export type Lens = {
   id: string;
   /** Component slots this lens renders into the GUI. */
-  components?: Omit<ComponentSlot, 'id'>[];
+  components?: PartiallyPartial<ComponentSlot, 'id'>[];
   /** Applies whatever this lens does when it becomes active. Not restricted to theming, can be any side effect in the spirit of a lens. */
   activate: () => void;
   /** Reverses everything activate did, restoring prior state when the lens becomes inactive. */

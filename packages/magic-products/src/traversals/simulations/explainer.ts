@@ -2,28 +2,31 @@ import { Graph } from '@magic/shared/graph';
 import { Explainer, ExplainerHighlight } from '@magic/shared/simulation';
 
 import { TraversalFrame } from './frame.ts';
+import { slotIds } from './shared.ts';
 
-const componentSlotHighlight = (slotId: string): ExplainerHighlight => ({
-  activate: (graph) => graph.magic.componentSlots.setHighlighted(slotId),
+const componentSlotHighlight = (
+  slot: keyof typeof slotIds,
+): ExplainerHighlight => ({
+  activate: (graph) => graph.magic.componentSlots.setHighlighted(slotIds[slot]),
   deactivate: (graph) => graph.magic.componentSlots.clearHighlighted(),
 });
 
 const highlights = {
   queue: {
     tooltipLabel: 'The waiting line. First one in is the first one out',
-    ...componentSlotHighlight('traversals'),
+    ...componentSlotHighlight('queue'),
   },
   enqueue: {
     tooltipLabel: 'Get in the back of the queue!',
-    ...componentSlotHighlight('traversals'),
+    ...componentSlotHighlight('queue'),
   },
   dequeue: {
     tooltipLabel: 'Grab whoever is at the front of the queue',
-    ...componentSlotHighlight('traversals'),
+    ...componentSlotHighlight('queue'),
   },
   visited: {
     tooltipLabel: 'Nodes we have already seen, nothing new here',
-    ...componentSlotHighlight('traversals'),
+    ...componentSlotHighlight('visited'),
   },
 } as const satisfies Record<string, ExplainerHighlight>;
 

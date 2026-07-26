@@ -3,6 +3,7 @@
 
   import { computed } from 'vue';
 
+  import { slotIds } from '../shared.ts';
   import { useCurrentFrame } from './useCurrentFrame.ts';
 
   const { currentFrame } = useCurrentFrame();
@@ -12,6 +13,6 @@
 <template>
   <NodeList
     :ids="queued"
-    slot-id="traversals"
+    :slot-id="slotIds.queue"
   />
 </template>
