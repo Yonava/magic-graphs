@@ -3,6 +3,7 @@ import { nullThrows } from '@core/utils/assert';
 import { computed } from 'vue';
 
 import { useProvidedGraph } from '../product/useProvidedGraph.ts';
+import { useCurrentFrame } from './useCurrentFrame.ts';
 
 export const useRunningSimulation = () => {
   const graph = useProvidedGraph();
@@ -16,11 +17,8 @@ export const useRunningSimulation = () => {
 
   const violation = computed(() => simulation.value.violation);
 
-  const explainer = computed(() =>
-    simulation.value.explainer?.(
-      simulation.value.frames[simulation.value.playhead.position],
-    ),
-  );
+  const currentFrame = useCurrentFrame();
+  const explainer = computed(() => simulation.value.explainer?.(currentFrame));
 
   return {
     simulation,

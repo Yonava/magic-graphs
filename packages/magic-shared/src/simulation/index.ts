@@ -7,3 +7,4 @@ export type {
   SimulationEffects,
 } from './types.ts';
 export { SimulationGuardBuilder } from './guard/SimulationGuardBuilder.ts';
+export { useCurrentFrame } from './useCurrentFrame.ts';

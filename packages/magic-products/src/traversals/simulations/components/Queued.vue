@@ -1,12 +1,13 @@
 <script setup lang="ts">
   import NodeList from '@magic/shared/NodeList';
+  import { useCurrentFrame } from '@magic/shared/simulation';
 
   import { computed } from 'vue';
 
+  import { TraversalFrame } from '../frame.ts';
   import { slotIds } from '../shared.ts';
-  import { useCurrentFrame } from './useCurrentFrame.ts';
 
-  const { currentFrame } = useCurrentFrame();
+  const currentFrame = useCurrentFrame<TraversalFrame>();
   const queued = computed(() => currentFrame.value?.queuedNodeIds ?? []);
 </script>
 
