@@ -1,7 +1,8 @@
 <script setup lang="ts">
+  import NodeList from '@magic/shared/NodeList';
+
   import { computed } from 'vue';
 
-  import NodeList from './NodeList.vue';
   import { useCurrentFrame } from './useCurrentFrame.ts';
 
   const { currentFrame } = useCurrentFrame();
@@ -11,6 +12,6 @@
 <template>
   <NodeList
     :ids="queued"
-    targeting-id="queue-list"
+    slot-id="traversals"
   />
 </template>

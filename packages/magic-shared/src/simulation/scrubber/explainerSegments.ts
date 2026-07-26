@@ -2,6 +2,7 @@ import { nullThrows } from '@core/utils/assert';
 import { MaybeGetter, getValue } from '@core/utils/maybeGetter/index';
 
 import { Graph } from '../../graph/types.ts';
+import { MagicGraph } from '../../product/useGraphProduct.ts';
 import { Explainer, ExplainerHighlight } from '../types.ts';
 import { parseTextSegments } from './parseTextSegments.ts';
 import { useNodeRefExplainerSegment } from './useNodeIdPart.ts';
@@ -13,13 +14,13 @@ export type ExplainerSegment = {
 };
 
 export const explainerSegments = (
-  graph: Graph,
+  graph: MagicGraph,
   explainer: Explainer | undefined,
 ): ExplainerSegment[] => {
   if (!explainer) return [];
 
-  const textValue = getValue(explainer.content);
-  const highlightsValue = getValue(explainer.highlights) ?? [];
+  const textValue = getValue(explainer.content, graph);
+  const highlightsValue = getValue(explainer.highlights, graph) ?? [];
 
   const textSegments = parseTextSegments(textValue);
 

@@ -36,21 +36,21 @@
     >
       <template v-if="segment.highlight">
         <Tooltip
-          :label="getValue(segment.highlight.tooltipLabel)"
-          @vue:mounted="segment.highlight.onMounted?.()"
-          @vue:unmounted="segment.highlight.onUnmounted?.()"
+          :label="getValue(segment.highlight.tooltipLabel, graph)"
+          @vue:mounted="segment.highlight.onMounted?.(graph)"
+          @vue:unmounted="segment.highlight.onUnmounted?.(graph)"
         >
           <template #trigger>
             <Button
-              @mouseenter="segment.highlight.activate?.()"
-              @mouseleave="segment.highlight.deactivate?.()"
+              @mouseenter="segment.highlight.activate?.(graph)"
+              @mouseleave="segment.highlight.deactivate?.(graph)"
               :class="
                 cn(
                   'text-2xl font-bold px-2 py-0',
-                  getValue(segment.highlight.classes),
+                  getValue(segment.highlight.classes, graph),
                 )
               "
-              :style="getValue(segment.highlight.styles)"
+              :style="getValue(segment.highlight.styles, graph)"
               >{{ getValue(segment.text) }}</Button
             >
           </template>
