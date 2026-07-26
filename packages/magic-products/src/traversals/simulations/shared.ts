@@ -79,10 +79,11 @@ export const slotIds = {
 
 const traversalThemers = (graph: Graph): TraversalThemers => {
   const current = createNodeIdThemer(graph, nodeRoles.current);
-  const visited = createNodeIdThemer(graph, nodeRoles.visited);
   const queued = createNodeIdThemer(graph, nodeRoles.queued);
+  const visited = createNodeIdThemer(graph, nodeRoles.visited);
   const traveled = createEdgeIdThemer(graph, edgeRoles.traveled);
-  const themers = [current, visited, queued, traveled];
+  // visited theme takes priority over queued, so it must be after queued
+  const themers = [queued, visited, current, traveled];
   return {
     current,
     visited,
@@ -103,8 +104,8 @@ const traversalThemers = (graph: Graph): TraversalThemers => {
     },
     syncToFrame: (frame) => {
       current.setId(frame.exploredNode);
-      visited.setIds(frame.visitedNodeIds ?? []);
       queued.setIds(frame.queuedNodeIds ?? []);
+      visited.setIds(frame.visitedNodeIds ?? []);
       traveled.setIds(frame.traveledEdgeIds ?? []);
     },
   };

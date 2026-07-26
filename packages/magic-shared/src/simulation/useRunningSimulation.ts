@@ -18,7 +18,9 @@ export const useRunningSimulation = () => {
   const violation = computed(() => simulation.value.violation);
 
   const currentFrame = useCurrentFrame();
-  const explainer = computed(() => simulation.value.explainer?.(currentFrame));
+  const explainer = computed(() =>
+    simulation.value.explainer?.(currentFrame.value),
+  );
 
   return {
     simulation,

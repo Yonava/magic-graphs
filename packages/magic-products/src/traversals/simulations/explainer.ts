@@ -92,4 +92,11 @@ export const traversalExplainer =
         highlights: [highlights.visited],
       };
     }
+
+    if (frame.type === 'dequeued-node-already-visited') {
+      return {
+        content: `It Seems {${frame.node}} Has Been [Visited] Since Being Added to [Queue]! Let's Ignore It`,
+        highlights: [highlights.visited, highlights.queue],
+      };
+    }
   };

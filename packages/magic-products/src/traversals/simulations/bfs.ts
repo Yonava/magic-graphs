@@ -6,7 +6,6 @@ export const bfs: TraversalFunction =
     if (!(startNodeId in adjList)) return;
 
     const visited = new Set<string>();
-    const enqueued = new Set<string>([startNodeId]);
     const queue = [startNodeId];
 
     frameCollector.add({
@@ -24,6 +23,16 @@ export const bfs: TraversalFunction =
         visitedNodeIds: [...visited],
         queuedNodeIds: [...queue],
       });
+
+      if (visited.has(node)) {
+        frameCollector.add({
+          type: 'dequeued-node-already-visited',
+          node,
+          visitedNodeIds: [...visited],
+          queuedNodeIds: [...queue],
+        });
+        continue;
+      }
 
       visited.add(node);
 
@@ -48,7 +57,7 @@ export const bfs: TraversalFunction =
       }
 
       for (const neighbor of neighbors) {
-        if (enqueued.has(neighbor)) {
+        if (visited.has(neighbor)) {
           frameCollector.add({
             type: 'previously-visited',
             node: neighbor,
@@ -57,7 +66,6 @@ export const bfs: TraversalFunction =
           });
           continue;
         }
-        enqueued.add(neighbor);
         queue.push(neighbor);
 
         frameCollector.add({
@@ -72,6 +80,6 @@ export const bfs: TraversalFunction =
     frameCollector.add({
       type: 'end',
       visitedNodeIds: [...visited],
-      queuedNodeIds: [],
+      queuedNodeIds: [...queue],
     });
   };
