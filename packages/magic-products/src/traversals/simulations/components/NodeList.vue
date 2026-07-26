@@ -13,6 +13,7 @@
       ids: readonly string[];
       /** which edge the panel slides out past when the list empties */
       exitSide?: 'left' | 'right';
+      targetingId?: string;
     }>(),
     { exitSide: 'right' },
   );
@@ -128,8 +129,9 @@
   >
     <Well
       v-if="panelVisible"
-      class="queue-panel"
+      class="queue-panel border-3 border-transparent"
       :class="exitSide === 'left' ? 'exit-left' : 'exit-right'"
+      :id="props.targetingId"
     >
       <!--
         the box is fixed rather than sized to the contents, so the panel holds

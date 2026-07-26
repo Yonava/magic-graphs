@@ -9,5 +9,8 @@
 </script>
 
 <template>
-  <NodeList :ids="queued" />
+  <NodeList
+    :ids="queued"
+    targeting-id="queue-list"
+  />
 </template>

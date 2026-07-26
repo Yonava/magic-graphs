@@ -11,6 +11,7 @@ export const bfs: TraversalFunction =
 
     frameCollector.add({
       type: 'start',
+      node: startNodeId,
       queuedNodeIds: [...queue],
     });
 

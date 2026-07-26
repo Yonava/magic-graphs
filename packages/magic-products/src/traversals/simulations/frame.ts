@@ -23,6 +23,7 @@ type TraversalPayload = VisitedNodes &
 
 type StartTraversalFrame = {
   type: 'start';
+  node: GNode['id'];
 };
 
 type EndTraversalFrame = {

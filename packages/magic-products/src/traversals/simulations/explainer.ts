@@ -1,26 +1,36 @@
+import colors from '@core/utils/colors';
 import { Graph } from '@magic/shared/graph';
 import { Explainer, ExplainerHighlight } from '@magic/shared/simulation';
 
 import { TraversalFrame } from './frame.ts';
-import { StartNodeId } from './shared.ts';
 
 const highlights = {
   queue: {
-    tooltipLabel: 'Queue',
+    tooltipLabel: 'The waiting line. First one in is the first one out',
+    activate: () => {
+      const element = document.getElementById('queue-list');
+      if (!element) return;
+      element.style.borderColor = colors.RED_500;
+    },
+    deactivate: () => {
+      const element = document.getElementById('queue-list');
+      if (!element) return;
+      element.style.borderColor = 'transparent';
+    },
   },
   enqueue: {
-    tooltipLabel: 'Enqueue',
+    tooltipLabel: 'Get in the back of the queue!',
   },
   dequeue: {
-    tooltipLabel: 'Dequeue',
+    tooltipLabel: 'Grab whoever is at the front of the queue',
   },
   visited: {
-    tooltipLabel: 'Visited',
+    tooltipLabel: 'Nodes we have already seen, nothing new here',
   },
 } as const satisfies Record<string, ExplainerHighlight>;
 
 export const traversalExplainer =
-  (graph: Graph, startNodeId: StartNodeId) =>
+  (graph: Graph) =>
   (frame: TraversalFrame): Explainer | undefined => {
     if (frame.type === 'start') {
       const queuedNode = frame.queuedNodeIds?.[0];
@@ -30,7 +40,7 @@ export const traversalExplainer =
           highlights: [highlights.queue],
         };
       return {
-        content: `Starting Depth-First Search at {${startNodeId.value}}`,
+        content: `Starting Depth-First Search at {${frame.node}}`,
       };
     }
 

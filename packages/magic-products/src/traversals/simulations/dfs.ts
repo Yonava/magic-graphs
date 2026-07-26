@@ -9,6 +9,7 @@ export const dfs: TraversalFunction =
 
     frameCollector.add({
       type: 'start',
+      node: startNodeId,
       visitedNodeIds: [],
     });
 
