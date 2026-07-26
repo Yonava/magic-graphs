@@ -1,4 +1,5 @@
 import { GNode } from '@magic/shared/graph';
+import Fraction from 'fraction.js';
 
 import { Arc, SingleSourceFunction, arcs } from './arcs.ts';
 import { Distance, PathFindingFrame } from './frame.ts';
@@ -12,7 +13,7 @@ export const bellmanFord: SingleSourceFunction =
 
     const distances: Record<GNode['id'], Distance> = {};
     for (const id of nodeIds) distances[id] = undefined;
-    distances[sourceNodeId] = 0;
+    distances[sourceNodeId] = new Fraction(0);
 
     /** the arc each node's best distance arrived on, which is what draws the tree */
     const arrivedOn = new Map<GNode['id'], Arc>();
@@ -44,7 +45,7 @@ export const bellmanFord: SingleSourceFunction =
         // per such arc would bury the passes that do move under ones that cannot
         if (reachedFrom === undefined) continue;
 
-        const offered = reachedFrom + arc.weight;
+        const offered = reachedFrom.add(arc.weight);
         const current = distances[arc.to];
 
         frameCollector.add(
@@ -59,7 +60,7 @@ export const bellmanFord: SingleSourceFunction =
           }),
         );
 
-        if (current !== undefined && current <= offered) {
+        if (current !== undefined && current.lte(offered)) {
           frameCollector.add(
             frame({
               type: 'keep-distance',
@@ -106,7 +107,7 @@ export const bellmanFord: SingleSourceFunction =
       const reachedFrom = distances[arc.from];
       if (reachedFrom === undefined) return false;
       const current = distances[arc.to];
-      return current === undefined || reachedFrom + arc.weight < current;
+      return current === undefined || reachedFrom.add(arc.weight).lt(current);
     });
 
     if (looping) {

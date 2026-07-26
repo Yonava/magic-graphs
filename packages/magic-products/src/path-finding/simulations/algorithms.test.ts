@@ -4,10 +4,14 @@ import { describe, expect, it } from 'vitest';
 import { bellmanFord } from './bellman-ford.ts';
 import { dijkstras } from './dijkstras.ts';
 import { floydWarshall } from './floyd-warshall.ts';
-import type { PathFindingFrame } from './frame.ts';
+import {
+  type DistanceRow,
+  type PathFindingFrame,
+  formatDistance,
+} from './frame.ts';
 
-/** source, target, weight */
-type EdgeSpec = [string, string, number];
+/** source, target, weight. the weight is anything `new Fraction()` takes */
+type EdgeSpec = [string, string, number | string];
 
 /*
   the algorithms read three things off a graph and nothing else: the node list,
@@ -39,6 +43,19 @@ const collect = (run: (c: { add: (f: PathFindingFrame) => void }) => void) => {
 
 const last = (frames: PathFindingFrame[]) => frames[frames.length - 1];
 
+/*
+  distances are fractions, and two fractions holding the same value are not the
+  same object. comparing the rendered form asserts the value and the way the
+  reader will see it in one go, and '∞' falls out of it for free
+*/
+const readDistances = (row: DistanceRow | undefined) =>
+  Object.fromEntries(
+    Object.entries(row ?? {}).map(([id, distance]) => [
+      id,
+      formatDistance(distance),
+    ]),
+  );
+
 // a -1-> b -2-> d, a -4-> c -1-> d, so d is 3 via b and 5 via c
 const DIAMOND: EdgeSpec[] = [
   ['a', 'b', 1],
@@ -52,7 +69,12 @@ describe('dijkstras', () => {
     const graph = makeGraph(['a', 'b', 'c', 'd'], DIAMOND);
     const frames = collect(dijkstras(graph, 'a'));
     expect(last(frames).type).toBe('end');
-    expect(last(frames).distances).toEqual({ a: 0, b: 1, c: 4, d: 3 });
+    expect(readDistances(last(frames).distances)).toEqual({
+      a: '0',
+      b: '1',
+      c: '4',
+      d: '3',
+    });
     expect(last(frames).settledNodeIds).toHaveLength(4);
   });
 
@@ -63,7 +85,11 @@ describe('dijkstras', () => {
     expect(unreachable && 'nodes' in unreachable && unreachable.nodes).toEqual([
       'z',
     ]);
-    expect(last(frames).distances).toEqual({ a: 0, b: 5, z: undefined });
+    expect(readDistances(last(frames).distances)).toEqual({
+      a: '0',
+      b: '5',
+      z: '∞',
+    });
   });
 
   it('walks undirected edges both ways', () => {
@@ -76,7 +102,11 @@ describe('dijkstras', () => {
       false,
     );
     const frames = collect(dijkstras(graph, 'a'));
-    expect(last(frames).distances).toEqual({ a: 0, b: 2, c: 5 });
+    expect(readDistances(last(frames).distances)).toEqual({
+      a: '0',
+      b: '2',
+      c: '5',
+    });
   });
 
   it('takes the cheaper of two parallel edges', () => {
@@ -88,19 +118,42 @@ describe('dijkstras', () => {
       ],
     );
     const frames = collect(dijkstras(graph, 'a'));
-    expect(last(frames).distances).toEqual({ a: 0, b: 2 });
+    expect(readDistances(last(frames).distances)).toEqual({ a: '0', b: '2' });
+  });
+
+  /*
+    the reason distances are fractions and not floats. three thirds are exactly
+    one, but in floats they fall a hair short of it, which is enough to make an
+    equal length detour look cheaper than the path it ties with
+  */
+  it('sums thirds to exactly one', () => {
+    const graph = makeGraph(
+      ['a', 'b', 'c', 'd'],
+      [
+        ['a', 'b', '1/3'],
+        ['b', 'c', '1/3'],
+        ['c', 'd', '1/3'],
+        ['a', 'd', 1],
+      ],
+    );
+    const distances = last(collect(dijkstras(graph, 'a'))).distances;
+    expect(readDistances(distances)).toEqual({
+      a: '0',
+      b: '1/3',
+      c: '2/3',
+      d: '1',
+    });
+    // the direct edge ties rather than losing, so the tie breaker holds
+    expect(distances!.d!.equals(1)).toBe(true);
   });
 });
 
 describe('bellmanFord', () => {
   it('agrees with dijkstra when weights are non negative', () => {
     const graph = makeGraph(['a', 'b', 'c', 'd'], DIAMOND);
-    expect(last(collect(bellmanFord(graph, 'a'))).distances).toEqual({
-      a: 0,
-      b: 1,
-      c: 4,
-      d: 3,
-    });
+    expect(
+      readDistances(last(collect(bellmanFord(graph, 'a'))).distances),
+    ).toEqual({ a: '0', b: '1', c: '4', d: '3' });
   });
 
   it('handles a negative edge dijkstra would get wrong', () => {
@@ -113,11 +166,22 @@ describe('bellmanFord', () => {
         ['c', 'b', -4],
       ],
     );
-    expect(last(collect(bellmanFord(graph, 'a'))).distances).toEqual({
-      a: 0,
-      b: 2,
-      c: 6,
-    });
+    expect(
+      readDistances(last(collect(bellmanFord(graph, 'a'))).distances),
+    ).toEqual({ a: '0', b: '2', c: '6' });
+  });
+
+  it('keeps fractional weights exact across passes', () => {
+    const graph = makeGraph(
+      ['a', 'b', 'c'],
+      [
+        ['a', 'b', '1/7'],
+        ['b', 'c', '2/7'],
+      ],
+    );
+    expect(
+      readDistances(last(collect(bellmanFord(graph, 'a'))).distances),
+    ).toEqual({ a: '0', b: '1/7', c: '3/7' });
   });
 
   it('stops early once a pass changes nothing', () => {
@@ -144,13 +208,23 @@ describe('floydWarshall', () => {
   it('fills in every pair', () => {
     const graph = makeGraph(['a', 'b', 'c', 'd'], DIAMOND);
     const matrix = last(collect(floydWarshall(graph)))!.matrix!;
-    expect(matrix.a).toEqual({ a: 0, b: 1, c: 4, d: 3 });
-    expect(matrix.b).toEqual({ a: undefined, b: 0, c: undefined, d: 2 });
-    expect(matrix.d).toEqual({
-      a: undefined,
-      b: undefined,
-      c: undefined,
-      d: 0,
+    expect(readDistances(matrix.a)).toEqual({
+      a: '0',
+      b: '1',
+      c: '4',
+      d: '3',
+    });
+    expect(readDistances(matrix.b)).toEqual({
+      a: '∞',
+      b: '0',
+      c: '∞',
+      d: '2',
+    });
+    expect(readDistances(matrix.d)).toEqual({
+      a: '∞',
+      b: '∞',
+      c: '∞',
+      d: '0',
     });
   });
 
@@ -166,8 +240,20 @@ describe('floydWarshall', () => {
     const matrix = last(collect(floydWarshall(graph)))!.matrix!;
     for (const source of ['a', 'b', 'c']) {
       const distances = last(collect(bellmanFord(graph, source))).distances;
-      expect(matrix[source]).toEqual(distances);
+      expect(readDistances(matrix[source])).toEqual(readDistances(distances));
     }
+  });
+
+  it('routes through a pivot without losing exactness', () => {
+    const graph = makeGraph(
+      ['a', 'b', 'c'],
+      [
+        ['a', 'b', '1/3'],
+        ['b', 'c', '1/6'],
+      ],
+    );
+    const matrix = last(collect(floydWarshall(graph)))!.matrix!;
+    expect(formatDistance(matrix.a.c)).toBe('1/2');
   });
 
   it('calls out a negative cycle', () => {

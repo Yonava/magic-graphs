@@ -1,21 +1,18 @@
 import { GEdge, GNode } from '@magic/shared/graph';
+import Fraction from 'fraction.js';
 
 /**
- * a distance of undefined is infinity: no path has been found yet. it is not a
- * number so that arithmetic on it is a type error rather than a silent Infinity
- * creeping into a table cell
+ * a distance is a sum of edge weights, so it is a fraction for the same reason
+ * a weight is one: three hops of 1/3 have to land on exactly 1, and in floats
+ * they land just under it, which is enough to pick the wrong shortest path.
+ *
+ * undefined is infinity, rather than a number, so that adding to a distance we
+ * have not found yet is a type error instead of an Infinity in a table cell
  */
-export type Distance = number | undefined;
+export type Distance = Fraction | undefined;
 
-/**
- * weights are fractions, so a distance can land on a value no decimal writes
- * exactly. rounding is a display concern only: the numbers being compared are
- * always the unrounded ones
- */
-export const formatDistance = (distance: Distance) => {
-  if (distance === undefined) return '∞';
-  return Number.isInteger(distance) ? `${distance}` : distance.toFixed(2);
-};
+export const formatDistance = (distance: Distance) =>
+  distance === undefined ? '∞' : distance.toFraction();
 
 /** the best known distance from one fixed source to every node */
 export type DistanceRow = Readonly<Record<GNode['id'], Distance>>;
@@ -97,7 +94,7 @@ type EndFrame = {
 type SettleNodeFrame = {
   type: 'settle-node';
   node: GNode['id'];
-  distance: number;
+  distance: Fraction;
 };
 
 type RelaxEdgeFrame = {
@@ -111,14 +108,14 @@ type ImproveDistanceFrame = {
   type: 'improve-distance';
   node: GNode['id'];
   oldDistance: Distance;
-  newDistance: number;
+  newDistance: Fraction;
 };
 
 type KeepDistanceFrame = {
   type: 'keep-distance';
   node: GNode['id'];
-  distance: number;
-  offered: number;
+  distance: Fraction;
+  offered: Fraction;
 };
 
 type UnreachableFrame = {
@@ -155,7 +152,7 @@ type ConsiderPairFrame = {
   to: GNode['id'];
   pivot: GNode['id'];
   direct: Distance;
-  viaPivot: number;
+  viaPivot: Fraction;
 };
 
 type ImprovePairFrame = {
@@ -164,7 +161,7 @@ type ImprovePairFrame = {
   to: GNode['id'];
   pivot: GNode['id'];
   oldDistance: Distance;
-  newDistance: number;
+  newDistance: Fraction;
 };
 
 type KeepPairFrame = {
@@ -172,7 +169,7 @@ type KeepPairFrame = {
   from: GNode['id'];
   to: GNode['id'];
   pivot: GNode['id'];
-  distance: number;
+  distance: Fraction;
 };
 
 export type PathFindingFrame = (

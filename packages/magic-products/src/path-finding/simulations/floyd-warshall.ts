@@ -1,4 +1,5 @@
 import { GNode } from '@magic/shared/graph';
+import Fraction from 'fraction.js';
 
 import { AllPairsFunction, arcs } from './arcs.ts';
 import { Distance, PathFindingFrame } from './frame.ts';
@@ -9,7 +10,8 @@ export const floydWarshall: AllPairsFunction = (graph) => (frameCollector) => {
   const matrix: Record<GNode['id'], Record<GNode['id'], Distance>> = {};
   for (const from of nodeIds) {
     matrix[from] = {};
-    for (const to of nodeIds) matrix[from][to] = from === to ? 0 : undefined;
+    for (const to of nodeIds)
+      matrix[from][to] = from === to ? new Fraction(0) : undefined;
   }
 
   /*
@@ -20,7 +22,7 @@ export const floydWarshall: AllPairsFunction = (graph) => (frameCollector) => {
   */
   for (const arc of arcs(graph)) {
     const known = matrix[arc.from]?.[arc.to];
-    if (known !== undefined && known <= arc.weight) continue;
+    if (known !== undefined && known.lte(arc.weight)) continue;
     matrix[arc.from][arc.to] = arc.weight;
   }
 
@@ -61,7 +63,7 @@ export const floydWarshall: AllPairsFunction = (graph) => (frameCollector) => {
         const outOfPivot = matrix[pivot][to];
         if (outOfPivot === undefined || to === pivot) continue;
 
-        const viaPivot = intoPivot + outOfPivot;
+        const viaPivot = intoPivot.add(outOfPivot);
         const direct = matrix[from][to];
 
         frameCollector.add(
@@ -77,7 +79,7 @@ export const floydWarshall: AllPairsFunction = (graph) => (frameCollector) => {
           }),
         );
 
-        if (direct !== undefined && direct <= viaPivot) {
+        if (direct !== undefined && direct.lte(viaPivot)) {
           frameCollector.add(
             frame({
               type: 'keep-pair',
@@ -114,7 +116,7 @@ export const floydWarshall: AllPairsFunction = (graph) => (frameCollector) => {
     a node that can reach itself for less than nothing is sitting on a cycle
     that gets cheaper every lap, so no shortest path through it exists
   */
-  const looping = nodeIds.find((id) => (matrix[id][id] ?? 0) < 0);
+  const looping = nodeIds.find((id) => matrix[id][id]?.lt(0));
 
   if (looping) {
     frameCollector.add(

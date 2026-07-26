@@ -1,4 +1,5 @@
 import { GNode } from '@magic/shared/graph';
+import Fraction from 'fraction.js';
 
 import { Arc, SingleSourceFunction, arcsBySource } from './arcs.ts';
 import { Distance, PathFindingFrame } from './frame.ts';
@@ -10,7 +11,7 @@ export const dijkstras: SingleSourceFunction =
 
     const distances: Record<GNode['id'], Distance> = {};
     for (const node of graph.nodes.value) distances[node.id] = undefined;
-    distances[sourceNodeId] = 0;
+    distances[sourceNodeId] = new Fraction(0);
 
     const settled = new Set<GNode['id']>();
     /** the arc each node's best distance arrived on, which is what draws the tree */
@@ -25,7 +26,7 @@ export const dijkstras: SingleSourceFunction =
     const frontier = () =>
       Object.keys(distances)
         .filter((id) => !settled.has(id) && distances[id] !== undefined)
-        .sort((a, b) => distances[a]! - distances[b]!);
+        .sort((a, b) => distances[a]!.compare(distances[b]!));
 
     const frame = <T extends PathFindingFrame>(fields: T) => ({
       distances: { ...distances },
@@ -51,7 +52,7 @@ export const dijkstras: SingleSourceFunction =
       );
 
       for (const arc of outgoing[nearest] ?? []) {
-        const offered = distances[nearest]! + arc.weight;
+        const offered = distances[nearest]!.add(arc.weight);
         const current = distances[arc.to];
 
         frameCollector.add(
@@ -66,7 +67,7 @@ export const dijkstras: SingleSourceFunction =
           }),
         );
 
-        if (current !== undefined && current <= offered) {
+        if (current !== undefined && current.lte(offered)) {
           frameCollector.add(
             frame({
               type: 'keep-distance',

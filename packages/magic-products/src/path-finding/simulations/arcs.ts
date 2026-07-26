@@ -1,5 +1,6 @@
 import { GEdge, GNode, Graph } from '@magic/shared/graph';
 import { FrameCollectorFn } from '@magic/shared/simulation/types';
+import Fraction from 'fraction.js';
 
 import { PathFindingFrame } from './frame.ts';
 
@@ -25,19 +26,19 @@ export type Arc = {
   edgeId: GEdge['id'];
   from: GNode['id'];
   to: GNode['id'];
-  weight: number;
+  /** the edge's own weight, carried across as the fraction it already is */
+  weight: Fraction;
 };
 
 export const arcs = (graph: Graph): Arc[] => {
   const collected: Arc[] = [];
 
   for (const edge of graph.edges.value) {
-    const weight = edge.weight.valueOf();
     const forward = {
       edgeId: edge.id,
       from: edge.source,
       to: edge.target,
-      weight,
+      weight: edge.weight,
     };
     collected.push(forward);
     if (graph.metadata.directed) continue;
