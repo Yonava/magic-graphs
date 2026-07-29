@@ -42,7 +42,8 @@
     "unserialize",
     "unshifted",
     "unshifts",
-    "usetoast"
+    "usetoast",
+    "Warshall"
   ],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",

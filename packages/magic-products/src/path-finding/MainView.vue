@@ -1,14 +1,13 @@
 <script setup lang="ts">
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
-  import BottomPanel from './BottomPanel.vue';
+  import ActionBar from './ActionBar.vue';
   import { manifest } from './manifest.ts';
 
   const graph = useGraphProduct({
     manifest,
     interactive: {
       addedEdgeRuleNoSelfLoops: true,
-      addedEdgeWeight: 0.5,
       addedEdgeRuleOneEdgePerPath: false,
     },
     ui: {
@@ -17,8 +16,8 @@
   });
 
   graph.magic.componentSlots.add({
-    id: 'panel',
-    component: BottomPanel,
+    id: 'action-bar',
+    component: ActionBar,
     position: 'bottom-middle',
   });
 </script>
