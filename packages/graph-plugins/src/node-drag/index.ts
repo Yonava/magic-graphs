@@ -83,6 +83,7 @@ export const nodeDrag: NodeDragPlugin = ({ controls, actions, getters }) => {
         nullThrows(getters.getNode(nodeId), 'dropped node not found'),
       ),
     );
+    controls.history?.captureSnapshot();
   };
 
   const drag = (

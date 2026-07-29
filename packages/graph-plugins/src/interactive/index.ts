@@ -19,6 +19,12 @@ export const interactive =
       ...options,
     };
 
+    const captureHistorySnapshot = () => {
+      const { recordHistory } = optionsWithDefaults;
+      if (!recordHistory) return;
+      controls.history?.captureSnapshot();
+    };
+
     let lastClickTime = 0;
 
     const handleNodeCreation = ({
@@ -38,6 +44,7 @@ export const interactive =
       finalActions.addNode({
         position: { x: coords.x, y: coords.y },
       });
+      captureHistorySnapshot();
     };
 
     const handleEdgeTextArea = ({
@@ -60,8 +67,7 @@ export const interactive =
           'Edge not found!',
         );
 
-        const newWeight =
-          optionsWithDefaults.edgeInputToWeight(textAreaContent);
+        const newWeight = optionsWithDefaults.parseEdgeWeight(textAreaContent);
         if (
           newWeight === undefined ||
           edge.weight.valueOf() === newWeight.valueOf()
@@ -70,6 +76,8 @@ export const interactive =
         }
 
         controls.weights.set({ edgeId: edge.id, update: newWeight });
+
+        captureHistorySnapshot();
       });
     };
 
@@ -77,12 +85,12 @@ export const interactive =
       sourceNode: { id: string },
       targetNode: { id: string },
     ) => {
-      if (options.addedEdgeRuleNoSelfLoops) {
+      if (!optionsWithDefaults.allowSelfLoops) {
         const violatesRule = sourceNode.id === targetNode.id;
         if (violatesRule) return false;
       }
 
-      if (options.addedEdgeRuleOneEdgePerPath) {
+      if (!optionsWithDefaults.allowRepeatConnections) {
         const edgeBetweenToAndFrom = controls.edges.find(
           (edge) =>
             edge.source === sourceNode.id && edge.target === targetNode.id,
@@ -115,7 +123,7 @@ export const interactive =
       if (!canCreateEdge) return;
 
       const numberWeight = getValue(
-        optionsWithDefaults.addedEdgeWeight,
+        optionsWithDefaults.newEdgeWeight,
       ).valueOf();
 
       // finalActions, not actions: this fires later, on anchor drop, so it
@@ -125,6 +133,7 @@ export const interactive =
         target: targetNode.id,
         weight: new Fraction(numberWeight),
       });
+      captureHistorySnapshot();
     };
 
     const removeFocusedElements = (e: KeyboardEvent) => {
@@ -136,6 +145,7 @@ export const interactive =
         },
         {},
       );
+      captureHistorySnapshot();
     };
 
     const enable = () => {

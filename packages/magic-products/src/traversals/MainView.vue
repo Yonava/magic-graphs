@@ -11,7 +11,7 @@
       weighted: false,
     },
     interactive: {
-      addedEdgeRuleNoSelfLoops: true,
+      allowSelfLoops: false,
     },
     ui: {
       lensChips,
