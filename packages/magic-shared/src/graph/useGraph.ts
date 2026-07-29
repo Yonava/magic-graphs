@@ -13,6 +13,7 @@ import { interactive } from '@graph/plugins/interactive/index';
 import { InteractiveOptions } from '@graph/plugins/interactive/options';
 import { marquee } from '@graph/plugins/marquee/index';
 import { nodeDrag } from '@graph/plugins/node-drag/index';
+import { NodeDragOptions } from '@graph/plugins/node-drag/options';
 import { nodeLabel } from '@graph/plugins/node-label/index';
 import { transitionMatrix } from '@graph/plugins/transition-matrix/index';
 import { dark } from '@graph/theme-presets/dark/index';
@@ -31,6 +32,7 @@ import { useGraphDevTools } from './useGraphDevTools.ts';
 export type UseGraphOptions = {
   core?: Partial<CoreOptions>;
   interactive?: Partial<InteractiveOptions>;
+  nodeDrag?: Partial<NodeDragOptions>;
 };
 
 const graphPlugins = (
@@ -41,7 +43,7 @@ const graphPlugins = (
   focus,
   marquee,
   anchors,
-  nodeDrag,
+  nodeDrag(options.nodeDrag ?? {}),
   nodeLabel,
   adjacencyLists,
   transitionMatrix,

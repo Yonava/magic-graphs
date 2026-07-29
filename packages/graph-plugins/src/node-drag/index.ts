@@ -14,156 +14,170 @@ import {
 } from './constants.ts';
 import { createDragThemer } from './createDragThemer.ts';
 import { createNodeDragEventRegistry } from './events.ts';
+import { DEFAULT_NODE_DRAG_OPTIONS, NodeDragOptions } from './options.ts';
 import { NodeDragPlugin, NodeIdDragState } from './types.ts';
 import { validateNodeIds } from './validateNodeIds.ts';
 
-export const nodeDrag: NodeDragPlugin = ({ controls, actions, getters }) => {
-  const nodeDragEventRegistry = createNodeDragEventRegistry();
-  const nodeDragEventHub = createEventHub(nodeDragEventRegistry);
+export const nodeDrag =
+  (options: Partial<NodeDragOptions>): NodeDragPlugin =>
+  ({ controls, actions, getters }) => {
+    const optionsWithDefaults = {
+      ...DEFAULT_NODE_DRAG_OPTIONS,
+      ...options,
+    };
 
-  const dragState = createDragState<NodeIdDragState>();
-  let nodePositionStream: NodePositionStreamControls | undefined;
+    const captureHistorySnapshot = () => {
+      const { recordHistory } = optionsWithDefaults;
+      if (!recordHistory) return;
+      controls.history?.captureSnapshot();
+    };
 
-  const beginDrag = (
-    { topElement, coords, event }: CanvasGraphMouseEvent,
-    consume: () => void,
-  ) => {
-    if (event.button !== MOUSE_BUTTONS.left) return;
+    const nodeDragEventRegistry = createNodeDragEventRegistry();
+    const nodeDragEventHub = createEventHub(nodeDragEventRegistry);
 
-    if (!topElement) return;
+    const dragState = createDragState<NodeIdDragState>();
+    let nodePositionStream: NodePositionStreamControls | undefined;
 
-    const nodeIdsToDrag = [];
+    const beginDrag = (
+      { topElement, coords, event }: CanvasGraphMouseEvent,
+      consume: () => void,
+    ) => {
+      if (event.button !== MOUSE_BUTTONS.left) return;
 
-    if (controls.isNode(topElement.id)) {
-      nodeIdsToDrag.push(topElement.id);
-    }
+      if (!topElement) return;
 
-    const nodeIds = topElement.data?.[NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD];
-    if (nodeIds !== undefined) {
-      if (!validateNodeIds(nodeIds)) {
-        console.warn('node drag expected array of node ids: got', nodeIds);
-      } else {
-        nodeIdsToDrag.push(...nodeIds);
+      const nodeIdsToDrag = [];
+
+      if (controls.isNode(topElement.id)) {
+        nodeIdsToDrag.push(topElement.id);
       }
-    }
 
-    if (nodeIdsToDrag.length === 0) return;
+      const nodeIds = topElement.data?.[NODE_DRAG_CANVAS_ELEMENT_DATA_FIELD];
+      if (nodeIds !== undefined) {
+        if (!validateNodeIds(nodeIds)) {
+          console.warn('node drag expected array of node ids: got', nodeIds);
+        } else {
+          nodeIdsToDrag.push(...nodeIds);
+        }
+      }
 
-    consume();
+      if (nodeIdsToDrag.length === 0) return;
 
-    const nodes = nodeIdsToDrag.map((nodeId) =>
-      nullThrows(
-        getters.getNode(nodeId),
-        'canvas element of graph type node not resolvable as node',
-      ),
-    );
+      consume();
 
-    if (nodePositionStream) {
-      throw new Error(
-        'beginDrag called while a node position stream is already active',
+      const nodes = nodeIdsToDrag.map((nodeId) =>
+        nullThrows(
+          getters.getNode(nodeId),
+          'canvas element of graph type node not resolvable as node',
+        ),
       );
-    }
-    dragState.startDrag(coords, { nodeIds: nodeIdsToDrag });
-    nodePositionStream = controls.positions.createStream();
-    nodeDragEventHub.emit('onNodeDragStart', nodes);
-  };
 
-  const drop = () => {
-    const data = dragState.stopDrag();
-    if (!data) return;
-    const stream = nullThrows(
-      nodePositionStream,
-      'node position stream controls undefined',
-    );
-    stream.stop();
-    nodePositionStream = undefined;
-    nodeDragEventHub.emit(
-      'onNodeDrop',
-      data.nodeIds.map((nodeId) =>
-        nullThrows(getters.getNode(nodeId), 'dropped node not found'),
-      ),
-    );
-    controls.history?.captureSnapshot();
-  };
+      if (nodePositionStream) {
+        throw new Error(
+          'beginDrag called while a node position stream is already active',
+        );
+      }
+      dragState.startDrag(coords, { nodeIds: nodeIdsToDrag });
+      nodePositionStream = controls.positions.createStream();
+      nodeDragEventHub.emit('onNodeDragStart', nodes);
+    };
 
-  const drag = (
-    { coords }: DeepReadonly<GraphUnderCursor>,
-    consume: () => void,
-  ) => {
-    const dragData = dragState.applyMove(coords);
-    if (!dragData) return;
+    const drop = () => {
+      const data = dragState.stopDrag();
+      if (!data) return;
+      const stream = nullThrows(
+        nodePositionStream,
+        'node position stream controls undefined',
+      );
+      stream.stop();
+      nodePositionStream = undefined;
+      nodeDragEventHub.emit(
+        'onNodeDrop',
+        data.nodeIds.map((nodeId) =>
+          nullThrows(getters.getNode(nodeId), 'dropped node not found'),
+        ),
+      );
+      captureHistorySnapshot();
+    };
 
-    const {
-      data: { nodeIds },
-      deltas: { dx, dy },
-    } = dragData;
+    const drag = (
+      { coords }: DeepReadonly<GraphUnderCursor>,
+      consume: () => void,
+    ) => {
+      const dragData = dragState.applyMove(coords);
+      if (!dragData) return;
 
-    consume();
+      const {
+        data: { nodeIds },
+        deltas: { dx, dy },
+      } = dragData;
 
-    if (!dx && !dy) return;
+      consume();
 
-    const nodes = nodeIds.map((nodeId) =>
-      nullThrows(getters.getNode(nodeId), 'dragged node not found'),
-    );
+      if (!dx && !dy) return;
 
-    const stream = nullThrows(
-      nodePositionStream,
-      'node position stream controls undefined',
-    );
+      const nodes = nodeIds.map((nodeId) =>
+        nullThrows(getters.getNode(nodeId), 'dragged node not found'),
+      );
 
-    stream.setMany(
-      nodes.map((n) => ({
-        nodeId: n.id,
-        update: (pos) => ({ x: pos.x + dx, y: pos.y + dy }),
-      })),
-    );
-  };
+      const stream = nullThrows(
+        nodePositionStream,
+        'node position stream controls undefined',
+      );
 
-  const cursorTheme = createDragThemer(controls, dragState);
+      stream.setMany(
+        nodes.map((n) => ({
+          nodeId: n.id,
+          update: (pos) => ({ x: pos.x + dx, y: pos.y + dy }),
+        })),
+      );
+    };
 
-  const enable = () => {
-    controls.canvas.events.handle(
-      'onMouseDown',
-      beginDrag,
-      NODE_DRAG_PLUGIN_ID,
-      {
+    const cursorTheme = createDragThemer(controls, dragState);
+
+    const enable = () => {
+      controls.canvas.events.handle(
+        'onMouseDown',
+        beginDrag,
+        NODE_DRAG_PLUGIN_ID,
+        {
+          before: [ANCHOR_PLUGIN_ID],
+        },
+      );
+      controls.canvas.events.handle('onMouseUp', drop, NODE_DRAG_PLUGIN_ID, {
         before: [ANCHOR_PLUGIN_ID],
-      },
-    );
-    controls.canvas.events.handle('onMouseUp', drop, NODE_DRAG_PLUGIN_ID, {
-      before: [ANCHOR_PLUGIN_ID],
-    });
-    controls.canvas.events.handle(
-      'onGraphUnderCursorChange',
-      drag,
-      NODE_DRAG_PLUGIN_ID,
-      {
-        before: [ANCHOR_PLUGIN_ID],
-      },
-    );
-    cursorTheme.enable();
-  };
+      });
+      controls.canvas.events.handle(
+        'onGraphUnderCursorChange',
+        drag,
+        NODE_DRAG_PLUGIN_ID,
+        {
+          before: [ANCHOR_PLUGIN_ID],
+        },
+      );
+      cursorTheme.enable();
+    };
 
-  const disable = () => {
-    controls.canvas.events.unhandle('onMouseDown', beginDrag);
-    controls.canvas.events.unhandle('onMouseUp', drop);
-    controls.canvas.events.unhandle('onGraphUnderCursorChange', drag);
-    cursorTheme.disable();
-    drop();
-  };
+    const disable = () => {
+      controls.canvas.events.unhandle('onMouseDown', beginDrag);
+      controls.canvas.events.unhandle('onMouseUp', drop);
+      controls.canvas.events.unhandle('onGraphUnderCursorChange', drag);
+      cursorTheme.disable();
+      drop();
+    };
 
-  enable();
+    enable();
 
-  return {
-    name: 'nodeDrag',
-    getters,
-    actions,
-    controls: {
-      events: nodeDragEventHub,
-      lifecycle: {
-        enable,
-        disable,
+    return {
+      name: 'nodeDrag',
+      getters,
+      actions,
+      controls: {
+        events: nodeDragEventHub,
+        lifecycle: {
+          enable,
+          disable,
+        },
       },
-    },
+    };
   };
-};
