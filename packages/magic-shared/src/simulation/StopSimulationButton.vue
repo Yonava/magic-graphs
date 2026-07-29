@@ -4,11 +4,14 @@
   import Button from '../components/button/Button.vue';
   import Icon from '../components/icon/Icon.vue';
   import { useProvidedGraph } from '../product/useProvidedGraph.ts';
-  import { useCtrlKeys } from '../utilities/useCtrlKeys.ts';
 
   const graph = useProvidedGraph();
+  const { useShortcut } = graph.magic.shortcuts;
 
-  useCtrlKeys().add('escape', () => graph.magic.simulation.stop());
+  useShortcut({
+    key: 'escape',
+    callback: graph.magic.simulation.stop,
+  });
 </script>
 
 <template>

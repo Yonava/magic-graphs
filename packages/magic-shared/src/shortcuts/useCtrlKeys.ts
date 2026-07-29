@@ -16,7 +16,7 @@ export const useCtrlKeys = (): CtrlKeys => {
 
   const onKeyDown = (event: KeyboardEvent) => {
     if (isTypingTarget(event)) return;
-    handler.handle(event);
+    if (handler.handle(event)) event.preventDefault();
   };
 
   onMounted(() => window.addEventListener('keydown', onKeyDown));
