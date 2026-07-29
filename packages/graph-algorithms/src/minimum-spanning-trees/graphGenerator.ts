@@ -91,10 +91,7 @@ export const disconnectedGraphArbitrary: fc.Arbitrary<Graph> = fc
       const groupB = nodes.slice(splitPoint);
 
       return fc
-        .tuple(
-          connectedEdgesArbitrary(groupA),
-          connectedEdgesArbitrary(groupB),
-        )
+        .tuple(connectedEdgesArbitrary(groupA), connectedEdgesArbitrary(groupB))
         .map(([edgesA, edgesB]) => ({
           nodes,
           edges: [...edgesA, ...edgesB],

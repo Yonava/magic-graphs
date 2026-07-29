@@ -1,93 +1,155 @@
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 
-import { MAX_HISTORY } from './constants.ts';
+import { MAX_HISTORY, PLUGINS_EXCLUDED_FROM_HISTORY } from './constants.ts';
 import { createHistoryEventRegistry } from './events.ts';
-import { HistoryPlugin, HistoryRecord } from './types.ts';
+import { HistoryPlugin } from './types.ts';
 
-export const history: HistoryPlugin = ({ actions, getters, finalActions }) => {
+/**
+ * history is a list of whole graph snapshots plus a cursor, not a stack of inverse
+ * actions. the reason is plugin owned state: a node's label lives in nodeLabel rather
+ * than on the node, so an inverse of `removeNode` written here could never restore it,
+ * and it gets worse with every plugin (third party ones included) that widens nodes and
+ * edges through getters. `finalTransit` already asks every plugin to encode and decode
+ * the state it owns, so a snapshot preserves all of it without history having to know
+ * what any of it is.
+ */
+export const history: HistoryPlugin = ({
+  actions,
+  getters,
+  finalTransit,
+  invalidateGetters,
+}) => {
   const historyRegistry = createHistoryEventRegistry();
   const historyEventHub = createEventHub(historyRegistry);
 
-  let undoStack: HistoryRecord[] = [];
-  let redoStack: HistoryRecord[] = [];
+  /**
+   * snapshots are held serialized. transit payloads are JSON round trip safe by design
+   * (they are what a share link puts on the wire), and keeping the string makes the
+   * identical-state check in `commit` a cheap compare rather than a deep diff.
+   */
+  const snapshots: string[] = [];
+  /** index of the snapshot the graph is currently sitting at */
+  let cursor = -1;
+  let recording = true;
+  let capturePending = false;
 
-  const addToUndoStack = (record: HistoryRecord) => {
-    undoStack.push(record);
-    if (undoStack.length > MAX_HISTORY) {
-      undoStack.shift();
+  const withoutExcludedPlugins = (payload: Record<string, unknown>) => {
+    const result = { ...payload };
+    for (const pluginName of PLUGINS_EXCLUDED_FROM_HISTORY) {
+      delete result[pluginName];
     }
+    return result;
+  };
+
+  const encodeCurrentState = () =>
+    JSON.stringify(withoutExcludedPlugins(finalTransit.encode()));
+
+  const commit = () => {
+    const encoded = encodeCurrentState();
+
+    // an encoding identical to where the cursor already sits is not a new state. this
+    // is also what makes `restore` safe: decoding may prompt a plugin to ask for a
+    // snapshot, and that request lands here as a no-op rather than recording the undo
+    // itself as a new state and truncating the future it just walked into.
+    if (encoded === snapshots[cursor]) return;
+
+    // anything above the cursor belongs to a branch the graph walked away from on undo.
+    // left in place it stays reachable via redo, which would send the graph into a
+    // state the current one never came from.
+    snapshots.splice(cursor + 1);
+    snapshots.push(encoded);
+    if (snapshots.length > MAX_HISTORY) snapshots.shift();
+    cursor = snapshots.length - 1;
+
     historyEventHub.emit('onHistoryChanged');
   };
 
-  const addToRedoStack = (record: HistoryRecord) => {
-    redoStack.push(record);
-    if (redoStack.length > MAX_HISTORY) {
-      redoStack.shift();
+  const captureSnapshot = () => {
+    if (!recording || capturePending) return;
+    capturePending = true;
+    // one gesture routinely touches several plugins, each of which asks for a snapshot.
+    // deferring to the end of the tick collapses them into a single record by
+    // construction, so no caller has to coordinate with any other.
+    queueMicrotask(() => {
+      capturePending = false;
+      commit();
+    });
+  };
+
+  const restore = (index: number) => {
+    const snapshot = snapshots.at(index);
+    if (snapshot === undefined) return false;
+
+    const payload = JSON.parse(snapshot) as Record<string, unknown>;
+
+    // snapshots carry no slice at all for excluded plugins, so fill them in from live
+    // state. decode validates and writes every registered plugin unconditionally, so an
+    // absent key would arrive at that plugin's decode as undefined.
+    const liveState = finalTransit.encode();
+    for (const pluginName of PLUGINS_EXCLUDED_FROM_HISTORY) {
+      payload[pluginName] = liveState[pluginName];
     }
-    historyEventHub.emit('onHistoryChanged');
+
+    // moved ahead of the decode so a snapshot requested in response to it compares
+    // against the slot the graph is arriving at
+    cursor = index;
+    finalTransit.decode(payload);
+    // decode writes directly into state each plugin owns, which is exactly the case the
+    // invalidateGetters convention covers
+    invalidateGetters();
+
+    return true;
   };
 
   const undo = () => {
-    const record = undoStack.pop();
-    if (!record) return;
-
-    addToRedoStack(record);
-    record.inverse();
+    if (cursor <= 0) return;
+    if (!restore(cursor - 1)) return;
     historyEventHub.emit('onUndo');
-
-    return record;
+    historyEventHub.emit('onHistoryChanged');
   };
 
   const redo = () => {
-    const record = redoStack.pop();
-    if (!record) return;
-
-    addToUndoStack(record);
-    record.forward();
+    if (cursor >= snapshots.length - 1) return;
+    if (!restore(cursor + 1)) return;
     historyEventHub.emit('onRedo');
-
-    return record;
-  };
-
-  const clearHistory = () => {
-    undoStack = [];
-    redoStack = [];
     historyEventHub.emit('onHistoryChanged');
   };
+
+  const clear = () => {
+    const current = snapshots.at(cursor);
+    snapshots.length = 0;
+    // the current state stays behind as the new starting point, otherwise the next
+    // captureSnapshot has nothing to undo back to
+    if (current !== undefined) snapshots.push(current);
+    cursor = snapshots.length - 1;
+    historyEventHub.emit('onHistoryChanged');
+  };
+
+  // the starting point. deferred rather than run here or in onAfterInit because
+  // `finalTransit` does not resolve until folding finishes. queuing it during fold
+  // guarantees it lands before any snapshot a consumer could ask for.
+  captureSnapshot();
 
   return {
     name: 'history',
     getters,
-    actions: {
-      ...actions,
-      addNode: (options) => {
-        const node = actions.addNode(options);
-        const addToHistory = options.history ?? true;
-        if (addToHistory) {
-          const stackOptions = { ...options, ...node, history: false };
-          addToUndoStack({
-            forward: () => finalActions.addNode(stackOptions),
-            inverse: () => finalActions.removeNode(stackOptions),
-          });
-        }
-        return node;
-      },
-    },
+    actions,
     controls: {
+      captureSnapshot,
       undo,
       redo,
-      canUndo: () => undoStack.length > 0,
-      canRedo: () => redoStack.length > 0,
-      undoStack,
-      redoStack,
-      clear: clearHistory,
+      canUndo: () => cursor > 0,
+      canRedo: () => cursor < snapshots.length - 1,
+      clear,
+      recordCount: () => snapshots.length,
       events: historyEventHub,
       lifecycle: {
         enable: () => {
-          console.warn('not implemented');
+          recording = true;
         },
+        // undo and redo keep working while disabled, only new records stop
         disable: () => {
-          console.warn('not implemented');
+          recording = false;
         },
       },
     },

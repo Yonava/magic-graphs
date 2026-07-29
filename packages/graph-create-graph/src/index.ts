@@ -15,12 +15,13 @@ import { AggregatorTransformer } from '@graph/plugins/canvas/aggregator/types';
 import { CanvasControls } from '@graph/plugins/canvas/types';
 import { GraphActions } from '@graph/primitives/actions/types';
 import { GraphGetters } from '@graph/primitives/getters/types';
+import { LooseGraphTransit } from '@graph/primitives/transit/types';
 import type { Prettify } from 'ts-essentials';
 
 import { createCanvasElementFactories } from './canvas-elements.ts';
-import { emitConsumerEvents } from './consumer-events.ts';
 import { createThemer } from './createThemer.ts';
 import { foldPlugins } from './fold-plugins.ts';
+import { createGraphTransit } from './graph-transit.ts';
 import { resolveEdgeComputedTokens } from './render-functions/edge.ts';
 import { resolveNodeComputedTokens } from './render-functions/node.ts';
 import { GraphTransit } from './types.ts';
@@ -72,7 +73,13 @@ export const createGraph = <
     ExtractGetters<NoInfer<TPlugins>>
   >;
 
-  const { pluginTransitControls, consumerEvents, getNodes, getEdges } = folded;
+  const {
+    pluginTransitControls,
+    resolveFinalTransit,
+    consumerEvents,
+    getNodes,
+    getEdges,
+  } = folded;
 
   const tokenResolver = createComputedTokenResolver(folded.themeDetectors);
 
@@ -103,45 +110,18 @@ export const createGraph = <
     Prettify<ExtractTransitPayload<NoInfer<TPlugins>>>
   >;
 
-  const transit: GraphTransitControls = {
-    encode: () =>
-      pluginTransitControls.reduce(
-        (result, { pluginName, transit }) => ({
-          ...result,
-          [pluginName]: transit.encode(),
-        }),
-        {} as ReturnType<GraphTransitControls['encode']>,
-      ),
-    decode: (data) => {
-      const pluginsFailingValidation = pluginTransitControls.filter(
-        ({ pluginName, transit }) =>
-          !transit.validate((data as any)[pluginName]),
-      );
-      if (pluginsFailingValidation.length > 0) {
-        const namesOfFailures = pluginsFailingValidation
-          .map((p) => p.pluginName)
-          .join(', ');
-        throw new Error(
-          `Data decode validation failed for: ${namesOfFailures}`,
-        );
-      }
-      const oldNodeIds = coreGraph.controls.nodes.map((n) => n.id);
-      const oldEdgeIds = coreGraph.controls.edges.map((e) => e.id);
-      for (const { pluginName, transit } of pluginTransitControls) {
-        transit.decode((data as any)[pluginName]);
-      }
+  const transit = createGraphTransit<
+    ReturnType<GraphTransitControls['encode']>
+  >({
+    pluginTransitControls,
+    coreGraph,
+    consumerEvents,
+  });
 
-      emitConsumerEvents(
-        {
-          addedEdges: data.core.edges,
-          addedNodes: data.core.nodes,
-          removedEdgeIds: oldEdgeIds,
-          removedNodeIds: oldNodeIds,
-        },
-        consumerEvents.emit,
-      );
-    },
-  };
+  // plugins captured `finalTransit` during fold — point it at the real thing now that
+  // it exists. the cast drops the precise per-plugin payload shape, which plugins
+  // can't know at author time anyway (see LooseGraphTransit).
+  resolveFinalTransit(transit as unknown as LooseGraphTransit);
 
   // nodes/edges are exposed as getNodes()/getEdges() rather than the raw core arrays —
   // see getters-cache.ts. omit the core fields here so nothing shadows the getters below.

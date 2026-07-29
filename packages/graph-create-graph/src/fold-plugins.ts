@@ -15,6 +15,7 @@ import {
   wrapActionsWithConsumerEvents,
   wrapWeightsControlsWithConsumerEvents,
 } from './consumer-events.ts';
+import { createFinalTransitProxy } from './final-transit.ts';
 import { createGettersCache } from './getters-cache.ts';
 
 type PluginTransitControl = {
@@ -30,6 +31,9 @@ type FoldedPlugins = {
   getters: any;
   themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']>;
   pluginTransitControls: PluginTransitControl[];
+  resolveFinalTransit: ReturnType<
+    typeof createFinalTransitProxy
+  >['resolveFinalTransit'];
   getNodes: () => any[];
   getEdges: () => any[];
 };
@@ -73,6 +77,7 @@ export const foldPlugins = (
   let actions = coreGraph.actions;
   let getters = coreGraph.getters;
   const { finalActions, resolveFinalActions } = createFinalActionsProxy();
+  const { finalTransit, resolveFinalTransit } = createFinalTransitProxy();
   let themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']> =
     {};
 
@@ -108,6 +113,7 @@ export const foldPlugins = (
       finalActions,
       getters,
       invalidateGetters: gettersCache.invalidateGetters,
+      finalTransit,
     });
 
     controls = { ...controls, [pluginResult.name]: pluginResult.controls };
@@ -160,6 +166,7 @@ export const foldPlugins = (
     getters,
     themeDetectors,
     pluginTransitControls,
+    resolveFinalTransit,
     getNodes: gettersCache.getNodes,
     getEdges: gettersCache.getEdges,
   };
