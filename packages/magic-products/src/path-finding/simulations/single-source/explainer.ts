@@ -1,8 +1,9 @@
 import { Graph } from '@magic/shared/graph';
 import { Explainer, ExplainerHighlight } from '@magic/shared/simulation';
 
-import { PathFindingFrame, formatDistance } from './frame.ts';
-import { slotIds } from './shared.ts';
+import { formatDistance } from '../distance.ts';
+import { slotIds } from './effects.ts';
+import { SingleSourceFrame } from './frame.ts';
 
 const componentSlotHighlight = (
   slot: keyof typeof slotIds,
@@ -28,22 +29,12 @@ const highlights = {
     tooltipLabel: 'Everything discovered but not yet finalized, cheapest first',
     ...componentSlotHighlight('frontier'),
   },
-  matrix: {
-    tooltipLabel: 'The cheapest trip we know between every pair of nodes',
-    ...componentSlotHighlight('matrix'),
-  },
 } as const satisfies Record<string, ExplainerHighlight>;
 
-export const pathFindingExplainer =
+export const singleSourceExplainer =
   (graph: Graph) =>
-  (frame: PathFindingFrame): Explainer | undefined => {
+  (frame: SingleSourceFrame): Explainer | undefined => {
     if (frame.type === 'start') {
-      if (!frame.source) {
-        return {
-          content: 'Seeding the [Table] with the Edges We Already Have',
-          highlights: [highlights.matrix],
-        };
-      }
       return {
         content: `Starting at {${frame.source}}. Every Other Node Is an ∞ Away in [Distances]`,
         highlights: [highlights.distances],
@@ -51,12 +42,6 @@ export const pathFindingExplainer =
     }
 
     if (frame.type === 'end') {
-      if (frame.matrix) {
-        return {
-          content: "Done! Every Pair's Shortest Trip Is in the [Table]",
-          highlights: [highlights.matrix],
-        };
-      }
       return {
         content: `Done! The [Distances] from {${frame.anchorNodeId}} Are as Short as They Get`,
         highlights: [highlights.distances],
@@ -115,32 +100,6 @@ export const pathFindingExplainer =
     if (frame.type === 'negative-cycle') {
       return {
         content: `{${frame.node}} Can Still Get Cheaper! A Negative Cycle Means No Shortest Path Exists`,
-      };
-    }
-
-    if (frame.type === 'choose-pivot') {
-      return {
-        content: `Pivot ${frame.pivotNumber} of ${frame.totalPivots}: Can Detouring Through {${frame.node}} Beat the [Table]?`,
-        highlights: [highlights.matrix],
-      };
-    }
-
-    if (frame.type === 'consider-pair') {
-      return {
-        content: `{${frame.from}} to {${frame.to}} via {${frame.pivot}} Costs ${formatDistance(frame.viaPivot)}, Against ${formatDistance(frame.direct)} Today`,
-      };
-    }
-
-    if (frame.type === 'improve-pair') {
-      return {
-        content: `The Detour Wins, So [Updating] {${frame.from}} to {${frame.to}} to ${formatDistance(frame.newDistance)}`,
-        highlights: [highlights.matrix],
-      };
-    }
-
-    if (frame.type === 'keep-pair') {
-      return {
-        content: `{${frame.from}} to {${frame.to}} Is Already ${formatDistance(frame.distance)}, So the Detour Through {${frame.pivot}} Is No Help`,
       };
     }
   };

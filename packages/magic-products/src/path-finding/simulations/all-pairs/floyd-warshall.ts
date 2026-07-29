@@ -1,8 +1,14 @@
 import { GNode } from '@magic/shared/graph';
 import Fraction from 'fraction.js';
 
-import { AllPairsFunction, arcs } from './arcs.ts';
-import { Distance, PathFindingFrame } from './frame.ts';
+import { arcs } from '../arcs.ts';
+import { Distance } from '../distance.ts';
+import {
+  AllPairsFrame,
+  AllPairsFunction,
+  AllPairsHighlights,
+  AllPairsStep,
+} from './frame.ts';
 
 export const floydWarshall: AllPairsFunction = (graph) => (frameCollector) => {
   const nodeIds = graph.nodes.value.map((node) => node.id);
@@ -26,7 +32,9 @@ export const floydWarshall: AllPairsFunction = (graph) => (frameCollector) => {
     matrix[arc.from][arc.to] = arc.weight;
   }
 
-  const frame = <T extends PathFindingFrame>(fields: T) => ({
+  const frame = <T extends AllPairsStep>(
+    fields: T & AllPairsHighlights,
+  ): AllPairsFrame => ({
     matrix: Object.fromEntries(
       nodeIds.map((from) => [from, { ...matrix[from] }]),
     ),

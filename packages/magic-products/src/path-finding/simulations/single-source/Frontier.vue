@@ -4,15 +4,15 @@
 
   import { computed } from 'vue';
 
-  import { PathFindingFrame } from '../frame.ts';
-  import { slotIds } from '../shared.ts';
+  import { slotIds } from './effects.ts';
+  import { SingleSourceFrame } from './frame.ts';
 
-  const currentFrame = useCurrentFrame<PathFindingFrame>();
+  const currentFrame = useCurrentFrame<SingleSourceFrame>();
 
   /*
-    only dijkstra keeps a frontier. bellman ford and floyd warshall leave this
-    empty, and an empty list slides the panel away on its own, so the lens can
-    carry the same components for all three
+    only dijkstra keeps a frontier. bellman ford sweeps every edge every pass
+    and has none, so it leaves this empty, and an empty list slides the panel
+    away on its own
   */
   const frontier = computed(() => currentFrame.value?.pendingNodeIds ?? []);
 </script>

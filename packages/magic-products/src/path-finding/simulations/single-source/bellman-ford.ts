@@ -1,8 +1,14 @@
 import { GNode } from '@magic/shared/graph';
 import Fraction from 'fraction.js';
 
-import { Arc, SingleSourceFunction, arcs } from './arcs.ts';
-import { Distance, PathFindingFrame } from './frame.ts';
+import { Arc, arcs } from '../arcs.ts';
+import { Distance } from '../distance.ts';
+import {
+  SingleSourceFrame,
+  SingleSourceFunction,
+  SingleSourceHighlights,
+  SingleSourceStep,
+} from './frame.ts';
 
 export const bellmanFord: SingleSourceFunction =
   (graph, sourceNodeId) => (frameCollector) => {
@@ -23,7 +29,9 @@ export const bellmanFord: SingleSourceFunction =
       edge every pass, so the only state worth painting is the distance table
       and the tree the table implies
     */
-    const frame = <T extends PathFindingFrame>(fields: T) => ({
+    const frame = <T extends SingleSourceStep>(
+      fields: T & SingleSourceHighlights,
+    ): SingleSourceFrame => ({
       distances: { ...distances },
       treeEdgeIds: [...arrivedOn.values()].map((arc) => arc.edgeId),
       anchorNodeId: sourceNodeId,

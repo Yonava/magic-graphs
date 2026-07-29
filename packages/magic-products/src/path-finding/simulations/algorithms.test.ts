@@ -1,14 +1,10 @@
 import Fraction from 'fraction.js';
 import { describe, expect, it } from 'vitest';
 
-import { bellmanFord } from './bellman-ford.ts';
-import { dijkstras } from './dijkstras.ts';
-import { floydWarshall } from './floyd-warshall.ts';
-import {
-  type DistanceRow,
-  type PathFindingFrame,
-  formatDistance,
-} from './frame.ts';
+import { floydWarshall } from './all-pairs/floyd-warshall.ts';
+import { type DistanceRow, formatDistance } from './distance.ts';
+import { bellmanFord } from './single-source/bellman-ford.ts';
+import { dijkstras } from './single-source/dijkstras.ts';
 
 /** source, target, weight. the weight is anything `new Fraction()` takes */
 type EdgeSpec = [string, string, number | string];
@@ -35,13 +31,15 @@ const makeGraph = (
   metadata: { directed },
 });
 
-const collect = (run: (c: { add: (f: PathFindingFrame) => void }) => void) => {
-  const frames: PathFindingFrame[] = [];
+// generic over the frame, so a single source run and an all pairs run each keep
+// their own frame type through to the assertions
+const collect = <F>(run: (c: { add: (frame: F) => void }) => void) => {
+  const frames: F[] = [];
   run({ add: (frame) => frames.push(frame) });
   return frames;
 };
 
-const last = (frames: PathFindingFrame[]) => frames[frames.length - 1];
+const last = <F>(frames: F[]) => frames[frames.length - 1];
 
 /*
   distances are fractions, and two fractions holding the same value are not the
@@ -144,7 +142,7 @@ describe('dijkstras', () => {
       d: '1',
     });
     // the direct edge ties rather than losing, so the tie breaker holds
-    expect(distances!.d!.equals(1)).toBe(true);
+    expect(distances.d!.equals(1)).toBe(true);
   });
 });
 
@@ -207,7 +205,7 @@ describe('bellmanFord', () => {
 describe('floydWarshall', () => {
   it('fills in every pair', () => {
     const graph = makeGraph(['a', 'b', 'c', 'd'], DIAMOND);
-    const matrix = last(collect(floydWarshall(graph)))!.matrix!;
+    const matrix = last(collect(floydWarshall(graph))).matrix;
     expect(readDistances(matrix.a)).toEqual({
       a: '0',
       b: '1',
@@ -237,7 +235,7 @@ describe('floydWarshall', () => {
         ['c', 'b', -4],
       ],
     );
-    const matrix = last(collect(floydWarshall(graph)))!.matrix!;
+    const matrix = last(collect(floydWarshall(graph))).matrix;
     for (const source of ['a', 'b', 'c']) {
       const distances = last(collect(bellmanFord(graph, source))).distances;
       expect(readDistances(matrix[source])).toEqual(readDistances(distances));
@@ -252,7 +250,7 @@ describe('floydWarshall', () => {
         ['b', 'c', '1/6'],
       ],
     );
-    const matrix = last(collect(floydWarshall(graph)))!.matrix!;
+    const matrix = last(collect(floydWarshall(graph))).matrix;
     expect(formatDistance(matrix.a.c)).toBe('1/2');
   });
 

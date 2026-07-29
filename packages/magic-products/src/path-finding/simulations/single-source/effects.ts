@@ -16,20 +16,17 @@ import {
 
 import { Ref } from 'vue';
 
-import { AllPairsFunction, SingleSourceFunction } from './arcs.ts';
-import Distances from './components/Distances.vue';
-import Frontier from './components/Frontier.vue';
-import Matrix from './components/Matrix.vue';
-import { pathFindingExplainer } from './explainer.ts';
-import { PathFindingFrame } from './frame.ts';
-import { PathFindingSimulationOptions } from './index.ts';
+import Distances from './Distances.vue';
+import Frontier from './Frontier.vue';
+import { singleSourceExplainer } from './explainer.ts';
+import { SingleSourceFrame, SingleSourceFunction } from './frame.ts';
 
 // exploring = the node the algorithm is standing on this frame.
 // weighing = a node whose distance is being compared against a fresh offer.
 // finalized = its distance is final, no later step can beat it.
 // frontier = discovered, with a tentative distance that may still improve.
 // source = the node the user picked to measure every distance from.
-type PathFindingConcept =
+type SingleSourceConcept =
   'exploring' | 'weighing' | 'finalized' | 'frontier' | 'source';
 
 export const nodeRoles = {
@@ -38,30 +35,34 @@ export const nodeRoles = {
   finalized: 'settled',
   frontier: 'pending',
   source: 'anchor',
-} as const satisfies Record<PathFindingConcept, NodeRole>;
+} as const satisfies Record<SingleSourceConcept, NodeRole>;
 
 // relaxing = the edge whose weight is being tested this frame.
 // shortestPath = an edge on one of the best paths found so far.
 // discarded = an edge tested this frame that offered nothing better.
-type PathFindingEdgeConcept = 'relaxing' | 'shortestPath' | 'discarded';
+type SingleSourceEdgeConcept = 'relaxing' | 'shortestPath' | 'discarded';
 
 export const edgeRoles = {
   relaxing: 'crossing',
   shortestPath: 'tree',
   discarded: 'rejected',
-} as const satisfies Record<PathFindingEdgeConcept, EdgeRole>;
+} as const satisfies Record<SingleSourceEdgeConcept, EdgeRole>;
 
 export type SourceNodeId = Ref<GNode['id'] | undefined>;
+
+export type SingleSourceOptions = {
+  graph: MagicGraph;
+  sourceNodeId: SourceNodeId;
+};
 
 export const slotIds = {
   distances: 'path-finding/distances',
   frontier: 'path-finding/frontier',
-  matrix: 'path-finding/matrix',
 } as const;
 
-const pathFindingEffects = (
+const singleSourceEffects = (
   graph: MagicGraph,
-): SimulationEffects<PathFindingFrame> => {
+): SimulationEffects<SingleSourceFrame> => {
   const frontier = createNodeIdThemer(graph, nodeRoles.frontier);
   const finalized = createNodeIdThemer(graph, nodeRoles.finalized);
   const source = createNodeIdThemer(graph, nodeRoles.source);
@@ -87,10 +88,9 @@ const pathFindingEffects = (
   ];
 
   const lens: Lens = {
-    id: 'path-finding',
+    id: 'path-finding/single-source',
     components: [
       { component: Distances, position: 'center-left', id: slotIds.distances },
-      { component: Matrix, position: 'center-left', id: slotIds.matrix },
       { component: Frontier, position: 'center-right', id: slotIds.frontier },
     ],
     activate: () => {
@@ -101,20 +101,20 @@ const pathFindingEffects = (
     },
   };
 
-  const syncToFrame = (frame: PathFindingFrame) => {
+  const syncToFrame = (frame: SingleSourceFrame) => {
     exploring.setId(frame.activeNodeId);
     weighing.setIds(frame.candidateNodeIds ?? []);
     finalized.setIds(frame.settledNodeIds ?? []);
     frontier.setIds(frame.pendingNodeIds ?? []);
     source.setId(frame.anchorNodeId);
     relaxing.setIds(frame.relaxingEdgeIds ?? []);
-    shortestPath.setIds(frame.treeEdgeIds ?? []);
+    shortestPath.setIds(frame.treeEdgeIds);
     discarded.setIds(frame.rejectedEdgeIds ?? []);
   };
 
   return {
     lens,
-    explainer: pathFindingExplainer(graph),
+    explainer: singleSourceExplainer(graph),
     onSetupCompleted: syncToFrame,
     onFrameTransition: syncToFrame,
     onViolation: graph.magic.simulation.stop,
@@ -123,8 +123,8 @@ const pathFindingEffects = (
 
 export const singleSourceSimulationDefinition = (
   algorithm: SingleSourceFunction,
-  options: PathFindingSimulationOptions,
-): SimulationDefinition<PathFindingFrame> => ({
+  options: SingleSourceOptions,
+): SimulationDefinition<SingleSourceFrame> => ({
   guard: new SimulationGuardBuilder(options.graph)
     .custom(() => {
       const sourceInNodes = options.graph.nodes.value.some(
@@ -140,16 +140,5 @@ export const singleSourceSimulationDefinition = (
       nullThrows(options.sourceNodeId.value, 'source node id not defined'),
     )(collector);
   },
-  setup: () => pathFindingEffects(options.graph),
-});
-
-export const allPairsSimulationDefinition = (
-  algorithm: AllPairsFunction,
-  options: PathFindingSimulationOptions,
-): SimulationDefinition<PathFindingFrame> => ({
-  guard: new SimulationGuardBuilder(options.graph).minNodes(1).build(),
-  collectFrames: (collector) => {
-    algorithm(options.graph)(collector);
-  },
-  setup: () => pathFindingEffects(options.graph),
+  setup: () => singleSourceEffects(options.graph),
 });

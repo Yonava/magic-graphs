@@ -1,17 +1,5 @@
 import { GEdge, GNode, Graph } from '@magic/shared/graph';
-import { FrameCollectorFn } from '@magic/shared/simulation/types';
 import Fraction from 'fraction.js';
-
-import { PathFindingFrame } from './frame.ts';
-
-export type SingleSourceFunction = (
-  graph: Graph,
-  sourceNodeId: GNode['id'],
-) => FrameCollectorFn<PathFindingFrame>;
-
-export type AllPairsFunction = (
-  graph: Graph,
-) => FrameCollectorFn<PathFindingFrame>;
 
 /**
  * one direction of one edge, which is the unit all three algorithms relax. an

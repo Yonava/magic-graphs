@@ -10,12 +10,13 @@
 
   import { computed } from 'vue';
 
-  import { PathFindingFrame, formatDistance } from '../frame.ts';
-  import { nodeRoles, slotIds } from '../shared.ts';
+  import { formatDistance } from '../distance.ts';
+  import { nodeRoles, slotIds } from './effects.ts';
+  import { AllPairsFrame } from './frame.ts';
 
   const graph = useProvidedGraph();
 
-  const currentFrame = useCurrentFrame<PathFindingFrame>();
+  const currentFrame = useCurrentFrame<AllPairsFrame>();
 
   const matrix = computed(() => currentFrame.value?.matrix);
 
@@ -27,7 +28,7 @@
 
   /*
     which cell the algorithm is looking at, read off the frame type rather than
-    carried in the payload. the pair is only ever a floyd warshall idea, so
+    carried in the payload. the pair belongs to the steps that have one, so
     spelling it out here keeps it from becoming a field every other frame has to
     leave undefined
   */
@@ -49,8 +50,8 @@
 
   // the same hues the canvas paints the roles with, so the table and the graph
   // agree on what is being looked at. the alpha suffix keeps the text readable
-  const PIVOT_TINT = nodeRoleColors[nodeRoles.exploring] + '33';
-  const PAIR_TINT = nodeRoleColors[nodeRoles.weighing] + '66';
+  const PIVOT_TINT = nodeRoleColors[nodeRoles.pivot] + '33';
+  const PAIR_TINT = nodeRoleColors[nodeRoles.pair] + '66';
 
   const cellTint = (from: GNode['id'], to: GNode['id']) => {
     const { pivot, from: focusFrom, to: focusTo } = focus.value;

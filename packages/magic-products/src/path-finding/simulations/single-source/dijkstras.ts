@@ -1,8 +1,14 @@
 import { GNode } from '@magic/shared/graph';
 import Fraction from 'fraction.js';
 
-import { Arc, SingleSourceFunction, arcsBySource } from './arcs.ts';
-import { Distance, PathFindingFrame } from './frame.ts';
+import { Arc, arcsBySource } from '../arcs.ts';
+import { Distance } from '../distance.ts';
+import {
+  SingleSourceFrame,
+  SingleSourceFunction,
+  SingleSourceHighlights,
+  SingleSourceStep,
+} from './frame.ts';
 
 export const dijkstras: SingleSourceFunction =
   (graph, sourceNodeId) => (frameCollector) => {
@@ -28,7 +34,9 @@ export const dijkstras: SingleSourceFunction =
         .filter((id) => !settled.has(id) && distances[id] !== undefined)
         .sort((a, b) => distances[a]!.compare(distances[b]!));
 
-    const frame = <T extends PathFindingFrame>(fields: T) => ({
+    const frame = <T extends SingleSourceStep>(
+      fields: T & SingleSourceHighlights,
+    ): SingleSourceFrame => ({
       distances: { ...distances },
       settledNodeIds: [...settled],
       pendingNodeIds: frontier(),

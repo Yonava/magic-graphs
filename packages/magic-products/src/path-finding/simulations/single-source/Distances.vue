@@ -9,12 +9,13 @@
 
   import { computed } from 'vue';
 
-  import { PathFindingFrame, formatDistance } from '../frame.ts';
-  import { slotIds } from '../shared.ts';
+  import { formatDistance } from '../distance.ts';
+  import { slotIds } from './effects.ts';
+  import { SingleSourceFrame } from './frame.ts';
 
   const graph = useProvidedGraph();
 
-  const currentFrame = useCurrentFrame<PathFindingFrame>();
+  const currentFrame = useCurrentFrame<SingleSourceFrame>();
 
   /*
     rows follow the graph's own node order rather than the distances, so a row
@@ -22,7 +23,7 @@
     on every improvement, which is the one moment the reader is looking at it
   */
   const rows = computed(() => {
-    const { distances } = currentFrame.value ?? {};
+    const distances = currentFrame.value?.distances;
     if (!distances) return [];
     return graph.nodes.value
       .filter((node) => node.id in distances)
