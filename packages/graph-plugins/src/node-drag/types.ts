@@ -8,6 +8,7 @@ import { CoreNode } from '@graph/primitives/types';
 
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
+import { HistoryPlugin } from '../history/types.ts';
 import { MarqueePlugin } from '../marquee/types.ts';
 import { NodeDragEventMap } from './events.ts';
 
@@ -28,5 +29,5 @@ export type NodeDragPlugin = GraphPlugin<{
   controls: WithLifecycle<NodeDragControls>;
   events: NodeDragEventMap;
   dependsOn: [CanvasPlugin];
-  optionalDependsOn: [FocusPlugin, MarqueePlugin];
+  optionalDependsOn: [FocusPlugin, MarqueePlugin, HistoryPlugin];
 }>;

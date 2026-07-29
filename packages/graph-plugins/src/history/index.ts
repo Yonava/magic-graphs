@@ -2,23 +2,23 @@ import { createEventHub } from '@graph/primitives/events/createEventHub';
 
 import { MAX_HISTORY } from './constants.ts';
 import { createHistoryEventRegistry } from './events.ts';
-import { HistoryPlugin } from './types.ts';
+import { HistoryPlugin, HistoryRecord } from './types.ts';
 
-export const history: HistoryPlugin = ({ actions, getters }) => {
+export const history: HistoryPlugin = ({ actions, getters, finalActions }) => {
   const historyRegistry = createHistoryEventRegistry();
   const historyEventHub = createEventHub(historyRegistry);
 
-  let undoStack: any[] = [];
-  let redoStack: any[] = [];
+  let undoStack: HistoryRecord[] = [];
+  let redoStack: HistoryRecord[] = [];
 
-  const addToUndoStack = (record: any) => {
+  const addToUndoStack = (record: HistoryRecord) => {
     undoStack.push(record);
     if (undoStack.length > MAX_HISTORY) {
       undoStack.shift();
     }
   };
 
-  const addToRedoStack = (record: any) => {
+  const addToRedoStack = (record: HistoryRecord) => {
     redoStack.push(record);
     if (redoStack.length > MAX_HISTORY) {
       redoStack.shift();
@@ -30,7 +30,7 @@ export const history: HistoryPlugin = ({ actions, getters }) => {
     if (!record) return;
 
     addToRedoStack(record);
-    undoHistoryRecord(record);
+    record.inverse();
     historyEventHub.emit('onUndo');
 
     return record;
@@ -41,14 +41,11 @@ export const history: HistoryPlugin = ({ actions, getters }) => {
     if (!record) return;
 
     addToUndoStack(record);
-    redoHistoryRecord(record);
+    record.forward();
     historyEventHub.emit('onRedo');
 
     return record;
   };
-
-  const undoHistoryRecord = (record: any) => {};
-  const redoHistoryRecord = (record: any) => {};
 
   const clearHistory = () => {
     undoStack = [];
@@ -61,7 +58,15 @@ export const history: HistoryPlugin = ({ actions, getters }) => {
     actions: {
       ...actions,
       addNode: (options) => {
-        return actions.addNode(options);
+        const node = actions.addNode(options);
+        if (options.history) {
+          const stackOptions = { ...options, ...node, history: false };
+          addToUndoStack({
+            forward: () => finalActions.addNode(stackOptions),
+            inverse: () => finalActions.removeNode(stackOptions),
+          });
+        }
+        return node;
       },
     },
     controls: {
@@ -71,7 +76,7 @@ export const history: HistoryPlugin = ({ actions, getters }) => {
       canRedo: () => redoStack.length > 0,
       undoStack,
       redoStack,
-      clearHistory,
+      clear: clearHistory,
       events: historyEventHub,
       lifecycle: {
         enable: () => {

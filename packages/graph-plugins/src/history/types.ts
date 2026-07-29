@@ -14,6 +14,12 @@ type HistoryOption = {
 
 type HistoryActions = {
   addNode: HistoryOption;
+  removeNode: HistoryOption;
+};
+
+export type HistoryRecord = {
+  forward: () => void;
+  inverse: () => void;
 };
 
 type HistoryControls = {
@@ -34,17 +40,9 @@ type HistoryControls = {
    */
   canRedo: () => boolean;
   /**
-   * stores past actions to revert
+   * clear all history
    */
-  undoStack: DeepReadonly<any[]>;
-  /**
-   * stores undone actions to reapply
-   */
-  redoStack: DeepReadonly<any[]>;
-  /**
-   * clears the undo and redo stacks
-   */
-  clearHistory: () => void;
+  clear: () => void;
 };
 
 export type HistoryPlugin = GraphPlugin<{
