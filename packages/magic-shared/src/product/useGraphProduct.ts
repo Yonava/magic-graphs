@@ -6,6 +6,8 @@ import { Graph } from '../graph/types.ts';
 import { UseGraphOptions, useGraph } from '../graph/useGraph.ts';
 import { useLensState } from '../lens/useLensState.ts';
 import { LensControls } from '../lens/useLensState.ts';
+import { mountProductShortcuts } from '../shortcuts/mountProductShortcuts.ts';
+import { ShortcutControls, useShortcuts } from '../shortcuts/useShortcuts.ts';
 import { useSimulationState } from '../simulation/useSimulationState.ts';
 import { SimulationControls } from '../simulation/useSimulationState.ts';
 import {
@@ -32,6 +34,7 @@ export type MagicGraph = Graph & {
     simulation: SimulationControls;
     ui: UIControls;
     appearance: AppearanceControls;
+    shortcuts: ShortcutControls;
   };
 };
 
@@ -44,6 +47,7 @@ export const useGraphProduct = (options: GraphProductOptions) => {
 
   const ui = useProductUI(graph, componentSlots, options.ui);
   const appearance = useProductAppearance(graph);
+  const shortcuts = useShortcuts();
 
   const magicGraph: MagicGraph = {
     ...graph,
@@ -54,6 +58,7 @@ export const useGraphProduct = (options: GraphProductOptions) => {
       simulation,
       ui,
       appearance,
+      shortcuts,
     },
   };
 
@@ -64,6 +69,8 @@ export const useGraphProduct = (options: GraphProductOptions) => {
   if (magicGraph.magic.ui.linkSharing) {
     onMounted(() => loadGraphFromLinkPayload(magicGraph));
   }
+
+  mountProductShortcuts(magicGraph);
 
   provideGraph(magicGraph);
 
