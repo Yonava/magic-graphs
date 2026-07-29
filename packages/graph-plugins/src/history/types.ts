@@ -3,7 +3,6 @@ import {
   WithEvents,
   WithLifecycle,
 } from '@graph/plugins-shared/plugins';
-import { DeepReadonly } from 'ts-essentials';
 
 import { HistoryEventMap } from './events.ts';
 
@@ -22,7 +21,7 @@ export type HistoryRecord = {
   inverse: () => void;
 };
 
-type HistoryControls = {
+type BaseHistoryControls = {
   /**
    * undoes the last action and moves it to the redo stack
    */
@@ -45,10 +44,13 @@ type HistoryControls = {
   clear: () => void;
 };
 
+export type HistoryControls = WithLifecycle<
+  WithEvents<BaseHistoryControls, HistoryEventMap>
+>;
+
 export type HistoryPlugin = GraphPlugin<{
   name: 'history';
-  controls: WithLifecycle<WithEvents<HistoryControls, HistoryEventMap>>;
+  controls: HistoryControls;
   events: HistoryEventMap;
   actions: HistoryActions;
-  dependsOn: [];
 }>;

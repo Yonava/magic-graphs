@@ -16,6 +16,7 @@ export const history: HistoryPlugin = ({ actions, getters, finalActions }) => {
     if (undoStack.length > MAX_HISTORY) {
       undoStack.shift();
     }
+    historyEventHub.emit('onHistoryChanged');
   };
 
   const addToRedoStack = (record: HistoryRecord) => {
@@ -23,6 +24,7 @@ export const history: HistoryPlugin = ({ actions, getters, finalActions }) => {
     if (redoStack.length > MAX_HISTORY) {
       redoStack.shift();
     }
+    historyEventHub.emit('onHistoryChanged');
   };
 
   const undo = () => {
@@ -50,6 +52,7 @@ export const history: HistoryPlugin = ({ actions, getters, finalActions }) => {
   const clearHistory = () => {
     undoStack = [];
     redoStack = [];
+    historyEventHub.emit('onHistoryChanged');
   };
 
   return {
@@ -59,7 +62,8 @@ export const history: HistoryPlugin = ({ actions, getters, finalActions }) => {
       ...actions,
       addNode: (options) => {
         const node = actions.addNode(options);
-        if (options.history) {
+        const addToHistory = options.history ?? true;
+        if (addToHistory) {
           const stackOptions = { ...options, ...node, history: false };
           addToUndoStack({
             forward: () => finalActions.addNode(stackOptions),

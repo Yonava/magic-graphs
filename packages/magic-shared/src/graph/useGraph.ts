@@ -22,6 +22,7 @@ import { useCharacteristics } from '@graph/vue/useCharacteristics';
 import { useCreateGraphActivePreset } from '@graph/vue/useCreateGraphActivePreset';
 import { useFocus } from '@graph/vue/useFocus';
 import { useGraphEvents } from '@graph/vue/useGraphEvents';
+import { useHistory } from '@graph/vue/useHistory';
 import { useNodesEdges } from '@graph/vue/useNodesEdges';
 import { useTransitionMatrix } from '@graph/vue/useTransitionMatrix';
 
@@ -85,6 +86,7 @@ export const useGraph = (options: UseGraphOptions = {}) => {
     graph.transitionMatrix,
   );
   const vueFocus = useFocus(graph.focus);
+  const vueHistory = useHistory(graph.history);
 
   const vueEvents = useGraphEvents(graph.events);
 
@@ -95,6 +97,7 @@ export const useGraph = (options: UseGraphOptions = {}) => {
     characteristics: vueCharacteristics,
     transitionMatrix: vueTransitionMatrix,
     focus: vueFocus,
+    history: vueHistory,
     theme: {
       ...graph.theme,
       ...vueActivePreset,

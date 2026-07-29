@@ -11,12 +11,14 @@
   import AppearanceToggle from '../appearance/AppearanceToggle.vue';
   import FullscreenButton from '../fullscreen/FullscreenButton.vue';
   import LinkSharingButton from '../link-sharing/LinkSharingButton.vue';
+  import HistoryButtons from '../undo-redo/HistoryButtons.vue';
 
   const graph = useProvidedGraph();
 </script>
 
 <template>
   <HStack>
+    <HistoryButtons />
     <AnnotationToggle v-if="graph.magic.ui.annotations" />
 
     <Well class="p-0 rounded-full overflow-hidden">
