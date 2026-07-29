@@ -16,11 +16,13 @@ export type UIOptions = {
   lensChips?: (graph: Graph) => LensChipDefinition[] | undefined;
   annotations?: boolean;
   debug?: boolean;
+  linkSharing?: boolean;
 };
 
 export type UIControls = {
   lensChips?: LensChipDefinition[];
   annotations?: AnnotationsControls;
+  linkSharing: boolean;
 };
 
 export const useProductUI = (
@@ -71,5 +73,6 @@ export const useProductUI = (
   return {
     annotations,
     lensChips,
+    linkSharing: options.linkSharing !== false,
   };
 };
