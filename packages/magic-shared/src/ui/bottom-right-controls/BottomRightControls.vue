@@ -10,6 +10,7 @@
   import AnnotationToggle from '../annotations/AnnotationToggle.vue';
   import AppearanceToggle from '../appearance/AppearanceToggle.vue';
   import FullscreenButton from '../fullscreen/FullscreenButton.vue';
+  import LinkSharingButton from '../link-sharing/LinkSharingButton.vue';
 
   const graph = useProvidedGraph();
 </script>
@@ -32,6 +33,7 @@
           />
         </template>
         <VStack class="gap-1 px-1">
+          <LinkSharingButton v-if="graph.magic.ui.linkSharing" />
           <FullscreenButton />
           <div
             class="w-full bg-white opacity-10"

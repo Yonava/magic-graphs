@@ -390,6 +390,9 @@ importers:
       ctrl-keys:
         specifier: ^1.0.6
         version: 1.0.6
+      lz-string:
+        specifier: ^1.5.0
+        version: 1.5.0
     devDependencies:
       nuxt:
         specifier: ^4.1.2

@@ -1,3 +1,5 @@
+import { onMounted } from 'vue';
+
 import { useComponentSlotsState } from '../component-slot/useComponentSlotsState.ts';
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import { Graph } from '../graph/types.ts';
@@ -10,6 +12,7 @@ import {
   AppearanceControls,
   useProductAppearance,
 } from '../ui/appearance/useProductAppearance.ts';
+import { loadGraphFromLinkPayload } from '../ui/link-sharing/linkPayload.ts';
 import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
 import { MagicProductManifest } from './manifest.ts';
 import { useLocalStorageGraphSync } from './useLocalStorageGraphSync.ts';
@@ -56,6 +59,10 @@ export const useGraphProduct = (options: GraphProductOptions) => {
 
   if (options.localStorage !== false) {
     useLocalStorageGraphSync(magicGraph);
+  }
+
+  if (magicGraph.magic.ui.linkSharing) {
+    onMounted(() => loadGraphFromLinkPayload(magicGraph));
   }
 
   provideGraph(magicGraph);

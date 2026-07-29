@@ -131,7 +131,8 @@
     "@graph/vue": "workspace:*",
     "@mdi/js": "^7.4.47",
     "@vueuse/core": "catalog:",
-    "ctrl-keys": "^1.0.6"
+    "ctrl-keys": "^1.0.6",
+    "lz-string": "^1.5.0"
   },
   "devDependencies": {
     "nuxt": "^4.1.2",

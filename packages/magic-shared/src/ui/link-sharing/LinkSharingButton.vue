@@ -1,0 +1,59 @@
+<script setup lang="ts">
+  import { mdiCheck, mdiLink } from '@mdi/js';
+
+  import { computed, ref } from 'vue';
+
+  import Button from '../../components/button/Button.vue';
+  import Icon from '../../components/icon/Icon.vue';
+  import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
+  import { getLink } from './linkPayload.ts';
+
+  const graph = useProvidedGraph();
+
+  let linkCopiedResetTimer: NodeJS.Timeout;
+
+  // 3 seconds of link copied confirmation state
+  const LINK_COPIED_FEEDBACK_DURATION_MS = 3_000;
+
+  const copyLinkToClipboard = () => {
+    clearTimeout(linkCopiedResetTimer);
+    try {
+      navigator.clipboard.writeText(getLink(graph));
+      linkCopiedToClipboard.value = true;
+      linkCopiedResetTimer = setTimeout(
+        () => (linkCopiedToClipboard.value = false),
+        LINK_COPIED_FEEDBACK_DURATION_MS,
+      );
+    } catch (err) {
+      // TODO handle link copy failure with a toast
+      // https://github.com/Yonava/magic-graphs/issues/783
+      console.error('Failed to copy to clipboard!', err);
+    }
+  };
+
+  const linkCopiedToClipboard = ref(false);
+
+  const display = computed(() => {
+    return linkCopiedToClipboard.value
+      ? {
+          text: 'Link Copied',
+          icon: mdiCheck,
+        }
+      : {
+          text: 'Copy Link',
+          icon: mdiLink,
+        };
+  });
+</script>
+
+<template>
+  <Button
+    class="px-2 bg-transparent w-full justify-start"
+    @click="copyLinkToClipboard"
+  >
+    <template #start>
+      <Icon :path="display.icon" />
+    </template>
+    {{ display.text }}
+  </Button>
+</template>
