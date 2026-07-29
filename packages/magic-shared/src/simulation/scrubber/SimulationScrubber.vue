@@ -8,8 +8,8 @@
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
+  import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
-  import { useCtrlKeys } from '../../utilities/useCtrlKeys.ts';
   import { useRunningSimulation } from '../useRunningSimulation.ts';
   import ExplainerText from './ExplainerText.vue';
 
@@ -37,14 +37,23 @@
     return (playhead / (totalFrames - 1)) * 100;
   });
 
-  useCtrlKeys()
-    .add('left', () => {
+  const graph = useProvidedGraph();
+  const { useShortcut } = graph.magic.shortcuts;
+
+  useShortcut({
+    key: 'left',
+    callback: () => {
       if (!simulation.value.playhead.isFirst())
         simulation.value.playhead.prev();
-    })
-    .add('right', () => {
+    },
+  });
+
+  useShortcut({
+    key: 'right',
+    callback: () => {
       if (!simulation.value.playhead.isLast()) simulation.value.playhead.next();
-    });
+    },
+  });
 </script>
 
 <template>
