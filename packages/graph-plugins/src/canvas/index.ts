@@ -33,9 +33,22 @@ export const canvas =
       },
     };
 
-    events._internal.coreEvents.subscribe('onTransactionComplete', () => {
+    /*
+      shapes are reused between draws for as long as nothing they are built
+      from has moved. these are the core's own signals for "something changed":
+      structure, geometry and edge weights, which between them cover everything
+      a shape or its hitbox is derived from
+    */
+    const coreEvents = events._internal.coreEvents;
+
+    coreEvents.subscribe('onTransactionComplete', () => {
+      aggregator.invalidate();
       forceUpdateGraphUnderCursor();
     });
+
+    coreEvents.subscribe('onNodePositionsCommitted', aggregator.invalidate);
+    coreEvents.subscribe('onNodeMoveStream', aggregator.invalidate);
+    coreEvents.subscribe('onEdgeWeightsCommitted', aggregator.invalidate);
 
     const theme = createThemeController(createCanvasThemeOverrides());
 
@@ -75,7 +88,8 @@ export const canvas =
       const coords = magicCanvas.cursorCoordinates.value;
       graphUnderCursor.coords = coords;
 
-      aggregator.updateAggregator();
+      // runs per mousemove, which is well above once per frame on most mice
+      aggregator.updateAggregatorIfStale();
       const newElements = aggregator.getCanvasElementsAtCoordinate(coords);
       graphUnderCursor.elements = newElements;
 
