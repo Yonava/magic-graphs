@@ -5,6 +5,7 @@
 
   import { cn } from '../../cn.ts';
   import { useAttrClass } from '../../composables/useAttrClass.ts';
+  import { preventFocusSteal } from '../../preventFocusSteal.ts';
   import { type ButtonVariant, buttonVariants } from '../button/variants.ts';
   import Icon from '../icon/Icon.vue';
   import Tooltip from '../tooltip/Tooltip.vue';
@@ -55,6 +56,7 @@
         :aria-label="label"
         v-bind="{ ...attrs, class: undefined }"
         :class="classes"
+        @mousedown="preventFocusSteal"
       >
         <Icon
           :path="path"

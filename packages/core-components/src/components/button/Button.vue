@@ -5,6 +5,7 @@
 
   import { cn } from '../../cn.ts';
   import { useAttrClass } from '../../composables/useAttrClass.ts';
+  import { preventFocusSteal } from '../../preventFocusSteal.ts';
   import { type ButtonVariant, buttonVariants } from './variants.ts';
 
   defineOptions({ inheritAttrs: false });
@@ -42,6 +43,7 @@
     :as-child="asChild"
     v-bind="{ ...attrs, class: undefined }"
     :class="classes"
+    @mousedown="preventFocusSteal"
   >
     <slot name="start" />
     <slot />

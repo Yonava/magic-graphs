@@ -5,6 +5,7 @@
 
   import { cn } from '../../cn.ts';
   import { useAttrClass } from '../../composables/useAttrClass.ts';
+  import { preventFocusSteal } from '../../preventFocusSteal.ts';
   import { toggleButtonClasses } from './variants.ts';
 
   defineOptions({ inheritAttrs: false });
@@ -32,6 +33,7 @@
     :disabled="disabled"
     v-bind="{ ...attrs, class: undefined }"
     :class="classes"
+    @mousedown="preventFocusSteal"
   >
     <slot />
   </Toggle>

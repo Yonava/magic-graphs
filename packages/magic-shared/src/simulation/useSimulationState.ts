@@ -6,6 +6,7 @@ import { ComputedRef, computed, ref } from 'vue';
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import { Graph } from '../graph/types.ts';
 import { LensControls } from '../lens/useLensState.ts';
+import StopSimulationButton from './StopSimulationButton.vue';
 import { Violation } from './guard/SimulationGuardBuilder.ts';
 import SimulationScrubber from './scrubber/SimulationScrubber.vue';
 import {
@@ -43,7 +44,10 @@ export type Simulation<Frame> = {
   violation: Violation | undefined;
 } & SimulationEffects<Frame>;
 
-const SCRUBBER_COMPONENT_ID = 'simulation-scrubber';
+const COMPONENT_IDS = {
+  scrubber: 'simulation/scrubber',
+  stop: 'simulation/stop',
+};
 
 export const useSimulationState = (
   graph: Graph,
@@ -167,12 +171,19 @@ export const useSimulationState = (
       ...simulationEffects,
     };
 
-    componentSlotControls.add({
-      id: SCRUBBER_COMPONENT_ID,
-      component: SimulationScrubber,
-      position: 'bottom-middle',
-      priority: 1,
-    });
+    componentSlotControls.addMany([
+      {
+        id: COMPONENT_IDS.scrubber,
+        component: SimulationScrubber,
+        position: 'bottom-middle',
+        priority: 1,
+      },
+      {
+        id: COMPONENT_IDS.stop,
+        component: StopSimulationButton,
+        position: 'top-right',
+      },
+    ]);
 
     if (simulation.value.lens) {
       lensControls.add(simulation.value.lens);
@@ -186,7 +197,8 @@ export const useSimulationState = (
     sim.onBeforeTeardown?.();
     // if running sim had an active violation lens, remove the lens
     if (sim.violation?.lens) lensControls.remove(sim.violation.lens.id);
-    componentSlotControls.remove(SCRUBBER_COMPONENT_ID);
+    componentSlotControls.remove(COMPONENT_IDS.scrubber);
+    componentSlotControls.remove(COMPONENT_IDS.stop);
     if (sim.lens) lensControls.remove(sim.lens.id);
     sim.onTeardownCompleted?.();
     simulation.value = undefined;

@@ -39,7 +39,16 @@
 </script>
 
 <template>
-  <DropdownMenuRoot>
+  <!--
+    non-modal so the menu behaves like canvas chrome rather than a dialog. a modal
+    menu traps focus and disables pointer events on the rest of the page, which
+    means the click that dismisses it never reaches the canvas underneath, leaving
+    the canvas unfocused and reka handing focus to the trigger button on close.
+    non-modal lets that click through to the canvas and opts into reka's own
+    outside-dismissal path, which skips the focus handoff. escape still returns
+    focus to the trigger, since there is nowhere else sensible to land.
+  -->
+  <DropdownMenuRoot :modal="false">
     <DropdownMenuTrigger as-child>
       <slot name="trigger" />
     </DropdownMenuTrigger>

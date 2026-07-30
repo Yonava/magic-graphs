@@ -2,7 +2,6 @@ import { ComponentSlot } from '../component-slot/types.ts';
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import { Graph } from '../graph/types.ts';
 import CursorCoordinates from '../product/debug/CursorCoordinates.vue';
-import StopSimulationButton from '../simulation/StopSimulationButton.vue';
 import LensChipGroup from '../ui/lens-chips/LensChipGroup.vue';
 import {
   AnnotationsControls,
@@ -42,11 +41,6 @@ export const useProductUI = (
       id: 'product/navigation-menu',
       component: NavigationMenu,
       position: 'top-left',
-    },
-    {
-      id: 'product/stop-simulation',
-      component: StopSimulationButton,
-      position: 'top-right',
     },
     lensChips
       ? {

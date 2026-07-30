@@ -20,15 +20,32 @@
       throw new Error('Canvas not found in DOM. Check ref link.');
     props.cleanup(canvas.value);
   });
+
+  /**
+   * a canvas element is not focusable on its own, so clicking it leaves DOM
+   * focus wherever it was, typically on the last shell button the user pressed.
+   * tabindex makes the canvas a real focus target and this claims it explicitly
+   * on mousedown rather than trusting the browser default, so focus lands on the
+   * canvas before any of the graph's own mouse handling runs.
+   */
+  const claimFocus = () => canvas.value?.focus();
 </script>
 
 <template>
   <canvas
+    tabindex="0"
     v-bind="{
       ...$attrs,
-      class: twMerge($attrs.class as ClassNameValue, ['w-screen', 'h-screen']),
+      class: twMerge($attrs.class as ClassNameValue, [
+        'w-screen',
+        'h-screen',
+        'focus:outline-none',
+      ]),
     }"
     ref="canvas"
+    @focus="console.log('focus')"
+    @blur="console.log('blur')"
+    @mousedown="claimFocus"
   >
     Sorry, your browser does not support canvas.
   </canvas>

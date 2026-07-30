@@ -1,8 +1,7 @@
+import { isTypingTarget } from '@core/utils/keyboard';
 import { type Binding, type Sequence, keys } from 'ctrl-keys';
 
 import { onMounted, onUnmounted } from 'vue';
-
-import { isTypingTarget } from './isTypingTarget.ts';
 
 export interface CtrlKeys {
   add: (...args: Binding) => CtrlKeys;
