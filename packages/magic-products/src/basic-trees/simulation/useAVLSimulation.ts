@@ -56,6 +56,7 @@ export const useAVLSimulationDefinition = (): Controls => {
     setup: (context) => {
       const { currentFrame, frames } = context;
       suggested.remove();
+      graph.history.lifecycle.disable();
       return {
         explainer,
         onSetupCompleted: () => sync(currentFrame.value),
@@ -63,6 +64,7 @@ export const useAVLSimulationDefinition = (): Controls => {
         onBeforeTeardown: () =>
           sync(nullThrows(frames.value.at(-1), 'last frame undefined')),
         onTeardownCompleted: () => {
+          graph.history.lifecycle.enable();
           graph.history.captureSnapshot();
           setTimeout(suggested.add, 0);
         },

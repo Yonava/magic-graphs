@@ -21,19 +21,19 @@ type BaseHistoryControls = {
    */
   captureSnapshot: () => void;
   /**
-   * restores the state preceding the current one
+   * restores the state preceding the current one. a no-op while the plugin is disabled
    */
   undo: () => void;
   /**
-   * restores the state that was undone
+   * restores the state that was undone. a no-op while the plugin is disabled
    */
   redo: () => void;
   /**
-   * true if there is an earlier state to restore
+   * true if there is an earlier state to restore. false while the plugin is disabled
    */
   canUndo: () => boolean;
   /**
-   * true if there is an undone state to restore
+   * true if there is an undone state to restore. false while the plugin is disabled
    */
   canRedo: () => boolean;
   /**

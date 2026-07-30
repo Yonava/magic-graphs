@@ -30,7 +30,7 @@ export const history: HistoryPlugin = ({
   const snapshots: string[] = [];
   /** index of the snapshot the graph is currently sitting at */
   let cursor = -1;
-  let recording = true;
+  let enabled = true;
   let capturePending = false;
 
   const withoutExcludedPlugins = (payload: Record<string, unknown>) => {
@@ -65,7 +65,7 @@ export const history: HistoryPlugin = ({
   };
 
   const captureSnapshot = () => {
-    if (!recording || capturePending) return;
+    if (!enabled || capturePending) return;
     capturePending = true;
     // one gesture routinely touches several plugins, each of which asks for a snapshot.
     // deferring to the end of the tick collapses them into a single record by
@@ -101,15 +101,18 @@ export const history: HistoryPlugin = ({
     return true;
   };
 
+  const canUndo = () => enabled && cursor > 0;
+  const canRedo = () => enabled && cursor < snapshots.length - 1;
+
   const undo = () => {
-    if (cursor <= 0) return;
+    if (!canUndo()) return;
     if (!restore(cursor - 1)) return;
     historyEventHub.emit('onUndo');
     historyEventHub.emit('onHistoryChanged');
   };
 
   const redo = () => {
-    if (cursor >= snapshots.length - 1) return;
+    if (!canRedo()) return;
     if (!restore(cursor + 1)) return;
     historyEventHub.emit('onRedo');
     historyEventHub.emit('onHistoryChanged');
@@ -138,18 +141,25 @@ export const history: HistoryPlugin = ({
       captureSnapshot,
       undo,
       redo,
-      canUndo: () => cursor > 0,
-      canRedo: () => cursor < snapshots.length - 1,
+      canUndo,
+      canRedo,
       clear,
       recordCount: () => snapshots.length,
       events: historyEventHub,
       lifecycle: {
+        // toggling changes what canUndo and canRedo answer, so it goes out as a history
+        // change too. consumers that cache those answers off the event (graph-vue) would
+        // otherwise keep offering an undo that no longer does anything.
         enable: () => {
-          recording = true;
+          if (enabled) return;
+          enabled = true;
+          historyEventHub.emit('onHistoryChanged');
         },
-        // undo and redo keep working while disabled, only new records stop
+        // records already held survive, they are just unreachable until re-enabled
         disable: () => {
-          recording = false;
+          if (!enabled) return;
+          enabled = false;
+          historyEventHub.emit('onHistoryChanged');
         },
       },
     },

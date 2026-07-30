@@ -92,6 +92,7 @@ const setup = () => {
       canRedo: () => boolean;
       clear: () => void;
       recordCount: () => number;
+      lifecycle: { enable: () => void; disable: () => void };
     },
     label: folded.controls.label as {
       setLabel: (id: string, label: string) => void;
@@ -246,6 +247,51 @@ describe('history', () => {
     await settle();
 
     expect(graph.historyControls.recordCount()).toBe(recordsBefore);
+  });
+
+  it('stops recording while disabled', async () => {
+    graph.historyControls.lifecycle.disable();
+
+    graph.actions.addNode({});
+    graph.historyControls.captureSnapshot();
+    await settle();
+
+    expect(graph.historyControls.recordCount()).toBe(1);
+  });
+
+  it('refuses to undo or redo while disabled', async () => {
+    graph.actions.addNode({});
+    graph.historyControls.captureSnapshot();
+    await settle();
+
+    graph.historyControls.lifecycle.disable();
+
+    expect(graph.historyControls.canUndo()).toBe(false);
+    graph.historyControls.undo();
+    expect(graph.getNodes()).toHaveLength(1);
+
+    graph.historyControls.lifecycle.enable();
+    expect(graph.historyControls.canUndo()).toBe(true);
+    graph.historyControls.undo();
+    expect(graph.getNodes()).toHaveLength(0);
+
+    graph.historyControls.lifecycle.disable();
+    expect(graph.historyControls.canRedo()).toBe(false);
+    graph.historyControls.redo();
+    expect(graph.getNodes()).toHaveLength(0);
+  });
+
+  it('keeps records taken before a disable reachable once re-enabled', async () => {
+    graph.actions.addNode({});
+    graph.historyControls.captureSnapshot();
+    await settle();
+
+    graph.historyControls.lifecycle.disable();
+    graph.historyControls.lifecycle.enable();
+
+    expect(graph.historyControls.recordCount()).toBe(2);
+    graph.historyControls.undo();
+    expect(graph.getNodes()).toHaveLength(0);
   });
 
   it('keeps the current state as the starting point after a clear', async () => {
