@@ -132,13 +132,32 @@ export const canvas =
       }
     });
 
-    magicCanvas.draw.backgroundPattern.value = (ctx, at, alpha) => {
-      cross({
-        at,
+    /*
+      the cell is built once and then stamped, rather than built per cell. a
+      cross constructs three rects of its own on the way down, so at low zoom
+      the old shape-per-cell version was putting sixteen thousand shape objects
+      through the allocator every frame to draw the same twelve pixels over and
+      over
+
+      translating for each stamp is what makes one shape enough: the cross is
+      built at the origin and the transform carries it to where it belongs
+    */
+    magicCanvas.draw.backgroundPattern.value = (ctx, alpha) => {
+      const origin = { x: 0, y: 0 };
+
+      const cell = cross({
+        at: origin,
         size: 12,
         lineWidth: 1,
-        fillColor: theme._resolveToken('canvas.patternColor', at, alpha),
-      }).draw(ctx);
+        fillColor: theme._resolveToken('canvas.patternColor', alpha),
+      });
+
+      return (at) => {
+        ctx.save();
+        ctx.translate(at.x, at.y);
+        cell.draw(ctx);
+        ctx.restore();
+      };
     };
 
     canvasEvents.subscribe('onDraw', () => {

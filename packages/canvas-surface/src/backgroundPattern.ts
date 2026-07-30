@@ -20,17 +20,32 @@ const computeAlpha = (z: number) => {
   return strPercent.length === 1 ? `0${strPercent}` : strPercent;
 };
 
+/**
+ * Prepares the pattern for a frame and returns how to stamp a single cell of it.
+ *
+ * Split in two because the cell count is large and everything except the
+ * position is the same for all of them. Handed a per cell draw instead, the
+ * implementation had nowhere to put the work that does not vary, and ended up
+ * rebuilding its shapes and re-resolving its color a few thousand times a
+ * frame.
+ */
 export type DrawPattern = (
   ctx: CanvasRenderingContext2D,
-  at: Coordinate,
   alpha: string,
-) => void;
+) => (at: Coordinate) => void;
 
 export const useBackgroundPattern = (
   { panX, panY, zoom }: Camera['state'],
   drawPattern: DrawFns['backgroundPattern'],
 ) => {
-  const draw = (ctx: CanvasRenderingContext2D) => {
+  /**
+   * @param canvasRect the canvas's on screen position, passed in rather than
+   * measured here: both corners below need it, and reading it forces layout
+   */
+  const draw = (
+    ctx: CanvasRenderingContext2D,
+    canvasRect: Pick<DOMRect, 'left' | 'top'>,
+  ) => {
     if (zoom.value <= PATTERN_FULLY_FADED_OUT) return;
 
     const startingCoords = getCoordinates(
@@ -39,6 +54,7 @@ export const useBackgroundPattern = (
         clientY: 0,
       },
       ctx,
+      canvasRect,
     );
 
     const endingCoords = getCoordinates(
@@ -47,10 +63,14 @@ export const useBackgroundPattern = (
         clientY: window.innerHeight + STAGGER,
       },
       ctx,
+      canvasRect,
     );
 
     const offsetX = (panX.value / zoom.value) % STAGGER;
     const offsetY = (panY.value / zoom.value) % STAGGER;
+
+    // the alpha follows zoom alone, so it is the same string for every cell
+    const drawCell = drawPattern.value(ctx, computeAlpha(zoom.value));
 
     for (let x = startingCoords.x + offsetX; x < endingCoords.x; x += STAGGER) {
       for (
@@ -58,7 +78,7 @@ export const useBackgroundPattern = (
         y < endingCoords.y;
         y += STAGGER
       ) {
-        drawPattern.value(ctx, { x, y }, computeAlpha(zoom.value));
+        drawCell({ x, y });
       }
     }
   };

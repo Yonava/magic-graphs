@@ -20,6 +20,8 @@ const initCanvasWidthHeight = (canvas: HTMLCanvasElement | undefined) => {
   const rect = canvas.getBoundingClientRect();
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
+
+  return rect;
 };
 
 export const useCanvas: UseCanvas = () => {
@@ -27,14 +29,22 @@ export const useCanvas: UseCanvas = () => {
   const canvasBoxSize = useElementSize(canvas);
 
   const drawContent = ref<DrawContent>(() => {});
-  const drawBackgroundPattern = ref<DrawPattern>(() => {});
+  const drawBackgroundPattern = ref<DrawPattern>(() => () => {});
+
+  /*
+    the background pattern needs the canvas's screen position to work out which
+    slice of the world is visible, and reading it forces layout. the canvas
+    fills the viewport, so the only thing that moves it is a resize, which is
+    already being watched
+  */
+  let canvasRect: Pick<DOMRect, 'left' | 'top'> = { left: 0, top: 0 };
 
   const lifecycleEvents = createEventHub(createCanvasLifecycleEventRegistry());
 
   let repaintInterval: NodeJS.Timeout;
 
   onMounted(() => {
-    initCanvasWidthHeight(canvas.value);
+    canvasRect = initCanvasWidthHeight(canvas.value);
     repaintInterval = setInterval(repaintCanvas, 1000 / REPAINT_FPS);
     lifecycleEvents.emit('onMounted');
   });
@@ -43,9 +53,9 @@ export const useCanvas: UseCanvas = () => {
     lifecycleEvents.emit('onBeforeUnmount');
   });
 
-  watch([canvasBoxSize.width, canvasBoxSize.height], () =>
-    initCanvasWidthHeight(canvas.value),
-  );
+  watch([canvasBoxSize.width, canvasBoxSize.height], () => {
+    canvasRect = initCanvasWidthHeight(canvas.value);
+  });
 
   const { cleanup: cleanupCamera, ...camera } = useCamera(canvas);
   const { coordinates: cursorCoordinates, cleanup: cleanupCoords } =
@@ -56,7 +66,7 @@ export const useCanvas: UseCanvas = () => {
   const repaintCanvas = () => {
     const ctx = getCtx(canvas);
     camera.transformAndClear(ctx);
-    pattern.draw(ctx);
+    pattern.draw(ctx, canvasRect);
     drawContent.value(ctx);
   };
 
