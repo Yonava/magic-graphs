@@ -67,9 +67,23 @@ export const createAggregator = (
    * console.log(els) // [node, nodeAnchor] meaning nodeAnchor is above the node
    */
   const getCanvasElementsAtCoordinate = (coords: Coordinate) => {
-    return aggregator
-      .sort((a, b) => a.priority - b.priority)
-      .filter((element) => element.shape.hitbox(coords));
+    /*
+      no sort here: the aggregator is built in priority order and nothing
+      reorders it afterwards, so re-sorting was rewriting an already sorted
+      array on every mousemove
+
+      the bounding box test goes first where it can, since it is a handful of
+      comparisons against a hitbox that walks segment lists for u-turns and
+      scribbles. it does not go first for a shape carrying text: the box covers
+      the shape alone, and a label reaches well outside a shape that is a few
+      pixels thick, so pre-testing an edge would reject hits on its own weight
+    */
+    const point = { at: coords, width: 0, height: 0 };
+
+    return aggregator.filter(({ shape }) => {
+      if (!shape.textHitbox && !shape.efficientHitbox(point)) return false;
+      return shape.hitbox(coords);
+    });
   };
 
   return {
