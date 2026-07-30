@@ -43,8 +43,6 @@
       ]),
     }"
     ref="canvas"
-    @focus="console.log('focus')"
-    @blur="console.log('blur')"
     @mousedown="claimFocus"
   >
     Sorry, your browser does not support canvas.
