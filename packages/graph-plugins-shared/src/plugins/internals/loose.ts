@@ -7,6 +7,7 @@ import {
 } from '@graph/primitives/actions/types';
 import { GenericEventMap } from '@graph/primitives/events/types';
 import { BaseGetters, GraphGetters } from '@graph/primitives/getters/types';
+import { LooseGraphTransit } from '@graph/primitives/transit/types';
 
 export type LoosePluginSchema = {
   name: string;
@@ -30,6 +31,9 @@ type LoosePluginInput = {
   // see [2] in ./plugin.ts — call after mutating any plugin-local state a getter
   // reads from, so create-graph knows to recompute getNodes()/getEdges()
   invalidateGetters: () => void;
+  // see [3] in ./plugin.ts — a stable accessor for the graph wide encode/decode
+  // surface, assembled from every plugin's transit controls once folding completes
+  finalTransit: LooseGraphTransit;
 };
 
 type LoosePluginOutput = {

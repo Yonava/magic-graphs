@@ -7,8 +7,8 @@
   const graph = useGraphProduct({
     manifest,
     interactive: {
-      addedEdgeRuleNoSelfLoops: true,
-      addedEdgeRuleOneEdgePerPath: false,
+      allowSelfLoops: false,
+      allowRepeatConnections: true,
     },
     ui: {
       annotations: true,

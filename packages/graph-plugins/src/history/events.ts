@@ -9,6 +9,7 @@ export type HistoryEventMap = {
    * when the redo action is triggered
    */
   onRedo: () => void;
+  onHistoryChanged: () => void;
 };
 
 type HistoryEventRegistry = EventMapToEventRegistry<HistoryEventMap>;
@@ -16,4 +17,5 @@ type HistoryEventRegistry = EventMapToEventRegistry<HistoryEventMap>;
 export const createHistoryEventRegistry = (): HistoryEventRegistry => ({
   onUndo: new Set(),
   onRedo: new Set(),
+  onHistoryChanged: new Set(),
 });

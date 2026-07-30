@@ -30,6 +30,10 @@ export const useSuggestedNodes = (
   const suggestedNodeIds = ref<Set<string>>(new Set());
 
   const addSuggestedNodes = () => {
+    // suggested nodes must clear first
+    if (suggestedNodeIds.value.size > 0) {
+      removeSuggestedNodes();
+    }
     const nodeData = POSITIONS.map((v): AddGNodeOptions => ({
       label: getRandomInRange(1, 5).toString(),
       position: v,

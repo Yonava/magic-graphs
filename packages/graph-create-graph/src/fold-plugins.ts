@@ -12,9 +12,12 @@ import {
   createConsumerEventHub,
   createFinalActionsProxy,
   createGettersInvalidationEventHub,
+  createTransitEventHub,
+  TransitEventHub,
   wrapActionsWithConsumerEvents,
   wrapWeightsControlsWithConsumerEvents,
 } from './consumer-events.ts';
+import { createFinalTransitProxy } from './final-transit.ts';
 import { createGettersCache } from './getters-cache.ts';
 
 type PluginTransitControl = {
@@ -26,10 +29,14 @@ type FoldedPlugins = {
   controls: any;
   events: ConsumerEventsHub;
   consumerEvents: ConsumerEventHub;
+  transitEvents: TransitEventHub;
   actions: any;
   getters: any;
   themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']>;
   pluginTransitControls: PluginTransitControl[];
+  resolveFinalTransit: ReturnType<
+    typeof createFinalTransitProxy
+  >['resolveFinalTransit'];
   getNodes: () => any[];
   getEdges: () => any[];
 };
@@ -52,6 +59,10 @@ export const foldPlugins = (
   // plumbing for getNodes()/getEdges() staleness, not part of the curated consumer
   // vocabulary. only reachable via events._internal.gettersInvalidation.
   const gettersInvalidationEvents = createGettersInvalidationEventHub();
+  // also separate from consumerEvents — encode/decode report on the graph as a
+  // serialized whole rather than on a change to its structure. created here so plugins
+  // can subscribe during setup, even though only createGraphTransit ever emits on it.
+  const transitEvents = createTransitEventHub();
 
   let controls = {
     ...coreGraph.controls,
@@ -65,6 +76,7 @@ export const foldPlugins = (
   // `_internal` so they don't crowd the default autocomplete (see ConsumerEventsHub).
   const events: ConsumerEventsHub = {
     ...consumerEvents,
+    transit: transitEvents,
     _internal: {
       coreEvents: coreGraph.events,
       gettersInvalidation: gettersInvalidationEvents,
@@ -73,6 +85,7 @@ export const foldPlugins = (
   let actions = coreGraph.actions;
   let getters = coreGraph.getters;
   const { finalActions, resolveFinalActions } = createFinalActionsProxy();
+  const { finalTransit, resolveFinalTransit } = createFinalTransitProxy();
   let themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']> =
     {};
 
@@ -108,6 +121,7 @@ export const foldPlugins = (
       finalActions,
       getters,
       invalidateGetters: gettersCache.invalidateGetters,
+      finalTransit,
     });
 
     controls = { ...controls, [pluginResult.name]: pluginResult.controls };
@@ -156,10 +170,12 @@ export const foldPlugins = (
     controls,
     events,
     consumerEvents,
+    transitEvents,
     actions: wrappedActions,
     getters,
     themeDetectors,
     pluginTransitControls,
+    resolveFinalTransit,
     getNodes: gettersCache.getNodes,
     getEdges: gettersCache.getEdges,
   };

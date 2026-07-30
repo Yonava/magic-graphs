@@ -4,6 +4,7 @@ import { CoreGetters } from '@graph/core/getters';
 import { CoreControls } from '@graph/core/types';
 import { GraphActions, MergeActions } from '@graph/primitives/actions/types';
 import { GraphGetters, MergeGetters } from '@graph/primitives/getters/types';
+import { LooseGraphTransit } from '@graph/primitives/transit/types';
 
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls } from './extractors.ts';
@@ -26,6 +27,8 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
   getters: GraphGetters<CoreGetters>;
   // [2]
   invalidateGetters: () => void;
+  // [3]
+  finalTransit: LooseGraphTransit;
 };
 
 type PluginOutput<PluginSchema extends LoosePluginSchema> = {
@@ -64,6 +67,18 @@ type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
 // actually triggering a mutation in response to something external (user
 // input, a timer, another event), not when building on the pipeline itself.
 
+// [3] `transit` is declared per plugin (see PluginOutput above), but the graph wide
+// encode/decode surface is only assembled out of every plugin's contribution once
+// folding finishes. `finalTransit` is the late bound accessor to that assembled
+// surface, in the same spirit as `finalActions` in [1]: safe to capture during fold,
+// invalid to call before graph creation completes.
+//
+// this is what lets a plugin snapshot and restore the *whole* graph without knowing
+// which other plugins exist. history relies on it — each plugin already knows how to
+// encode and decode the state it owns, so history never has to learn about
+// plugin-owned node/edge properties (nodeLabel's labels, and anything a third party
+// adds) in order to preserve them across an undo.
+//
 // [2] getNodes()/getEdges() on the composed graph are a cache over the per-id getters,
 // not a live view. create-graph invalidates that cache on its own for structural and
 // edge-weight changes, but it has no way to know when a plugin's own local state (e.g.

@@ -3,38 +3,46 @@ import Fraction from 'fraction.js';
 
 export type InteractiveOptions = {
   /**
-   * the weight assigned to an edge when added via node anchor drop
+   * the weight given to an edge created by dropping a node anchor onto another node
    * @default 1
    */
-  addedEdgeWeight: MaybeGetter<Fraction | number>;
+  newEdgeWeight: MaybeGetter<Fraction | number>;
   /**
-   * whether to allow self loops.
-   * relevant on directed graphs where a node can have an edge to itself
-   * @default false
+   * parses user input into an {@link CoreEdge.weight | edge weight}. returning
+   * undefined rejects the input and leaves the weight as it was
    */
-  addedEdgeRuleNoSelfLoops: boolean;
+  parseEdgeWeight: (input: string) => Fraction | undefined;
   /**
-   * whether to allow only one edge per path between two nodes.
-   * relevant on directed graphs where multiple edges can exist between two nodes
-   * @default false
+   * whether a node may be given an edge to itself.
+   * relevant on directed graphs, where a self loop is a meaningful edge
+   * @default true
    */
-  addedEdgeRuleOneEdgePerPath: boolean;
+  allowSelfLoops: boolean;
   /**
-   * a setter for {@link CoreEdge.weight | edge weight} - takes the user inputted string and returns a fraction that will
-   * be set as the edge weight or returns undefined if the edge label should not be set
+   * whether an edge may be added between two nodes that are already connected.
+   * connection is direction agnostic, so with this off an existing A to B edge also
+   * blocks B to A
+   * @default true
    */
-  edgeInputToWeight: (input: string) => Fraction | undefined;
+  allowRepeatConnections: boolean;
+  /**
+   * whether interactive records the mutations it makes to history, when the history
+   * plugin is installed and enabled
+   * @default true
+   */
+  recordHistory: boolean;
 };
 
 export const DEFAULT_INTERACTIVE_OPTIONS: InteractiveOptions = {
-  edgeInputToWeight: (input: string) => {
+  parseEdgeWeight: (input: string) => {
     // fraction throws an error if the input cannot be parsed or
     // is a divide by zero operation
     try {
       return new Fraction(input);
     } catch {}
   },
-  addedEdgeWeight: 1,
-  addedEdgeRuleNoSelfLoops: false,
-  addedEdgeRuleOneEdgePerPath: false,
+  newEdgeWeight: 1,
+  allowSelfLoops: true,
+  allowRepeatConnections: true,
+  recordHistory: true,
 };

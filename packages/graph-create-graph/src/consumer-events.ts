@@ -1,6 +1,7 @@
 import {
   ConsumerEventMap,
   GettersInvalidationEventMap,
+  TransitEventMap,
 } from '@graph/core/consumer-events';
 import {
   EdgeWeightEntry,
@@ -34,6 +35,16 @@ export type ConsumerEventHub = ReturnType<typeof createConsumerEventHub>;
 
 export const createConsumerEventHub = () =>
   createEventHub<ConsumerEventMap>(createConsumerEventRegistry());
+
+// kept off ConsumerEventMap on purpose — see TransitEventMap in
+// @graph/core/consumer-events. its own hub, exposed at events.transit.
+export type TransitEventHub = ReturnType<typeof createTransitEventHub>;
+
+export const createTransitEventHub = () =>
+  createEventHub<TransitEventMap>({
+    onEncoded: new Set(),
+    onDecoded: new Set(),
+  });
 
 // kept off ConsumerEventMap on purpose — see GettersInvalidationEventMap in
 // @graph/core/consumer-events. its own tiny hub, exposed only under

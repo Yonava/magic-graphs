@@ -13,6 +13,7 @@ import { interactive } from '@graph/plugins/interactive/index';
 import { InteractiveOptions } from '@graph/plugins/interactive/options';
 import { marquee } from '@graph/plugins/marquee/index';
 import { nodeDrag } from '@graph/plugins/node-drag/index';
+import { NodeDragOptions } from '@graph/plugins/node-drag/options';
 import { nodeLabel } from '@graph/plugins/node-label/index';
 import { transitionMatrix } from '@graph/plugins/transition-matrix/index';
 import { dark } from '@graph/theme-presets/dark/index';
@@ -22,6 +23,7 @@ import { useCharacteristics } from '@graph/vue/useCharacteristics';
 import { useCreateGraphActivePreset } from '@graph/vue/useCreateGraphActivePreset';
 import { useFocus } from '@graph/vue/useFocus';
 import { useGraphEvents } from '@graph/vue/useGraphEvents';
+import { useHistory } from '@graph/vue/useHistory';
 import { useNodesEdges } from '@graph/vue/useNodesEdges';
 import { useTransitionMatrix } from '@graph/vue/useTransitionMatrix';
 
@@ -30,6 +32,7 @@ import { useGraphDevTools } from './useGraphDevTools.ts';
 export type UseGraphOptions = {
   core?: Partial<CoreOptions>;
   interactive?: Partial<InteractiveOptions>;
+  nodeDrag?: Partial<NodeDragOptions>;
 };
 
 const graphPlugins = (
@@ -40,7 +43,7 @@ const graphPlugins = (
   focus,
   marquee,
   anchors,
-  nodeDrag,
+  nodeDrag(options.nodeDrag ?? {}),
   nodeLabel,
   adjacencyLists,
   transitionMatrix,
@@ -85,6 +88,7 @@ export const useGraph = (options: UseGraphOptions = {}) => {
     graph.transitionMatrix,
   );
   const vueFocus = useFocus(graph.focus);
+  const vueHistory = useHistory(graph.history);
 
   const vueEvents = useGraphEvents(graph.events);
 
@@ -95,6 +99,7 @@ export const useGraph = (options: UseGraphOptions = {}) => {
     characteristics: vueCharacteristics,
     transitionMatrix: vueTransitionMatrix,
     focus: vueFocus,
+    history: vueHistory,
     theme: {
       ...graph.theme,
       ...vueActivePreset,
