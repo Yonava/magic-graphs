@@ -1,7 +1,11 @@
 import { core } from '@graph/core/index';
 import { GraphTransit } from '@graph/primitives/transit/types';
 
-import { ConsumerEventHub, emitConsumerEvents } from './consumer-events.ts';
+import {
+  ConsumerEventHub,
+  emitConsumerEvents,
+  TransitEventHub,
+} from './consumer-events.ts';
 
 type PluginTransitControl = {
   pluginName: string;
@@ -16,6 +20,7 @@ type CreateGraphTransitOptions = {
   pluginTransitControls: PluginTransitControl[];
   coreGraph: ReturnType<typeof core>;
   consumerEvents: ConsumerEventHub;
+  transitEvents: TransitEventHub;
 };
 
 /**
@@ -27,15 +32,21 @@ export const createGraphTransit = <PayloadData>({
   pluginTransitControls,
   coreGraph,
   consumerEvents,
+  transitEvents,
 }: CreateGraphTransitOptions): GraphTransit<PayloadData> => ({
-  encode: () =>
-    pluginTransitControls.reduce(
+  encode: () => {
+    const payload = pluginTransitControls.reduce(
       (result, { pluginName, transit }) => ({
         ...result,
         [pluginName]: transit.encode(),
       }),
       {} as PayloadData,
-    ),
+    );
+
+    transitEvents.emit('onEncoded', payload as Record<string, unknown>);
+
+    return payload;
+  },
   decode: (payload) => {
     // the payload is keyed by plugin name, which is only knowable at runtime here.
     // the caller supplies the precise shape via PayloadData.
@@ -65,5 +76,9 @@ export const createGraphTransit = <PayloadData>({
       },
       consumerEvents.emit,
     );
+
+    // after the consumer events above on purpose — anything listening for onDecoded
+    // sees a graph that has already settled into its new structure.
+    transitEvents.emit('onDecoded', data);
   },
 });

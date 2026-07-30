@@ -41,6 +41,25 @@ export type ConsumerEventMap = {
   onEdgeWeightsChanged: (weights: DeepReadonly<EdgeWeightEntry[]>) => void;
 };
 
+// its own hub rather than part of ConsumerEventMap: encode/decode are about the graph
+// as a serialized whole, not about a structural change to it, and a consumer wiring up
+// persistence wants exactly these two and nothing else. exposed at events.transit,
+// mirroring the transit control surface it reports on.
+export type TransitEventMap = {
+  /**
+   * triggered after the graph has been encoded, carrying the payload that was
+   * produced. keyed by plugin name, so the precise shape is only knowable to whoever
+   * owns the plugin list (see LooseGraphTransit).
+   */
+  onEncoded: (payload: Readonly<Record<string, unknown>>) => void;
+  /**
+   * triggered after a payload has passed every plugin's validation and been written
+   * into the graph. the consumer events for the resulting structural change are
+   * triggered first, so the graph is fully settled by the time this runs.
+   */
+  onDecoded: (payload: Readonly<Record<string, unknown>>) => void;
+};
+
 // deliberately not part of ConsumerEventMap: it's plumbing for getNodes()/getEdges()
 // staleness, not something the primary consumer vocabulary should surface. lives under
 // _internal on ConsumerEventsHub, same as coreEvents, for plugin wrappers and anyone
@@ -62,6 +81,7 @@ export type GettersInvalidationEventMap = {
 // _resolveToken. this shape will likely change (e.g. _internal growing more fields);
 // consumers reaching into _internal should expect it to move.
 export type ConsumerEventsHub = ReadonlyEventHub<ConsumerEventMap> & {
+  transit: ReadonlyEventHub<TransitEventMap>;
   _internal: {
     coreEvents: ReadonlyEventHub<CoreEventMap>;
     gettersInvalidation: ReadonlyEventHub<GettersInvalidationEventMap>;

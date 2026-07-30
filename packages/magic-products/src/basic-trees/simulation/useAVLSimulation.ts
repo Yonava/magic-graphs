@@ -7,6 +7,7 @@ import { onMounted, ref } from 'vue';
 import { AVLTree } from '../AVLTree.ts';
 import { createSync } from './createSync.ts';
 import { explainer } from './explainer.ts';
+import { graphToTree } from './graphToTree.ts';
 import { AVLFrame, AVLMode } from './types.ts';
 import {
   SuggestedNodesControls,
@@ -61,14 +62,27 @@ export const useAVLSimulationDefinition = (): Controls => {
         onFrameTransition: () => sync(currentFrame.value),
         onBeforeTeardown: () =>
           sync(nullThrows(frames.value.at(-1), 'last frame undefined')),
-        onTeardownCompleted: suggested.add,
+        onTeardownCompleted: () => {
+          graph.history.captureSnapshot();
+          setTimeout(suggested.add, 0);
+        },
       };
     },
     recomputeFramesOnStructureChange: false,
   };
 
   const suggested = useSuggestedNodes(graph, definition, avlControls);
-  onMounted(suggested.add);
+
+  onMounted(() => {
+    graph.history.captureSnapshot();
+    setTimeout(suggested.add, 0);
+  });
+
+  graph.events.transit.subscribe('onDecoded', () => {
+    suggested.remove();
+    tree.root = graphToTree(graph);
+    suggested.add();
+  });
 
   return {
     definition,

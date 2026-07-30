@@ -77,6 +77,7 @@ const setup = () => {
     pluginTransitControls: folded.pluginTransitControls,
     coreGraph,
     consumerEvents: folded.consumerEvents,
+    transitEvents: folded.transitEvents,
   });
   folded.resolveFinalTransit(transit as LooseGraphTransit);
 

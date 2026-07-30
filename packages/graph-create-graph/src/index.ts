@@ -77,6 +77,7 @@ export const createGraph = <
     pluginTransitControls,
     resolveFinalTransit,
     consumerEvents,
+    transitEvents,
     getNodes,
     getEdges,
   } = folded;
@@ -116,6 +117,7 @@ export const createGraph = <
     pluginTransitControls,
     coreGraph,
     consumerEvents,
+    transitEvents,
   });
 
   // plugins captured `finalTransit` during fold — point it at the real thing now that
