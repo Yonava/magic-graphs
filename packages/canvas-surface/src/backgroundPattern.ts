@@ -23,11 +23,10 @@ const computeAlpha = (z: number) => {
 /**
  * Prepares the pattern for a frame and returns how to stamp a single cell of it.
  *
- * Split in two because the cell count is large and everything except the
- * position is the same for all of them. Handed a per cell draw instead, the
- * implementation had nowhere to put the work that does not vary, and ended up
- * rebuilding its shapes and re-resolving its color a few thousand times a
- * frame.
+ * Two stages because position is the only thing that differs between cells, and
+ * at low zoom there are a few thousand of them. The outer call is where an
+ * implementation builds its shapes and resolves its color, once, and the
+ * returned function is the only thing the frame runs per cell.
  */
 export type DrawPattern = (
   ctx: CanvasRenderingContext2D,

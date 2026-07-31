@@ -13,7 +13,12 @@ import type { DrawContent, UseCanvas } from './types.ts';
 
 const REPAINT_FPS = 60;
 
-const initCanvasWidthHeight = (canvas: HTMLCanvasElement | undefined) => {
+/**
+ * measures the canvas, sizes its backing store to match at the current device
+ * pixel ratio, and hands the measurement back so callers that need the canvas's
+ * screen position do not have to pay for a second layout to get it
+ */
+const measureAndSizeCanvas = (canvas: HTMLCanvasElement | undefined) => {
   if (!canvas) throw new Error('Canvas not found in DOM. Check ref link.');
 
   const dpr = getDevicePixelRatio();
@@ -44,7 +49,7 @@ export const useCanvas: UseCanvas = () => {
   let repaintInterval: NodeJS.Timeout;
 
   onMounted(() => {
-    canvasRect = initCanvasWidthHeight(canvas.value);
+    canvasRect = measureAndSizeCanvas(canvas.value);
     repaintInterval = setInterval(repaintCanvas, 1000 / REPAINT_FPS);
     lifecycleEvents.emit('onMounted');
   });
@@ -54,7 +59,7 @@ export const useCanvas: UseCanvas = () => {
   });
 
   watch([canvasBoxSize.width, canvasBoxSize.height], () => {
-    canvasRect = initCanvasWidthHeight(canvas.value);
+    canvasRect = measureAndSizeCanvas(canvas.value);
   });
 
   const { cleanup: cleanupCamera, ...camera } = useCamera(canvas);

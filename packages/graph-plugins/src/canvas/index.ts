@@ -133,14 +133,14 @@ export const canvas =
     });
 
     /*
-      the cell is built once and then stamped, rather than built per cell. a
-      cross constructs three rects of its own on the way down, so at low zoom
-      the old shape-per-cell version was putting sixteen thousand shape objects
-      through the allocator every frame to draw the same twelve pixels over and
-      over
+      everything that does not depend on where a cell lands is hoisted out of
+      the stamp: the theme lookup, and the cross itself, which resolves its
+      schema, builds the three bars it draws with, and builds a hitbox, a
+      bounding box and text props the pattern never asks for. what is left per
+      cell is a translate and a draw
 
-      translating for each stamp is what makes one shape enough: the cross is
-      built at the origin and the transform carries it to where it belongs
+      the cross is built at the origin, so that translate is what puts each
+      stamp where it belongs
     */
     magicCanvas.draw.backgroundPattern.value = (ctx, alpha) => {
       const origin = { x: 0, y: 0 };

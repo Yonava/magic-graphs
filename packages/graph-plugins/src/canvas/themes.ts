@@ -52,9 +52,10 @@ export type EdgeThemeValues = {
 type CanvasThemeValues = {
   color: ThemeValue<string>;
   /*
-    no coordinate here. the pattern is stamped a few thousand times a frame at
-    low zoom, so it is resolved once per frame and reused for every cell, which
-    a per cell coordinate would rule out. no preset ever varied on it
+    takes the alpha and nothing else. the pattern covers the viewport a few
+    thousand cells at a time at low zoom, so this resolves once a frame and the
+    result is reused for every cell. a coordinate argument would force it back
+    to once a cell to mean anything
   */
   patternColor: ThemeValue<string, [alpha: string]>;
   cursor: ThemeValue<Cursor | CursorFallback>;

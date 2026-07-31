@@ -42,9 +42,9 @@ export const getCoordinates = (
   clientCoords: ClientCoords,
   ctx: CanvasRenderingContext2D,
   /**
-   * the canvas's position on screen. reading it forces layout, so a caller in
-   * the draw path should hand over one it already has rather than let this
-   * measure per call
+   * the canvas's position on screen. measuring it forces layout, so callers on
+   * the draw path should pass one they already hold and leave the default to
+   * one off callers like event handlers
    */
   rect: Pick<DOMRect, 'left' | 'top'> = ctx.canvas.getBoundingClientRect(),
 ): WithZoom<Coords> => {
