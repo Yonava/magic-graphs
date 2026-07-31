@@ -52,6 +52,6 @@ export const getCrossBoundingBox = (schema: CrossSchemaWithDefaults) => () => {
   });
 };
 
-export const crossEfficientHitbox =
+export const crossOverlapsBox =
   (schema: CrossSchemaWithDefaults) => (boxToCheck: BoundingBox) =>
     areBoundingBoxesOverlapping(getCrossBoundingBox(schema)(), boxToCheck);

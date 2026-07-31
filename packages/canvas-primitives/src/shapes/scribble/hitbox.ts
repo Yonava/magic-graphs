@@ -38,10 +38,10 @@ export const scribbleHitbox =
         end: points[i + 1],
       };
 
-      const { efficientHitbox } = line(scribbleSegment);
+      const { overlapsBox } = line(scribbleSegment);
 
       if (
-        efficientHitbox({
+        overlapsBox({
           at: point,
           width: 1,
           height: 1,
@@ -79,14 +79,14 @@ export const getScribbleBoundingBox =
     });
   };
 
-export const scribbleEfficientHitbox =
+export const scribbleOverlapsBox =
   (schema: ScribbleSchemaWithDefaults) => (boxToCheck: BoundingBox) => {
     if (schema.type === 'erase') return false;
 
     const { at, width, height } = getScribbleBoundingBox(schema)();
     const { points, brushWeight } = schema;
 
-    const { efficientHitbox } = rect({
+    const { overlapsBox } = rect({
       at,
       // To prevent dots from not having a hitbox: due to drawing with ctx.lineCap = "round"
       width: Math.max(width, brushWeight),
@@ -94,14 +94,14 @@ export const scribbleEfficientHitbox =
     });
 
     if (points.length === 1) {
-      const { efficientHitbox } = circle({
+      const { overlapsBox } = circle({
         at: points[0],
         radius: brushWeight,
       });
-      return efficientHitbox(boxToCheck);
+      return overlapsBox(boxToCheck);
     }
 
-    if (!efficientHitbox(boxToCheck)) return false;
+    if (!overlapsBox(boxToCheck)) return false;
 
     for (let i = 0; i < points.length - 1; i++) {
       const scribbleSegment = {
@@ -109,8 +109,8 @@ export const scribbleEfficientHitbox =
         end: points[i + 1],
       };
 
-      const { efficientHitbox } = line(scribbleSegment);
-      if (efficientHitbox(boxToCheck)) return true;
+      const { overlapsBox } = line(scribbleSegment);
+      if (overlapsBox(boxToCheck)) return true;
     }
 
     return false;

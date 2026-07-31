@@ -6,8 +6,8 @@ import { resolveUTurnDefaults } from './defaults.ts';
 import { drawUTurnWithCtx } from './draw.ts';
 import {
   getUTurnBoundingBox,
-  uturnEfficientHitbox,
   uturnHitbox,
+  uturnOverlapsBox,
 } from './hitbox.ts';
 import { getTextAreaAnchorPoint } from './text.ts';
 import type { UTurnSchema } from './types.ts';
@@ -31,7 +31,7 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
 
   const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);
   const shapeHitbox = uturnHitbox(schema);
-  const efficientHitbox = uturnEfficientHitbox(schema);
+  const overlapsBox = uturnOverlapsBox(schema);
 
   const draw =
     drawOverride ??
@@ -48,7 +48,7 @@ export const uturn: ShapeFactory<UTurnSchema> = (options) => {
 
     hitbox,
     shapeHitbox,
-    efficientHitbox,
+    overlapsBox,
 
     getBoundingBox,
 

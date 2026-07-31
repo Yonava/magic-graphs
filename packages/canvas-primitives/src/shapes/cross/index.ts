@@ -5,8 +5,8 @@ import type { Coordinate } from '../../types/utility.ts';
 import { resolveCrossDefaults } from './defaults.ts';
 import { drawCrossWithCtx } from './draw.ts';
 import {
-  crossEfficientHitbox,
   crossHitbox,
+  crossOverlapsBox,
   getCrossBoundingBox,
 } from './hitbox.ts';
 import type { CrossSchema } from './types.ts';
@@ -28,7 +28,7 @@ export const cross: ShapeFactory<CrossSchema> = (options) => {
     });
 
   const shapeHitbox = crossHitbox(schema);
-  const efficientHitbox = crossEfficientHitbox(schema);
+  const overlapsBox = crossOverlapsBox(schema);
   const hitbox = (point: Coordinate) =>
     text?.textHitbox(point) || shapeHitbox(point);
 
@@ -43,7 +43,7 @@ export const cross: ShapeFactory<CrossSchema> = (options) => {
     hitbox,
     shapeHitbox,
 
-    efficientHitbox,
+    overlapsBox,
     getBoundingBox,
 
     ...textProps,

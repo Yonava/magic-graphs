@@ -186,6 +186,6 @@ export const getRectBoundingBox = (schema: RectSchemaWithDefaults) => () => {
   });
 };
 
-export const rectEfficientHitbox =
+export const rectOverlapsBox =
   (schema: RectSchemaWithDefaults) => (boxToCheck: BoundingBox) =>
     areBoundingBoxesOverlapping(getRectBoundingBox(schema)(), boxToCheck);
