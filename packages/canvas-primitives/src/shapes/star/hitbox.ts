@@ -65,6 +65,6 @@ export const getStarBoundingBox = (schema: StarSchemaWithDefaults) => () => {
   });
 };
 
-export const starEfficientHitbox =
+export const starOverlapsBox =
   (schema: StarSchemaWithDefaults) => (boxToCheck: BoundingBox) =>
     areBoundingBoxesOverlapping(getStarBoundingBox(schema)(), boxToCheck);

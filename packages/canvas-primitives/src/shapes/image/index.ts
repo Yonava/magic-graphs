@@ -18,7 +18,7 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
 
   const drawShape = drawImageWithCtx(schema);
 
-  const { shapeHitbox, efficientHitbox, getBoundingBox } = rect(schema);
+  const { shapeHitbox, overlapsBox, getBoundingBox } = rect(schema);
   const hitbox = (point: Coordinate) =>
     text?.textHitbox(point) || shapeHitbox(point);
 
@@ -35,7 +35,7 @@ export const image: ShapeFactory<ImageSchema> = (options) => {
 
     hitbox,
     shapeHitbox,
-    efficientHitbox,
+    overlapsBox,
 
     getBoundingBox,
 

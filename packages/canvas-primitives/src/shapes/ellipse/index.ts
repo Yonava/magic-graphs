@@ -5,8 +5,8 @@ import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
 import { resolveEllipseDefaults } from './defaults.ts';
 import {
-  ellipseEfficientHitbox,
   ellipseHitbox,
+  ellipseOverlapsBox,
   getEllipseBoundingBox,
 } from './hitbox.ts';
 import type { EllipseSchema } from './types.ts';
@@ -22,7 +22,7 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
   const { drawOverride, ...textProps } = text ?? {};
   const shapeHitbox = ellipseHitbox(schema);
 
-  const efficientHitbox = ellipseEfficientHitbox(schema);
+  const overlapsBox = ellipseOverlapsBox(schema);
   const hitbox = (point: Coordinate) =>
     text?.textHitbox(point) || shapeHitbox(point);
 
@@ -45,7 +45,7 @@ export const ellipse: ShapeFactory<EllipseSchema> = (options) => {
     hitbox,
     shapeHitbox,
 
-    efficientHitbox,
+    overlapsBox,
     getBoundingBox,
 
     ...textProps,

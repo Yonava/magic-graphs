@@ -65,7 +65,7 @@ export const marquee: MarqueePlugin = ({
     const targetedItems: string[] = [];
 
     for (const { id, shape } of controls.canvas.aggregator.aggregator()) {
-      const inSelectionBox = shape.efficientHitbox(box);
+      const inSelectionBox = shape.overlapsBox(box);
       if (inSelectionBox) targetedItems.push(id);
     }
 

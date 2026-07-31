@@ -33,7 +33,7 @@ export const getLineBoundingBox = (schema: LineSchemaWithDefaults) => () => {
   });
 };
 
-export const lineEfficientHitbox = (schema: LineSchemaWithDefaults) => {
+export const lineOverlapsBox = (schema: LineSchemaWithDefaults) => {
   const { start, end, lineWidth } = schema;
 
   const lineLength = Math.hypot(end.x - start.x, end.y - start.y);

@@ -7,8 +7,8 @@ import { resolveTriangleDefaults } from './defaults.ts';
 import { drawTriangleWithCtx } from './draw.ts';
 import {
   getTriangleBoundingBox,
-  triangleEfficientHitbox,
   triangleHitbox,
+  triangleOverlapsBox,
 } from './hitbox.ts';
 import type { TriangleSchema } from './types.ts';
 
@@ -22,7 +22,7 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
   const { drawOverride, ...textProps } = text ?? {};
 
   const shapeHitbox = triangleHitbox(schema);
-  const efficientHitbox = triangleEfficientHitbox(schema);
+  const overlapsBox = triangleOverlapsBox(schema);
   const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);
 
   const draw =
@@ -40,7 +40,7 @@ export const triangle: ShapeFactory<TriangleSchema> = (options) => {
 
     hitbox,
     shapeHitbox,
-    efficientHitbox,
+    overlapsBox,
     getBoundingBox,
 
     ...textProps,

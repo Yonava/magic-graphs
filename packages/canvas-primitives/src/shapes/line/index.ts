@@ -4,11 +4,7 @@ import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
 import { resolveLineDefaults } from './defaults.ts';
 import { drawLineWithCtx } from './draw.ts';
-import {
-  getLineBoundingBox,
-  lineEfficientHitbox,
-  lineHitbox,
-} from './hitbox.ts';
+import { getLineBoundingBox, lineHitbox, lineOverlapsBox } from './hitbox.ts';
 import { getTextAreaAnchorPoint } from './text.ts';
 import type { LineSchema } from './types.ts';
 
@@ -25,7 +21,7 @@ export const line: ShapeFactory<LineSchema> = (options) => {
   const { drawOverride, ...textProps } = text ?? {};
 
   const shapeHitbox = lineHitbox(schema);
-  const efficientHitbox = lineEfficientHitbox(schema);
+  const overlapsBox = lineOverlapsBox(schema);
   const hitbox = (point: Coordinate) =>
     text?.textHitbox(point) || shapeHitbox(point);
 
@@ -46,7 +42,7 @@ export const line: ShapeFactory<LineSchema> = (options) => {
 
     hitbox,
     shapeHitbox,
-    efficientHitbox,
+    overlapsBox,
     getBoundingBox,
 
     ...textProps,

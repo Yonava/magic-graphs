@@ -95,7 +95,7 @@ export const getArrowBoundingBox = (arrow: ArrowSchemaWithDefaults) => () => {
   });
 };
 
-export const arrowEfficientHitbox = (schema: ArrowSchemaWithDefaults) => {
+export const arrowOverlapsBox = (schema: ArrowSchemaWithDefaults) => {
   const { start, end, lineWidth: width } = schema;
 
   const headSchema = calculateArrowHeadCorners({
@@ -107,6 +107,5 @@ export const arrowEfficientHitbox = (schema: ArrowSchemaWithDefaults) => {
   const shaft = line(schema);
   const head = triangle(headSchema);
 
-  return (bb: BoundingBox) =>
-    shaft.efficientHitbox(bb) || head.efficientHitbox(bb);
+  return (bb: BoundingBox) => shaft.overlapsBox(bb) || head.overlapsBox(bb);
 };
