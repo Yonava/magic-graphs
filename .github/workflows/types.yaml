@@ -1,10 +1,10 @@
-name: CI
+name: Types
 
 on:
   pull_request:
 
 jobs:
-  check:
+  typecheck:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
 
@@ -29,9 +29,3 @@ jobs:
       # vue-tsc -b over the root tsconfig, which references all 18 projects
       - name: Typecheck
         run: pnpm build:types
-
-      # --run because the test script is bare `vitest`, which is watch mode.
-      # actions sets CI and vitest would pick up on that, but a watch mode
-      # process that ignores it sits here until the job times out
-      - name: Test
-        run: pnpm test --run
