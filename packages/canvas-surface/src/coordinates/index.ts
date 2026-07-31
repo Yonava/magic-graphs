@@ -41,8 +41,13 @@ export type WithZoom<T> = T & {
 export const getCoordinates = (
   clientCoords: ClientCoords,
   ctx: CanvasRenderingContext2D,
+  /**
+   * the canvas's position on screen. measuring it forces layout, so callers on
+   * the draw path should pass one they already hold and leave the default to
+   * one off callers like event handlers
+   */
+  rect: Pick<DOMRect, 'left' | 'top'> = ctx.canvas.getBoundingClientRect(),
 ): WithZoom<Coords> => {
-  const rect = ctx.canvas.getBoundingClientRect();
   const localX = clientCoords.clientX - rect.left;
   const localY = clientCoords.clientY - rect.top;
 

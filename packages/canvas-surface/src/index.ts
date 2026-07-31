@@ -22,13 +22,20 @@ const REPAINT_FPS = 60;
 */
 const MS_PER_REPAINT = 1000 / REPAINT_FPS - 1;
 
-const initCanvasWidthHeight = (canvas: HTMLCanvasElement | undefined) => {
+/**
+ * measures the canvas, sizes its backing store to match at the current device
+ * pixel ratio, and hands the measurement back so callers that need the canvas's
+ * screen position do not have to pay for a second layout to get it
+ */
+const measureAndSizeCanvas = (canvas: HTMLCanvasElement | undefined) => {
   if (!canvas) throw new Error('Canvas not found in DOM. Check ref link.');
 
   const dpr = getDevicePixelRatio();
   const rect = canvas.getBoundingClientRect();
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
+
+  return rect;
 };
 
 export const useCanvas: UseCanvas = () => {
@@ -36,7 +43,15 @@ export const useCanvas: UseCanvas = () => {
   const canvasBoxSize = useElementSize(canvas);
 
   const drawContent = ref<DrawContent>(() => {});
-  const drawBackgroundPattern = ref<DrawPattern>(() => {});
+  const drawBackgroundPattern = ref<DrawPattern>(() => () => {});
+
+  /*
+    the background pattern needs the canvas's screen position to work out which
+    slice of the world is visible, and reading it forces layout. the canvas
+    fills the viewport, so the only thing that moves it is a resize, which is
+    already being watched
+  */
+  let canvasRect: Pick<DOMRect, 'left' | 'top'> = { left: 0, top: 0 };
 
   const lifecycleEvents = createEventHub(createCanvasLifecycleEventRegistry());
 
@@ -70,7 +85,7 @@ export const useCanvas: UseCanvas = () => {
   };
 
   onMounted(() => {
-    initCanvasWidthHeight(canvas.value);
+    canvasRect = measureAndSizeCanvas(canvas.value);
     ctx = getCtx(canvas);
     scheduleRepaint();
     lifecycleEvents.emit('onMounted');
@@ -81,7 +96,7 @@ export const useCanvas: UseCanvas = () => {
   });
 
   watch([canvasBoxSize.width, canvasBoxSize.height], () => {
-    initCanvasWidthHeight(canvas.value);
+    canvasRect = measureAndSizeCanvas(canvas.value);
     ctx = getCtx(canvas);
   });
 
@@ -95,7 +110,7 @@ export const useCanvas: UseCanvas = () => {
     if (!ctx) return;
     lifecycleEvents.emit('onBeforeRepaint');
     camera.transformAndClear(ctx);
-    pattern.draw(ctx);
+    pattern.draw(ctx, canvasRect);
     drawContent.value(ctx);
     lifecycleEvents.emit('onAfterRepaint');
   };
