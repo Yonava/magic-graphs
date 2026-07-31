@@ -1,5 +1,3 @@
-import { DeepReadonly } from 'ts-essentials';
-
 import { CoreEdge, CoreNode } from '../types.ts';
 
 export type TransactionPayload = {

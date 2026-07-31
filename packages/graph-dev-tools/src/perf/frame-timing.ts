@@ -1,7 +1,5 @@
 /**
- * Frame timing for the canvas render loop.
- *
- * Two numbers, kept apart on purpose, because they answer different questions:
+ * Frame timing for the canvas render loop:
  *
  * - interval: the gap between consecutive repaints. answers "are we hitting 60"
  * - draw: how long the repaint itself takes. answers "why not"
@@ -12,7 +10,6 @@
  */
 import { percentile } from './percentile.ts';
 
-/** anything with the canvas surface's repaint events. duck typed on purpose */
 export type RepaintEvents = {
   subscribe: (event: RepaintEvent, callback: () => void) => void;
   unsubscribe: (event: RepaintEvent, callback: () => void) => void;

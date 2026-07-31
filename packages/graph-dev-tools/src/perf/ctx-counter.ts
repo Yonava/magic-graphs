@@ -1,10 +1,8 @@
 /**
  * Counts what a frame actually asks the canvas to do.
  *
- * For a canvas app this is the highest signal instrument there is. A sampling
- * profiler tells you time went into rendering, which was never in doubt; this
- * turns "feels slow" into "3,400 fillRect and 11 drawImage per frame at 10
- * nodes", which is a claim that can be falsified.
+ * Data that turns "feels slow" into "3,400 fillRect and 11 drawImage per frame at 10
+ * nodes"
  *
  * It patches the prototype rather than wrapping one context, so offscreen
  * canvases are counted too. That matters here: offscreen allocation is the
@@ -14,7 +12,6 @@
  * not a run to read frame timings off of. Measure one at a time.
  */
 
-/** anything with the canvas surface's repaint events. duck typed on purpose */
 export type RepaintEvents = {
   subscribe: (event: 'onBeforeRepaint', callback: () => void) => void;
   unsubscribe: (event: 'onBeforeRepaint', callback: () => void) => void;
