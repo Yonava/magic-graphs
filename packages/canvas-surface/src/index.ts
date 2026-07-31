@@ -93,9 +93,11 @@ export const useCanvas: UseCanvas = () => {
 
   const repaintCanvas = () => {
     if (!ctx) return;
+    lifecycleEvents.emit('onBeforeRepaint');
     camera.transformAndClear(ctx);
     pattern.draw(ctx);
     drawContent.value(ctx);
+    lifecycleEvents.emit('onAfterRepaint');
   };
 
   return {

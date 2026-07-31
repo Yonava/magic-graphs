@@ -12,6 +12,7 @@
     { "path": "./packages/graph-primitives" },
     { "path": "./packages/graph-theme-presets" },
     { "path": "./packages/graph-vue" },
+    { "path": "./packages/perf-harness" },
     { "path": "./packages/magic-products" },
     { "path": "./packages/canvas-primitives" },
     { "path": "./packages/canvas-primitives/tsconfig.storybook.json" },
