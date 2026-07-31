@@ -1,35 +1,5 @@
+import { withScratchCanvas } from './offscreen.ts';
 import type { Shape } from './types/index.ts';
-
-/**
- * Creates an offscreen canvas that mirrors the main canvas's pixel dimensions
- * and has the same camera transform applied, ready for isolated drawing.
- */
-const createOffscreenCanvas = (
-  ctx: CanvasRenderingContext2D,
-): CanvasRenderingContext2D => {
-  const offscreen = document.createElement('canvas');
-  offscreen.width = ctx.canvas.width;
-  offscreen.height = ctx.canvas.height;
-
-  const offCtx = offscreen.getContext('2d')!;
-  offCtx.setTransform(ctx.getTransform());
-
-  return offCtx;
-};
-
-/**
- * Composites the offscreen canvas onto the main canvas.
- * Transform is reset so offscreen pixels map 1:1 to main canvas pixels.
- */
-const compositeToMain = (
-  ctx: CanvasRenderingContext2D,
-  offCtx: CanvasRenderingContext2D,
-) => {
-  ctx.save();
-  ctx.resetTransform();
-  ctx.drawImage(offCtx.canvas, 0, 0);
-  ctx.restore();
-};
 
 /**
  * Draws a group of shapes with their text areas cleanly layered on top,
@@ -61,24 +31,38 @@ const compositeToMain = (
 export const drawGroup = (ctx: CanvasRenderingContext2D, shapes: Shape[]) => {
   if (shapes.length === 0) return;
 
-  const offCtx = createOffscreenCanvas(ctx);
+  /*
+    every property read here crosses the animated shape proxy, which does real
+    work on the way through, so each shape is asked for its hole exactly once
+    and the answer carries through the passes below
+  */
+  const group = shapes.map((shape) => ({
+    shape,
+    drawHole: shape.drawTextAreaHole,
+  }));
 
-  for (const shape of shapes) {
-    shape.drawShape(offCtx);
+  const punchesHoles = group.some(({ drawHole }) => drawHole);
+
+  /*
+    the isolated surface only earns its cost when there is a hole to punch:
+    without one, the group is drawn and then blitted over unchanged, which
+    lands exactly the same pixels as drawing onto the main canvas directly.
+    node groups never punch (their text areas take the matte path), and every
+    node is its own priority group, so this is the common case by a wide margin
+  */
+  if (!punchesHoles) {
+    for (const { shape } of group) shape.drawShape(ctx);
+  } else {
+    withScratchCanvas(ctx, (scratchCtx) => {
+      for (const { shape } of group) shape.drawShape(scratchCtx);
+
+      scratchCtx.globalCompositeOperation = 'destination-out';
+      for (const { drawHole } of group) drawHole?.(scratchCtx);
+    });
   }
 
-  offCtx.globalCompositeOperation = 'destination-out';
-  for (const shape of shapes) {
-    shape.drawTextAreaHole?.(offCtx);
-  }
-
-  compositeToMain(ctx, offCtx);
-
-  for (const shape of shapes) {
-    if (shape.drawTextAreaHole) {
-      shape.drawText?.(ctx);
-    } else {
-      shape.drawTextArea?.(ctx);
-    }
+  for (const { shape, drawHole } of group) {
+    if (drawHole) shape.drawText?.(ctx);
+    else shape.drawTextArea?.(ctx);
   }
 };
