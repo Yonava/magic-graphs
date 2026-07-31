@@ -1,0 +1,175 @@
+name: perf bot
+
+# comment `/perf` on a pull request and this measures the canvas render loop on
+# both the pull request and its merge base, then replies with what changed.
+#
+# reporting only: nothing here fails a build.
+
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: pull request number to measure
+        required: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  measure:
+    # the association check is not decoration. this job checks out the pull
+    # request's code and runs pnpm install, whose postinstall runs nuxt
+    # prepare, so /perf from a stranger would be arbitrary code execution
+    # holding a token that can comment on the repo
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.issue.pull_request != null &&
+       startsWith(github.event.comment.body, '/perf') &&
+       contains(fromJSON('["OWNER","COLLABORATOR","MEMBER"]'), github.event.comment.author_association))
+
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+
+    env:
+      PR_NUMBER: ${{ github.event.issue.number || inputs.pr }}
+      GH_TOKEN: ${{ github.token }}
+      # the harness measures whatever is on this port, which is a different
+      # checkout for each half of the comparison. pinned rather than left to
+      # nuxt, which quietly moves to the next free port when this one is busy
+      # and would leave the harness measuring nothing at all
+      PORT: 3000
+      PERF_URL: http://localhost:3000
+      # the second server starts where the first one just stopped, and nuxt
+      # holds a dev lock that outlives the process by a moment
+      NUXT_IGNORE_LOCK: 1
+
+    steps:
+      - name: acknowledge the ping
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'eyes',
+            });
+
+      # full history: the merge base is the other half of the measurement
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run: gh pr checkout "$PR_NUMBER"
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: cache browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - run: pnpm --filter @graph/perf-harness exec playwright install --with-deps chromium
+
+      - name: measure the pull request
+        run: |
+          pnpm dev > /tmp/head-server.log 2>&1 &
+          .github/scripts/wait-for-server.sh "$PERF_URL"
+          pnpm --filter @graph/perf-harness run measure \
+            --url "$PERF_URL" \
+            --out "$GITHUB_WORKSPACE/head.json" \
+            --commit "$(git rev-parse HEAD)"
+          pkill -f "nuxt.mjs dev" || true
+          sleep 2
+
+      # a worktree rather than a checkout, because the harness itself may not
+      # exist on the base commit. this keeps the driver from the pull request
+      # and points it at a server built from the base
+      - name: measure the merge base
+        run: |
+          BASE_REF="$(gh pr view "$PR_NUMBER" --json baseRefName --jq .baseRefName)"
+          MERGE_BASE="$(git merge-base HEAD "origin/$BASE_REF")"
+          echo "measuring merge base $MERGE_BASE"
+
+          git worktree add /tmp/perf-base "$MERGE_BASE"
+          cd /tmp/perf-base
+          pnpm install --frozen-lockfile
+          pnpm dev > /tmp/base-server.log 2>&1 &
+          "$GITHUB_WORKSPACE/.github/scripts/wait-for-server.sh" "$PERF_URL"
+
+          cd "$GITHUB_WORKSPACE"
+          pnpm --filter @graph/perf-harness run measure \
+            --url "$PERF_URL" \
+            --out "$GITHUB_WORKSPACE/base.json" \
+            --commit "$MERGE_BASE"
+          pkill -f "nuxt.mjs dev" || true
+        continue-on-error: true
+
+      - name: render the report
+        run: |
+          if [ -f base.json ]; then
+            pnpm --filter @graph/perf-harness run report \
+              --head "$GITHUB_WORKSPACE/head.json" \
+              --base "$GITHUB_WORKSPACE/base.json" > report.md
+          else
+            pnpm --filter @graph/perf-harness run report \
+              --head "$GITHUB_WORKSPACE/head.json" > report.md
+            echo "" >> report.md
+            echo "_The merge base could not be measured, so there is nothing to compare against. It may predate the perf tooling._" >> report.md
+          fi
+
+      - name: post the report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { readFileSync } = require('node:fs');
+            const body = readFileSync('report.md', 'utf8');
+            const marker = '<!-- magic-graphs-perf-bot -->';
+
+            const issue_number = Number(process.env.PR_NUMBER);
+            const { owner, repo } = context.repo;
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number },
+            );
+
+            // one comment per pull request, edited in place, so pinging four
+            // times leaves one current answer rather than four stale ones
+            const existing = comments.find((comment) =>
+              comment.body?.includes(marker),
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body,
+              });
+            }
+
+      - name: server logs
+        if: failure()
+        run: |
+          echo "--- head server ---"; tail -50 /tmp/head-server.log || true
+          echo "--- base server ---"; tail -50 /tmp/base-server.log || true
