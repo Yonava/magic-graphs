@@ -59,12 +59,13 @@ jobs:
               content: 'eyes',
             });
 
-      # full history: the merge base is the other half of the measurement
+      # stays on the default branch for the whole job. the commits under test
+      # are served out of worktrees instead, so the harness measuring them is
+      # always this branch's, never one that may not exist on the pull request
+      # or that the pull request has edited
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - run: gh pr checkout "$PR_NUMBER"
 
       - uses: pnpm/action-setup@v4
 
@@ -83,38 +84,36 @@ jobs:
 
       - run: pnpm --filter @graph/perf-harness exec playwright install --with-deps chromium
 
-      - name: measure the pull request
-        run: |
-          pnpm dev > /tmp/head-server.log 2>&1 &
-          .github/scripts/wait-for-server.sh "$PERF_URL"
-          pnpm --filter @graph/perf-harness run measure \
-            --url "$PERF_URL" \
-            --out "$GITHUB_WORKSPACE/head.json" \
-            --commit "$(git rev-parse HEAD)"
-          pkill -f "nuxt.mjs dev" || true
-          sleep 2
-
-      # a worktree rather than a checkout, because the harness itself may not
-      # exist on the base commit. this keeps the driver from the pull request
-      # and points it at a server built from the base
-      - name: measure the merge base
+      # what the pull request would do to the base once merged, rather than the
+      # branch on its own. github maintains that merge for us, and it is both
+      # the more honest thing to measure and the only one that works: a branch
+      # opened before the perf tooling landed carries no way to be measured,
+      # while merging it into the base brings the tooling along
+      - name: resolve what to measure
         run: |
           BASE_REF="$(gh pr view "$PR_NUMBER" --json baseRefName --jq .baseRefName)"
-          MERGE_BASE="$(git merge-base HEAD "origin/$BASE_REF")"
-          echo "measuring merge base $MERGE_BASE"
+          git fetch -q origin "refs/pull/$PR_NUMBER/merge" || true
 
-          git worktree add /tmp/perf-base "$MERGE_BASE"
-          cd /tmp/perf-base
-          pnpm install --frozen-lockfile
-          pnpm dev > /tmp/base-server.log 2>&1 &
-          "$GITHUB_WORKSPACE/.github/scripts/wait-for-server.sh" "$PERF_URL"
+          if git rev-parse -q --verify FETCH_HEAD > /dev/null; then
+            HEAD_SHA="$(git rev-parse FETCH_HEAD)"
+            echo "measuring the pull request merged into $BASE_REF"
+          else
+            # closed, conflicted, or otherwise unmergeable: fall back to the
+            # branch itself and let the harness say if it cannot be measured
+            HEAD_SHA="$(gh pr view "$PR_NUMBER" --json headRefOid --jq .headRefOid)"
+            echo "no merge ref for #$PR_NUMBER, falling back to its head"
+          fi
 
-          cd "$GITHUB_WORKSPACE"
-          pnpm --filter @graph/perf-harness run measure \
-            --url "$PERF_URL" \
-            --out "$GITHUB_WORKSPACE/base.json" \
-            --commit "$MERGE_BASE"
-          pkill -f "nuxt.mjs dev" || true
+          {
+            echo "HEAD_SHA=$HEAD_SHA"
+            echo "BASE_SHA=$(git rev-parse "origin/$BASE_REF")"
+          } >> "$GITHUB_ENV"
+
+      - name: measure the pull request
+        run: .github/scripts/measure-commit.sh "$HEAD_SHA" "$GITHUB_WORKSPACE/head.json"
+
+      - name: measure the base
+        run: .github/scripts/measure-commit.sh "$BASE_SHA" "$GITHUB_WORKSPACE/base.json"
         continue-on-error: true
 
       - name: render the report
@@ -127,7 +126,7 @@ jobs:
             pnpm --filter @graph/perf-harness run report \
               --head "$GITHUB_WORKSPACE/head.json" > report.md
             echo "" >> report.md
-            echo "_The merge base could not be measured, so there is nothing to compare against. It may predate the perf tooling._" >> report.md
+            echo "_The base could not be measured, so there is nothing to compare against._" >> report.md
           fi
 
       - name: post the report
@@ -168,8 +167,47 @@ jobs:
               });
             }
 
-      - name: server logs
-        if: failure()
-        run: |
-          echo "--- head server ---"; tail -50 /tmp/head-server.log || true
-          echo "--- base server ---"; tail -50 /tmp/base-server.log || true
+      # a job that dies quietly leaves someone watching an eyes reaction for
+      # twenty minutes waiting for a comment that is never coming. say so
+      - name: report the failure
+        if: failure() && github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = '<!-- magic-graphs-perf-bot -->';
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
+            const body = [
+              marker,
+              '### canvas perf',
+              '',
+              `The run failed before it could measure anything. [Logs](${run}).`,
+            ].join('\n');
+
+            const issue_number = Number(process.env.PR_NUMBER);
+            const { owner, repo } = context.repo;
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number },
+            );
+
+            const existing = comments.find((comment) =>
+              comment.body?.includes(marker),
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body,
+              });
+            }
