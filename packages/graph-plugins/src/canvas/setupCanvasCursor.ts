@@ -48,11 +48,15 @@ export const setupCanvasCursor = ({
     return elementCursor;
   };
 
+  // remembered rather than read back off the element, since this runs per frame
+  let writtenCursor: Cursor | undefined;
+
   const refreshCursor = () => {
     if (!canvas.value) return;
-    const currentCursor = canvas.value.style.cursor;
     const newCursor = getCursor();
-    if (currentCursor !== newCursor) canvas.value.style.cursor = newCursor;
+    if (writtenCursor === newCursor) return;
+    canvas.value.style.cursor = newCursor;
+    writtenCursor = newCursor;
   };
 
   subscribe('onDraw', refreshCursor);
