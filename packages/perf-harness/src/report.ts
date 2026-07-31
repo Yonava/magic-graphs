@@ -13,7 +13,7 @@
 import { readFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
 
-import type { PerfCounts, RunResult, ScenarioResult } from './types.ts';
+import type { RunResult, ScenarioResult } from './types.ts';
 
 /** lets the workflow find its own comment again instead of posting a new one */
 export const COMMENT_MARKER = '<!-- magic-graphs-perf-bot -->';
@@ -36,8 +36,11 @@ const HEADLINE_COUNTERS = [
 /** below this a difference is rounding or a stray frame, not a change */
 const NOTABLE_DELTA = 0.1;
 
-const totalCalls = (counts: PerfCounts) =>
-  Object.values(counts).reduce((sum, count) => sum + count, 0);
+/**
+ * a counter that moves by a fraction of a call per frame is not news, however
+ * large the percentage looks next to a base of nearly nothing
+ */
+const NOTABLE_CALLS_PER_FRAME = 1;
 
 const round = (value: number) => Math.round(value * 10) / 10;
 
@@ -77,14 +80,6 @@ const scenarioTable = (head: ScenarioResult, base?: ScenarioResult) => {
     row(counter, head.perFrame[counter] ?? 0, base?.perFrame[counter]),
   );
 
-  rows.push(
-    row(
-      '**all calls**',
-      totalCalls(head.perFrame),
-      base && totalCalls(base.perFrame),
-    ),
-  );
-
   return [
     `#### \`${head.scenario}\` (${head.nodes} nodes, ${head.frames} frames)`,
     '',
@@ -92,7 +87,55 @@ const scenarioTable = (head: ScenarioResult, base?: ScenarioResult) => {
     ...rows,
     // a table that runs straight into the next heading stops being a table
     '',
+    ...alsoMoved(head, base),
   ].join('\n');
+};
+
+/*
+  there used to be a total here, and it was worse than nothing. summing canvas
+  calls treats them as interchangeable, and they are not: removing 85
+  createElement plus getContext pairs per frame is the entire point of a change
+  that moves a total of seven thousand by two percent, so the row reported the
+  headline result as a rounding error.
+
+  what the total was really for was catching a counter nobody thought to put in
+  the headline list. that is worth keeping, so it is done directly: name the
+  ones that moved, and stay quiet when none did
+*/
+const alsoMoved = (head: ScenarioResult, base?: ScenarioResult) => {
+  if (!base) return [];
+
+  const counterNames = new Set([
+    ...Object.keys(head.perFrame),
+    ...Object.keys(base.perFrame),
+  ]);
+
+  const moved = [...counterNames]
+    .filter((counter) => !HEADLINE_COUNTERS.includes(counter as never))
+    .map((counter) => ({
+      counter,
+      baseValue: base.perFrame[counter] ?? 0,
+      headValue: head.perFrame[counter] ?? 0,
+    }))
+    .filter(({ baseValue, headValue }) => {
+      const absolute = Math.abs(headValue - baseValue);
+      if (absolute < NOTABLE_CALLS_PER_FRAME) return false;
+      return baseValue === 0 || absolute / baseValue >= NOTABLE_DELTA;
+    })
+    .sort(
+      (a, b) =>
+        Math.abs(b.headValue - b.baseValue) -
+        Math.abs(a.headValue - a.baseValue),
+    );
+
+  if (moved.length === 0) return [];
+
+  const described = moved.map(
+    ({ counter, baseValue, headValue }) =>
+      `\`${counter}\` ${round(baseValue)} → ${round(headValue)}`,
+  );
+
+  return [`Also moved: ${described.join(', ')}.`, ''];
 };
 
 const timingSection = (head: RunResult, base?: RunResult) => {
@@ -104,13 +147,18 @@ const timingSection = (head: RunResult, base?: RunResult) => {
     const draw = (result?: ScenarioResult) =>
       result ? `${round(result.timing.draw.p50)}ms` : 'n/a';
 
+    // dropped frames get a base column of their own. one bare number in a
+    // comparison table reads as a delta, and this one never was
+    const dropped = (result?: ScenarioResult) =>
+      result ? String(result.timing.dropped) : 'n/a';
+
     return base
-      ? `| ${scenario.scenario} | ${draw(baseScenario)} | ${draw(scenario)} | ${scenario.timing.dropped} |`
-      : `| ${scenario.scenario} | ${draw(scenario)} | ${scenario.timing.dropped} |`;
+      ? `| ${scenario.scenario} | ${draw(baseScenario)} | ${draw(scenario)} | ${dropped(baseScenario)} | ${dropped(scenario)} |`
+      : `| ${scenario.scenario} | ${draw(scenario)} | ${dropped(scenario)} |`;
   });
 
   const header = base
-    ? '| scenario | base draw p50 | head draw p50 | dropped |\n| --- | ---: | ---: | ---: |'
+    ? '| scenario | base draw p50 | head draw p50 | base dropped | head dropped |\n| --- | ---: | ---: | ---: | ---: |'
     : '| scenario | draw p50 | dropped |\n| --- | ---: | ---: |';
 
   return [
