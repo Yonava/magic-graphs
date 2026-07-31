@@ -4,11 +4,7 @@ import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
 import { resolveStarDefaults } from './defaults.ts';
 import { drawStarWithCtx } from './draw.ts';
-import {
-  getStarBoundingBox,
-  starEfficientHitbox,
-  starHitbox,
-} from './hitbox.ts';
+import { getStarBoundingBox, starHitbox, starOverlapsBox } from './hitbox.ts';
 import type { StarSchema } from './types.ts';
 
 export const star: ShapeFactory<StarSchema> = (options) => {
@@ -36,7 +32,7 @@ export const star: ShapeFactory<StarSchema> = (options) => {
 
   const shapeHitbox = starHitbox(schema);
   const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);
-  const efficientHitbox = starEfficientHitbox(schema);
+  const overlapsBox = starOverlapsBox(schema);
   const getBoundingBox = getStarBoundingBox(schema);
 
   return shapeFactoryWrapper({
@@ -47,7 +43,7 @@ export const star: ShapeFactory<StarSchema> = (options) => {
 
     hitbox,
     shapeHitbox,
-    efficientHitbox,
+    overlapsBox,
     getBoundingBox,
 
     ...textProps,

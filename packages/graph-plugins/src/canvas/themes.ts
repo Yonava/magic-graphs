@@ -51,7 +51,13 @@ export type EdgeThemeValues = {
 
 type CanvasThemeValues = {
   color: ThemeValue<string>;
-  patternColor: ThemeValue<string, [Coordinate, alpha: string]>;
+  /*
+    takes the alpha and nothing else. the pattern covers the viewport a few
+    thousand cells at a time at low zoom, so this resolves once a frame and the
+    result is reused for every cell. a coordinate argument would force it back
+    to once a cell to mean anything
+  */
+  patternColor: ThemeValue<string, [alpha: string]>;
   cursor: ThemeValue<Cursor | CursorFallback>;
 };
 

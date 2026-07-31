@@ -39,6 +39,6 @@ export const getEllipseBoundingBox =
     });
   };
 
-export const ellipseEfficientHitbox =
+export const ellipseOverlapsBox =
   (schema: EllipseSchemaWithDefaults) => (boxToCheck: BoundingBox) =>
     areBoundingBoxesOverlapping(getEllipseBoundingBox(schema)(), boxToCheck);

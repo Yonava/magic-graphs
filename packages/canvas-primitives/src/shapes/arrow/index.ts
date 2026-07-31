@@ -6,8 +6,8 @@ import { getTextAreaAnchorPoint } from '../line/text.ts';
 import { resolveArrowDefaults } from './defaults.ts';
 import { drawArrowWithCtx } from './draw.ts';
 import {
-  arrowEfficientHitbox,
   arrowHitbox,
+  arrowOverlapsBox,
   getArrowBoundingBox,
 } from './hitbox.ts';
 import type { ArrowSchema } from './types.ts';
@@ -25,7 +25,7 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
   const { drawOverride, ...textProps } = text ?? {};
 
   const shapeHitbox = arrowHitbox(schema);
-  const efficientHitbox = arrowEfficientHitbox(schema);
+  const overlapsBox = arrowOverlapsBox(schema);
   const hitbox = (point: Coordinate) =>
     text?.textHitbox(point) || shapeHitbox(point);
 
@@ -47,7 +47,7 @@ export const arrow: ShapeFactory<ArrowSchema> = (options) => {
 
     hitbox,
     shapeHitbox,
-    efficientHitbox,
+    overlapsBox,
     getBoundingBox,
 
     ...textProps,

@@ -16,7 +16,7 @@ export const light: LightPreset = {
   canvas: {
     'canvas.color': colors.GRAY_300,
     'canvas.cursor': CURSOR_FALLBACK,
-    'canvas.patternColor': (_, alpha) => colors.GRAY_500 + alpha,
+    'canvas.patternColor': (alpha) => colors.GRAY_500 + alpha,
 
     'edge.default.color': colors.GRAY_800,
     'edge.default.cursor': shared.edge.cursor,

@@ -89,7 +89,7 @@ export const useAnnotationsState = (graph: Graph) => {
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
         const shape = graph.canvas.shapes.shapes.scribble(scribble);
-        return shape.efficientHitbox(eraserBoundingBox);
+        return shape.overlapsBox(eraserBoundingBox);
       });
 
       for (const erasedScribble of erasedScribbles) {
@@ -122,7 +122,7 @@ export const useAnnotationsState = (graph: Graph) => {
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
         const shape = graph.canvas.shapes.shapes.scribble(scribble);
-        return shape.efficientHitbox(eraserBoundingBox);
+        return shape.overlapsBox(eraserBoundingBox);
       });
 
       for (const erasedScribble of erasedScribbles) {

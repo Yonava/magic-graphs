@@ -7,8 +7,8 @@ import { resolveScribbleDefaults } from './defaults.ts';
 import { drawScribbleWithCtx } from './draw.ts';
 import {
   getScribbleBoundingBox,
-  scribbleEfficientHitbox,
   scribbleHitbox,
+  scribbleOverlapsBox,
 } from './hitbox.ts';
 import type { ScribbleSchema } from './types.ts';
 
@@ -32,7 +32,7 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
   const { drawOverride, ...textProps } = text ?? {};
 
   const shapeHitbox = scribbleHitbox(schema);
-  const efficientHitbox = scribbleEfficientHitbox(schema);
+  const overlapsBox = scribbleOverlapsBox(schema);
   const hitbox = (pt: Coordinate) => text?.textHitbox(pt) || shapeHitbox(pt);
 
   const draw =
@@ -50,7 +50,7 @@ export const scribble: ShapeFactory<ScribbleSchema> = (options) => {
 
     hitbox,
     shapeHitbox,
-    efficientHitbox,
+    overlapsBox,
 
     getBoundingBox,
 

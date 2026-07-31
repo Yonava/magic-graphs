@@ -63,11 +63,12 @@ export const createAggregator = (
       [],
     );
 
-    aggregator = [
-      ...resolvedCanvasElements.sort((a, b) => a.priority - b.priority),
-    ];
-
     stale = false;
+
+    aggregator = resolvedCanvasElements.toSorted(
+      (a, b) => a.priority - b.priority,
+    );
+
   };
 
   const groupByPriority = (elements: Aggregator): Map<number, Aggregator> => {
@@ -104,11 +105,8 @@ export const createAggregator = (
    * @example const els = getCanvasElementsAtCoordinate({ x: 200, y: 550 })
    * console.log(els) // [node, nodeAnchor] meaning nodeAnchor is above the node
    */
-  const getCanvasElementsAtCoordinate = (coords: Coordinate) => {
-    return aggregator
-      .sort((a, b) => a.priority - b.priority)
-      .filter((element) => element.shape.hitbox(coords));
-  };
+  const getCanvasElementsAtCoordinate = (coords: Coordinate) =>
+    aggregator.filter(({ shape }) => shape.hitbox(coords));
 
   return {
     aggregator: () => aggregator,

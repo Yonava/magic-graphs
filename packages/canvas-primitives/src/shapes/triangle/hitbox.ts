@@ -58,6 +58,6 @@ export const getTriangleBoundingBox =
     });
   };
 
-export const triangleEfficientHitbox =
+export const triangleOverlapsBox =
   (schema: TriangleSchemaWithDefaults) => (boxToCheck: BoundingBox) =>
     areBoundingBoxesOverlapping(getTriangleBoundingBox(schema)(), boxToCheck);

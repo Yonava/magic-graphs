@@ -146,19 +146,47 @@ export const canvas =
       }
     });
 
-    magicCanvas.draw.backgroundPattern.value = (ctx, at, alpha) => {
-      cross({
-        at,
+    /*
+      everything that does not depend on where a cell lands is hoisted out of
+      the stamp: the theme lookup, and the cross itself, which resolves its
+      schema, builds the three bars it draws with, and builds a hitbox, a
+      bounding box and text props the pattern never asks for. what is left per
+      cell is a translate and a draw
+
+      the cross is built at the origin, so that translate is what puts each
+      stamp where it belongs
+    */
+    magicCanvas.draw.backgroundPattern.value = (ctx, alpha) => {
+      const origin = { x: 0, y: 0 };
+
+      const cell = cross({
+        at: origin,
         size: 12,
         lineWidth: 1,
-        fillColor: theme._resolveToken('canvas.patternColor', at, alpha),
-      }).draw(ctx);
+        fillColor: theme._resolveToken('canvas.patternColor', alpha),
+      });
+
+      return (at) => {
+        ctx.save();
+        ctx.translate(at.x, at.y);
+        cell.draw(ctx);
+        ctx.restore();
+      };
     };
+
+    // the color only moves on a theme switch, so the write is skipped rather
+    // than repeated at every frame
+    let writtenBackgroundColor: string | undefined;
 
     canvasEvents.subscribe('onDraw', () => {
       const canvas = magicCanvas.canvas.value;
       if (!canvas) return;
-      canvas.style.backgroundColor = theme._resolveToken('canvas.color');
+
+      const backgroundColor = theme._resolveToken('canvas.color');
+      if (writtenBackgroundColor === backgroundColor) return;
+
+      canvas.style.backgroundColor = backgroundColor;
+      writtenBackgroundColor = backgroundColor;
     });
 
     let getNodePriority = createNodeCanvasElementPriorityGetter({

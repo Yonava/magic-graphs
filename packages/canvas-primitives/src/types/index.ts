@@ -91,9 +91,16 @@ export type ShapeProps = {
   shapeHitbox: (point: Coordinate) => boolean;
 
   /**
-   * returns true if any part of the bounding box is within the shape, not including text area
+   * returns true if `boxToCheck` overlaps the shape, not including text area.
+   *
+   * this is the region query behind the marquee and the eraser, not a cheaper
+   * {@link ShapeProps.shapeHitbox | shapeHitbox}. it is deliberately generous:
+   * a line tests against the bounding boxes of its segments and a rect ignores
+   * its rotation and border radius, so a box that never touches the drawn shape
+   * can still come back true. pass a zero area box and it costs more than the
+   * point test it looks like it is replacing
    */
-  efficientHitbox: (boxToCheck: BoundingBox) => boolean;
+  overlapsBox: (boxToCheck: BoundingBox) => boolean;
 
   /**
    * returns the coordinates of the top-left corner along with the width and height
@@ -161,7 +168,7 @@ export const shapeProps: Set<keyof Shape> = new Set([
   'drawShape',
   'hitbox',
   'shapeHitbox',
-  'efficientHitbox',
+  'overlapsBox',
   'getBoundingBox',
   'getCenterPoint',
 ]);

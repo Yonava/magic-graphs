@@ -6,11 +6,7 @@ import type { ShapeFactory } from '../../types/index.ts';
 import type { Coordinate } from '../../types/utility.ts';
 import { resolveRectDefaults } from './defaults.ts';
 import { drawRectWithCtx } from './draw.ts';
-import {
-  getRectBoundingBox,
-  rectEfficientHitbox,
-  rectHitbox,
-} from './hitbox.ts';
+import { getRectBoundingBox, rectHitbox, rectOverlapsBox } from './hitbox.ts';
 import type { RectSchema } from './types.ts';
 
 export const rect: ShapeFactory<RectSchema> = (options) => {
@@ -26,7 +22,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
   const { drawOverride, ...textProps } = text ?? {};
 
   const shapeHitbox = rectHitbox(schema);
-  const efficientHitbox = rectEfficientHitbox(schema);
+  const overlapsBox = rectOverlapsBox(schema);
   const hitbox = (point: Coordinate) =>
     text?.textHitbox(point) || shapeHitbox(point);
 
@@ -47,7 +43,7 @@ export const rect: ShapeFactory<RectSchema> = (options) => {
 
     hitbox,
     shapeHitbox,
-    efficientHitbox,
+    overlapsBox,
 
     getBoundingBox,
 

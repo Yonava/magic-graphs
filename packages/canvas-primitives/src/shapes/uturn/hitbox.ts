@@ -103,6 +103,6 @@ export const getUTurnBoundingBox = (schema: UTurnSchemaWithDefaults) => () => {
   });
 };
 
-export const uturnEfficientHitbox =
+export const uturnOverlapsBox =
   (schema: UTurnSchemaWithDefaults) => (boxToCheck: BoundingBox) =>
     areBoundingBoxesOverlapping(getUTurnBoundingBox(schema)(), boxToCheck);
