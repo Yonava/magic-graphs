@@ -11,6 +11,8 @@ import { useCoordinates } from './coordinates/index.ts';
 import { createCanvasLifecycleEventRegistry } from './events.ts';
 import type { DrawContent, UseCanvas } from './types.ts';
 
+const REPAINT_FPS = 60;
+
 /*
   the slack matters. a 60hz display does not hand out frames exactly 16.667ms
   apart, so comparing against the period on the nose rejects the frame that
@@ -84,7 +86,6 @@ export const useCanvas: UseCanvas = () => {
 
   onMounted(() => {
     canvasRect = measureAndSizeCanvas(canvas.value);
-    initCanvasWidthHeight(canvas.value);
     ctx = getCtx(canvas);
     scheduleRepaint();
     lifecycleEvents.emit('onMounted');
@@ -96,7 +97,6 @@ export const useCanvas: UseCanvas = () => {
 
   watch([canvasBoxSize.width, canvasBoxSize.height], () => {
     canvasRect = measureAndSizeCanvas(canvas.value);
-    initCanvasWidthHeight(canvas.value);
     ctx = getCtx(canvas);
   });
 
