@@ -7,7 +7,6 @@
 
   const graph = useProvidedGraph();
   const { useShortcut } = graph.magic.shortcuts;
-
   useShortcut({
     key: 'escape',
     callback: graph.magic.simulation.stop,

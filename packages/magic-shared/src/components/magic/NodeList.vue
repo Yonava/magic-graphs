@@ -164,7 +164,7 @@
             name="queue"
             tag="div"
             appear
-            class="relative flex flex-col-reverse items-center gap-2 h-full w-full overflow-y-auto"
+            class="queue-column relative flex flex-col-reverse items-center gap-2 h-full w-full overflow-y-auto"
             :class="[
               exitDirection === 'down' ? 'exit-down' : 'exit-up',
               enterDirection === 'down' ? 'enter-down' : 'enter-up',
@@ -223,6 +223,26 @@
   .panel-appear-from,
   .panel-leave-to {
     transform: translateX(calc(var(--panel-exit) * (100% + 1.5rem)));
+  }
+
+  /*
+    a node on its way in or out is outside the column for most of the trip, and
+    the column counts that as content it could scroll to. so every arrival and
+    departure flashed a scrollbar, and since a scrolling axis forces the other
+    one to match, the horizontal one came along with it
+
+    the travel is real and cannot be given up, so the scrollbars go instead. the
+    column still scrolls for a queue longer than the box, just without the
+    chrome, and the horizontal axis is pinned shut since nothing here ever needs
+    to scroll sideways
+  */
+  .queue-column {
+    overflow-x: hidden;
+    scrollbar-width: none;
+  }
+
+  .queue-column::-webkit-scrollbar {
+    display: none;
   }
 
   .queue-item {
