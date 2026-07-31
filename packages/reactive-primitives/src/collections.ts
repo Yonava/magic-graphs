@@ -98,6 +98,10 @@ export class ReactiveMap<K, V> extends Map<K, V> {
   }
 }
 
+// TODO before stable: the ES2025 set methods (union, intersection, difference,
+// symmetricDifference, isSubsetOf, isSupersetOf, isDisjointFrom) read through
+// internal slots and are not tracked here. unreachable while lib is pinned to
+// ES2023, silent staleness the moment it is bumped.
 export class ReactiveSet<T> extends Set<T> {
   #version = createVersion();
 
