@@ -416,6 +416,12 @@ importers:
         specifier: ^4.20.0
         version: 4.23.1
 
+  packages/reactive-primitives:
+    dependencies:
+      alien-signals:
+        specifier: 3.2.1
+        version: 3.2.1
+
 packages:
 
   '@adobe/css-tools@4.5.0':
