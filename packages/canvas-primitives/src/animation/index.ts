@@ -324,16 +324,30 @@ export const createAnimatedShapes = () => {
   // equal to, not less than, every group's new end) is claimed by exactly
   // one group instead of falling through every group's exclusive range
   const ghostsPlacedThisFrame = new Set<SchemaId>();
+  /*
+    built once a frame rather than once per group. every node is its own
+    priority group, so asking per group meant rebuilding the same list N times
+    to draw N nodes, and it is empty almost always. the shapes it hands back
+    resolve their animated values when read, not when built, so one build
+    serves the whole frame without freezing anything mid animation
+  */
+  let ghostsThisFrame: ReturnType<typeof getGhostShapes> = [];
+
   const beginFrame = () => {
     shapesDrawnThisFrame = 0;
     ghostsPlacedThisFrame.clear();
+    ghostsThisFrame = getGhostShapes();
   };
 
   const drawGroup = (ctx: CanvasRenderingContext2D, groupShapes: Shape[]) => {
     const groupStart = shapesDrawnThisFrame;
     const groupEnd = groupStart + groupShapes.length;
 
-    const ghostsInGroup = getGhostShapes().filter(
+    shapesDrawnThisFrame = groupEnd;
+
+    if (ghostsThisFrame.length === 0) return drawGroupPure(ctx, groupShapes);
+
+    const ghostsInGroup = ghostsThisFrame.filter(
       ({ id, orderIndex }) =>
         !ghostsPlacedThisFrame.has(id) &&
         orderIndex >= groupStart &&
@@ -350,8 +364,6 @@ export const createAnimatedShapes = () => {
       );
     }
 
-    shapesDrawnThisFrame = groupEnd;
-
     drawGroupPure(ctx, shapesWithGhosts);
   };
 
@@ -364,7 +376,7 @@ export const createAnimatedShapes = () => {
    * calls, to draw any ghosts that were never claimed by one.
    */
   const endFrame = (ctx: CanvasRenderingContext2D) => {
-    const unclaimedGhosts = getGhostShapes().filter(
+    const unclaimedGhosts = ghostsThisFrame.filter(
       ({ id }) => !ghostsPlacedThisFrame.has(id),
     );
     if (unclaimedGhosts.length === 0) return;
