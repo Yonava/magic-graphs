@@ -37,8 +37,14 @@ jobs:
       PR_NUMBER: ${{ github.event.issue.number || inputs.pr }}
       GH_TOKEN: ${{ github.token }}
       # the harness measures whatever is on this port, which is a different
-      # checkout for each half of the comparison
+      # checkout for each half of the comparison. pinned rather than left to
+      # nuxt, which quietly moves to the next free port when this one is busy
+      # and would leave the harness measuring nothing at all
+      PORT: 3000
       PERF_URL: http://localhost:3000
+      # the second server starts where the first one just stopped, and nuxt
+      # holds a dev lock that outlives the process by a moment
+      NUXT_IGNORE_LOCK: 1
 
     steps:
       - name: acknowledge the ping
@@ -80,12 +86,13 @@ jobs:
       - name: measure the pull request
         run: |
           pnpm dev > /tmp/head-server.log 2>&1 &
-          npx wait-on "$PERF_URL" --timeout 120000
+          .github/scripts/wait-for-server.sh "$PERF_URL"
           pnpm --filter @graph/perf-harness run measure \
             --url "$PERF_URL" \
             --out "$GITHUB_WORKSPACE/head.json" \
             --commit "$(git rev-parse HEAD)"
-          pkill -f "nuxt dev" || true
+          pkill -f "nuxt.mjs dev" || true
+          sleep 2
 
       # a worktree rather than a checkout, because the harness itself may not
       # exist on the base commit. this keeps the driver from the pull request
@@ -100,14 +107,14 @@ jobs:
           cd /tmp/perf-base
           pnpm install --frozen-lockfile
           pnpm dev > /tmp/base-server.log 2>&1 &
-          npx wait-on "$PERF_URL" --timeout 120000
+          "$GITHUB_WORKSPACE/.github/scripts/wait-for-server.sh" "$PERF_URL"
 
           cd "$GITHUB_WORKSPACE"
           pnpm --filter @graph/perf-harness run measure \
             --url "$PERF_URL" \
             --out "$GITHUB_WORKSPACE/base.json" \
             --commit "$MERGE_BASE"
-          pkill -f "nuxt dev" || true
+          pkill -f "nuxt.mjs dev" || true
         continue-on-error: true
 
       - name: render the report
