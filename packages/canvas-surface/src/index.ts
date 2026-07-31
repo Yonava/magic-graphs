@@ -54,10 +54,12 @@ export const useCanvas: UseCanvas = () => {
   const pattern = useBackgroundPattern(camera.state, drawBackgroundPattern);
 
   const repaintCanvas = () => {
+    lifecycleEvents.emit('onBeforeRepaint');
     const ctx = getCtx(canvas);
     camera.transformAndClear(ctx);
     pattern.draw(ctx);
     drawContent.value(ctx);
+    lifecycleEvents.emit('onAfterRepaint');
   };
 
   return {
