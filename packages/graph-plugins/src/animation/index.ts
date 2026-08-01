@@ -2,7 +2,7 @@ import { getCtx } from '@core/utils/ctx/index';
 
 import { AnimationPlugin } from './types.ts';
 
-export const animation: AnimationPlugin = ({ controls, ...stuff }) => {
+export const animation: AnimationPlugin = ({ controls, actions }) => {
   const autoAnimate = () =>
     controls.canvas.shapes.autoAnimate.captureFrame(() =>
       controls.canvas.aggregator.draw(
@@ -12,62 +12,61 @@ export const animation: AnimationPlugin = ({ controls, ...stuff }) => {
 
   return {
     name: 'animation',
-    ...stuff,
     actions: {
-      ...stuff.actions,
+      ...actions,
       addNode: (options) => {
         if (options.animate) {
           const finalize = autoAnimate();
-          const node = stuff.actions.addNode(options);
+          const node = actions.addNode(options);
           finalize();
           return node;
         }
-        return stuff.actions.addNode(options);
+        return actions.addNode(options);
       },
       addEdge: (options) => {
         if (options.animate) {
           const finalize = autoAnimate();
-          const edge = stuff.actions.addEdge(options);
+          const edge = actions.addEdge(options);
           finalize();
           return edge;
         }
-        return stuff.actions.addEdge(options);
+        return actions.addEdge(options);
       },
       removeNode: (options) => {
         if (options.animate) {
           const finalize = autoAnimate();
-          const result = stuff.actions.removeNode(options);
+          const result = actions.removeNode(options);
           finalize();
           return result;
         }
-        return stuff.actions.removeNode(options);
+        return actions.removeNode(options);
       },
       removeEdge: (options) => {
         if (options.animate) {
           const finalize = autoAnimate();
-          const result = stuff.actions.removeEdge(options);
+          const result = actions.removeEdge(options);
           finalize();
           return result;
         }
-        return stuff.actions.removeEdge(options);
+        return actions.removeEdge(options);
       },
       addElements: (options, shared) => {
         if (shared.animate) {
           const finalize = autoAnimate();
-          const result = stuff.actions.addElements(options, shared);
+          const result = actions.addElements(options, shared);
           finalize();
           return result;
         }
-        return stuff.actions.addElements(options, shared);
+        return actions.addElements(options, shared);
       },
       removeElements: (options, shared) => {
         if (shared.animate) {
           const finalize = autoAnimate();
-          const result = stuff.actions.removeElements(options, shared);
+          const result = actions.removeElements(options, shared);
           finalize();
           return result;
         }
-        return stuff.actions.removeElements(options, shared);
+        return actions.removeElements(options, shared);
       },
     },
     controls: {

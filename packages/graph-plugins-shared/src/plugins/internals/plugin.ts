@@ -2,14 +2,14 @@ import { CoreActions } from '@graph/core/actions/types';
 import { ConsumerEventsHub } from '@graph/core/consumer-events';
 import { CoreGetters } from '@graph/core/getters';
 import { CoreControls } from '@graph/core/types';
-import { GraphActions, MergeActions } from '@graph/primitives/actions/types';
-import { GraphGetters, MergeGetters } from '@graph/primitives/getters/types';
+import { GraphActions } from '@graph/primitives/actions/types';
+import { GraphGetters } from '@graph/primitives/getters/types';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
 
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';
-import { TransitField } from './transit.ts';
+import { ActionsField, GettersField, TransitField } from './output-fields.ts';
 
 export type GraphPlugin<PluginSchema extends PluginSchemaInput> =
   ResolvedGraphPlugin<ResolvePluginSchema<PluginSchema>>;
@@ -33,10 +33,10 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
 type PluginOutput<PluginSchema extends LoosePluginSchema> = {
   name: PluginSchema['name'];
   controls: PluginSchema['controls'];
-  getters: GraphGetters<MergeGetters<[PluginSchema['getters'], CoreGetters]>>;
-  actions: GraphActions<MergeActions<[PluginSchema['actions'], CoreActions]>>;
   onAfterInit?: () => void;
-} & TransitField<PluginSchema['transit']>;
+} & GettersField<PluginSchema['getters']> &
+  ActionsField<PluginSchema['actions']> &
+  TransitField<PluginSchema['transit']>;
 
 type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
   options: PluginInput<PluginSchema>,

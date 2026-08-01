@@ -20,7 +20,7 @@ import { validateNodeIds } from './validateNodeIds.ts';
 
 export const nodeDrag =
   (options: Partial<NodeDragOptions>): NodeDragPlugin =>
-  ({ controls, actions, getters }) => {
+  ({ controls, getters }) => {
     const optionsWithDefaults = {
       ...DEFAULT_NODE_DRAG_OPTIONS,
       ...options,
@@ -170,8 +170,6 @@ export const nodeDrag =
 
     return {
       name: 'nodeDrag',
-      getters,
-      actions,
       controls: {
         events: nodeDragEventHub,
         lifecycle: {

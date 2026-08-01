@@ -26,7 +26,7 @@ const sameElements = (previous: CanvasElement[], next: CanvasElement[]) => {
 
 export const canvas =
   (magicCanvas: CanvasProps): CanvasPlugin =>
-  ({ controls, actions, getters }) => {
+  ({ controls, getters }) => {
     const canvasEventRegistry = createCanvasEventRegistry();
     const canvasEvents = createEventHub(canvasEventRegistry);
 
@@ -196,7 +196,6 @@ export const canvas =
 
     return {
       name: 'canvas',
-      getters,
       controls: {
         aggregator,
         shapes,
@@ -233,7 +232,6 @@ export const canvas =
         },
         validate: (data) => true,
       },
-      actions,
       onAfterInit: () => {
         const weightLayer = theme.createLayer(
           CANVAS_PLUGIN_ID + '/theme/edge-weight',

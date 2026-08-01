@@ -31,16 +31,8 @@ export type CharacteristicsPlugin = GraphPlugin<{
 
 export type Controls = PluginOptions<CharacteristicsPlugin>['controls'];
 
-export const characteristics: CharacteristicsPlugin = ({
-  controls,
-  events,
-  actions,
-  getters,
-}) => ({
+export const characteristics: CharacteristicsPlugin = ({ controls }) => ({
   name: 'characteristics',
-  actions,
-  events,
-  getters,
   controls: {
     isComplete: computed(() => isComplete(controls)),
     getCycles: computed(() =>

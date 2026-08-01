@@ -13,7 +13,7 @@ import { InteractivePlugin } from './types.ts';
  */
 export const interactive =
   (options: Partial<InteractiveOptions>): InteractivePlugin =>
-  ({ controls, actions, finalActions, getters }) => {
+  ({ controls, finalActions, getters }) => {
     const optionsWithDefaults = {
       ...DEFAULT_INTERACTIVE_OPTIONS,
       ...options,
@@ -180,8 +180,6 @@ export const interactive =
 
     return {
       name: 'interactive',
-      actions,
-      getters,
       controls: {
         lifecycle: {
           enable,

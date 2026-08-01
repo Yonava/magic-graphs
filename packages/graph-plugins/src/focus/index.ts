@@ -177,7 +177,6 @@ export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
   return {
     name: 'focus',
     actions: extendedActions,
-    getters,
     controls: {
       set: setFocus,
       clear: clearFocus,

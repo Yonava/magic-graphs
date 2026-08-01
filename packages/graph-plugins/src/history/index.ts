@@ -13,7 +13,7 @@ import { HistoryPlugin } from './types.ts';
  * the state it owns, so a snapshot preserves all of it without history having to know
  * what any of it is.
  */
-export const history: HistoryPlugin = ({ actions, getters, finalTransit }) => {
+export const history: HistoryPlugin = ({ finalTransit }) => {
   const historyRegistry = createHistoryEventRegistry();
   const historyEventHub = createEventHub(historyRegistry);
 
@@ -127,8 +127,6 @@ export const history: HistoryPlugin = ({ actions, getters, finalTransit }) => {
 
   return {
     name: 'history',
-    getters,
-    actions,
     controls: {
       captureSnapshot,
       undo,
