@@ -6,7 +6,6 @@
     "rewriteRelativeImportExtensions": false
   },
   "references": [
-    { "path": "../reactive-primitives" },
     { "path": "../core-components" },
     { "path": "../core-utils" },
     { "path": "../graph-core" },

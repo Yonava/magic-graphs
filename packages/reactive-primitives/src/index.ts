@@ -1,6 +1,6 @@
 import {
+  effect as alienEffect,
   computed,
-  effect,
   endBatch,
   setActiveSub,
   signal,
@@ -22,7 +22,16 @@ export type Signal<T> = {
 /** a derived value. recomputes lazily on read, only once its sources change. */
 export type Computed<T> = () => T;
 
-export { computed, effect, signal };
+export { computed, signal };
+
+/**
+ * runs `fn` now and again whenever something it read changes. returns a stop function.
+ *
+ * whatever `fn` returns is taken as a cleanup and called before the next run, so
+ * `effect(() => save())` throws `cleanup is not a function` the second time it runs.
+ * use a block body unless the return really is a cleanup.
+ */
+export const effect = alienEffect;
 
 /** reads inside `fn` are not recorded as dependencies of the surrounding scope. */
 export const untracked = <T>(fn: () => T): T => {

@@ -396,9 +396,6 @@ importers:
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
-      '@reactive/primitives':
-        specifier: workspace:*
-        version: link:../reactive-primitives
       '@vueuse/core':
         specifier: 'catalog:'
         version: 13.9.0(vue@3.5.40(typescript@6.0.3))
