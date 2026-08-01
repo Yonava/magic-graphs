@@ -304,14 +304,6 @@ export const anchors: AnchorsPlugin = ({
     else if (!parentNode) throw new Error('active anchor without parent node');
     anchorsEventHub.emit('onNodeAnchorDrop', parentNode, draggedAnchor);
     clearAnchorState();
-
-    // when we clear the node anchors, we must ensure that the
-    // aggregator updates so that it knows the node anchors
-    // and edge preview are no longer on the canvas
-    controls.canvas.forceUpdateGraphUnderCursor();
-
-    // in case anchor was dropped a different node, set that new node as the parent node
-    checkForParentNodeUpdate();
   };
 
   const insertAnchorsIntoAggregator = (aggregator: CanvasElement[]) => {

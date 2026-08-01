@@ -7,17 +7,11 @@ import { CanvasEventMap, CanvasGraphMouseEvent } from './events.ts';
 export const emitMouseEvents: (
   graphMouseEvent: (ev: MouseEvent) => CanvasGraphMouseEvent,
   emit: EventHub<CanvasEventMap>['emit'],
-  updateGraphAtMousePosition: () => void,
-) => Partial<MouseEventMap> = (
-  graphMouseEvent,
-  emit,
-  updateGraphAtMousePosition,
-) => ({
+) => Partial<MouseEventMap> = (graphMouseEvent, emit) => ({
   click: (ev: MouseEvent) => {
     emit('onClick', graphMouseEvent(ev));
   },
   mousemove: (ev: MouseEvent) => {
-    updateGraphAtMousePosition();
     emit('onMouseMove', graphMouseEvent(ev));
   },
   mousedown: (ev: MouseEvent) => {
