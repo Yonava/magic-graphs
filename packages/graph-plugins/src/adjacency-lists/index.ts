@@ -8,8 +8,9 @@ import {
 } from './types.ts';
 
 const getDirectedGraphAdjacencyList = (graph: Graph) => {
-  return graph.nodes.reduce<AdjacencyList>((acc, node) => {
-    acc[node.id] = graph.edges
+  return graph.nodes().reduce<AdjacencyList>((acc, node) => {
+    acc[node.id] = graph
+      .edges()
       .filter((edge) => edge.source === node.id)
       .map((edge) => edge.target);
     return acc;
@@ -17,8 +18,9 @@ const getDirectedGraphAdjacencyList = (graph: Graph) => {
 };
 
 const getUndirectedGraphAdjacencyList = (graph: Graph) => {
-  return graph.nodes.reduce<AdjacencyList>((acc, node) => {
-    acc[node.id] = graph.edges
+  return graph.nodes().reduce<AdjacencyList>((acc, node) => {
+    acc[node.id] = graph
+      .edges()
       .filter((edge) => edge.source === node.id || edge.target === node.id)
       .map((edge) => {
         return edge.source === node.id ? edge.target : edge.source;
@@ -79,19 +81,16 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
   actions,
   getters,
 }) => {
-  // built per evaluation rather than hoisted, because the spread reads controls.nodes
-  // and controls.edges. done inside a computed that is a tracked read, done once at
-  // setup it is a snapshot that never updates again
-  const graph = (): Graph => ({
+  const graph: Graph = {
     ...controls,
     ...getters,
     events,
-  });
+  };
 
-  const standard = computed(() => getAdjacencyList(graph()));
-  const weighted = computed(() => getWeightedAdjacencyList(graph()));
-  const directed = computed(() => getDirectedGraphAdjacencyList(graph()));
-  const undirected = computed(() => getUndirectedGraphAdjacencyList(graph()));
+  const standard = computed(() => getAdjacencyList(graph));
+  const weighted = computed(() => getWeightedAdjacencyList(graph));
+  const directed = computed(() => getDirectedGraphAdjacencyList(graph));
+  const undirected = computed(() => getUndirectedGraphAdjacencyList(graph));
 
   return {
     name: 'adjacencyLists',

@@ -15,8 +15,8 @@ import {
 export type CreateCoreActionOptions = {
   commitTransaction: CommitTransaction;
   graph: {
-    nodes: CoreNode[];
-    edges: CoreEdge[];
+    nodes: () => CoreNode[];
+    edges: () => CoreEdge[];
     positions: NodePositionStoreControls;
     weights: EdgeWeightStoreControls;
   };

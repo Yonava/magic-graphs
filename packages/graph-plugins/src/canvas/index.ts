@@ -54,10 +54,12 @@ export const canvas =
     // collides with the existing distribution. max+1 gives permanent promotion
     // without touching other nodes and works fine since node z-scored get normalized for rendering anyway.
     const setHoveredNode = (nodeId: string) => {
-      const maxZ = controls.nodes.reduce(
-        (max, n) => Math.max(max, controls.positions.get(n.id).z),
-        -Infinity,
-      );
+      const maxZ = controls
+        .nodes()
+        .reduce(
+          (max, n) => Math.max(max, controls.positions.get(n.id).z),
+          -Infinity,
+        );
       controls.positions.set({ nodeId, update: { z: maxZ + 1 } });
     };
 

@@ -31,7 +31,8 @@ export const nodeLabel: NodeLabelPlugin = ({
 
   const generateLabel = createLabelGenerator({
     getLabels: () =>
-      controls.nodes
+      controls
+        .nodes()
         .map((n) => getNodeLabel(n.id))
         .filter((label): label is string => label !== undefined),
     sequence: UPPERCASE_ALPHABET,

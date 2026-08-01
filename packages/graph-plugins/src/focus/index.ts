@@ -96,8 +96,8 @@ export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
   };
 
   const focusAll = () => {
-    const nodeIds = controls.nodes.map((node) => node.id);
-    const edgeIds = controls.edges.map((edge) => edge.id);
+    const nodeIds = controls.nodes().map((node) => node.id);
+    const edgeIds = controls.edges().map((edge) => edge.id);
     setFocus([...nodeIds, ...edgeIds]);
   };
 
@@ -189,8 +189,8 @@ export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
       add: addToFocus,
       all: focusAll,
       isFocused,
-      focusedNodes: () => controls.nodes.filter((node) => isFocused(node.id)),
-      focusedEdges: () => controls.edges.filter((edge) => isFocused(edge.id)),
+      focusedNodes: () => controls.nodes().filter((node) => isFocused(node.id)),
+      focusedEdges: () => controls.edges().filter((edge) => isFocused(edge.id)),
       events: focusEventHub,
       theme: {
         ...theme,

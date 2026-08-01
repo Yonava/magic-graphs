@@ -14,7 +14,10 @@ const options = (
   } = {},
 ): TransactionOptions => {
   return {
-    getGraph: () => ({ nodes: state.nodes ?? [], edges: state.edges ?? [] }),
+    graph: {
+      nodes: () => state.nodes ?? [],
+      edges: () => state.edges ?? [],
+    },
     onTransactionSucceeded: state.success ?? (() => {}),
   };
 };

@@ -23,24 +23,23 @@ export const core = (options: Partial<CoreOptions>) => {
   const eventRegistry = createCoreEventRegistry();
   const coreEventHub = createEventHub(eventRegistry);
 
-  // every read of these goes through the signal call, so anything deriving from
-  // nodes/edges tracks them without being told to. exposed to consumers as the
-  // `nodes`/`edges` getters on coreControls below, which keeps the array shaped
-  // read surface while preserving that tracking
   const nodes = signal<CoreNode[]>([]);
   const edges = signal<CoreEdge[]>([]);
+
+  const readNodes = () => nodes();
+  const readEdges = () => edges();
 
   const nodePositionStore = createNodePositionStore(coreEventHub);
   const edgeWeightStore = createEdgeWeightStore(coreEventHub, metadata);
 
   const getNode = (id: CoreNode['id']) =>
     nullThrows(
-      nodes().find((n) => n.id === id),
+      readNodes().find((n) => n.id === id),
       `node with id ${id} not found`,
     );
   const getEdge = (id: CoreEdge['id']) => {
     const edge = nullThrows(
-      edges().find((e) => e.id === id),
+      readEdges().find((e) => e.id === id),
       `edge with id ${id} not found`,
     );
     return { ...edge, weight: edgeWeightStore.get(id) };
@@ -58,42 +57,29 @@ export const core = (options: Partial<CoreOptions>) => {
   });
 
   const commitTransaction = createCommitTransaction({
-    getGraph: () => ({ nodes: nodes(), edges: edges() }),
+    graph: { nodes: readNodes, edges: readEdges },
     onTransactionSucceeded,
   });
 
-  // getters rather than plain fields on every object handed downstream. a field
-  // would capture whatever array was current at construction and never see a
-  // replacement, which is the partial tracking failure this refactor exists to avoid
   const coreActions = createCoreActions({
     commitTransaction,
     graph: {
-      get nodes() {
-        return nodes();
-      },
-      get edges() {
-        return edges();
-      },
+      nodes: readNodes,
+      edges: readEdges,
       positions: nodePositionStore,
       weights: edgeWeightStore,
     },
   });
 
   const coreControls: CoreControls = {
-    get nodes() {
-      return nodes();
-    },
-    get edges() {
-      return edges();
-    },
-    isNode: (id: string) => nodes().some((n) => n.id === id),
-    isEdge: (id: string) => edges().some((e) => e.id === id),
-    nodeIdToIndex: (id: string) => nodes().findIndex((n) => n.id === id),
-    edgeIdToIndex: (id: string) => edges().findIndex((n) => n.id === id),
+    nodes: readNodes,
+    edges: readEdges,
+    isNode: (id: string) => readNodes().some((n) => n.id === id),
+    isEdge: (id: string) => readEdges().some((e) => e.id === id),
+    nodeIdToIndex: (id: string) => readNodes().findIndex((n) => n.id === id),
+    edgeIdToIndex: (id: string) => readEdges().findIndex((n) => n.id === id),
     helpers: createHelpers({
-      get edges() {
-        return edges();
-      },
+      edges: readEdges,
       getEdge,
       getNode,
       metadata,

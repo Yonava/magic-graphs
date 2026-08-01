@@ -21,11 +21,15 @@ export const setupTransactionSucceeded = ({
     let nextNodes = nodes();
     let nextEdges = edges();
 
-    if (payload.removedNodeIds.length || payload.removedEdgeIds.length) {
+    // guarded separately: filter always returns a new array, so filtering both under
+    // one combined check would make an edge only removal notify every node dependent
+    if (payload.removedNodeIds.length) {
       const removedNodeIds = new Set(payload.removedNodeIds);
-      const removedEdgeIds = new Set(payload.removedEdgeIds);
-
       nextNodes = nextNodes.filter((n) => !removedNodeIds.has(n.id));
+    }
+
+    if (payload.removedEdgeIds.length) {
+      const removedEdgeIds = new Set(payload.removedEdgeIds);
       nextEdges = nextEdges.filter((e) => !removedEdgeIds.has(e.id));
     }
 

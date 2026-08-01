@@ -2,11 +2,15 @@ import { NodePositionStoreControls } from '@graph/core/positions/types';
 import { CoreNode } from '@graph/primitives/types';
 
 export type NodeZScoreOptions = {
-  nodes: readonly CoreNode[];
+  nodes: () => readonly CoreNode[];
   positions: NodePositionStoreControls;
 };
 
-export const getNodeZScores = ({ nodes, positions }: NodeZScoreOptions) => {
+export const getNodeZScores = ({
+  nodes: readNodes,
+  positions,
+}: NodeZScoreOptions) => {
+  const nodes = readNodes();
   const zScores = new Map<string, number>();
   if (nodes.length === 0) return zScores;
 

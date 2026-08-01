@@ -91,15 +91,19 @@ export const interactive =
       }
 
       if (!optionsWithDefaults.allowRepeatConnections) {
-        const edgeBetweenToAndFrom = controls.edges.find(
-          (edge) =>
-            edge.source === sourceNode.id && edge.target === targetNode.id,
-        );
+        const edgeBetweenToAndFrom = controls
+          .edges()
+          .find(
+            (edge) =>
+              edge.source === sourceNode.id && edge.target === targetNode.id,
+          );
 
-        const edgeBetweenFromAndTo = controls.edges.find(
-          (edge) =>
-            edge.source === targetNode.id && edge.target === sourceNode.id,
-        );
+        const edgeBetweenFromAndTo = controls
+          .edges()
+          .find(
+            (edge) =>
+              edge.source === targetNode.id && edge.target === sourceNode.id,
+          );
 
         const violatesRule = edgeBetweenToAndFrom || edgeBetweenFromAndTo;
         if (violatesRule) return false;

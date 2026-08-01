@@ -61,8 +61,8 @@ export const createGraphTransit = <PayloadData>({
         .join(', ');
       throw new Error(`Data decode validation failed for: ${namesOfFailures}`);
     }
-    const oldNodeIds = coreGraph.controls.nodes.map((n) => n.id);
-    const oldEdgeIds = coreGraph.controls.edges.map((e) => e.id);
+    const oldNodeIds = coreGraph.controls.nodes().map((n) => n.id);
+    const oldEdgeIds = coreGraph.controls.edges().map((e) => e.id);
     for (const { pluginName, transit } of pluginTransitControls) {
       transit.decode(data[pluginName]);
     }
