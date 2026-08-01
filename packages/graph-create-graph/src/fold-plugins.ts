@@ -99,7 +99,11 @@ export const foldPlugins = (
       finalTransit,
     });
 
-    controls = { ...controls, [pluginResult.name]: pluginResult.controls };
+    // a plugin only appears under its own namespace if it declared controls, otherwise
+    // the key would sit there holding undefined and read as a plugin that shipped nothing
+    if (pluginResult.controls) {
+      controls = { ...controls, [pluginResult.name]: pluginResult.controls };
+    }
     actions = { ...actions, ...pluginResult.actions };
     getters = { ...getters, ...pluginResult.getters };
 

@@ -13,19 +13,27 @@ import {
 import { TransitControls } from '@graph/primitives/transit/types';
 import { IsNever } from 'ts-essentials';
 
-// a plugin that declares no getters, actions or transit in its schema has nothing of its
-// own to hand back, so the field drops off its output rather than making it pass through
-// what it was handed
+// a plugin that declares no controls, getters, actions or transit in its schema has
+// nothing of its own to hand back, so the field drops off its output rather than making
+// it pass through what it was handed. undeclared schema fields resolve to never (see
+// ./defaults.ts), which is what each of these keys off
+
+export type ControlsField<Controls> =
+  IsNever<Controls> extends true
+    ? {}
+    : {
+        controls: Controls;
+      };
 
 export type GettersField<Getters extends Partial<BaseGetters>> =
-  keyof Getters extends never
+  IsNever<Getters> extends true
     ? {}
     : {
         getters: GraphGetters<MergeGetters<[Getters, CoreGetters]>>;
       };
 
 export type ActionsField<Actions extends PartialBaseActions> =
-  keyof Actions extends never
+  IsNever<Actions> extends true
     ? {}
     : {
         actions: GraphActions<MergeActions<[Actions, CoreActions]>>;

@@ -4,10 +4,12 @@ import { Prettify } from 'ts-essentials';
 import { LoosePluginSchema } from './loose.ts';
 
 export type PluginSchemaDefaults = {
-  controls: {};
+  // never, not {}: an undeclared controls, getters, actions or transit field drops off
+  // the plugin's output entirely (see ./output-fields.ts)
+  controls: never;
   events: {};
-  getters: {};
-  actions: {};
+  getters: never;
+  actions: never;
   transit: never;
   dependsOn: [];
   optionalDependsOn: [];

@@ -37,8 +37,8 @@ type LoosePluginInput = {
 
 type LoosePluginOutput = {
   name: LooseGraphPlugin['name'];
-  controls: LoosePluginSchema['controls'];
   // absent unless the plugin declares them in its schema (see ./output-fields.ts)
+  controls?: LoosePluginSchema['controls'];
   actions?: GraphActions<any>;
   getters?: GraphGetters<any>;
   onAfterInit?: () => void;

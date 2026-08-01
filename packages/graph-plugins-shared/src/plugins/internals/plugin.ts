@@ -9,7 +9,12 @@ import { LooseGraphTransit } from '@graph/primitives/transit/types';
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';
-import { ActionsField, GettersField, TransitField } from './output-fields.ts';
+import {
+  ActionsField,
+  ControlsField,
+  GettersField,
+  TransitField,
+} from './output-fields.ts';
 
 export type GraphPlugin<PluginSchema extends PluginSchemaInput> =
   ResolvedGraphPlugin<ResolvePluginSchema<PluginSchema>>;
@@ -32,9 +37,9 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
 
 type PluginOutput<PluginSchema extends LoosePluginSchema> = {
   name: PluginSchema['name'];
-  controls: PluginSchema['controls'];
   onAfterInit?: () => void;
-} & GettersField<PluginSchema['getters']> &
+} & ControlsField<PluginSchema['controls']> &
+  GettersField<PluginSchema['getters']> &
   ActionsField<PluginSchema['actions']> &
   TransitField<PluginSchema['transit']>;
 

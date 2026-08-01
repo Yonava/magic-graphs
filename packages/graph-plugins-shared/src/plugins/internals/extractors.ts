@@ -10,6 +10,14 @@ import { LooseGraphPlugin } from './loose.ts';
 
 type RemoveArray<T> = T extends (infer F)[] ? F : T;
 
+// core is folded in here rather than taken from the plugins, since a plugin declaring no
+// controls, actions or getters of its own leaves that field off its output entirely
+type MergeIntoCore<Core, Contributions> =
+  // UnionToIntersection resolves an empty union to never, which would wipe out core
+  IsNever<Contributions> extends true
+    ? Core
+    : Core & UnionToIntersection<Contributions>;
+
 type ResolveControls<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
   ? ReturnType<Plugin> extends {
       name: infer Name extends string;
@@ -30,18 +38,7 @@ type ResolveTransitPayload<Plugin extends LooseGraphPlugin> =
     : never;
 
 export type ExtractControls<TPlugins extends LooseGraphPlugin[]> =
-  CoreControls &
-    (TPlugins extends never[]
-      ? {}
-      : UnionToIntersection<ResolveControls<RemoveArray<NoInfer<TPlugins>>>>);
-
-// core is folded in here rather than taken from the plugins, since a plugin declaring no
-// actions or getters of its own leaves that field off its output entirely
-type MergeIntoCore<Core, Contributions> =
-  // UnionToIntersection resolves an empty union to never, which would wipe out core
-  IsNever<Contributions> extends true
-    ? Core
-    : Core & UnionToIntersection<Contributions>;
+  MergeIntoCore<CoreControls, ResolveControls<RemoveArray<NoInfer<TPlugins>>>>;
 
 type ActionsFromPlugin<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
   ? ReturnType<Plugin> extends { actions: GraphActions<infer Actions> }

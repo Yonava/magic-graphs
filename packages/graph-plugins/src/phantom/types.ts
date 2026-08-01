@@ -6,6 +6,6 @@ type PhantomControls = {};
 
 export type PhantomPlugin = GraphPlugin<{
   name: 'phantom';
-  controls: PhantomControls;
+  // controls: PhantomControls;
   dependsOn: [CanvasPlugin];
 }>;
