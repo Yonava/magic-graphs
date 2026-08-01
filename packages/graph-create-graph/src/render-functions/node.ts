@@ -4,14 +4,16 @@ import { Coordinate } from '@canvas/primitives/types/utility';
 import { CompoundTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import { CoreNode } from '@graph/primitives/types';
 
-type RendererProps = {
+export type NodeRenderFunctionProps = {
   resolver: CompoundTokenResolver;
   node: CoreNode;
   position: Coordinate;
   shapes: AnimatedShapeFactories;
 };
 
-type NodeRenderer = (props: RendererProps) => Shape | undefined;
+export type NodeRenderFunction = (
+  props: NodeRenderFunctionProps,
+) => Shape | undefined;
 
 export const resolveNodeComputedTokens =
   (resolver: CompoundTokenResolver) => (node: CoreNode) => ({
@@ -30,7 +32,7 @@ export const resolveNodeComputedTokens =
     },
   });
 
-export const nodeRenderer: NodeRenderer = ({
+export const nodeRenderer: NodeRenderFunction = ({
   resolver,
   node,
   shapes,

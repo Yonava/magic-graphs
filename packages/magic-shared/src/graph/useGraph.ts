@@ -15,6 +15,7 @@ import { marquee } from '@graph/plugins/marquee/index';
 import { nodeDrag } from '@graph/plugins/node-drag/index';
 import { NodeDragOptions } from '@graph/plugins/node-drag/options';
 import { nodeLabel } from '@graph/plugins/node-label/index';
+import { phantom } from '@graph/plugins/phantom/index';
 import { transitionMatrix } from '@graph/plugins/transition-matrix/index';
 import { dark } from '@graph/theme-presets/dark/index';
 import { light } from '@graph/theme-presets/light/index';
@@ -50,6 +51,7 @@ const graphPlugins = (
   characteristics,
   interactive(options.interactive ?? {}),
   animation,
+  phantom,
 ];
 
 const createGraphWithPlugins = (
