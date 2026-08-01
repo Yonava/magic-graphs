@@ -162,19 +162,10 @@ export const canvas =
       };
     };
 
-    // the color only moves on a theme switch, so the write is skipped rather
-    // than repeated at every frame
-    let writtenBackgroundColor: string | undefined;
-
     canvasEvents.subscribe('onDraw', () => {
       const canvas = magicCanvas.canvas.value;
       if (!canvas) return;
-
-      const backgroundColor = theme._resolveToken('canvas.color');
-      if (writtenBackgroundColor === backgroundColor) return;
-
-      canvas.style.backgroundColor = backgroundColor;
-      writtenBackgroundColor = backgroundColor;
+      canvas.style.backgroundColor = theme._resolveToken('canvas.color');
     });
 
     let getNodePriority = createNodeCanvasElementPriorityGetter({
