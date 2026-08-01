@@ -1,3 +1,5 @@
+import { computed } from '@reactive/primitives/index';
+
 import {
   AdjacencyList,
   AdjacencyListsPlugin,
@@ -77,37 +79,29 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
   actions,
   getters,
 }) => {
-  let standard: AdjacencyList = {};
-  let weighted: WeightedAdjacencyList = {};
-  let directed: AdjacencyList = {};
-  let undirected: AdjacencyList = {};
+  // built per evaluation rather than hoisted, because the spread reads controls.nodes
+  // and controls.edges. done inside a computed that is a tracked read, done once at
+  // setup it is a snapshot that never updates again
+  const graph = (): Graph => ({
+    ...controls,
+    ...getters,
+    events,
+  });
 
-  const update = () => {
-    const graph: Graph = {
-      ...controls,
-      ...getters,
-      events,
-    };
-    standard = getAdjacencyList(graph);
-    weighted = getWeightedAdjacencyList(graph);
-
-    directed = getDirectedGraphAdjacencyList(graph);
-    undirected = getUndirectedGraphAdjacencyList(graph);
-  };
-
-  update();
-
-  events.subscribe('onStructureChange', update);
+  const standard = computed(() => getAdjacencyList(graph()));
+  const weighted = computed(() => getWeightedAdjacencyList(graph()));
+  const directed = computed(() => getDirectedGraphAdjacencyList(graph()));
+  const undirected = computed(() => getUndirectedGraphAdjacencyList(graph()));
 
   return {
     name: 'adjacencyLists',
     actions,
     getters,
     controls: {
-      standard: () => standard,
-      weighted: () => weighted,
-      directed: () => directed,
-      undirected: () => undirected,
+      standard,
+      weighted,
+      directed,
+      undirected,
     },
   };
 };

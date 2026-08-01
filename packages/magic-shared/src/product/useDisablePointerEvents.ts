@@ -13,7 +13,9 @@ export const useDisablePointerEvents = (graph: Graph) => {
     hand them down
   */
   const pointerEvents = computed(() =>
-    disableUIPointerEvents.value ? 'pointer-events-none' : 'pointer-events-auto',
+    disableUIPointerEvents.value
+      ? 'pointer-events-none'
+      : 'pointer-events-auto',
   );
 
   const stopPointerEvents = () => (disableUIPointerEvents.value = true);

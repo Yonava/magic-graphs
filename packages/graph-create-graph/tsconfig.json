@@ -11,7 +11,8 @@
     { "path": "../graph-plugins" },
     { "path": "../graph-primitives" },
     { "path": "../core-utils" },
-    { "path": "../canvas-primitives" }
+    { "path": "../canvas-primitives" },
+    { "path": "../reactive-primitives" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

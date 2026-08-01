@@ -1,6 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import type { CoreEdge, CoreNode } from '@graph/primitives/types';
+import { signal } from '@reactive/primitives/index';
 import Fraction from 'fraction.js';
 
 import { createCoreActions } from './actions/createCoreActions.ts';
@@ -22,20 +23,24 @@ export const core = (options: Partial<CoreOptions>) => {
   const eventRegistry = createCoreEventRegistry();
   const coreEventHub = createEventHub(eventRegistry);
 
-  const nodes: CoreNode[] = [];
-  const edges: CoreEdge[] = [];
+  // every read of these goes through the signal call, so anything deriving from
+  // nodes/edges tracks them without being told to. exposed to consumers as the
+  // `nodes`/`edges` getters on coreControls below, which keeps the array shaped
+  // read surface while preserving that tracking
+  const nodes = signal<CoreNode[]>([]);
+  const edges = signal<CoreEdge[]>([]);
 
   const nodePositionStore = createNodePositionStore(coreEventHub);
   const edgeWeightStore = createEdgeWeightStore(coreEventHub, metadata);
 
   const getNode = (id: CoreNode['id']) =>
     nullThrows(
-      nodes.find((n) => n.id === id),
+      nodes().find((n) => n.id === id),
       `node with id ${id} not found`,
     );
   const getEdge = (id: CoreEdge['id']) => {
     const edge = nullThrows(
-      edges.find((e) => e.id === id),
+      edges().find((e) => e.id === id),
       `edge with id ${id} not found`,
     );
     return { ...edge, weight: edgeWeightStore.get(id) };
@@ -53,29 +58,42 @@ export const core = (options: Partial<CoreOptions>) => {
   });
 
   const commitTransaction = createCommitTransaction({
-    getGraph: () => ({ nodes, edges }),
+    getGraph: () => ({ nodes: nodes(), edges: edges() }),
     onTransactionSucceeded,
   });
 
+  // getters rather than plain fields on every object handed downstream. a field
+  // would capture whatever array was current at construction and never see a
+  // replacement, which is the partial tracking failure this refactor exists to avoid
   const coreActions = createCoreActions({
     commitTransaction,
     graph: {
-      nodes,
-      edges,
+      get nodes() {
+        return nodes();
+      },
+      get edges() {
+        return edges();
+      },
       positions: nodePositionStore,
       weights: edgeWeightStore,
     },
   });
 
   const coreControls: CoreControls = {
-    nodes,
-    edges,
-    isNode: (id: string) => nodes.some((n) => n.id === id),
-    isEdge: (id: string) => edges.some((e) => e.id === id),
-    nodeIdToIndex: (id: string) => nodes.findIndex((n) => n.id === id),
-    edgeIdToIndex: (id: string) => edges.findIndex((n) => n.id === id),
+    get nodes() {
+      return nodes();
+    },
+    get edges() {
+      return edges();
+    },
+    isNode: (id: string) => nodes().some((n) => n.id === id),
+    isEdge: (id: string) => edges().some((e) => e.id === id),
+    nodeIdToIndex: (id: string) => nodes().findIndex((n) => n.id === id),
+    edgeIdToIndex: (id: string) => edges().findIndex((n) => n.id === id),
     helpers: createHelpers({
-      edges,
+      get edges() {
+        return edges();
+      },
       getEdge,
       getNode,
       metadata,
@@ -96,16 +114,16 @@ export const core = (options: Partial<CoreOptions>) => {
       ).map(([id, position]) => ({ id, position }));
 
       return {
-        nodes: [...nodes],
-        edges: [...edges],
+        nodes: [...nodes()],
+        edges: [...edges()],
         edgeWeights,
         nodePositions,
       };
     },
     decode: (data) => {
       // --- CLEANUP EXISTING STATE ---
-      const nodeIds = nodes.map((n) => n.id);
-      const edgeIds = edges.map((e) => e.id);
+      const nodeIds = nodes().map((n) => n.id);
+      const edgeIds = edges().map((e) => e.id);
 
       edgeWeightStore._internal.remove(edgeIds);
       nodePositionStore._internal.remove(nodeIds);

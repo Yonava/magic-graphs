@@ -1,6 +1,4 @@
-import { ConsumerEventsHub } from '@graph/core/consumer-events';
-
-import { computed, shallowRef } from 'vue';
+import { useSignal } from './useSignal.ts';
 
 type NodesEdgesGetters<Node, Edge> = {
   getNodes: () => Node[];
@@ -8,26 +6,8 @@ type NodesEdgesGetters<Node, Edge> = {
 };
 
 export const useNodesEdges = <Node, Edge>(
-  events: ConsumerEventsHub,
   graph: NodesEdgesGetters<Node, Edge>,
-) => {
-  const refresh = shallowRef(0);
-  // onGettersInvalidated lives off the curated consumer hub on purpose (see
-  // ConsumerEventsHub) — this wrapper is exactly the kind of plugin-adjacent internal
-  // consumer it's meant for, not part of the app-facing event vocabulary.
-  events._internal.gettersInvalidation.subscribe(
-    'onGettersInvalidated',
-    () => refresh.value++,
-  );
-
-  return {
-    nodes: computed(() => {
-      refresh.value;
-      return graph.getNodes();
-    }),
-    edges: computed(() => {
-      refresh.value;
-      return graph.getEdges();
-    }),
-  };
-};
+) => ({
+  nodes: useSignal(graph.getNodes),
+  edges: useSignal(graph.getEdges),
+});

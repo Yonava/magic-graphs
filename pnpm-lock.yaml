@@ -150,6 +150,9 @@ importers:
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@reactive/primitives':
+        specifier: workspace:*
+        version: link:../reactive-primitives
       fraction.js:
         specifier: ^5.3.4
         version: 5.3.4
@@ -178,6 +181,9 @@ importers:
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@reactive/primitives':
+        specifier: workspace:*
+        version: link:../reactive-primitives
     devDependencies:
       ts-essentials:
         specifier: ^10.2.0
@@ -209,6 +215,9 @@ importers:
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@reactive/primitives':
+        specifier: workspace:*
+        version: link:../reactive-primitives
       fraction.js:
         specifier: ^5.3.4
         version: 5.3.4
@@ -268,6 +277,9 @@ importers:
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@reactive/primitives':
+        specifier: workspace:*
+        version: link:../reactive-primitives
       vue:
         specifier: 'catalog:'
         version: 3.5.40(typescript@6.0.3)
@@ -384,6 +396,9 @@ importers:
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
+      '@reactive/primitives':
+        specifier: workspace:*
+        version: link:../reactive-primitives
       '@vueuse/core':
         specifier: 'catalog:'
         version: 13.9.0(vue@3.5.40(typescript@6.0.3))

@@ -125,8 +125,8 @@ export const createGraph = <
   // can't know at author time anyway (see LooseGraphTransit).
   resolveFinalTransit(transit as unknown as LooseGraphTransit);
 
-  // nodes/edges are exposed as getNodes()/getEdges() rather than the raw core arrays —
-  // see getters-cache.ts. omit the core fields here so nothing shadows the getters below.
+  // nodes/edges are exposed as the getNodes()/getEdges() computeds rather than the raw
+  // core arrays. omit the core fields here so nothing shadows them below.
   const { nodes: _coreNodes, edges: _coreEdges, ...restControls } = controls;
 
   return {

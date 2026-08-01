@@ -1,6 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 import { getValue } from '@core/utils/maybeGetter/index';
 import { EventHub } from '@graph/primitives/events/createEventHub';
+import { reactiveMap } from '@reactive/primitives/index';
 
 import { CoreEventMap } from '../events.ts';
 import { DEFAULT_POSITION } from './constants.ts';
@@ -13,7 +14,7 @@ import {
 export const createNodePositionStore = (
   events: EventHub<CoreEventMap>,
 ): NodePositionStoreControls => {
-  const nodeIdToNodePosition = new Map<string, Position>();
+  const nodeIdToNodePosition = reactiveMap<string, Position>();
 
   const getNodePosition: NodePositionStoreControls['get'] = (nodeId) =>
     nullThrows(

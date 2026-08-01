@@ -10,10 +10,10 @@
  * @example
  * node src/run.ts --url http://localhost:3000 --out head.json
  */
-import { chromium, type Page } from 'playwright';
-
 import { writeFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
+
+import { type Page, chromium } from 'playwright';
 
 import {
   MEASURE_MS,
@@ -22,7 +22,12 @@ import {
   type Scenario,
   scenarios,
 } from './scenarios.ts';
-import type { PerfReport, PerfTools, RunResult, ScenarioResult } from './types.ts';
+import type {
+  PerfReport,
+  PerfTools,
+  RunResult,
+  ScenarioResult,
+} from './types.ts';
 
 declare global {
   interface Window {

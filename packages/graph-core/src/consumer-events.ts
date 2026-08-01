@@ -60,20 +60,6 @@ export type TransitEventMap = {
   onDecoded: (payload: Readonly<Record<string, unknown>>) => void;
 };
 
-// deliberately not part of ConsumerEventMap: it's plumbing for getNodes()/getEdges()
-// staleness, not something the primary consumer vocabulary should surface. lives under
-// _internal on ConsumerEventsHub, same as coreEvents, for plugin wrappers and anyone
-// reaching past the curated surface on purpose.
-export type GettersInvalidationEventMap = {
-  /**
-   * triggered once the getNodes()/getEdges() snapshot has been recomputed after an
-   * invalidation. derived by create-graph itself (structural changes, edge weight
-   * changes) or by a plugin author calling the `invalidateGetters` function handed to
-   * every plugin — never emitted by a plugin directly onto this hub.
-   */
-  onGettersInvalidated: () => void;
-};
-
 // the only surface plugins and graph consumers get by default: the curated consumer
 // vocabulary directly at the top level. raw CoreEventMap is a machinery escape hatch,
 // namespaced under _internal so it doesn't crowd the primary autocomplete — same
@@ -84,6 +70,5 @@ export type ConsumerEventsHub = ReadonlyEventHub<ConsumerEventMap> & {
   transit: ReadonlyEventHub<TransitEventMap>;
   _internal: {
     coreEvents: ReadonlyEventHub<CoreEventMap>;
-    gettersInvalidation: ReadonlyEventHub<GettersInvalidationEventMap>;
   };
 };

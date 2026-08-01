@@ -19,7 +19,8 @@
     "@graph/primitives": "workspace:*",
     "@canvas/primitives": "workspace:*",
     "@core/utils": "workspace:*",
-    "fraction.js": "^5.3.4"
+    "fraction.js": "^5.3.4",
+    "@reactive/primitives": "workspace:*"
   },
   "devDependencies": {
     "ts-essentials": "^10.2.0"

@@ -3,8 +3,8 @@ import { GraphTransit } from '@graph/primitives/transit/types';
 
 import {
   ConsumerEventHub,
-  emitConsumerEvents,
   TransitEventHub,
+  emitConsumerEvents,
 } from './consumer-events.ts';
 
 type PluginTransitControl = {

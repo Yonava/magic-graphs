@@ -74,19 +74,10 @@ export const useGraph = (options: UseGraphOptions = {}) => {
   canvasSurface.draw.content.value = graph.canvas.aggregator.draw;
 
   const vueActivePreset = useCreateGraphActivePreset(graph.theme);
-  const vueNodesEdges = useNodesEdges(graph.events, graph);
-  const vueAdjacencyLists = useAdjacencyLists(
-    graph.events,
-    graph.adjacencyLists,
-  );
-  const vueCharacteristics = useCharacteristics(
-    graph.events,
-    graph.characteristics,
-  );
-  const vueTransitionMatrix = useTransitionMatrix(
-    graph.events,
-    graph.transitionMatrix,
-  );
+  const vueNodesEdges = useNodesEdges(graph);
+  const vueAdjacencyLists = useAdjacencyLists(graph.adjacencyLists);
+  const vueCharacteristics = useCharacteristics(graph.characteristics);
+  const vueTransitionMatrix = useTransitionMatrix(graph.transitionMatrix);
   const vueFocus = useFocus(graph.focus);
   const vueHistory = useHistory(graph.history);
 

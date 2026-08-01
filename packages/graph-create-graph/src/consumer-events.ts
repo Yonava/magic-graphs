@@ -1,8 +1,4 @@
-import {
-  ConsumerEventMap,
-  GettersInvalidationEventMap,
-  TransitEventMap,
-} from '@graph/core/consumer-events';
+import { ConsumerEventMap, TransitEventMap } from '@graph/core/consumer-events';
 import {
   EdgeWeightEntry,
   EdgeWeightStoreControls,
@@ -44,18 +40,6 @@ export const createTransitEventHub = () =>
   createEventHub<TransitEventMap>({
     onEncoded: new Set(),
     onDecoded: new Set(),
-  });
-
-// kept off ConsumerEventMap on purpose — see GettersInvalidationEventMap in
-// @graph/core/consumer-events. its own tiny hub, exposed only under
-// events._internal.gettersInvalidation.
-export type GettersInvalidationEventHub = ReturnType<
-  typeof createGettersInvalidationEventHub
->;
-
-export const createGettersInvalidationEventHub = () =>
-  createEventHub<GettersInvalidationEventMap>({
-    onGettersInvalidated: new Set(),
   });
 
 const hasItems = (...arrays: unknown[][]) =>

@@ -1,29 +1,22 @@
-import {
-  GettersAuditGraph,
-  startGettersDiscrepancyAudit,
-} from '@graph/dev-tools/debugging/getters-audit';
 import { RepaintEvents } from '@graph/dev-tools/perf/frame-timing';
 import { startPerfTools } from '@graph/dev-tools/perf/index';
 import { SceneGraph } from '@graph/dev-tools/perf/scene';
 
 import { onBeforeUnmount, onMounted } from 'vue';
 
-type DevToolsGraph = GettersAuditGraph &
-  SceneGraph & {
-    canvas: {
-      magicCanvas: {
-        lifecycleEvents: RepaintEvents;
-      };
+type DevToolsGraph = SceneGraph & {
+  canvas: {
+    magicCanvas: {
+      lifecycleEvents: RepaintEvents;
     };
   };
+};
 
 export const useGraphDevTools = (graph: DevToolsGraph) => {
   // @ts-expect-error add vite env to .d.ts
   if (!import.meta.env.DEV) return;
   const cleanups: (() => void)[] = [];
   onMounted(() => {
-    cleanups.push(startGettersDiscrepancyAudit(graph));
-
     /*
       frame timing runs from mount rather than waiting to be asked, since the
       cost is two event subscriptions and some arithmetic, and tooling you have

@@ -18,7 +18,8 @@
     "@graph/plugins": "workspace:*",
     "@graph/primitives": "workspace:*",
     "@core/utils": "workspace:*",
-    "@canvas/primitives": "workspace:*"
+    "@canvas/primitives": "workspace:*",
+    "@reactive/primitives": "workspace:*"
   },
   "devDependencies": {
     "ts-essentials": "^10.2.0"

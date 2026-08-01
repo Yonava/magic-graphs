@@ -1,32 +1,11 @@
-import { ConsumerEventMap } from '@graph/create-graph/consumer-events';
 import { AdjacencyListsControls } from '@graph/plugins/adjacency-lists/types';
-import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 
-import { computed, shallowRef } from 'vue';
+import { useSignals } from './useSignal.ts';
 
-export const useAdjacencyLists = (
-  events: ReadonlyEventHub<ConsumerEventMap>,
-  adjacencyLists: AdjacencyListsControls,
-) => {
-  const refresh = shallowRef(0);
-  events.subscribe('onStructureChange', () => refresh.value++);
-
-  return {
-    standard: computed(() => {
-      refresh.value;
-      return adjacencyLists.standard();
-    }),
-    directed: computed(() => {
-      refresh.value;
-      return adjacencyLists.directed();
-    }),
-    undirected: computed(() => {
-      refresh.value;
-      return adjacencyLists.undirected();
-    }),
-    weighted: computed(() => {
-      refresh.value;
-      return adjacencyLists.weighted();
-    }),
-  };
-};
+export const useAdjacencyLists = (adjacencyLists: AdjacencyListsControls) =>
+  useSignals({
+    standard: adjacencyLists.standard,
+    directed: adjacencyLists.directed,
+    undirected: adjacencyLists.undirected,
+    weighted: adjacencyLists.weighted,
+  });

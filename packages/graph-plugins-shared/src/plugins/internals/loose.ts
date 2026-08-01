@@ -27,11 +27,10 @@ type LoosePluginInput = {
   // see [1] in ./plugin.ts — a stable accessor for the fully-composed graph
   // actions, safe to capture in a closure and invoke after folding completes
   finalActions: GraphActions<CoreActions>;
+  // see [3] in ./plugin.ts — getters reading plugin owned state require that state
+  // to live in a @reactive/primitives container
   getters: GraphGetters<CoreGetters>;
-  // see [2] in ./plugin.ts — call after mutating any plugin-local state a getter
-  // reads from, so create-graph knows to recompute getNodes()/getEdges()
-  invalidateGetters: () => void;
-  // see [3] in ./plugin.ts — a stable accessor for the graph wide encode/decode
+  // see [2] in ./plugin.ts — a stable accessor for the graph wide encode/decode
   // surface, assembled from every plugin's transit controls once folding completes
   finalTransit: LooseGraphTransit;
 };

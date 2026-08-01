@@ -1,4 +1,5 @@
 import { debounce } from '@core/utils/debounce';
+import { effect } from '@reactive/primitives/index';
 
 import { onMounted } from 'vue';
 
@@ -21,10 +22,14 @@ export const useLocalStorageGraphSync = (graph: MagicGraph) => {
 
   onMounted(sync);
 
-  graph.events._internal.gettersInvalidation.subscribe(
-    'onGettersInvalidated',
-    save,
-  );
+  // replaces a subscription to the old onGettersInvalidated. reading getNodes here
+  // covers everything a node carries, plugin contributed fields included, which is
+  // what that event was standing in for. save is debounced, so the eager evaluation
+  // an effect forces does not cost a write per change
+  effect(() => {
+    graph.getNodes();
+    save();
+  });
   graph.events.subscribe('onStructureChange', save);
   graph.nodeDrag.events.subscribe('onNodeDrop', save);
 };

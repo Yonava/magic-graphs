@@ -20,7 +20,8 @@
     "@graph/primitives": "workspace:*",
     "@graph/create-graph": "workspace:*",
     "@graph/plugins": "workspace:*",
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "@reactive/primitives": "workspace:*"
   },
   "devDependencies": {}
 }
