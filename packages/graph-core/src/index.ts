@@ -1,7 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import type { CoreEdge, CoreNode } from '@graph/primitives/types';
-import { signal } from '@reactive/primitives/index';
+import { batch, signal } from '@reactive/primitives/index';
 import Fraction from 'fraction.js';
 
 import { createCoreActions } from './actions/createCoreActions.ts';
@@ -106,34 +106,38 @@ export const core = (options: Partial<CoreOptions>) => {
         nodePositions,
       };
     },
-    decode: (data) => {
-      // --- CLEANUP EXISTING STATE ---
-      const nodeIds = nodes().map((n) => n.id);
-      const edgeIds = edges().map((e) => e.id);
+    // batched for the same reason actions are (see `atomic` in createCoreActions):
+    // decode tears down and rebuilds across four writes, and the state in between is
+    // not a graph anyone should be able to observe
+    decode: (data) =>
+      batch(() => {
+        // --- CLEANUP EXISTING STATE ---
+        const nodeIds = nodes().map((n) => n.id);
+        const edgeIds = edges().map((e) => e.id);
 
-      edgeWeightStore._internal.remove(edgeIds);
-      nodePositionStore._internal.remove(nodeIds);
+        edgeWeightStore._internal.remove(edgeIds);
+        nodePositionStore._internal.remove(nodeIds);
 
-      commitTransaction({
-        removeNodeIds: nodeIds,
-      });
+        commitTransaction({
+          removeNodeIds: nodeIds,
+        });
 
-      // --- APPLY NEW STATE ---
-      nodePositionStore._internal.add(data.nodePositions);
-      edgeWeightStore._internal.add(
-        data.edgeWeights.map((e) => ({
-          id: e.id,
-          weight: new Fraction(e.weight),
-        })),
-      );
+        // --- APPLY NEW STATE ---
+        nodePositionStore._internal.add(data.nodePositions);
+        edgeWeightStore._internal.add(
+          data.edgeWeights.map((e) => ({
+            id: e.id,
+            weight: new Fraction(e.weight),
+          })),
+        );
 
-      // adding and removing needs to be 2 separate transactions due to known bug:
-      // https://github.com/Yonava/magic-graphs/issues/685
-      commitTransaction({
-        addNodes: data.nodes,
-        addEdges: data.edges,
-      });
-    },
+        // adding and removing needs to be 2 separate transactions due to known bug:
+        // https://github.com/Yonava/magic-graphs/issues/685
+        commitTransaction({
+          addNodes: data.nodes,
+          addEdges: data.edges,
+        });
+      }),
     validate: (data) => true,
   };
 
