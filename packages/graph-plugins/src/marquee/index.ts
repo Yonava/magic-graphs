@@ -65,6 +65,8 @@ export const marquee: MarqueePlugin = ({
     const targetedItems: string[] = [];
 
     for (const { id, shape } of controls.canvas.aggregator.aggregator()) {
+      // the aggregator carries overlays too, including marquee's own box
+      if (!controls.isNode(id) && !controls.isEdge(id)) continue;
       const inSelectionBox = shape.overlapsBox(box);
       if (inSelectionBox) targetedItems.push(id);
     }
