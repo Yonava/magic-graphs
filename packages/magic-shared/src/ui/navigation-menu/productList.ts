@@ -29,6 +29,15 @@ export const productList = {
       dark: '/products/thumbnails/dijkstras.png',
     },
   },
+  dev: {
+    name: 'Dev Playground',
+    description: 'Dev test zone',
+    slug: 'dev',
+    thumbnail: {
+      light: '/products/thumbnails/dijkstras.png',
+      dark: '/products/thumbnails/dijkstras.png',
+    },
+  },
 } as const satisfies Record<string, MagicProductNavigation>;
 
 export const products = Object.entries(productList).map(
