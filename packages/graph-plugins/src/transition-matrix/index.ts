@@ -1,17 +1,19 @@
 import { CoreNode } from '@graph/primitives/types';
+import { computed } from '@reactive/primitives/index';
+import Fraction from 'fraction.js';
 
 import { AdjacencyListsControls } from '../adjacency-lists/types.ts';
 import { TransitionMatrix, TransitionMatrixPlugin } from './types.ts';
 
 export const getTransitionMatrix = (
-  adjList: AdjacencyListsControls['weighted'],
+  adjList: ReturnType<AdjacencyListsControls['weighted']>,
   nodeToIndex: (id: CoreNode['id']) => number,
 ) => {
   const adjListEntries = Object.entries(adjList);
   const nodeCount = adjListEntries.length;
 
   const matrix: TransitionMatrix = Array.from({ length: nodeCount }, () =>
-    Array(nodeCount).fill(0),
+    Array.from({ length: nodeCount }, () => new Fraction(0)),
   );
 
   for (const [nodeId, neighbors] of adjListEntries) {
@@ -31,10 +33,11 @@ export const transitionMatrix: TransitionMatrixPlugin = ({
   ...rest
 }) => ({
   name: 'transitionMatrix',
-  controls: () =>
+  controls: computed(() =>
     getTransitionMatrix(
-      controls.adjacencyLists.weighted,
+      controls.adjacencyLists.weighted(),
       controls.nodeIdToIndex,
     ),
+  ),
   ...rest,
 });
