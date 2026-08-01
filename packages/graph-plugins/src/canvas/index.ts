@@ -4,9 +4,9 @@ import { CanvasProps } from '@canvas/surface/types';
 import { KeyboardEventEntries, MouseEventEntries } from '@core/utils/types';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
-import { DeepReadonly } from 'ts-essentials';
 
 import { createAggregator } from './aggregator/createAggregator.ts';
+import { CanvasElement } from './aggregator/types.ts';
 import { CANVAS_PLUGIN_ID } from './constants.ts';
 import { emitKeyboardEvents, emitMouseEvents } from './emitDOMEvents.ts';
 import { CanvasGraphMouseEvent, createCanvasEventRegistry } from './events.ts';
@@ -16,9 +16,17 @@ import { setupOnHoveredElementChangeEvent } from './setupHoveredElement.ts';
 import { createCanvasDetectors, createCanvasThemeOverrides } from './themes.ts';
 import { CanvasPlugin, GraphUnderCursor } from './types.ts';
 
+const sameElements = (previous: CanvasElement[], next: CanvasElement[]) => {
+  if (previous.length !== next.length) return false;
+  for (let i = 0; i < previous.length; i++) {
+    if (previous[i].id !== next[i].id) return false;
+  }
+  return true;
+};
+
 export const canvas =
   (magicCanvas: CanvasProps): CanvasPlugin =>
-  ({ controls, events, actions, getters }) => {
+  ({ controls, actions, getters }) => {
     const canvasEventRegistry = createCanvasEventRegistry();
     const canvasEvents = createEventHub(canvasEventRegistry);
 
@@ -33,9 +41,32 @@ export const canvas =
       },
     };
 
-    events._internal.coreEvents.subscribe('onTransactionComplete', () => {
-      forceUpdateGraphUnderCursor();
-    });
+    /*
+      what sits under the cursor is a function of the cursor position and everything drawn
+      on the canvas, and the canvas moves on its own: animations interpolating, a peer
+      dragging a node, a simulation stepping. enumerating those causes so each one can
+      invalidate a cache is a losing game, and every plugin that pushes to the aggregator
+      is one more chance to forget. so this recomputes off the aggregator that draw just
+      rebuilt, every frame, and only emits when the answer actually changed
+    */
+    const refreshGraphUnderCursor = () => {
+      const coords = magicCanvas.cursorCoordinates.value;
+      const elements = aggregator.getCanvasElementsAtCoordinate(coords);
+
+      const changed =
+        coords.x !== graphUnderCursor.coords.x ||
+        coords.y !== graphUnderCursor.coords.y ||
+        !sameElements(graphUnderCursor.elements, elements);
+
+      graphUnderCursor.coords = coords;
+      graphUnderCursor.elements = elements;
+
+      if (!changed) return;
+      canvasEvents.emit('onGraphUnderCursorChange', graphUnderCursor);
+    };
+
+    // ahead of setupCanvasCursor so the cursor it paints reflects this frame's hit test
+    canvasEvents.subscribe('onDraw', refreshGraphUnderCursor);
 
     const theme = createThemeController(createCanvasThemeOverrides());
 
@@ -73,28 +104,12 @@ export const canvas =
       CANVAS_PLUGIN_ID,
     );
 
-    const forceUpdateGraphUnderCursor = (): DeepReadonly<GraphUnderCursor> => {
-      const coords = magicCanvas.cursorCoordinates.value;
-      graphUnderCursor.coords = coords;
-
-      aggregator.updateAggregator();
-      const newElements = aggregator.getCanvasElementsAtCoordinate(coords);
-      graphUnderCursor.elements = newElements;
-
-      canvasEvents.emit('onGraphUnderCursorChange', graphUnderCursor);
-      return graphUnderCursor;
-    };
-
     const graphMouseEvent = (event: MouseEvent): CanvasGraphMouseEvent => ({
       ...graphUnderCursor,
       event,
     });
 
-    const mouseEvents = emitMouseEvents(
-      graphMouseEvent,
-      canvasEvents.emit,
-      forceUpdateGraphUnderCursor,
-    );
+    const mouseEvents = emitMouseEvents(graphMouseEvent, canvasEvents.emit);
 
     const keyboardEvents = emitKeyboardEvents(canvasEvents.emit);
 
@@ -190,7 +205,6 @@ export const canvas =
         magicCanvas,
 
         graphUnderCursor,
-        forceUpdateGraphUnderCursor,
 
         getNodePriority: () => getNodePriority,
 

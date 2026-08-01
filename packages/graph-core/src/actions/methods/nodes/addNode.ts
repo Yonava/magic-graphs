@@ -9,10 +9,8 @@ export const createAddNodeHandler: CreateCoreAction<'addNode'> =
     const newNode = { id: generateId(), ...node };
 
     // https://github.com/Yonava/magic-graphs/issues/685
-    // must be before commitTransaction because
-    // onTransactionComplete is used to refresh the graphUnderCursor
-    // state, and to do that the schemas need to be resolved which requires
-    // a lookup to the node positioning system.
+    // must be before commitTransaction because anything reading the new node resolves
+    // its schema, which requires a lookup to the node positioning system.
     // I don't like putting this call before knowing if the transaction
     // is successful because if the transaction fails, node
     // positioning system will hold a reference to a node id that

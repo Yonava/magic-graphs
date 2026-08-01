@@ -41,18 +41,12 @@ type BaseCanvasControls = {
   shapes: AnimatedShapeControls;
   /**
    * the canvas elements currently under the cursor and the cursor's canvas coordinates.
-   * updated on mouse move and on any graph mutation that affects what is under the cursor.
+   *
+   * recomputed every frame against the canvas as drawn, so anything your extension adds
+   * to the aggregator is hit-tested automatically. `onGraphUnderCursorChange` is triggered
+   * on the frames where the answer changes.
    */
   graphUnderCursor: DeepReadonly<GraphUnderCursor>;
-  /**
-   * forces an update to `graphUnderCursor` with the latest canvas state,
-   * triggering the `onGraphUnderCursorChange` event.
-   *
-   * ℹ️ use this when your extension renders content outside the graph's built-in APIs
-   * (e.g. custom shapes or overlays) and needs to notify the system that cursor
-   * hit-testing may have changed.
-   */
-  forceUpdateGraphUnderCursor: () => DeepReadonly<GraphUnderCursor>;
   getNodePriority: () => (nodeId: string) => number;
 };
 

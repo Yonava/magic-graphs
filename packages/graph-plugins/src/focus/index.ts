@@ -11,9 +11,12 @@ import { createFocusEventRegistry } from './events.ts';
 import { createFocusDetectors, createFocusThemeOverrides } from './themes.ts';
 import { FocusPlugin } from './types.ts';
 
-const sameIds = (a: ReadonlySet<string>, b: ReadonlySet<string>) => {
-  if (a.size !== b.size) return false;
-  for (const id of a) if (!b.has(id)) return false;
+const sameIds = (
+  previous: ReadonlySet<string>,
+  next: ReadonlySet<string>,
+) => {
+  if (previous.size !== next.size) return false;
+  for (const id of previous) if (!next.has(id)) return false;
   return true;
 };
 
