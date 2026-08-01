@@ -11,57 +11,55 @@ import { createFocusEventRegistry } from './events.ts';
 import { createFocusDetectors, createFocusThemeOverrides } from './themes.ts';
 import { FocusPlugin } from './types.ts';
 
+const sameIds = (a: ReadonlySet<string>, b: ReadonlySet<string>) => {
+  if (a.size !== b.size) return false;
+  for (const id of a) if (!b.has(id)) return false;
+  return true;
+};
+
 export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
   const focusEventRegistry = createFocusEventRegistry();
   const focusEventHub = createEventHub(focusEventRegistry);
 
-  let focusedElementIds = new Set<string>();
+  let focusedElementIds: ReadonlySet<string> = new Set<string>();
 
-  const setFocus = (ids: string[]) => {
-    const elementsAlreadyFocused =
-      ids.length === focusedElementIds.size &&
-      ids.every((id) => focusedElementIds.has(id));
-    if (ids.length > 0 && elementsAlreadyFocused) return;
+  const isNodeOrEdge = (id: string) =>
+    controls.isNode(id) || controls.isEdge(id);
 
-    const oldIds = new Set([...focusedElementIds]);
-    focusedElementIds = new Set(ids);
+  const commitFocus = (ids: Iterable<string>) => {
+    const nextFocusedElementIds = new Set<string>();
+    const unrecognizedIds: string[] = [];
 
-    focusEventHub.emit('onFocusChange', focusedElementIds, oldIds);
-  };
-
-  const clearFocus = () => setFocus([]);
-
-  const addToFocus = (id: string | Readonly<string[]>) => {
-    const elementsAddedToFocus = typeof id === 'object' ? id : [id];
-    const nonExistingElementIds = new Set(
-      elementsAddedToFocus.filter(
-        (newId) => !getters.getNode(newId) && !getters.getEdge(newId),
-      ),
-    );
-    if (nonExistingElementIds.size) {
-      console.warn(
-        `Attempted to focus non-existent elements`,
-        nonExistingElementIds,
-      );
+    for (const id of ids) {
+      if (isNodeOrEdge(id)) nextFocusedElementIds.add(id);
+      else unrecognizedIds.push(id);
     }
-    const stagedElementIds = elementsAddedToFocus.filter(
-      (newId) =>
-        !focusedElementIds.has(newId) && !nonExistingElementIds.has(newId),
-    );
-    if (stagedElementIds.length === 0) return;
 
-    const previousFocusedElementIds = new Set([...focusedElementIds]);
-    const newFocusedElementIds = new Set([
-      ...stagedElementIds,
-      ...previousFocusedElementIds,
-    ]);
-    focusedElementIds = newFocusedElementIds;
+    if (unrecognizedIds.length > 0) {
+      console.warn('focus expected node or edge ids: got', unrecognizedIds);
+    }
+
+    if (sameIds(nextFocusedElementIds, focusedElementIds)) return;
+
+    const previousFocusedElementIds = focusedElementIds;
+    focusedElementIds = nextFocusedElementIds;
+
     focusEventHub.emit(
       'onFocusChange',
-      newFocusedElementIds,
+      focusedElementIds,
       previousFocusedElementIds,
     );
   };
+
+  const setFocus = (ids: string[]) => commitFocus(ids);
+
+  const clearFocus = () => commitFocus([]);
+
+  const addToFocus = (id: string | Readonly<string[]>) =>
+    commitFocus([
+      ...focusedElementIds,
+      ...(typeof id === 'object' ? id : [id]),
+    ]);
 
   const clearRemovedElementsFromFocus = ({
     removedNodeIds,
@@ -81,21 +79,21 @@ export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
     setFocus(newFocusedIds);
   };
 
-  const handleMouseDown = ({
-    elements: items,
-    event,
-  }: CanvasGraphMouseEvent) => {
+  const handleMouseDown = ({ topElement, event }: CanvasGraphMouseEvent) => {
     if (event.button !== MOUSE_BUTTONS.left) return;
-    const topItem = items.at(-1);
-    if (!topItem) {
-      return event.shiftKey ? undefined : clearFocus();
+    if (!topElement) {
+      if (!event.shiftKey) clearFocus();
+      return;
     }
 
-    if (event.shiftKey) addToFocus(topItem.id);
-    else setFocus([topItem.id]);
+    // decorative elements sitting above the graph (marquee selection box, anchors) preserve focus rather than taking it
+    if (!isNodeOrEdge(topElement.id)) return;
+
+    if (event.shiftKey) addToFocus(topElement.id);
+    else setFocus([topElement.id]);
   };
 
-  const focusAll = () => {
+  const setFocusToAll = () => {
     const nodeIds = controls.nodes().map((node) => node.id);
     const edgeIds = controls.edges().map((edge) => edge.id);
     setFocus([...nodeIds, ...edgeIds]);
@@ -186,8 +184,7 @@ export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
     controls: {
       set: setFocus,
       clear: clearFocus,
-      add: addToFocus,
-      all: focusAll,
+      setAll: setFocusToAll,
       isFocused,
       focusedNodes: () => controls.nodes().filter((node) => isFocused(node.id)),
       focusedEdges: () => controls.edges().filter((edge) => isFocused(edge.id)),

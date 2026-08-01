@@ -7,7 +7,7 @@ export const mountProductShortcuts = (graph: MagicGraph) => {
     {
       id: 'product/focus-all',
       key: 'meta+a',
-      callback: graph.focus.all,
+      callback: graph.focus.setAll,
     },
     {
       id: 'product/undo',
