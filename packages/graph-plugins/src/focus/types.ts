@@ -22,15 +22,9 @@ type BaseFocusControls = {
    */
   clear: () => void;
   /**
-   * Adds an element to the current focus
-   *
-   * @param id the id of the element to add to the focus
+   * Sets the focus to every node and edge in the graph
    */
-  add: (id: string) => void;
-  /**
-   * Focus all elements
-   */
-  all: () => void;
+  setAll: () => void;
   /**
    * @param id the id of the element to check
    * @returns true if the element is focused

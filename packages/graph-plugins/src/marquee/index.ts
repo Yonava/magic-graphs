@@ -74,6 +74,7 @@ export const marquee: MarqueePlugin = ({
 
   const updateSelectionBox = () => {
     selectionBox = getSelectionBox(controls);
+    controls.canvas.forceUpdateGraphUnderCursor();
   };
 
   const setMarqueeBoxDimensions = (

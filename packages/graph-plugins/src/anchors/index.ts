@@ -56,9 +56,6 @@ export const anchors: AnchorsPlugin = ({
 
   const setParentNode = (nodeId: CoreNode['id']) => {
     const node = getters.getNode(nodeId);
-
-    if (!node) throw new Error('node not found');
-
     parentNode = node;
     updateNodeAnchors(node);
   };
@@ -269,9 +266,6 @@ export const anchors: AnchorsPlugin = ({
     if (!controls.isNode(topElement.id)) return clearAnchorState();
 
     const newParentNode = getters.getNode(topElement.id);
-    if (!newParentNode) {
-      throw new Error('anchors: node shown on screen not in graph state');
-    }
 
     if (newParentNode.id === parentNode?.id) return;
     setParentNode(newParentNode.id);
@@ -314,7 +308,6 @@ export const anchors: AnchorsPlugin = ({
     // when we clear the node anchors, we must ensure that the
     // aggregator updates so that it knows the node anchors
     // and edge preview are no longer on the canvas
-    controls.canvas.aggregator.updateAggregator();
     controls.canvas.forceUpdateGraphUnderCursor();
 
     // in case anchor was dropped a different node, set that new node as the parent node
