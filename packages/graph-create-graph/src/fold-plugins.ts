@@ -6,19 +6,18 @@ import {
   PluginThemeField,
 } from '@graph/plugins-shared/plugins';
 import { TransitControls } from '@graph/primitives/transit/types';
+import { computed } from '@reactive/primitives/index';
 
 import {
   ConsumerEventHub,
+  TransitEventHub,
   createConsumerEventHub,
   createFinalActionsProxy,
-  createGettersInvalidationEventHub,
   createTransitEventHub,
-  TransitEventHub,
   wrapActionsWithConsumerEvents,
   wrapWeightsControlsWithConsumerEvents,
 } from './consumer-events.ts';
 import { createFinalTransitProxy } from './final-transit.ts';
-import { createGettersCache } from './getters-cache.ts';
 
 type PluginTransitControl = {
   pluginName: string;
@@ -55,11 +54,8 @@ export const foldPlugins = (
   // subscribing to core's own event hub. merged in up front so plugins can subscribe
   // during setup.
   const consumerEvents = createConsumerEventHub();
-  // separate from consumerEvents on purpose — onGettersInvalidated is internal
-  // plumbing for getNodes()/getEdges() staleness, not part of the curated consumer
-  // vocabulary. only reachable via events._internal.gettersInvalidation.
-  const gettersInvalidationEvents = createGettersInvalidationEventHub();
-  // also separate from consumerEvents — encode/decode report on the graph as a
+
+  // separate from consumerEvents — encode/decode report on the graph as a
   // serialized whole rather than on a change to its structure. created here so plugins
   // can subscribe during setup, even though only createGraphTransit ever emits on it.
   const transitEvents = createTransitEventHub();
@@ -71,6 +67,7 @@ export const foldPlugins = (
       consumerEvents,
     ),
   };
+
   // consumer events are the primary surface — spread directly onto the top-level
   // `events` field. raw core events are still reachable, but namespaced under
   // `_internal` so they don't crowd the default autocomplete (see ConsumerEventsHub).
@@ -79,7 +76,6 @@ export const foldPlugins = (
     transit: transitEvents,
     _internal: {
       coreEvents: coreGraph.events,
-      gettersInvalidation: gettersInvalidationEvents,
     },
   };
   let actions = coreGraph.actions;
@@ -88,26 +84,6 @@ export const foldPlugins = (
   const { finalTransit, resolveFinalTransit } = createFinalTransitProxy();
   let themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']> =
     {};
-
-  // closes over the `getters` binding above, so any recompute reads whatever plugins have
-  // folded into it by that point (the initial recompute() below only runs once folding
-  // is done).
-  const gettersCache = createGettersCache(
-    {
-      nodeIds: () => coreGraph.controls.nodes.map((n) => n.id),
-      edgeIds: () => coreGraph.controls.edges.map((e) => e.id),
-    },
-    () => getters,
-    gettersInvalidationEvents,
-  );
-  // structural and weight changes are known to create-graph itself, so they invalidate
-  // the getters cache automatically — no plugin author needs to remember to do this for
-  // core mutations, only for their own plugin-local state (see nodeLabel for example).
-  consumerEvents.subscribe('onStructureChange', gettersCache.invalidateGetters);
-  consumerEvents.subscribe(
-    'onEdgeWeightsChanged',
-    gettersCache.invalidateGetters,
-  );
 
   const pluginTransitControls: PluginTransitControl[] = [
     { pluginName: 'core', transit: coreGraph.transit },
@@ -120,7 +96,6 @@ export const foldPlugins = (
       actions,
       finalActions,
       getters,
-      invalidateGetters: gettersCache.invalidateGetters,
       finalTransit,
     });
 
@@ -161,10 +136,12 @@ export const foldPlugins = (
   const wrappedActions = wrapActionsWithConsumerEvents(actions, consumerEvents);
   resolveFinalActions(wrappedActions);
 
-  // folding is done and `getters` has its final, fully-decorated shape — populate the
-  // cache now rather than waiting for the first invalidateGetters() call, which may
-  // never come if nothing mutates before a consumer reads getNodes()/getEdges().
-  gettersCache.recompute();
+  const nodes = computed(() =>
+    coreGraph.controls.nodes().map((n) => getters.getNode(n.id)),
+  );
+  const edges = computed(() =>
+    coreGraph.controls.edges().map((e) => getters.getEdge(e.id)),
+  );
 
   return {
     controls,
@@ -176,7 +153,7 @@ export const foldPlugins = (
     themeDetectors,
     pluginTransitControls,
     resolveFinalTransit,
-    getNodes: gettersCache.getNodes,
-    getEdges: gettersCache.getEdges,
+    getNodes: nodes,
+    getEdges: edges,
   };
 };

@@ -97,8 +97,18 @@ export const createGraph = <
   const { transformers } = castControls.canvas.aggregator;
 
   const transformer: AggregatorTransformer = (agg) => {
-    agg.push(...controls.nodes.map(nodeCanvasElement).filter((v) => !!v));
-    agg.push(...controls.edges.map(edgeCanvasElement).filter((v) => !!v));
+    agg.push(
+      ...controls
+        .nodes()
+        .map(nodeCanvasElement)
+        .filter((v) => !!v),
+    );
+    agg.push(
+      ...controls
+        .edges()
+        .map(edgeCanvasElement)
+        .filter((v) => !!v),
+    );
     return agg;
   };
 
@@ -125,8 +135,7 @@ export const createGraph = <
   // can't know at author time anyway (see LooseGraphTransit).
   resolveFinalTransit(transit as unknown as LooseGraphTransit);
 
-  // nodes/edges are exposed as getNodes()/getEdges() rather than the raw core arrays —
-  // see getters-cache.ts. omit the core fields here so nothing shadows the getters below.
+  // the public surface is the decorated getNodes()/getEdges(), not core's raw pair
   const { nodes: _coreNodes, edges: _coreEdges, ...restControls } = controls;
 
   return {

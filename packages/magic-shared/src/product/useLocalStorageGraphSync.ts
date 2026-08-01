@@ -21,10 +21,6 @@ export const useLocalStorageGraphSync = (graph: MagicGraph) => {
 
   onMounted(sync);
 
-  graph.events._internal.gettersInvalidation.subscribe(
-    'onGettersInvalidated',
-    save,
-  );
   graph.events.subscribe('onStructureChange', save);
   graph.nodeDrag.events.subscribe('onNodeDrop', save);
 };

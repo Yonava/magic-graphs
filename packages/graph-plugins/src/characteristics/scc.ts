@@ -21,10 +21,10 @@ export type ComponentAdjacencyMap = Map<number, Set<number>>;
 /**
  * uses Tarjan's algorithm to find the strongly connected components of a graph
  */
-export const getStronglyConnectedComponents: GetComponents = ({
-  nodes,
-  edges,
-}) => {
+export const getStronglyConnectedComponents: GetComponents = (controls) => {
+  const nodes = controls.nodes();
+  const edges = controls.edges();
+
   const tarjan = new TarjanGraph(nodes.length);
   const nodeIds = nodes.map((node) => node.id);
 

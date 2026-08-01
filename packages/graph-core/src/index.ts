@@ -1,6 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import type { CoreEdge, CoreNode } from '@graph/primitives/types';
+import { batch, signal } from '@reactive/primitives/index';
 import Fraction from 'fraction.js';
 
 import { createCoreActions } from './actions/createCoreActions.ts';
@@ -22,20 +23,23 @@ export const core = (options: Partial<CoreOptions>) => {
   const eventRegistry = createCoreEventRegistry();
   const coreEventHub = createEventHub(eventRegistry);
 
-  const nodes: CoreNode[] = [];
-  const edges: CoreEdge[] = [];
+  const nodes = signal<CoreNode[]>([]);
+  const edges = signal<CoreEdge[]>([]);
+
+  const readNodes = () => nodes();
+  const readEdges = () => edges();
 
   const nodePositionStore = createNodePositionStore(coreEventHub);
   const edgeWeightStore = createEdgeWeightStore(coreEventHub, metadata);
 
   const getNode = (id: CoreNode['id']) =>
     nullThrows(
-      nodes.find((n) => n.id === id),
+      readNodes().find((n) => n.id === id),
       `node with id ${id} not found`,
     );
   const getEdge = (id: CoreEdge['id']) => {
     const edge = nullThrows(
-      edges.find((e) => e.id === id),
+      readEdges().find((e) => e.id === id),
       `edge with id ${id} not found`,
     );
     return { ...edge, weight: edgeWeightStore.get(id) };
@@ -53,29 +57,29 @@ export const core = (options: Partial<CoreOptions>) => {
   });
 
   const commitTransaction = createCommitTransaction({
-    getGraph: () => ({ nodes, edges }),
+    graph: { nodes: readNodes, edges: readEdges },
     onTransactionSucceeded,
   });
 
   const coreActions = createCoreActions({
     commitTransaction,
     graph: {
-      nodes,
-      edges,
+      nodes: readNodes,
+      edges: readEdges,
       positions: nodePositionStore,
       weights: edgeWeightStore,
     },
   });
 
   const coreControls: CoreControls = {
-    nodes,
-    edges,
-    isNode: (id: string) => nodes.some((n) => n.id === id),
-    isEdge: (id: string) => edges.some((e) => e.id === id),
-    nodeIdToIndex: (id: string) => nodes.findIndex((n) => n.id === id),
-    edgeIdToIndex: (id: string) => edges.findIndex((n) => n.id === id),
+    nodes: readNodes,
+    edges: readEdges,
+    isNode: (id: string) => readNodes().some((n) => n.id === id),
+    isEdge: (id: string) => readEdges().some((e) => e.id === id),
+    nodeIdToIndex: (id: string) => readNodes().findIndex((n) => n.id === id),
+    edgeIdToIndex: (id: string) => readEdges().findIndex((n) => n.id === id),
     helpers: createHelpers({
-      edges,
+      edges: readEdges,
       getEdge,
       getNode,
       metadata,
@@ -96,40 +100,44 @@ export const core = (options: Partial<CoreOptions>) => {
       ).map(([id, position]) => ({ id, position }));
 
       return {
-        nodes: [...nodes],
-        edges: [...edges],
+        nodes: [...nodes()],
+        edges: [...edges()],
         edgeWeights,
         nodePositions,
       };
     },
-    decode: (data) => {
-      // --- CLEANUP EXISTING STATE ---
-      const nodeIds = nodes.map((n) => n.id);
-      const edgeIds = edges.map((e) => e.id);
+    // batched for the same reason actions are (see `atomic` in createCoreActions):
+    // decode tears down and rebuilds across four writes, and the state in between is
+    // not a graph anyone should be able to observe
+    decode: (data) =>
+      batch(() => {
+        // --- CLEANUP EXISTING STATE ---
+        const nodeIds = nodes().map((n) => n.id);
+        const edgeIds = edges().map((e) => e.id);
 
-      edgeWeightStore._internal.remove(edgeIds);
-      nodePositionStore._internal.remove(nodeIds);
+        edgeWeightStore._internal.remove(edgeIds);
+        nodePositionStore._internal.remove(nodeIds);
 
-      commitTransaction({
-        removeNodeIds: nodeIds,
-      });
+        commitTransaction({
+          removeNodeIds: nodeIds,
+        });
 
-      // --- APPLY NEW STATE ---
-      nodePositionStore._internal.add(data.nodePositions);
-      edgeWeightStore._internal.add(
-        data.edgeWeights.map((e) => ({
-          id: e.id,
-          weight: new Fraction(e.weight),
-        })),
-      );
+        // --- APPLY NEW STATE ---
+        nodePositionStore._internal.add(data.nodePositions);
+        edgeWeightStore._internal.add(
+          data.edgeWeights.map((e) => ({
+            id: e.id,
+            weight: new Fraction(e.weight),
+          })),
+        );
 
-      // adding and removing needs to be 2 separate transactions due to known bug:
-      // https://github.com/Yonava/magic-graphs/issues/685
-      commitTransaction({
-        addNodes: data.nodes,
-        addEdges: data.edges,
-      });
-    },
+        // adding and removing needs to be 2 separate transactions due to known bug:
+        // https://github.com/Yonava/magic-graphs/issues/685
+        commitTransaction({
+          addNodes: data.nodes,
+          addEdges: data.edges,
+        });
+      }),
     validate: (data) => true,
   };
 

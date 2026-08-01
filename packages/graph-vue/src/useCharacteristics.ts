@@ -1,40 +1,13 @@
-import { ConsumerEventMap } from '@graph/create-graph/consumer-events';
 import { CharacteristicsControls } from '@graph/plugins/characteristics/index';
-import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 
-import { computed, shallowRef } from 'vue';
+import { useSignals } from './useSignal.ts';
 
-export const useCharacteristics = (
-  events: ReadonlyEventHub<ConsumerEventMap>,
-  characteristics: CharacteristicsControls,
-) => {
-  const refresh = shallowRef(0);
-  events.subscribe('onStructureChange', () => refresh.value++);
-
-  return {
-    isComplete: computed(() => {
-      refresh.value;
-      return characteristics.isComplete();
-    }),
-    cycles: computed(() => {
-      refresh.value;
-      return characteristics.getCycles();
-    }),
-    sccs: computed(() => {
-      refresh.value;
-      return characteristics.sccs();
-    }),
-    bidirectionalEdges: computed(() => {
-      refresh.value;
-      return characteristics.bidirectionalEdges();
-    }),
-    bipartite: computed(() => {
-      refresh.value;
-      return characteristics.bipartite();
-    }),
-    connected: computed(() => {
-      refresh.value;
-      return characteristics.connected();
-    }),
-  };
-};
+export const useCharacteristics = (characteristics: CharacteristicsControls) =>
+  useSignals({
+    isComplete: characteristics.isComplete,
+    cycles: characteristics.getCycles,
+    sccs: characteristics.sccs,
+    bidirectionalEdges: characteristics.bidirectionalEdges,
+    bipartite: characteristics.bipartite,
+    connected: characteristics.connected,
+  });

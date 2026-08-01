@@ -13,6 +13,8 @@ import {
 export const createNodePositionStore = (
   events: EventHub<CoreEventMap>,
 ): NodePositionStoreControls => {
+  // plain Map is safe only while nothing derives from positions, since setMany mutates
+  // the stored Position in place and a reactiveMap would never see the write.
   const nodeIdToNodePosition = new Map<string, Position>();
 
   const getNodePosition: NodePositionStoreControls['get'] = (nodeId) =>

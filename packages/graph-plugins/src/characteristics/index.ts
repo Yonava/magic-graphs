@@ -1,5 +1,6 @@
 import { GraphPlugin, PluginOptions } from '@graph/plugins-shared/plugins';
 import { CoreEdge } from '@graph/primitives/types';
+import { computed } from '@reactive/primitives/index';
 
 import { AdjacencyListsPlugin } from '../adjacency-lists/types.ts';
 import { getBidirectionalEdges } from './bidirectional.ts';
@@ -41,12 +42,13 @@ export const characteristics: CharacteristicsPlugin = ({
   events,
   getters,
   controls: {
-    isComplete: () => isComplete(controls),
-    getCycles: () =>
+    isComplete: computed(() => isComplete(controls)),
+    getCycles: computed(() =>
       getCycleData(controls, getStronglyConnectedComponents(controls)),
-    sccs: () => getStronglyConnectedComponentsData(controls),
-    bidirectionalEdges: () => getBidirectionalEdges(controls),
-    bipartite: () => getBipartiteData(controls),
-    connected: () => getConnectedData(controls),
+    ),
+    sccs: computed(() => getStronglyConnectedComponentsData(controls)),
+    bidirectionalEdges: computed(() => getBidirectionalEdges(controls)),
+    bipartite: computed(() => getBipartiteData(controls)),
+    connected: computed(() => getConnectedData(controls)),
   },
 });

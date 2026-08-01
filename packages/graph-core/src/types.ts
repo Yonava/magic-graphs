@@ -8,8 +8,8 @@ import { NodePositionStoreControls, Position } from './positions/types.ts';
 import { EdgeWeightStoreControls } from './weights/types.ts';
 
 export type CoreControls = {
-  nodes: Readonly<CoreNode[]>;
-  edges: Readonly<CoreEdge[]>;
+  nodes: () => Readonly<CoreNode[]>;
+  edges: () => Readonly<CoreEdge[]>;
 
   isNode: (id: string) => boolean;
   isEdge: (id: string) => boolean;

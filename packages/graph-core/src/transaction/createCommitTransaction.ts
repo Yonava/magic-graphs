@@ -7,11 +7,12 @@ import type { TransactionOptions } from './types.ts';
 // 2. ✅ Process Mutation State
 // 3. ✅ Commit Payload and Return Confirmation
 export function createCommitTransaction({
-  getGraph,
+  graph,
   onTransactionSucceeded,
 }: TransactionOptions): CommitTransaction {
   return (draft) => {
-    const { edges, nodes } = getGraph();
+    const edges = graph.edges();
+    const nodes = graph.nodes();
     const payload = createEmptyPayload();
 
     // PROCESS REMOVALS - edges first, then nodes to ensure references don't hang

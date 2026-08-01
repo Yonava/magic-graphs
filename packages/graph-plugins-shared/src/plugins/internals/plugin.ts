@@ -24,10 +24,9 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
   events: ConsumerEventsHub;
   // [1]
   finalActions: GraphActions<CoreActions>;
+  // [3]
   getters: GraphGetters<CoreGetters>;
   // [2]
-  invalidateGetters: () => void;
-  // [3]
   finalTransit: LooseGraphTransit;
 };
 
@@ -67,7 +66,7 @@ type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
 // actually triggering a mutation in response to something external (user
 // input, a timer, another event), not when building on the pipeline itself.
 
-// [3] `transit` is declared per plugin (see PluginOutput above), but the graph wide
+// [2] `transit` is declared per plugin (see PluginOutput above), but the graph wide
 // encode/decode surface is only assembled out of every plugin's contribution once
 // folding finishes. `finalTransit` is the late bound accessor to that assembled
 // surface, in the same spirit as `finalActions` in [1]: safe to capture during fold,
@@ -79,11 +78,8 @@ type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
 // plugin-owned node/edge properties (nodeLabel's labels, and anything a third party
 // adds) in order to preserve them across an undo.
 //
-// [2] getNodes()/getEdges() on the composed graph are a cache over the per-id getters,
-// not a live view. create-graph invalidates that cache on its own for structural and
-// edge-weight changes, but it has no way to know when a plugin's own local state (e.g.
-// nodeLabel's nodeIdToLabel map) changes what one of its getters returns — that's not
-// something create-graph can detect automatically. any plugin whose getters read from
-// mutable state it owns must call `invalidateGetters` right after that state changes,
-// or the cached getNodes()/getEdges() output can silently go stale. this is a
-// convention, not something the type system enforces — see nodeLabel for the pattern.
+// [3] a plugin whose getters read state it owns must hold that state in a
+// `@reactive/primitives` container (signal, reactiveMap, reactiveSet). nothing else
+// is required: `nodes`/`edges` are computeds over the getters, so a tracked read
+// during derivation is what keeps them fresh. plain mutable state is the one thing
+// that breaks it, silently.

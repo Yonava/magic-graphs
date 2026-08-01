@@ -1,10 +1,11 @@
 import { core } from '@graph/core/index';
 import { GraphTransit } from '@graph/primitives/transit/types';
+import { batch } from '@reactive/primitives/index';
 
 import {
   ConsumerEventHub,
-  emitConsumerEvents,
   TransitEventHub,
+  emitConsumerEvents,
 } from './consumer-events.ts';
 
 type PluginTransitControl = {
@@ -61,11 +62,15 @@ export const createGraphTransit = <PayloadData>({
         .join(', ');
       throw new Error(`Data decode validation failed for: ${namesOfFailures}`);
     }
-    const oldNodeIds = coreGraph.controls.nodes.map((n) => n.id);
-    const oldEdgeIds = coreGraph.controls.edges.map((e) => e.id);
-    for (const { pluginName, transit } of pluginTransitControls) {
-      transit.decode(data[pluginName]);
-    }
+    const oldNodeIds = coreGraph.controls.nodes().map((n) => n.id);
+    const oldEdgeIds = coreGraph.controls.edges().map((e) => e.id);
+    // core decodes first and every other plugin layers its own state on top, so without
+    // one flush a derivation wakes between them and sees half restored nodes.
+    batch(() => {
+      for (const { pluginName, transit } of pluginTransitControls) {
+        transit.decode(data[pluginName]);
+      }
+    });
 
     emitConsumerEvents(
       {

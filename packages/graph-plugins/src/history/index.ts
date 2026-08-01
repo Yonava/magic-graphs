@@ -13,12 +13,7 @@ import { HistoryPlugin } from './types.ts';
  * the state it owns, so a snapshot preserves all of it without history having to know
  * what any of it is.
  */
-export const history: HistoryPlugin = ({
-  actions,
-  getters,
-  finalTransit,
-  invalidateGetters,
-}) => {
+export const history: HistoryPlugin = ({ actions, getters, finalTransit }) => {
   const historyRegistry = createHistoryEventRegistry();
   const historyEventHub = createEventHub(historyRegistry);
 
@@ -94,9 +89,6 @@ export const history: HistoryPlugin = ({
     // against the slot the graph is arriving at
     cursor = index;
     finalTransit.decode(payload);
-    // decode writes directly into state each plugin owns, which is exactly the case the
-    // invalidateGetters convention covers
-    invalidateGetters();
 
     return true;
   };

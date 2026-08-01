@@ -1,4 +1,5 @@
 import { getValue } from '@core/utils/maybeGetter/index';
+import { reactiveMap } from '@reactive/primitives/index';
 
 import { UPPERCASE_ALPHABET } from './constants.ts';
 import { createLabelGenerator } from './createLabelGenerator.ts';
@@ -10,9 +11,10 @@ export const nodeLabel: NodeLabelPlugin = ({
   events,
   actions,
   getters,
-  invalidateGetters,
 }) => {
-  const nodeIdToLabel = new Map<string, string>();
+  // reactiveMap rather than Map: getNode below reads it, and nodes/edges are computeds
+  // over the getters, so this read is what ties a label change to a recompute
+  const nodeIdToLabel = reactiveMap<string, string>();
 
   const getNodeLabel: NodeLabelControls['get'] = (nodeId: string) =>
     nodeIdToLabel.get(nodeId);
@@ -24,13 +26,13 @@ export const nodeLabel: NodeLabelPlugin = ({
       nodeIdToLabel.set(nodeId, label);
       return { nodeId, label };
     });
-    invalidateGetters();
     return result;
   };
 
   const generateLabel = createLabelGenerator({
     getLabels: () =>
-      controls.nodes
+      controls
+        .nodes()
         .map((n) => getNodeLabel(n.id))
         .filter((label): label is string => label !== undefined),
     sequence: UPPERCASE_ALPHABET,

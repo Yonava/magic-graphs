@@ -29,8 +29,5 @@ export const useGraphEvents = (
   transit: withAutoUnsubscribe(events.transit),
   _internal: {
     coreEvents: withAutoUnsubscribe(events._internal.coreEvents),
-    gettersInvalidation: withAutoUnsubscribe(
-      events._internal.gettersInvalidation,
-    ),
   },
 });

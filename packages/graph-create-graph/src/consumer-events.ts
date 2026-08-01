@@ -1,8 +1,4 @@
-import {
-  ConsumerEventMap,
-  GettersInvalidationEventMap,
-  TransitEventMap,
-} from '@graph/core/consumer-events';
+import { ConsumerEventMap, TransitEventMap } from '@graph/core/consumer-events';
 import {
   EdgeWeightEntry,
   EdgeWeightStoreControls,
@@ -16,6 +12,7 @@ import {
   TransactionPayload,
 } from '@graph/primitives/transactions/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
+import { batch } from '@reactive/primitives/index';
 
 export type { ConsumerEventMap };
 
@@ -44,18 +41,6 @@ export const createTransitEventHub = () =>
   createEventHub<TransitEventMap>({
     onEncoded: new Set(),
     onDecoded: new Set(),
-  });
-
-// kept off ConsumerEventMap on purpose — see GettersInvalidationEventMap in
-// @graph/core/consumer-events. its own tiny hub, exposed only under
-// events._internal.gettersInvalidation.
-export type GettersInvalidationEventHub = ReturnType<
-  typeof createGettersInvalidationEventHub
->;
-
-export const createGettersInvalidationEventHub = () =>
-  createEventHub<GettersInvalidationEventMap>({
-    onGettersInvalidated: new Set(),
   });
 
 const hasItems = (...arrays: unknown[][]) =>
@@ -191,8 +176,10 @@ export const wrapActionsWithConsumerEvents = <
     const action = actions[key];
     if (!action) continue;
 
+    // `action` is the fully composed stack here, so batching catches plugin state
+    // written after the delegated core action, which core's own `atomic` cannot reach.
     (wrapped as any)[key] = (...args: any[]) => {
-      const result = (action as any)(...args);
+      const result = batch(() => (action as any)(...args));
       const partialPayload = (actionResultToPartialPayload[key] as any)(result);
       emitConsumerEvents(
         {

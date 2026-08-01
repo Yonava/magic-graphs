@@ -1,5 +1,6 @@
 import { core } from '@graph/core/index';
 import { LooseGraphPlugin } from '@graph/plugins-shared/plugins';
+import { ReactiveMap, reactiveMap } from '@reactive/primitives/index';
 import { describe, expect, it, vi } from 'vitest';
 
 import { foldPlugins } from './fold-plugins.ts';
@@ -42,16 +43,15 @@ const createTriggeringPlugin =
     };
   };
 
-// mimics nodeLabel: decorates getNode with plugin-local state, and calls
-// invalidateGetters after mutating that state so getNodes() stays in sync.
+// mimics nodeLabel: decorates getNode with plugin-local state held in a reactive
+// container, which is the whole contract. no invalidation call anywhere.
 const createLabelingGetterPlugin =
-  (nodeIdToLabel: Map<string, string>): LooseGraphPlugin =>
-  ({ events, actions, getters, invalidateGetters }) => ({
+  (nodeIdToLabel: ReactiveMap<string, string>): LooseGraphPlugin =>
+  ({ events, actions, getters }) => ({
     name: 'labelingGetter',
     controls: {
       setLabel: (id: string, label: string) => {
         nodeIdToLabel.set(id, label);
-        invalidateGetters();
       },
     },
     events,
@@ -74,7 +74,7 @@ const createLabelingGetterPlugin =
 
 describe('finalActions', () => {
   it('resolves to the fully-composed action, unlike a captured `actions` snapshot', () => {
-    const nodeIdToLabel = new Map<string, string>();
+    const nodeIdToLabel = reactiveMap<string, string>();
     let trigger: (() => any) | undefined;
 
     const folded = foldPlugins(
@@ -101,7 +101,7 @@ describe('finalActions', () => {
 
 describe('foldPlugins structural events', () => {
   it('fires onNodesAdded only after the fully-composed action finishes', () => {
-    const nodeIdToLabel = new Map<string, string>();
+    const nodeIdToLabel = reactiveMap<string, string>();
     const folded = foldPlugins(
       core({}),
       [createLabelingPlugin(nodeIdToLabel)],
@@ -165,25 +165,24 @@ describe('foldPlugins structural events', () => {
   });
 });
 
-describe('getters cache', () => {
-  it('starts populated (empty) right after folding, without waiting on an invalidateGetters() call', () => {
+describe('nodes and edges', () => {
+  it('reads empty right after folding, with no priming step', () => {
     const folded = foldPlugins(core({}), [], {}, () => 'default');
 
     expect(folded.getNodes()).toEqual([]);
     expect(folded.getEdges()).toEqual([]);
   });
 
-  it('auto-invalidates on structural changes without any plugin calling invalidateGetters', async () => {
+  it('tracks structural changes with no invalidation wiring', () => {
     const folded = foldPlugins(core({}), [], {}, () => 'default');
 
     const node = folded.actions.addNode({});
-    await Promise.resolve();
 
     expect(folded.getNodes().map((n: any) => n.id)).toContain(node.id);
   });
 
-  it('reflects a plugin-local state change after that plugin calls invalidateGetters', async () => {
-    const nodeIdToLabel = new Map<string, string>();
+  it('tracks a plugin-local state change through the reactive container', () => {
+    const nodeIdToLabel = reactiveMap<string, string>();
     const folded = foldPlugins(
       core({}),
       [createLabelingGetterPlugin(nodeIdToLabel)],
@@ -192,17 +191,16 @@ describe('getters cache', () => {
     );
 
     const node = folded.actions.addNode({});
-    await Promise.resolve();
-
     (folded.controls as any).labelingGetter.setLabel(node.id, 'renamed');
-    await Promise.resolve();
 
     const found = folded.getNodes().find((n: any) => n.id === node.id) as any;
     expect(found.label).toBe('renamed');
   });
 
-  it('recomputes and emits onGettersInvalidated synchronously on every invalidateGetters() call', async () => {
-    const nodeIdToLabel = new Map<string, string>();
+  // the read is synchronous, not scheduled. a computed evaluates when it is read, so
+  // there is no flush to await and no window where a caller can observe stale data
+  it('reflects every write immediately, without awaiting a flush', () => {
+    const nodeIdToLabel = reactiveMap<string, string>();
     const folded = foldPlugins(
       core({}),
       [createLabelingGetterPlugin(nodeIdToLabel)],
@@ -211,25 +209,23 @@ describe('getters cache', () => {
     );
 
     const node = folded.actions.addNode({});
-    await Promise.resolve();
-
-    const onGettersInvalidated = vi.fn();
-    folded.events._internal.gettersInvalidation.subscribe(
-      'onGettersInvalidated',
-      onGettersInvalidated,
-    );
-
     const labeling = (folded.controls as any).labelingGetter;
+
+    const labelNow = () =>
+      (folded.getNodes().find((n: any) => n.id === node.id) as any).label;
+
     labeling.setLabel(node.id, 'a');
-    expect(onGettersInvalidated).toHaveBeenCalledTimes(1);
-    let found = folded.getNodes().find((n: any) => n.id === node.id) as any;
-    expect(found.label).toBe('a');
+    expect(labelNow()).toBe('a');
 
     labeling.setLabel(node.id, 'b');
     labeling.setLabel(node.id, 'c');
+    expect(labelNow()).toBe('c');
+  });
 
-    expect(onGettersInvalidated).toHaveBeenCalledTimes(3);
-    found = folded.getNodes().find((n: any) => n.id === node.id) as any;
-    expect(found.label).toBe('c');
+  it('does not recompute when nothing it depends on changed', () => {
+    const folded = foldPlugins(core({}), [], {}, () => 'default');
+    folded.actions.addNode({});
+
+    expect(folded.getNodes()).toBe(folded.getNodes());
   });
 });

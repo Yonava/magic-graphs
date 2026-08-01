@@ -1,3 +1,5 @@
+import { computed } from '@reactive/primitives/index';
+
 import {
   AdjacencyList,
   AdjacencyListsPlugin,
@@ -6,8 +8,9 @@ import {
 } from './types.ts';
 
 const getDirectedGraphAdjacencyList = (graph: Graph) => {
-  return graph.nodes.reduce<AdjacencyList>((acc, node) => {
-    acc[node.id] = graph.edges
+  return graph.nodes().reduce<AdjacencyList>((acc, node) => {
+    acc[node.id] = graph
+      .edges()
       .filter((edge) => edge.source === node.id)
       .map((edge) => edge.target);
     return acc;
@@ -15,8 +18,9 @@ const getDirectedGraphAdjacencyList = (graph: Graph) => {
 };
 
 const getUndirectedGraphAdjacencyList = (graph: Graph) => {
-  return graph.nodes.reduce<AdjacencyList>((acc, node) => {
-    acc[node.id] = graph.edges
+  return graph.nodes().reduce<AdjacencyList>((acc, node) => {
+    acc[node.id] = graph
+      .edges()
       .filter((edge) => edge.source === node.id || edge.target === node.id)
       .map((edge) => {
         return edge.source === node.id ? edge.target : edge.source;
@@ -77,37 +81,26 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
   actions,
   getters,
 }) => {
-  let standard: AdjacencyList = {};
-  let weighted: WeightedAdjacencyList = {};
-  let directed: AdjacencyList = {};
-  let undirected: AdjacencyList = {};
-
-  const update = () => {
-    const graph: Graph = {
-      ...controls,
-      ...getters,
-      events,
-    };
-    standard = getAdjacencyList(graph);
-    weighted = getWeightedAdjacencyList(graph);
-
-    directed = getDirectedGraphAdjacencyList(graph);
-    undirected = getUndirectedGraphAdjacencyList(graph);
+  const graph: Graph = {
+    ...controls,
+    ...getters,
+    events,
   };
 
-  update();
-
-  events.subscribe('onStructureChange', update);
+  const standard = computed(() => getAdjacencyList(graph));
+  const weighted = computed(() => getWeightedAdjacencyList(graph));
+  const directed = computed(() => getDirectedGraphAdjacencyList(graph));
+  const undirected = computed(() => getUndirectedGraphAdjacencyList(graph));
 
   return {
     name: 'adjacencyLists',
     actions,
     getters,
     controls: {
-      standard: () => standard,
-      weighted: () => weighted,
-      directed: () => directed,
-      undirected: () => undirected,
+      standard,
+      weighted,
+      directed,
+      undirected,
     },
   };
 };

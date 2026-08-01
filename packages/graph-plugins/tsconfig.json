@@ -5,6 +5,7 @@
     "rootDir": "./src"
   },
   "references": [
+    { "path": "../reactive-primitives" },
     { "path": "../canvas-surface" },
     { "path": "../core-utils" },
     { "path": "../graph-core" },

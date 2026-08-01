@@ -2,6 +2,7 @@ import { core } from '@graph/core/index';
 import { LooseGraphPlugin } from '@graph/plugins-shared/plugins';
 import { history } from '@graph/plugins/history/index';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
+import { reactiveMap } from '@reactive/primitives/index';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { foldPlugins } from './fold-plugins.ts';
@@ -11,14 +12,13 @@ import { createGraphTransit } from './graph-transit.ts';
 // node itself, and hands it to transit so anything graph-wide can round trip it. this
 // is the case an inverse-action history could never restore.
 const createLabelPlugin = (): LooseGraphPlugin => {
-  const nodeIdToLabel = new Map<string, string>();
+  const nodeIdToLabel = reactiveMap<string, string>();
 
-  return ({ actions, getters, events, invalidateGetters }) => ({
+  return ({ actions, getters, events }) => ({
     name: 'label',
     controls: {
       setLabel: (id: string, label: string) => {
         nodeIdToLabel.set(id, label);
-        invalidateGetters();
       },
       getLabel: (id: string) => nodeIdToLabel.get(id),
     },
