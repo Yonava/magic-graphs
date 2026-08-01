@@ -11,16 +11,100 @@ import type {
   Shape,
   ShapeFactory,
   ShapeName,
+  ShapeNameToSchema,
   WithId,
 } from '../types/index.ts';
 import { shapeProps } from '../types/index.ts';
 import { createAutoAnimate } from './auto-animate/createAutoAnimate.ts';
+import type { DefineTimeline } from './timeline/define.ts';
 import { createDefineTimeline } from './timeline/define.ts';
 import type { ActiveAnimation, LooseSchema } from './types.ts';
 import { getAnimationProgress, getCurrentRunCount } from './utils.ts';
 
-type ActiveAnimationsMap = Map<SchemaId, ActiveAnimation[]>;
+export type ActiveAnimationsMap = Map<SchemaId, ActiveAnimation[]>;
 export type GetAnimatedSchema = (schemaId: SchemaId) => LooseSchema | undefined;
+
+/**
+ * every shape factory, wrapped so the shape it produces resolves its
+ * properties through whatever animations are running on that schema id
+ */
+export type AnimatedShapeFactories = {
+  [TShape in ShapeName]: ShapeFactory<WithId<ShapeNameToSchema[TShape]>>;
+};
+
+/**
+ * the frame lifecycle and timeline machinery that makes
+ * {@link AnimatedShapeFactories} animate. held by whoever owns the draw loop,
+ * not by the code that just builds shapes
+ */
+export type ShapeRenderer = {
+  /**
+   * a `drawGroup` that also draws recently-removed shapes ("ghosts") in the
+   * draw-order position they held right before removal, for as long as their
+   * remove animation is still running
+   */
+  drawGroup: (ctx: CanvasRenderingContext2D, groupShapes: Shape[]) => void;
+  /**
+   * marks the start of a draw pass, resetting the running shape count that
+   * `drawGroup` places ghosts against. call once per frame
+   */
+  beginFrame: () => void;
+  /**
+   * draws any ghost whose priority tier had no surviving live elements this
+   * frame, and so never got a `drawGroup` call to be spliced into. call once
+   * per frame, after every `drawGroup`
+   */
+  endFrame: (ctx: CanvasRenderingContext2D) => void;
+  /**
+   * registers an animation that shapes can play by id
+   */
+  defineTimeline: DefineTimeline;
+  autoAnimate: {
+    /**
+     * captures a before/after pair of schema snapshots around a mutation by
+     * invoking `flushDraw` twice, generating animations from the difference.
+     * returns the finalizer that takes the "after" snapshot
+     */
+    captureFrame: (flushDraw: () => void) => () => void;
+  };
+  /**
+   * if a schema is actively being animated, the live schema with animated
+   * props applied
+   */
+  getAnimatedSchema: GetAnimatedSchema;
+  /**
+   * Get the animated value of a schema property currently being animated.
+   *
+   * Intended for use in imperative timelines where resolving one property's animated value
+   * depends on the animated value of another property. In these special cases, `getAnimatedSchema`
+   * would cause a circular dependency.
+   *
+   * WARNING: Calling this on a property that the imperative track itself resolves
+   * will crash your app!
+   */
+  getAnimatedProp: <TProp extends EverySchemaPropName>(
+    schemaId: SchemaId,
+    inputPropName: TProp,
+  ) => UnionToIntersection<EverySchemaProp>[TProp];
+  /**
+   * a mapping between shapes (via ids) and the animations currently
+   * active/running on those shapes
+   */
+  activeAnimations: ActiveAnimationsMap;
+};
+
+/**
+ * one closure's worth of animated shapes: the factories and the renderer that
+ * drives them share the same active-animation state, so they are created
+ * together and split apart by the consumer that hands each half to a
+ * different audience
+ */
+export type AnimatedShapes = {
+  /**
+   * drop-in replacements for the raw shape factories that animate themselves
+   */
+  shapes: AnimatedShapeFactories;
+} & ShapeRenderer;
 
 export const resolveSchemaWithDefaults = (
   schema: LooseSchema,
@@ -49,7 +133,7 @@ const withoutDrawing = (shape: Shape): Shape => ({
   drawTextAreaMatte: () => {},
 });
 
-export const createAnimatedShapes = () => {
+export const createAnimatedShapes = (): AnimatedShapes => {
   /**
    * a mapping between shapes (via ids) and the animations currently
    * active/running on those shapes
@@ -270,7 +354,7 @@ export const createAnimatedShapes = () => {
       });
   }
 
-  const animatedShapes = {
+  const animatedShapes: AnimatedShapeFactories = {
     arrow: animatedFactory(shapes.arrow, 'arrow'),
     circle: animatedFactory(shapes.circle, 'circle'),
     cross: animatedFactory(shapes.cross, 'cross'),
@@ -387,19 +471,9 @@ export const createAnimatedShapes = () => {
     defineTimeline,
     autoAnimate: { captureFrame: autoAnimate.captureFrame },
     getAnimatedSchema,
-    /**
-     * Get the animated value of a schema property currently being animated.
-     *
-     * Intended for use in imperative timelines where resolving one property's animated value
-     * depends on the animated value of another property. In these special cases, `getAnimatedSchema`
-     * would cause a circular dependency.
-     *
-     * WARNING: Calling this on a property that the imperative track itself resolves
-     * will crash your app!
-     */
-    getAnimatedProp: <T extends EverySchemaPropName>(
-      schemaId: string,
-      inputPropName: T,
+    getAnimatedProp: <TProp extends EverySchemaPropName>(
+      schemaId: SchemaId,
+      inputPropName: TProp,
     ) => {
       const animations = activeAnimations.get(schemaId);
       if (!animations || animations.length === 0) {
@@ -429,7 +503,7 @@ export const createAnimatedShapes = () => {
 
       let propVal = schemaWithDefaults[
         inputPropName
-      ] as UnionToIntersection<EverySchemaProp>[T];
+      ] as UnionToIntersection<EverySchemaProp>[TProp];
 
       for (const animation of animations) {
         const timeline = timelineIdToTimeline.get(animation.timelineId);
@@ -463,5 +537,3 @@ export const createAnimatedShapes = () => {
     activeAnimations,
   };
 };
-
-export type AnimatedShapeControls = ReturnType<typeof createAnimatedShapes>;

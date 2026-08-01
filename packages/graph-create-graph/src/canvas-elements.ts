@@ -1,3 +1,4 @@
+import { nullThrows } from '@core/utils/assert';
 import { CoreControls } from '@graph/core/types';
 import { createComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import { CanvasElement } from '@graph/plugins/canvas/aggregator/types';
@@ -13,7 +14,15 @@ export const createCanvasElementFactories = (
   tokenResolver: ReturnType<typeof createComputedTokenResolver>,
 ) => {
   const nodeCanvasElement = (node: CoreNode): CanvasElement | undefined => {
-    const shape = nodeRenderer({ resolver: tokenResolver, controls, node });
+    const shape = nodeRenderer({
+      resolver: tokenResolver,
+      shapes: controls.canvas.shapes,
+      node,
+      position: nullThrows(
+        controls.positions.get(node.id),
+        `could not resolve position for node with id ${node.id}`,
+      ),
+    });
     if (!shape) return;
 
     return {

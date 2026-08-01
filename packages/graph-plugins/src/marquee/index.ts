@@ -87,7 +87,7 @@ export const marquee: MarqueePlugin = ({ controls, events }) => {
   };
 
   const getMarqueeBoxCanvasElement = (box: BoundingBox): CanvasElement => {
-    const shape = controls.canvas.shapes.shapes.rect({
+    const shape = controls.canvas.shapes.rect({
       id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
       fillColor: theme._resolveToken('marquee.drag.color'),
@@ -117,7 +117,7 @@ export const marquee: MarqueePlugin = ({ controls, events }) => {
 
   const getSelectionBoxSchema = (box: BoundingBox): CanvasElement => {
     const id = 'selection-box';
-    const shape = controls.canvas.shapes.shapes.rect({
+    const shape = controls.canvas.shapes.rect({
       id,
       ...box,
       fillColor: theme._resolveToken('marquee.selection.color'),

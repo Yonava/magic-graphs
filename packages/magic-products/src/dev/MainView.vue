@@ -6,12 +6,8 @@
 
   const graph = useGraphProduct({
     manifest,
-    interactive: {
-      allowSelfLoops: false,
-      allowRepeatConnections: true,
-    },
     ui: {
-      annotations: true,
+      debug: true,
     },
   });
 

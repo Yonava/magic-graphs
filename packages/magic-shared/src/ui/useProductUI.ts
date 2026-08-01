@@ -1,13 +1,13 @@
 import { ComponentSlot } from '../component-slot/types.ts';
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import { Graph } from '../graph/types.ts';
-import CursorCoordinates from '../product/debug/CursorCoordinates.vue';
 import LensChipGroup from '../ui/lens-chips/LensChipGroup.vue';
 import {
   AnnotationsControls,
   useAnnotationsState,
 } from './annotations/useAnnotationsState.ts';
 import BottomRightControls from './bottom-right-controls/BottomRightControls.vue';
+import CursorCoordinates from './debug/CursorCoordinates.vue';
 import { LensChipDefinition } from './lens-chips/types.ts';
 import NavigationMenu from './navigation-menu/NavigationMenu.vue';
 

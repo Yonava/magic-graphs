@@ -30,8 +30,8 @@ export const canvas =
     const canvasEventRegistry = createCanvasEventRegistry();
     const canvasEvents = createEventHub(canvasEventRegistry);
 
-    const shapes = createAnimatedShapes();
-    const aggregator = createAggregator(canvasEvents, shapes);
+    const { shapes, ...renderer } = createAnimatedShapes();
+    const aggregator = createAggregator(canvasEvents, renderer);
 
     const graphUnderCursor: GraphUnderCursor = {
       coords: { x: 0, y: 0 },
@@ -199,6 +199,7 @@ export const canvas =
       controls: {
         aggregator,
         shapes,
+        renderer,
         events: canvasEvents,
 
         magicCanvas,

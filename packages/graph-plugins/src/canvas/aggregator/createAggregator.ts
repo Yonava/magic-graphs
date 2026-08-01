@@ -1,4 +1,4 @@
-import { AnimatedShapeControls } from '@canvas/primitives/animation/index';
+import { ShapeRenderer } from '@canvas/primitives/animation/index';
 import { Coordinate } from '@graph/plugins-shared/drag';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { DeepReadonly } from 'ts-essentials';
@@ -16,7 +16,7 @@ export type AggregatorControls = {
 
 export const createAggregator = (
   { emit }: Pick<EventHub<CanvasEventMap>, 'emit'>,
-  shapes: Pick<AnimatedShapeControls, 'drawGroup' | 'beginFrame' | 'endFrame'>,
+  renderer: Pick<ShapeRenderer, 'drawGroup' | 'beginFrame' | 'endFrame'>,
 ): AggregatorControls => {
   let aggregator: Aggregator = [];
   const transformers: AggregatorTransformer[] = [];
@@ -46,14 +46,14 @@ export const createAggregator = (
     emit('onBeforeDraw', ctx);
     updateAggregator();
 
-    shapes.beginFrame();
+    renderer.beginFrame();
     for (const group of groupByPriority(aggregator).values()) {
-      shapes.drawGroup(
+      renderer.drawGroup(
         ctx,
         group.map((item) => item.shape),
       );
     }
-    shapes.endFrame(ctx);
+    renderer.endFrame(ctx);
 
     emit('onDraw', ctx);
   };

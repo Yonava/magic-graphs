@@ -4,7 +4,7 @@ import { AnimationPlugin } from './types.ts';
 
 export const animation: AnimationPlugin = ({ controls, actions }) => {
   const autoAnimate = () =>
-    controls.canvas.shapes.autoAnimate.captureFrame(() =>
+    controls.canvas.renderer.autoAnimate.captureFrame(() =>
       controls.canvas.aggregator.draw(
         getCtx(controls.canvas.magicCanvas.canvas),
       ),

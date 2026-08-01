@@ -1,17 +1,17 @@
+import { AnimatedShapeFactories } from '@canvas/primitives/animation/index';
 import { Shape } from '@canvas/primitives/types/index';
-import { nullThrows } from '@core/utils/assert';
-import { CoreControls } from '@graph/core/types';
+import { Coordinate } from '@canvas/primitives/types/utility';
 import { CompoundTokenResolver } from '@graph/plugins-shared/computed-tokens';
-import { CanvasControls } from '@graph/plugins/canvas/types';
 import { CoreNode } from '@graph/primitives/types';
 
-type Props = {
+type RendererProps = {
   resolver: CompoundTokenResolver;
   node: CoreNode;
-  controls: CoreControls & { canvas: CanvasControls };
+  position: Coordinate;
+  shapes: AnimatedShapeFactories;
 };
 
-type NodeRenderer = (props: Props) => Shape | undefined;
+type NodeRenderer = (props: RendererProps) => Shape | undefined;
 
 export const resolveNodeComputedTokens =
   (resolver: CompoundTokenResolver) => (node: CoreNode) => ({
@@ -30,14 +30,15 @@ export const resolveNodeComputedTokens =
     },
   });
 
-export const nodeRenderer: NodeRenderer = ({ resolver, node, controls }) => {
-  const position = nullThrows(
-    controls.positions.get(node.id),
-    `could not resolve position for node with id ${node.id}`,
-  );
+export const nodeRenderer: NodeRenderer = ({
+  resolver,
+  node,
+  shapes,
+  position,
+}) => {
   const styles = resolveNodeComputedTokens(resolver)(node);
 
-  return controls.canvas.shapes.shapes.circle({
+  return shapes.circle({
     id: node.id,
     at: position,
     radius: styles.size,

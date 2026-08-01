@@ -138,7 +138,7 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
       (fromNodeSize + fromNodeBorderWidth / 2) -
       WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX;
 
-    return controls.canvas.shapes.shapes.uturn({
+    return controls.canvas.shapes.uturn({
       id: edge.id,
       spacing: styles.width * 1.2,
       at: { x: sourceNode.x, y: sourceNode.y },
@@ -162,7 +162,7 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
   if (areNodesTouching) return undefined;
 
   if (!isGraphDirected) {
-    return controls.canvas.shapes.shapes.line({
+    return controls.canvas.shapes.line({
       id: edge.id,
       start: edgeStart,
       end: edgeEnd,
@@ -172,7 +172,7 @@ export const edgeRenderer: EdgeRenderer = ({ resolver, edge, controls }) => {
     });
   }
 
-  return controls.canvas.shapes.shapes.arrow({
+  return controls.canvas.shapes.arrow({
     id: edge.id,
     start: edgeStart,
     end: edgeEnd,

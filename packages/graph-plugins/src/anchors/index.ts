@@ -94,8 +94,7 @@ export const anchors: AnchorsPlugin = ({ controls, events, getters }) => {
         nodeAnchorSchema.at.y = draggedAnchor.y;
       }
 
-      const nodeAnchorShape =
-        controls.canvas.shapes.shapes.circle(nodeAnchorSchema);
+      const nodeAnchorShape = controls.canvas.shapes.circle(nodeAnchorSchema);
 
       anchorSchemas.push({
         id: anchor.id,
@@ -229,7 +228,7 @@ export const anchors: AnchorsPlugin = ({ controls, events, getters }) => {
 
     const width = isFocused ? focusWidth : baseWidth;
 
-    const shape = controls.canvas.shapes.shapes.line({
+    const shape = controls.canvas.shapes.line({
       id: EDGE_PREVIEW_ID,
       start,
       end,
