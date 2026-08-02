@@ -12,7 +12,9 @@ export type PhantomNode = CoreNode & {
   label: string;
 };
 
-export type PhantomEdge = CoreEdge;
+export type PhantomEdge = CoreEdge & {
+  label?: string;
+};
 
 export type PhantomPlugin = GraphPlugin<{
   name: 'phantom';

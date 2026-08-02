@@ -236,7 +236,7 @@ export const canvas =
       },
       onAfterInit: () => {
         const weightLayer = theme.createLayer(
-          CANVAS_PLUGIN_ID + '/theme/edge-weight',
+          CANVAS_PLUGIN_ID + '/edge-weight',
         );
         const weight = (edge: CoreEdge) => {
           if (!controls.isEdge(edge.id)) return;

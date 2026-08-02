@@ -7,7 +7,7 @@ import {
 import { getNeighborPositions } from '@graph/render-functions/utils/getNeighborPositions';
 
 import { CanvasElement } from '../canvas/aggregator/types.ts';
-import { createLabelThemer } from '../node-label/createLabelThemer.ts';
+import { createLabelThemer } from './createLabelThemer.ts';
 import { PhantomEdge, PhantomNode, PhantomPlugin } from './types.ts';
 
 // const createEdgeRenderFunction = () => {
@@ -87,11 +87,13 @@ export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
     return elements;
   };
 
-  const themer = createLabelThemer(
+  const labelThemer = createLabelThemer(
     controls,
-    (id) => nodes.find((n) => n.id === id)?.label,
+    ({ id }) =>
+      nodes.find((n) => n.id === id)?.label ??
+      edges.find((e) => e.id === id)?.label,
   );
-  themer.enable();
+  labelThemer.enable();
 
   controls.canvas.aggregator.transformers.push(render);
 
@@ -117,15 +119,8 @@ export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
     id: 'phantom-edge-1',
     source: 'phantom-node-1',
     target: 'phantom-node-2',
+    label: 'ABC',
   });
-
-  setTimeout(() => {
-    addEdge({
-      id: 'phantom-edge-2',
-      source: 'phantom-node-1',
-      target: controls.nodes()[0].id,
-    });
-  }, 4000);
 
   return {
     name: 'phantom',
