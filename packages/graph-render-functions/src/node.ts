@@ -1,7 +1,7 @@
 import { createNodeStyleResolver } from './helpers.ts';
-import { CreateNodeRenderer } from './types.ts';
+import { CreateNodeRenderFunction } from './types.ts';
 
-export const createNodeRenderer: CreateNodeRenderer = ({
+export const createNodeRenderFunction: CreateNodeRenderFunction = ({
   shapes,
   resolveToken,
 }) => {

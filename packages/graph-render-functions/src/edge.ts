@@ -4,11 +4,11 @@ import { GOLDEN_RATIO } from '@core/utils/math';
 import { getValue } from '@core/utils/maybeGetter/index';
 
 import { createEdgeStyleResolver, createNodeStyleResolver } from './helpers.ts';
-import { CreateEdgeRenderer } from './types.ts';
+import { CreateEdgeRenderFunction } from './types.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
-export const createEdgeRenderer: CreateEdgeRenderer = ({
+export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
   resolveToken,
   shapes,
   directed,

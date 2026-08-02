@@ -11,6 +11,7 @@
     { "path": "../graph-core" },
     { "path": "../graph-plugins-shared" },
     { "path": "../graph-primitives" },
+    { "path": "../graph-render-functions" },
     { "path": "../canvas-primitives" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]

@@ -18,6 +18,7 @@
     "@graph/plugins-shared": "workspace:*",
     "@graph/primitives": "workspace:*",
     "@canvas/primitives": "workspace:*",
+    "@graph/render-functions": "workspace:*",
     "@core/utils": "workspace:*",
     "fraction.js": "^5.3.4",
     "@reactive/primitives": "workspace:*"

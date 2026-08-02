@@ -5,7 +5,7 @@ import { MaybeGetter } from '@core/utils/maybeGetter/index';
 import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import { CoreNode } from '@graph/primitives/types';
 
-type RendererOptions = {
+type RenderFunctionOptions = {
   shapes: AnimatedShapeFactories;
   resolveToken: ComputedTokenResolver;
 };
@@ -18,8 +18,8 @@ export type NodeRenderProps = CoreNode & {
 
 type NodeRenderFunction = (node: NodeRenderProps) => Shape;
 
-export type CreateNodeRenderer = (
-  options: RendererOptions,
+export type CreateNodeRenderFunction = (
+  options: RenderFunctionOptions,
 ) => NodeRenderFunction;
 
 // ----- EDGE RENDERER -----
@@ -36,8 +36,8 @@ export type EdgeRenderProps = {
 
 type EdgeRenderFunction = (edge: EdgeRenderProps) => Shape;
 
-export type CreateEdgeRenderer = (
-  options: RendererOptions & {
+export type CreateEdgeRenderFunction = (
+  options: RenderFunctionOptions & {
     directed: boolean;
     labelled: boolean;
     labelTextInputColor: MaybeGetter<string>;

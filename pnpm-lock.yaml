@@ -218,6 +218,9 @@ importers:
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@graph/render-functions':
+        specifier: workspace:*
+        version: link:../graph-render-functions
       '@reactive/primitives':
         specifier: workspace:*
         version: link:../reactive-primitives

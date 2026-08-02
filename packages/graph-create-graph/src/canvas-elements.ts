@@ -6,20 +6,20 @@ import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@graph/plugins/canvas/setupCanv
 import { CanvasControls } from '@graph/plugins/canvas/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 import {
-  createEdgeRenderer,
-  createNodeRenderer,
+  createEdgeRenderFunction,
+  createNodeRenderFunction,
 } from '@graph/render-functions/index';
 
 export const createCanvasElementFactories = (
   controls: CoreControls & { canvas: CanvasControls },
   tokenResolver: ComputedTokenResolver,
 ) => {
-  const nodeRenderer = createNodeRenderer({
+  const nodeRenderFunction = createNodeRenderFunction({
     shapes: controls.canvas.shapes,
     resolveToken: tokenResolver,
   });
 
-  const edgeRenderer = createEdgeRenderer({
+  const edgeRenderFunction = createEdgeRenderFunction({
     directed: controls.metadata.directed,
     labelled: controls.metadata.weighted,
     labelTextInputColor: () =>
@@ -45,7 +45,7 @@ export const createCanvasElementFactories = (
 
   const nodeToCanvasElement = (node: CoreNode): CanvasElement => ({
     id: node.id,
-    shape: nodeRenderer({
+    shape: nodeRenderFunction({
       id: node.id,
       position: nullThrows(
         controls.positions.get(node.id),
@@ -60,7 +60,7 @@ export const createCanvasElementFactories = (
 
   const edgeToCanvasElement = (edge: CoreEdge): CanvasElement => ({
     id: edge.id,
-    shape: edgeRenderer({
+    shape: edgeRenderFunction({
       id: edge.id,
       source: {
         id: edge.source,

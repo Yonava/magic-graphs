@@ -1,14 +1,14 @@
-/** Builds the shape for a single node. Pair with {@link CreateNodeRenderer} to swap in your own. */
-export { createNodeRenderer } from './node.ts';
+/** Builds the shape for a single node. Pair with {@link CreateNodeRenderFunction} to swap in your own. */
+export { createNodeRenderFunction } from './node.ts';
 
-/** Builds the shape for a single edge, including self directed and parallel edges. Pair with {@link CreateEdgeRenderer} to swap in your own. */
-export { createEdgeRenderer } from './edge.ts';
+/** Builds the shape for a single edge, including self directed and parallel edges. Pair with {@link CreateEdgeRenderFunction} to swap in your own. */
+export { createEdgeRenderFunction } from './edge.ts';
 
 /** The contract a node render function factory satisfies. */
-export type { CreateNodeRenderer } from './types.ts';
+export type { CreateNodeRenderFunction } from './types.ts';
 
 /** The contract an edge render function factory satisfies. */
-export type { CreateEdgeRenderer } from './types.ts';
+export type { CreateEdgeRenderFunction } from './types.ts';
 
 /** Everything a node render function is handed. */
 export type { NodeRenderProps } from './types.ts';
