@@ -6,7 +6,7 @@ import { GraphActions } from '@graph/primitives/actions/types';
 import { GraphGetters } from '@graph/primitives/getters/types';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
 
-import { CompoundTokenResolver } from '../../computed-tokens/index.ts';
+import { ComputedTokenResolver } from '../../computed-tokens/index.ts';
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';
@@ -35,7 +35,7 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
   // [3]
   getters: GraphGetters<CoreGetters>;
   // [4]
-  finalTokenResolver: CompoundTokenResolver;
+  finalTokenResolver: ComputedTokenResolver;
 };
 
 type PluginOutput<PluginSchema extends LoosePluginSchema> = {

@@ -9,7 +9,7 @@ import { GenericEventMap } from '@graph/primitives/events/types';
 import { BaseGetters, GraphGetters } from '@graph/primitives/getters/types';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
 
-import { CompoundTokenResolver } from '../../computed-tokens/index.ts';
+import { ComputedTokenResolver } from '../../computed-tokens/index.ts';
 
 export type LoosePluginSchema = {
   name: string;
@@ -37,7 +37,7 @@ type LoosePluginInput = {
   finalTransit: LooseGraphTransit;
   // see [4] in ./plugin.ts for the stable accessor to the computed token resolver,
   // built from every plugin's detectors once folding completes
-  finalTokenResolver: CompoundTokenResolver;
+  finalTokenResolver: ComputedTokenResolver;
 };
 
 type LoosePluginOutput = {

@@ -1,6 +1,6 @@
 import { nullThrows } from '@core/utils/assert';
 import { CoreControls } from '@graph/core/types';
-import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens/internals/createComputedTokenResolver';
+import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import { CanvasElement } from '@graph/plugins/canvas/aggregator/types';
 import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@graph/plugins/canvas/setupCanvasCursor';
 import { CanvasControls } from '@graph/plugins/canvas/types';

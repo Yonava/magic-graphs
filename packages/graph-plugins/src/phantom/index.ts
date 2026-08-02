@@ -1,7 +1,7 @@
 import { AnimatedShapeFactories } from '@canvas/primitives/animation/index';
 import { Shape } from '@canvas/primitives/types/index';
 import { Coordinate } from '@canvas/primitives/types/utility';
-import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens/internals/createComputedTokenResolver';
+import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import { CoreNode } from '@graph/primitives/types';
 
 import { CanvasElement } from '../canvas/aggregator/types.ts';

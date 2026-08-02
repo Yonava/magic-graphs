@@ -12,7 +12,7 @@ type RendererOptions = {
 
 // ----- NODE RENDERER -----
 
-export type NodeRenderProps = CoreNode & {
+type NodeRenderProps = CoreNode & {
   position: Coordinate;
 };
 
@@ -24,7 +24,7 @@ export type CreateNodeRenderer = (
 
 // ----- EDGE RENDERER -----
 
-export type EdgeRenderProps = {
+type EdgeRenderProps = {
   id: string;
   source: NodeRenderProps;
   target: NodeRenderProps;
