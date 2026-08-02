@@ -1,3 +1,5 @@
+import { resolveNodeComputedTokens } from '@graph/create-graph/render-functions/helpers';
+
 import { MaybeRefOrGetter, toRef } from 'vue';
 
 import { GNode, Graph } from '../../graph/types.ts';
@@ -8,8 +10,9 @@ export const useNodeStyles = (
   nodeId: MaybeRefOrGetter<GNode['id']>,
 ) => {
   const id = toRef(nodeId);
-  const res = useResolvedStyles(graph, () =>
-    graph.theme.resolveNodeStyles({ id: id.value }),
-  );
+  const res = useResolvedStyles(graph, () => {
+    const getStyles = resolveNodeComputedTokens(graph.theme.tokenResolver);
+    return getStyles({ id: id.value });
+  });
   return { id, ...res };
 };

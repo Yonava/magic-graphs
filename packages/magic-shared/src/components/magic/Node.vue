@@ -26,7 +26,7 @@
     borderWidth: toPixels(styles.value.border.width * props.scale),
     borderColor: styles.value.border.color,
     backgroundColor: styles.value.color,
-    fontSize: toPixels(styles.value.text.size * props.scale),
+    fontSize: toPixels(styles.value.text.fontSize * props.scale),
     fontWeight: styles.value.text.fontWeight,
     display: 'grid',
     placeItems: 'center',

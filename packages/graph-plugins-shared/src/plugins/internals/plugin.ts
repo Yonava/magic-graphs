@@ -30,10 +30,10 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
   events: ConsumerEventsHub;
   // [1]
   finalActions: GraphActions<CoreActions>;
-  // [3]
-  getters: GraphGetters<CoreGetters>;
   // [2]
   finalTransit: LooseGraphTransit;
+  // [3]
+  getters: GraphGetters<CoreGetters>;
   // [4]
   finalTokenResolver: CompoundTokenResolver;
 };

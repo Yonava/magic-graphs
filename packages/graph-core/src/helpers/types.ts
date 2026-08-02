@@ -7,13 +7,6 @@ import { CoreControls } from '../types.ts';
 
 export type EdgeHelpers = {
   /**
-   * resolves {@link CoreEdge.source | edge.from} and {@link CoreEdge.target | edge.to} fields into an their referenced {@link CoreNode | nodes}
-   */
-  getConnectedNodes: (edgeId: CoreEdge['id']) => {
-    sourceNode: CoreNode;
-    targetNode: CoreNode;
-  };
-  /**
    * a {@link CoreOptions.directed | options.isGraphDirected} aware predicate returning `true` if provided {@link CoreEdge | edge} directs into provided {@link CoreNode | node}
    */
   isPointingTowardNode: (
@@ -78,7 +71,7 @@ export type NodeHelpers = {
   getEdgesBetweenConnectedNodes: (
     node1Id: CoreNode['id'],
     node2Id: CoreNode['id'],
-  ) => CoreEdge[];
+  ) => readonly CoreEdge[];
   /**
    * a {@link CoreOptions.directed | options.isGraphDirected} aware getter that returns the edge linking a source node to a target node
    *

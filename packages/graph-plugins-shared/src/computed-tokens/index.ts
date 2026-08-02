@@ -1,6 +1,6 @@
 /** Resolves computed token values for nodes and edges by running detectors in precedence order. */
 export {
-  type CompoundTokenResolver,
+  type ComputedTokenResolver as CompoundTokenResolver,
   createComputedTokenResolver,
 } from './internals/createComputedTokenResolver.ts';
 

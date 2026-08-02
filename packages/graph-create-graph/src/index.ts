@@ -22,8 +22,6 @@ import { createCanvasElementFactories } from './canvas-elements.ts';
 import { createThemer } from './createThemer.ts';
 import { foldPlugins } from './fold-plugins.ts';
 import { createGraphTransit } from './graph-transit.ts';
-import { resolveEdgeComputedTokens } from './render-functions/edge.ts';
-import { resolveNodeComputedTokens } from './render-functions/node.ts';
 import { GraphTransit } from './types.ts';
 
 type CreateGraphOptions<
@@ -93,33 +91,20 @@ export const createGraph = <
     canvas: CanvasControls;
   };
 
-  const { nodeCanvasElement, edgeCanvasElement } = createCanvasElementFactories(
-    castControls,
-    tokenResolver,
-  );
+  const {
+    nodeToCanvasElement: nodeCanvasElement,
+    edgeToCanvasElement: edgeCanvasElement,
+  } = createCanvasElementFactories(castControls, tokenResolver);
 
   const { transformers } = castControls.canvas.aggregator;
 
   const transformer: AggregatorTransformer = (agg) => {
-    agg.push(
-      ...controls
-        .nodes()
-        .map(nodeCanvasElement)
-        .filter((v) => !!v),
-    );
-    agg.push(
-      ...controls
-        .edges()
-        .map(edgeCanvasElement)
-        .filter((v) => !!v),
-    );
+    agg.push(...controls.nodes().map(nodeCanvasElement));
+    agg.push(...controls.edges().map(edgeCanvasElement));
     return agg;
   };
 
   transformers.push(transformer);
-
-  const resolveNodeStyles = resolveNodeComputedTokens(tokenResolver);
-  const resolveEdgeStyles = resolveEdgeComputedTokens(tokenResolver);
 
   type GraphTransitControls = GraphTransit<
     Prettify<ExtractTransitPayload<NoInfer<TPlugins>>>
@@ -153,8 +138,6 @@ export const createGraph = <
     theme: {
       createThemer: createThemer<TPlugins>(controls),
       tokenResolver,
-      resolveNodeStyles,
-      resolveEdgeStyles,
       activePresetName: () => activePresetName,
       activePreset: () => themePresets[activePresetName],
       setActivePreset: (newPresetName: PresetName) => {

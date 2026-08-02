@@ -1,5 +1,7 @@
+import { AnimatedShapeFactories } from '@canvas/primitives/animation/index';
 import { Shape } from '@canvas/primitives/types/index';
 import { Coordinate } from '@canvas/primitives/types/utility';
+import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens/internals/createComputedTokenResolver';
 import { CoreNode } from '@graph/primitives/types';
 
 import { CanvasElement } from '../canvas/aggregator/types.ts';
@@ -10,51 +12,60 @@ type PhantomNode = CoreNode & {
   label: string;
 };
 
-type NodeRenderFunctionProps = {
-  node: PhantomNode;
+type NodeRenderFunction<Node extends CoreNode> = (node: Node) => Shape;
+
+type Config = {
+  shapes: AnimatedShapeFactories;
+  token: ComputedTokenResolver;
 };
 
-type NodeRenderFunction = (props: NodeRenderFunctionProps) => Shape;
+type CreateNodeRenderer<Node extends CoreNode> = (
+  config: Config,
+) => NodeRenderFunction<Node>;
 
-export const phantom: PhantomPlugin = ({ controls }) => {
-  const nodes: PhantomNode[] = [
-    { id: 'phantom-node-1', position: { x: 850, y: 430 }, label: 'P!' },
-    { id: 'phantom-node-2', position: { x: 850, y: 530 }, label: 'Z!' },
-  ];
-
-  const resolveToken = controls.canvas.theme._resolveToken;
-
-  const nodeRenderer: NodeRenderFunction = ({ node }) => {
-    return controls.canvas.shapes.circle({
+const createNodeRenderer: CreateNodeRenderer<PhantomNode> =
+  ({ shapes, token }) =>
+  (node) =>
+    shapes.circle({
       id: node.id,
       at: node.position,
-      radius: resolveToken('node.default.size', node),
-      fillColor: resolveToken('node.default.color', node),
+      radius: token('node.size', node),
+      fillColor: token('node.color', node),
       stroke: {
-        color: resolveToken('node.default.border.color', node),
-        lineWidth: resolveToken('node.default.border.width', node),
+        color: token('node.border.color', node),
+        lineWidth: token('node.border.width', node),
       },
       textArea: {
         color: 'transparent',
         textBlock: {
           content: node.label,
-          fontSize: resolveToken('node.default.text.size', node),
-          fontWeight: resolveToken('node.default.text.fontWeight', node),
-          color:
-            controls.canvas.graphUnderCursor.topElement?.id === node.id
-              ? 'red'
-              : resolveToken('node.default.text.color', node),
+          fontSize: token('node.text.size', node),
+          fontWeight: token('node.text.fontWeight', node),
+          color: token('node.text.color', node),
         },
       },
     });
-  };
+
+// nodes in graph rendered on a priority level between [2, 3)
+const NODE_RENDER_PRIORITY = 2;
+
+export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
+  const nodes: PhantomNode[] = [
+    { id: 'phantom-node-1', position: { x: 850, y: 430 }, label: 'P!' },
+    { id: 'phantom-node-2', position: { x: 850, y: 530 }, label: 'Z!' },
+  ];
+
+  const nodeRenderer = createNodeRenderer({
+    shapes: controls.canvas.shapes,
+    token: finalTokenResolver,
+  });
 
   const render = (elements: CanvasElement[]) => {
     for (const node of nodes) {
       elements.push({
         id: node.id,
-        priority: 0,
-        shape: nodeRenderer({ node }),
+        priority: NODE_RENDER_PRIORITY,
+        shape: nodeRenderer(node),
         data: {
           cursor: 'not-allowed',
         },
