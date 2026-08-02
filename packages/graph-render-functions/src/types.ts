@@ -1,11 +1,10 @@
 import { AnimatedShapeFactories } from '@canvas/primitives/animation/index';
 import { Shape } from '@canvas/primitives/types/index';
 import { Coordinate } from '@canvas/primitives/types/utility';
-import { MaybeGetter } from '@core/utils/maybeGetter/index';
 import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import { CoreNode } from '@graph/primitives/types';
 
-type RenderFunctionOptions = {
+export type RenderFunctionOptions = {
   shapes: AnimatedShapeFactories;
   resolveToken: ComputedTokenResolver;
 };
@@ -16,7 +15,7 @@ export type NodeRenderProps = CoreNode & {
   position: Coordinate;
 };
 
-type NodeRenderFunction = (node: NodeRenderProps) => Shape;
+export type NodeRenderFunction = (node: NodeRenderProps) => Shape;
 
 export type CreateNodeRenderFunction = (
   options: RenderFunctionOptions,
@@ -30,13 +29,13 @@ export type EdgeRenderProps = {
   target: NodeRenderProps;
 };
 
-type EdgeRenderFunction = (edge: EdgeRenderProps) => Shape;
+export type EdgeRenderFunction = (edge: EdgeRenderProps) => Shape;
 
 export type CreateEdgeRenderFunction = (
   options: RenderFunctionOptions & {
     directed: boolean;
     labelled: boolean;
-    labelTextInputColor: MaybeGetter<string>;
+    labelTextInputColor: (edge: EdgeRenderProps) => string;
     /** how many edges run between {@link source} and {@link target}, including this one */
     parallelEdgeCount: (edge: EdgeRenderProps) => number;
     /** positions of the nodes adjacent to {@link source} and {@link target}, used to aim self directed edges away from them */

@@ -1,7 +1,7 @@
 import { PluginOptions } from '@graph/plugins-shared/plugins';
 
 import { PHANTOM_PLUGIN_ID } from './constants.ts';
-import { PhantomEdge, PhantomNode, PhantomPlugin } from './types.ts';
+import { PhantomPlugin } from './types.ts';
 
 const layerId = `${PHANTOM_PLUGIN_ID}/createLabelThemer`;
 

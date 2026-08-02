@@ -16,6 +16,11 @@ export type { NodeRenderProps } from './types.ts';
 /** Everything an edge render function is handed, including the topology facts it cannot derive on its own. */
 export type { EdgeRenderProps } from './types.ts';
 
+export type { NodeRenderFunction } from './types.ts';
+export type { EdgeRenderFunction } from './types.ts';
+
+export type { RenderFunctionOptions } from './types.ts';
+
 /** Builds a resolver for every node style token in one pass, keyed to match what shapes accept. */
 export { createNodeStyleResolver } from './resolvers.ts';
 

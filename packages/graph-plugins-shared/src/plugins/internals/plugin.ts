@@ -5,6 +5,10 @@ import { CoreControls } from '@graph/core/types';
 import { GraphActions } from '@graph/primitives/actions/types';
 import { GraphGetters } from '@graph/primitives/getters/types';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
+import type {
+  EdgeRenderFunction,
+  NodeRenderFunction,
+} from '@graph/render-functions/index';
 
 import { ComputedTokenResolver } from '../../computed-tokens/index.ts';
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
@@ -36,6 +40,7 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
   getters: GraphGetters<CoreGetters>;
   // [4]
   finalTokenResolver: ComputedTokenResolver;
+  finalRenderFunctions: { node: NodeRenderFunction; edge: EdgeRenderFunction };
 };
 
 type PluginOutput<PluginSchema extends LoosePluginSchema> = {
