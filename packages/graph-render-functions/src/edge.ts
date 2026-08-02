@@ -3,7 +3,10 @@ import { TextArea } from '@canvas/primitives/text/types';
 import { GOLDEN_RATIO } from '@core/utils/math';
 import { getValue } from '@core/utils/maybeGetter/index';
 
-import { createEdgeStyleResolver, createNodeStyleResolver } from './helpers.ts';
+import {
+  createEdgeStyleResolver,
+  createNodeStyleResolver,
+} from './resolvers.ts';
 import { CreateEdgeRenderFunction } from './types.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
@@ -14,6 +17,8 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
   directed,
   labelled,
   labelTextInputColor,
+  parallelEdgeCount,
+  neighborPositions,
 }) => {
   const resolveEdgeStyles = createEdgeStyleResolver(resolveToken);
   const resolveNodeStyles = createNodeStyleResolver(resolveToken);
@@ -33,7 +38,7 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
       styles: resolveNodeStyles(edge.target),
     };
 
-    const multipleEdgesInPath = edge.parallelEdgeCount > 1;
+    const multipleEdgesInPath = parallelEdgeCount(edge) > 1;
 
     const angle = Math.atan2(
       targetNode.position.y - sourceNode.position.y,
@@ -96,13 +101,13 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
       return shapes.uturn({
         id: edge.id,
         spacing: styles.width * 1.2,
-        at: { x: sourceNode.position.x, y: sourceNode.position.y },
+        at: sourceNode.position,
         upDistance,
         downDistance,
         // point the loop into whichever gap between neighbors is widest
         rotation: getLargestAngularSpaceBisector(
           edgeStart,
-          edge.neighborPositions,
+          neighborPositions(edge),
         ),
         lineWidth: styles.width,
         fillColor: styles.color,

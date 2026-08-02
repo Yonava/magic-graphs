@@ -1,4 +1,4 @@
-import { createNodeStyleResolver } from './helpers.ts';
+import { createNodeStyleResolver } from './resolvers.ts';
 import { CreateNodeRenderFunction } from './types.ts';
 
 export const createNodeRenderFunction: CreateNodeRenderFunction = ({

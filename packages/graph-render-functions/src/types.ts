@@ -28,10 +28,6 @@ export type EdgeRenderProps = {
   id: string;
   source: NodeRenderProps;
   target: NodeRenderProps;
-  /** how many edges run between {@link source} and {@link target}, including this one */
-  parallelEdgeCount: number;
-  /** positions of the nodes adjacent to {@link source} and {@link target}, used to aim self directed edges away from them */
-  neighborPositions: readonly Coordinate[];
 };
 
 type EdgeRenderFunction = (edge: EdgeRenderProps) => Shape;
@@ -41,5 +37,9 @@ export type CreateEdgeRenderFunction = (
     directed: boolean;
     labelled: boolean;
     labelTextInputColor: MaybeGetter<string>;
+    /** how many edges run between {@link source} and {@link target}, including this one */
+    parallelEdgeCount: (edge: EdgeRenderProps) => number;
+    /** positions of the nodes adjacent to {@link source} and {@link target}, used to aim self directed edges away from them */
+    neighborPositions: (edge: EdgeRenderProps) => readonly Coordinate[];
   },
 ) => EdgeRenderFunction;

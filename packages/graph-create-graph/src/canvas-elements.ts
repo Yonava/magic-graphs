@@ -9,6 +9,7 @@ import {
   createEdgeRenderFunction,
   createNodeRenderFunction,
 } from '@graph/render-functions/index';
+import { getNeighborPositions } from '@graph/render-functions/utils/getNeighborPositions';
 
 export const createCanvasElementFactories = (
   controls: CoreControls & { canvas: CanvasControls },
@@ -26,22 +27,14 @@ export const createCanvasElementFactories = (
       controls.canvas.theme._resolveToken('canvas.color'),
     shapes: controls.canvas.shapes,
     resolveToken: tokenResolver,
+    parallelEdgeCount: (edge) =>
+      controls.helpers.nodes.getEdgesBetweenConnectedNodes(
+        edge.source.id,
+        edge.target.id,
+      ).length,
+    neighborPositions: (edge) =>
+      getNeighborPositions(edge, controls.edges(), controls.positions.get),
   });
-
-  // nodes one hop from either endpoint, excluding the endpoints themselves
-  const getNeighborPositions = (edge: CoreEdge) => {
-    const endpoints = new Set([edge.source, edge.target]);
-    const neighborIds = new Set<CoreNode['id']>();
-
-    for (const candidate of controls.edges()) {
-      if (endpoints.has(candidate.source)) neighborIds.add(candidate.target);
-      if (endpoints.has(candidate.target)) neighborIds.add(candidate.source);
-    }
-
-    for (const endpoint of endpoints) neighborIds.delete(endpoint);
-
-    return [...neighborIds].map((nodeId) => controls.positions.get(nodeId));
-  };
 
   const nodeToCanvasElement = (node: CoreNode): CanvasElement => ({
     id: node.id,
@@ -58,6 +51,7 @@ export const createCanvasElementFactories = (
     },
   });
 
+  const EDGE_RENDER_PRIORITY = 1;
   const edgeToCanvasElement = (edge: CoreEdge): CanvasElement => ({
     id: edge.id,
     shape: edgeRenderFunction({
@@ -70,13 +64,8 @@ export const createCanvasElementFactories = (
         id: edge.target,
         position: controls.positions.get(edge.target),
       },
-      parallelEdgeCount: controls.helpers.nodes.getEdgesBetweenConnectedNodes(
-        edge.source,
-        edge.target,
-      ).length,
-      neighborPositions: getNeighborPositions(edge),
     }),
-    priority: 1,
+    priority: EDGE_RENDER_PRIORITY,
     data: {
       [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: tokenResolver('edge.cursor', edge),
     },

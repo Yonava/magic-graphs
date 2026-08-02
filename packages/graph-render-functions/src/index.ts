@@ -17,7 +17,7 @@ export type { NodeRenderProps } from './types.ts';
 export type { EdgeRenderProps } from './types.ts';
 
 /** Builds a resolver for every node style token in one pass, keyed to match what shapes accept. */
-export { createNodeStyleResolver } from './helpers.ts';
+export { createNodeStyleResolver } from './resolvers.ts';
 
 /** Builds a resolver for every edge style token in one pass, keyed to match what shapes accept. */
-export { createEdgeStyleResolver } from './helpers.ts';
+export { createEdgeStyleResolver } from './resolvers.ts';
