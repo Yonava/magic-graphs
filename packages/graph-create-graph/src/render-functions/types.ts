@@ -3,7 +3,7 @@ import { Shape } from '@canvas/primitives/types/index';
 import { Coordinate } from '@canvas/primitives/types/utility';
 import { MaybeGetter } from '@core/utils/maybeGetter/index';
 import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens/internals/createComputedTokenResolver';
-import { CoreEdge, CoreNode } from '@graph/primitives/types';
+import { CoreNode } from '@graph/primitives/types';
 
 type RendererOptions = {
   shapes: AnimatedShapeFactories;
@@ -12,40 +12,34 @@ type RendererOptions = {
 
 // ----- NODE RENDERER -----
 
-type DefaultNode = CoreNode & {
+type NodeRenderProps = CoreNode & {
   position: Coordinate;
 };
 
-type NodeRenderFunction<Node extends CoreNode = DefaultNode> = (
-  node: Node,
-) => Shape;
+type NodeRenderFunction = (node: NodeRenderProps) => Shape;
 
-export type CreateNodeRenderer<Node extends CoreNode = DefaultNode> = (
+export type CreateNodeRenderer = (
   options: RendererOptions,
-) => NodeRenderFunction<Node>;
+) => NodeRenderFunction;
 
 // ----- EDGE RENDERER -----
 
-type DefaultEdge = {
+type EdgeRenderProps = {
   id: string;
-  source: DefaultNode;
-  target: DefaultNode;
+  source: NodeRenderProps;
+  target: NodeRenderProps;
+  /** how many edges run between {@link source} and {@link target}, including this one */
+  parallelEdgeCount: number;
+  /** positions of the nodes adjacent to {@link source} and {@link target}, used to aim self directed edges away from them */
+  neighborPositions: readonly Coordinate[];
 };
 
-type EdgeRenderFunction<Edge extends DefaultEdge = DefaultEdge> = (
-  edge: Edge,
-) => Shape;
+type EdgeRenderFunction = (edge: EdgeRenderProps) => Shape;
 
-export type CreateEdgeRenderer<Edge extends DefaultEdge = DefaultEdge> = (
+export type CreateEdgeRenderer = (
   options: RendererOptions & {
     directed: boolean;
     labelled: boolean;
     labelTextInputColor: MaybeGetter<string>;
-    getEdgesAlongPath: (
-      nodeA: CoreNode['id'],
-      nodeB: CoreNode['id'],
-    ) => readonly CoreEdge[];
-    getEdges: () => readonly CoreEdge[];
-    getNodePosition: (nodeId: CoreNode['id']) => Coordinate;
   },
-) => EdgeRenderFunction<Edge>;
+) => EdgeRenderFunction;

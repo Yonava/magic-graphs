@@ -17,9 +17,6 @@ export const createEdgeRenderer: CreateEdgeRenderer = ({
   directed,
   labelled,
   labelTextInputColor,
-  getEdgesAlongPath,
-  getEdges,
-  getNodePosition,
 }) => {
   const getStyles = resolveEdgeComputedTokens(token);
   const getNodeStyles = resolveNodeComputedTokens(token);
@@ -33,9 +30,7 @@ export const createEdgeRenderer: CreateEdgeRenderer = ({
     const sourceNode = { ...edge.source, styles: getNodeStyles(edge.source) };
     const targetNode = { ...edge.target, styles: getNodeStyles(edge.target) };
 
-    const edgesAlongPath = getEdgesAlongPath(sourceNode.id, targetNode.id);
-
-    const multipleEdgesInPath = edgesAlongPath.length > 1;
+    const multipleEdgesInPath = edge.parallelEdgeCount > 1;
 
     const angle = Math.atan2(
       targetNode.position.y - sourceNode.position.y,
@@ -75,27 +70,6 @@ export const createEdgeRenderer: CreateEdgeRenderer = ({
       edgeEnd.y += Math.sin(angle + Math.PI / 2) * bidirectionalEdgeSpacing;
     }
 
-    const largestAngularSpaceBisector = getLargestAngularSpaceBisector(
-      edgeStart,
-      // positions of the nodes surrounding this edge, deduped so bi-directional
-      // pairs do not skew the bisector when they are the only neighbors
-      getEdges()
-        .filter(
-          (neighbor) =>
-            (neighbor.target === sourceNode.id ||
-              neighbor.source === targetNode.id) &&
-            neighbor.target !== neighbor.source,
-        )
-        .map((neighbor) => getNodePosition(neighbor.source))
-        .filter(
-          (point, index, self) =>
-            index ===
-            self.findIndex(
-              (other) => other.x === point.x && other.y === point.y,
-            ),
-        ),
-    );
-
     const textArea: TextArea | undefined = labelled
       ? {
           color: 'none',
@@ -122,7 +96,11 @@ export const createEdgeRenderer: CreateEdgeRenderer = ({
         at: { x: sourceNode.position.x, y: sourceNode.position.y },
         upDistance,
         downDistance,
-        rotation: largestAngularSpaceBisector,
+        // point the loop into whichever gap between neighbors is widest
+        rotation: getLargestAngularSpaceBisector(
+          edgeStart,
+          edge.neighborPositions,
+        ),
         lineWidth: styles.width,
         fillColor: styles.color,
         textArea,

@@ -21,14 +21,26 @@ export const createCanvasElementFactories = (
   const edgeRenderer = createEdgeRenderer({
     directed: controls.metadata.directed,
     labelled: controls.metadata.weighted,
-    getEdges: controls.edges,
-    getEdgesAlongPath: controls.helpers.nodes.getEdgesBetweenConnectedNodes,
-    getNodePosition: controls.positions.get,
     labelTextInputColor: () =>
       controls.canvas.theme._resolveToken('canvas.color'),
     shapes: controls.canvas.shapes,
     token: tokenResolver,
   });
+
+  // nodes one hop from either endpoint, excluding the endpoints themselves
+  const getNeighborPositions = (edge: CoreEdge) => {
+    const endpoints = new Set([edge.source, edge.target]);
+    const neighborIds = new Set<CoreNode['id']>();
+
+    for (const candidate of controls.edges()) {
+      if (endpoints.has(candidate.source)) neighborIds.add(candidate.target);
+      if (endpoints.has(candidate.target)) neighborIds.add(candidate.source);
+    }
+
+    for (const endpoint of endpoints) neighborIds.delete(endpoint);
+
+    return [...neighborIds].map((nodeId) => controls.positions.get(nodeId));
+  };
 
   const nodeToCanvasElement = (node: CoreNode): CanvasElement => ({
     id: node.id,
@@ -57,6 +69,11 @@ export const createCanvasElementFactories = (
         id: edge.target,
         position: controls.positions.get(edge.target),
       },
+      parallelEdgeCount: controls.helpers.nodes.getEdgesBetweenConnectedNodes(
+        edge.source,
+        edge.target,
+      ).length,
+      neighborPositions: getNeighborPositions(edge),
     }),
     priority: 1,
     data: {
