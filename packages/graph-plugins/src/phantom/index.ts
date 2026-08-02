@@ -39,12 +39,14 @@ export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
       const connectedEdges = getEdgesBetweenConnectedNodes(allEdges);
       return connectedEdges(edge.source.id, edge.target.id).length;
     },
-    neighborPositions: (edge) =>
-      getNeighborPositions(edge, controls.edges(), (nodeId) => {
+    neighborPositions: (edge) => {
+      const allEdges = [...controls.edges(), ...edges];
+      return getNeighborPositions(edge, allEdges, (nodeId) => {
         // real node? return the positions, phantom node? get phantoms position
         if (controls.isNode(nodeId)) return controls.positions.get(nodeId);
         return getPhantomNode(nodeId).position;
-      }),
+      });
+    },
     ...createRenderOptions,
   });
 
@@ -86,6 +88,10 @@ export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
     nodes.push(node);
   };
 
+  const addEdge = (edge: PhantomEdge) => {
+    edges.push(edge);
+  };
+
   addNode({
     id: 'phantom-node-1',
     position: { x: 850, y: 430 },
@@ -95,6 +101,11 @@ export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
     id: 'phantom-node-2',
     position: { x: 850, y: 530 },
     label: 'B!',
+  });
+  addEdge({
+    id: 'phantom-edge-1',
+    source: 'phantom-node-1',
+    target: 'phantom-node-2',
   });
 
   return {

@@ -4,6 +4,7 @@ import { CanvasProps } from '@canvas/surface/types';
 import { KeyboardEventEntries, MouseEventEntries } from '@core/utils/types';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
+import { CoreEdge } from '@graph/primitives/types';
 
 import { createAggregator } from './aggregator/createAggregator.ts';
 import { CanvasElement } from './aggregator/types.ts';
@@ -237,12 +238,12 @@ export const canvas =
         const weightLayer = theme.createLayer(
           CANVAS_PLUGIN_ID + '/theme/edge-weight',
         );
-        weightLayer.set('edge.default.text.content', (edge) =>
-          getters.getEdge(edge.id).weight.toFraction(),
-        );
-        weightLayer.set('edge.hover.text.content', (edge) =>
-          getters.getEdge(edge.id).weight.toFraction(),
-        );
+        const weight = (edge: CoreEdge) => {
+          if (!controls.isEdge(edge.id)) return;
+          return getters.getEdge(edge.id).weight.toFraction();
+        };
+        weightLayer.set('edge.default.text.content', weight);
+        weightLayer.set('edge.hover.text.content', weight);
       },
     };
   };
