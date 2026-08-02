@@ -19,6 +19,7 @@ type NodeRenderFunction = (props: NodeRenderFunctionProps) => Shape;
 export const phantom: PhantomPlugin = ({ controls }) => {
   const nodes: PhantomNode[] = [
     { id: 'phantom-node-1', position: { x: 850, y: 430 }, label: 'P!' },
+    { id: 'phantom-node-2', position: { x: 850, y: 530 }, label: 'Z!' },
   ];
 
   const resolveToken = controls.canvas.theme._resolveToken;
@@ -54,6 +55,9 @@ export const phantom: PhantomPlugin = ({ controls }) => {
         id: node.id,
         priority: 0,
         shape: nodeRenderer({ node }),
+        data: {
+          cursor: 'not-allowed',
+        },
       });
     }
     return elements;

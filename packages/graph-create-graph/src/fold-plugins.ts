@@ -17,6 +17,7 @@ import {
   wrapActionsWithConsumerEvents,
   wrapWeightsControlsWithConsumerEvents,
 } from './consumer-events.ts';
+import { createFinalTokenResolverProxy } from './final-token-resolver.ts';
 import { createFinalTransitProxy } from './final-transit.ts';
 
 type PluginTransitControl = {
@@ -36,6 +37,9 @@ type FoldedPlugins = {
   resolveFinalTransit: ReturnType<
     typeof createFinalTransitProxy
   >['resolveFinalTransit'];
+  resolveFinalTokenResolver: ReturnType<
+    typeof createFinalTokenResolverProxy
+  >['resolveFinalTokenResolver'];
   getNodes: () => any[];
   getEdges: () => any[];
 };
@@ -82,6 +86,8 @@ export const foldPlugins = (
   let getters = coreGraph.getters;
   const { finalActions, resolveFinalActions } = createFinalActionsProxy();
   const { finalTransit, resolveFinalTransit } = createFinalTransitProxy();
+  const { finalTokenResolver, resolveFinalTokenResolver } =
+    createFinalTokenResolverProxy();
   let themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']> =
     {};
 
@@ -97,6 +103,7 @@ export const foldPlugins = (
       finalActions,
       getters,
       finalTransit,
+      finalTokenResolver,
     });
 
     // a plugin only appears under its own namespace if it declared controls, otherwise
@@ -157,6 +164,7 @@ export const foldPlugins = (
     themeDetectors,
     pluginTransitControls,
     resolveFinalTransit,
+    resolveFinalTokenResolver,
     getNodes: nodes,
     getEdges: edges,
   };

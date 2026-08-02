@@ -84,6 +84,10 @@ export const createGraph = <
 
   const tokenResolver = createComputedTokenResolver(folded.themeDetectors);
 
+  // plugins captured `finalTokenResolver` during fold, before the detector map was
+  // complete. point it at the real resolver now (see [4] in plugins/internals/plugin.ts)
+  folded.resolveFinalTokenResolver(tokenResolver);
+
   // assume we have canvas in controls since this is a theme aware orchestrator!
   const castControls = controls as unknown as CoreControls & {
     canvas: CanvasControls;

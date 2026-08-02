@@ -6,6 +6,7 @@ import { GraphActions } from '@graph/primitives/actions/types';
 import { GraphGetters } from '@graph/primitives/getters/types';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
 
+import { CompoundTokenResolver } from '../../computed-tokens/index.ts';
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';
@@ -33,6 +34,8 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
   getters: GraphGetters<CoreGetters>;
   // [2]
   finalTransit: LooseGraphTransit;
+  // [4]
+  finalTokenResolver: CompoundTokenResolver;
 };
 
 type PluginOutput<PluginSchema extends LoosePluginSchema> = {
@@ -88,3 +91,13 @@ type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
 // is required: `nodes`/`edges` are computeds over the getters, so a tracked read
 // during derivation is what keeps them fresh. plain mutable state is the one thing
 // that breaks it, silently.
+//
+// [4] `finalTokenResolver` answers "what does this token resolve to for this node or
+// edge, right now, across every plugin in the graph", which is the same question the
+// renderer asks. it is late bound for the same reason as [1] and [2]: the detector
+// map it walks is still being accumulated while plugins fold, so a resolver built
+// mid-fold would silently miss detectors registered by later plugins.
+//
+// this is the read side of the theme system. a plugin registers detectors to
+// *contribute* to a token's value; it calls `finalTokenResolver` when it needs to
+// *consume* the resolved value, having given up knowing which plugin won.
