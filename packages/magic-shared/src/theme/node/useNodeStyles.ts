@@ -1,4 +1,4 @@
-import { resolveNodeComputedTokens } from '@graph/render-functions/index';
+import { createNodeStyleResolver } from '@graph/render-functions/index';
 
 import { MaybeRefOrGetter, toRef } from 'vue';
 
@@ -11,8 +11,10 @@ export const useNodeStyles = (
 ) => {
   const id = toRef(nodeId);
   const res = useResolvedStyles(graph, () => {
-    const getStyles = resolveNodeComputedTokens(graph.theme.tokenResolver);
-    return getStyles({ id: id.value });
+    const resolveNodeStyles = createNodeStyleResolver(
+      graph.theme.tokenResolver,
+    );
+    return resolveNodeStyles({ id: id.value });
   });
   return { id, ...res };
 };

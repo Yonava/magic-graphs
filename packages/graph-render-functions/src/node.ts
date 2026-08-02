@@ -1,10 +1,13 @@
-import { resolveNodeComputedTokens } from './helpers.ts';
+import { createNodeStyleResolver } from './helpers.ts';
 import { CreateNodeRenderer } from './types.ts';
 
-export const createNodeRenderer: CreateNodeRenderer = ({ shapes, token }) => {
-  const getStyles = resolveNodeComputedTokens(token);
+export const createNodeRenderer: CreateNodeRenderer = ({
+  shapes,
+  resolveToken,
+}) => {
+  const resolveNodeStyles = createNodeStyleResolver(resolveToken);
   return (node) => {
-    const styles = getStyles(node);
+    const styles = resolveNodeStyles(node);
     return shapes.circle({
       id: node.id,
       at: node.position,

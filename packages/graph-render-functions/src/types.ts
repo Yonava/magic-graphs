@@ -7,7 +7,7 @@ import { CoreNode } from '@graph/primitives/types';
 
 type RendererOptions = {
   shapes: AnimatedShapeFactories;
-  token: ComputedTokenResolver;
+  resolveToken: ComputedTokenResolver;
 };
 
 // ----- NODE RENDERER -----

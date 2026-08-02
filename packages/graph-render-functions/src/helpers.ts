@@ -1,32 +1,32 @@
 import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
-export const resolveNodeComputedTokens =
-  (token: ComputedTokenResolver) => (node: CoreNode) => ({
-    color: token('node.color', node),
-    size: token('node.size', node),
+export const createNodeStyleResolver =
+  (resolveToken: ComputedTokenResolver) => (node: CoreNode) => ({
+    color: resolveToken('node.color', node),
+    size: resolveToken('node.size', node),
     border: {
-      color: token('node.border.color', node),
-      width: token('node.border.width', node),
+      color: resolveToken('node.border.color', node),
+      width: resolveToken('node.border.width', node),
     },
-    cursor: token('node.cursor', node),
+    cursor: resolveToken('node.cursor', node),
     text: {
-      content: token('node.text.content', node),
-      fontSize: token('node.text.size', node),
-      color: token('node.text.color', node),
-      fontWeight: token('node.text.fontWeight', node),
+      content: resolveToken('node.text.content', node),
+      fontSize: resolveToken('node.text.size', node),
+      color: resolveToken('node.text.color', node),
+      fontWeight: resolveToken('node.text.fontWeight', node),
     },
   });
 
-export const resolveEdgeComputedTokens =
-  (token: ComputedTokenResolver) => (edge: CoreEdge) => ({
-    color: token('edge.color', edge),
-    width: token('edge.width', edge),
-    cursor: token('edge.cursor', edge),
+export const createEdgeStyleResolver =
+  (resolveToken: ComputedTokenResolver) => (edge: CoreEdge) => ({
+    color: resolveToken('edge.color', edge),
+    width: resolveToken('edge.width', edge),
+    cursor: resolveToken('edge.cursor', edge),
     text: {
-      content: token('edge.text.content', edge),
-      fontSize: token('edge.text.size', edge),
-      color: token('edge.text.color', edge),
-      fontWeight: token('edge.text.fontWeight', edge),
+      content: resolveToken('edge.text.content', edge),
+      fontSize: resolveToken('edge.text.size', edge),
+      color: resolveToken('edge.text.color', edge),
+      fontWeight: resolveToken('edge.text.fontWeight', edge),
     },
   });

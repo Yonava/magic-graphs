@@ -3,32 +3,35 @@ import { TextArea } from '@canvas/primitives/text/types';
 import { GOLDEN_RATIO } from '@core/utils/math';
 import { getValue } from '@core/utils/maybeGetter/index';
 
-import {
-  resolveEdgeComputedTokens,
-  resolveNodeComputedTokens,
-} from './helpers.ts';
+import { createEdgeStyleResolver, createNodeStyleResolver } from './helpers.ts';
 import { CreateEdgeRenderer } from './types.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
 export const createEdgeRenderer: CreateEdgeRenderer = ({
-  token,
+  resolveToken,
   shapes,
   directed,
   labelled,
   labelTextInputColor,
 }) => {
-  const getStyles = resolveEdgeComputedTokens(token);
-  const getNodeStyles = resolveNodeComputedTokens(token);
+  const resolveEdgeStyles = createEdgeStyleResolver(resolveToken);
+  const resolveNodeStyles = createNodeStyleResolver(resolveToken);
   return (edge) => {
-    const styles = getStyles({
+    const styles = resolveEdgeStyles({
       id: edge.id,
       source: edge.source.id,
       target: edge.target.id,
     });
 
-    const sourceNode = { ...edge.source, styles: getNodeStyles(edge.source) };
-    const targetNode = { ...edge.target, styles: getNodeStyles(edge.target) };
+    const sourceNode = {
+      ...edge.source,
+      styles: resolveNodeStyles(edge.source),
+    };
+    const targetNode = {
+      ...edge.target,
+      styles: resolveNodeStyles(edge.target),
+    };
 
     const multipleEdgesInPath = edge.parallelEdgeCount > 1;
 

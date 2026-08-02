@@ -16,7 +16,7 @@ export const createCanvasElementFactories = (
 ) => {
   const nodeRenderer = createNodeRenderer({
     shapes: controls.canvas.shapes,
-    token: tokenResolver,
+    resolveToken: tokenResolver,
   });
 
   const edgeRenderer = createEdgeRenderer({
@@ -25,7 +25,7 @@ export const createCanvasElementFactories = (
     labelTextInputColor: () =>
       controls.canvas.theme._resolveToken('canvas.color'),
     shapes: controls.canvas.shapes,
-    token: tokenResolver,
+    resolveToken: tokenResolver,
   });
 
   // nodes one hop from either endpoint, excluding the endpoints themselves
