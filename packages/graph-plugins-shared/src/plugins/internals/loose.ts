@@ -8,10 +8,7 @@ import {
 import { GenericEventMap } from '@graph/primitives/events/types';
 import { BaseGetters, GraphGetters } from '@graph/primitives/getters/types';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
-import {
-  EdgeRenderFunction,
-  NodeRenderFunction,
-} from '@graph/render-functions/types';
+import { RenderFunctions } from '@graph/render-functions/types';
 
 import { ComputedTokenResolver } from '../../computed-tokens/index.ts';
 
@@ -42,7 +39,9 @@ type LoosePluginInput = {
   // see [4] in ./plugin.ts for the stable accessor to the computed token resolver,
   // built from every plugin's detectors once folding completes
   finalTokenResolver: ComputedTokenResolver;
-  finalRenderFunctions: { node: NodeRenderFunction; edge: EdgeRenderFunction };
+  // see [5] in ./plugin.ts — the node and edge render functions the graph itself draws
+  // with, built once folding has produced every plugin's theme detectors
+  finalRenderFunctions: RenderFunctions;
 };
 
 type LoosePluginOutput = {

@@ -94,7 +94,12 @@ export const createGraph = <
   const {
     nodeToCanvasElement: nodeCanvasElement,
     edgeToCanvasElement: edgeCanvasElement,
+    renderFunctions,
   } = createCanvasElementFactories(castControls, tokenResolver);
+
+  // plugins captured `finalRenderFunctions` during fold, before the render functions
+  // could be built (see [5] in plugins/internals/plugin.ts)
+  folded.resolveFinalRenderFunctions(renderFunctions);
 
   const { transformers } = castControls.canvas.aggregator;
 

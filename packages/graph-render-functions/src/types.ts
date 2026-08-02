@@ -42,3 +42,11 @@ export type CreateEdgeRenderFunction = (
     neighborPositions: (edge: EdgeRenderProps) => readonly Coordinate[];
   },
 ) => EdgeRenderFunction;
+
+// ----- BOTH -----
+
+/** the pair of render functions a graph draws all of its nodes and edges with */
+export type RenderFunctions = {
+  node: NodeRenderFunction;
+  edge: EdgeRenderFunction;
+};

@@ -74,5 +74,9 @@ export const createCanvasElementFactories = (
   return {
     nodeToCanvasElement,
     edgeToCanvasElement,
+    renderFunctions: {
+      node: nodeRenderFunction,
+      edge: edgeRenderFunction,
+    },
   };
 };

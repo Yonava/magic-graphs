@@ -17,6 +17,7 @@ import {
   wrapActionsWithConsumerEvents,
   wrapWeightsControlsWithConsumerEvents,
 } from './consumer-events.ts';
+import { createFinalRenderFunctionsProxy } from './final-render-functions.ts';
 import { createFinalTokenResolverProxy } from './final-token-resolver.ts';
 import { createFinalTransitProxy } from './final-transit.ts';
 
@@ -40,6 +41,9 @@ type FoldedPlugins = {
   resolveFinalTokenResolver: ReturnType<
     typeof createFinalTokenResolverProxy
   >['resolveFinalTokenResolver'];
+  resolveFinalRenderFunctions: ReturnType<
+    typeof createFinalRenderFunctionsProxy
+  >['resolveFinalRenderFunctions'];
   getNodes: () => any[];
   getEdges: () => any[];
 };
@@ -88,6 +92,8 @@ export const foldPlugins = (
   const { finalTransit, resolveFinalTransit } = createFinalTransitProxy();
   const { finalTokenResolver, resolveFinalTokenResolver } =
     createFinalTokenResolverProxy();
+  const { finalRenderFunctions, resolveFinalRenderFunctions } =
+    createFinalRenderFunctionsProxy();
   let themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']> =
     {};
 
@@ -104,6 +110,7 @@ export const foldPlugins = (
       getters,
       finalTransit,
       finalTokenResolver,
+      finalRenderFunctions,
     });
 
     // a plugin only appears under its own namespace if it declared controls, otherwise
@@ -165,6 +172,7 @@ export const foldPlugins = (
     pluginTransitControls,
     resolveFinalTransit,
     resolveFinalTokenResolver,
+    resolveFinalRenderFunctions,
     getNodes: nodes,
     getEdges: edges,
   };

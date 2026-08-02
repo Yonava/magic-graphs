@@ -5,10 +5,7 @@ import { CoreControls } from '@graph/core/types';
 import { GraphActions } from '@graph/primitives/actions/types';
 import { GraphGetters } from '@graph/primitives/getters/types';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
-import type {
-  EdgeRenderFunction,
-  NodeRenderFunction,
-} from '@graph/render-functions/index';
+import type { RenderFunctions } from '@graph/render-functions/index';
 
 import { ComputedTokenResolver } from '../../computed-tokens/index.ts';
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
@@ -40,7 +37,8 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
   getters: GraphGetters<CoreGetters>;
   // [4]
   finalTokenResolver: ComputedTokenResolver;
-  finalRenderFunctions: { node: NodeRenderFunction; edge: EdgeRenderFunction };
+  // [5]
+  finalRenderFunctions: RenderFunctions;
 };
 
 type PluginOutput<PluginSchema extends LoosePluginSchema> = {
@@ -106,3 +104,12 @@ type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
 // this is the read side of the theme system. a plugin registers detectors to
 // *contribute* to a token's value; it calls `finalTokenResolver` when it needs to
 // *consume* the resolved value, having given up knowing which plugin won.
+//
+// [5] `finalRenderFunctions` is how a plugin draws something that looks like a graph
+// node or edge without owning one. it is late bound like [1], [2] and [4]: the render
+// functions close over the finished token resolver, so they cannot be built until
+// folding has produced every plugin's detectors.
+//
+// a plugin calls these from its own canvas aggregator transformer, which runs per
+// frame long after fold. phantom is the reference case: it renders nodes and edges the
+// graph does not actually contain, and gets the real thing rather than a lookalike.

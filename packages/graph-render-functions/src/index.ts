@@ -19,6 +19,9 @@ export type { EdgeRenderProps } from './types.ts';
 export type { NodeRenderFunction } from './types.ts';
 export type { EdgeRenderFunction } from './types.ts';
 
+/** The node and edge render functions a graph draws with, as one pair. */
+export type { RenderFunctions } from './types.ts';
+
 export type { RenderFunctionOptions } from './types.ts';
 
 /** Builds a resolver for every node style token in one pass, keyed to match what shapes accept. */
