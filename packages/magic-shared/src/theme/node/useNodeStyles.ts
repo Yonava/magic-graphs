@@ -1,4 +1,4 @@
-import { resolveNodeComputedTokens } from '@graph/create-graph/render-functions/helpers';
+import { resolveNodeComputedTokens } from '@graph/render-functions/index';
 
 import { MaybeRefOrGetter, toRef } from 'vue';
 

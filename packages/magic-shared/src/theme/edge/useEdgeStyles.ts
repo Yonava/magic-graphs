@@ -1,4 +1,4 @@
-import { resolveEdgeComputedTokens } from '@graph/create-graph/render-functions/helpers';
+import { resolveEdgeComputedTokens } from '@graph/render-functions/index';
 
 import { GEdge, Graph } from '../../graph/types.ts';
 import { useResolvedStyles } from '../shared/useResolvedStyles.ts';

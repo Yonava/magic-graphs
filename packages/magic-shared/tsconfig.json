@@ -13,6 +13,7 @@
     { "path": "../graph-plugins" },
     { "path": "../graph-plugins-shared" },
     { "path": "../graph-primitives" },
+    { "path": "../graph-render-functions" },
     { "path": "../graph-create-graph" },
     { "path": "../graph-theme-presets" },
     { "path": "../canvas-surface" },

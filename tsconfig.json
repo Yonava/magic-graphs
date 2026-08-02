@@ -10,6 +10,7 @@
     { "path": "./packages/graph-plugins-shared" },
     { "path": "./packages/graph-plugins" },
     { "path": "./packages/graph-primitives" },
+    { "path": "./packages/graph-render-functions" },
     { "path": "./packages/reactive-primitives" },
     { "path": "./packages/graph-theme-presets" },
     { "path": "./packages/graph-vue" },

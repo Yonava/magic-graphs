@@ -24,6 +24,7 @@ export default defineConfig({
       '@graph/plugins': r('packages/graph-plugins/src'),
       '@graph/plugins-shared': r('packages/graph-plugins-shared/src'),
       '@graph/primitives': r('packages/graph-primitives/src'),
+      '@graph/render-functions': r('packages/graph-render-functions/src'),
       '@graph/theme-presets': r('packages/graph-theme-presets/src'),
       '@graph/vue': r('packages/graph-vue/src'),
     },

@@ -1,0 +1,25 @@
+{
+  "name": "@graph/render-functions",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./index": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./dist/types/*.d.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "build:types": "vue-tsc -b tsconfig.json"
+  },
+  "dependencies": {
+    "@canvas/primitives": "workspace:*",
+    "@core/utils": "workspace:*",
+    "@graph/plugins-shared": "workspace:*",
+    "@graph/primitives": "workspace:*"
+  }
+}
