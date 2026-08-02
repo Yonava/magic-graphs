@@ -18,11 +18,22 @@ export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
   const nodes: PhantomNode[] = [];
   const edges: PhantomEdge[] = [];
 
-  const getPhantomNode = (id: string) =>
-    nullThrows(
+  const getNode = (id: string) => {
+    // look up normal node through core controls
+    if (controls.isNode(id)) {
+      const node = nullThrows(
+        controls.nodes().find((n) => n.id === id),
+        'node not found',
+      );
+      const position = controls.positions.get(node.id);
+      return { id: node.id, position };
+    }
+    // if node is phantom, return the phantom node
+    return nullThrows(
       nodes.find((n) => n.id === id),
-      'phantom node not found',
+      'node not found',
     );
+  };
 
   const createRenderOptions = {
     shapes: controls.canvas.shapes,
@@ -41,11 +52,11 @@ export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
     },
     neighborPositions: (edge) => {
       const allEdges = [...controls.edges(), ...edges];
-      return getNeighborPositions(edge, allEdges, (nodeId) => {
-        // real node? return the positions, phantom node? get phantoms position
-        if (controls.isNode(nodeId)) return controls.positions.get(nodeId);
-        return getPhantomNode(nodeId).position;
-      });
+      return getNeighborPositions(
+        edge,
+        allEdges,
+        (nodeId) => getNode(nodeId).position,
+      );
     },
     ...createRenderOptions,
   });
@@ -68,8 +79,8 @@ export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
         priority: EDGE_RENDER_PRIORITY,
         shape: edgeRenderFunction({
           id: edge.id,
-          source: getPhantomNode(edge.source),
-          target: getPhantomNode(edge.target),
+          source: getNode(edge.source),
+          target: getNode(edge.target),
         }),
       });
     }
@@ -99,7 +110,7 @@ export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
   });
   addNode({
     id: 'phantom-node-2',
-    position: { x: 850, y: 530 },
+    position: { x: 850, y: 30 },
     label: 'B!',
   });
   addEdge({
@@ -107,6 +118,14 @@ export const phantom: PhantomPlugin = ({ controls, finalTokenResolver }) => {
     source: 'phantom-node-1',
     target: 'phantom-node-2',
   });
+
+  setTimeout(() => {
+    addEdge({
+      id: 'phantom-edge-2',
+      source: 'phantom-node-1',
+      target: controls.nodes()[0].id,
+    });
+  }, 4000);
 
   return {
     name: 'phantom',
