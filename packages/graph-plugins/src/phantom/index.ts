@@ -78,9 +78,6 @@ export const phantom: PhantomPlugin = ({
     edges.push(...elements.edges);
   };
 
-  const touchesNodes = (edge: PhantomEdge, nodeIds: ReadonlySet<string>) =>
-    nodeIds.has(edge.source) || nodeIds.has(edge.target);
-
   const removeElements = ({ nodeIds, edgeIds }: PhantomElementIds) => {
     const nodeIdsToRemove = new Set(nodeIds);
     const edgeIdsToRemove = new Set(edgeIds);
@@ -93,7 +90,9 @@ export const phantom: PhantomPlugin = ({
     const removedEdgeIds = edges
       .filter(
         (edge) =>
-          edgeIdsToRemove.has(edge.id) || touchesNodes(edge, nodeIdsToRemove),
+          edgeIdsToRemove.has(edge.id) ||
+          nodeIdsToRemove.has(edge.source) ||
+          nodeIdsToRemove.has(edge.target),
       )
       .map((edge) => edge.id);
 
@@ -111,17 +110,20 @@ export const phantom: PhantomPlugin = ({
     removeElements({ nodeIds: [], edgeIds: [edgeId] });
   };
 
+  const canResolveNode = (nodeId: CoreNode['id']) =>
+    controls.isNode(nodeId) || nodes.some((node) => node.id === nodeId);
+
   // a phantom edge may point at a real node, so a removed node leaves it dangling and
   // getNodePosition throws on the next frame, taking the whole render pass with it.
-  // phantom nodes are left alone since they own their ids independently of core
-  const dropEdgesTouchingNodes = (
-    removedNodeIds: Readonly<CoreNode['id'][]>,
-  ) => {
-    const removed = new Set(removedNodeIds);
-    edges = edges.filter((edge) => !touchesNodes(edge, removed));
+  // resolved against current state rather than the event payload because a transit
+  // decode reports every pre-decode node as removed, including the ones it restored
+  const dropDanglingEdges = () => {
+    edges = edges.filter(
+      (edge) => canResolveNode(edge.source) && canResolveNode(edge.target),
+    );
   };
 
-  events.subscribe('onNodesRemoved', dropEdgesTouchingNodes);
+  events.subscribe('onNodesRemoved', dropDanglingEdges);
 
   return {
     name: 'phantom',
