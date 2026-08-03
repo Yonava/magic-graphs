@@ -41,9 +41,10 @@ export const interactive =
 
       // finalActions, not actions: this fires later, on a real click, so it
       // needs the fully-composed action, not the fold-time snapshot
-      finalActions.addNode({
+      const node = finalActions.addNode({
         position: { x: coords.x, y: coords.y },
       });
+      controls.focus?.set([node.id]);
       captureHistorySnapshot();
     };
 
@@ -132,11 +133,12 @@ export const interactive =
 
       // finalActions, not actions: this fires later, on anchor drop, so it
       // needs the fully-composed action, not the fold-time snapshot
-      finalActions.addEdge({
+      const edge = finalActions.addEdge({
         source: sourceNode.id,
         target: targetNode.id,
         weight: new Fraction(numberWeight),
       });
+      controls.focus?.set([edge.id]);
       captureHistorySnapshot();
     };
 

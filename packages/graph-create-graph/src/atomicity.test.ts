@@ -47,8 +47,8 @@ const labeler = ({ actions, getters, events }: any) => {
         labels.set(node.id, `L${nextLabel++}`);
         return node;
       },
-      removeElements: (options: any, shared: any) => {
-        const removed = actions.removeElements(options, shared);
+      removeElements: (options: any) => {
+        const removed = actions.removeElements(options);
         for (const nodeId of removed.removedNodeIds) labels.delete(nodeId);
         return removed;
       },
@@ -110,7 +110,7 @@ describe('composition atomicity', () => {
     folded.actions.addNode({});
     folded.actions.addNode({});
     const snapshot = transit.encode();
-    folded.actions.removeElements({ nodes: folded.getNodes(), edges: [] }, {});
+    folded.actions.removeElements({ nodes: folded.getNodes(), edges: [] });
 
     const { observed, stop } = observeNodes(folded);
     transit.decode(snapshot);

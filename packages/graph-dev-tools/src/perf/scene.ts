@@ -15,15 +15,11 @@ type SceneEdge = { source: string; target: string };
 
 /**
  * the slice of the graph's action surface a scene needs. duck typed on purpose,
- * and loosely: `addElements` picks up a `shared` argument from whichever plugins
- * are installed, and this tool has no business knowing about any of them
+ * and loosely
  */
 export type SceneGraph = {
   actions: {
-    addElements: (
-      elements: { nodes: any[]; edges: any[] },
-      shared?: any,
-    ) => unknown;
+    addElements: (elements: { nodes: any[]; edges: any[] }) => unknown;
   };
 };
 
@@ -94,7 +90,7 @@ export const buildScene = (
     edges.push({ source: source.id, target: target.id });
   }
 
-  graph.actions.addElements({ nodes, edges }, {});
+  graph.actions.addElements({ nodes, edges });
 
   return { nodes, edges };
 };
