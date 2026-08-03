@@ -2,7 +2,7 @@ import { AddGEdgeOptions, AddGNodeOptions } from '@magic/shared/graph/types';
 
 import { TreeNode } from './TreeNode.ts';
 import { getTreeNodePositions } from './getTreeNodePositions.ts';
-import { TreeArray, treeToArray } from './treeToArray.ts';
+import { TreeArray, treeNodeToArray } from './treeNodeToArray.ts';
 import type { Coordinate } from './types.ts';
 
 const X_OFFSET = 160;
@@ -49,7 +49,7 @@ export const treeToGraph = (
     yOffset: Y_OFFSET,
   });
 
-  const treeArray = treeToArray(root);
+  const treeArray = treeNodeToArray(root);
 
   return {
     edges: edgesInTree(treeArray),

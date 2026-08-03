@@ -13,7 +13,7 @@ export type TreeArray = (TreeNode | undefined)[];
 /**
  * @returns a tree array where the index of the array corresponds to the tree index
  */
-export const treeToArray = (root: TreeNode | undefined) => {
+export const treeNodeToArray = (root: TreeNode | undefined) => {
   const treeIndexToNodeId: TreeArray = [];
   if (!root) return treeIndexToNodeId;
 
