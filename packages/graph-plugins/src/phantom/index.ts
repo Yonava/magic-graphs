@@ -2,6 +2,7 @@ import { nullThrows } from '@core/utils/assert';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { CanvasElement } from '../canvas/aggregator/types.ts';
+import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '../canvas/setupCanvasCursor.ts';
 import { createLabelThemer } from './createLabelThemer.ts';
 import {
   PhantomEdge,
@@ -15,6 +16,7 @@ export const phantom: PhantomPlugin = ({
   controls,
   events,
   finalRenderFunctions: renderFunctions,
+  finalTokenResolver,
 }) => {
   let nodes: PhantomNode[] = [];
   let edges: PhantomEdge[] = [];
@@ -39,6 +41,12 @@ export const phantom: PhantomPlugin = ({
         id: node.id,
         priority: NODE_RENDER_PRIORITY,
         shape: renderFunctions.node()(node),
+        data: {
+          [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: finalTokenResolver(
+            'node.cursor',
+            node,
+          ),
+        },
       });
     }
     for (const edge of edges) {
@@ -50,6 +58,12 @@ export const phantom: PhantomPlugin = ({
           source: getNode(edge.source),
           target: getNode(edge.target),
         }),
+        data: {
+          [CANVAS_ELEMENT_CURSOR_FIELD_KEY]: finalTokenResolver(
+            'edge.cursor',
+            edge,
+          ),
+        },
       });
     }
     return elements;
