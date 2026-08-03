@@ -1,8 +1,6 @@
 export type NodePayload = { value: number; id: string };
 
-/**
- * Represents a node in a binary/avl tree
- */
+/** a single node in a binary tree, holding its own value and its two child links */
 export class TreeNode {
   id: string;
   value: number;

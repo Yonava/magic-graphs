@@ -1,4 +1,4 @@
-import { NodePayload, TreeNode } from './TreeNode.ts';
+import { NodePayload, TreeNode } from '../tree/TreeNode.ts';
 
 export type BalanceMethod =
   'left-left' | 'right-right' | 'left-right' | 'right-left';
@@ -32,7 +32,7 @@ type InsertFrame = {
 
 type RemoveFrame = {
   action: 'remove';
-  // node value in this case since node doesn't exist, so we should't be referencing an ID that doest exist
+  // keyed by value rather than id, since the node is gone by the time this frame is read
   targetNodeValue: NodePayload['value'] | undefined;
 };
 
@@ -47,8 +47,3 @@ export type AVLFrameNoRoot =
 export type AVLFrame = AVLFrameNoRoot & { root: TreeNode | undefined };
 
 export type AVLMode = 'insert' | 'remove';
-
-export type Coordinate = {
-  x: number;
-  y: number;
-};

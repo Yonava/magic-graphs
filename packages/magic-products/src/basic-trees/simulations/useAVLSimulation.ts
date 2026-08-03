@@ -4,11 +4,11 @@ import { SimulationDefinition } from '@magic/shared/simulation';
 
 import { onMounted, ref } from 'vue';
 
-import { AVLTree } from '../AVLTree.ts';
+import { graphToTree } from '../graph-conversion/graphToTree.ts';
+import { AVLTree } from '../tree/AVLTree.ts';
 import { createSync } from './createSync.ts';
 import { explainer } from './explainer.ts';
-import { graphToTree } from './graphToTree.ts';
-import { AVLFrame, AVLMode } from './types.ts';
+import { AVLFrame, AVLMode } from './frames.ts';
 import {
   SuggestedNodesControls,
   useSuggestedNodes,
@@ -66,7 +66,7 @@ export const useAVLSimulationDefinition = (): Controls => {
         onTeardownCompleted: () => {
           graph.history.lifecycle.enable();
           graph.history.captureSnapshot();
-          setTimeout(suggested.add, 0);
+          suggested.add();
         },
       };
     },
@@ -77,13 +77,11 @@ export const useAVLSimulationDefinition = (): Controls => {
 
   onMounted(() => {
     graph.history.captureSnapshot();
-    setTimeout(suggested.add, 0);
+    suggested.add();
   });
 
   graph.events.transit.subscribe('onDecoded', () => {
-    suggested.remove();
     tree.root = graphToTree(graph);
-    suggested.add();
   });
 
   return {

@@ -1,14 +1,14 @@
+import { generateId } from '@core/utils/id';
 import { getRandomInRange } from '@core/utils/random';
 import { CanvasElement } from '@graph/plugins/canvas/aggregator/types';
 import { CoreNode } from '@graph/primitives/types';
-import { AddGNodeOptions } from '@magic/shared/graph/types';
 import { MagicGraph } from '@magic/shared/product/useGraphProduct';
 import { SimulationDefinition } from '@magic/shared/simulation';
 import tinycolor from 'tinycolor2';
 
-import { computed, onUnmounted, ref } from 'vue';
+import { onUnmounted } from 'vue';
 
-import { AVLFrame } from './types.ts';
+import { AVLFrame } from './frames.ts';
 import { AVLControls } from './useAVLSimulation.ts';
 
 const Y = 250;
@@ -22,39 +22,38 @@ const POSITIONS = [
   { x: X + 200, y: Y },
 ];
 
+/**
+ * the row of candidate values offered above the tree. they are phantom nodes rather than
+ * real ones so the tree, history and share links only ever see nodes the user committed to
+ */
 export const useSuggestedNodes = (
   graph: MagicGraph,
   simDefinition: SimulationDefinition<AVLFrame>,
   controls: AVLControls,
 ) => {
-  const suggestedNodeIds = ref<Set<string>>(new Set());
+  const suggestions = () => graph.phantom.nodes();
 
   const addSuggestedNodes = () => {
-    // suggested nodes must clear first
-    if (suggestedNodeIds.value.size > 0) {
-      removeSuggestedNodes();
-    }
-    const nodeData = POSITIONS.map((v): AddGNodeOptions => ({
-      label: getRandomInRange(1, 5).toString(),
-      position: v,
-    }));
-    const { addedNodes } = graph.actions.addElements(
-      { nodes: nodeData, edges: [] },
-      { focus: false },
-    );
-    suggestedNodeIds.value = new Set(addedNodes.map((n) => n.id));
+    removeSuggestedNodes();
+    graph.phantom.addElements({
+      nodes: POSITIONS.map((position) => ({
+        id: generateId(),
+        label: getRandomInRange(1, 5).toString(),
+        position,
+      })),
+      edges: [],
+    });
   };
 
   const removeSuggestedNodes = () => {
-    const nodes = Array.from(suggestedNodeIds.value)
-      .filter((id) => id !== controls.target.value)
-      .map((id) => ({ id }));
-    graph.actions.removeElements({ nodes: nodes, edges: [] }, {});
-    suggestedNodeIds.value.clear();
+    graph.phantom.removeElements({
+      nodeIds: suggestions().map((node) => node.id),
+      edgeIds: [],
+    });
   };
 
   const dimSuggested = ({ id }: CoreNode, resolveUnderneath: () => string) => {
-    const isSuggested = suggestedNodeIds.value.has(id);
+    const isSuggested = suggestions().some((node) => node.id === id);
     if (!isSuggested) return;
     const tinycolorRes = tinycolor(resolveUnderneath());
     return tinycolorRes.setAlpha(0.5).toHex8String();
@@ -75,9 +74,21 @@ export const useSuggestedNodes = (
   }: {
     topElement: CanvasElement | undefined;
   }) => {
-    if (!topElement || !suggestedNodeIds.value.has(topElement.id)) return;
+    if (!topElement) return;
+    const suggestion = suggestions().find((node) => node.id === topElement.id);
+    if (!suggestion) return;
+
+    // committing to a suggestion promotes it into a real node, since the tree can only
+    // insert something the graph actually contains
+    graph.phantom.removeNode(suggestion.id);
+    const node = graph.actions.addNode({
+      id: suggestion.id,
+      label: suggestion.label,
+      position: suggestion.position,
+    });
+
     controls.mode.value = 'insert';
-    controls.target.value = graph.getNode(topElement.id).id;
+    controls.target.value = node.id;
     graph.magic.simulation.start(simDefinition);
   };
 
@@ -89,7 +100,6 @@ export const useSuggestedNodes = (
   return {
     add: addSuggestedNodes,
     remove: removeSuggestedNodes,
-    ids: computed(() => suggestedNodeIds.value),
   };
 };
 

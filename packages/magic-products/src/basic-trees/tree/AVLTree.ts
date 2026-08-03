@@ -1,9 +1,9 @@
 import { nullThrows } from '@core/utils/assert';
 import { FrameCollector } from '@magic/shared/simulation';
 
-import { NodePayload, TreeNode } from './simulation/TreeNode.ts';
-import { getTreeHeight } from './simulation/getTreeHeight.ts';
-import { AVLFrame, AVLFrameNoRoot } from './simulation/types.ts';
+import { AVLFrame, AVLFrameNoRoot } from '../simulations/frames.ts';
+import { NodePayload, TreeNode } from './TreeNode.ts';
+import { getTreeHeight } from './getTreeHeight.ts';
 
 const getBalance = (node: TreeNode) =>
   getTreeHeight(node.left) - getTreeHeight(node.right);

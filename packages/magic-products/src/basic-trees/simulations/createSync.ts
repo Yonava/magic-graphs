@@ -1,8 +1,8 @@
 import { Graph } from '@magic/shared/graph';
 
-import { compareCompanion } from './compareCompanion.ts';
-import { treeToGraph } from './treeToGraph.ts';
-import { AVLFrame } from './types.ts';
+import { compareCompanion } from '../graph-conversion/compareCompanion.ts';
+import { treeToGraph } from '../graph-conversion/treeToGraph.ts';
+import { AVLFrame } from './frames.ts';
 
 const ROOT_POSITION = {
   x: 800,

@@ -1,6 +1,6 @@
 import { Explainer } from '@magic/shared/simulation';
 
-import { AVLFrame, BalanceMethod } from './types.ts';
+import { AVLFrame, BalanceMethod } from './frames.ts';
 
 const BALANCE_METHOD_TO_STRING: Record<BalanceMethod, string> = {
   'left-left': 'Left Left',

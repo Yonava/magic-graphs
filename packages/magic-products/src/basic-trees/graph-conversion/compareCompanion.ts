@@ -1,7 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 
+import { CompareFrame } from '../simulations/frames.ts';
 import { GraphState } from './treeToGraph.ts';
-import { CompareFrame } from './types.ts';
 
 export const compareCompanion = (frame: CompareFrame, state: GraphState) => {
   const nodeWeAreAdding = frame.targetNode;
