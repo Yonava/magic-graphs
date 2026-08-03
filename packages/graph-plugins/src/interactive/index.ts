@@ -142,13 +142,10 @@ export const interactive =
 
     const removeFocusedElements = (e: KeyboardEvent) => {
       if (e.key !== 'Backspace') return;
-      finalActions.removeElements(
-        {
-          nodes: controls.focus?.focusedNodes() ?? [],
-          edges: controls.focus?.focusedEdges() ?? [],
-        },
-        {},
-      );
+      finalActions.removeElements({
+        nodes: controls.focus?.focusedNodes() ?? [],
+        edges: controls.focus?.focusedEdges() ?? [],
+      });
       captureHistorySnapshot();
     };
 

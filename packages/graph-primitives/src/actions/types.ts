@@ -9,9 +9,6 @@ import { CoreEdge, CoreNode } from '../types.ts';
 type BulkActionConfig = {
   nodes: {};
   edges: {};
-  // a special field for options like "add to focus" or "add to history stack" that would
-  // be super annoying for the consumer to apply to each node or edge inside the payload
-  shared: {};
 };
 
 type BaseActions = {
@@ -100,13 +97,10 @@ export type MergeActions<Actions extends PartialBaseActions[]> =
             >;
       };
 
-type BulkHandler<Action extends BulkActionConfig, ReturnValue> = (
-  options: {
-    nodes: Action['nodes'][];
-    edges: Action['edges'][];
-  },
-  shared: Action['shared'],
-) => ReturnValue;
+type BulkHandler<Action extends BulkActionConfig, ReturnValue> = (options: {
+  nodes: Action['nodes'][];
+  edges: Action['edges'][];
+}) => ReturnValue;
 
 export type GraphActions<Actions extends BaseActions> = {
   /**

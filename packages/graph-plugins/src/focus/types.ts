@@ -40,24 +40,6 @@ type BaseFocusControls = {
   focusedEdges: () => CoreEdge[];
 };
 
-export type FocusOption = {
-  /**
-   * Whether to focus the added element(s).
-   * @default true
-   */
-  focus?: boolean;
-};
-
-export type FocusActions = {
-  addNode: FocusOption;
-  addEdge: FocusOption;
-  addElements: {
-    nodes: FocusOption;
-    edges: FocusOption;
-    shared: FocusOption;
-  };
-};
-
 export type FocusControls = WithEvents<
   WithTheme<BaseFocusControls, FocusThemes>,
   FocusEventMap
@@ -67,6 +49,5 @@ export type FocusPlugin = GraphPlugin<{
   name: 'focus';
   controls: WithLifecycle<FocusControls>;
   events: FocusEventMap;
-  actions: FocusActions;
   dependsOn: [CanvasPlugin];
 }>;
