@@ -14,8 +14,6 @@ export type TreeArray = (TreeNode | undefined)[];
  * @returns a tree array where the index of the array corresponds to the tree index
  */
 export const treeToArray = (root: TreeNode | undefined) => {
-  if (!root) return [];
-
   const treeIndexToNodeId: TreeArray = [];
   if (!root) return treeIndexToNodeId;
 

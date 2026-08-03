@@ -66,7 +66,7 @@ export const useAVLSimulationDefinition = (): Controls => {
         onTeardownCompleted: () => {
           graph.history.lifecycle.enable();
           graph.history.captureSnapshot();
-          setTimeout(suggested.add, 0);
+          suggested.add();
         },
       };
     },
@@ -77,13 +77,11 @@ export const useAVLSimulationDefinition = (): Controls => {
 
   onMounted(() => {
     graph.history.captureSnapshot();
-    setTimeout(suggested.add, 0);
+    suggested.add();
   });
 
   graph.events.transit.subscribe('onDecoded', () => {
-    suggested.remove();
     tree.root = graphToTree(graph);
-    suggested.add();
   });
 
   return {
