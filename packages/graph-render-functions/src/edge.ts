@@ -7,9 +7,28 @@ import {
   createEdgeStyleResolver,
   createNodeStyleResolver,
 } from './resolvers.ts';
-import { CreateEdgeRenderFunction } from './types.ts';
+import {
+  CreateEdgeRenderFunction,
+  DefaultEdgeRenderOptions,
+  EdgeRenderOptionsSource,
+} from './types.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
+
+/**
+ * the single definition of how a graph answers every edge render option that does not depend
+ * on topology. spread it and supply {@link EdgeTopologyOptions} to build a renderer that
+ * differs from the default only where it means to.
+ */
+export const createDefaultEdgeRenderOptions = (
+  source: EdgeRenderOptionsSource,
+): DefaultEdgeRenderOptions => ({
+  shapes: source.canvas.shapes,
+  resolveToken: source.resolveToken,
+  directed: source.metadata.directed,
+  labelled: source.metadata.weighted,
+  labelTextInputColor: () => source.canvas.theme._resolveToken('canvas.color'),
+});
 
 export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
   resolveToken,

@@ -11,6 +11,7 @@ import { LooseGraphTransit } from '@graph/primitives/transit/types';
 import { RenderFunctions } from '@graph/render-functions/types';
 
 import { ComputedTokenResolver } from '../../computed-tokens/index.ts';
+import { GetterRenderFunctions } from './plugin.ts';
 
 export type LoosePluginSchema = {
   name: string;
@@ -41,7 +42,7 @@ type LoosePluginInput = {
   finalTokenResolver: ComputedTokenResolver;
   // see [5] in ./plugin.ts — the node and edge render functions the graph itself draws
   // with, built once folding has produced every plugin's theme detectors
-  finalRenderFunctions: RenderFunctions;
+  finalRenderFunctions: GetterRenderFunctions;
 };
 
 type LoosePluginOutput = {

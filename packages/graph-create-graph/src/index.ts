@@ -30,7 +30,7 @@ type CreateGraphOptions<
 > = {
   plugins: TPlugins;
   themePresets: Record<PresetName, PluginThemes<NoInfer<TPlugins>>>;
-  options: Partial<CoreOptions>;
+  coreOptions?: Partial<CoreOptions>;
 };
 
 export const createGraph = <
@@ -39,16 +39,16 @@ export const createGraph = <
 >({
   plugins,
   themePresets,
-  options: coreOptions = {},
+  coreOptions,
 }: CreateGraphOptions<TPlugins, PresetName>) => {
+  const coreGraph = core(coreOptions ?? {});
+
   const presetNames = Object.keys(themePresets) as PresetName[];
 
   let activePresetName = nullThrows(
     presetNames.at(0),
     'createGraph requires at least 1 theme preset!',
   );
-
-  const coreGraph = core(coreOptions);
 
   const folded = foldPlugins(
     coreGraph,
@@ -95,6 +95,7 @@ export const createGraph = <
     nodeToCanvasElement: nodeCanvasElement,
     edgeToCanvasElement: edgeCanvasElement,
     renderFunctions,
+    setRenderFunction,
   } = createCanvasElementFactories(castControls, tokenResolver);
 
   // plugins captured `finalRenderFunctions` during fold, before the render functions
@@ -149,6 +150,7 @@ export const createGraph = <
         return (activePresetName = newPresetName);
       },
     },
+    setRenderFunction,
   };
 };
 

@@ -4,6 +4,15 @@ export { createNodeRenderFunction } from './node.ts';
 /** Builds the shape for a single edge, including self directed and parallel edges. Pair with {@link CreateEdgeRenderFunction} to swap in your own. */
 export { createEdgeRenderFunction } from './edge.ts';
 
+/** Every edge render option that does not depend on topology, so a custom renderer only restates the parts it changes. */
+export { createDefaultEdgeRenderOptions } from './edge.ts';
+
+/** The graph state {@link createDefaultEdgeRenderOptions} reads, kept structural so any graph shaped value satisfies it. */
+export type { EdgeRenderOptionsSource } from './types.ts';
+
+/** The topology options {@link createDefaultEdgeRenderOptions} deliberately leaves to the caller. */
+export type { EdgeTopologyOptions } from './types.ts';
+
 /** The contract a node render function factory satisfies. */
 export type { CreateNodeRenderFunction } from './types.ts';
 

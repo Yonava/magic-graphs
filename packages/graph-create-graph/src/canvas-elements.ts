@@ -6,27 +6,50 @@ import { CANVAS_ELEMENT_CURSOR_FIELD_KEY } from '@graph/plugins/canvas/setupCanv
 import { CanvasControls } from '@graph/plugins/canvas/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 import {
+  EdgeRenderFunction,
+  NodeRenderFunction,
+  RenderFunctions,
+  createDefaultEdgeRenderOptions,
   createEdgeRenderFunction,
   createNodeRenderFunction,
 } from '@graph/render-functions/index';
 import { getNeighborPositions } from '@graph/render-functions/utils/getNeighborPositions';
 
+export type GetterRenderFunctions = {
+  node: () => NodeRenderFunction;
+  edge: () => EdgeRenderFunction;
+};
+
+export type CanvasElementFactories = {
+  edgeToCanvasElement: (edge: CoreEdge) => CanvasElement;
+  nodeToCanvasElement: (node: CoreNode) => CanvasElement;
+  renderFunctions: GetterRenderFunctions;
+  setRenderFunction: <T extends keyof RenderFunctions>(
+    type: T,
+    fn: RenderFunctions[T],
+  ) => void;
+};
+
 export const createCanvasElementFactories = (
   controls: CoreControls & { canvas: CanvasControls },
   tokenResolver: ComputedTokenResolver,
-) => {
-  const nodeRenderFunction = createNodeRenderFunction({
+): CanvasElementFactories => {
+  const renderFunctionOverrides: Partial<RenderFunctions> = {
+    node: undefined,
+    edge: undefined,
+  };
+
+  const defaultNodeRenderFunction = createNodeRenderFunction({
     shapes: controls.canvas.shapes,
     resolveToken: tokenResolver,
   });
 
-  const edgeRenderFunction = createEdgeRenderFunction({
-    directed: controls.metadata.directed,
-    labelled: controls.metadata.weighted,
-    labelTextInputColor: () =>
-      controls.canvas.theme._resolveToken('canvas.color'),
-    shapes: controls.canvas.shapes,
-    resolveToken: tokenResolver,
+  const defaultEdgeRenderFunction = createEdgeRenderFunction({
+    ...createDefaultEdgeRenderOptions({
+      canvas: controls.canvas,
+      metadata: controls.metadata,
+      resolveToken: tokenResolver,
+    }),
     parallelEdgeCount: (edge) =>
       controls.helpers.nodes.getEdgesBetweenConnectedNodes(
         edge.source.id,
@@ -36,9 +59,15 @@ export const createCanvasElementFactories = (
       getNeighborPositions(edge, controls.edges(), controls.positions.get),
   });
 
+  const nodeRenderFunction = () =>
+    renderFunctionOverrides.node ?? defaultNodeRenderFunction;
+
+  const edgeRenderFunction = () =>
+    renderFunctionOverrides.edge ?? defaultEdgeRenderFunction;
+
   const nodeToCanvasElement = (node: CoreNode): CanvasElement => ({
     id: node.id,
-    shape: nodeRenderFunction({
+    shape: nodeRenderFunction()({
       id: node.id,
       position: nullThrows(
         controls.positions.get(node.id),
@@ -54,7 +83,7 @@ export const createCanvasElementFactories = (
   const EDGE_RENDER_PRIORITY = 1;
   const edgeToCanvasElement = (edge: CoreEdge): CanvasElement => ({
     id: edge.id,
-    shape: edgeRenderFunction({
+    shape: edgeRenderFunction()({
       id: edge.id,
       source: {
         id: edge.source,
@@ -78,5 +107,6 @@ export const createCanvasElementFactories = (
       node: nodeRenderFunction,
       edge: edgeRenderFunction,
     },
+    setRenderFunction: (type, fn) => (renderFunctionOverrides[type] = fn),
   };
 };

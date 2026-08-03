@@ -16,6 +16,23 @@
     component: ActionBar,
     position: 'bottom-middle',
   });
+
+  graph.phantom.addNode({
+    id: 'phantom-node-1',
+    position: { x: 850, y: 430 },
+    label: 'A!',
+  });
+  graph.phantom.addNode({
+    id: 'phantom-node-2',
+    position: { x: 850, y: 30 },
+    label: 'B!',
+  });
+  graph.phantom.addEdge({
+    id: 'phantom-edge-1',
+    source: 'phantom-node-1',
+    target: 'phantom-node-2',
+    label: 'ABC',
+  });
 </script>
 
 <template>

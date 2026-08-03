@@ -1,0 +1,50 @@
+import { getEdgesBetweenConnectedNodes } from '@graph/core/helpers/node';
+import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
+import { CoreEdge } from '@graph/primitives/types';
+import {
+  EdgeRenderOptionsSource,
+  createDefaultEdgeRenderOptions,
+  createEdgeRenderFunction,
+} from '@graph/render-functions/index';
+import { getNeighborPositions } from '@graph/render-functions/utils/getNeighborPositions';
+
+import { PhantomControls } from './types.ts';
+
+/**
+ * the slice of a graph running the {@link phantom} plugin this renderer reads from.
+ * structural so the graph itself can be handed straight in.
+ */
+export type PhantomAwareGraph = Pick<
+  EdgeRenderOptionsSource,
+  'canvas' | 'metadata'
+> & {
+  theme: { tokenResolver: ComputedTokenResolver };
+  phantom: Pick<PhantomControls, 'edges' | 'getNodePosition'>;
+  getEdges: () => readonly CoreEdge[];
+};
+
+// the default edge renderer will not work with the phantom plugin since edge rendering requires
+// graph context (like other nodes and edges around it) to work properly.
+// IE for base edges to render properly alongside phantom edges, they must be able to see phantom edges and vice versa
+export const createPhantomAwareEdgeRenderFunction = (
+  graph: PhantomAwareGraph,
+) => {
+  const allEdges = (): readonly CoreEdge[] => [
+    ...graph.getEdges(),
+    ...graph.phantom.edges(),
+  ];
+
+  return createEdgeRenderFunction({
+    ...createDefaultEdgeRenderOptions({
+      canvas: graph.canvas,
+      metadata: graph.metadata,
+      resolveToken: graph.theme.tokenResolver,
+    }),
+    parallelEdgeCount: (edge) => {
+      const connectedEdges = getEdgesBetweenConnectedNodes(allEdges());
+      return connectedEdges(edge.source.id, edge.target.id).length;
+    },
+    neighborPositions: (edge) =>
+      getNeighborPositions(edge, allEdges(), graph.phantom.getNodePosition),
+  });
+};

@@ -15,6 +15,7 @@ import { marquee } from '@graph/plugins/marquee/index';
 import { nodeDrag } from '@graph/plugins/node-drag/index';
 import { NodeDragOptions } from '@graph/plugins/node-drag/options';
 import { nodeLabel } from '@graph/plugins/node-label/index';
+import { createPhantomAwareEdgeRenderFunction } from '@graph/plugins/phantom/createPhantomAwareEdgeRenderFunction';
 import { phantom } from '@graph/plugins/phantom/index';
 import { transitionMatrix } from '@graph/plugins/transition-matrix/index';
 import { dark } from '@graph/theme-presets/dark/index';
@@ -56,15 +57,19 @@ const graphPlugins = (
 
 const createGraphWithPlugins = (
   options: UseGraphOptions & { canvasSurface: CanvasProps },
-) =>
-  createGraph({
-    options: options.core ?? {},
+) => {
+  const graph = createGraph({
+    coreOptions: options.core ?? {},
     plugins: graphPlugins(options),
     themePresets: {
       dark,
       light,
     },
   });
+  const edgeRenderer = createPhantomAwareEdgeRenderFunction(graph);
+  graph.setRenderFunction('edge', edgeRenderer);
+  return graph;
+};
 
 export const useGraph = (options: UseGraphOptions = {}) => {
   const canvasSurface = useCanvas();

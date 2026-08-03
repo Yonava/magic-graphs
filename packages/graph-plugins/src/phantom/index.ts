@@ -11,22 +11,15 @@ export const phantom: PhantomPlugin = ({
   const nodes: PhantomNode[] = [];
   const edges: PhantomEdge[] = [];
 
-  const getNode = (id: string) => {
-    // look up normal node through core controls
-    if (controls.isNode(id)) {
-      const node = nullThrows(
-        controls.nodes().find((n) => n.id === id),
-        'node not found',
-      );
-      const position = controls.positions.get(node.id);
-      return { id: node.id, position };
-    }
-    // if node is phantom, return the phantom node
+  const getNodePosition = (id: string) => {
+    if (controls.isNode(id)) return controls.positions.get(id);
     return nullThrows(
-      nodes.find((n) => n.id === id),
-      'node not found',
-    );
+      nodes.find((node) => node.id === id),
+      `could not resolve position for node with id ${id}`,
+    ).position;
   };
+
+  const getNode = (id: string) => ({ id, position: getNodePosition(id) });
 
   const render = (elements: CanvasElement[]) => {
     // nodes in graph rendered on a priority level between [2, 3)
@@ -37,14 +30,14 @@ export const phantom: PhantomPlugin = ({
       elements.push({
         id: node.id,
         priority: NODE_RENDER_PRIORITY,
-        shape: renderFunctions.node(node),
+        shape: renderFunctions.node()(node),
       });
     }
     for (const edge of edges) {
       elements.push({
         id: edge.id,
         priority: EDGE_RENDER_PRIORITY,
-        shape: renderFunctions.edge({
+        shape: renderFunctions.edge()({
           id: edge.id,
           source: getNode(edge.source),
           target: getNode(edge.target),
@@ -91,6 +84,12 @@ export const phantom: PhantomPlugin = ({
 
   return {
     name: 'phantom',
-    controls: {},
+    controls: {
+      addNode,
+      addEdge,
+      nodes: () => nodes,
+      edges: () => edges,
+      getNodePosition,
+    },
   };
 };
