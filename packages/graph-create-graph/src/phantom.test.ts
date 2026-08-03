@@ -32,7 +32,7 @@ const setup = () => {
   );
 
   // stand-ins that echo what they were handed, so a render pass is inspectable without
-  // pulling in shapes or the token resolver
+  // pulling in shapes or a detector map
   folded.resolveFinalRenderFunctions({
     node: () => (node) => ({ drew: 'node', id: node.id }) as any,
     edge: () => (edge) =>
@@ -43,6 +43,8 @@ const setup = () => {
         target: edge.target,
       }) as any,
   });
+
+  folded.resolveFinalTokenResolver(((token: string) => token) as any);
 
   const transit = createGraphTransit({
     pluginTransitControls: folded.pluginTransitControls,

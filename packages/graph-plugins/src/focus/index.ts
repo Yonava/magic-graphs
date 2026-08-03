@@ -17,7 +17,7 @@ const sameIds = (previous: ReadonlySet<string>, next: ReadonlySet<string>) => {
   return true;
 };
 
-export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
+export const focus: FocusPlugin = ({ controls, events, getters }) => {
   const focusEventRegistry = createFocusEventRegistry();
   const focusEventHub = createEventHub(focusEventRegistry);
 
