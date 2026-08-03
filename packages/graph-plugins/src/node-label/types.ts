@@ -28,13 +28,13 @@ export type NodeLabelControls = {
 };
 
 type LabelOption = {
-  label: string;
+  label?: string;
 };
 
 type NodeLabelActions = {
-  addNode: Partial<LabelOption>;
+  addNode: LabelOption;
   addElements: {
-    nodes: Partial<LabelOption>;
+    nodes: LabelOption;
   };
 };
 

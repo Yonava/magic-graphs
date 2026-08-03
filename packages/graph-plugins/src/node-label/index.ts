@@ -79,8 +79,8 @@ export const nodeLabel: NodeLabelPlugin = ({
         nodeIdToLabel.delete(options.id);
         return removalPayload;
       },
-      addElements: (options, shared) => {
-        const addedElements = actions.addElements(options, shared);
+      addElements: (options) => {
+        const addedElements = actions.addElements(options);
         setNodeLabels(
           addedElements.addedNodes.map((node, i) => ({
             nodeId: node.id,
@@ -89,8 +89,8 @@ export const nodeLabel: NodeLabelPlugin = ({
         );
         return addedElements;
       },
-      removeElements: (options, shared) => {
-        const removedElements = actions.removeElements(options, shared);
+      removeElements: (options) => {
+        const removedElements = actions.removeElements(options);
         for (const nodeId of removedElements.removedNodeIds) {
           nodeIdToLabel.delete(nodeId);
         }

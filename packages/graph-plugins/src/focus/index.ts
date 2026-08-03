@@ -17,7 +17,7 @@ const sameIds = (previous: ReadonlySet<string>, next: ReadonlySet<string>) => {
   return true;
 };
 
-export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
+export const focus: FocusPlugin = ({ controls, events, getters }) => {
   const focusEventRegistry = createFocusEventRegistry();
   const focusEventHub = createEventHub(focusEventRegistry);
 
@@ -122,61 +122,10 @@ export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
 
   enable();
 
-  const extendedActions: ReturnType<FocusPlugin>['actions'] = {
-    addNode: (options) => {
-      const addedNode = actions.addNode(options);
-      const focusOnAdded = options?.focus ?? true;
-      if (focusOnAdded) setFocus([addedNode.id]);
-      return addedNode;
-    },
-    addEdge: (options) => {
-      const addedEdge = actions.addEdge(options);
-      const focusOnAdded = options?.focus ?? true;
-      if (focusOnAdded) setFocus([addedEdge.id]);
-      return addedEdge;
-    },
-    removeNode: (options) => {
-      const removedNode = actions.removeNode(options);
-      clearRemovedElementsFromFocus({
-        removedNodeIds: removedNode.removedNodeIds,
-        removedEdgeIds: removedNode.removedEdgeIds,
-      });
-      return removedNode;
-    },
-    removeEdge: (options) => {
-      const removedEdgeId = actions.removeEdge(options);
-      clearRemovedElementsFromFocus({
-        removedNodeIds: [],
-        removedEdgeIds: [removedEdgeId],
-      });
-      return removedEdgeId;
-    },
-    addElements: (options, shared) => {
-      const updatedElements = actions.addElements(options, shared);
-      const focusOnAdded = shared?.focus ?? true;
-      if (focusOnAdded) {
-        setFocus([
-          ...updatedElements.addedNodes.map((n) => n.id),
-          ...updatedElements.addedEdges.map((e) => e.id),
-        ]);
-      }
-      return updatedElements;
-    },
-    removeElements: (options, shared) => {
-      const removedElements = actions.removeElements(options, shared);
-      clearRemovedElementsFromFocus({
-        removedNodeIds: removedElements.removedNodeIds,
-        removedEdgeIds: removedElements.removedEdgeIds,
-      });
-      return removedElements;
-    },
-  };
-
   const theme = createThemeController(createFocusThemeOverrides());
 
   return {
     name: 'focus',
-    actions: extendedActions,
     controls: {
       set: setFocus,
       clear: clearFocus,
@@ -198,9 +147,10 @@ export const focus: FocusPlugin = ({ controls, events, actions, getters }) => {
       const weightLayer = theme.createLayer(
         FOCUS_PLUGIN_ID + '/theme/edge-weight',
       );
-      weightLayer.set('edge.focus.text.content', (edge) =>
-        getters.getEdge(edge.id).weight.toFraction(),
-      );
+      weightLayer.set('edge.focus.text.content', (edge) => {
+        if (!controls.isEdge(edge.id)) return;
+        return getters.getEdge(edge.id).weight.toFraction();
+      });
     },
   };
 };

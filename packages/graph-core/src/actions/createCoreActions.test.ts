@@ -79,7 +79,7 @@ describe(createCoreActions, () => {
     });
 
     const { observed, stop } = observeStructure(graph);
-    graph.actions.removeElements({ nodes: [node1, node2], edges: [] }, {});
+    graph.actions.removeElements({ nodes: [node1, node2], edges: [] });
     stop();
 
     expect(observed).toEqual([{ nodes: [], edges: [] }]);

@@ -4,7 +4,6 @@ import {
   WithLifecycle,
   WithTheme,
 } from '@graph/plugins-shared/plugins';
-import { CoreNode } from '@graph/primitives/types';
 
 import { CanvasPlugin } from '../canvas/types.ts';
 import { FocusPlugin } from '../focus/types.ts';
