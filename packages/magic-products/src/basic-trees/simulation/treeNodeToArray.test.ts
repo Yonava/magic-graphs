@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { TreeNode } from './TreeNode.ts';
-import { TreeArray, treeNodeToArray } from './treeNodeToArray.ts';
+import { TreeNodeArray, treeNodeToArray } from './treeNodeToArray.ts';
 
 const node = (id: string, left?: TreeNode, right?: TreeNode): TreeNode => {
   const treeNode = new TreeNode({ id, value: 0 });
@@ -10,7 +10,7 @@ const node = (id: string, left?: TreeNode, right?: TreeNode): TreeNode => {
   return treeNode;
 };
 
-const idsIn = (array: TreeArray) => array.map((entry) => entry?.id ?? null);
+const idsIn = (array: TreeNodeArray) => array.map((entry) => entry?.id ?? null);
 
 const nodesIn = (root: TreeNode | undefined): TreeNode[] =>
   root ? [root, ...nodesIn(root.left), ...nodesIn(root.right)] : [];
@@ -20,7 +20,7 @@ const nodesIn = (root: TreeNode | undefined): TreeNode[] =>
  * the array form and the only thing callers may rely on
  */
 const expectHeapLayout = (
-  array: TreeArray,
+  array: TreeNodeArray,
   node: TreeNode | undefined,
   index: number,
 ) => {

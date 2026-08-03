@@ -2,27 +2,28 @@ import { AddGEdgeOptions, AddGNodeOptions } from '@magic/shared/graph/types';
 
 import { TreeNode } from './TreeNode.ts';
 import { getTreeNodePositions } from './getTreeNodePositions.ts';
-import { TreeArray, treeNodeToArray } from './treeNodeToArray.ts';
+import { TreeNodeArray, treeNodeToArray } from './treeNodeToArray.ts';
 import type { Coordinate } from './types.ts';
 
 const X_OFFSET = 160;
 const Y_OFFSET = 200;
 
 const newEdge = (source: string, target: string): AddGEdgeOptions => ({
-  source: source.toString(),
-  target: target.toString(),
+  source,
+  target,
   id: `${source}-${target}`,
 });
 
-const edgesInTree = (treeArray: TreeArray) => {
+/** one edge per parent to child link, read off the position each index encodes */
+const edgesBetweenNodes = (nodes: TreeNodeArray) => {
   const edges: AddGEdgeOptions[] = [];
 
-  for (let i = 0; i < treeArray.length; i++) {
-    const node = treeArray[i];
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
     if (node === undefined) continue;
 
-    const left = treeArray[2 * i + 1];
-    const right = treeArray[2 * i + 2];
+    const left = nodes[2 * i + 1];
+    const right = nodes[2 * i + 2];
 
     if (left !== undefined) edges.push(newEdge(node.id, left.id));
     if (right !== undefined) edges.push(newEdge(node.id, right.id));
@@ -36,33 +37,34 @@ export type GraphState = {
   edges: AddGEdgeOptions[];
 };
 
+/** lays out `node` and its descendants as graph elements, with `node` at `nodePosition` */
 export const treeToGraph = (
-  root: TreeNode | undefined,
-  rootPosition: Coordinate,
+  node: TreeNode | undefined,
+  nodePosition: Coordinate,
 ): GraphState => {
-  if (!root) return { edges: [], nodes: [] };
+  if (!node) return { edges: [], nodes: [] };
 
   const positions = getTreeNodePositions({
-    root,
-    rootNodeCoordinates: rootPosition,
+    node,
+    nodeCoordinates: nodePosition,
     xOffset: X_OFFSET,
     yOffset: Y_OFFSET,
   });
 
-  const treeArray = treeNodeToArray(root);
+  const nodes = treeNodeToArray(node);
 
   return {
-    edges: edgesInTree(treeArray),
-    nodes: treeArray
-      .map((node): AddGNodeOptions | undefined =>
-        node !== undefined
+    edges: edgesBetweenNodes(nodes),
+    nodes: nodes
+      .map((treeNode): AddGNodeOptions | undefined =>
+        treeNode !== undefined
           ? {
-              id: node.id,
-              label: node.value.toString(),
-              position: positions.get(node),
+              id: treeNode.id,
+              label: treeNode.value.toString(),
+              position: positions.get(treeNode),
             }
           : undefined,
       )
-      .filter((v) => v !== undefined),
+      .filter((treeNode) => treeNode !== undefined),
   };
 };

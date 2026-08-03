@@ -2,28 +2,26 @@ import { TreeNode } from './TreeNode.ts';
 import { getTreeHeight } from './getTreeHeight.ts';
 
 /**
- * An array representation of a binary tree, where each index corresponds to a tree position:
- * index 0 is the root, index 1 is the left child, index 2 is the right child, etc.
+ * the flat encoding of a {@link TreeNode} and everything beneath it, where an index
+ * addresses a position rather than a child count: index 0 is the node itself, and the
+ * children of index `i` are at `2i + 1` and `2i + 2`.
  *
- * Each index in the array is the TreeNode at that position, or `undefined` if no node exists at that position.
+ * a position no node occupies holds `undefined`, so indices never shift to close a gap.
  */
+export type TreeNodeArray = (TreeNode | undefined)[];
 
-export type TreeArray = (TreeNode | undefined)[];
+/** @returns the {@link TreeNodeArray} encoding of `node` and its descendants */
+export const treeNodeToArray = (node: TreeNode | undefined) => {
+  const nodesByIndex: TreeNodeArray = [];
+  if (!node) return nodesByIndex;
 
-/**
- * @returns a tree array where the index of the array corresponds to the tree index
- */
-export const treeNodeToArray = (root: TreeNode | undefined) => {
-  const treeIndexToNodeId: TreeArray = [];
-  if (!root) return treeIndexToNodeId;
+  let nodesAtDepth: TreeNodeArray = [node];
 
-  let nodesAtDepth: TreeArray = [root];
-
-  for (let i = 0; i <= getTreeHeight(root); i++) {
-    const nodesAtNextDepth: TreeArray = [];
+  for (let i = 0; i <= getTreeHeight(node); i++) {
+    const nodesAtNextDepth: TreeNodeArray = [];
 
     for (const maybeTreeNode of nodesAtDepth) {
-      treeIndexToNodeId.push(maybeTreeNode);
+      nodesByIndex.push(maybeTreeNode);
       nodesAtNextDepth.push(maybeTreeNode?.left);
       nodesAtNextDepth.push(maybeTreeNode?.right);
     }
@@ -31,5 +29,5 @@ export const treeNodeToArray = (root: TreeNode | undefined) => {
     nodesAtDepth = [...nodesAtNextDepth];
   }
 
-  return treeIndexToNodeId;
+  return nodesByIndex;
 };

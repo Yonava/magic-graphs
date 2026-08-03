@@ -34,10 +34,10 @@ const perfectTree = (
   );
 };
 
-const place = (root: TreeNode, xOffset = X_OFFSET, origin = ORIGIN) =>
+const place = (node: TreeNode, xOffset = X_OFFSET, origin = ORIGIN) =>
   getTreeNodePositions({
-    root,
-    rootNodeCoordinates: origin,
+    node,
+    nodeCoordinates: origin,
     xOffset,
     yOffset: Y_OFFSET,
   });
