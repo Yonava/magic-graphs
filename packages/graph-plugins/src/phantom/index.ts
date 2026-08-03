@@ -1,4 +1,5 @@
 import { nullThrows } from '@core/utils/assert';
+import { CoreNode } from '@graph/primitives/types';
 
 import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { createLabelThemer } from './createLabelThemer.ts';
@@ -6,10 +7,11 @@ import { PhantomEdge, PhantomNode, PhantomPlugin } from './types.ts';
 
 export const phantom: PhantomPlugin = ({
   controls,
+  events,
   finalRenderFunctions: renderFunctions,
 }) => {
   const nodes: PhantomNode[] = [];
-  const edges: PhantomEdge[] = [];
+  let edges: PhantomEdge[] = [];
 
   const getNodePosition = (id: string) => {
     if (controls.isNode(id)) return controls.positions.get(id);
@@ -65,22 +67,18 @@ export const phantom: PhantomPlugin = ({
     edges.push(edge);
   };
 
-  // addNode({
-  //   id: 'phantom-node-1',
-  //   position: { x: 850, y: 430 },
-  //   label: 'A!',
-  // });
-  // addNode({
-  //   id: 'phantom-node-2',
-  //   position: { x: 850, y: 30 },
-  //   label: 'B!',
-  // });
-  // addEdge({
-  //   id: 'phantom-edge-1',
-  //   source: 'phantom-node-1',
-  //   target: 'phantom-node-2',
-  //   label: 'ABC',
-  // });
+  // a phantom edge may point at a real node, so a removed node leaves it dangling and
+  // getNodePosition throws on the next frame, taking the whole render pass with it
+  const dropEdgesTouchingNodes = (
+    removedNodeIds: Readonly<CoreNode['id'][]>,
+  ) => {
+    const removed = new Set(removedNodeIds);
+    edges = edges.filter(
+      (edge) => !removed.has(edge.source) && !removed.has(edge.target),
+    );
+  };
+
+  events.subscribe('onNodesRemoved', dropEdgesTouchingNodes);
 
   return {
     name: 'phantom',

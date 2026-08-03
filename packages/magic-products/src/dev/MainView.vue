@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
+  import { onMounted } from 'vue';
+
   import ActionBar from './ActionBar.vue';
   import { manifest } from './manifest.ts';
 
@@ -27,11 +29,16 @@
     position: { x: 850, y: 30 },
     label: 'B!',
   });
-  graph.phantom.addEdge({
-    id: 'phantom-edge-1',
-    source: 'phantom-node-1',
-    target: 'phantom-node-2',
-    label: 'ABC',
+
+  onMounted(() => {
+    const a = graph.nodes.value.find((n) => n.label === 'A')?.id!;
+    const c = graph.nodes.value.find((n) => n.label === 'C')?.id!;
+    graph.phantom.addEdge({
+      id: 'phantom-edge-1',
+      source: a,
+      target: c,
+      label: 'ABC',
+    });
   });
 </script>
 
