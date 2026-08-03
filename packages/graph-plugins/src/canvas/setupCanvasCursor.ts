@@ -1,10 +1,10 @@
-import { CoreGetters } from '@graph/core/getters';
 import {
   CURSOR,
   CURSOR_FALLBACK,
   Cursor,
   isValidCursor,
-} from '@graph/plugins-shared/theme';
+} from '@core/themes/index';
+import { CoreGetters } from '@graph/core/getters';
 import { EventHub } from '@graph/primitives/events/createEventHub';
 import { GraphGetters } from '@graph/primitives/getters/types';
 

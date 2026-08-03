@@ -1,6 +1,6 @@
+import { ThemeValue } from '@core/themes/index';
 import { Color } from '@core/utils/colors';
 import { Themer } from '@graph/create-graph/createThemer';
-import { ThemeValue } from '@graph/plugins-shared/theme';
 
 type Identified = { id: string };
 

@@ -1,6 +1,6 @@
+import { CURSOR, CURSOR_FALLBACK } from '@core/themes/index';
 import colors from '@core/utils/colors';
 import { PluginThemes } from '@graph/plugins-shared/plugins';
-import { CURSOR, CURSOR_FALLBACK } from '@graph/plugins-shared/theme';
 import { AnchorsPlugin } from '@graph/plugins/anchors/types';
 import { CanvasPlugin } from '@graph/plugins/canvas/types';
 import { FocusPlugin } from '@graph/plugins/focus/types';

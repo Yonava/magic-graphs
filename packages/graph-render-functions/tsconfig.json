@@ -8,8 +8,8 @@
   "references": [
     { "path": "../canvas-primitives" },
     { "path": "../core-utils" },
-    { "path": "../graph-plugins-shared" },
-    { "path": "../graph-primitives" }
+    { "path": "../graph-primitives" },
+    { "path": "../graph-computed-tokens" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

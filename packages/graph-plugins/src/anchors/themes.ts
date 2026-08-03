@@ -1,10 +1,10 @@
-import { Color } from '@core/utils/colors';
 import {
   Cursor,
   CursorFallback,
   ThemeOverrides,
   ThemeValue,
-} from '@graph/plugins-shared/theme';
+} from '@core/themes/index';
+import { Color } from '@core/utils/colors';
 import { CoreNode } from '@graph/primitives/types';
 
 import { NodeAnchor } from './types.ts';

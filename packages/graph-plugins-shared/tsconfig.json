@@ -8,7 +8,9 @@
     { "path": "../graph-primitives" },
     { "path": "../graph-core" },
     { "path": "../core-utils" },
-    { "path": "../canvas-primitives" }
+    { "path": "../graph-render-functions" },
+    { "path": "../core-themes" },
+    { "path": "../graph-computed-tokens" }
   ],
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

@@ -1,4 +1,4 @@
-import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
+import { ComputedTokenResolver } from '@graph/computed-tokens/index';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 export const createNodeStyleResolver =

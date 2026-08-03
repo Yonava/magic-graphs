@@ -19,7 +19,7 @@
   "dependencies": {
     "@canvas/primitives": "workspace:*",
     "@core/utils": "workspace:*",
-    "@graph/plugins-shared": "workspace:*",
-    "@graph/primitives": "workspace:*"
+    "@graph/primitives": "workspace:*",
+    "@graph/computed-tokens": "workspace:*"
   }
 }

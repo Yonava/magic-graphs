@@ -11,6 +11,8 @@
     { "path": "../graph-plugins" },
     { "path": "../graph-primitives" },
     { "path": "../graph-render-functions" },
+    { "path": "../core-themes" },
+    { "path": "../graph-computed-tokens" },
     { "path": "../core-utils" },
     { "path": "../reactive-primitives" }
   ],

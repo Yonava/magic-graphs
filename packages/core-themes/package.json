@@ -1,0 +1,25 @@
+{
+  "name": "@core/themes",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./index": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./dist/types/*.d.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "build:types": "tsc -b ."
+  },
+  "dependencies": {
+    "@core/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "ts-essentials": "^10.2.0"
+  }
+}

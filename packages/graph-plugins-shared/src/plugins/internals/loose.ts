@@ -1,3 +1,4 @@
+import { ComputedTokenResolver } from '@graph/computed-tokens/index';
 import { CoreActions } from '@graph/core/actions/types';
 import { ConsumerEventsHub } from '@graph/core/consumer-events';
 import { CoreGetters } from '@graph/core/getters';
@@ -10,7 +11,6 @@ import { BaseGetters, GraphGetters } from '@graph/primitives/getters/types';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
 import { RenderFunctions } from '@graph/render-functions/types';
 
-import { ComputedTokenResolver } from '../../computed-tokens/index.ts';
 import { GetterRenderFunctions } from './plugin.ts';
 
 export type LoosePluginSchema = {
