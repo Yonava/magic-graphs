@@ -1,6 +1,6 @@
 import { Graph } from '@magic/shared/graph';
 
-import { TreeNode } from './TreeNode.ts';
+import { TreeNode } from '../tree/TreeNode.ts';
 
 /**
  * reads the tree encoded in `graph`, where node labels supply values and outgoing

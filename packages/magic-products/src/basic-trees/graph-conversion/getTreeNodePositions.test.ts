@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { TreeNode } from './TreeNode.ts';
+import { TreeNode } from '../tree/TreeNode.ts';
 import { getTreeNodePositions } from './getTreeNodePositions.ts';
 
 const X_OFFSET = 160;

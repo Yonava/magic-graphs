@@ -1,9 +1,8 @@
 import { AddGEdgeOptions, AddGNodeOptions } from '@magic/shared/graph/types';
 
-import { TreeNode } from './TreeNode.ts';
-import { getTreeNodePositions } from './getTreeNodePositions.ts';
-import { TreeNodeArray, treeNodeToArray } from './treeNodeToArray.ts';
-import type { Coordinate } from './types.ts';
+import { TreeNode } from '../tree/TreeNode.ts';
+import { TreeNodeArray, treeNodeToArray } from '../tree/treeNodeToArray.ts';
+import { Coordinate, getTreeNodePositions } from './getTreeNodePositions.ts';
 
 const X_OFFSET = 160;
 const Y_OFFSET = 200;

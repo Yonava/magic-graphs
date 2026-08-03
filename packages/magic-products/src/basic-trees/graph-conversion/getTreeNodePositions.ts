@@ -1,6 +1,11 @@
-import type { TreeNode } from './TreeNode.ts';
-import { getTreeHeight } from './getTreeHeight.ts';
-import type { Coordinate } from './types.ts';
+import type { TreeNode } from '../tree/TreeNode.ts';
+import { getTreeHeight } from '../tree/getTreeHeight.ts';
+
+/** where a node is drawn on the canvas */
+export type Coordinate = {
+  x: number;
+  y: number;
+};
 
 /**
  * maps `node` and every descendant to the (x, y) position it should be drawn at.

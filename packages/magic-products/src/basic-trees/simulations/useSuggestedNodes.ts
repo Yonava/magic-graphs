@@ -8,7 +8,7 @@ import tinycolor from 'tinycolor2';
 
 import { onUnmounted } from 'vue';
 
-import { AVLFrame } from './types.ts';
+import { AVLFrame } from './frames.ts';
 import { AVLControls } from './useAVLSimulation.ts';
 
 const Y = 250;
@@ -31,8 +31,6 @@ export const useSuggestedNodes = (
   simDefinition: SimulationDefinition<AVLFrame>,
   controls: AVLControls,
 ) => {
-  // this product is the only thing putting phantom nodes on the graph, so every phantom
-  // node is a suggestion and no separate bookkeeping is needed to tell them apart
   const suggestions = () => graph.phantom.nodes();
 
   const addSuggestedNodes = () => {

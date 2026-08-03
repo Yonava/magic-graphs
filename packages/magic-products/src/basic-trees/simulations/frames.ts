@@ -1,4 +1,4 @@
-import { NodePayload, TreeNode } from './TreeNode.ts';
+import { NodePayload, TreeNode } from '../tree/TreeNode.ts';
 
 export type BalanceMethod =
   'left-left' | 'right-right' | 'left-right' | 'right-left';
@@ -47,8 +47,3 @@ export type AVLFrameNoRoot =
 export type AVLFrame = AVLFrameNoRoot & { root: TreeNode | undefined };
 
 export type AVLMode = 'insert' | 'remove';
-
-export type Coordinate = {
-  x: number;
-  y: number;
-};

@@ -5,7 +5,7 @@
   import { useProvidedGraph } from '@magic/shared/product';
   import { useFocusedNode } from '@magic/shared/utilities/useFocusedNode';
 
-  import { useAVLSimulationDefinition } from './simulation/useAVLSimulation.ts';
+  import { useAVLSimulationDefinition } from './simulations/useAVLSimulation.ts';
 
   const graph = useProvidedGraph();
 
