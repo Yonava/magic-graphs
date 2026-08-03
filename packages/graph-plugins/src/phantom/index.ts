@@ -1,16 +1,22 @@
 import { nullThrows } from '@core/utils/assert';
-import { CoreNode } from '@graph/primitives/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 import { CanvasElement } from '../canvas/aggregator/types.ts';
 import { createLabelThemer } from './createLabelThemer.ts';
-import { PhantomEdge, PhantomNode, PhantomPlugin } from './types.ts';
+import {
+  PhantomEdge,
+  PhantomElementIds,
+  PhantomElements,
+  PhantomNode,
+  PhantomPlugin,
+} from './types.ts';
 
 export const phantom: PhantomPlugin = ({
   controls,
   events,
   finalRenderFunctions: renderFunctions,
 }) => {
-  const nodes: PhantomNode[] = [];
+  let nodes: PhantomNode[] = [];
   let edges: PhantomEdge[] = [];
 
   const getNodePosition = (id: string) => {
@@ -67,15 +73,52 @@ export const phantom: PhantomPlugin = ({
     edges.push(edge);
   };
 
+  const addElements = (elements: PhantomElements) => {
+    nodes.push(...elements.nodes);
+    edges.push(...elements.edges);
+  };
+
+  const touchesNodes = (edge: PhantomEdge, nodeIds: ReadonlySet<string>) =>
+    nodeIds.has(edge.source) || nodeIds.has(edge.target);
+
+  const removeElements = ({ nodeIds, edgeIds }: PhantomElementIds) => {
+    const nodeIdsToRemove = new Set(nodeIds);
+    const edgeIdsToRemove = new Set(edgeIds);
+
+    const removedNodeIds = nodes
+      .filter((node) => nodeIdsToRemove.has(node.id))
+      .map((node) => node.id);
+
+    // a removed node takes its edges with it, same as the core removeNode action
+    const removedEdgeIds = edges
+      .filter(
+        (edge) =>
+          edgeIdsToRemove.has(edge.id) || touchesNodes(edge, nodeIdsToRemove),
+      )
+      .map((edge) => edge.id);
+
+    const removedEdgeIdSet = new Set(removedEdgeIds);
+    nodes = nodes.filter((node) => !nodeIdsToRemove.has(node.id));
+    edges = edges.filter((edge) => !removedEdgeIdSet.has(edge.id));
+
+    return { removedNodeIds, removedEdgeIds };
+  };
+
+  const removeNode = (nodeId: CoreNode['id']) =>
+    removeElements({ nodeIds: [nodeId], edgeIds: [] });
+
+  const removeEdge = (edgeId: CoreEdge['id']) => {
+    removeElements({ nodeIds: [], edgeIds: [edgeId] });
+  };
+
   // a phantom edge may point at a real node, so a removed node leaves it dangling and
-  // getNodePosition throws on the next frame, taking the whole render pass with it
+  // getNodePosition throws on the next frame, taking the whole render pass with it.
+  // phantom nodes are left alone since they own their ids independently of core
   const dropEdgesTouchingNodes = (
     removedNodeIds: Readonly<CoreNode['id'][]>,
   ) => {
     const removed = new Set(removedNodeIds);
-    edges = edges.filter(
-      (edge) => !removed.has(edge.source) && !removed.has(edge.target),
-    );
+    edges = edges.filter((edge) => !touchesNodes(edge, removed));
   };
 
   events.subscribe('onNodesRemoved', dropEdgesTouchingNodes);
@@ -85,6 +128,10 @@ export const phantom: PhantomPlugin = ({
     controls: {
       addNode,
       addEdge,
+      addElements,
+      removeNode,
+      removeEdge,
+      removeElements,
       nodes: () => nodes,
       edges: () => edges,
       getNodePosition,
