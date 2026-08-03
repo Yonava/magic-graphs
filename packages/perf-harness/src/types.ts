@@ -8,7 +8,7 @@
  * boundary would be pretending to a guarantee that does not exist.
  */
 
-export type PerfCounts = Record<string, number>;
+type PerfCounts = Record<string, number>;
 
 export type PerfReport = {
   timing: {

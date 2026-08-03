@@ -2,13 +2,21 @@ import { CoreActions } from '@graph/core/actions/types';
 import { CoreGetters } from '@graph/core/getters';
 import { CoreControls, CoreTransitPayload } from '@graph/core/types';
 import { GraphActions } from '@graph/primitives/actions/types';
-import { BaseGetters } from '@graph/primitives/getters/types';
+import { BaseGetters, GraphGetters } from '@graph/primitives/getters/types';
 import { TransitControls } from '@graph/primitives/transit/types';
-import { UnionToIntersection } from 'ts-essentials';
+import { IsNever, UnionToIntersection } from 'ts-essentials';
 
 import { LooseGraphPlugin } from './loose.ts';
 
 type RemoveArray<T> = T extends (infer F)[] ? F : T;
+
+// core is folded in here rather than taken from the plugins, since a plugin declaring no
+// controls, actions or getters of its own leaves that field off its output entirely
+type MergeIntoCore<Core, Contributions> =
+  // UnionToIntersection resolves an empty union to never, which would wipe out core
+  IsNever<Contributions> extends true
+    ? Core
+    : Core & UnionToIntersection<Contributions>;
 
 type ResolveControls<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
   ? ReturnType<Plugin> extends {
@@ -30,40 +38,36 @@ type ResolveTransitPayload<Plugin extends LooseGraphPlugin> =
     : never;
 
 export type ExtractControls<TPlugins extends LooseGraphPlugin[]> =
-  CoreControls &
-    (TPlugins extends never[]
-      ? {}
-      : UnionToIntersection<ResolveControls<RemoveArray<NoInfer<TPlugins>>>>);
+  MergeIntoCore<CoreControls, ResolveControls<RemoveArray<NoInfer<TPlugins>>>>;
 
-export type ExtractActions<TPlugins extends LooseGraphPlugin[]> =
-  TPlugins extends never[]
-    ? // all plugins come pre-baked with core actions
-      CoreActions
-    : UnionToIntersection<
-        ReturnType<RemoveArray<NoInfer<TPlugins>>> extends {
-          actions: GraphActions<infer Actions>;
-        }
-          ? Actions
-          : never
-      >;
+type ActionsFromPlugin<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
+  ? ReturnType<Plugin> extends { actions: GraphActions<infer Actions> }
+    ? Actions
+    : never
+  : never;
 
-type GettersFromPlugin<Plugin extends LooseGraphPlugin> =
-  Plugin extends LooseGraphPlugin
+export type ExtractActions<TPlugins extends LooseGraphPlugin[]> = MergeIntoCore<
+  CoreActions,
+  ActionsFromPlugin<RemoveArray<NoInfer<TPlugins>>>
+>;
+
+type GettersFromPlugin<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
+  ? ReturnType<Plugin> extends {
+      getters: infer Getters extends GraphGetters<any>;
+    }
     ? {
-        getNode: ReturnType<ReturnType<Plugin>['getters']['getNode']>;
-        getEdge: ReturnType<ReturnType<Plugin>['getters']['getEdge']>;
+        getNode: ReturnType<Getters['getNode']>;
+        getEdge: ReturnType<Getters['getEdge']>;
       }
-    : never;
+    : never
+  : never;
 
-export type ExtractGetters<TPlugins extends LooseGraphPlugin[]> =
-  TPlugins extends never[]
-    ? // all plugins come pre-baked with core getters
-      CoreGetters
-    : {
-        [K in keyof BaseGetters]: UnionToIntersection<
-          GettersFromPlugin<RemoveArray<NoInfer<TPlugins>>>[K]
-        >;
-      };
+export type ExtractGetters<TPlugins extends LooseGraphPlugin[]> = {
+  [GettersField in keyof BaseGetters]: MergeIntoCore<
+    CoreGetters[GettersField],
+    GettersFromPlugin<RemoveArray<NoInfer<TPlugins>>>[GettersField]
+  >;
+};
 
 export type ExtractTransitPayload<TPlugins extends LooseGraphPlugin[]> = Record<
   'core',

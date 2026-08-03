@@ -100,13 +100,8 @@ const getEdgeBetween: CurriedNodeHelpers['getEdgeBetween'] =
     });
   };
 
-export const nodeHelpers: CurriedNodeHelpers = {
-  getAncestors,
-  getChildren,
-  getConnectedEdges,
-  getDescendants,
-  getEdgeBetween,
-  getEdgesBetweenConnectedNodes: (graph) => (nodeId1, nodeId2) => {
+export const getEdgesBetweenConnectedNodes =
+  (edges: readonly CoreEdge[]) => (nodeId1: string, nodeId2: string) => {
     const isConnecting = (edge: CoreEdge) => {
       const fromNode1ToNode2 =
         edge.source === nodeId1 && edge.target === nodeId2;
@@ -115,8 +110,17 @@ export const nodeHelpers: CurriedNodeHelpers = {
       return fromNode1ToNode2 || fromNode2ToNode1;
     };
 
-    return graph.edges().filter(isConnecting);
-  },
+    return edges.filter(isConnecting);
+  };
+
+export const nodeHelpers: CurriedNodeHelpers = {
+  getAncestors,
+  getChildren,
+  getConnectedEdges,
+  getDescendants,
+  getEdgeBetween,
+  getEdgesBetweenConnectedNodes: (graph) =>
+    getEdgesBetweenConnectedNodes(graph.edges()),
   getInboundEdges,
   getOutboundEdges,
   getParents,

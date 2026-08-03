@@ -4,6 +4,7 @@ import { CanvasProps } from '@canvas/surface/types';
 import { KeyboardEventEntries, MouseEventEntries } from '@core/utils/types';
 import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
+import { CoreEdge } from '@graph/primitives/types';
 
 import { createAggregator } from './aggregator/createAggregator.ts';
 import { CanvasElement } from './aggregator/types.ts';
@@ -26,12 +27,12 @@ const sameElements = (previous: CanvasElement[], next: CanvasElement[]) => {
 
 export const canvas =
   (magicCanvas: CanvasProps): CanvasPlugin =>
-  ({ controls, actions, getters }) => {
+  ({ controls, getters }) => {
     const canvasEventRegistry = createCanvasEventRegistry();
     const canvasEvents = createEventHub(canvasEventRegistry);
 
-    const shapes = createAnimatedShapes();
-    const aggregator = createAggregator(canvasEvents, shapes);
+    const { shapes, ...renderer } = createAnimatedShapes();
+    const aggregator = createAggregator(canvasEvents, renderer);
 
     const graphUnderCursor: GraphUnderCursor = {
       coords: { x: 0, y: 0 },
@@ -196,10 +197,10 @@ export const canvas =
 
     return {
       name: 'canvas',
-      getters,
       controls: {
         aggregator,
         shapes,
+        renderer,
         events: canvasEvents,
 
         magicCanvas,
@@ -233,17 +234,16 @@ export const canvas =
         },
         validate: (data) => true,
       },
-      actions,
       onAfterInit: () => {
         const weightLayer = theme.createLayer(
-          CANVAS_PLUGIN_ID + '/theme/edge-weight',
+          CANVAS_PLUGIN_ID + '/edge-weight',
         );
-        weightLayer.set('edge.default.text.content', (edge) =>
-          getters.getEdge(edge.id).weight.toFraction(),
-        );
-        weightLayer.set('edge.hover.text.content', (edge) =>
-          getters.getEdge(edge.id).weight.toFraction(),
-        );
+        const weight = (edge: CoreEdge) => {
+          if (!controls.isEdge(edge.id)) return;
+          return getters.getEdge(edge.id).weight.toFraction();
+        };
+        weightLayer.set('edge.default.text.content', weight);
+        weightLayer.set('edge.hover.text.content', weight);
       },
     };
   };

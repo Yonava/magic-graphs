@@ -17,12 +17,7 @@ import { getSelectionBox, getSurfaceArea } from './helpers.ts';
 import { createMarqueeThemeOverrides } from './themes.ts';
 import { MarqueePlugin } from './types.ts';
 
-export const marquee: MarqueePlugin = ({
-  controls,
-  events,
-  actions,
-  getters,
-}) => {
+export const marquee: MarqueePlugin = ({ controls, events }) => {
   const marqueeEventRegistry = createMarqueeEventRegistry();
   const marqueeEventHub = createEventHub(marqueeEventRegistry);
 
@@ -92,7 +87,7 @@ export const marquee: MarqueePlugin = ({
   };
 
   const getMarqueeBoxCanvasElement = (box: BoundingBox): CanvasElement => {
-    const shape = controls.canvas.shapes.shapes.rect({
+    const shape = controls.canvas.shapes.rect({
       id: MARQUEE_SHAPE_ID,
       ...normalizeBoundingBox(box),
       fillColor: theme._resolveToken('marquee.drag.color'),
@@ -122,7 +117,7 @@ export const marquee: MarqueePlugin = ({
 
   const getSelectionBoxSchema = (box: BoundingBox): CanvasElement => {
     const id = 'selection-box';
-    const shape = controls.canvas.shapes.shapes.rect({
+    const shape = controls.canvas.shapes.rect({
       id,
       ...box,
       fillColor: theme._resolveToken('marquee.selection.color'),
@@ -215,8 +210,6 @@ export const marquee: MarqueePlugin = ({
 
   return {
     name: 'marquee',
-    actions,
-    getters,
     controls: {
       events: marqueeEventHub,
       theme,

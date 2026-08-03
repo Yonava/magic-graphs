@@ -4,7 +4,7 @@
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import { useProvidedGraph } from '../useProvidedGraph.ts';
+  import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
 
   const graph = useProvidedGraph();
   const coords = graph.canvas.magicCanvas.cursorCoordinates;

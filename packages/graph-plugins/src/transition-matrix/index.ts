@@ -28,10 +28,7 @@ export const getTransitionMatrix = (
   return matrix;
 };
 
-export const transitionMatrix: TransitionMatrixPlugin = ({
-  controls,
-  ...rest
-}) => ({
+export const transitionMatrix: TransitionMatrixPlugin = ({ controls }) => ({
   name: 'transitionMatrix',
   controls: computed(() =>
     getTransitionMatrix(
@@ -39,5 +36,4 @@ export const transitionMatrix: TransitionMatrixPlugin = ({
       controls.nodeIdToIndex,
     ),
   ),
-  ...rest,
 });

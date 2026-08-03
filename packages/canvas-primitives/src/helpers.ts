@@ -78,7 +78,7 @@ export const getAngle = (point1: Coordinate, point2: Coordinate) => {
  */
 export const getLargestAngularSpaceBisector = (
   center: Coordinate,
-  points: Coordinate[],
+  points: readonly Coordinate[],
 ) => {
   if (points.length === 0) return 0;
   const [firstPoint] = points;

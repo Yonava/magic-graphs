@@ -22,10 +22,11 @@ export type PluginThemeField<Themes> = {
 export type WithTheme<Controls, Themes> = Controls & PluginThemeField<Themes>;
 
 type ThemeForPlugin<Plugin extends LooseGraphPlugin> = Plugin extends Plugin
-  ? ReturnType<Plugin>['controls'] extends {
-      theme: ThemeController<infer Themes>;
+  ? ReturnType<Plugin> extends {
+      name: infer Name extends string;
+      controls: { theme: ThemeController<infer Themes> };
     }
-    ? Record<ReturnType<Plugin>['name'], Themes>
+    ? Record<Name, Themes>
     : never
   : never;
 

@@ -127,6 +127,7 @@
     "@graph/plugins": "workspace:*",
     "@graph/plugins-shared": "workspace:*",
     "@graph/primitives": "workspace:*",
+    "@graph/render-functions": "workspace:*",
     "@graph/theme-presets": "workspace:*",
     "@graph/vue": "workspace:*",
     "@mdi/js": "^7.4.47",

@@ -30,12 +30,7 @@ const isAnchor = (id: string) => id.endsWith(ANCHOR_ID_POSTFIX);
  * - Parent Node: The node which anchors actively orbit around.
  * - Link Preview: The line that appears between the parent node and the anchor when the anchor is being dragged.
  */
-export const anchors: AnchorsPlugin = ({
-  controls,
-  events,
-  actions,
-  getters,
-}) => {
+export const anchors: AnchorsPlugin = ({ controls, events, getters }) => {
   const anchorsEventRegistry = createAnchorsEventRegistry();
   const anchorsEventHub = createEventHub(anchorsEventRegistry);
 
@@ -99,8 +94,7 @@ export const anchors: AnchorsPlugin = ({
         nodeAnchorSchema.at.y = draggedAnchor.y;
       }
 
-      const nodeAnchorShape =
-        controls.canvas.shapes.shapes.circle(nodeAnchorSchema);
+      const nodeAnchorShape = controls.canvas.shapes.circle(nodeAnchorSchema);
 
       anchorSchemas.push({
         id: anchor.id,
@@ -234,7 +228,7 @@ export const anchors: AnchorsPlugin = ({
 
     const width = isFocused ? focusWidth : baseWidth;
 
-    const shape = controls.canvas.shapes.shapes.line({
+    const shape = controls.canvas.shapes.line({
       id: EDGE_PREVIEW_ID,
       start,
       end,
@@ -432,8 +426,6 @@ export const anchors: AnchorsPlugin = ({
 
   return {
     name: 'anchors',
-    actions,
-    getters,
     controls: {
       events: anchorsEventHub,
       lifecycle: {

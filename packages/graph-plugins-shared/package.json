@@ -32,7 +32,8 @@
     "@graph/primitives": "workspace:*",
     "@graph/core": "workspace:*",
     "@canvas/primitives": "workspace:*",
-    "@core/utils": "workspace:*"
+    "@core/utils": "workspace:*",
+    "@graph/render-functions": "workspace:*"
   },
   "devDependencies": {
     "ts-essentials": "^10.2.0"

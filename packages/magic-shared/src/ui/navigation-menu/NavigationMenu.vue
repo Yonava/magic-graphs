@@ -48,7 +48,10 @@
           :key="product.id"
         >
           <DropdownItem @click="navigateTo(`/${product.slug}`)">
-            <Button class="rounded-lg p-2 w-84 bg-transparent">
+            <!-- the dropdown item owns the highlight, so the button stays transparent in every state -->
+            <Button
+              class="rounded-lg p-2 w-84 bg-transparent hover:bg-transparent active:bg-transparent"
+            >
               <HStack class="gap-4 items-start">
                 <img
                   :src="imageUriFromThumbnail(product.thumbnail)"

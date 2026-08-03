@@ -78,7 +78,6 @@ const getWeightedAdjacencyList = (graph: Graph) => {
 export const adjacencyLists: AdjacencyListsPlugin = ({
   controls,
   events,
-  actions,
   getters,
 }) => {
   const graph: Graph = {
@@ -94,8 +93,6 @@ export const adjacencyLists: AdjacencyListsPlugin = ({
 
   return {
     name: 'adjacencyLists',
-    actions,
-    getters,
     controls: {
       standard,
       weighted,

@@ -17,6 +17,8 @@ import {
   wrapActionsWithConsumerEvents,
   wrapWeightsControlsWithConsumerEvents,
 } from './consumer-events.ts';
+import { createFinalRenderFunctionsProxy } from './final-render-functions.ts';
+import { createFinalTokenResolverProxy } from './final-token-resolver.ts';
 import { createFinalTransitProxy } from './final-transit.ts';
 
 type PluginTransitControl = {
@@ -36,6 +38,12 @@ type FoldedPlugins = {
   resolveFinalTransit: ReturnType<
     typeof createFinalTransitProxy
   >['resolveFinalTransit'];
+  resolveFinalTokenResolver: ReturnType<
+    typeof createFinalTokenResolverProxy
+  >['resolveFinalTokenResolver'];
+  resolveFinalRenderFunctions: ReturnType<
+    typeof createFinalRenderFunctionsProxy
+  >['resolveFinalRenderFunctions'];
   getNodes: () => any[];
   getEdges: () => any[];
 };
@@ -82,6 +90,10 @@ export const foldPlugins = (
   let getters = coreGraph.getters;
   const { finalActions, resolveFinalActions } = createFinalActionsProxy();
   const { finalTransit, resolveFinalTransit } = createFinalTransitProxy();
+  const { finalTokenResolver, resolveFinalTokenResolver } =
+    createFinalTokenResolverProxy();
+  const { finalRenderFunctions, resolveFinalRenderFunctions } =
+    createFinalRenderFunctionsProxy();
   let themeDetectors: NonNullable<PluginThemeField<any>['theme']['detectors']> =
     {};
 
@@ -97,9 +109,15 @@ export const foldPlugins = (
       finalActions,
       getters,
       finalTransit,
+      finalTokenResolver,
+      finalRenderFunctions,
     });
 
-    controls = { ...controls, [pluginResult.name]: pluginResult.controls };
+    // a plugin only appears under its own namespace if it declared controls, otherwise
+    // the key would sit there holding undefined and read as a plugin that shipped nothing
+    if (pluginResult.controls) {
+      controls = { ...controls, [pluginResult.name]: pluginResult.controls };
+    }
     actions = { ...actions, ...pluginResult.actions };
     getters = { ...getters, ...pluginResult.getters };
 
@@ -153,6 +171,8 @@ export const foldPlugins = (
     themeDetectors,
     pluginTransitControls,
     resolveFinalTransit,
+    resolveFinalTokenResolver,
+    resolveFinalRenderFunctions,
     getNodes: nodes,
     getEdges: edges,
   };

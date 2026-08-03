@@ -22,8 +22,6 @@ import { createCanvasElementFactories } from './canvas-elements.ts';
 import { createThemer } from './createThemer.ts';
 import { foldPlugins } from './fold-plugins.ts';
 import { createGraphTransit } from './graph-transit.ts';
-import { resolveEdgeComputedTokens } from './render-functions/edge.ts';
-import { resolveNodeComputedTokens } from './render-functions/node.ts';
 import { GraphTransit } from './types.ts';
 
 type CreateGraphOptions<
@@ -32,7 +30,7 @@ type CreateGraphOptions<
 > = {
   plugins: TPlugins;
   themePresets: Record<PresetName, PluginThemes<NoInfer<TPlugins>>>;
-  options: Partial<CoreOptions>;
+  coreOptions?: Partial<CoreOptions>;
 };
 
 export const createGraph = <
@@ -41,16 +39,16 @@ export const createGraph = <
 >({
   plugins,
   themePresets,
-  options: coreOptions = {},
+  coreOptions,
 }: CreateGraphOptions<TPlugins, PresetName>) => {
+  const coreGraph = core(coreOptions ?? {});
+
   const presetNames = Object.keys(themePresets) as PresetName[];
 
   let activePresetName = nullThrows(
     presetNames.at(0),
     'createGraph requires at least 1 theme preset!',
   );
-
-  const coreGraph = core(coreOptions);
 
   const folded = foldPlugins(
     coreGraph,
@@ -84,38 +82,35 @@ export const createGraph = <
 
   const tokenResolver = createComputedTokenResolver(folded.themeDetectors);
 
+  // plugins captured `finalTokenResolver` during fold, before the detector map was
+  // complete. point it at the real resolver now (see [4] in plugins/internals/plugin.ts)
+  folded.resolveFinalTokenResolver(tokenResolver);
+
   // assume we have canvas in controls since this is a theme aware orchestrator!
   const castControls = controls as unknown as CoreControls & {
     canvas: CanvasControls;
   };
 
-  const { nodeCanvasElement, edgeCanvasElement } = createCanvasElementFactories(
-    castControls,
-    tokenResolver,
-  );
+  const {
+    nodeToCanvasElement: nodeCanvasElement,
+    edgeToCanvasElement: edgeCanvasElement,
+    renderFunctions,
+    setRenderFunction,
+  } = createCanvasElementFactories(castControls, tokenResolver);
+
+  // plugins captured `finalRenderFunctions` during fold, before the render functions
+  // could be built (see [5] in plugins/internals/plugin.ts)
+  folded.resolveFinalRenderFunctions(renderFunctions);
 
   const { transformers } = castControls.canvas.aggregator;
 
   const transformer: AggregatorTransformer = (agg) => {
-    agg.push(
-      ...controls
-        .nodes()
-        .map(nodeCanvasElement)
-        .filter((v) => !!v),
-    );
-    agg.push(
-      ...controls
-        .edges()
-        .map(edgeCanvasElement)
-        .filter((v) => !!v),
-    );
+    agg.push(...controls.nodes().map(nodeCanvasElement));
+    agg.push(...controls.edges().map(edgeCanvasElement));
     return agg;
   };
 
   transformers.push(transformer);
-
-  const resolveNodeStyles = resolveNodeComputedTokens(tokenResolver);
-  const resolveEdgeStyles = resolveEdgeComputedTokens(tokenResolver);
 
   type GraphTransitControls = GraphTransit<
     Prettify<ExtractTransitPayload<NoInfer<TPlugins>>>
@@ -149,14 +144,13 @@ export const createGraph = <
     theme: {
       createThemer: createThemer<TPlugins>(controls),
       tokenResolver,
-      resolveNodeStyles,
-      resolveEdgeStyles,
       activePresetName: () => activePresetName,
       activePreset: () => themePresets[activePresetName],
       setActivePreset: (newPresetName: PresetName) => {
         return (activePresetName = newPresetName);
       },
     },
+    setRenderFunction,
   };
 };
 

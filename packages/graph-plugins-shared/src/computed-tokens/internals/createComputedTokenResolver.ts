@@ -7,6 +7,17 @@ import {
   computedTokenStatePrecedence,
 } from './types.ts';
 
+export type ComputedTokenResolver = {
+  <Token extends keyof NodeComputedTokens>(
+    token: Token,
+    subject: CoreNode,
+  ): NodeComputedTokens[Token];
+  <Token extends keyof EdgeComputedTokens>(
+    token: Token,
+    subject: CoreEdge,
+  ): EdgeComputedTokens[Token];
+};
+
 /**
  * creates a `resolveComputedToken` function with the detector map closed over.
  *
@@ -23,7 +34,7 @@ import {
  */
 export function createComputedTokenResolver(
   detectors: ComputedTokenDetectorMap,
-) {
+): ComputedTokenResolver {
   function resolveComputedToken<Token extends keyof NodeComputedTokens>(
     token: Token,
     subject: CoreNode,
@@ -63,7 +74,3 @@ export function createComputedTokenResolver(
 
   return resolveComputedToken;
 }
-
-export type CompoundTokenResolver = ReturnType<
-  typeof createComputedTokenResolver
->;

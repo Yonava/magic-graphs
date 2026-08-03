@@ -2,14 +2,29 @@ import { CoreActions } from '@graph/core/actions/types';
 import { ConsumerEventsHub } from '@graph/core/consumer-events';
 import { CoreGetters } from '@graph/core/getters';
 import { CoreControls } from '@graph/core/types';
-import { GraphActions, MergeActions } from '@graph/primitives/actions/types';
-import { GraphGetters, MergeGetters } from '@graph/primitives/getters/types';
+import { GraphActions } from '@graph/primitives/actions/types';
+import { GraphGetters } from '@graph/primitives/getters/types';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
+import type {
+  EdgeRenderFunction,
+  NodeRenderFunction,
+} from '@graph/render-functions/index';
 
+import { ComputedTokenResolver } from '../../computed-tokens/index.ts';
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';
-import { TransitField } from './transit.ts';
+import {
+  ActionsField,
+  ControlsField,
+  GettersField,
+  TransitField,
+} from './output-fields.ts';
+
+export type GetterRenderFunctions = {
+  node: () => NodeRenderFunction;
+  edge: () => EdgeRenderFunction;
+};
 
 export type GraphPlugin<PluginSchema extends PluginSchemaInput> =
   ResolvedGraphPlugin<ResolvePluginSchema<PluginSchema>>;
@@ -24,19 +39,23 @@ type PluginInput<PluginSchema extends LoosePluginSchema> = {
   events: ConsumerEventsHub;
   // [1]
   finalActions: GraphActions<CoreActions>;
-  // [3]
-  getters: GraphGetters<CoreGetters>;
   // [2]
   finalTransit: LooseGraphTransit;
+  // [3]
+  getters: GraphGetters<CoreGetters>;
+  // [4]
+  finalTokenResolver: ComputedTokenResolver;
+  // [5]
+  finalRenderFunctions: GetterRenderFunctions;
 };
 
 type PluginOutput<PluginSchema extends LoosePluginSchema> = {
   name: PluginSchema['name'];
-  controls: PluginSchema['controls'];
-  getters: GraphGetters<MergeGetters<[PluginSchema['getters'], CoreGetters]>>;
-  actions: GraphActions<MergeActions<[PluginSchema['actions'], CoreActions]>>;
   onAfterInit?: () => void;
-} & TransitField<PluginSchema['transit']>;
+} & ControlsField<PluginSchema['controls']> &
+  GettersField<PluginSchema['getters']> &
+  ActionsField<PluginSchema['actions']> &
+  TransitField<PluginSchema['transit']>;
 
 type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
   options: PluginInput<PluginSchema>,
@@ -83,3 +102,22 @@ type ResolvedGraphPlugin<PluginSchema extends LoosePluginSchema> = (
 // is required: `nodes`/`edges` are computeds over the getters, so a tracked read
 // during derivation is what keeps them fresh. plain mutable state is the one thing
 // that breaks it, silently.
+//
+// [4] `finalTokenResolver` answers "what does this token resolve to for this node or
+// edge, right now, across every plugin in the graph", which is the same question the
+// renderer asks. it is late bound for the same reason as [1] and [2]: the detector
+// map it walks is still being accumulated while plugins fold, so a resolver built
+// mid-fold would silently miss detectors registered by later plugins.
+//
+// this is the read side of the theme system. a plugin registers detectors to
+// *contribute* to a token's value; it calls `finalTokenResolver` when it needs to
+// *consume* the resolved value, having given up knowing which plugin won.
+//
+// [5] `finalRenderFunctions` is how a plugin draws something that looks like a graph
+// node or edge without owning one. it is late bound like [1], [2] and [4]: the render
+// functions close over the finished token resolver, so they cannot be built until
+// folding has produced every plugin's detectors.
+//
+// a plugin calls these from its own canvas aggregator transformer, which runs per
+// frame long after fold. phantom is the reference case: it renders nodes and edges the
+// graph does not actually contain, and gets the real thing rather than a lookalike.

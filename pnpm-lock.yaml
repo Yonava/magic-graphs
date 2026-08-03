@@ -163,9 +163,6 @@ importers:
 
   packages/graph-create-graph:
     dependencies:
-      '@canvas/primitives':
-        specifier: workspace:*
-        version: link:../canvas-primitives
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils
@@ -181,6 +178,9 @@ importers:
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@graph/render-functions':
+        specifier: workspace:*
+        version: link:../graph-render-functions
       '@reactive/primitives':
         specifier: workspace:*
         version: link:../reactive-primitives
@@ -215,6 +215,9 @@ importers:
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@graph/render-functions':
+        specifier: workspace:*
+        version: link:../graph-render-functions
       '@reactive/primitives':
         specifier: workspace:*
         version: link:../reactive-primitives
@@ -240,6 +243,9 @@ importers:
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@graph/render-functions':
+        specifier: workspace:*
+        version: link:../graph-render-functions
     devDependencies:
       ts-essentials:
         specifier: ^10.2.0
@@ -250,6 +256,21 @@ importers:
       ts-essentials:
         specifier: ^10.2.0
         version: 10.2.1(typescript@6.0.3)
+
+  packages/graph-render-functions:
+    dependencies:
+      '@canvas/primitives':
+        specifier: workspace:*
+        version: link:../canvas-primitives
+      '@core/utils':
+        specifier: workspace:*
+        version: link:../core-utils
+      '@graph/plugins-shared':
+        specifier: workspace:*
+        version: link:../graph-plugins-shared
+      '@graph/primitives':
+        specifier: workspace:*
+        version: link:../graph-primitives
 
   packages/graph-theme-presets:
     dependencies:
@@ -387,6 +408,9 @@ importers:
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@graph/render-functions':
+        specifier: workspace:*
+        version: link:../graph-render-functions
       '@graph/theme-presets':
         specifier: workspace:*
         version: link:../graph-theme-presets
@@ -4871,8 +4895,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
-  vue-component-type-helpers@3.3.8:
-    resolution: {integrity: sha512-troqCMmQodQDqUqn63NQaFi+CDSclSe7sc8VEBFqf5GFLqmGR2Ph3P2WEC7qwpRVyEWsTi/aAr4vyOe/B1hU3g==}
+  vue-component-type-helpers@3.3.9:
+    resolution: {integrity: sha512-3c/UfMe0SqyEfcGTyH7mfshHagJ9QTCbppCb0/uGpHZpFug7+If3GeGZN7I0YheKEExemx3xldQPoO7PQSOLQg==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -6372,7 +6396,7 @@ snapshots:
       storybook: 9.1.20(@testing-library/dom@10.4.1)(prettier@3.9.6)(vite@8.1.5(@types/node@24.13.3)(esbuild@0.25.12)(jiti@2.7.0)(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0))
       type-fest: 2.19.0
       vue: 3.5.40(typescript@5.9.3)
-      vue-component-type-helpers: 3.3.8
+      vue-component-type-helpers: 3.3.9
 
   '@swc/helpers@0.5.23':
     dependencies:
@@ -9761,7 +9785,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.3.8: {}
+  vue-component-type-helpers@3.3.9: {}
 
   vue-demi@0.14.10(vue@3.5.40(typescript@6.0.3)):
     dependencies:

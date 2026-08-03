@@ -88,7 +88,7 @@ export const useAnnotationsState = (graph: Graph) => {
       }).getBoundingBox();
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
-        const shape = graph.canvas.shapes.shapes.scribble(scribble);
+        const shape = graph.canvas.shapes.scribble(scribble);
         return shape.overlapsBox(eraserBoundingBox);
       });
 
@@ -121,7 +121,7 @@ export const useAnnotationsState = (graph: Graph) => {
       }).getBoundingBox();
 
       const erasedScribbles = scribbles.value.filter((scribble) => {
-        const shape = graph.canvas.shapes.shapes.scribble(scribble);
+        const shape = graph.canvas.shapes.scribble(scribble);
         return shape.overlapsBox(eraserBoundingBox);
       });
 
@@ -199,7 +199,7 @@ export const useAnnotationsState = (graph: Graph) => {
 
     if (isErasing.value) {
       const eraserId = 'annotation-eraser-cursor';
-      const eraserCursor = graph.canvas.shapes.shapes.circle({
+      const eraserCursor = graph.canvas.shapes.circle({
         id: eraserId,
         at: graph.canvas.graphUnderCursor.coords,
         radius: ERASER_BRUSH_RADIUS,
@@ -217,7 +217,7 @@ export const useAnnotationsState = (graph: Graph) => {
       });
     } else if (batch.value.length > 0 && isDrawing.value) {
       const incompleteAnnotationId = 'annotation-incomplete';
-      const incompleteScribble = graph.canvas.shapes.shapes.scribble({
+      const incompleteScribble = graph.canvas.shapes.scribble({
         id: incompleteAnnotationId,
         type: 'draw',
         points: batch.value,
@@ -232,7 +232,7 @@ export const useAnnotationsState = (graph: Graph) => {
       });
     } else if (isLaserPointing.value) {
       const laserPointerCursorId = 'laser-pointer-cursor';
-      const laserPointerCursor = graph.canvas.shapes.shapes.circle({
+      const laserPointerCursor = graph.canvas.shapes.circle({
         id: laserPointerCursorId,
         at: graph.canvas.graphUnderCursor.coords,
         radius: selectedBrushWeight.value,
@@ -250,7 +250,7 @@ export const useAnnotationsState = (graph: Graph) => {
       const isErased = erasedScribbleIds.value.has(scribble.id);
       aggregator.push({
         id: scribble.id,
-        shape: graph.canvas.shapes.shapes.scribble({
+        shape: graph.canvas.shapes.scribble({
           ...scribble,
           fillColor: scribble.fillColor + (isErased ? '50' : ''),
         }),

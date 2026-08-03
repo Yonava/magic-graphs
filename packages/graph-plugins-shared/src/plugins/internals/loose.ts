@@ -8,6 +8,10 @@ import {
 import { GenericEventMap } from '@graph/primitives/events/types';
 import { BaseGetters, GraphGetters } from '@graph/primitives/getters/types';
 import { LooseGraphTransit } from '@graph/primitives/transit/types';
+import { RenderFunctions } from '@graph/render-functions/types';
+
+import { ComputedTokenResolver } from '../../computed-tokens/index.ts';
+import { GetterRenderFunctions } from './plugin.ts';
 
 export type LoosePluginSchema = {
   name: string;
@@ -33,13 +37,20 @@ type LoosePluginInput = {
   // see [2] in ./plugin.ts — a stable accessor for the graph wide encode/decode
   // surface, assembled from every plugin's transit controls once folding completes
   finalTransit: LooseGraphTransit;
+  // see [4] in ./plugin.ts for the stable accessor to the computed token resolver,
+  // built from every plugin's detectors once folding completes
+  finalTokenResolver: ComputedTokenResolver;
+  // see [5] in ./plugin.ts — the node and edge render functions the graph itself draws
+  // with, built once folding has produced every plugin's theme detectors
+  finalRenderFunctions: GetterRenderFunctions;
 };
 
 type LoosePluginOutput = {
   name: LooseGraphPlugin['name'];
-  controls: LoosePluginSchema['controls'];
-  actions: GraphActions<any>;
-  getters: GraphGetters<any>;
+  // absent unless the plugin declares them in its schema (see ./output-fields.ts)
+  controls?: LoosePluginSchema['controls'];
+  actions?: GraphActions<any>;
+  getters?: GraphGetters<any>;
   onAfterInit?: () => void;
   transit?: {
     encode: () => any;

@@ -1,4 +1,7 @@
-import { AnimatedShapeControls } from '@canvas/primitives/animation/index';
+import {
+  AnimatedShapeFactories,
+  ShapeRenderer,
+} from '@canvas/primitives/animation/index';
 import { CanvasProps, Coordinate } from '@canvas/surface/types';
 import {
   GraphPlugin,
@@ -36,9 +39,15 @@ type BaseCanvasControls = {
    */
   aggregator: AggregatorControls;
   /**
-   * controls for adding and managing animated shapes on the canvas.
+   * build the shapes your extension draws. these animate themselves, so a
+   * schema change animates rather than snaps without any extra wiring.
    */
-  shapes: AnimatedShapeControls;
+  shapes: AnimatedShapeFactories;
+  /**
+   * the frame lifecycle and timelines behind `shapes`. reach for this to
+   * define an animation or drive a draw pass, not to build a shape.
+   */
+  renderer: ShapeRenderer;
   /**
    * the canvas elements currently under the cursor and the cursor's canvas coordinates.
    *

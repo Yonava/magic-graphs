@@ -17,8 +17,8 @@
     "@graph/plugins-shared": "workspace:*",
     "@graph/plugins": "workspace:*",
     "@graph/primitives": "workspace:*",
+    "@graph/render-functions": "workspace:*",
     "@core/utils": "workspace:*",
-    "@canvas/primitives": "workspace:*",
     "@reactive/primitives": "workspace:*"
   },
   "devDependencies": {
