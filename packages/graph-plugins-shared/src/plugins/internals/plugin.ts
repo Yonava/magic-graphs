@@ -1,3 +1,4 @@
+import { ComputedTokenResolver } from '@graph/computed-tokens/index';
 import { CoreActions } from '@graph/core/actions/types';
 import { ConsumerEventsHub } from '@graph/core/consumer-events';
 import { CoreGetters } from '@graph/core/getters';
@@ -10,7 +11,6 @@ import type {
   NodeRenderFunction,
 } from '@graph/render-functions/index';
 
-import { ComputedTokenResolver } from '../../computed-tokens/index.ts';
 import { PluginSchemaInput, ResolvePluginSchema } from './defaults.ts';
 import { ExtractControls } from './extractors.ts';
 import { LoosePluginSchema } from './loose.ts';

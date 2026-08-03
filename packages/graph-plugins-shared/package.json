@@ -4,17 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./theme": {
-      "types": "./dist/types/theme/index.d.ts",
-      "default": "./src/theme/index.ts"
-    },
     "./plugins": {
       "types": "./dist/types/plugins/index.d.ts",
       "default": "./src/plugins/index.ts"
-    },
-    "./computed-tokens": {
-      "types": "./dist/types/computed-tokens/index.d.ts",
-      "default": "./src/computed-tokens/index.ts"
     },
     "./drag": {
       "types": "./dist/types/drag/index.d.ts",
@@ -31,9 +23,10 @@
   "dependencies": {
     "@graph/primitives": "workspace:*",
     "@graph/core": "workspace:*",
-    "@canvas/primitives": "workspace:*",
     "@core/utils": "workspace:*",
-    "@graph/render-functions": "workspace:*"
+    "@graph/render-functions": "workspace:*",
+    "@core/themes": "workspace:*",
+    "@graph/computed-tokens": "workspace:*"
   },
   "devDependencies": {
     "ts-essentials": "^10.2.0"

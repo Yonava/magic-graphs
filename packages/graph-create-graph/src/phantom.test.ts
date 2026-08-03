@@ -1,5 +1,5 @@
+import { createThemeController } from '@core/themes/index';
 import { core } from '@graph/core/index';
-import { createThemeController } from '@graph/plugins-shared/theme';
 import { AggregatorTransformer } from '@graph/plugins/canvas/aggregator/types';
 import { CanvasElement } from '@graph/plugins/canvas/aggregator/types';
 import { createCanvasThemeOverrides } from '@graph/plugins/canvas/themes';

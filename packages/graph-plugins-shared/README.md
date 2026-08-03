@@ -1,5 +1,5 @@
 # @graph/plugins-shared
 
-Shared infrastructure for all graph plugins. Provides the theming system (token resolution, computed tokens), drag handling utilities, and plugin lifecycle management.
+Shared infrastructure for all graph plugins. Provides drag handling utilities and plugin lifecycle management. The theming system lives in `@graph/tokens`.
 
-**Key exports:** `createThemeController`, `createComputedTokenResolver`
+**Key exports:** `GraphPlugin`, `createDragState`

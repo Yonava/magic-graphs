@@ -1,0 +1,25 @@
+{
+  "name": "@graph/computed-tokens",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./index": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./dist/types/*.d.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "build:types": "tsc -b ."
+  },
+  "dependencies": {
+    "@canvas/primitives": "workspace:*",
+    "@core/themes": "workspace:*",
+    "@core/utils": "workspace:*",
+    "@graph/primitives": "workspace:*"
+  }
+}

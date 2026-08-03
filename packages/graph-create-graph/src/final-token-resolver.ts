@@ -1,4 +1,4 @@
-import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
+import { ComputedTokenResolver } from '@graph/computed-tokens/index';
 
 // see [4] in graph-plugins-shared/plugins/internals/plugin.ts. same late binding
 // trick as createFinalActionsProxy and createFinalTransitProxy: the detector map is

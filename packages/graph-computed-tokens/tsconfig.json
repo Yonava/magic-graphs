@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/types",
+    "rootDir": "./src"
+  },
+  "references": [
+    { "path": "../canvas-primitives" },
+    { "path": "../core-themes" },
+    { "path": "../core-utils" },
+    { "path": "../graph-primitives" }
+  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
+}

@@ -1,5 +1,5 @@
-import { ComputedTokenDetectorMap } from '@graph/plugins-shared/computed-tokens';
-import { ThemeOverrides, TokenResolver } from '@graph/plugins-shared/theme';
+import { ThemeOverrides, TokenResolver } from '@core/themes/index';
+import { ComputedTokenDetectorMap } from '@graph/computed-tokens/index';
 
 import { EdgeThemeValues, NodeThemeValues } from '../canvas/themes.ts';
 

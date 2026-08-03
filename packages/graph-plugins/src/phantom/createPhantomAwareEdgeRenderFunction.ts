@@ -1,5 +1,5 @@
+import { ComputedTokenResolver } from '@graph/computed-tokens/index';
 import { getEdgesBetweenConnectedNodes } from '@graph/core/helpers/node';
-import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import { CoreEdge } from '@graph/primitives/types';
 import {
   EdgeRenderOptionsSource,

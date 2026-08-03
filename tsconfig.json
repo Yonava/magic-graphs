@@ -13,6 +13,7 @@
     { "path": "./packages/graph-render-functions" },
     { "path": "./packages/reactive-primitives" },
     { "path": "./packages/graph-theme-presets" },
+    { "path": "./packages/graph-computed-tokens" },
     { "path": "./packages/graph-vue" },
     { "path": "./packages/perf-harness" },
     { "path": "./packages/magic-products" },
@@ -20,6 +21,7 @@
     { "path": "./packages/canvas-primitives/tsconfig.storybook.json" },
     { "path": "./packages/core-utils" },
     { "path": "./packages/core-components" },
+    { "path": "./packages/core-themes" },
     { "path": "./packages/magic-shared" }
   ]
 }

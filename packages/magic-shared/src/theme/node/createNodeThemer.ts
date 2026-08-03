@@ -1,5 +1,5 @@
+import { ThemeValue } from '@core/themes/index';
 import { Color } from '@core/utils/colors';
-import { ThemeValue } from '@graph/plugins-shared/theme';
 import { CoreNode } from '@graph/primitives/types';
 
 import { GNode, Graph } from '../../graph/types.ts';

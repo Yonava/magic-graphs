@@ -1,8 +1,8 @@
 import { createAnimatedShapes } from '@canvas/primitives/animation/index';
 import { cross } from '@canvas/primitives/shapes/cross/index';
 import { CanvasProps } from '@canvas/surface/types';
+import { createThemeController } from '@core/themes/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@core/utils/types';
-import { createThemeController } from '@graph/plugins-shared/theme';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { CoreEdge } from '@graph/primitives/types';
 

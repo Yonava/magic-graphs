@@ -1,8 +1,7 @@
 import type { FontWeight } from '@canvas/primitives/text/types';
+import { Cursor, CursorFallback } from '@core/themes/index';
 import { Color } from '@core/utils/colors';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
-
-import { Cursor, CursorFallback } from '../../theme/index.ts';
 
 export type NodeComputedTokens = {
   'node.color': Color;

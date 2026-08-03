@@ -1,8 +1,8 @@
 import { nullThrows } from '@core/utils/assert';
+import { createComputedTokenResolver } from '@graph/computed-tokens/index';
 import { core } from '@graph/core/index';
 import { CoreOptions } from '@graph/core/options';
 import { CoreControls } from '@graph/core/types';
-import { createComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
 import {
   ExtractActions,
   ExtractControls,

@@ -2,7 +2,7 @@ import { AnimatedShapeFactories } from '@canvas/primitives/animation/index';
 import { Shape } from '@canvas/primitives/types/index';
 import { Coordinate } from '@canvas/primitives/types/utility';
 import { Color } from '@core/utils/colors';
-import { ComputedTokenResolver } from '@graph/plugins-shared/computed-tokens';
+import { ComputedTokenResolver } from '@graph/computed-tokens/index';
 import { CoreNode } from '@graph/primitives/types';
 
 export type RenderFunctionOptions = {
