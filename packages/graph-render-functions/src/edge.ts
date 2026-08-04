@@ -1,5 +1,7 @@
 import { getLargestAngularSpaceBisector } from '@canvas/primitives/helpers';
+import { LineSchema } from '@canvas/primitives/shapes/line/types';
 import { TextArea } from '@canvas/primitives/text/types';
+import { WithId } from '@canvas/primitives/types/index';
 import { GOLDEN_RATIO } from '@core/utils/math';
 
 import {
@@ -76,7 +78,6 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
         Math.sin(angle),
     };
 
-    // copied because the shift below would otherwise write through to the position store
     const edgeStart = {
       x: sourceNode.position.x,
       y: sourceNode.position.y,
@@ -133,25 +134,22 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
       });
     }
 
-    if (directed) {
-      return shapes.arrow({
-        id: edge.id,
-        start: edgeStart,
-        end: edgeEnd,
-        lineWidth: styles.width,
-        textOffsetFromCenter: sourceNodeGirth / 2,
-        fillColor: styles.color,
-        textArea,
-      });
-    }
-
-    return shapes.line({
+    const lineOptions: WithId<LineSchema> = {
       id: edge.id,
       start: edgeStart,
       end: edgeEnd,
       lineWidth: styles.width,
       fillColor: styles.color,
       textArea,
-    });
+    };
+
+    if (directed) {
+      return shapes.arrow({
+        textOffsetFromCenter: sourceNodeGirth / 2,
+        ...lineOptions,
+      });
+    }
+
+    return shapes.line(lineOptions);
   };
 };
