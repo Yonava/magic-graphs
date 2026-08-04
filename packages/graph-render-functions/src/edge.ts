@@ -1,7 +1,6 @@
 import { getLargestAngularSpaceBisector } from '@canvas/primitives/helpers';
 import { TextArea } from '@canvas/primitives/text/types';
 import { GOLDEN_RATIO } from '@core/utils/math';
-import { getValue } from '@core/utils/maybeGetter/index';
 
 import {
   createEdgeStyleResolver,
