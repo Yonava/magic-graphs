@@ -13,8 +13,11 @@ import {
   DefaultEdgeRenderOptions,
   EdgeRenderOptionsSource,
 } from './types.ts';
+import { getParallelEdgeSlot } from './utils/getParallelEdgeSlot.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
+
+const DEFAULT_PARALLEL_EDGE_SPACING_PX = 14;
 
 /**
  * the single definition of how a graph answers every edge render option that does not depend
@@ -37,8 +40,9 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
   directed,
   labelled,
   labelTextInputColor,
-  parallelEdgeCount,
+  parallelEdges,
   neighborPositions,
+  parallelEdgeSpacing = DEFAULT_PARALLEL_EDGE_SPACING_PX,
 }) => {
   const resolveEdgeStyles = createEdgeStyleResolver(resolveToken);
   const resolveNodeStyles = createNodeStyleResolver(resolveToken);
@@ -57,8 +61,6 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
       ...edge.target,
       styles: resolveNodeStyles(edge.target),
     };
-
-    const multipleEdgesInPath = parallelEdgeCount(edge) > 1;
 
     const angle = Math.atan2(
       targetNode.position.y - sourceNode.position.y,
@@ -88,14 +90,17 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
       y: targetNode.position.y - (directed ? arrowDrawOffset.y : 0),
     };
 
-    const bidirectionalEdgeSpacing = Math.max(styles.width * 1.2, 7);
+    const slot = getParallelEdgeSlot(edge.id, parallelEdges(edge));
 
-    if (multipleEdgesInPath) {
-      edgeStart.x += Math.cos(angle + Math.PI / 2) * bidirectionalEdgeSpacing;
-      edgeStart.y += Math.sin(angle + Math.PI / 2) * bidirectionalEdgeSpacing;
-      edgeEnd.x += Math.cos(angle + Math.PI / 2) * bidirectionalEdgeSpacing;
-      edgeEnd.y += Math.sin(angle + Math.PI / 2) * bidirectionalEdgeSpacing;
-    }
+    // both directions of a path must call the same side left, or a reversed edge mirrors onto its twin
+    const runsWithPath = edge.source.id <= edge.target.id;
+    const perpendicular = angle + (runsWithPath ? Math.PI / 2 : -Math.PI / 2);
+    const parallelEdgeOffset = slot * (styles.width + parallelEdgeSpacing);
+
+    edgeStart.x += Math.cos(perpendicular) * parallelEdgeOffset;
+    edgeStart.y += Math.sin(perpendicular) * parallelEdgeOffset;
+    edgeEnd.x += Math.cos(perpendicular) * parallelEdgeOffset;
+    edgeEnd.y += Math.sin(perpendicular) * parallelEdgeOffset;
 
     const textArea: TextArea | undefined = labelled
       ? {

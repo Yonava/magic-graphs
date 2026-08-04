@@ -3,7 +3,7 @@ import { Shape } from '@canvas/primitives/types/index';
 import { Coordinate } from '@canvas/primitives/types/utility';
 import { Color } from '@core/utils/colors';
 import { ComputedTokenResolver } from '@graph/computed-tokens/index';
-import { CoreNode } from '@graph/primitives/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 export type RenderFunctionOptions = {
   shapes: AnimatedShapeFactories;
@@ -36,10 +36,12 @@ export type EdgeRenderOptions = RenderFunctionOptions & {
   directed: boolean;
   labelled: boolean;
   labelTextInputColor: (edge: EdgeRenderProps) => string;
-  /** how many edges run between {@link source} and {@link target}, including this one */
-  parallelEdgeCount: (edge: EdgeRenderProps) => number;
+  /** every edge running between {@link source} and {@link target} in either direction, including this one, fanned apart by {@link parallelEdgeSpacing} */
+  parallelEdges: (edge: EdgeRenderProps) => readonly CoreEdge[];
   /** positions of the nodes adjacent to {@link source} and {@link target}, used to aim self directed edges away from them */
   neighborPositions: (edge: EdgeRenderProps) => readonly Coordinate[];
+  /** pixels of whitespace between two adjacent edges of a fan */
+  parallelEdgeSpacing?: number;
 };
 
 export type CreateEdgeRenderFunction = (
@@ -52,7 +54,7 @@ export type CreateEdgeRenderFunction = (
  */
 export type EdgeTopologyOptions = Pick<
   EdgeRenderOptions,
-  'parallelEdgeCount' | 'neighborPositions'
+  'parallelEdges' | 'neighborPositions'
 >;
 
 /** every edge render option a graph answers the same way regardless of topology */

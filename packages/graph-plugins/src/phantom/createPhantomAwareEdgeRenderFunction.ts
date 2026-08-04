@@ -40,9 +40,9 @@ export const createPhantomAwareEdgeRenderFunction = (
       metadata: graph.metadata,
       resolveToken: graph.theme.tokenResolver,
     }),
-    parallelEdgeCount: (edge) => {
+    parallelEdges: (edge) => {
       const connectedEdges = getEdgesBetweenConnectedNodes(allEdges());
-      return connectedEdges(edge.source.id, edge.target.id).length;
+      return connectedEdges(edge.source.id, edge.target.id);
     },
     neighborPositions: (edge) =>
       getNeighborPositions(edge, allEdges(), graph.phantom.getNodePosition),

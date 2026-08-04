@@ -34,10 +34,7 @@ export const createCanvasElementFactories = (
   controls: CoreControls & { canvas: CanvasControls },
   tokenResolver: ComputedTokenResolver,
 ): CanvasElementFactories => {
-  const renderFunctionOverrides: Partial<RenderFunctions> = {
-    node: undefined,
-    edge: undefined,
-  };
+  const renderFunctionOverrides: Partial<RenderFunctions> = {};
 
   const defaultNodeRenderFunction = createNodeRenderFunction({
     shapes: controls.canvas.shapes,
@@ -50,11 +47,11 @@ export const createCanvasElementFactories = (
       metadata: controls.metadata,
       resolveToken: tokenResolver,
     }),
-    parallelEdgeCount: (edge) =>
+    parallelEdges: (edge) =>
       controls.helpers.nodes.getEdgesBetweenConnectedNodes(
         edge.source.id,
         edge.target.id,
-      ).length,
+      ),
     neighborPositions: (edge) =>
       getNeighborPositions(edge, controls.edges(), controls.positions.get),
   });

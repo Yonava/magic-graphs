@@ -9,7 +9,7 @@
   const graph = useGraphProduct({
     manifest,
     core: {
-      directed: false,
+      directed: true,
     },
     ui: {
       debug: true,
