@@ -17,7 +17,7 @@ import { getParallelEdgeSlot } from './utils/getParallelEdgeSlot.ts';
 
 const WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX = 2;
 
-const DEFAULT_PARALLEL_EDGE_SPACING_PX = 14;
+const DEFAULT_PARALLEL_EDGE_SPACING_PX = 12;
 
 /**
  * the single definition of how a graph answers every edge render option that does not depend

@@ -40,7 +40,10 @@ export type EdgeRenderOptions = RenderFunctionOptions & {
   parallelEdges: (edge: EdgeRenderProps) => readonly CoreEdge[];
   /** positions of the nodes adjacent to {@link source} and {@link target}, used to aim self directed edges away from them */
   neighborPositions: (edge: EdgeRenderProps) => readonly Coordinate[];
-  /** pixels of whitespace between two adjacent edges of a fan */
+  /**
+   * pixels of whitespace between two adjacent edges of a fan
+   * @default 12
+   */
   parallelEdgeSpacing?: number;
 };
 

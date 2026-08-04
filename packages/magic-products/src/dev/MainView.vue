@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { createPhantomAwareEdgeRenderFunction } from '@graph/plugins/phantom/createPhantomAwareEdgeRenderFunction';
+  import { CoreEdge } from '@graph/primitives/types';
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import { onMounted } from 'vue';
@@ -13,6 +15,28 @@
     },
     ui: {
       debug: true,
+      lensChips: (graph) => {
+        const noGapRenderer = createPhantomAwareEdgeRenderFunction({
+          ...graph,
+          getEdges: () => graph.edges.value,
+          parallelEdgeSpacing: 0,
+        });
+        const defaultRenderer = createPhantomAwareEdgeRenderFunction(graph);
+        return [
+          {
+            lens: {
+              activate: () => {
+                graph.setRenderFunction('edge', noGapRenderer);
+              },
+              deactivate: () => {
+                graph.setRenderFunction('edge', defaultRenderer);
+              },
+              id: 'no-gap',
+            },
+            title: 'No Gap',
+          },
+        ];
+      },
     },
   });
 

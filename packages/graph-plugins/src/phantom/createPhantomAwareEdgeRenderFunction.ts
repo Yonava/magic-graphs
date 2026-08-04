@@ -27,7 +27,9 @@ export type PhantomAwareGraph = Pick<
 // graph context (like other nodes and edges around it) to work properly.
 // IE for base edges to render properly alongside phantom edges, they must be able to see phantom edges and vice versa
 export const createPhantomAwareEdgeRenderFunction = (
-  graph: PhantomAwareGraph,
+  graph: PhantomAwareGraph & {
+    parallelEdgeSpacing?: number;
+  },
 ) => {
   const allEdges = (): readonly CoreEdge[] => [
     ...graph.getEdges(),
@@ -46,5 +48,6 @@ export const createPhantomAwareEdgeRenderFunction = (
     },
     neighborPositions: (edge) =>
       getNeighborPositions(edge, allEdges(), graph.phantom.getNodePosition),
+    parallelEdgeSpacing: graph.parallelEdgeSpacing,
   });
 };

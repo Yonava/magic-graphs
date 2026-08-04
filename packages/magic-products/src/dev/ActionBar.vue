@@ -14,6 +14,8 @@
 
 <template>
   <Well v-if="node">
-    <Node :id="node.id" />
+    <HStack>
+      <Node :id="node.id" />
+    </HStack>
   </Well>
 </template>
