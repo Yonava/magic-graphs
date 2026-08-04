@@ -2,6 +2,7 @@
   "name": "@graph/dev-tools",
   "version": "1.0.0",
   "private": true,
+  "publishConfig": { "access": "public" },
   "type": "module",
   "exports": {
     "./*": {

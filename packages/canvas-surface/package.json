@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "private": true,
+  "publishConfig": { "access": "public" },
   "exports": {
     "./*": {
       "types": "./dist/types/*.d.ts",
