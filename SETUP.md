@@ -45,6 +45,6 @@ Runs `nuxt generate` for `@magic/client`, producing a static site in `packages/m
 - `packages/magic-client` — the Magic Graphs site (Nuxt, SSG).
 - `packages/core-components` — shared, colorless component library (Reka UI + Tailwind), consumed by product code.
 - `packages/core-utils` — shared utility functions.
-- `packages/graph-*` — the framework-agnostic graph engine (AG Graph) and its plugins/primitives.
+- `packages/graph-*` — the framework-agnostic graph engine (Graph Kit) and its plugins/primitives.
 - `packages/canvas-*` - Infinite Canvas engine.
 - `packages/magic-products` — Magic Graphs product experiences.

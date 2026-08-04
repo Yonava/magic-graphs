@@ -2,7 +2,9 @@
   "name": "@graph/vue",
   "version": "1.0.0",
   "private": true,
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "exports": {
     "./*": {

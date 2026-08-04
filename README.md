@@ -1,41 +1,57 @@
-# Magic Graphs ✨🦄
+# Welcome To Graph Kit
 
-### A New Tool For Understanding Theory
+The TypeScript Native, Framework Agnostic Graph SDK.
 
-<br>
+Composable and Progressive.
 
-## Learn Network Flow by Seeing How a Residual Graph Develops
+**Progressive.** The core is a bare graph data structure: nodes, edges, weights,
+and the actions, getters, and events that move them. Capability is bought one
+plugin at a time, so a graph that only answers structural questions never carries
+the machinery for dragging, undo, or selection. Everything past the core is a
+plugin you opt into:
 
-<img width="1477" alt="Screenshot 2024-11-09 at 10 53 44 PM" src="https://github.com/user-attachments/assets/2bdd5f71-35ce-49a8-a6f7-bdf15e01d720">
+|                     |                                                                |
+| ------------------- | -------------------------------------------------------------- |
+| **canvas**          | draws the graph and tracks what sits under the cursor          |
+| **interactive**     | double-click to add a node, drag between nodes to connect them |
+| **nodeDrag**        | pick up nodes and move them, one or a whole selection          |
+| **focus**           | tracks and highlights what is selected                         |
+| **history**         | undo and redo                                                  |
+| **characteristics** | is the graph connected, complete, bipartite, cyclic            |
 
-## Watching Dijkstras at Work May Just Be The Shortest Path to Understanding It
+That is 6 of 13. See [`packages/graph-plugins`](./packages/graph-plugins) for
+the full list, and each plugin's own README for its dependencies and API.
 
-<img width="945" alt="Screenshot 2024-11-10 at 10 14 24 AM" src="https://github.com/user-attachments/assets/22e5660b-2b33-4bbb-9388-1f0387514e1c">
+**Composable.** The plugin array is the configuration. `createGraph` folds it into
+one surface of actions, getters, controls, and events, and derives the type of that
+surface from the array you passed, so `characteristics` appears on the graph only
+because you asked for it:
 
-## Minimum Spanning Trees Form Differently With Prims and Kruskals, Thats Why You Can Visualize Both
+```ts
+const graph = createGraph({
+  plugins: [canvas(surface), adjacencyLists, characteristics],
+  themePresets: { light, dark },
+});
 
-<img width="1390" alt="Screenshot 2024-11-12 at 1 59 52 AM" src="https://github.com/user-attachments/assets/4552f4bb-fc6b-49ff-972b-e3ca7fdbd4ed">
+graph.characteristics.bipartite();
+```
 
-## Wanna See It In Action? Watch Our 1 Minute Demo
+Plugins compose with each other the same way. Each declares what it builds on
+through `dependsOn`, which is how `characteristics` reads the adjacency lists it
+needs and how `marquee` reaches both `canvas` and `focus`, types carried across
+the seam.
 
-https://github.com/user-attachments/assets/ee5e5109-28dc-43da-8ab3-306801c38af8
+## Status
+
+Graph Kit is in **early alpha**. Expect breaking changes!
 
 ## Development
 
-### Install
+Node 24+ and pnpm. From the repo root:
 
 ```sh
-npm i && (cd client && npm i) && (cd ../server && npm i)
+pnpm install
+pnpm dev
 ```
 
-### Run
-
-```sh
-npm run dev
-```
-
-### Build
-
-```sh
-cd client && npm run build
-```
+See [SETUP.md](./SETUP.md) for the full script list and repo layout.
