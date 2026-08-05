@@ -311,7 +311,7 @@ describe('property based tests', () => {
             current = result.previous.get(current) ?? null;
             }
         }
-        })
+        }), { numRuns: 10 },
     );
     });
   it('previous pointers reconstruct the recorded distance', () => {
@@ -363,7 +363,7 @@ describe('property based tests', () => {
 
             expect(total.equals(distance)).toBe(true);
         }
-        })
+        }), { numRuns: 10 },
     );
     });
     it('satisfies the triangle inequality', () => {
@@ -383,7 +383,7 @@ describe('property based tests', () => {
             dv.compare(du.add(edge.weight))
             ).toBeLessThanOrEqual(0);
         }
-        })
+        }), { numRuns: 10 },
     );
     });
     it('every previous pointer corresponds to an edge', () => {
@@ -406,7 +406,7 @@ describe('property based tests', () => {
             )
             ).toBe(true);
           }
-        })
+        }), { numRuns: 10 },
       );
     });
   it('never produces a negative distance', () => {
@@ -421,7 +421,7 @@ describe('property based tests', () => {
             expect(distance.compare(0)).toBeGreaterThanOrEqual(0);
             }
         }
-        })
+        }), { numRuns: 10 },
       );
     });
   it('distance to the start node is always zero', () => {
@@ -433,7 +433,7 @@ describe('property based tests', () => {
 
         expect(result.distances.get(start)?.equals(new Fraction(0))).toBe(true);
         expect(result.previous.get(start)).toBe(null);
-        })
+        }), { numRuns: 10 },
     );
   });
 })

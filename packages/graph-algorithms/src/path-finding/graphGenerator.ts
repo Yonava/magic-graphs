@@ -5,7 +5,7 @@ const nodeIds = fc.uniqueArray(
   fc.stringMatching(/^[A-Z]$/),
   {
     minLength: 1,
-    maxLength: 8,
+    maxLength: 50,
   }
 );
 
