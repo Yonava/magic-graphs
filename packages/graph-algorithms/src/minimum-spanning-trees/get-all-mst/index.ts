@@ -1,65 +1,16 @@
 import Fraction from 'fraction.js';
 
 import type { Edge, Node } from '../types.ts';
+import { type ComponentEdge, allSpanningTrees } from './allSpanningTrees.ts';
+import { type Parent, find, union } from './unionFind.ts';
 
-type Parent = Map<string, string>;
-
-const find = (parent: Parent, nodeId: string): string => {
-  if (parent.get(nodeId) !== nodeId) {
-    parent.set(nodeId, find(parent, parent.get(nodeId)!));
-  }
-  return parent.get(nodeId)!;
-};
-
-const union = (parent: Parent, nodeA: string, nodeB: string): boolean => {
-  const rootA = find(parent, nodeA);
-  const rootB = find(parent, nodeB);
-
-  if (rootA === rootB) return false;
-
-  parent.set(rootA, rootB);
-  return true;
-};
-
-// An edge from a equal-weight group, labeled with the current (pre-group)
-// component roots of its endpoints, used to detect which edges are still
-// able to connect distinct components once processed together
-type ComponentEdge = { edge: Edge; a: string; b: string };
-
-const allSpanningTrees = (
-  vertices: string[],
-  pairs: ComponentEdge[],
-): Edge[][] => {
-  const needed = vertices.length - 1;
-  if (needed === 0) return [[]];
-
-  const results: Edge[][] = [];
-
-  const search = (index: number, selected: Edge[], parent: Parent): void => {
-    // union() prevents cycles
-    if (selected.length === needed) {
-      results.push([...selected]);
-      return;
-    }
-
-    const remaining = pairs.length - index;
-    if (selected.length + remaining < needed) return;
-
-    const { edge, a, b } = pairs[index];
-
-    const includedParent = new Map(parent);
-    if (union(includedParent, a, b)) {
-      selected.push(edge);
-      search(index + 1, selected, includedParent);
-      selected.pop();
-    }
-
-    search(index + 1, selected, parent);
-  };
-
-  search(0, [], new Map(vertices.map((vertex) => [vertex, vertex])));
-
-  return results;
+export type GetAllMstsResult = {
+  /** every MST of the graph, or every minimum spanning forest when disconnected */
+  msts: Edge[][];
+  /** the weight shared by every entry in `msts` */
+  totalWeight: Fraction;
+  /** whether the returned trees span every node, false for a forest */
+  connected: boolean;
 };
 
 /**
@@ -82,7 +33,10 @@ const allSpanningTrees = (
  * minimum spanning trees is exponential in V.
  * CAUTION: FUNCTION IS EXPONENTIAL IN THE NUMBER OF EQUAL-WEIGHT EDGES, AND WILL BLOW UP IF GIVEN A LARGE GROUP!
  */
-export const getAllMsts = (nodes: Node[], edges: Edge[]) => {
+export const getAllMsts = (
+  nodes: readonly Node[],
+  edges: readonly Edge[],
+): GetAllMstsResult => {
   const parent: Parent = new Map(nodes.map((node) => [node.id, node.id]));
 
   const sortedEdges = edges
@@ -172,7 +126,6 @@ export const getAllMsts = (nodes: Node[], edges: Edge[]) => {
 
   return {
     msts,
-    // the weight of a minimum spanning forest, if applicable
     totalWeight: msts[0].reduce(
       (sum, edge) => sum.add(edge.weight),
       new Fraction(0),

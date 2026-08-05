@@ -12,6 +12,7 @@ import { history } from '@graph/plugins/history/index';
 import { interactive } from '@graph/plugins/interactive/index';
 import { InteractiveOptions } from '@graph/plugins/interactive/options';
 import { marquee } from '@graph/plugins/marquee/index';
+import { minimumSpanningTrees } from '@graph/plugins/minimum-spanning-trees/index';
 import { nodeDrag } from '@graph/plugins/node-drag/index';
 import { NodeDragOptions } from '@graph/plugins/node-drag/options';
 import { nodeLabel } from '@graph/plugins/node-label/index';
@@ -26,6 +27,7 @@ import { useCreateGraphActivePreset } from '@graph/vue/useCreateGraphActivePrese
 import { useFocus } from '@graph/vue/useFocus';
 import { useGraphEvents } from '@graph/vue/useGraphEvents';
 import { useHistory } from '@graph/vue/useHistory';
+import { useMinimumSpanningTrees } from '@graph/vue/useMinimumSpanningTrees';
 import { useNodesEdges } from '@graph/vue/useNodesEdges';
 import { useTransitionMatrix } from '@graph/vue/useTransitionMatrix';
 
@@ -53,6 +55,7 @@ const graphPlugins = (
   interactive(options.interactive ?? {}),
   animation,
   phantom,
+  minimumSpanningTrees,
 ];
 
 const createGraphWithPlugins = (
@@ -85,6 +88,9 @@ export const useGraph = (options: UseGraphOptions = {}) => {
   const vueAdjacencyLists = useAdjacencyLists(graph.adjacencyLists);
   const vueCharacteristics = useCharacteristics(graph.characteristics);
   const vueTransitionMatrix = useTransitionMatrix(graph.transitionMatrix);
+  const vueMinimumSpanningTrees = useMinimumSpanningTrees(
+    graph.minimumSpanningTrees,
+  );
   const vueFocus = useFocus(graph.focus);
   const vueHistory = useHistory(graph.history);
 
@@ -96,6 +102,7 @@ export const useGraph = (options: UseGraphOptions = {}) => {
     adjacencyLists: vueAdjacencyLists,
     characteristics: vueCharacteristics,
     transitionMatrix: vueTransitionMatrix,
+    minimumSpanningTrees: vueMinimumSpanningTrees,
     focus: vueFocus,
     history: vueHistory,
     theme: {

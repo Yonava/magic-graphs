@@ -1,4 +1,4 @@
-import { useSignal } from './useSignal.ts';
+import { useSignal } from './utils/useSignal.ts';
 
 type NodesEdgesGetters<Node, Edge> = {
   getNodes: () => Node[];
