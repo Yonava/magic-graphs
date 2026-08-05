@@ -1,3 +1,4 @@
+import { nullThrows } from '@core/utils/assert';
 import Fraction from 'fraction.js';
 
 import type { Edge, Node } from '../types.ts';
@@ -45,7 +46,7 @@ export const getAllMsts = (
 
   const weightGroups: Edge[][] = [];
   sortedEdges.forEach((edge) => {
-    const lastGroup = weightGroups[weightGroups.length - 1];
+    const lastGroup = weightGroups.at(-1);
     if (lastGroup && lastGroup[0].weight.compare(edge.weight) === 0) {
       lastGroup.push(edge);
     } else {
@@ -90,26 +91,32 @@ export const getAllMsts = (
       if (!components.has(root)) {
         components.set(root, { vertices: new Set(), pairs: [] });
       }
-      components.get(root)!.vertices.add(vertex);
+      nullThrows(
+        components.get(root),
+        `component ${root} was just seeded above, so it must be present`,
+      ).vertices.add(vertex);
     });
 
     pairs.forEach((pair) => {
       const root = find(groupParent, pair.a);
-      components.get(root)!.pairs.push(pair);
+      nullThrows(
+        components.get(root),
+        `component ${root} must exist because every endpoint of a pair is a touched vertex`,
+      ).pairs.push(pair);
     });
 
     components.forEach(({ vertices, pairs: componentPairs }) => {
       const options = allSpanningTrees([...vertices], componentPairs);
       choicePoints.push(options);
 
-      if (options.length === 0) {
-        throw new Error(
-          'Options should not be empty; this indicates a bug in the algorithm.',
-        );
-      }
+      const firstOption = nullThrows(
+        options.at(0),
+        'every equal-weight component is connected by construction, so it must admit at least one spanning tree',
+      );
+
       // Advance the real union-find with one arbitrary valid choice, so
       // later (strictly higher-weight) groups see the correct components
-      options[0].forEach((edge) => union(parent, edge.source, edge.target));
+      firstOption.forEach((edge) => union(parent, edge.source, edge.target));
     });
   }
 

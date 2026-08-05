@@ -141,6 +141,9 @@ importers:
 
   packages/graph-algorithms:
     dependencies:
+      '@core/utils':
+        specifier: workspace:*
+        version: link:../core-utils
       fraction.js:
         specifier: ^5.3.4
         version: 5.3.4

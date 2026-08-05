@@ -39,6 +39,23 @@ export type PhantomControls = {
    * @returns everything that was removed
    */
   removeElements: (elements: PhantomElementIds) => ElementRemovalPayload;
+  /**
+   * removes every phantom node.
+   *
+   * ℹ️ **Note:** this implicitly removes the phantom edges attached to them.
+   * @returns everything that was removed
+   */
+  removeAllNodes: () => ElementRemovalPayload;
+  /**
+   * removes every phantom edge, leaving the phantom nodes in place
+   * @returns everything that was removed
+   */
+  removeAllEdges: () => ElementRemovalPayload;
+  /**
+   * removes every phantom node and edge
+   * @returns everything that was removed
+   */
+  removeAllElements: () => ElementRemovalPayload;
   /** the phantom nodes only, the graph's own nodes are not included */
   nodes: () => readonly PhantomNode[];
   /** the phantom edges only, the graph's own edges are not included */

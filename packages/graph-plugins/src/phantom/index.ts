@@ -124,6 +124,18 @@ export const phantom: PhantomPlugin = ({
     removeElements({ nodeIds: [], edgeIds: [edgeId] });
   };
 
+  const removeAllNodes = () =>
+    removeElements({ nodeIds: nodes.map((node) => node.id), edgeIds: [] });
+
+  const removeAllEdges = () =>
+    removeElements({ nodeIds: [], edgeIds: edges.map((edge) => edge.id) });
+
+  const removeAllElements = () =>
+    removeElements({
+      nodeIds: nodes.map((node) => node.id),
+      edgeIds: edges.map((edge) => edge.id),
+    });
+
   const canResolveNode = (nodeId: CoreNode['id']) =>
     controls.isNode(nodeId) || nodes.some((node) => node.id === nodeId);
 
@@ -148,6 +160,9 @@ export const phantom: PhantomPlugin = ({
       removeNode,
       removeEdge,
       removeElements,
+      removeAllNodes,
+      removeAllEdges,
+      removeAllElements,
       nodes: () => nodes,
       edges: () => edges,
       getNodePosition,

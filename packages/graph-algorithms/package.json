@@ -53,6 +53,7 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@core/utils": "workspace:*",
     "fraction.js": "^5.3.4"
   }
 }
