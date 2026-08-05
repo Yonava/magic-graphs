@@ -5,7 +5,7 @@ type PluginLifecycleControls = {
     enable: () => void;
     /** Deactivates the plugin. */
     disable: () => void;
-    // TODO implement: https://github.com/Yonava/magic-graphs/issues/702
+    // TODO implement: https://github.com/graph-kit/graph-kit/issues/702
     /** @returns true if the plugin is currently active */
     // isEnabled: () => boolean;
   };

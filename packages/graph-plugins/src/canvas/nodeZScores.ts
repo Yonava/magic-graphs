@@ -6,7 +6,7 @@ export type NodeZScoreOptions = {
   positions: NodePositionStoreControls;
 };
 
-// TODO https://github.com/Yonava/magic-graphs/issues/721
+// TODO https://github.com/graph-kit/graph-kit/issues/721
 export const getNodeZScores = ({
   nodes: readNodes,
   positions,

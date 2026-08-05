@@ -132,7 +132,7 @@ export const core = (options: Partial<CoreOptions>) => {
         );
 
         // adding and removing needs to be 2 separate transactions due to known bug:
-        // https://github.com/Yonava/magic-graphs/issues/685
+        // https://github.com/graph-kit/graph-kit/issues/685
         commitTransaction({
           addNodes: data.nodes,
           addEdges: data.edges,

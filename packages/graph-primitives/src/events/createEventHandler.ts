@@ -45,7 +45,7 @@ export const createEventHandler = <EventMap extends GenericEventMap>() => {
       const handlers = allHandlers[eventName] ?? [];
 
       // TODO check for duplicate handler registrations
-      // https://github.com/Yonava/magic-graphs/issues/640
+      // https://github.com/graph-kit/graph-kit/issues/640
 
       allHandlers[eventName] = getSortedByPriority([
         ...handlers,

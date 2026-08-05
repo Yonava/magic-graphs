@@ -14,7 +14,7 @@ export const createAddElementsHandler: CreateCoreAction<'addElements'> =
       ...e,
     }));
 
-    // https://github.com/Yonava/magic-graphs/issues/685
+    // https://github.com/graph-kit/graph-kit/issues/685
     // must be before commitTransaction because anything reading the new elements resolves
     // their schemas, which requires a lookup to the node positioning system.
     // I don't like putting this call before knowing if the transaction

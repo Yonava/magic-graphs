@@ -3,7 +3,7 @@ import { CommitTransaction } from '@graph/primitives/transactions/types';
 import { createEmptyPayload } from './createEmptyPayload.ts';
 import type { TransactionOptions } from './types.ts';
 
-// TODO 1. ❌ Validation https://github.com/Yonava/magic-graphs/issues/598
+// TODO 1. ❌ Validation https://github.com/graph-kit/graph-kit/issues/598
 // 2. ✅ Process Mutation State
 // 3. ✅ Commit Payload and Return Confirmation
 export function createCommitTransaction({

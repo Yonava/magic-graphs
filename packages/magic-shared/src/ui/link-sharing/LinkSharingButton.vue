@@ -26,7 +26,7 @@
       );
     } catch (err) {
       // TODO handle link copy failure with a toast
-      // https://github.com/Yonava/magic-graphs/issues/783
+      // https://github.com/graph-kit/graph-kit/issues/783
       console.error('Failed to copy to clipboard!', err);
     }
   };
