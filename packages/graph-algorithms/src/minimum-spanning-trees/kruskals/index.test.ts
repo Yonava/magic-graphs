@@ -2,11 +2,11 @@ import fc from 'fast-check';
 import Fraction from 'fraction.js';
 import { describe, expect, it } from 'vitest';
 
+import { hasCycle } from '../helpers.ts';
 import {
   disconnectedGraphArbitrary,
   graphArbitrary,
 } from '../testing/graphGenerator.ts';
-import { hasCycle } from '../helpers.ts';
 import type { Edge, Node } from '../types.ts';
 import { kruskals } from './index.ts';
 

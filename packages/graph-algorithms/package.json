@@ -7,6 +7,38 @@
   },
   "type": "module",
   "exports": {
+    "./automata": {
+      "types": "./dist/types/automata/index.d.ts",
+      "default": "./src/automata/index.ts"
+    },
+    "./dynamic-programming": {
+      "types": "./dist/types/dynamic-programming/index.d.ts",
+      "default": "./src/dynamic-programming/index.ts"
+    },
+    "./markov-chains": {
+      "types": "./dist/types/markov-chains/index.d.ts",
+      "default": "./src/markov-chains/index.ts"
+    },
+    "./minimum-spanning-trees": {
+      "types": "./dist/types/minimum-spanning-trees/index.d.ts",
+      "default": "./src/minimum-spanning-trees/index.ts"
+    },
+    "./network-flow": {
+      "types": "./dist/types/network-flow/index.d.ts",
+      "default": "./src/network-flow/index.ts"
+    },
+    "./path-finding": {
+      "types": "./dist/types/path-finding/index.d.ts",
+      "default": "./src/path-finding/index.ts"
+    },
+    "./strongly-connected-components": {
+      "types": "./dist/types/strongly-connected-components/index.d.ts",
+      "default": "./src/strongly-connected-components/index.ts"
+    },
+    "./traversals": {
+      "types": "./dist/types/traversals/index.d.ts",
+      "default": "./src/traversals/index.ts"
+    },
     "./*": {
       "types": "./dist/types/*.d.ts",
       "default": "./src/*.ts"

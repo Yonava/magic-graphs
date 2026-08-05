@@ -2,8 +2,8 @@ import fc from 'fast-check';
 import Fraction from 'fraction.js';
 import { describe, expect, it } from 'vitest';
 
-import { graphArbitrary } from '../testing/graphGenerator.ts';
 import { kruskals } from '../kruskals/index.ts';
+import { graphArbitrary } from '../testing/graphGenerator.ts';
 import type { Edge, Node } from '../types.ts';
 import { getAllMsts } from './index.ts';
 
