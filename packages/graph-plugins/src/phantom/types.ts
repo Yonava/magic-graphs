@@ -60,6 +60,10 @@ export type PhantomControls = {
   nodes: () => readonly PhantomNode[];
   /** the phantom edges only, the graph's own edges are not included */
   edges: () => readonly PhantomEdge[];
+  /** whether the id belongs to a phantom node, the graph's own nodes report false */
+  isNode: (id: string) => boolean;
+  /** whether the id belongs to a phantom edge, the graph's own edges report false */
+  isEdge: (id: string) => boolean;
   /** position of any node the graph draws, phantom or real */
   getNodePosition: (nodeId: CoreNode['id']) => Readonly<Coordinate>;
 };
