@@ -1,6 +1,6 @@
 import Fraction from 'fraction.js';
 
-import type { Edge, Node } from '../types.ts';
+import type { Edge, Node } from '../../types/types.ts';
 
 type Parent = Map<string, string>;
 type Rank = Map<string, number>;

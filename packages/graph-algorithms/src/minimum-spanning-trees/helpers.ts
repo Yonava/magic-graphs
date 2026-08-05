@@ -1,4 +1,4 @@
-import type { Edge, Node } from './types.ts';
+import type { Edge, Node } from '../types/types.ts';
 
 export const hasCycle = (nodes: Node[], edges: Edge[]) => {
   const parent = new Map<string, string>();

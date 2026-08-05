@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { graphArbitrary } from '../graphGenerator.ts';
 import { kruskals } from '../kruskals/index.ts';
-import type { Edge, Node } from '../types.ts';
+import type { Edge, Node } from '../../types/types.ts';
 import { getAllMsts } from './index.ts';
 
 const normalize = (mst: Edge[]) => mst.map((e) => e.id).sort();

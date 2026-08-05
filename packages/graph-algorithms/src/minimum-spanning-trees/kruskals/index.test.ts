@@ -7,7 +7,7 @@ import {
   graphArbitrary,
 } from '../graphGenerator.ts';
 import { hasCycle } from '../helpers.ts';
-import type { Edge, Node } from '../types.ts';
+import type { Edge, Node } from '../../types/types.ts';
 import { kruskals } from './index.ts';
 
 describe(kruskals, () => {

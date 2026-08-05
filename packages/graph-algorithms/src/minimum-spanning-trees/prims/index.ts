@@ -1,6 +1,6 @@
 import Fraction from 'fraction.js';
 
-import type { Edge, Node } from '../types.ts';
+import type { Edge, Node } from '../../types/types.ts';
 
 /**
  * Finds a minimum spanning tree (MST) of a weighted graph using Prim's
