@@ -58,32 +58,6 @@ const getConnectedEdges: CurriedNodeHelpers['getConnectedEdges'] =
       .edges()
       .filter((edge) => edge.target === nodeId || edge.source === nodeId);
 
-// TODO needs to become core.options.directed aware still
-// which means hardening them to infinite recursive loop edge cases
-// see https://github.com/Yonava/magic-graphs/issues/575
-const getAncestors: CurriedNodeHelpers['getAncestors'] =
-  (graph) =>
-  (nodeId): CoreNode[] => {
-    const parents = getParents(graph)(nodeId);
-    const ancestors = parents.flatMap((parent) => {
-      return [parent, ...getAncestors(graph)(parent.id)];
-    });
-    return ancestors;
-  };
-
-// TODO needs to become isGraphDirected aware still
-// which means hardening them to infinite recursive loop edge cases
-// see https://github.com/Yonava/magic-graphs/issues/575
-const getDescendants: CurriedNodeHelpers['getDescendants'] =
-  (graph) =>
-  (nodeId): CoreNode[] => {
-    const children = getChildren(graph)(nodeId);
-    const descendants = children.flatMap((child) => {
-      return [child, ...getDescendants(graph)(child.id)];
-    });
-    return descendants;
-  };
-
 const getEdgeBetween: CurriedNodeHelpers['getEdgeBetween'] =
   (graph) => (fromNodeId, toNodeId) => {
     const { directed: isGraphDirected } = graph.metadata;
@@ -114,10 +88,8 @@ export const getEdgesBetweenConnectedNodes =
   };
 
 export const nodeHelpers: CurriedNodeHelpers = {
-  getAncestors,
   getChildren,
   getConnectedEdges,
-  getDescendants,
   getEdgeBetween,
   getEdgesBetweenConnectedNodes: (graph) =>
     getEdgesBetweenConnectedNodes(graph.edges()),

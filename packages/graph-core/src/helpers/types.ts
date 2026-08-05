@@ -36,18 +36,6 @@ export type NodeHelpers = {
    */
   getChildren: (nodeId: CoreNode['id']) => CoreNode[];
   /**
-   * a {@link CoreOptions.directed | options.isGraphDirected} aware getter for all ancestors of the provided {@link CoreNode | node}
-   *
-   * ℹ️ a {@link CoreNode | nodes} ancestors are all {@link CoreNode | nodes} that can have a path through the graph to reach this {@link CoreNode | node}
-   */
-  getAncestors: (nodeId: CoreNode['id']) => CoreNode[];
-  /**
-   * a {@link CoreOptions.directed | options.isGraphDirected} aware getter for all descendants of the provided {@link CoreNode | node}
-   *
-   * ℹ️ a {@link CoreNode | nodes} descendants are all {@link CoreNode | nodes} that the provided {@link CoreNode | node} can reach via a path through the graph
-   */
-  getDescendants: (nodeId: CoreNode['id']) => CoreNode[];
-  /**
    * gets all {@link CoreEdge | edges} that are attached to the provided {@link CoreNode | node}, regardless of {@link CoreEdge | edge} direction
    *
    * ⚠️ not {@link CoreOptions.directed | options.isGraphDirected} aware
