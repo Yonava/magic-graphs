@@ -42,8 +42,11 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
   labelTextInputColor,
   parallelEdges,
   neighborPositions,
-  parallelEdgeSpacing = DEFAULT_PARALLEL_EDGE_SPACING_PX,
+  layout,
 }) => {
+  const { parallelEdgeSpacing = DEFAULT_PARALLEL_EDGE_SPACING_PX } =
+    layout ?? {};
+
   const resolveEdgeStyles = createEdgeStyleResolver(resolveToken);
   const resolveNodeStyles = createNodeStyleResolver(resolveToken);
   return (edge) => {

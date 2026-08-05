@@ -32,19 +32,27 @@ export type EdgeRenderProps = {
 
 export type EdgeRenderFunction = (edge: EdgeRenderProps) => Shape;
 
-export type EdgeRenderOptions = RenderFunctionOptions & {
-  directed: boolean;
-  labelled: boolean;
-  labelTextInputColor: (edge: EdgeRenderProps) => string;
-  /** every edge running between {@link source} and {@link target} in either direction, including this one, fanned apart by {@link parallelEdgeSpacing} */
-  parallelEdges: (edge: EdgeRenderProps) => readonly CoreEdge[];
-  /** positions of the nodes adjacent to {@link source} and {@link target}, used to aim self directed edges away from them */
-  neighborPositions: (edge: EdgeRenderProps) => readonly Coordinate[];
+/**
+ * tunable spacing values, all optional. separate from the rest of the render options because
+ * these are the only ones a caller adjusts to taste rather than to describe its graph.
+ */
+export type EdgeLayoutOptions = {
   /**
    * pixels of whitespace between two adjacent edges of a fan
    * @default 12
    */
   parallelEdgeSpacing?: number;
+};
+
+export type EdgeRenderOptions = RenderFunctionOptions & {
+  directed: boolean;
+  labelled: boolean;
+  labelTextInputColor: (edge: EdgeRenderProps) => string;
+  /** every edge running between {@link source} and {@link target} in either direction, including this one, fanned apart by {@link EdgeLayoutOptions.parallelEdgeSpacing} */
+  parallelEdges: (edge: EdgeRenderProps) => readonly CoreEdge[];
+  /** positions of the nodes adjacent to {@link source} and {@link target}, used to aim self directed edges away from them */
+  neighborPositions: (edge: EdgeRenderProps) => readonly Coordinate[];
+  layout?: EdgeLayoutOptions;
 };
 
 export type CreateEdgeRenderFunction = (
@@ -63,7 +71,7 @@ export type EdgeTopologyOptions = Pick<
 /** every edge render option a graph answers the same way regardless of topology */
 export type DefaultEdgeRenderOptions = Omit<
   EdgeRenderOptions,
-  keyof EdgeTopologyOptions
+  keyof EdgeTopologyOptions | 'layout'
 >;
 
 /** the graph state {@link DefaultEdgeRenderOptions} is derived from */

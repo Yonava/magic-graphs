@@ -73,4 +73,10 @@ The payoff is that visibility propagates on its own. When something stops being 
 
 Analysis plugins are the deliberate exception. `adjacencyLists` and `characteristics` answer structural questions about the data, so the node list is the correct source for them. The rule is about anything that renders or responds to the cursor.
 
+Render topology is the other exception, and unlike analysis it is a known gap rather than a considered choice. `parallelEdges` and `neighborPositions` read `controls.edges()` because they answer questions that have to be settled _before_ a shape exists, and the aggregator holds finished shapes. Laying out one edge requires knowing the others are there, and they only reach the aggregator once they already have geometry.
+
+The consequence is that removing a graph element in a transformer does not remove it from layout. A culled edge keeps the slot it was assigned, so a fan of three draws with a hole in the middle and the two survivors sit a full slot further apart than they should. Reaching for the aggregator does not fix this: reading it here means reading last frame's output to build this frame's input, which trades a static hole for geometry that visibly settles.
+
+[#813](https://github.com/graph-kit/graph-kit/issues/813) tracks the fix, a registry upstream of rendering that owns whether an element is drawn at all, so the render path and the topology callbacks resolve against one list. Until it lands, treat aggregator transformers as additive where graph elements are concerned. Add decorations freely, but do not filter out nodes or edges.
+
 Corollary: if your plugin needs cleanup code to tear down an overlay when its subject disappears, it is probably reading the wrong source. Aggregator-derived state has nothing to clean up.

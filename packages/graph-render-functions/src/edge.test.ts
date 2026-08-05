@@ -77,7 +77,7 @@ const renderFan = (
     labelTextInputColor: () => 'black',
     parallelEdges: () => fan,
     neighborPositions: () => [],
-    parallelEdgeSpacing: SPACING,
+    layout: { parallelEdgeSpacing: SPACING },
     ...options,
   });
 
@@ -224,17 +224,27 @@ describe('createEdgeRenderFunction parallel edge geometry', () => {
 
   it('draws a fan touching with no whitespace when spacing is zero', () => {
     const segments = renderFan([edge('1', 'a', 'b'), edge('2', 'b', 'a')], {
-      parallelEdgeSpacing: 0,
+      layout: { parallelEdgeSpacing: 0 },
     });
 
     const [first, second] = offsetsOf(segments).map(([, offset]) => offset);
     expect(second! - first!).toBe(EDGE_WIDTH);
   });
 
-  it('falls back to a default spacing when none is supplied', () => {
-    const DEFAULT_SPACING = 12;
+  const DEFAULT_SPACING = 12;
+
+  it('falls back to a default spacing when no layout is supplied', () => {
     const segments = renderFan([edge('1', 'a', 'b'), edge('2', 'a', 'b')], {
-      parallelEdgeSpacing: undefined,
+      layout: undefined,
+    });
+
+    const [first, second] = offsetsOf(segments).map(([, offset]) => offset);
+    expect(second! - first!).toBe(EDGE_WIDTH + DEFAULT_SPACING);
+  });
+
+  it('falls back to a default spacing when layout omits it', () => {
+    const segments = renderFan([edge('1', 'a', 'b'), edge('2', 'a', 'b')], {
+      layout: {},
     });
 
     const [first, second] = offsetsOf(segments).map(([, offset]) => offset);

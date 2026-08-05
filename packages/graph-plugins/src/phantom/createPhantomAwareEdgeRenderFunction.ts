@@ -2,6 +2,7 @@ import { ComputedTokenResolver } from '@graph/computed-tokens/index';
 import { getEdgesBetweenConnectedNodes } from '@graph/core/helpers/node';
 import { CoreEdge } from '@graph/primitives/types';
 import {
+  EdgeLayoutOptions,
   EdgeRenderOptionsSource,
   createDefaultEdgeRenderOptions,
   createEdgeRenderFunction,
@@ -27,12 +28,15 @@ export type PhantomAwareGraph = Pick<
 // graph context (like other nodes and edges around it) to work properly.
 // IE for base edges to render properly alongside phantom edges, they must be able to see phantom edges and vice versa
 export const createPhantomAwareEdgeRenderFunction = (
-  graph: PhantomAwareGraph & {
-    parallelEdgeSpacing?: number;
+  graph: PhantomAwareGraph,
+  layout?: EdgeLayoutOptions & {
+    // TODO temporary. will be replaced by node/edge render registry
+    // https://github.com/graph-kit/graph-kit/issues/813
+    phantomOnly?: boolean;
   },
 ) => {
   const allEdges = (): readonly CoreEdge[] => [
-    ...graph.getEdges(),
+    ...(layout?.phantomOnly ? [] : graph.getEdges()),
     ...graph.phantom.edges(),
   ];
 
@@ -48,6 +52,6 @@ export const createPhantomAwareEdgeRenderFunction = (
     },
     neighborPositions: (edge) =>
       getNeighborPositions(edge, allEdges(), graph.phantom.getNodePosition),
-    parallelEdgeSpacing: graph.parallelEdgeSpacing,
+    layout,
   });
 };
