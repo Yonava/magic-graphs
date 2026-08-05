@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { AggregatorTransformer } from '@graph/plugins/canvas/aggregator/types';
+  import { createPhantomAwareEdgeRenderFunction } from '@graph/plugins/phantom/createPhantomAwareEdgeRenderFunction';
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import { onMounted } from 'vue';
@@ -8,8 +10,40 @@
 
   const graph = useGraphProduct({
     manifest,
+    core: {
+      directed: true,
+    },
     ui: {
       debug: true,
+      lensChips: (graph) => {
+        const noGapRenderer = createPhantomAwareEdgeRenderFunction(graph, {
+          parallelEdgeSpacing: 0,
+          phantomOnly: true,
+        });
+        const defaultRenderer = createPhantomAwareEdgeRenderFunction(graph);
+        let flag = false;
+        const removeNonPhantomEdges: AggregatorTransformer = (agg) => {
+          if (!flag) return agg;
+          return agg.filter((el) => !graph.isEdge(el.id));
+        };
+        graph.canvas.aggregator.transformers.push(removeNonPhantomEdges);
+        return [
+          {
+            lens: {
+              activate: () => {
+                flag = true;
+                graph.setRenderFunction('edge', noGapRenderer);
+              },
+              deactivate: () => {
+                flag = false;
+                graph.setRenderFunction('edge', defaultRenderer);
+              },
+              id: 'no-gap',
+            },
+            title: 'No Gap',
+          },
+        ];
+      },
     },
   });
 

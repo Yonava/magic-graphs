@@ -3,7 +3,7 @@ import { Shape } from '@canvas/primitives/types/index';
 import { Coordinate } from '@canvas/primitives/types/utility';
 import { Color } from '@core/utils/colors';
 import { ComputedTokenResolver } from '@graph/computed-tokens/index';
-import { CoreNode } from '@graph/primitives/types';
+import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
 export type RenderFunctionOptions = {
   shapes: AnimatedShapeFactories;
@@ -32,14 +32,27 @@ export type EdgeRenderProps = {
 
 export type EdgeRenderFunction = (edge: EdgeRenderProps) => Shape;
 
+/**
+ * tunable spacing values, all optional. separate from the rest of the render options because
+ * these are the only ones a caller adjusts to taste rather than to describe its graph.
+ */
+export type EdgeLayoutOptions = {
+  /**
+   * pixels of whitespace between two adjacent edges of a fan
+   * @default 12
+   */
+  parallelEdgeSpacing?: number;
+};
+
 export type EdgeRenderOptions = RenderFunctionOptions & {
   directed: boolean;
   labelled: boolean;
   labelTextInputColor: (edge: EdgeRenderProps) => string;
-  /** how many edges run between {@link source} and {@link target}, including this one */
-  parallelEdgeCount: (edge: EdgeRenderProps) => number;
+  /** every edge running between {@link source} and {@link target} in either direction, including this one, fanned apart by {@link EdgeLayoutOptions.parallelEdgeSpacing} */
+  parallelEdges: (edge: EdgeRenderProps) => readonly CoreEdge[];
   /** positions of the nodes adjacent to {@link source} and {@link target}, used to aim self directed edges away from them */
   neighborPositions: (edge: EdgeRenderProps) => readonly Coordinate[];
+  layout?: EdgeLayoutOptions;
 };
 
 export type CreateEdgeRenderFunction = (
@@ -52,13 +65,13 @@ export type CreateEdgeRenderFunction = (
  */
 export type EdgeTopologyOptions = Pick<
   EdgeRenderOptions,
-  'parallelEdgeCount' | 'neighborPositions'
+  'parallelEdges' | 'neighborPositions'
 >;
 
 /** every edge render option a graph answers the same way regardless of topology */
 export type DefaultEdgeRenderOptions = Omit<
   EdgeRenderOptions,
-  keyof EdgeTopologyOptions
+  keyof EdgeTopologyOptions | 'layout'
 >;
 
 /** the graph state {@link DefaultEdgeRenderOptions} is derived from */

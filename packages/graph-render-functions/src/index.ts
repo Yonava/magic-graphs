@@ -13,6 +13,9 @@ export type { EdgeRenderOptionsSource } from './types.ts';
 /** The topology options {@link createDefaultEdgeRenderOptions} deliberately leaves to the caller. */
 export type { EdgeTopologyOptions } from './types.ts';
 
+/** Optional spacing knobs an edge renderer takes, separate from the options that describe the graph. */
+export type { EdgeLayoutOptions } from './types.ts';
+
 /** The contract a node render function factory satisfies. */
 export type { CreateNodeRenderFunction } from './types.ts';
 
