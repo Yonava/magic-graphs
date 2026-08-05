@@ -80,6 +80,7 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
         Math.sin(angle),
     };
 
+    // copied because the shift below would otherwise write through to the position store
     const edgeStart = {
       x: sourceNode.position.x,
       y: sourceNode.position.y,

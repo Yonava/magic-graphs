@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { createPhantomAwareEdgeRenderFunction } from '@graph/plugins/phantom/createPhantomAwareEdgeRenderFunction';
-  import { CoreEdge } from '@graph/primitives/types';
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import { onMounted } from 'vue';
