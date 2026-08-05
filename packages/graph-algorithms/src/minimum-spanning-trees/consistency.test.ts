@@ -4,7 +4,7 @@ import { expect, it } from 'vitest';
 import {
   disconnectedGraphArbitrary,
   graphArbitrary,
-} from './graphGenerator.ts';
+} from './testing/graphGenerator.ts';
 import { kruskals } from './kruskals/index.ts';
 import { prims } from './prims/index.ts';
 

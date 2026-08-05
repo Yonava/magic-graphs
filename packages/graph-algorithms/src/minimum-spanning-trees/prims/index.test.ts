@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import {
   disconnectedGraphArbitrary,
   graphArbitrary,
-} from '../graphGenerator.ts';
+} from '../testing/graphGenerator.ts';
 import { hasCycle } from '../helpers.ts';
 import type { Edge, Node } from '../types.ts';
 import { prims } from './index.ts';

@@ -240,6 +240,9 @@ importers:
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils
+      '@graph/algorithms':
+        specifier: workspace:*
+        version: link:../graph-algorithms
       '@graph/computed-tokens':
         specifier: workspace:*
         version: link:../graph-computed-tokens
