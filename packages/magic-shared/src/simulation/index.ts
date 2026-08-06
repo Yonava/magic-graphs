@@ -1,8 +1,6 @@
 export type {
   FrameCollector,
   SimulationDefinition,
-  ExplainerHighlight,
-  Explainer,
   SetupContext,
   SimulationEffects,
 } from './types.ts';

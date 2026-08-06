@@ -1,10 +1,9 @@
 import { nullThrows } from '@core/utils/assert';
 import { MaybeGetter, getValue } from '@core/utils/maybeGetter/index';
 
-import { Graph } from '../../graph/types.ts';
-import { MagicGraph } from '../../product/useGraphProduct.ts';
-import { Explainer, ExplainerHighlight } from '../types.ts';
+import { MagicGraph } from '../../../product/useGraphProduct.ts';
 import { parseTextSegments } from './parseTextSegments.ts';
+import { Explainer, ExplainerHighlight } from './types.ts';
 import { useNodeRefExplainerSegment } from './useNodeIdPart.ts';
 
 export type ExplainerSegment = {

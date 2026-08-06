@@ -11,7 +11,7 @@
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
   import { useRunningSimulation } from '../useRunningSimulation.ts';
-  import ExplainerText from './ExplainerText.vue';
+  import SimulationExplainerText from './SimulationExplainerText.vue';
 
   const { simulation, violation } = useRunningSimulation();
 
@@ -59,7 +59,7 @@
 <template>
   <VStack class="items-center gap-5">
     <div>
-      <ExplainerText />
+      <SimulationExplainerText />
     </div>
 
     <div class="w-90 h-4">

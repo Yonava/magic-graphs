@@ -1,9 +1,7 @@
-import { MaybeGetter } from '@core/utils/maybeGetter/index';
+import { ComputedRef } from 'vue';
 
-import { ComputedRef, StyleValue } from 'vue';
-
+import { Explainer } from '../components/magic/explainer/types.ts';
 import { Lens } from '../lens/types.ts';
-import { MagicGraph } from '../product/useGraphProduct.ts';
 import { GuardCheck, Violation } from './guard/SimulationGuardBuilder.ts';
 
 export type FrameCollector<Frame> = {
@@ -13,24 +11,6 @@ export type FrameCollector<Frame> = {
 export type SetupContext<Frame> = {
   frames: ComputedRef<Frame[]>;
   currentFrame: ComputedRef<Frame>;
-};
-
-type GetterWithGraph = (graph: MagicGraph) => void;
-
-export type ExplainerHighlight = {
-  activate?: GetterWithGraph;
-  deactivate?: GetterWithGraph;
-  onMounted?: GetterWithGraph;
-  onUnmounted?: GetterWithGraph;
-  tooltipLabel?: MaybeGetter<string, [MagicGraph]>;
-  // TODO nest classes and styles under attrs field, and have attrs field spread onto button
-  classes?: MaybeGetter<string, [MagicGraph]>;
-  styles?: MaybeGetter<StyleValue, [MagicGraph]>;
-};
-
-export type Explainer = {
-  content: MaybeGetter<string, [MagicGraph]>;
-  highlights?: MaybeGetter<ExplainerHighlight[], [MagicGraph]>;
 };
 
 export type SimulationLifecycle<Frame> = {
