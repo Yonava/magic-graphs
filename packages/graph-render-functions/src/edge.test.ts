@@ -73,11 +73,10 @@ const renderFan = (
     } as unknown as AnimatedShapeFactories,
     resolveToken,
     directed: false,
-    labelled: false,
     labelTextInputColor: () => 'black',
     parallelEdges: () => fan,
     neighborPositions: () => [],
-    layout: { parallelEdgeSpacing: SPACING },
+    layout: { parallelEdgeSpacing: SPACING, labelled: false },
     ...options,
   });
 

@@ -1,3 +1,5 @@
+import Fraction from 'fraction.js';
+
 /**
  * the golden ratio constant.
  * {@link} https://en.wikipedia.org/wiki/Golden_ratio
@@ -77,6 +79,22 @@ export const gcd = (a: number, b: number): number => {
  */
 export const within = (tolerance: number) => (a: number, b: number) => {
   return Math.abs(a - b) <= tolerance;
+};
+
+/**
+ * formats a fraction as a decimal, prefixing a tilde when rounding lost
+ * precision
+ *
+ * @param fraction the fraction to format
+ * @param fractionDigits how many decimal places to keep
+ * @returns the formatted fraction, tilde prefixed if it was rounded
+ * @example fractionToDecimal(new Fraction(5, 2)) // '2.5'
+ * fractionToDecimal(new Fraction(1, 3)) // '~0.333'
+ * fractionToDecimal(new Fraction(1, 3), 1) // '~0.3'
+ */
+export const fractionToDecimal = (fraction: Fraction, fractionDigits = 3) => {
+  const rounded = fraction.round(fractionDigits);
+  return `${rounded.equals(fraction) ? '' : '~'}${rounded.valueOf()}`;
 };
 
 /**

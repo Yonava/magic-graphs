@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { nullThrows } from '@core/utils/assert';
-  import colors from '@core/utils/colors';
+  import { fractionToDecimal } from '@core/utils/math';
   import WellVue from '@magic/shared/Well';
   import { Explainer, ExplainerText } from '@magic/shared/explainer';
   import { useProvidedGraph } from '@magic/shared/product';
@@ -14,6 +14,8 @@
       'no mst in graph!',
     ),
   );
+
+  const cost = computed(() => graph.minimumSpanningTrees.all.value.totalWeight);
 
   const themer = graph.theme.createThemer({
     canvas: {
@@ -35,19 +37,10 @@
       .join('')
       .slice(0, -2);
     return {
-      content: `${stringOfPluses} = [${graph.minimumSpanningTrees.all.value.totalWeight.toFraction()}]`,
+      content: `${stringOfPluses} = [${cost.value.toFraction()}]`,
       highlights: [
         {
-          tooltipLabel: () => {
-            const [numerator, denominator] =
-              graph.minimumSpanningTrees.all.value.totalWeight
-                .toFraction()
-                .split('/');
-            return (
-              'Total Cost: ' +
-              (Number(numerator) / Number(denominator)).toLocaleString()
-            );
-          },
+          tooltipLabel: () => fractionToDecimal(cost.value),
           activate: () => themer.activate(),
           deactivate: () => themer.deactivate(),
         },
