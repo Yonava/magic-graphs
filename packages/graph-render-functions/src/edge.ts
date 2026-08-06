@@ -3,6 +3,7 @@ import { LineSchema } from '@canvas/primitives/shapes/line/types';
 import { TextArea } from '@canvas/primitives/text/types';
 import { WithId } from '@canvas/primitives/types/index';
 import { GOLDEN_RATIO } from '@core/utils/math';
+import { getValue } from '@core/utils/maybeGetter/index';
 
 import {
   createEdgeStyleResolver,
@@ -30,7 +31,6 @@ export const createDefaultEdgeRenderOptions = (
   shapes: source.canvas.shapes,
   resolveToken: source.resolveToken,
   directed: source.metadata.directed,
-  labelled: source.metadata.weighted,
   labelTextInputColor: () => source.canvas.theme._resolveToken('canvas.color'),
 });
 
@@ -38,7 +38,6 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
   resolveToken,
   shapes,
   directed,
-  labelled,
   labelTextInputColor,
   parallelEdges,
   neighborPositions,
@@ -106,7 +105,8 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
     edgeEnd.x += Math.cos(perpendicular) * parallelEdgeOffset;
     edgeEnd.y += Math.sin(perpendicular) * parallelEdgeOffset;
 
-    const textArea: TextArea | undefined = labelled
+    const labelled = layout?.labelled ?? true;
+    const textArea: TextArea | undefined = getValue(labelled, edge)
       ? {
           color: 'none',
           activeColor: labelTextInputColor(edge),

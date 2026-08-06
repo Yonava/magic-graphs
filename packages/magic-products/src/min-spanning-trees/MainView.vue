@@ -4,8 +4,10 @@
   import { AggregatorTransformer } from '@graph/plugins/canvas/aggregator/types';
   import { GraphUnderCursor } from '@graph/plugins/canvas/types';
   import { createPhantomAwareEdgeRenderFunction } from '@graph/plugins/phantom/createPhantomAwareEdgeRenderFunction';
+  import { CoreEdge } from '@graph/primitives/types';
   import { GraphProduct, useGraphProduct } from '@magic/shared/product';
   import { LensChipDefinition } from '@magic/shared/ui/lens-chips/types';
+  import tinycolor from 'tinycolor2';
   import type { DeepReadonly } from 'ts-essentials';
 
   import ActiveMST from './ActiveMST.vue';
@@ -21,9 +23,16 @@
     },
     ui: {
       lensChips: (graph) => {
+        const mstIndexFromId = (edgeId: string) =>
+          Number(edgeId.split('-').at(0));
+        let activeMstIndex: number | undefined = undefined;
         const noGapRenderer = createPhantomAwareEdgeRenderFunction(graph, {
           parallelEdgeSpacing: 0,
           phantomOnly: true,
+          labelled: (edge) => {
+            const mstIndex = mstIndexFromId(edge.id);
+            return mstIndex === activeMstIndex;
+          },
         });
         const defaultRenderer = createPhantomAwareEdgeRenderFunction(graph);
         let removeEdges = false;
@@ -53,20 +62,22 @@
           MST_COLORS[mstIndex % MST_COLORS.length];
 
         const mstEdgeId = (mstIndex: number) => `${mstIndex}-${generateId()}`;
-        const mstIndexFromId = (edgeId: string) =>
-          Number(edgeId.split('-').at(0));
 
-        let activeMstIndex: number | undefined = undefined;
+        const edgeColoring = (edge: CoreEdge) => {
+          const mstIndex = mstIndexFromId(edge.id);
+          const color = mstIndexToColor(mstIndex);
+          if (activeMstIndex !== undefined && activeMstIndex !== mstIndex) {
+            return tinycolor(color).setAlpha(0.33).toHex8String();
+          }
+          return color;
+        };
 
         const edgeThemer = graph.theme.createThemer({
           canvas: {
-            'edge.default.color': (edge) => {
-              const mstIndex = mstIndexFromId(edge.id);
-              if (activeMstIndex !== undefined && activeMstIndex !== mstIndex) {
-                return;
-              }
-              return mstIndexToColor(mstIndex);
-            },
+            'edge.default.color': edgeColoring,
+            'edge.hover.color': edgeColoring,
+            'edge.default.text.color': edgeColoring,
+            'edge.hover.text.color': edgeColoring,
           },
         });
 

@@ -2,6 +2,7 @@ import { AnimatedShapeFactories } from '@canvas/primitives/animation/index';
 import { Shape } from '@canvas/primitives/types/index';
 import { Coordinate } from '@canvas/primitives/types/utility';
 import { Color } from '@core/utils/colors';
+import { MaybeGetter } from '@core/utils/maybeGetter/index';
 import { ComputedTokenResolver } from '@graph/computed-tokens/index';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
 
@@ -42,11 +43,12 @@ export type EdgeLayoutOptions = {
    * @default 12
    */
   parallelEdgeSpacing?: number;
+  /** @default true */
+  labelled?: MaybeGetter<boolean, [edge: EdgeRenderProps]>;
 };
 
 export type EdgeRenderOptions = RenderFunctionOptions & {
   directed: boolean;
-  labelled: boolean;
   labelTextInputColor: (edge: EdgeRenderProps) => string;
   /** every edge running between {@link source} and {@link target} in either direction, including this one, fanned apart by {@link EdgeLayoutOptions.parallelEdgeSpacing} */
   parallelEdges: (edge: EdgeRenderProps) => readonly CoreEdge[];

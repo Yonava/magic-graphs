@@ -52,6 +52,9 @@ export const createPhantomAwareEdgeRenderFunction = (
     },
     neighborPositions: (edge) =>
       getNeighborPositions(edge, allEdges(), graph.phantom.getNodePosition),
-    layout,
+    layout: {
+      ...layout,
+      labelled: layout?.labelled ?? graph.metadata.weighted,
+    },
   });
 };

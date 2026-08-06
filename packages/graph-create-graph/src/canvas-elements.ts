@@ -54,6 +54,9 @@ export const createCanvasElementFactories = (
       ),
     neighborPositions: (edge) =>
       getNeighborPositions(edge, controls.edges(), controls.positions.get),
+    layout: {
+      labelled: controls.metadata.weighted,
+    },
   });
 
   const nodeRenderFunction = () =>
