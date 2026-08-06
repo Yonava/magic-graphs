@@ -10,7 +10,8 @@
   import tinycolor from 'tinycolor2';
   import type { DeepReadonly } from 'ts-essentials';
 
-  import ActiveMST from './ActiveMST.vue';
+  import { computed } from 'vue';
+
   import { manifest } from './manifest.ts';
 
   const graph = useGraphProduct({
@@ -23,6 +24,14 @@
     },
     ui: {
       lensChips: (graph) => {
+        const msts = computed(() => graph.minimumSpanningTrees.all.value.msts);
+        const totalMstCost = computed(
+          () => graph.minimumSpanningTrees.all.value.totalWeight,
+        );
+        const mstConnected = computed(
+          () => graph.minimumSpanningTrees.all.value.connected,
+        );
+
         const mstIndexFromId = (edgeId: string) =>
           Number(edgeId.split('-').at(0));
         let activeMstIndex: number | undefined = undefined;
@@ -30,6 +39,7 @@
           parallelEdgeSpacing: 0,
           phantomOnly: true,
           labelled: (edge) => {
+            if (msts.value.length < 2) return true;
             const mstIndex = mstIndexFromId(edge.id);
             return mstIndex === activeMstIndex;
           },
@@ -90,9 +100,8 @@
         };
 
         const addPhantomEdges = () => {
-          const { msts } = graph.minimumSpanningTrees.all.value;
-          for (let mstIndex = 0; mstIndex < msts.length; mstIndex++) {
-            for (const edge of msts[mstIndex]) {
+          for (let mstIndex = 0; mstIndex < msts.value.length; mstIndex++) {
+            for (const edge of msts.value[mstIndex]) {
               graph.phantom.addEdge({
                 id: mstEdgeId(mstIndex),
                 source: edge.source,
@@ -103,8 +112,12 @@
           }
         };
         const allMstsChip: LensChipDefinition = {
-          title: 'All MSTs',
-          tooltipLabel: 'View all minimum spanning trees',
+          title: () => {
+            return `Unique MSTs: ${msts.value.length}`;
+          },
+          tooltipLabel: () => {
+            return `This graph has ${msts.value.length} unique minimum spanning tree${msts.value.length === 1 ? '' : 's'}.`;
+          },
           lens: {
             id: 'all-msts',
             activate: () => {
@@ -132,7 +145,29 @@
           },
         };
 
-        return [allMstsChip];
+        const costChip: LensChipDefinition = {
+          title: () => `Total Cost: ${totalMstCost.value.toFraction()}`,
+          tooltipLabel:
+            'The total cost if you sum up all the edges making up the minimum spanning tree.',
+          lens: {
+            id: 'total-mst-cost',
+            activate: () => {},
+            deactivate: () => {},
+          },
+        };
+
+        const connectedChip: LensChipDefinition = {
+          title: () => `Is Connected: ${mstConnected.value ? 'Yes' : 'No'}`,
+          tooltipLabel:
+            'If the tree is connected it means that one contiguous path of edges can connect all nodes.',
+          lens: {
+            id: 'is-mst-connected',
+            activate: () => {},
+            deactivate: () => {},
+          },
+        };
+
+        return [allMstsChip, costChip, connectedChip];
       },
     },
   });

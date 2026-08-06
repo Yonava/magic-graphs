@@ -154,7 +154,8 @@ export const createEdgeRenderFunction: CreateEdgeRenderFunction = ({
 
     if (directed) {
       return shapes.arrow({
-        textOffsetFromCenter: sourceNodeGirth / 2,
+        textOffsetFromCenter:
+          sourceNodeGirth / 2 + WHITESPACE_BETWEEN_ARROW_TIP_AND_NODE_PX / 2,
         ...lineOptions,
       });
     }
