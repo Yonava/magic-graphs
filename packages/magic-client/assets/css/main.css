@@ -5,6 +5,12 @@
 @source '../../../magic-shared//src/**/*.{vue,ts}';
 @source '../../../canvas-surface//src/**/*.{vue,ts}';
 
+/* chrome turns horizontal overscroll into back/forward navigation, which yanks the user off the page mid drag */
+html,
+body {
+  overscroll-behavior: none;
+}
+
 /* our branded text color */
 @utility text-magic {
   @apply bg-linear-to-tr from-purple-500 to-orange-500 text-transparent bg-clip-text;
