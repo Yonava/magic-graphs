@@ -1,5 +1,5 @@
+import { Explainer, ExplainerHighlight } from '@magic/shared/explainer';
 import { Graph } from '@magic/shared/graph';
-import { Explainer, ExplainerHighlight } from '@magic/shared/simulation';
 
 import { formatDistance } from '../distance.ts';
 import { slotIds } from './effects.ts';

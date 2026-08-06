@@ -1,7 +1,7 @@
 import { nullThrows } from '@core/utils/assert';
 
-import { GNode, Graph } from '../../../graph/types.ts';
-import { useNodeStyles } from '../../../theme/node/index.ts';
+import { GNode, Graph } from '../graph/types.ts';
+import { useNodeStyles } from '../theme/node/index.ts';
 import { ExplainerSegment } from './explainerSegments.ts';
 import { ExplainerHighlight } from './types.ts';
 

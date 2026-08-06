@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { computed } from 'vue';
 
+  import ExplainerText from '../../explainer/ExplainerText.vue';
   import { useRunningSimulation } from '../useRunningSimulation.ts';
-  import ExplainerText from './ExplainerText.vue';
 
   const { explainer, violation } = useRunningSimulation();
 

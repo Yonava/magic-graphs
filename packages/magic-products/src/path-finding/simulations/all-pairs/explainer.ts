@@ -1,4 +1,4 @@
-import { Explainer, ExplainerHighlight } from '@magic/shared/simulation';
+import { Explainer, ExplainerHighlight } from '@magic/shared/explainer';
 
 import { formatDistance } from '../distance.ts';
 import { slotIds } from './effects.ts';

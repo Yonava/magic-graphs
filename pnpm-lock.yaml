@@ -393,9 +393,6 @@ importers:
       '@graph/core':
         specifier: workspace:*
         version: link:../graph-core
-      '@graph/create-graph':
-        specifier: workspace:*
-        version: link:../graph-create-graph
       '@graph/plugins':
         specifier: workspace:*
         version: link:../graph-plugins
@@ -405,9 +402,6 @@ importers:
       '@magic/shared':
         specifier: workspace:*
         version: link:../magic-shared
-      '@mdi/js':
-        specifier: ^7.4.47
-        version: 7.4.47
       fraction.js:
         specifier: ^5.3.4
         version: 5.3.4

@@ -1,4 +1,4 @@
-import { Explainer } from '@magic/shared/simulation';
+import { Explainer } from '@magic/shared/explainer';
 
 import { AVLFrame, BalanceMethod } from './frames.ts';
 

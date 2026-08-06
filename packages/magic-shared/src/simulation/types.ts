@@ -1,6 +1,6 @@
 import { ComputedRef } from 'vue';
 
-import { Explainer } from '../components/magic/explainer/types.ts';
+import { Explainer } from '../explainer/types.ts';
 import { Lens } from '../lens/types.ts';
 import { GuardCheck, Violation } from './guard/SimulationGuardBuilder.ts';
 
