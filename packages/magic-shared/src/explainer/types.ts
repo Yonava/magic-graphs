@@ -16,7 +16,7 @@ export type ExplainerHighlight = {
   deactivate?: GetterWithGraph;
   onMounted?: GetterWithGraph;
   onUnmounted?: GetterWithGraph;
-  tooltipLabel?: MaybeGetter<string, [MagicGraph]>;
+  tooltipLabel?: MaybeGetter<string | undefined, [MagicGraph]>;
   // TODO nest classes and styles under attrs field, and have attrs field spread onto button
   classes?: MaybeGetter<string, [MagicGraph]>;
   styles?: MaybeGetter<StyleValue, [MagicGraph]>;

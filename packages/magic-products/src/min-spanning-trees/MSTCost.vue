@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { nullThrows } from '@core/utils/assert';
-  import { fractionToDecimal } from '@core/utils/math';
+  import { fractionIsInteger, fractionToDecimal } from '@core/utils/math';
   import WellVue from '@magic/shared/Well';
   import { Explainer, ExplainerText } from '@magic/shared/explainer';
   import { useProvidedGraph } from '@magic/shared/product';
@@ -40,7 +40,10 @@
       content: `${stringOfPluses} = [${cost.value.toFraction()}]`,
       highlights: [
         {
-          tooltipLabel: () => fractionToDecimal(cost.value),
+          tooltipLabel: () =>
+            fractionIsInteger(cost.value)
+              ? undefined
+              : fractionToDecimal(cost.value),
           activate: () => themer.activate(),
           deactivate: () => themer.deactivate(),
         },

@@ -98,6 +98,19 @@ export const fractionToDecimal = (fraction: Fraction, fractionDigits = 3) => {
 };
 
 /**
+ * check if a fraction can be expressed as an integer
+ *
+ * @param fraction the fraction to check
+ * @returns true if the fraction has no fractional part
+ * @example fractionIsInteger(new Fraction(4, 2)) // true
+ * fractionIsInteger(new Fraction(1, 3)) // false
+ */
+export const fractionIsInteger = (fraction: Fraction) => {
+  // fraction.js keeps fractions reduced, so a denominator of 1 means integer
+  return fraction.d === 1n;
+};
+
+/**
  * get the average of an array of numbers
  *
  * @param arr the array of numbers to average

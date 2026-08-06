@@ -4,12 +4,12 @@ import { AggregatorTransformer } from '@graph/plugins/canvas/aggregator/types';
 import { GraphUnderCursor } from '@graph/plugins/canvas/types';
 import { createPhantomAwareEdgeRenderFunction } from '@graph/plugins/phantom/createPhantomAwareEdgeRenderFunction';
 import { CoreEdge } from '@graph/primitives/types';
-import { GEdge, Graph } from '@magic/shared/graph';
+import { Graph } from '@magic/shared/graph';
 import { LensChipDefinition } from '@magic/shared/ui/lens-chips/types';
 import tinycolor from 'tinycolor2';
 import { DeepReadonly } from 'ts-essentials';
 
-import { ComputedRef } from 'vue';
+import { ComputedRef, computed } from 'vue';
 
 const MST_COLORS = [
   colors.AMBER_500,
@@ -27,10 +27,9 @@ const MST_COLORS = [
   colors.TEAL_500,
 ];
 
-export const allMstsChip = (
-  graph: Graph,
-  msts: ComputedRef<GEdge[][]>,
-): LensChipDefinition => {
+export const allMstsChip = (graph: Graph): LensChipDefinition => {
+  const msts = computed(() => graph.minimumSpanningTrees.all.value.msts);
+
   const mstIndexFromId = (edgeId: string) => Number(edgeId.split('-').at(0));
   let activeMstIndex: number | undefined = undefined;
   const noGapRenderer = createPhantomAwareEdgeRenderFunction(graph, {

@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest';
 
 import {
   average,
+  fractionIsInteger,
   fractionToDecimal,
   gcd,
   getPrimeFactors,
@@ -60,6 +61,23 @@ describe('fractionToDecimal', () => {
 
   test('drops trailing zeros', () => {
     expect(fractionToDecimal(new Fraction(1, 2), 3)).toBe('0.5');
+  });
+});
+
+describe('fractionIsInteger', () => {
+  test('returns true for fractions that reduce to an integer', () => {
+    expect(fractionIsInteger(new Fraction(3))).toBe(true);
+    expect(fractionIsInteger(new Fraction(4, 2))).toBe(true);
+    expect(fractionIsInteger(new Fraction(-6, 3))).toBe(true);
+  });
+
+  test('returns false for fractions with a fractional part', () => {
+    expect(fractionIsInteger(new Fraction(5, 2))).toBe(false);
+    expect(fractionIsInteger(new Fraction(1, 3))).toBe(false);
+  });
+
+  test('edge case: 0', () => {
+    expect(fractionIsInteger(new Fraction(0))).toBe(true);
   });
 });
 

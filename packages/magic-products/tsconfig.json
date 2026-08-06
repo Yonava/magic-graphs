@@ -13,10 +13,5 @@
     { "path": "../graph-primitives" },
     { "path": "../graph-create-graph" }
   ],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.vue",
-    "../magic-shared/src/simulation/useCurrentFrame.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
 }
