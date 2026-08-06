@@ -4,14 +4,12 @@
 
   import { computed } from 'vue';
 
-  import Button from '../../components/button/Button.vue';
-  import Tooltip from '../../components/tooltip/Tooltip.vue';
-  import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
-  import { useThemeToClasses } from '../../useThemeToClasses.ts';
-  import { useRunningSimulation } from '../useRunningSimulation.ts';
+  import Button from '../components/button/Button.vue';
+  import Tooltip from '../components/tooltip/Tooltip.vue';
+  import { useProvidedGraph } from '../product/useProvidedGraph.ts';
+  import { useThemeToClasses } from '../useThemeToClasses.ts';
   import { explainerSegments } from './explainerSegments.ts';
-
-  const { explainer, violation } = useRunningSimulation();
+  import { Explainer } from './types.ts';
 
   const parentClasses = useThemeToClasses({
     dark: 'text-white',
@@ -20,16 +18,15 @@
 
   const graph = useProvidedGraph();
 
-  const segments = computed(() =>
-    explainerSegments(graph, violation.value?.explainer ?? explainer.value),
-  );
+  const props = defineProps<{
+    explainer?: Explainer;
+  }>();
+
+  const segments = computed(() => explainerSegments(graph, props.explainer));
 </script>
 
 <template>
-  <div
-    v-if="segments"
-    :class="cn(parentClasses, 'text-2xl font-bold text-center')"
-  >
+  <div :class="cn(parentClasses, 'text-2xl font-bold text-center')">
     <template
       v-for="segment in segments"
       :key="segment.id"

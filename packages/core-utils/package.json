@@ -16,6 +16,9 @@
     "build:types": "tsc -b .",
     "test": "vitest"
   },
+  "dependencies": {
+    "fraction.js": "^5.3.4"
+  },
   "devDependencies": {
     "vitest": "^3.2.4",
     "ts-essentials": "^10.2.0",

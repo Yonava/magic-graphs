@@ -1,9 +1,9 @@
 import { getValue } from '@core/utils/maybeGetter/index';
 import { describe, expect, test, vi } from 'vitest';
 
-import { Explainer, ExplainerHighlight } from '../types.ts';
+import { Explainer, ExplainerHighlight } from './types.ts';
 
-vi.mock('../../theme/node/index.ts', () => ({
+vi.mock('../theme/node/index.ts', () => ({
   useNodeStyles: () => ({
     styles: { value: { border: { color: undefined } } },
     dispose: vi.fn(),

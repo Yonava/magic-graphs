@@ -5,7 +5,7 @@ import {
   distances,
   graphArbitrary,
   reachableNodes,
-} from '../graphGenerator.ts';
+} from '../testing/graphGenerator.ts';
 import { breadthFirstSearch } from './index.ts';
 
 describe(breadthFirstSearch, () => {

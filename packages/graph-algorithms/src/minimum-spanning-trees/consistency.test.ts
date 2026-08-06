@@ -1,12 +1,12 @@
 import fc from 'fast-check';
 import { expect, it } from 'vitest';
 
+import { kruskals } from './kruskals/index.ts';
+import { prims } from './prims/index.ts';
 import {
   disconnectedGraphArbitrary,
   graphArbitrary,
-} from './graphGenerator.ts';
-import { kruskals } from './kruskals/index.ts';
-import { prims } from './prims/index.ts';
+} from './testing/graphGenerator.ts';
 
 it('kruskals and prims agree on total weight and connectivity', () => {
   fc.assert(

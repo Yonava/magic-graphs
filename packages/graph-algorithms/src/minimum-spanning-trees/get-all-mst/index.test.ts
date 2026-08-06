@@ -2,8 +2,8 @@ import fc from 'fast-check';
 import Fraction from 'fraction.js';
 import { describe, expect, it } from 'vitest';
 
-import { graphArbitrary } from '../graphGenerator.ts';
 import { kruskals } from '../kruskals/index.ts';
+import { graphArbitrary } from '../testing/graphGenerator.ts';
 import type { Edge, Node } from '../types.ts';
 import { getAllMsts } from './index.ts';
 
@@ -11,7 +11,7 @@ const normalize = (mst: Edge[]) => mst.map((e) => e.id).sort();
 
 const normalizeAll = (msts: Edge[][]) => msts.map(normalize).sort();
 
-describe('getAllMsts', () => {
+describe(getAllMsts, () => {
   it('returns every MST of a triangle with equal weights', () => {
     const nodes: Node[] = [{ id: 'A' }, { id: 'B' }, { id: 'C' }];
 
@@ -153,7 +153,7 @@ describe('getAllMsts', () => {
     expect(normalize(result.msts[0])).toEqual(['AB']);
   });
   it('takes the Cartesian product of independent equal-weight choice points', () => {
-    /* 
+    /*
       A
      / \
     B---C---D

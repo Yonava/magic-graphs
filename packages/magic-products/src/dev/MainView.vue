@@ -32,10 +32,12 @@
             lens: {
               activate: () => {
                 flag = true;
+                graph.anchors.lifecycle.disable();
                 graph.setRenderFunction('edge', noGapRenderer);
               },
               deactivate: () => {
                 flag = false;
+                graph.anchors.lifecycle.enable();
                 graph.setRenderFunction('edge', defaultRenderer);
               },
               id: 'no-gap',

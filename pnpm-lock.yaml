@@ -128,6 +128,10 @@ importers:
         version: 10.2.1(typescript@6.0.3)
 
   packages/core-utils:
+    dependencies:
+      fraction.js:
+        specifier: ^5.3.4
+        version: 5.3.4
     devDependencies:
       ts-essentials:
         specifier: ^10.2.0
@@ -141,6 +145,9 @@ importers:
 
   packages/graph-algorithms:
     dependencies:
+      '@core/utils':
+        specifier: workspace:*
+        version: link:../core-utils
       fraction.js:
         specifier: ^5.3.4
         version: 5.3.4
@@ -240,6 +247,9 @@ importers:
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils
+      '@graph/algorithms':
+        specifier: workspace:*
+        version: link:../graph-algorithms
       '@graph/computed-tokens':
         specifier: workspace:*
         version: link:../graph-computed-tokens
@@ -387,9 +397,6 @@ importers:
       '@graph/core':
         specifier: workspace:*
         version: link:../graph-core
-      '@graph/create-graph':
-        specifier: workspace:*
-        version: link:../graph-create-graph
       '@graph/plugins':
         specifier: workspace:*
         version: link:../graph-plugins
@@ -399,9 +406,6 @@ importers:
       '@magic/shared':
         specifier: workspace:*
         version: link:../magic-shared
-      '@mdi/js':
-        specifier: ^7.4.47
-        version: 7.4.47
       fraction.js:
         specifier: ^5.3.4
         version: 5.3.4

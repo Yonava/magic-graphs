@@ -124,8 +124,24 @@ export const phantom: PhantomPlugin = ({
     removeElements({ nodeIds: [], edgeIds: [edgeId] });
   };
 
+  const removeAllNodes = () =>
+    removeElements({ nodeIds: nodes.map((node) => node.id), edgeIds: [] });
+
+  const removeAllEdges = () =>
+    removeElements({ nodeIds: [], edgeIds: edges.map((edge) => edge.id) });
+
+  const removeAllElements = () =>
+    removeElements({
+      nodeIds: nodes.map((node) => node.id),
+      edgeIds: edges.map((edge) => edge.id),
+    });
+
+  const isNode = (id: string) => nodes.some((node) => node.id === id);
+
+  const isEdge = (id: string) => edges.some((edge) => edge.id === id);
+
   const canResolveNode = (nodeId: CoreNode['id']) =>
-    controls.isNode(nodeId) || nodes.some((node) => node.id === nodeId);
+    controls.isNode(nodeId) || isNode(nodeId);
 
   // a phantom edge may point at a real node, so a removed node leaves it dangling and
   // getNodePosition throws on the next frame, taking the whole render pass with it.
@@ -148,8 +164,13 @@ export const phantom: PhantomPlugin = ({
       removeNode,
       removeEdge,
       removeElements,
+      removeAllNodes,
+      removeAllEdges,
+      removeAllElements,
       nodes: () => nodes,
       edges: () => edges,
+      isNode,
+      isEdge,
       getNodePosition,
     },
   };

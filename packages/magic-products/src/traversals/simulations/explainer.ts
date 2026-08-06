@@ -1,5 +1,5 @@
+import { Explainer, ExplainerHighlight } from '@magic/shared/explainer';
 import { Graph } from '@magic/shared/graph';
-import { Explainer, ExplainerHighlight } from '@magic/shared/simulation';
 
 import { TraversalFrame } from './frame.ts';
 import { slotIds } from './shared.ts';

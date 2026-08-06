@@ -29,13 +29,22 @@ export const productList = {
       dark: '/products/thumbnails/dijkstras.png',
     },
   },
+  'min-spanning-trees': {
+    name: 'Magic Minimum Spanning Trees',
+    description: 'Learn about how MST algorithms like Kruskals work!',
+    slug: 'mst',
+    thumbnail: {
+      light: '/products/thumbnails/mst.png',
+      dark: '/products/thumbnails/mst.png',
+    },
+  },
   dev: {
     name: 'Dev Playground',
     description: 'Dev test zone',
     slug: 'dev',
     thumbnail: {
-      light: '/products/thumbnails/dijkstras.png',
-      dark: '/products/thumbnails/dijkstras.png',
+      light: '/products/thumbnails/graph-sandbox.png',
+      dark: '/products/thumbnails/graph-sandbox.png',
     },
   },
 } as const satisfies Record<string, MagicProductNavigation>;

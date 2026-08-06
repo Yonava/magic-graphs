@@ -69,10 +69,7 @@ export const interactive =
         );
 
         const newWeight = optionsWithDefaults.parseEdgeWeight(textAreaContent);
-        if (
-          newWeight === undefined ||
-          edge.weight.valueOf() === newWeight.valueOf()
-        ) {
+        if (newWeight === undefined || edge.weight.equals(newWeight)) {
           return;
         }
 
@@ -127,16 +124,12 @@ export const interactive =
       const canCreateEdge = doesEdgeConformToRules(sourceNode, targetNode);
       if (!canCreateEdge) return;
 
-      const numberWeight = getValue(
-        optionsWithDefaults.newEdgeWeight,
-      ).valueOf();
-
       // finalActions, not actions: this fires later, on anchor drop, so it
       // needs the fully-composed action, not the fold-time snapshot
       const edge = finalActions.addEdge({
         source: sourceNode.id,
         target: targetNode.id,
-        weight: new Fraction(numberWeight),
+        weight: new Fraction(getValue(optionsWithDefaults.newEdgeWeight)),
       });
       controls.focus?.set([edge.id]);
       captureHistorySnapshot();

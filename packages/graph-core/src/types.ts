@@ -1,6 +1,5 @@
 import { TransitControls } from '@graph/primitives/transit/types';
 import { CoreEdge, CoreNode } from '@graph/primitives/types';
-import Fraction from 'fraction.js';
 
 import { CoreGraphHelpers } from './helpers/types.ts';
 import { CoreOptions } from './options.ts';

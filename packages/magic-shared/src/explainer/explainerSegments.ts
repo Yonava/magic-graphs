@@ -1,11 +1,10 @@
 import { nullThrows } from '@core/utils/assert';
 import { MaybeGetter, getValue } from '@core/utils/maybeGetter/index';
 
-import { Graph } from '../../graph/types.ts';
-import { MagicGraph } from '../../product/useGraphProduct.ts';
-import { Explainer, ExplainerHighlight } from '../types.ts';
+import { MagicGraph } from '../product/useGraphProduct.ts';
 import { parseTextSegments } from './parseTextSegments.ts';
-import { useNodeRefExplainerSegment } from './useNodeIdPart.ts';
+import { Explainer, ExplainerHighlight } from './types.ts';
+import { useGraphElementRefExplainerSegment } from './useGraphElementIdPart.ts';
 
 export type ExplainerSegment = {
   id: string;
@@ -38,7 +37,7 @@ export const explainerSegments = (
       continue;
     }
     if (bracketType === 'curly') {
-      explainerSegments.push(useNodeRefExplainerSegment(graph, text));
+      explainerSegments.push(useGraphElementRefExplainerSegment(graph, text));
       continue;
     }
     const highlight = nullThrows(

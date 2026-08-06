@@ -20,6 +20,7 @@
     "@graph/core": "workspace:*",
     "@graph/plugins-shared": "workspace:*",
     "@graph/primitives": "workspace:*",
+    "@graph/algorithms": "workspace:*",
     "@canvas/primitives": "workspace:*",
     "@graph/render-functions": "workspace:*",
     "@core/themes": "workspace:*",

@@ -1,7 +1,10 @@
+import Fraction from 'fraction.js';
 import { describe, expect, test } from 'vitest';
 
 import {
   average,
+  fractionIsInteger,
+  fractionToDecimal,
   gcd,
   getPrimeFactors,
   lowestPrimeFactor,
@@ -42,6 +45,39 @@ describe('gcd', () => {
   test('returns the greatest common divisor of two numbers', () => {
     expect(gcd(12, 15)).toBe(3);
     expect(gcd(12, 18)).toBe(6);
+  });
+});
+
+describe('fractionToDecimal', () => {
+  test('leaves exact fractions untouched', () => {
+    expect(fractionToDecimal(new Fraction(3))).toBe('3');
+    expect(fractionToDecimal(new Fraction(5, 2))).toBe('2.5');
+  });
+
+  test('tilde prefixes fractions that lost precision', () => {
+    expect(fractionToDecimal(new Fraction(1, 3))).toBe('~0.333');
+    expect(fractionToDecimal(new Fraction(1, 3), 1)).toBe('~0.3');
+  });
+
+  test('drops trailing zeros', () => {
+    expect(fractionToDecimal(new Fraction(1, 2), 3)).toBe('0.5');
+  });
+});
+
+describe('fractionIsInteger', () => {
+  test('returns true for fractions that reduce to an integer', () => {
+    expect(fractionIsInteger(new Fraction(3))).toBe(true);
+    expect(fractionIsInteger(new Fraction(4, 2))).toBe(true);
+    expect(fractionIsInteger(new Fraction(-6, 3))).toBe(true);
+  });
+
+  test('returns false for fractions with a fractional part', () => {
+    expect(fractionIsInteger(new Fraction(5, 2))).toBe(false);
+    expect(fractionIsInteger(new Fraction(1, 3))).toBe(false);
+  });
+
+  test('edge case: 0', () => {
+    expect(fractionIsInteger(new Fraction(0))).toBe(true);
   });
 });
 

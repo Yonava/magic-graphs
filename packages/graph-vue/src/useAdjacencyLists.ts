@@ -1,6 +1,6 @@
 import { AdjacencyListsControls } from '@graph/plugins/adjacency-lists/types';
 
-import { useSignals } from './useSignal.ts';
+import { useSignals } from './utils/useSignal.ts';
 
 export const useAdjacencyLists = (adjacencyLists: AdjacencyListsControls) =>
   useSignals({

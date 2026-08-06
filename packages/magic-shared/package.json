@@ -68,6 +68,10 @@
       "types": "./dist/types/component-slot/index.d.ts",
       "default": "./src/component-slot/index.ts"
     },
+    "./explainer": {
+      "types": "./dist/types/explainer/index.d.ts",
+      "default": "./src/explainer/index.ts"
+    },
     "./graph": {
       "types": "./dist/types/graph/index.d.ts",
       "default": "./src/graph/index.ts"

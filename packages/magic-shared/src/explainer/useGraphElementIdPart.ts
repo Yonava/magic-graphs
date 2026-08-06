@@ -1,0 +1,70 @@
+import { Graph } from '../graph/types.ts';
+import { useEdgeStyles, useNodeStyles } from '../theme/index.ts';
+import { ExplainerSegment } from './explainerSegments.ts';
+import { ExplainerHighlight } from './types.ts';
+
+const useGraphElementExplainerHighlight = (
+  graph: Graph,
+  id: string,
+): ExplainerHighlight => {
+  // proxy default color to focus color
+  const themer = graph.theme.createThemer({
+    canvas: {
+      'node.default.border.color': (node) =>
+        node.id === id
+          ? graph.focus.theme._resolveToken('node.focus.border.color', { id })
+          : undefined,
+      'edge.default.color': (edge) =>
+        edge.id === id
+          ? graph.focus.theme._resolveToken('edge.focus.color', edge)
+          : undefined,
+    },
+  });
+  const node = useNodeStyles(graph, id);
+  const edge = useEdgeStyles(graph, id);
+  return {
+    onUnmounted: () => {
+      node.dispose();
+      edge.dispose();
+    },
+    activate: themer.activate,
+    deactivate: themer.deactivate,
+    classes: 'text-white',
+    styles: () => {
+      return {
+        backgroundColor: graph.isEdge(id)
+          ? edge.styles.value.color
+          : node.styles.value.border.color,
+      };
+    },
+  };
+};
+
+export const useGraphElementRefExplainerSegment = (
+  graph: Graph,
+  id: string,
+): ExplainerSegment => {
+  const inGraph = graph.isNode(id) || graph.isEdge(id);
+
+  if (!inGraph) {
+    return {
+      id: crypto.randomUUID(),
+      text: '?',
+      highlight: {
+        tooltipLabel: `Graph Element With ID ${id} Not In Graph`,
+        classes: 'bg-red-500 hover:bg-red-700 text-white',
+      },
+    };
+  }
+
+  return {
+    id: crypto.randomUUID(),
+    text: () => {
+      if (graph.isNode(id)) {
+        return graph.theme.tokenResolver('node.text.content', { id });
+      }
+      return graph.theme.tokenResolver('edge.text.content', graph.getEdge(id));
+    },
+    highlight: useGraphElementExplainerHighlight(graph, id),
+  };
+};

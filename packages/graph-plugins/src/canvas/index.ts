@@ -1,7 +1,9 @@
 import { createAnimatedShapes } from '@canvas/primitives/animation/index';
 import { cross } from '@canvas/primitives/shapes/cross/index';
+import { getCoordinates } from '@canvas/surface/coordinates/index';
 import { CanvasProps } from '@canvas/surface/types';
 import { createThemeController } from '@core/themes/index';
+import { getCtx } from '@core/utils/ctx/index';
 import { KeyboardEventEntries, MouseEventEntries } from '@core/utils/types';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { CoreEdge } from '@graph/primitives/types';
@@ -105,10 +107,24 @@ export const canvas =
       CANVAS_PLUGIN_ID,
     );
 
-    const graphMouseEvent = (event: MouseEvent): CanvasGraphMouseEvent => ({
-      ...graphUnderCursor,
-      event,
-    });
+    /*
+      graphUnderCursor is captured on mousemove and refreshed once a frame, so a
+      press can carry a point the cursor has already left: right after a camera
+      move the cursor never moved through, or before the next draw lands. the
+      native event knows where it happened, so the hit test is redone against it
+    */
+    const graphMouseEvent = (event: MouseEvent): CanvasGraphMouseEvent => {
+      const { x, y } = getCoordinates(event, getCtx(magicCanvas.canvas));
+      const coords = { x, y };
+      const elements = aggregator.getCanvasElementsAtCoordinate(coords);
+
+      return {
+        coords,
+        elements,
+        topElement: elements.at(-1),
+        event,
+      };
+    };
 
     const mouseEvents = emitMouseEvents(graphMouseEvent, canvasEvents.emit);
 
