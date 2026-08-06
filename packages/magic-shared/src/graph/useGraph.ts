@@ -110,5 +110,6 @@ export const useGraph = (options: UseGraphOptions = {}) => {
       ...vueActivePreset,
     },
     events: vueEvents,
+    rawEvents: graph.events,
   };
 };
