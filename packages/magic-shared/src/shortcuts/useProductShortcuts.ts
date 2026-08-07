@@ -33,6 +33,11 @@ export const useProductShortcuts = (graph: MagicGraph) => {
       key: 'f',
       callback: fullscreen.toggle,
     },
+    {
+      id: 'product/toggle-component-slot-ui',
+      key: 'meta+.',
+      callback: graph.magic.componentSlots.visibility.toggle,
+    },
   ];
 
   for (const shortcut of shortcuts) {
