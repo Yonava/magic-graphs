@@ -14,7 +14,7 @@
   const graph = useProvidedGraph();
 
   const displayedProducts = products.filter(
-    ({ navigation }) => !navigation.hidden,
+    ({ navigation }) => navigation.card,
   );
 
   const activeProduct = nullThrows(
@@ -38,11 +38,14 @@
           v-for="product in displayedProducts"
           :key="product.id"
         >
-          <DropdownItem @click="navigateToProduct(product)">
+          <DropdownItem
+            v-if="product.navigation.card"
+            @click="navigateToProduct(product)"
+          >
             <Button
               class="rounded-lg p-2 bg-transparent hover:bg-transparent active:bg-transparent"
             >
-              <ProductCard :product="product" />
+              <ProductCard :card="product.navigation.card" />
             </Button>
           </DropdownItem>
         </template>

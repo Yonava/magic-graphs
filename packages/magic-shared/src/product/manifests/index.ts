@@ -1,10 +1,5 @@
 import { MagicProductManifest } from './types.ts';
 
-/**
- * every product experience, in the order the navigation menu lists them. products
- * declare themselves here rather than beside their view so that navigation can
- * stay below them in the dependency graph
- */
 export const manifests = {
   'avl-trees': {
     id: 'avl-trees',
@@ -87,16 +82,7 @@ export const manifests = {
     id: 'dev',
     name: 'Dev Playground',
     navigation: {
-      hidden: true,
       slug: 'dev',
-      card: {
-        name: 'Dev Playground',
-        description: 'Dev test zone',
-        thumbnail: {
-          light: '/products/thumbnails/graph-sandbox.png',
-          dark: '/products/thumbnails/graph-sandbox.png',
-        },
-      },
     },
     meta: {
       title: 'Path Finding',
@@ -107,16 +93,7 @@ export const manifests = {
     id: 'welcome',
     name: 'Go To Experiences',
     navigation: {
-      hidden: true,
       slug: 'welcome',
-      card: {
-        name: 'Go To Experiences',
-        description: 'Landing page for Magic Graphs',
-        thumbnail: {
-          light: '/products/thumbnails/graph-sandbox.png',
-          dark: '/products/thumbnails/graph-sandbox.png',
-        },
-      },
     },
     meta: {
       title: 'Magic Graphs',
@@ -126,7 +103,6 @@ export const manifests = {
   },
 } as const satisfies Record<string, MagicProductManifest>;
 
-/** the id of any product experience, narrowed to those that actually exist */
 export type ProductId = keyof typeof manifests;
 
 /** the same manifests as a list, for rendering every product in order */

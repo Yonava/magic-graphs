@@ -5,18 +5,16 @@
 
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
-  import { MagicProductManifest } from '../../product/manifests/types.ts';
+  import { MagicProductCard } from '../../product/manifests/types.ts';
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
 
-  const props = defineProps<{ product: MagicProductManifest }>();
-
-  const card = computed(() => props.product.navigation.card);
+  const props = defineProps<{ card: MagicProductCard }>();
 
   const graph = useProvidedGraph();
 
   const thumbnail = computed(
-    () => card.value.thumbnail[graph.theme.activePresetName.value],
+    () => props.card.thumbnail[graph.theme.activePresetName.value],
   );
 
   const descriptionClasses = useThemeToClasses({

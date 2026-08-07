@@ -19,7 +19,10 @@
     class="w-124 p-3 select-none"
   >
     <HStack class="gap-4">
-      <ProductCard :product="activeProduct" />
+      <ProductCard
+        v-if="activeProduct.navigation.card"
+        :card="activeProduct.navigation.card"
+      />
       <Button
         @click="navigateToProduct(activeProduct)"
         class="gap-2 px-5"
