@@ -5,7 +5,7 @@
 
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
-  import { MagicProductManifest } from '../../product/manifest.ts';
+  import { MagicProductManifest } from '../../product/manifests/types.ts';
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
 

@@ -6,7 +6,7 @@
   import DropdownItem from '../../components/dropdown/DropdownItem.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import { products } from '../../product/manifests.ts';
+  import { products } from '../../product/manifests/index.ts';
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import ProductCard from '../product-card/ProductCard.vue';
   import { navigateToProduct } from './navigateToProduct.ts';

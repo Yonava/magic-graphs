@@ -16,7 +16,7 @@ import {
 } from '../ui/appearance/useProductAppearance.ts';
 import { loadGraphFromLinkPayload } from '../ui/link-sharing/linkPayload.ts';
 import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
-import { MagicProductManifest } from './manifest.ts';
+import { MagicProductManifest } from './manifests/types.ts';
 import { useLocalStorageGraphSync } from './useLocalStorageGraphSync.ts';
 import { provideGraph } from './useProvidedGraph.ts';
 
