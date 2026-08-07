@@ -1,11 +1,8 @@
 import fc from 'fast-check';
 import { describe, expect, test } from 'vitest';
 
-import {
-  distances,
-  graphArbitrary,
-  reachableNodes,
-} from '../graphGenerator.ts';
+import { graphArbitrary } from '../graphGenerator.ts';
+import { distances, reachableNodes } from '../helpers.ts';
 import { breadthFirstSearch } from './index.ts';
 
 describe(breadthFirstSearch, () => {
