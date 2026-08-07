@@ -11,11 +11,11 @@ export type WelcomeNode = {
 };
 
 /**
- * one row per node on the landing page, in the order the ring connects them and
- * animates them in. placed by hand rather than computed so any single node can be
- * moved or recolored without disturbing the others
+ * one row per node on the landing page, in the order they animate in. placed by
+ * hand rather than computed so any single node can be moved or recolored without
+ * disturbing the others
  */
-export const welcomeNodes: WelcomeNode[] = [
+export const welcomeNodes = [
   {
     productId: 'avl-trees',
     label: 'AVL',
@@ -40,6 +40,26 @@ export const welcomeNodes: WelcomeNode[] = [
     position: { x: 480, y: 320 },
     color: colors.CYAN_500,
   },
+  {
+    productId: 'markov-chains',
+    label: 'MKV',
+    position: { x: 1280, y: 420 },
+    color: colors.SKY_500,
+  },
+] as const satisfies WelcomeNode[];
+
+type Label = (typeof welcomeNodes)[number]['label'];
+
+/** [source, target] pairs, drawn once every node has animated in */
+export const edges: [Label, Label][] = [
+  ['AVL', 'MKV'],
+  ['MKV', 'AVL'],
+  ['AVL', 'MST'],
+  ['MKV', 'TRV'],
+  ['MST', 'PTH'],
+  ['PTH', 'TRV'],
+  ['TRV', 'PTH'],
+  ['TRV', 'AVL'],
 ];
 
 export const NODE_RADIUS = 45;
@@ -47,3 +67,10 @@ export const NODE_RADIUS = 45;
 export const nodeIdOf = (productId: ProductId) => `welcome/node/${productId}`;
 
 export const edgeIdOf = (index: number) => `welcome/edge/${index}`;
+
+const productIdByLabel = Object.fromEntries(
+  welcomeNodes.map(({ label, productId }) => [label, productId]),
+) as Record<Label, ProductId>;
+
+export const nodeIdOfLabel = (label: Label) =>
+  nodeIdOf(productIdByLabel[label]);
