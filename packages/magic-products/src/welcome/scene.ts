@@ -38,7 +38,6 @@ export const welcomeNodes: WelcomeNode[] = [
   },
 ];
 
-/** product nodes are larger than the ones a visitor makes, so they read as the invitation */
 export const PRODUCT_NODE_RADIUS = 45;
 
 export const nodeIdOf = (productId: ProductId) => `welcome/node/${productId}`;

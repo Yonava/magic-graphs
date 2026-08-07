@@ -59,8 +59,8 @@
       class="items-center gap-0.5 px-4"
     >
       <p class="text-xl font-bold">
-        {{ welcomeNodes.length }} experiences are sitting on this canvas.
-        Pick a colored node.
+        {{ welcomeNodes.length }} experiences are sitting on this canvas. Pick a
+        node.
       </p>
     </VStack>
   </Well>

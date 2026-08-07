@@ -31,30 +31,23 @@ const createWelcomeScene = (graph: MagicGraph) => {
     paintByNodeId.set(nodeIdOf(productId), color);
   }
 
-  const paint = ({ id }: CoreNode) => paintByNodeId.get(id);
+  const paint = ({ id }: CoreNode) =>
+    nullThrows(paintByNodeId.get(id), 'node is not a welcome node');
 
-  const litPaint = (node: CoreNode) => {
-    const color = paint(node);
-    if (!color) return;
-    return tinycolor(color).lighten(8).toHexString();
-  };
-
-  // a visitor's own nodes keep the preset size, which is what makes the product
-  // nodes read as the ones worth pointing at
-  const size = ({ id }: CoreNode) =>
-    paintByNodeId.has(id) ? PRODUCT_NODE_RADIUS : undefined;
+  const litPaint = (node: CoreNode) =>
+    tinycolor(paint(node)).lighten(8).toHexString();
 
   graph.theme
     .createThemer({
       canvas: {
         'node.default.color': paint,
-        'node.default.size': size,
+        'node.default.size': PRODUCT_NODE_RADIUS,
         'node.hover.color': litPaint,
-        'node.hover.size': size,
+        'node.hover.size': PRODUCT_NODE_RADIUS,
       },
       focus: {
         'node.focus.color': litPaint,
-        'node.focus.size': size,
+        'node.focus.size': PRODUCT_NODE_RADIUS,
       },
     })
     .activate();
