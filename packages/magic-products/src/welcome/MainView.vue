@@ -1,16 +1,12 @@
 <script setup lang="ts">
-  import {
-    GraphProduct,
-    manifests,
-    useGraphProduct,
-  } from '@magic/shared/product';
+  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import ActionBar from './ActionBar.vue';
   import WelcomeBanner from './WelcomeBanner.vue';
   import { provideWelcomeScene } from './useWelcomeScene.ts';
 
   const graph = useGraphProduct({
-    manifest: manifests['welcome'],
+    productId: 'welcome',
     localStorage: false,
     core: {
       weighted: false,

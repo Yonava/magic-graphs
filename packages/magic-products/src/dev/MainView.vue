@@ -1,18 +1,14 @@
 <script setup lang="ts">
   import { AggregatorTransformer } from '@graph/plugins/canvas/aggregator/types';
   import { createPhantomAwareEdgeRenderFunction } from '@graph/plugins/phantom/createPhantomAwareEdgeRenderFunction';
-  import {
-    GraphProduct,
-    manifests,
-    useGraphProduct,
-  } from '@magic/shared/product';
+  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import { onMounted } from 'vue';
 
   import ActionBar from './ActionBar.vue';
 
   const graph = useGraphProduct({
-    manifest: manifests['dev'],
+    productId: 'dev',
     core: {
       directed: true,
     },

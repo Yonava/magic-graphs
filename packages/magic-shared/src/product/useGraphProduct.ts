@@ -16,12 +16,13 @@ import {
 } from '../ui/appearance/useProductAppearance.ts';
 import { loadGraphFromLinkPayload } from '../ui/link-sharing/linkPayload.ts';
 import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
+import { ProductId, manifests } from './index.ts';
 import { MagicProductManifest } from './manifests/types.ts';
 import { useLocalStorageGraphSync } from './useLocalStorageGraphSync.ts';
 import { provideGraph } from './useProvidedGraph.ts';
 
 type GraphProductOptions = UseGraphOptions & {
-  manifest: MagicProductManifest;
+  productId: ProductId;
   localStorage?: boolean;
   ui?: UIOptions;
 };
@@ -52,7 +53,7 @@ export const useGraphProduct = (options: GraphProductOptions) => {
   const magicGraph: MagicGraph = {
     ...graph,
     magic: {
-      manifest: options.manifest,
+      manifest: manifests[options.productId],
       lens,
       componentSlots,
       simulation,

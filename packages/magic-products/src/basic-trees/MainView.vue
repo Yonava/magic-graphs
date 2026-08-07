@@ -1,14 +1,10 @@
 <script setup lang="ts">
-  import {
-    GraphProduct,
-    manifests,
-    useGraphProduct,
-  } from '@magic/shared/product';
+  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import FocusedNodeMenu from './FocusedNodeMenu.vue';
 
   const graph = useGraphProduct({
-    manifest: manifests['avl-trees'],
+    productId: 'avl-trees',
     localStorage: false,
     core: {
       weighted: false,
