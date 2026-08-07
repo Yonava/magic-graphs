@@ -23,14 +23,6 @@
     component: ActionBar,
     position: 'bottom-middle',
   });
-
-  graph.theme
-    .createThemer({
-      canvas: {
-        'node.hover.color': 'blue',
-      },
-    })
-    .activate();
 </script>
 
 <template>

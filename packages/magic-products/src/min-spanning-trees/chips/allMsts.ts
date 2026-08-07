@@ -9,7 +9,7 @@ import { LensChipDefinition } from '@magic/shared/ui/lens-chips/types';
 import tinycolor from 'tinycolor2';
 import { DeepReadonly } from 'ts-essentials';
 
-import { ComputedRef, computed } from 'vue';
+import { computed } from 'vue';
 
 const MST_COLORS = [
   colors.AMBER_500,
@@ -32,6 +32,7 @@ export const allMstsChip = (graph: Graph): LensChipDefinition => {
 
   const mstIndexFromId = (edgeId: string) => Number(edgeId.split('-').at(0));
   let activeMstIndex: number | undefined = undefined;
+
   const noGapRenderer = createPhantomAwareEdgeRenderFunction(graph, {
     parallelEdgeSpacing: 0,
     phantomOnly: true,
@@ -41,8 +42,11 @@ export const allMstsChip = (graph: Graph): LensChipDefinition => {
       return mstIndex === activeMstIndex;
     },
   });
+
   const defaultRenderer = createPhantomAwareEdgeRenderFunction(graph);
+
   let removeEdges = false;
+
   const removeNonPhantomEdges: AggregatorTransformer = (agg) => {
     if (!removeEdges) return agg;
     return agg.filter((el) => !graph.isEdge(el.id));
