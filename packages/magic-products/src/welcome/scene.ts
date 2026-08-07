@@ -5,6 +5,8 @@ type ProductId = keyof typeof productList;
 
 export type WelcomeNode = {
   productId: ProductId;
+  /** short form of the product name, since a full one cannot fit inside a node */
+  label: string;
   /** canvas coordinates, placed by hand */
   position: { x: number; y: number };
   color: Color;
@@ -18,21 +20,25 @@ export type WelcomeNode = {
 export const welcomeNodes: WelcomeNode[] = [
   {
     productId: 'avl-trees',
+    label: 'AVL',
     position: { x: 960, y: 320 },
     color: colors.PURPLE_500,
   },
   {
     productId: 'traversals',
+    label: 'TRV',
     position: { x: 960, y: 580 },
     color: colors.PINK_500,
   },
   {
     productId: 'path-finding',
+    label: 'PTH',
     position: { x: 480, y: 580 },
     color: colors.ORANGE_500,
   },
   {
     productId: 'min-spanning-trees',
+    label: 'MST',
     position: { x: 480, y: 320 },
     color: colors.CYAN_500,
   },

@@ -81,11 +81,11 @@ const createWelcomeScene = (graph: MagicGraph) => {
     timeouts.push(setTimeout(task, delayMs));
   };
 
-  const addProductNode = ({ productId, position }: WelcomeNode) =>
+  const addProductNode = ({ productId, label, position }: WelcomeNode) =>
     graph.animation.capture(() =>
       graph.actions.addNode({
         id: nodeIdOf(productId),
-        label: productOf(productId).shortName,
+        label,
         position,
       }),
     );

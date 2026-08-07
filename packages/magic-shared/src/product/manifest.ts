@@ -6,16 +6,17 @@ export type Thumbnail = Record<ThemePreset, string>;
 
 export type MagicProductNavigation = {
   name: string;
-  /** a 2-4 character code for tight spaces, like the face of a graph node */
-  shortName: string;
-  description: string;
-  thumbnail: Thumbnail;
   slug: string;
   /**
    * hide this from navigation view?
    * @default false
    */
   hidden?: boolean;
+  card: {
+    name: string;
+    description: string;
+    thumbnail: Thumbnail;
+  };
 };
 
 type MagicProductMeta = {

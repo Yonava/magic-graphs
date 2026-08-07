@@ -1,30 +1,17 @@
 <script setup lang="ts">
-  import { cn } from '@core/components/cn';
   import { nullThrows } from '@core/utils/assert';
 
   import Button from '../../components/button/Button.vue';
   import Dropdown from '../../components/dropdown/Dropdown.vue';
   import DropdownItem from '../../components/dropdown/DropdownItem.vue';
-  import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import { Thumbnail } from '../../product/manifest.ts';
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
-  import { useThemeToClasses } from '../../useThemeToClasses.ts';
+  import ProductCard from '../product-card/ProductCard.vue';
   import { navigateToProduct } from './navigateToProduct.ts';
   import { products } from './productList.ts';
 
   const graph = useProvidedGraph();
-
-  const imageUriFromThumbnail = (thumbnail: Thumbnail) => {
-    const presetName = graph.theme.activePresetName.value;
-    return thumbnail[presetName];
-  };
-
-  const descriptionClasses = useThemeToClasses({
-    dark: 'text-gray-300',
-    light: 'text-gray-800',
-  });
 
   const displayedProducts = products.filter(({ hidden }) => !hidden);
 
@@ -50,25 +37,10 @@
           :key="product.id"
         >
           <DropdownItem @click="navigateToProduct(product)">
-            <!-- the dropdown item owns the highlight, so the button stays transparent in every state -->
             <Button
-              class="rounded-lg p-2 w-84 bg-transparent hover:bg-transparent active:bg-transparent"
+              class="rounded-lg p-2 bg-transparent hover:bg-transparent active:bg-transparent"
             >
-              <HStack class="gap-4 items-start">
-                <img
-                  :src="imageUriFromThumbnail(product.thumbnail)"
-                  :alt="product.name"
-                  class="w-20 h-20 object-cover rounded-md"
-                />
-                <VStack class="text-left gap-1">
-                  <h1 class="font-bold text-lg">
-                    {{ product.name }}
-                  </h1>
-                  <p :class="cn('text-sm font-light', descriptionClasses)">
-                    {{ product.description }}
-                  </p>
-                </VStack>
-              </HStack>
+              <ProductCard :product="product" />
             </Button>
           </DropdownItem>
         </template>
