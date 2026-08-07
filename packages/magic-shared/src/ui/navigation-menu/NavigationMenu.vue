@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { cn } from '@core/components/cn';
   import { nullThrows } from '@core/utils/assert';
-  import { navigateTo } from 'nuxt/app';
 
   import Button from '../../components/button/Button.vue';
   import Dropdown from '../../components/dropdown/Dropdown.vue';
@@ -12,6 +11,7 @@
   import { Thumbnail } from '../../product/manifest.ts';
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
+  import { navigateToProduct } from './navigateToProduct.ts';
   import { products } from './productList.ts';
 
   const graph = useProvidedGraph();
@@ -49,7 +49,7 @@
           v-for="product in displayedProducts"
           :key="product.id"
         >
-          <DropdownItem @click="navigateTo(`/${product.slug}`)">
+          <DropdownItem @click="navigateToProduct(product)">
             <!-- the dropdown item owns the highlight, so the button stays transparent in every state -->
             <Button
               class="rounded-lg p-2 w-84 bg-transparent hover:bg-transparent active:bg-transparent"

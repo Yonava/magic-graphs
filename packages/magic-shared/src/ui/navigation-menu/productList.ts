@@ -3,6 +3,7 @@ import { MagicProductNavigation } from '../../product/manifest.ts';
 export const productList = {
   'avl-trees': {
     name: 'Magic AVL Trees',
+    shortName: 'AVL',
     description: 'Learn about how an AVL tree works!',
     slug: 'trees',
     thumbnail: {
@@ -12,7 +13,8 @@ export const productList = {
   },
   traversals: {
     name: 'Magic Traversals',
-    description: 'Learn about how an traversals like BFS and DFS works!',
+    shortName: 'TRV',
+    description: 'Learn about how traversals like BFS and DFS work!',
     slug: 'traversals',
     thumbnail: {
       light: '/products/sim-thumbnails/bfs.png',
@@ -21,8 +23,8 @@ export const productList = {
   },
   'path-finding': {
     name: 'Magic Path Finding',
-    description:
-      'Learn about how an path finding algorithms like Dijkstras work!',
+    shortName: 'PTH',
+    description: 'Learn about how path finding algorithms like Dijkstras work!',
     slug: 'path',
     thumbnail: {
       light: '/products/thumbnails/dijkstras.png',
@@ -31,6 +33,7 @@ export const productList = {
   },
   'min-spanning-trees': {
     name: 'Magic Minimum Spanning Trees',
+    shortName: 'MST',
     description: 'Learn about how MST algorithms like Kruskals work!',
     slug: 'mst',
     thumbnail: {
@@ -41,6 +44,7 @@ export const productList = {
   dev: {
     hidden: true,
     name: 'Dev Playground',
+    shortName: 'DEV',
     description: 'Dev test zone',
     slug: 'dev',
     thumbnail: {
@@ -50,7 +54,8 @@ export const productList = {
   },
   welcome: {
     hidden: true,
-    name: 'Click Here For Experiences',
+    name: 'Go To Experiences',
+    shortName: 'HI',
     description: 'Landing page for Magic Graphs',
     slug: 'welcome',
     thumbnail: {
@@ -60,7 +65,9 @@ export const productList = {
   },
 } as const satisfies Record<string, MagicProductNavigation>;
 
-export const products = Object.entries(productList).map(
+export type MagicProduct = MagicProductNavigation & { id: string };
+
+export const products: MagicProduct[] = Object.entries(productList).map(
   ([productId, navigation]) => ({
     id: productId,
     ...(navigation as MagicProductNavigation),
