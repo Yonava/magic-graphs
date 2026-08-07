@@ -58,8 +58,11 @@
           @click="togglePinnedLens(chipId(chip))"
           @focus="hoveredLensId = chipId(chip)"
           @blur="hoveredLensId = undefined"
-          @mouseenter="hoveredLensId = chipId(chip)"
-          @mouseleave="hoveredLensId = undefined"
+          @update:active="
+            $event
+              ? (hoveredLensId = chipId(chip))
+              : hoveredLensId === chipId(chip) && (hoveredLensId = undefined)
+          "
           :model-value="chipId(chip) === pinnedLensId"
         />
       </template>
