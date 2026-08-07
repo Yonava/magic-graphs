@@ -4,7 +4,7 @@ import { ThemePreset } from '../../graph/types.ts';
 export type Thumbnail = Record<ThemePreset, string>;
 
 /** the product as it appears on a navigation card */
-type MagicProductCard = {
+export type MagicProductCard = {
   name: string;
   description: string;
   thumbnail: Thumbnail;
@@ -14,12 +14,8 @@ type MagicProductCard = {
 export type MagicProductNavigation = {
   /** path this product is served from, without the leading slash */
   slug: string;
-  /**
-   * hide this from navigation view?
-   * @default false
-   */
-  hidden?: boolean;
-  card: MagicProductCard;
+  /** if missing, product card wont show up in the navigation menu */
+  card?: MagicProductCard;
 };
 
 /** tags handed to `useSeoMeta` by the page hosting this product */

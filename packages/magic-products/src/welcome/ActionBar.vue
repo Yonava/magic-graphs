@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { nullThrows } from '@core/utils/assert';
   import Button from '@magic/shared/Button';
   import HStack from '@magic/shared/HStack';
   import Icon from '@magic/shared/Icon';
@@ -19,7 +20,11 @@
     class="w-124 p-3 select-none"
   >
     <HStack class="gap-4">
-      <ProductCard :product="activeProduct" />
+      <ProductCard
+        :card="
+          nullThrows(activeProduct.navigation.card, 'no navigation card found')
+        "
+      />
       <Button
         @click="navigateToProduct(activeProduct)"
         class="gap-2 px-5"
