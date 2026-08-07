@@ -8,8 +8,6 @@
 
   const graph = useGraphProduct({
     manifest,
-    // the scene is seeded fresh on every visit, so a returning visitor is never
-    // dropped into whatever they left behind last time
     localStorage: false,
     core: {
       weighted: false,
@@ -18,6 +16,9 @@
       annotations: false,
     },
   });
+
+  graph.anchors.lifecycle.disable();
+  graph.interactive.lifecycle.disable();
 
   provideWelcomeScene(graph);
 

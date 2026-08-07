@@ -18,7 +18,7 @@ import {
 } from './scene.ts';
 
 /** how long each node waits before popping in, so the ring assembles itself */
-const STAGGER_MS = 90;
+const STAGGER_MS = 160;
 
 const KEY = 'WELCOME_SCENE';
 
@@ -122,7 +122,7 @@ const createWelcomeScene = (graph: MagicGraph) => {
 
     for (const [index, product] of featuredProducts.entries()) {
       const at = nullThrows(
-        positions[index],
+        positions.at(index),
         'a position is laid out for every featured product',
       );
       schedule(() => addProductNode(product, at), index * STAGGER_MS);

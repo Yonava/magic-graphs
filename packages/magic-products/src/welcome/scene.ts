@@ -6,11 +6,6 @@ export const featuredProducts: MagicProduct[] = products.filter(
   ({ hidden }) => !hidden,
 );
 
-/**
- * cycled by position rather than assigned per product, so a new product shows up
- * on the landing page wearing a color without anyone having to pick one. the ramp
- * runs through our purple to orange brand gradient
- */
 const palette: Color[] = [
   colors.PURPLE_500,
   colors.PINK_500,
@@ -20,7 +15,6 @@ const palette: Color[] = [
 
 export const paintOf = (index: number) => palette[index % palette.length]!;
 
-/** product nodes are larger than the ones a visitor makes, so they read as the invitation */
 export const PRODUCT_NODE_RADIUS = 45;
 
 export const nodeIdOf = ({ id }: MagicProduct) => `welcome/node/${id}`;

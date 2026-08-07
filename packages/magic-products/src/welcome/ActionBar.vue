@@ -27,7 +27,6 @@
 </script>
 
 <template>
-  <!-- fixed width so the card and the prompt swap in place rather than resizing the bar out from under the cursor -->
   <Well class="w-184 p-3 select-none">
     <HStack
       v-if="activeProduct"
@@ -62,9 +61,6 @@
       <p class="text-xl font-bold">
         {{ featuredProducts.length }} experiences are sitting on this canvas.
         Pick a colored node.
-      </p>
-      <p :class="`text-sm font-light ${mutedClasses}`">
-        It is a real graph, so drag them around while you decide.
       </p>
     </VStack>
   </Well>
