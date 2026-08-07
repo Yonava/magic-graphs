@@ -56,10 +56,7 @@
         <LensChip
           v-bind="chip"
           @click="togglePinnedLens(chipId(chip))"
-          @focus="hoveredLensId = chipId(chip)"
-          @blur="hoveredLensId = undefined"
-          @mouseenter="hoveredLensId = chipId(chip)"
-          @mouseleave="hoveredLensId = undefined"
+          @update:active="hoveredLensId = $event ? chipId(chip) : undefined"
           :model-value="chipId(chip) === pinnedLensId"
         />
       </template>
