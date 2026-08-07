@@ -1,5 +1,10 @@
 import { MagicProductManifest } from './types.ts';
 
+/**
+ * every product experience, in the order the navigation menu lists them. shared
+ * features like navigation need each product's id, slug and card, so manifests
+ * are declared together here rather than fragmented beside every product's view
+ */
 export const manifests = {
   'avl-trees': {
     id: 'avl-trees',

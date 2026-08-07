@@ -13,8 +13,8 @@
 
   const graph = useProvidedGraph();
 
-  const displayedProducts = products.filter(
-    ({ navigation }) => navigation.card,
+  const displayedProducts = products.flatMap((product) =>
+    product.navigation.card ? [{ product, card: product.navigation.card }] : [],
   );
 
   const activeProduct = nullThrows(
@@ -35,17 +35,14 @@
     <Well class="p-1 bg-transparent">
       <VStack>
         <template
-          v-for="product in displayedProducts"
+          v-for="{ product, card } in displayedProducts"
           :key="product.id"
         >
-          <DropdownItem
-            v-if="product.navigation.card"
-            @click="navigateToProduct(product)"
-          >
+          <DropdownItem @click="navigateToProduct(product)">
             <Button
               class="rounded-lg p-2 bg-transparent hover:bg-transparent active:bg-transparent"
             >
-              <ProductCard :card="product.navigation.card" />
+              <ProductCard :card="card" />
             </Button>
           </DropdownItem>
         </template>
