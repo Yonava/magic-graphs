@@ -12,7 +12,9 @@ import {
   NODE_RADIUS,
   WelcomeNode,
   edgeIdOf,
+  edges,
   nodeIdOf,
+  nodeIdOfLabel,
   welcomeNodes,
 } from './scene.ts';
 
@@ -89,19 +91,14 @@ const createWelcomeScene = (graph: MagicGraph) => {
       }),
     );
 
-  const connectRing = () =>
+  const connectProducts = () =>
     graph.animation.capture(() =>
       graph.actions.addElements({
         nodes: [],
-        edges: welcomeNodes.map(({ productId }, index) => ({
+        edges: edges.map(([source, target], index) => ({
           id: edgeIdOf(index),
-          source: nodeIdOf(productId),
-          target: nodeIdOf(
-            nullThrows(
-              welcomeNodes.at((index + 1) % welcomeNodes.length),
-              'ring wraps back onto a welcome node',
-            ).productId,
-          ),
+          source: nodeIdOfLabel(source),
+          target: nodeIdOfLabel(target),
         })),
       }),
     );
@@ -111,7 +108,7 @@ const createWelcomeScene = (graph: MagicGraph) => {
       schedule(() => addProductNode(welcomeNode), index * STAGGER_MS);
     }
 
-    schedule(connectRing, welcomeNodes.length * STAGGER_MS);
+    schedule(connectProducts, welcomeNodes.length * STAGGER_MS);
   };
 
   onMounted(() => {

@@ -1,14 +1,10 @@
 <script setup lang="ts">
-  import {
-    GraphProduct,
-    manifests,
-    useGraphProduct,
-  } from '@magic/shared/product';
+  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
 
   import { lensChips } from './lensChips.ts';
 
   useGraphProduct({
-    manifest: manifests['min-spanning-trees'],
+    productId: 'min-spanning-trees',
     core: {
       directed: false,
     },

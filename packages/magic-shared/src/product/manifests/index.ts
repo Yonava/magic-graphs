@@ -6,6 +6,25 @@ import { MagicProductManifest } from './types.ts';
  * are declared together here rather than fragmented beside every product's view
  */
 export const manifests = {
+  'markov-chains': {
+    id: 'markov-chains',
+    name: 'Magic Markov Chains',
+    navigation: {
+      slug: 'markov-chains',
+      card: {
+        name: 'Markov Chains',
+        description: 'Learn the ins and outs of Markov Chains!',
+        thumbnail: {
+          light: '/products/thumbnails/markov-chains.png',
+          dark: '/products/thumbnails/markov-chains.png',
+        },
+      },
+    },
+    meta: {
+      title: 'Markov Chains',
+      description: 'this is markov chains in magic graphs',
+    },
+  },
   'avl-trees': {
     id: 'avl-trees',
     name: 'Magic AVL Trees',
