@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useGraphProduct } from '@magic/shared/product';
-  import GraphProduct from '@magic/shared/product/GraphProduct.vue';
+  import { GraphProduct } from '@magic/shared/product';
 
   const graph = useGraphProduct({
     productId: 'markov-chains',
