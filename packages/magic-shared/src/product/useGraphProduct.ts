@@ -6,7 +6,7 @@ import { Graph } from '../graph/types.ts';
 import { UseGraphOptions, useGraph } from '../graph/useGraph.ts';
 import { useLensState } from '../lens/useLensState.ts';
 import { LensControls } from '../lens/useLensState.ts';
-import { mountProductShortcuts } from '../shortcuts/mountProductShortcuts.ts';
+import { useProductShortcuts } from '../shortcuts/useProductShortcuts.ts';
 import { ShortcutControls, useShortcuts } from '../shortcuts/useShortcuts.ts';
 import { useSimulationState } from '../simulation/useSimulationState.ts';
 import { SimulationControls } from '../simulation/useSimulationState.ts';
@@ -70,7 +70,7 @@ export const useGraphProduct = (options: GraphProductOptions) => {
     onMounted(() => loadGraphFromLinkPayload(magicGraph));
   }
 
-  mountProductShortcuts(magicGraph);
+  useProductShortcuts(magicGraph);
 
   provideGraph(magicGraph);
 

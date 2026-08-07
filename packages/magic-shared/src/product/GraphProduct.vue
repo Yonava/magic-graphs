@@ -30,7 +30,10 @@
     it takes no pointer events of its own, since covering the canvas is the
     whole point: the slots claim them individually
   -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+  <div
+    v-if="!graph.magic.componentSlots.visibility.isHidden.value"
+    class="fixed inset-0 overflow-hidden pointer-events-none"
+  >
     <ComponentSlots
       :top-left="`${slotSharedClasses} ${alignStart} top-6 left-6`"
       :top-middle="`${slotSharedClasses} ${alignCenter} top-6 left-1/2 -translate-x-1/2`"

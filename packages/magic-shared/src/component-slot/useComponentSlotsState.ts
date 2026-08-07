@@ -3,6 +3,10 @@ import { ComputedRef, computed, markRaw, ref, shallowRef } from 'vue';
 import { ComponentSlot } from './types.ts';
 
 export type ComponentSlotControls = {
+  visibility: {
+    isHidden: ComputedRef<boolean>;
+    toggle: () => void;
+  };
   entries: ComputedRef<ComponentSlot[]>;
   add: (slot: ComponentSlot) => void;
   addMany: (slots: ComponentSlot[]) => void;
@@ -13,6 +17,7 @@ export type ComponentSlotControls = {
 };
 
 export const useComponentSlotsState = (): ComponentSlotControls => {
+  const isHidden = ref(false);
   const componentSlots = shallowRef<ComponentSlot[]>([]);
   const highlightedSlot = ref<ComponentSlot['id']>();
 
@@ -38,5 +43,9 @@ export const useComponentSlotsState = (): ComponentSlotControls => {
     },
     clearHighlighted: () => (highlightedSlot.value = undefined),
     highlightedId: computed(() => highlightedSlot.value),
+    visibility: {
+      isHidden: computed(() => isHidden.value),
+      toggle: () => (isHidden.value = !isHidden.value),
+    },
   };
 };

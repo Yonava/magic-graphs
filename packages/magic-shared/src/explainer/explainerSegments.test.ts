@@ -1,6 +1,7 @@
 import { getValue } from '@core/utils/maybeGetter/index';
 import { describe, expect, test, vi } from 'vitest';
 
+import { GEdge } from '../graph/types.ts';
 import { Explainer, ExplainerHighlight } from './types.ts';
 
 vi.mock('../theme/node/index.ts', () => ({
@@ -10,18 +11,26 @@ vi.mock('../theme/node/index.ts', () => ({
   }),
 }));
 
+vi.mock('../theme/edge/index.ts', () => ({
+  useEdgeStyles: () => ({
+    styles: { value: { color: undefined } },
+    dispose: vi.fn(),
+  }),
+}));
+
 const { explainerSegments } = await import('./explainerSegments.ts');
 
 const graph = {
-  isNode: (_id: string): boolean => true,
-  nodeLabel: {
-    get: (id: string) => `Label ${id}`,
-  },
+  isNode: (id: string): boolean => id.startsWith('node-'),
+  isEdge: (id: string): boolean => id.startsWith('edge-'),
+  getEdge: (id: string) => ({ id }) as GEdge,
   theme: {
     createThemer: () => ({
       activate: vi.fn(),
       deactivate: vi.fn(),
     }),
+    tokenResolver: (token: string, { id }: { id: string }) =>
+      token === 'node.text.content' ? `Label ${id}` : `Weight ${id}`,
   },
   focus: {
     theme: {
@@ -228,6 +237,57 @@ describe(explainerSegments, () => {
       'Reason',
     ]);
     expect(segments.at(-1)?.highlight).toBe(h);
+  });
+
+  test('resolves a curly-braced edge id to its label and auto-highlights it', () => {
+    const explainer: Explainer = {
+      content: 'Take edge {edge-a} next',
+      highlights: [],
+    };
+
+    const segments = explainerSegments(graph, explainer);
+
+    expect(segments.map((segment) => getValue(segment.text))).toEqual([
+      'Take edge ',
+      'Weight edge-a',
+      ' next',
+    ]);
+    expect(segments[1].highlight).toBeDefined();
+  });
+
+  test('resolves node and edge ids in the same content', () => {
+    const explainer: Explainer = {
+      content: 'From {node-a} along {edge-a}',
+      highlights: [],
+    };
+
+    const segments = explainerSegments(graph, explainer);
+
+    expect(segments.map((segment) => getValue(segment.text))).toEqual([
+      'From ',
+      'Label node-a',
+      ' along ',
+      'Weight edge-a',
+    ]);
+    expect(segments[1].highlight).toBeDefined();
+    expect(segments[3].highlight).toBeDefined();
+  });
+
+  test('marks a curly-braced id that is neither node nor edge as not in graph', () => {
+    const explainer: Explainer = {
+      content: 'Missing {ghost-a}',
+      highlights: [],
+    };
+
+    const segments = explainerSegments(graph, explainer);
+
+    expect(segments.map((segment) => getValue(segment.text))).toEqual([
+      'Missing ',
+      '?',
+    ]);
+    expect(segments[1].highlight?.tooltipLabel).toBe(
+      'Graph Element With ID ghost-a Not In Graph',
+    );
   });
 
   test('defaults to an empty array when highlights is undefined', () => {

@@ -107,8 +107,11 @@ const ROUTE_MIDPOINT = {
   y: (NODE_POSITIONS.a!.y + NODE_POSITIONS.b!.y) / 2,
 };
 
-/** trig leaves float noise that exact equality cannot survive */
-const round = (value: number) => Math.round(value * 1e6) / 1e6;
+/** trig leaves float noise that exact equality cannot survive, down to a -0 that Object.is reads as its own value */
+const round = (value: number) => {
+  const rounded = Math.round(value * 1e6) / 1e6;
+  return rounded === 0 ? 0 : rounded;
+};
 
 /**
  * how far off the straight route an edge was drawn, signed so the two sides of the route

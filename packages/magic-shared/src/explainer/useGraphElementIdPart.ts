@@ -20,12 +20,12 @@ const useGraphElementExplainerHighlight = (
           : undefined,
     },
   });
-  const node = useNodeStyles(graph, id);
-  const edge = useEdgeStyles(graph, id);
+  const node = graph.isNode(id) ? useNodeStyles(graph, id) : undefined;
+  const edge = graph.isEdge(id) ? useEdgeStyles(graph, id) : undefined;
   return {
     onUnmounted: () => {
-      node.dispose();
-      edge.dispose();
+      node?.dispose();
+      edge?.dispose();
     },
     activate: themer.activate,
     deactivate: themer.deactivate,
@@ -33,8 +33,8 @@ const useGraphElementExplainerHighlight = (
     styles: () => {
       return {
         backgroundColor: graph.isEdge(id)
-          ? edge.styles.value.color
-          : node.styles.value.border.color,
+          ? edge?.styles.value.color
+          : node?.styles.value.border.color,
       };
     },
   };
