@@ -9,7 +9,7 @@
 
   import { computed } from 'vue';
 
-  import { featuredProducts } from './scene.ts';
+  import { welcomeNodes } from './scene.ts';
   import { useWelcomeScene } from './useWelcomeScene.ts';
 
   const graph = useProvidedGraph();
@@ -59,7 +59,7 @@
       class="items-center gap-0.5 px-4"
     >
       <p class="text-xl font-bold">
-        {{ featuredProducts.length }} experiences are sitting on this canvas.
+        {{ welcomeNodes.length }} experiences are sitting on this canvas.
         Pick a colored node.
       </p>
     </VStack>

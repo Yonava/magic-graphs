@@ -10,11 +10,11 @@ import { computed, inject, onMounted, onUnmounted, provide, ref } from 'vue';
 
 import {
   PRODUCT_NODE_RADIUS,
+  WelcomeNode,
   edgeIdOf,
-  featuredProducts,
   nodeIdOf,
-  paintOf,
-  ringPositions,
+  productOf,
+  welcomeNodes,
 } from './scene.ts';
 
 /** how long each node waits before popping in, so the ring assembles itself */
@@ -26,9 +26,9 @@ const createWelcomeScene = (graph: MagicGraph) => {
   const productByNodeId = new Map<string, MagicProduct>();
   const paintByNodeId = new Map<string, Color>();
 
-  for (const [index, product] of featuredProducts.entries()) {
-    productByNodeId.set(nodeIdOf(product), product);
-    paintByNodeId.set(nodeIdOf(product), paintOf(index));
+  for (const { productId, color } of welcomeNodes) {
+    productByNodeId.set(nodeIdOf(productId), productOf(productId));
+    paintByNodeId.set(nodeIdOf(productId), color);
   }
 
   const paint = ({ id }: CoreNode) => paintByNodeId.get(id);
@@ -85,15 +85,12 @@ const createWelcomeScene = (graph: MagicGraph) => {
     timeouts.push(setTimeout(task, delayMs));
   };
 
-  const addProductNode = (
-    product: MagicProduct,
-    at: { x: number; y: number },
-  ) =>
+  const addProductNode = ({ productId, position }: WelcomeNode) =>
     graph.animation.capture(() =>
       graph.actions.addNode({
-        id: nodeIdOf(product),
-        label: product.shortName,
-        position: at,
+        id: nodeIdOf(productId),
+        label: productOf(productId).shortName,
+        position,
       }),
     );
 
@@ -101,34 +98,25 @@ const createWelcomeScene = (graph: MagicGraph) => {
     graph.animation.capture(() =>
       graph.actions.addElements({
         nodes: [],
-        edges: featuredProducts.map((product, index) => ({
+        edges: welcomeNodes.map(({ productId }, index) => ({
           id: edgeIdOf(index),
-          source: nodeIdOf(product),
+          source: nodeIdOf(productId),
           target: nodeIdOf(
             nullThrows(
-              featuredProducts[(index + 1) % featuredProducts.length],
-              'ring wraps back onto a featured product',
-            ),
+              welcomeNodes.at((index + 1) % welcomeNodes.length),
+              'ring wraps back onto a welcome node',
+            ).productId,
           ),
         })),
       }),
     );
 
   const seed = () => {
-    const positions = ringPositions(featuredProducts.length, {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-
-    for (const [index, product] of featuredProducts.entries()) {
-      const at = nullThrows(
-        positions.at(index),
-        'a position is laid out for every featured product',
-      );
-      schedule(() => addProductNode(product, at), index * STAGGER_MS);
+    for (const [index, welcomeNode] of welcomeNodes.entries()) {
+      schedule(() => addProductNode(welcomeNode), index * STAGGER_MS);
     }
 
-    schedule(connectRing, featuredProducts.length * STAGGER_MS);
+    schedule(connectRing, welcomeNodes.length * STAGGER_MS);
   };
 
   onMounted(() => {
