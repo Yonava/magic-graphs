@@ -1,12 +1,15 @@
 <script setup lang="ts">
-  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
+  import {
+    GraphProduct,
+    manifests,
+    useGraphProduct,
+  } from '@magic/shared/product';
 
   import ActionBar from './ActionBar.vue';
   import { lensChips } from './lensChips.ts';
-  import { manifest } from './manifest.ts';
 
   const graph = useGraphProduct({
-    manifest,
+    manifest: manifests['traversals'],
     core: {
       weighted: false,
     },

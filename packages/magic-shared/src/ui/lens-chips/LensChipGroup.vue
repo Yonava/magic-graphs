@@ -50,7 +50,7 @@
 </script>
 
 <template>
-  <Well>
+  <Well v-if="chips.length > 0">
     <HStack>
       <template v-for="chip of chips">
         <LensChip

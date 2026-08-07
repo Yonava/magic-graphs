@@ -366,6 +366,9 @@ importers:
       '@magic/products':
         specifier: workspace:*
         version: link:../magic-products
+      '@magic/shared':
+        specifier: workspace:*
+        version: link:../magic-shared
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
@@ -406,6 +409,9 @@ importers:
       '@magic/shared':
         specifier: workspace:*
         version: link:../magic-shared
+      '@mdi/js':
+        specifier: ^7.4.47
+        version: 7.4.47
       fraction.js:
         specifier: ^5.3.4
         version: 5.3.4

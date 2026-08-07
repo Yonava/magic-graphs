@@ -16,6 +16,10 @@ body {
   @apply bg-linear-to-tr from-purple-500 to-orange-500 text-transparent bg-clip-text;
 }
 
+@utility text-magic-dark {
+  @apply bg-linear-to-tr from-purple-600 to-orange-600 text-transparent bg-clip-text;
+}
+
 /* our branded background color */
 @utility bg-magic {
   @apply bg-linear-to-tr from-purple-500 to-orange-500;
