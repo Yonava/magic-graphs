@@ -9,7 +9,7 @@ import tinycolor from 'tinycolor2';
 import { computed, inject, onMounted, onUnmounted, provide, ref } from 'vue';
 
 import {
-  PRODUCT_NODE_RADIUS,
+  NODE_RADIUS,
   WelcomeNode,
   edgeIdOf,
   nodeIdOf,
@@ -40,14 +40,13 @@ const createWelcomeScene = (graph: MagicGraph) => {
   graph.theme
     .createThemer({
       canvas: {
-        'node.default.color': paint,
-        'node.default.size': PRODUCT_NODE_RADIUS,
-        'node.hover.color': litPaint,
-        'node.hover.size': PRODUCT_NODE_RADIUS,
+        'node.default.border.color': paint,
+        'node.default.size': NODE_RADIUS,
+        'node.hover.border.color': litPaint,
+        'node.hover.size': NODE_RADIUS,
       },
       focus: {
-        'node.focus.color': litPaint,
-        'node.focus.size': PRODUCT_NODE_RADIUS,
+        'node.focus.size': NODE_RADIUS,
       },
     })
     .activate();
@@ -58,7 +57,10 @@ const createWelcomeScene = (graph: MagicGraph) => {
 
   const focusedProduct = computed(() => {
     if (!focusedNode.value) return;
-    return productByNodeId.get(focusedNode.value.id);
+    return nullThrows(
+      productByNodeId.get(focusedNode.value.id),
+      'node is not a welcome node',
+    );
   });
 
   /** pointing at a product previews it, clicking one pins it */
@@ -66,6 +68,7 @@ const createWelcomeScene = (graph: MagicGraph) => {
     () => hoveredProduct.value ?? focusedProduct.value,
   );
 
+  // edges are hoverable too, and those are the only elements without a product
   const trackHover = (element: { id: string } | undefined) => {
     hoveredProduct.value = element
       ? productByNodeId.get(element.id)

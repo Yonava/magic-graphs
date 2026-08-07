@@ -38,7 +38,7 @@ export const welcomeNodes: WelcomeNode[] = [
   },
 ];
 
-export const PRODUCT_NODE_RADIUS = 45;
+export const NODE_RADIUS = 45;
 
 export const nodeIdOf = (productId: ProductId) => `welcome/node/${productId}`;
 
