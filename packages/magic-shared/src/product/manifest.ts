@@ -9,6 +9,11 @@ export type MagicProductNavigation = {
   description: string;
   thumbnail: Thumbnail;
   slug: string;
+  /**
+   * hide this from navigation view?
+   * @default false
+   */
+  hidden?: boolean;
 };
 
 type MagicProductMeta = {

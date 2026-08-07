@@ -39,9 +39,20 @@ export const productList = {
     },
   },
   dev: {
+    hidden: true,
     name: 'Dev Playground',
     description: 'Dev test zone',
     slug: 'dev',
+    thumbnail: {
+      light: '/products/thumbnails/graph-sandbox.png',
+      dark: '/products/thumbnails/graph-sandbox.png',
+    },
+  },
+  welcome: {
+    hidden: true,
+    name: 'Click Here For Experiences',
+    description: 'Landing page for Magic Graphs',
+    slug: 'welcome',
     thumbnail: {
       light: '/products/thumbnails/graph-sandbox.png',
       dark: '/products/thumbnails/graph-sandbox.png',

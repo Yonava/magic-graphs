@@ -26,6 +26,8 @@
     light: 'text-gray-800',
   });
 
+  const displayedProducts = products.filter(({ hidden }) => !hidden);
+
   const activeProduct = nullThrows(
     products.find((product) => graph.magic.manifest.id === product.id),
     'product id not recognized',
@@ -44,7 +46,7 @@
     <Well class="p-1 bg-transparent">
       <VStack>
         <template
-          v-for="product in products"
+          v-for="product in displayedProducts"
           :key="product.id"
         >
           <DropdownItem @click="navigateTo(`/${product.slug}`)">
