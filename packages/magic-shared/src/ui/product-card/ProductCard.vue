@@ -5,16 +5,18 @@
 
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
-  import { MagicProductNavigation } from '../../product/manifest.ts';
+  import { MagicProductManifest } from '../../product/manifest.ts';
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
 
-  const props = defineProps<{ product: MagicProductNavigation }>();
+  const props = defineProps<{ product: MagicProductManifest }>();
+
+  const card = computed(() => props.product.navigation.card);
 
   const graph = useProvidedGraph();
 
   const thumbnail = computed(
-    () => props.product.card.thumbnail[graph.theme.activePresetName.value],
+    () => card.value.thumbnail[graph.theme.activePresetName.value],
   );
 
   const descriptionClasses = useThemeToClasses({
@@ -27,13 +29,13 @@
   <HStack class="w-84 items-start gap-4">
     <img
       :src="thumbnail"
-      :alt="product.card.name"
+      :alt="card.name"
       class="h-20 w-20 rounded-md object-cover"
     />
     <VStack class="gap-1 text-left">
-      <h1 class="text-lg font-bold">{{ product.card.name }}</h1>
+      <h1 class="text-lg font-bold">{{ card.name }}</h1>
       <p :class="cn('text-sm font-light', descriptionClasses)">
-        {{ product.card.description }}
+        {{ card.description }}
       </p>
     </VStack>
   </HStack>

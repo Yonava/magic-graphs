@@ -1,7 +1,5 @@
 import colors, { Color } from '@core/utils/colors';
-import { MagicProduct, productList } from '@magic/shared/ui/index';
-
-type ProductId = keyof typeof productList;
+import { ProductId } from '@magic/shared/product';
 
 export type WelcomeNode = {
   productId: ProductId;
@@ -49,8 +47,3 @@ export const NODE_RADIUS = 45;
 export const nodeIdOf = (productId: ProductId) => `welcome/node/${productId}`;
 
 export const edgeIdOf = (index: number) => `welcome/edge/${index}`;
-
-export const productOf = (productId: ProductId): MagicProduct => ({
-  id: productId,
-  ...productList[productId],
-});

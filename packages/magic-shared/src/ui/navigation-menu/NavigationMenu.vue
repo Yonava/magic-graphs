@@ -6,14 +6,16 @@
   import DropdownItem from '../../components/dropdown/DropdownItem.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
+  import { products } from '../../product/manifests.ts';
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import ProductCard from '../product-card/ProductCard.vue';
   import { navigateToProduct } from './navigateToProduct.ts';
-  import { products } from './productList.ts';
 
   const graph = useProvidedGraph();
 
-  const displayedProducts = products.filter(({ hidden }) => !hidden);
+  const displayedProducts = products.filter(
+    ({ navigation }) => !navigation.hidden,
+  );
 
   const activeProduct = nullThrows(
     products.find((product) => graph.magic.manifest.id === product.id),

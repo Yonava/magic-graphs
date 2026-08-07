@@ -1,8 +1,8 @@
 import { nullThrows } from '@core/utils/assert';
 import { Color } from '@core/utils/colors';
 import { CoreNode } from '@graph/primitives/types';
+import { MagicProductManifest, manifests } from '@magic/shared/product';
 import { MagicGraph } from '@magic/shared/product/useGraphProduct';
-import { MagicProduct } from '@magic/shared/ui/index';
 import { useFocusedNode } from '@magic/shared/utilities';
 import tinycolor from 'tinycolor2';
 
@@ -13,7 +13,6 @@ import {
   WelcomeNode,
   edgeIdOf,
   nodeIdOf,
-  productOf,
   welcomeNodes,
 } from './scene.ts';
 
@@ -23,11 +22,11 @@ const STAGGER_MS = 160;
 const KEY = 'WELCOME_SCENE';
 
 const createWelcomeScene = (graph: MagicGraph) => {
-  const productByNodeId = new Map<string, MagicProduct>();
+  const productByNodeId = new Map<string, MagicProductManifest>();
   const paintByNodeId = new Map<string, Color>();
 
   for (const { productId, color } of welcomeNodes) {
-    productByNodeId.set(nodeIdOf(productId), productOf(productId));
+    productByNodeId.set(nodeIdOf(productId), manifests[productId]);
     paintByNodeId.set(nodeIdOf(productId), color);
   }
 
@@ -51,7 +50,7 @@ const createWelcomeScene = (graph: MagicGraph) => {
     })
     .activate();
 
-  const hoveredProduct = ref<MagicProduct>();
+  const hoveredProduct = ref<MagicProductManifest>();
 
   const focusedNode = useFocusedNode(graph);
 

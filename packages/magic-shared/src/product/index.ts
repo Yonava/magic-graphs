@@ -3,4 +3,6 @@ export { useDisablePointerEvents } from './useDisablePointerEvents.ts';
 export { useGraphProduct } from './useGraphProduct.ts';
 export { provideGraph, useProvidedGraph } from './useProvidedGraph.ts';
 
+export { manifests, products } from './manifests.ts';
+export type { ProductId } from './manifests.ts';
 export type { MagicProductManifest } from './manifest.ts';

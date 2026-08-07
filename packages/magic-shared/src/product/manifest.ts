@@ -1,11 +1,8 @@
-import { Component } from 'vue';
-
 import { ThemePreset } from '../graph/types.ts';
 
 export type Thumbnail = Record<ThemePreset, string>;
 
 export type MagicProductNavigation = {
-  name: string;
   slug: string;
   /**
    * hide this from navigation view?
@@ -27,7 +24,7 @@ type MagicProductMeta = {
 export type MagicProductManifest = {
   /** unique ID of the product experience */
   id: string;
+  name: string;
   navigation: MagicProductNavigation;
   meta: MagicProductMeta;
-  component: Component;
 };
