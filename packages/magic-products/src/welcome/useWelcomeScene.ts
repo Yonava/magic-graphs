@@ -1,8 +1,8 @@
 import { nullThrows } from '@core/utils/assert';
 import { Color } from '@core/utils/colors';
 import { CoreNode } from '@graph/primitives/types';
+import { Graph } from '@magic/shared/graph';
 import { MagicProductManifest, manifests } from '@magic/shared/product';
-import { MagicGraph } from '@magic/shared/product/useGraphProduct';
 import { useFocusedNode } from '@magic/shared/utilities';
 import tinycolor from 'tinycolor2';
 
@@ -23,7 +23,7 @@ const STAGGER_MS = 160;
 
 const KEY = 'WELCOME_SCENE';
 
-const createWelcomeScene = (graph: MagicGraph) => {
+const createWelcomeScene = (graph: Graph) => {
   const productByNodeId = new Map<string, MagicProductManifest>();
   const paintByNodeId = new Map<string, Color>();
 
@@ -126,7 +126,7 @@ const createWelcomeScene = (graph: MagicGraph) => {
 
 export type WelcomeScene = ReturnType<typeof createWelcomeScene>;
 
-export const provideWelcomeScene = (graph: MagicGraph) => {
+export const provideWelcomeScene = (graph: Graph) => {
   const scene = createWelcomeScene(graph);
   provide(KEY, scene);
   return scene;

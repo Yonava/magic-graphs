@@ -9,9 +9,6 @@
       allowSelfLoops: false,
       allowRepeatConnections: true,
     },
-    ui: {
-      annotations: true,
-    },
   });
 
   graph.magic.componentSlots.add({

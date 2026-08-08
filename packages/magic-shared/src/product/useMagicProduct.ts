@@ -6,12 +6,17 @@ import { ComputedRef, Ref, onMounted } from 'vue';
 
 import { useComponentSlotsState } from '../component-slot/useComponentSlotsState.ts';
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
+import { Graph } from '../graph/types.ts';
 import { useLensState } from '../lens/useLensState.ts';
 import { LensControls } from '../lens/useLensState.ts';
 import { useProductShortcuts } from '../shortcuts/useProductShortcuts.ts';
 import { ShortcutControls, useShortcuts } from '../shortcuts/useShortcuts.ts';
 import { useSimulationState } from '../simulation/useSimulationState.ts';
 import { SimulationControls } from '../simulation/useSimulationState.ts';
+import {
+  AnnotationsControls,
+  useAnnotationsState,
+} from '../ui/annotations/useAnnotationsState.ts';
 import {
   AppearanceControls,
   useProductAppearance,
@@ -20,6 +25,7 @@ import { loadFromLinkPayload } from '../ui/link-sharing/linkPayload.ts';
 import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
 import { ProductId, manifests } from './index.ts';
 import { MagicProductManifest } from './manifests/types.ts';
+import { useLocalStorageSync } from './useLocalStorageSync.ts';
 import { provideMagic } from './useProvidedGraph.ts';
 
 type CanvasField = {
@@ -42,9 +48,7 @@ type HistoryField = {
   redo: () => void;
 };
 
-export type MinimalFields = {
-  /** load a payload into state */
-  decode: (payload: any) => void;
+export type MagicProductHost = {
   transit: TransitField;
   events: ReadonlyEventHub<{
     onStructureChange: () => void;
@@ -56,7 +60,11 @@ export type MinimalFields = {
 
 type ProductOptions<GraphLike> = {
   productId: ProductId;
+  // TODO narrow this down to an host interface so annotations can be adapted to non-graph products
+  annotations?: Graph;
   ui?: UIOptions<GraphLike>;
+  /** provide a handler for the trigger save function if you want to opt-in to local storage  */
+  localStorage?: (triggerSave: () => void) => void;
 };
 
 export type Magic = {
@@ -70,22 +78,27 @@ export type Magic = {
   canvas: CanvasField;
   transit: TransitField;
   history?: HistoryField;
+  annotations?: AnnotationsControls;
 };
 
 export const useMagicProduct = (
-  fields: MinimalFields,
-  options: ProductOptions<MinimalFields>,
+  host: MagicProductHost,
+  options: ProductOptions<MagicProductHost>,
 ) => {
   const componentSlots = useComponentSlotsState();
   const lens = useLensState(componentSlots);
   const simulation = useSimulationState(
-    fields.events.subscribe,
+    host.events.subscribe,
     componentSlots,
     lens,
   );
 
-  const ui = useProductUI(fields, componentSlots, options.ui);
-  const appearance = useProductAppearance(fields.setAppearance);
+  const annotations = options.annotations
+    ? useAnnotationsState(options.annotations)
+    : undefined;
+
+  const ui = useProductUI(host, componentSlots, options.ui);
+  const appearance = useProductAppearance(host.setAppearance);
   const shortcuts = useShortcuts();
 
   const magic: Magic = {
@@ -96,13 +109,19 @@ export const useMagicProduct = (
     ui,
     appearance,
     shortcuts,
-    canvas: fields.canvas,
-    transit: fields.transit,
-    history: fields.history,
+    annotations,
+    canvas: host.canvas,
+    transit: host.transit,
+    history: host.history,
   };
 
   if (magic.ui.linkSharing) {
     onMounted(() => loadFromLinkPayload(magic));
+  }
+
+  if (options.localStorage) {
+    const triggerSave = useLocalStorageSync(magic);
+    options.localStorage(triggerSave);
   }
 
   useProductShortcuts(magic);

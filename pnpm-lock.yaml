@@ -394,9 +394,6 @@ importers:
       '@canvas/surface':
         specifier: workspace:*
         version: link:../canvas-surface
-      '@core/themes':
-        specifier: workspace:*
-        version: link:../core-themes
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils

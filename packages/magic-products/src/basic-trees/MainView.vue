@@ -10,7 +10,6 @@
       weighted: false,
     },
     ui: {
-      annotations: true,
       debug: true,
     },
   });

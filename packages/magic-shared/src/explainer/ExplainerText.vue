@@ -6,7 +6,10 @@
 
   import Button from '../components/button/Button.vue';
   import Tooltip from '../components/tooltip/Tooltip.vue';
-  import { useProvidedGraph } from '../product/useProvidedGraph.ts';
+  import {
+    useProvidedGraph,
+    useProvidedMagicGraph,
+  } from '../product/useProvidedGraph.ts';
   import { useThemeToClasses } from '../useThemeToClasses.ts';
   import { explainerSegments } from './explainerSegments.ts';
   import { Explainer, ExplainerHighlight } from './types.ts';
@@ -16,7 +19,7 @@
     light: 'text-black',
   });
 
-  const graph = useProvidedGraph();
+  const graph = useProvidedMagicGraph();
 
   const props = defineProps<{
     explainer?: Explainer;

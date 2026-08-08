@@ -1,11 +1,11 @@
 import { nullThrows } from '@core/utils/assert';
 
-import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
+import { useProvidedMagic } from '../../product/useProvidedGraph.ts';
 
 export const useAnnotationControls = () => {
-  const graph = useProvidedGraph();
+  const magic = useProvidedMagic();
   return nullThrows(
-    graph.magic.ui.annotations,
-    'annotation controls not on graph instance!',
+    magic.ui.annotations,
+    'annotation controls not on magic instance!',
   );
 };

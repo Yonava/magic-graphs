@@ -1,6 +1,6 @@
 import { useFullscreen } from '@vueuse/core';
 
-import { MagicGraph } from '../product/useGraphProduct.ts';
+import { Graph } from '../graph/index.ts';
 import { Magic } from '../product/useMagicProduct.ts';
 import { ShortcutItem } from './useShortcuts.ts';
 
@@ -25,7 +25,7 @@ export const useProductShortcuts = (magic: Magic) => {
   }
 };
 
-export const useGraphProductShortcuts = (graph: MagicGraph) => {
+export const useGraphProductShortcuts = (magic: Magic, graph: Graph) => {
   // TODO make it windows + mac agnostic
   const shortcuts: ShortcutItem[] = [
     {
@@ -52,6 +52,6 @@ export const useGraphProductShortcuts = (graph: MagicGraph) => {
   ];
 
   for (const shortcut of shortcuts) {
-    graph.magic.shortcuts.add(shortcut);
+    magic.shortcuts.add(shortcut);
   }
 };

@@ -2,14 +2,13 @@
   import { useCanvas } from '@canvas/surface/index';
   import { createEventHub } from '@graph/primitives/events/createEventHub';
   import { MagicProduct, useMagicProduct } from '@magic/shared/product';
-  import { MinimalFields } from '@magic/shared/product/useMagicProduct';
+  import { MagicProductHost } from '@magic/shared/product/useMagicProduct';
 
   import { useCanvasTheme } from './useCanvasTheme.ts';
 
   const surface = useCanvas();
 
-  const graphLike: MinimalFields = {
-    decode: () => {},
+  const graphLike: MagicProductHost = {
     setAppearance: () => {},
     events: createEventHub<{ onStructureChange: () => void }>({
       onStructureChange: new Set(),
@@ -32,9 +31,6 @@
 
   const magic = useMagicProduct(graphLike, {
     productId: 'sets',
-    ui: {
-      annotations: false,
-    },
   });
 
   useCanvasTheme(magic);

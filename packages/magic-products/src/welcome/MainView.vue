@@ -11,9 +11,7 @@
     core: {
       weighted: false,
     },
-    ui: {
-      annotations: false,
-    },
+    annotations: false,
   });
 
   graph.anchors.lifecycle.disable();
