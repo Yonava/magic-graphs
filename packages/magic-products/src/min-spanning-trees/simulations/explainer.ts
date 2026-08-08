@@ -51,12 +51,6 @@ export const primsExplainer =
       };
     }
 
-    if (frame.type === 'add-to-tree') {
-      return {
-        content: `{${frame.node}} Joins the [Tree]`,
-      };
-    }
-
     if (frame.type === 'unreachable') {
       const count = frame.nodes.length;
       return {

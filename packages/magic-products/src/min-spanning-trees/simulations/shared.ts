@@ -30,7 +30,7 @@ import { PrimsFrame, PrimsFunction } from './frame.ts';
 // anchor = the node the user picked to grow the tree from.
 type PrimsNodeConcept = 'exploring' | 'settled' | 'frontier' | 'anchor';
 
-export const nodeRoles = {
+const nodeRoles = {
   exploring: 'active',
   settled: 'settled',
   frontier: 'candidate',
@@ -43,7 +43,7 @@ export const nodeRoles = {
 // tree = an edge grown into the tree so far.
 type PrimsEdgeConcept = 'frontier' | 'crossing' | 'tree';
 
-export const edgeRoles = {
+const edgeRoles = {
   frontier: 'weighing',
   crossing: 'crossing',
   tree: 'tree',

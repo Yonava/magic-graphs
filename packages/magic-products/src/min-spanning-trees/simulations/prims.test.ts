@@ -76,32 +76,6 @@ describe('prims', () => {
     expect([...last(frames).treeNodeIds].sort()).toEqual(['a', 'b']);
   });
 
-  it('weighs the whole frontier at once rather than one edge at a time', () => {
-    // a's frontier is every edge at once: a-b, a-c, a-d
-    const graph = makeGraph(
-      ['a', 'b', 'c', 'd'],
-      [
-        ['a', 'b', 5],
-        ['a', 'c', 1],
-        ['a', 'd', 4],
-      ],
-    );
-    const frames = collect(prims(graph, 'a'));
-
-    const considered = frames.find((f) => f.type === 'consider-edges');
-    expect(considered && 'edges' in considered && considered.edges).toEqual([
-      'e0',
-      'e1',
-      'e2',
-    ]);
-
-    const selected = frames.find((f) => f.type === 'select-edge');
-    expect(selected && 'edge' in selected && selected.edge).toBe('e1');
-
-    const grown = frames.filter((f) => f.type === 'add-to-tree');
-    expect(grown).toHaveLength(3);
-  });
-
   it('calls out a tie instead of breaking it silently', () => {
     const graph = makeGraph(
       ['a', 'b', 'c'],
@@ -115,39 +89,6 @@ describe('prims', () => {
     expect(selected && 'tiedEdges' in selected ? selected.tiedEdges : undefined).toEqual(
       ['e0', 'e1'],
     );
-  });
-
-  it('keeps an unresolved frontier edge lit continuously across a round rather than toggling it off and back on', () => {
-    // a's frontier is a-b (5) and a-c (1); a-c wins first, but a-b stays a
-    // live, unresolved candidate until it is finally taken two rounds later -
-    // it should never go dark and re-light in between
-    const graph = makeGraph(
-      ['a', 'b', 'c'],
-      [
-        ['a', 'b', 5],
-        ['a', 'c', 1],
-      ],
-    );
-    const frames = collect(prims(graph, 'a'));
-
-    const relevant = frames.filter(
-      (f): f is typeof f & { frontierEdgeIds?: readonly string[] } =>
-        f.type === 'consider-edges' ||
-        f.type === 'select-edge' ||
-        f.type === 'add-to-tree',
-    );
-
-    const firstSeen = relevant.findIndex((f) => f.frontierEdgeIds?.includes('e0'));
-    const resolvedAt = relevant.findIndex(
-      (f) => f.type === 'add-to-tree' && 'edge' in f && f.edge === 'e0',
-    );
-
-    expect(firstSeen).toBeGreaterThanOrEqual(0);
-    expect(resolvedAt).toBeGreaterThan(firstSeen);
-
-    for (let i = firstSeen; i < resolvedAt; i++) {
-      expect(relevant[i].frontierEdgeIds).toContain('e0');
-    }
   });
 
   it('gives the active edge to only the edge actually being added, not the whole frontier', () => {

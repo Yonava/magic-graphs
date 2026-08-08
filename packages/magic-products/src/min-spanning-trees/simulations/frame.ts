@@ -15,12 +15,6 @@ type EndFrame = {
   type: 'end';
 };
 
-type AddToTreeFrame = {
-  type: 'add-to-tree';
-  node: GNode['id'];
-  edge: GEdge['id'];
-};
-
 /** every edge crossing the cut this round, weighed together rather than one at a time */
 type ConsiderEdgesFrame = {
   type: 'consider-edges';
@@ -45,7 +39,6 @@ type UnreachableFrame = {
 export type PrimsStep =
   | StartFrame
   | EndFrame
-  | AddToTreeFrame
   | ConsiderEdgesFrame
   | SelectEdgeFrame
   | UnreachableFrame;

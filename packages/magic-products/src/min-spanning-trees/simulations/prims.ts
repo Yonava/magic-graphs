@@ -104,21 +104,7 @@ export const prims: PrimsFunction = (graph, startNodeId) => (frameCollector) => 
 
     inTree.add(winnerNode);
     treeEdges.push(winner.id);
-
-    frameCollector.add(
-      frame({
-        type: 'add-to-tree',
-        node: winnerNode,
-        edge: winner.id,
-        // the newly grown node gets a beat in the spotlight before settling
-        // into the plain "in the tree" color next frame
-        activeNodeId: winnerNode,
-        pendingNodeIds: frontierNodeIds.filter((id) => id !== winnerNode),
-        // the winner just became a tree edge; everyone else it shared the
-        // frontier with is still unresolved and keeps its highlight
-        frontierEdgeIds: frontierEdgeIds.filter((id) => id !== winner.id),
-      }),
-    );
+    
   }
 
   const unreachable = nodeIds.filter((id) => !inTree.has(id));
