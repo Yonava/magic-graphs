@@ -32,6 +32,8 @@ export const useGraphProduct = (options: GraphProductOptions): MagicGraph => {
     graph.nodeDrag.events.subscribe('onNodeDrop', save);
   };
 
+  const lensChips = options.lensChips?.(graph);
+
   const magic = useMagicProduct(
     {
       canvas: graph.canvas,
@@ -46,15 +48,17 @@ export const useGraphProduct = (options: GraphProductOptions): MagicGraph => {
         options.localStorage === false ? undefined : handleLocalStorageSave,
       annotations: options.annotations === false ? undefined : graph,
       ui: options.ui,
-      lensChips: options.lensChips?.(graph),
+      lensChips,
     },
   );
 
-  magic.componentSlots.add({
-    id: 'product/lens-chips',
-    component: LensChipGroup,
-    position: 'top-middle',
-  });
+  if (lensChips) {
+    magic.componentSlots.add({
+      id: 'product/lens-chips',
+      component: LensChipGroup,
+      position: 'top-middle',
+    });
+  }
 
   useGraphProductShortcuts(magic, graph);
 

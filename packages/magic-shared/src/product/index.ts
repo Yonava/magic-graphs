@@ -1,6 +1,9 @@
 export { default as MagicProduct } from './MagicProduct.vue';
 export { useDisablePointerEvents } from './useDisablePointerEvents.ts';
-export { useGraphProduct, GraphLensChipOption } from './useGraphProduct.ts';
+export {
+  useGraphProduct,
+  type GraphLensChipOption,
+} from './useGraphProduct.ts';
 export { useMagicProduct } from './useMagicProduct.ts';
 export { provideGraph, useProvidedGraph } from './useProvidedGraph.ts';
 
