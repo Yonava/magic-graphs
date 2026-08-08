@@ -54,8 +54,13 @@ export type MagicProductHost = {
 
 export type MagicProductOptions = {
   productId: ProductId;
-  // TODO narrow this down to an host interface so annotations can be adapted to non-graph products
-  annotations?: Graph;
+  /**
+   * the canvas annotations draw onto. a handle rather than a boolean because
+   * only the graph canvas carries the aggregator and cursor annotations need.
+   * moving the capability onto {@link MagicProductHost} is tracked in
+   * https://github.com/graph-kit/graph-kit/issues/846
+   */
+  annotations?: Graph['canvas'];
   lensChips?: LensChipDefinition[];
   ui?: UIOptions;
   /** provide a handler for the trigger save function if you want to opt-in to local storage  */

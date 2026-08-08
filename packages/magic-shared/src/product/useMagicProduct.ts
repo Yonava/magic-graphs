@@ -26,12 +26,13 @@ export const useMagicProduct = (
     lens,
   );
 
+  const appearance = useProductAppearance(host.setAppearance);
+
   const annotations = options.annotations
-    ? useAnnotationsState(options.annotations)
+    ? useAnnotationsState(options.annotations, appearance)
     : undefined;
 
   const ui = useProductUI(componentSlots, options.ui);
-  const appearance = useProductAppearance(host.setAppearance);
   const shortcuts = useShortcuts();
 
   const magic: Magic = {

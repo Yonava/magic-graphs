@@ -28,7 +28,7 @@ export const useGraphProduct = (options: GraphProductOptions): MagicGraph => {
       productId: options.productId,
       localStorage:
         options.localStorage === false ? undefined : handleLocalStorageSave,
-      annotations: options.annotations === false ? undefined : graph,
+      annotations: options.annotations === false ? undefined : graph.canvas,
       ui: options.ui,
       lensChips,
     },

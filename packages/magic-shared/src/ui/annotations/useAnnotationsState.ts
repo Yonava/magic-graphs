@@ -16,6 +16,7 @@ import { DeepReadonly } from 'ts-essentials';
 import { computed, ref } from 'vue';
 
 import { Graph } from '../../graph/types.ts';
+import { AppearanceControls } from '../appearance/useProductAppearance.ts';
 import {
   ANNOTATION_PLUGIN_ID,
   BRUSH_WEIGHTS,
@@ -28,7 +29,10 @@ import { createAnnotationThemer } from './createAnnotationThemer.ts';
 import { useAnnotationHistory } from './history.ts';
 import type { Annotation, AnnotationMode } from './types.ts';
 
-export const useAnnotationsState = (graph: Graph) => {
+export const useAnnotationsState = (
+  canvas: Graph['canvas'],
+  appearance: AppearanceControls,
+) => {
   const selectedColor = ref<Color>(COLORS[0]);
   const selectedBrushWeight = ref(BRUSH_WEIGHTS[1]);
   const mode = ref<AnnotationMode>('drawing');
@@ -193,7 +197,7 @@ export const useAnnotationsState = (graph: Graph) => {
   };
 
   const hideCursor = computed(() => isErasing.value || isLaserPointing.value);
-  const cursorTheme = createAnnotationThemer(graph, hideCursor);
+  const cursorTheme = createAnnotationThemer(canvas, hideCursor);
 
   const addScribblesToAggregator = (aggregator: Aggregator) => {
     if (!isActive.value) return aggregator;
@@ -201,11 +205,11 @@ export const useAnnotationsState = (graph: Graph) => {
     if (isErasing.value) {
       const eraserId = 'annotation-eraser-cursor';
       const eraserCursor = circle({
-        at: graph.canvas.graphUnderCursor.coords,
+        at: canvas.graphUnderCursor.coords,
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
         stroke: {
-          color: THEME_TO_ERASER_OUTLINE[graph.theme.activePresetName.value],
+          color: THEME_TO_ERASER_OUTLINE[appearance.state.value],
           lineWidth: 2,
         },
       });
@@ -230,7 +234,7 @@ export const useAnnotationsState = (graph: Graph) => {
       });
     } else if (isLaserPointing.value) {
       const laserPointerCursor = circle({
-        at: graph.canvas.graphUnderCursor.coords,
+        at: canvas.graphUnderCursor.coords,
         radius: selectedBrushWeight.value,
         fillColor: selectedColor.value,
       });
@@ -257,7 +261,7 @@ export const useAnnotationsState = (graph: Graph) => {
     return aggregator;
   };
 
-  graph.canvas.aggregator.transformers.push(addScribblesToAggregator);
+  canvas.aggregator.transformers.push(addScribblesToAggregator);
 
   const consume: WithConsume<(ev: CanvasGraphMouseEvent) => void> = (
     _,
@@ -269,30 +273,25 @@ export const useAnnotationsState = (graph: Graph) => {
 
     cursorTheme.activate();
 
-    graph.canvas.events.handle(
+    canvas.events.handle(
       'onMouseDown',
       startDrawing,
       ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
-    graph.canvas.events.handle(
+    canvas.events.handle(
       'onGraphUnderCursorChange',
       drawLine,
       ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
-    graph.canvas.events.handle(
+    canvas.events.handle(
       'onMouseUp',
       stopDrawing,
       ANNOTATION_PLUGIN_ID,
       PRIORITY,
     );
-    graph.canvas.events.handle(
-      'onClick',
-      consume,
-      ANNOTATION_PLUGIN_ID,
-      PRIORITY,
-    );
+    canvas.events.handle('onClick', consume, ANNOTATION_PLUGIN_ID, PRIORITY);
   };
 
   const deactivate = () => {
@@ -301,10 +300,10 @@ export const useAnnotationsState = (graph: Graph) => {
 
     cursorTheme.deactivate();
 
-    graph.canvas.events.unhandle('onMouseDown', startDrawing);
-    graph.canvas.events.unhandle('onGraphUnderCursorChange', drawLine);
-    graph.canvas.events.unhandle('onMouseUp', stopDrawing);
-    graph.canvas.events.unhandle('onClick', consume);
+    canvas.events.unhandle('onMouseDown', startDrawing);
+    canvas.events.unhandle('onGraphUnderCursorChange', drawLine);
+    canvas.events.unhandle('onMouseUp', stopDrawing);
+    canvas.events.unhandle('onClick', consume);
   };
 
   const load = (annotations: Annotation[]) => {
