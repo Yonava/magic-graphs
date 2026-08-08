@@ -4,7 +4,7 @@
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import { useProvidedMagic } from '../../product/useProvidedGraph.ts';
+  import { useProvidedMagic } from '../../product/context.ts';
 
   const magic = useProvidedMagic();
   const coords = magic.canvas.surface.cursorCoordinates;

@@ -1,5 +1,5 @@
 import { nullThrows } from '@core/utils/assert';
-import { useProvidedMagicGraph } from '@magic/shared/product/useProvidedGraph';
+import { useProvidedMagicGraph } from '@magic/shared/product';
 import { SimulationDefinition } from '@magic/shared/simulation';
 
 import { onMounted, ref } from 'vue';

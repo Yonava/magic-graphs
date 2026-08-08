@@ -1,93 +1,23 @@
-import { CanvasProps } from '@canvas/surface/types';
-import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
-import { BasicColorMode } from '@vueuse/core';
-
-import { ComputedRef, onMounted } from 'vue';
+import { onMounted } from 'vue';
 
 import { useComponentSlotsState } from '../component-slot/useComponentSlotsState.ts';
-import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
-import { Graph } from '../graph/types.ts';
 import { useLensState } from '../lens/useLensState.ts';
-import { LensControls } from '../lens/useLensState.ts';
 import { useProductShortcuts } from '../shortcuts/useProductShortcuts.ts';
-import { ShortcutControls, useShortcuts } from '../shortcuts/useShortcuts.ts';
+import { useShortcuts } from '../shortcuts/useShortcuts.ts';
 import { useSimulationState } from '../simulation/useSimulationState.ts';
-import { SimulationControls } from '../simulation/useSimulationState.ts';
-import {
-  AnnotationsControls,
-  useAnnotationsState,
-} from '../ui/annotations/useAnnotationsState.ts';
-import {
-  AppearanceControls,
-  useProductAppearance,
-} from '../ui/appearance/useProductAppearance.ts';
-import { LensChipDefinition } from '../ui/lens-chips/types.ts';
+import { useAnnotationsState } from '../ui/annotations/useAnnotationsState.ts';
+import { useProductAppearance } from '../ui/appearance/useProductAppearance.ts';
 import { loadFromLinkPayload } from '../ui/link-sharing/linkPayload.ts';
-import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
-import { ProductId, manifests } from './index.ts';
-import { MagicProductManifest } from './manifests/types.ts';
-import { useLocalStorageSync } from './useLocalStorageSync.ts';
-import { provideMagic } from './useProvidedGraph.ts';
-
-type CanvasField = {
-  events: ReadonlyEventHub<{
-    onMouseDown: () => void;
-    onMouseUp: () => void;
-  }>;
-  surface: CanvasProps;
-};
-
-type TransitField = {
-  encode: () => any;
-  decode: (payload: any) => void;
-};
-
-type HistoryField = {
-  canRedo: ComputedRef<boolean>;
-  canUndo: ComputedRef<boolean>;
-  undo: () => void;
-  redo: () => void;
-};
-
-export type MagicProductHost = {
-  transit: TransitField;
-  events: ReadonlyEventHub<{
-    onStructureChange: () => void;
-  }>;
-  canvas: CanvasField;
-  setAppearance: (color: BasicColorMode) => void;
-  history?: HistoryField;
-};
-
-type ProductOptions = {
-  productId: ProductId;
-  // TODO narrow this down to an host interface so annotations can be adapted to non-graph products
-  annotations?: Graph;
-  lensChips?: LensChipDefinition[];
-  ui?: UIOptions;
-  /** provide a handler for the trigger save function if you want to opt-in to local storage  */
-  localStorage?: (triggerSave: () => void) => void;
-};
-
-export type Magic = {
-  manifest: MagicProductManifest;
-  lens: LensControls;
-  componentSlots: ComponentSlotControls;
-  simulation: SimulationControls;
-  ui: UIControls;
-  appearance: AppearanceControls;
-  shortcuts: ShortcutControls;
-  canvas: CanvasField;
-  transit: TransitField;
-  history?: HistoryField;
-  annotations?: AnnotationsControls;
-  lensChips?: LensChipDefinition[];
-};
+import { useProductUI } from '../ui/useProductUI.ts';
+import { provideMagic } from './context.ts';
+import { useLocalStorageSync } from './internals/useLocalStorageSync.ts';
+import { manifests } from './manifests/index.ts';
+import { Magic, MagicProductHost, MagicProductOptions } from './types.ts';
 
 export const useMagicProduct = (
   host: MagicProductHost,
-  options: ProductOptions,
-) => {
+  options: MagicProductOptions,
+): Magic => {
   const componentSlots = useComponentSlotsState();
   const lens = useLensState(componentSlots);
   const simulation = useSimulationState(

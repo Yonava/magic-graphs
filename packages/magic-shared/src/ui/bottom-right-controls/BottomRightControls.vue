@@ -6,7 +6,7 @@
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
   import ToggleIconButton from '../../components/toggle-icon-button/ToggleIconButton.vue';
-  import { useProvidedMagic } from '../../product/useProvidedGraph.ts';
+  import { useProvidedMagic } from '../../product/context.ts';
   import AnnotationToggle from '../annotations/AnnotationToggle.vue';
   import AppearanceToggle from '../appearance/AppearanceToggle.vue';
   import FullscreenButton from '../fullscreen/FullscreenButton.vue';

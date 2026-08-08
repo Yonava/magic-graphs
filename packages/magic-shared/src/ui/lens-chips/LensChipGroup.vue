@@ -5,7 +5,7 @@
 
   import HStack from '../../components/layout/HStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import { useProvidedMagic } from '../../product/useProvidedGraph.ts';
+  import { useProvidedMagic } from '../../product/context.ts';
   import LensChip from './LensChip.vue';
   import { LensChipDefinition } from './types.ts';
 

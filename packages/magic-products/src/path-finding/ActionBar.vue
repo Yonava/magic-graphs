@@ -4,7 +4,7 @@
   import HStack from '@magic/shared/HStack';
   import VStack from '@magic/shared/VStack';
   import Well from '@magic/shared/Well';
-  import { useProvidedMagicGraph } from '@magic/shared/product/useProvidedGraph';
+  import { useProvidedMagicGraph } from '@magic/shared/product';
   import { useFocusedNode } from '@magic/shared/utilities';
 
   import { usePathFindingSimulations } from './simulations/index.ts';

@@ -2,7 +2,7 @@
   import Button from '@magic/shared/Button';
   import HStack from '@magic/shared/HStack';
   import Well from '@magic/shared/Well';
-  import { useProvidedMagicGraph } from '@magic/shared/product/useProvidedGraph';
+  import { useProvidedMagicGraph } from '@magic/shared/product';
   import { useFocusedNode } from '@magic/shared/utilities/useFocusedNode';
 
   import { useAVLSimulationDefinition } from './simulations/useAVLSimulation.ts';

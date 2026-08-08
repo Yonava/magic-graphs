@@ -3,7 +3,7 @@
 
   import IconButton from '../../components/icon-button/IconButton.vue';
   import HStack from '../../components/layout/HStack.vue';
-  import { useProvidedMagic } from '../../product/useProvidedGraph.ts';
+  import { useProvidedMagic } from '../../product/context.ts';
 
   const magic = useProvidedMagic();
 </script>

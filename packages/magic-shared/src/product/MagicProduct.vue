@@ -4,8 +4,8 @@
   import { computed } from 'vue';
 
   import ComponentSlots from '../component-slot/ComponentSlots.vue';
-  import { useDisablePointerEvents } from './useDisablePointerEvents.ts';
-  import { useProvidedMagic } from './useProvidedGraph.ts';
+  import { useProvidedMagic } from './context.ts';
+  import { useDisablePointerEvents } from './internals/useDisablePointerEvents.ts';
 
   const magic = useProvidedMagic();
   const pointerEvents = useDisablePointerEvents(magic);

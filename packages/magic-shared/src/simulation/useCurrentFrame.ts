@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 
-import { useProvidedMagic } from '../product/useProvidedGraph.ts';
+import { useProvidedMagic } from '../product/context.ts';
 
 export const useCurrentFrame = <Frame = any>() => {
   const magic = useProvidedMagic();

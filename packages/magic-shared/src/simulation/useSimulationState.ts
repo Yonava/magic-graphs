@@ -5,7 +5,6 @@ import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 import { ComputedRef, computed, ref } from 'vue';
 
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
-import { Graph } from '../graph/types.ts';
 import { LensControls } from '../lens/useLensState.ts';
 import StopSimulationButton from './StopSimulationButton.vue';
 import { Violation } from './guard/SimulationGuardBuilder.ts';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useProvidedMagic } from '../product/useProvidedGraph.ts';
+  import { useProvidedMagic } from '../product/context.ts';
   import { SlotPosition } from './types.ts';
   import { useComponentBySlotPosition } from './useComponentsBySlotPosition.ts';
 

@@ -2,7 +2,7 @@ import { debounce } from '@core/utils/debounce';
 
 import { onMounted } from 'vue';
 
-import { Magic } from './useMagicProduct.ts';
+import { Magic } from '../types.ts';
 
 const localStorageKey = (id: string) => 'product-data-' + id;
 

@@ -1,7 +1,7 @@
 import { computed } from 'vue';
 
 import { ThemePreset } from './graph/index.ts';
-import { useProvidedMagic } from './product/useProvidedGraph.ts';
+import { useProvidedMagic } from './product/context.ts';
 
 export const useThemeToClasses = (
   themeToClasses: Record<ThemePreset, string>,

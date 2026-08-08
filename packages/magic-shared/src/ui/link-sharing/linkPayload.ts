@@ -3,7 +3,7 @@ import {
   decompressFromEncodedURIComponent,
 } from 'lz-string';
 
-import { Magic } from '../../product/useMagicProduct.ts';
+import { Magic } from '../../product/types.ts';
 
 const sharePayloadQueryParam = 'data';
 

@@ -1,7 +1,7 @@
 import { useFullscreen } from '@vueuse/core';
 
 import { Graph } from '../graph/index.ts';
-import { Magic } from '../product/useMagicProduct.ts';
+import { Magic } from '../product/types.ts';
 import { ShortcutItem } from './useShortcuts.ts';
 
 export const useProductShortcuts = (magic: Magic) => {

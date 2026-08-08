@@ -1,6 +1,6 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-import { Magic } from './useMagicProduct.ts';
+import { Magic } from '../types.ts';
 
 export const useDisablePointerEvents = (magic: Magic) => {
   const disableUIPointerEvents = ref(false);

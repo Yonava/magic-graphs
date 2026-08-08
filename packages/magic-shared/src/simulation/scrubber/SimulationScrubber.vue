@@ -8,7 +8,7 @@
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
-  import { useProvidedMagic } from '../../product/useProvidedGraph.ts';
+  import { useProvidedMagic } from '../../product/context.ts';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
   import { useRunningSimulation } from '../useRunningSimulation.ts';
   import SimulationExplainerText from './SimulationExplainerText.vue';

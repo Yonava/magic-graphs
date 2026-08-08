@@ -3,7 +3,7 @@
 
   import Button from '../components/button/Button.vue';
   import Icon from '../components/icon/Icon.vue';
-  import { useProvidedMagic } from '../product/useProvidedGraph.ts';
+  import { useProvidedMagic } from '../product/context.ts';
 
   const magic = useProvidedMagic();
   const { useShortcut } = magic.shortcuts;

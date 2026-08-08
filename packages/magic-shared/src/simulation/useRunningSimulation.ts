@@ -2,7 +2,7 @@ import { nullThrows } from '@core/utils/assert';
 
 import { computed } from 'vue';
 
-import { useProvidedMagic } from '../product/useProvidedGraph.ts';
+import { useProvidedMagic } from '../product/context.ts';
 import { useCurrentFrame } from './useCurrentFrame.ts';
 
 export const useRunningSimulation = () => {

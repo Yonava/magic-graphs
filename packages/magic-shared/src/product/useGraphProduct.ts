@@ -1,29 +1,11 @@
-import { Graph } from '../graph/types.ts';
-import { UseGraphOptions, useGraph } from '../graph/useGraph.ts';
+import { useGraph } from '../graph/useGraph.ts';
 import { useGraphProductShortcuts } from '../shortcuts/useProductShortcuts.ts';
 import LensChipGroup from '../ui/lens-chips/LensChipGroup.vue';
-import { LensChipDefinition } from '../ui/lens-chips/types.ts';
-import { UIOptions } from '../ui/useProductUI.ts';
-import { ProductId, useMagicProduct } from './index.ts';
-import { Magic } from './useMagicProduct.ts';
-import { provideGraph } from './useProvidedGraph.ts';
+import { provideGraph } from './context.ts';
+import { GraphProductOptions, MagicGraph } from './types.ts';
+import { useMagicProduct } from './useMagicProduct.ts';
 
-export type GraphLensChipOption = (
-  graph: Graph,
-) => LensChipDefinition[] | undefined;
-
-type GraphProductOptions = UseGraphOptions & {
-  productId: ProductId;
-  localStorage?: boolean;
-  annotations?: boolean;
-  lensChips?: GraphLensChipOption;
-  ui?: UIOptions;
-};
-
-export type MagicGraph = Graph & {
-  magic: Magic;
-};
-
+/** adapts a graph to the harness host interface, see {@link useMagicProduct} */
 export const useGraphProduct = (options: GraphProductOptions): MagicGraph => {
   const graph = useGraph(options);
 

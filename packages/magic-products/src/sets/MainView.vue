@@ -1,8 +1,11 @@
 <script setup lang="ts">
   import { useCanvas } from '@canvas/surface/index';
   import { createEventHub } from '@graph/primitives/events/createEventHub';
-  import { MagicProduct, useMagicProduct } from '@magic/shared/product';
-  import { MagicProductHost } from '@magic/shared/product/useMagicProduct';
+  import {
+    MagicProduct,
+    MagicProductHost,
+    useMagicProduct,
+  } from '@magic/shared/product';
 
   import { useCanvasTheme } from './useCanvasTheme.ts';
 

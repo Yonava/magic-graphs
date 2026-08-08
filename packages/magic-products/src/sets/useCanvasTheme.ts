@@ -1,7 +1,7 @@
 import { crossPattern } from '@canvas/surface/crossPattern';
 import { dark } from '@graph/theme-presets/dark/index';
 import { light } from '@graph/theme-presets/light/index';
-import { Magic } from '@magic/shared/product/useMagicProduct';
+import { Magic } from '@magic/shared/product';
 
 import { computed, onMounted, watch } from 'vue';
 

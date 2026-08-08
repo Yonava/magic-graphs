@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed } from 'vue';
 
-  import { useProvidedMagic } from '../product/useProvidedGraph.ts';
+  import { useProvidedMagic } from '../product/context.ts';
 
   const props = withDefaults(
     defineProps<{

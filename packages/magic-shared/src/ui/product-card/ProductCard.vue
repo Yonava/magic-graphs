@@ -5,8 +5,8 @@
 
   import HStack from '../../components/layout/HStack.vue';
   import VStack from '../../components/layout/VStack.vue';
+  import { useProvidedMagic } from '../../product/context.ts';
   import { MagicProductCard } from '../../product/manifests/types.ts';
-  import { useProvidedMagic } from '../../product/useProvidedGraph.ts';
   import { useThemeToClasses } from '../../useThemeToClasses.ts';
 
   const props = defineProps<{ card: MagicProductCard }>();
