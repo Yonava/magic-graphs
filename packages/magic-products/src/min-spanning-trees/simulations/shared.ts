@@ -1,4 +1,6 @@
 import { nullThrows } from '@core/utils/assert';
+import { Color } from '@core/utils/colors';
+import { CoreEdge } from '@graph/primitives/types';
 import { GNode } from '@magic/shared/graph';
 import { Lens } from '@magic/shared/lens';
 import { MagicGraph } from '@magic/shared/product/useGraphProduct';
@@ -13,6 +15,7 @@ import {
   createEdgeIdThemer,
   createNodeIdThemer,
 } from '@magic/shared/theme';
+import tinycolor from 'tinycolor2';
 
 import { Ref } from 'vue';
 
@@ -37,14 +40,16 @@ const nodeRoles = {
   anchor: 'anchor',
 } as const satisfies Record<PrimsNodeConcept, NodeRole>;
 
-// frontier = crossing the cut, weighed against the rest of the frontier, not
-//   yet resolved. a set, and stays lit for as long as an edge stays unresolved.
-// crossing = the one edge actually being taken into the tree this round.
+// candidate = a currently-eligible edge, weighed against the rest of the
+//   candidate set, not yet resolved. a set, and stays lit for as long as an
+//   edge stays eligible.
+// crossing = the one or two edges actually in play this instant - either the
+//   pair being weighed against each other, or the single edge just chosen.
 // tree = an edge grown into the tree so far.
-type PrimsEdgeConcept = 'frontier' | 'crossing' | 'tree';
+type PrimsEdgeConcept = 'candidate' | 'crossing' | 'tree';
 
 const edgeRoles = {
-  frontier: 'weighing',
+  candidate: 'weighing',
   crossing: 'crossing',
   tree: 'tree',
 } as const satisfies Record<PrimsEdgeConcept, EdgeRole>;
@@ -63,8 +68,33 @@ const primsEffects = (graph: MagicGraph): SimulationEffects<PrimsFrame> => {
   const exploring = createNodeIdThemer(graph, nodeRoles.exploring);
 
   const tree = createEdgeIdThemer(graph, edgeRoles.tree);
-  const frontierEdge = createEdgeIdThemer(graph, edgeRoles.frontier);
+  const candidateEdge = createEdgeIdThemer(graph, edgeRoles.candidate);
   const crossingEdge = createEdgeIdThemer(graph, edgeRoles.crossing);
+
+  /*
+    edges that were candidates at some point but can never be picked now -
+    faded to a quarter alpha rather than given a flat color, the same
+    technique the "total cost" chip uses to grey out non-mst edges. an id
+    themer would replace the color outright; fading whatever is already
+    there instead keeps this legible next to anything else painting the edge
+  */
+  const excludedIds = new Set<string>();
+  const fadeExcluded = (edge: CoreEdge, resolveUnderneath: () => Color) => {
+    if (!excludedIds.has(edge.id)) return;
+    return tinycolor(resolveUnderneath()).setAlpha(0.25).toHex8String();
+  };
+  const excludedEdge = graph.theme.createThemer({
+    canvas: {
+      'edge.default.color': fadeExcluded,
+      'edge.default.text.color': fadeExcluded,
+      'edge.hover.color': fadeExcluded,
+      'edge.hover.text.color': fadeExcluded,
+    },
+    focus: {
+      'edge.focus.color': fadeExcluded,
+      'edge.focus.text.color': fadeExcluded,
+    },
+  });
 
   // order matters: latter elements take priority over earlier ones. the anchor
   // sits below the role that describes what is happening right now, so the
@@ -75,8 +105,9 @@ const primsEffects = (graph: MagicGraph): SimulationEffects<PrimsFrame> => {
     anchor,
     exploring,
     tree,
-    frontierEdge,
+    candidateEdge,
     crossingEdge,
+    { themer: excludedEdge },
   ];
 
   const syncToFrame = (frame: PrimsFrame) => {
@@ -85,8 +116,15 @@ const primsEffects = (graph: MagicGraph): SimulationEffects<PrimsFrame> => {
     frontier.setIds(frame.pendingNodeIds ?? []);
     anchor.setId(frame.anchorNodeId);
     tree.setIds(frame.treeEdgeIds);
-    frontierEdge.setIds(frame.frontierEdgeIds ?? []);
-    crossingEdge.setId(frame.activeEdgeId);
+    candidateEdge.setIds(frame.candidateEdges ?? []);
+    // the pair being weighed and the final pick never coexist in the same
+    // frame, so this is safe to merge into one themer rather than two
+    crossingEdge.setIds([
+      ...(frame.currentComparison ?? []),
+      ...(frame.selectedEdge ? [frame.selectedEdge] : []),
+    ]);
+    excludedIds.clear();
+    for (const id of frame.excludedEdgeIds) excludedIds.add(id);
   };
 
   const lens: Lens = {

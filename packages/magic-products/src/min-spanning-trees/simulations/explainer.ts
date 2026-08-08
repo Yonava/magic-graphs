@@ -36,6 +36,14 @@ export const primsExplainer =
       };
     }
 
+    if (frame.type === 'compare-edges') {
+      const left = describeEdge(graph, frame.left);
+      const right = describeEdge(graph, frame.right);
+      return {
+        content: `Comparing ${left} to ${right}`,
+      };
+    }
+
     if (frame.type === 'select-edge') {
       const winner = describeEdge(graph, frame.edge);
 
