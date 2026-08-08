@@ -388,9 +388,15 @@ importers:
 
   packages/magic-products:
     dependencies:
+      '@canvas/primitives':
+        specifier: workspace:*
+        version: link:../canvas-primitives
       '@canvas/surface':
         specifier: workspace:*
         version: link:../canvas-surface
+      '@core/themes':
+        specifier: workspace:*
+        version: link:../core-themes
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils
@@ -403,6 +409,9 @@ importers:
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@graph/theme-presets':
+        specifier: workspace:*
+        version: link:../graph-theme-presets
       '@magic/shared':
         specifier: workspace:*
         version: link:../magic-shared

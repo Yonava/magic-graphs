@@ -5,7 +5,7 @@ import {
 
 import { Magic } from '../../product/useMagicProduct.ts';
 
-const graphSharePayloadQueryParam = 'graph';
+const sharePayloadQueryParam = 'data';
 
 const getLinkPayload = (magic: Magic) => {
   const encoding = magic.transit.encode();
@@ -17,18 +17,18 @@ export const getLink = (magic: Magic) => {
   const { origin } = window.location;
   const { slug } = magic.manifest.navigation;
   const payload = getLinkPayload(magic);
-  const graphQueryParam = `${graphSharePayloadQueryParam}=${payload}`;
+  const query = `${sharePayloadQueryParam}=${payload}`;
 
-  return `${origin}/${slug}?${graphQueryParam}`;
+  return `${origin}/${slug}?${query}`;
 };
 
 export const loadFromLinkPayload = (magic: Magic) => {
   const url = new URL(window.location.href);
-  const payload = url.searchParams.get(graphSharePayloadQueryParam);
+  const payload = url.searchParams.get(sharePayloadQueryParam);
   if (!payload) return;
 
   // always consume or else users see stale when they refresh
-  url.searchParams.delete(graphSharePayloadQueryParam);
+  url.searchParams.delete(sharePayloadQueryParam);
   window.history.replaceState({}, '', url);
 
   const stringEncoding = decompressFromEncodedURIComponent(payload);
