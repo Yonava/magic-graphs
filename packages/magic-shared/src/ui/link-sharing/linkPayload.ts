@@ -3,26 +3,26 @@ import {
   decompressFromEncodedURIComponent,
 } from 'lz-string';
 
-import { MagicGraph } from '../../product/useGraphProduct.ts';
+import { Magic } from '../../product/useMagicProduct.ts';
 
 const graphSharePayloadQueryParam = 'graph';
 
-const getLinkPayload = (graph: MagicGraph) => {
-  const encoding = graph.transit.encode();
+const getLinkPayload = (magic: Magic) => {
+  const encoding = magic.transit.encode();
   const stringEncoding = JSON.stringify(encoding);
   return compressToEncodedURIComponent(stringEncoding);
 };
 
-export const getLink = (graph: MagicGraph) => {
+export const getLink = (magic: Magic) => {
   const { origin } = window.location;
-  const { slug } = graph.magic.manifest.navigation;
-  const payload = getLinkPayload(graph);
+  const { slug } = magic.manifest.navigation;
+  const payload = getLinkPayload(magic);
   const graphQueryParam = `${graphSharePayloadQueryParam}=${payload}`;
 
   return `${origin}/${slug}?${graphQueryParam}`;
 };
 
-export const loadGraphFromLinkPayload = (graph: MagicGraph) => {
+export const loadFromLinkPayload = (magic: Magic) => {
   const url = new URL(window.location.href);
   const payload = url.searchParams.get(graphSharePayloadQueryParam);
   if (!payload) return;
@@ -34,5 +34,6 @@ export const loadGraphFromLinkPayload = (graph: MagicGraph) => {
   const stringEncoding = decompressFromEncodedURIComponent(payload);
   if (!stringEncoding) return;
 
-  graph.transit.decode(JSON.parse(stringEncoding));
+  const parsedEncoding = JSON.parse(stringEncoding);
+  magic.transit.decode(parsedEncoding);
 };

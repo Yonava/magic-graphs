@@ -1,5 +1,5 @@
-import { UIOptions } from '@magic/shared/ui/useProductUI';
+import { GraphUIOptions } from '@magic/shared/ui/useProductUI';
 
-export const lensChips: UIOptions['lensChips'] = (graph) => {
+export const lensChips: GraphUIOptions['lensChips'] = (graph) => {
   return;
 };

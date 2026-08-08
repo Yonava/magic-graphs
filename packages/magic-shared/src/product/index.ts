@@ -1,6 +1,7 @@
-export { default as GraphProduct } from './GraphProduct.vue';
+export { default as MagicProduct } from './MagicProduct.vue';
 export { useDisablePointerEvents } from './useDisablePointerEvents.ts';
 export { useGraphProduct } from './useGraphProduct.ts';
+export { useMagicProduct } from './useMagicProduct.ts';
 export { provideGraph, useProvidedGraph } from './useProvidedGraph.ts';
 
 export { manifests, products } from './manifests/index.ts';

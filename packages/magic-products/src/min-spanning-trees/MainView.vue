@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
+  import { MagicProduct, useGraphProduct } from '@magic/shared/product';
 
   import { lensChips } from './lensChips.ts';
 
@@ -24,5 +24,5 @@
 </script>
 
 <template>
-  <GraphProduct />
+  <MagicProduct />
 </template>

@@ -18,14 +18,16 @@ export type DrawFns = {
   backgroundPattern: Ref<DrawPattern>;
 };
 
+export type CanvasRef = {
+  canvasRef: (canvas: HTMLCanvasElement) => void;
+  cleanup: (canvas: HTMLCanvasElement) => void;
+};
+
 export type CanvasProps = {
   canvas: Ref<HTMLCanvasElement | undefined>;
   camera: Omit<Camera, 'cleanup'>;
   cursorCoordinates: Ref<Coordinate>;
-  ref: {
-    canvasRef: (canvas: HTMLCanvasElement) => void;
-    cleanup: (canvas: HTMLCanvasElement) => void;
-  };
+  ref: CanvasRef;
   draw: DrawFns;
   lifecycleEvents: Omit<EventHub<CanvasLifecycleEvents>, 'emit'>;
 };

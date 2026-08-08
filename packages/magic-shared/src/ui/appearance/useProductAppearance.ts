@@ -1,8 +1,7 @@
-import { BasicColorSchema, useColorMode } from '@vueuse/core';
+import { BasicColorMode, BasicColorSchema, useColorMode } from '@vueuse/core';
 
 import { onMounted, watch } from 'vue';
 
-import { Graph } from '../../graph/types.ts';
 import { APPEARANCE_STORAGE_KEY, appearances } from './appearances.ts';
 
 const validAppearance = (appearance: unknown): appearance is BasicColorSchema =>
@@ -10,7 +9,9 @@ const validAppearance = (appearance: unknown): appearance is BasicColorSchema =>
 
 export type AppearanceControls = ReturnType<typeof useProductAppearance>;
 
-export const useProductAppearance = (graph: Graph) => {
+export const useProductAppearance = (
+  setAppearance: (color: BasicColorMode) => void,
+) => {
   const appearance = useColorMode({
     emitAuto: true,
     storageKey: APPEARANCE_STORAGE_KEY,
@@ -28,7 +29,7 @@ export const useProductAppearance = (graph: Graph) => {
       localStorage.removeItem(APPEARANCE_STORAGE_KEY);
       return;
     }
-    graph.theme.activePresetName.value = appearanceValue;
+    setAppearance(appearanceValue);
   };
 
   watch(appearance.state, setValue);

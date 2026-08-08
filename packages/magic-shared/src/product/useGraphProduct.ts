@@ -1,42 +1,31 @@
 import { onMounted } from 'vue';
 
 import { useComponentSlotsState } from '../component-slot/useComponentSlotsState.ts';
-import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
 import { Graph } from '../graph/types.ts';
 import { UseGraphOptions, useGraph } from '../graph/useGraph.ts';
 import { useLensState } from '../lens/useLensState.ts';
-import { LensControls } from '../lens/useLensState.ts';
-import { useProductShortcuts } from '../shortcuts/useProductShortcuts.ts';
-import { ShortcutControls, useShortcuts } from '../shortcuts/useShortcuts.ts';
-import { useSimulationState } from '../simulation/useSimulationState.ts';
-import { SimulationControls } from '../simulation/useSimulationState.ts';
 import {
-  AppearanceControls,
-  useProductAppearance,
-} from '../ui/appearance/useProductAppearance.ts';
-import { loadGraphFromLinkPayload } from '../ui/link-sharing/linkPayload.ts';
-import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
+  useGraphProductShortcuts,
+  useProductShortcuts,
+} from '../shortcuts/useProductShortcuts.ts';
+import { useShortcuts } from '../shortcuts/useShortcuts.ts';
+import { useSimulationState } from '../simulation/useSimulationState.ts';
+import { useProductAppearance } from '../ui/appearance/useProductAppearance.ts';
+import { loadFromLinkPayload } from '../ui/link-sharing/linkPayload.ts';
+import { UIOptions, useProductUI } from '../ui/useProductUI.ts';
 import { ProductId, manifests } from './index.ts';
-import { MagicProductManifest } from './manifests/types.ts';
 import { useLocalStorageGraphSync } from './useLocalStorageGraphSync.ts';
-import { provideGraph } from './useProvidedGraph.ts';
+import { Magic } from './useMagicProduct.ts';
+import { provideGraph, provideMagic } from './useProvidedGraph.ts';
 
 type GraphProductOptions = UseGraphOptions & {
   productId: ProductId;
   localStorage?: boolean;
-  ui?: UIOptions;
+  ui?: UIOptions<Graph>;
 };
 
 export type MagicGraph = Graph & {
-  magic: {
-    manifest: MagicProductManifest;
-    lens: LensControls;
-    componentSlots: ComponentSlotControls;
-    simulation: SimulationControls;
-    ui: UIControls;
-    appearance: AppearanceControls;
-    shortcuts: ShortcutControls;
-  };
+  magic: Magic;
 };
 
 export const useGraphProduct = (options: GraphProductOptions) => {
@@ -44,10 +33,16 @@ export const useGraphProduct = (options: GraphProductOptions) => {
 
   const componentSlots = useComponentSlotsState();
   const lens = useLensState(componentSlots);
-  const simulation = useSimulationState(graph, componentSlots, lens);
+  const simulation = useSimulationState(
+    graph.events.subscribe,
+    componentSlots,
+    lens,
+  );
 
   const ui = useProductUI(graph, componentSlots, options.ui);
-  const appearance = useProductAppearance(graph);
+  const appearance = useProductAppearance(
+    (color) => (graph.theme.activePresetName.value = color),
+  );
   const shortcuts = useShortcuts();
 
   const magicGraph: MagicGraph = {
@@ -60,6 +55,11 @@ export const useGraphProduct = (options: GraphProductOptions) => {
       ui,
       appearance,
       shortcuts,
+      canvas: {
+        events: graph.canvas.events,
+        surface: graph.canvas.magicCanvas,
+      },
+      transit: graph.transit,
     },
   };
 
@@ -68,12 +68,14 @@ export const useGraphProduct = (options: GraphProductOptions) => {
   }
 
   if (magicGraph.magic.ui.linkSharing) {
-    onMounted(() => loadGraphFromLinkPayload(magicGraph));
+    onMounted(() => loadFromLinkPayload(magicGraph.magic));
   }
 
-  useProductShortcuts(magicGraph);
+  useProductShortcuts(magicGraph.magic);
+  useGraphProductShortcuts(magicGraph);
 
   provideGraph(magicGraph);
+  provideMagic(magicGraph.magic);
 
   return magicGraph;
 };

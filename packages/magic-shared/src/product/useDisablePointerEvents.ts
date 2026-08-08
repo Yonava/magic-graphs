@@ -1,8 +1,8 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-import { Graph } from '../graph/types.ts';
+import { Magic } from './useMagicProduct.ts';
 
-export const useDisablePointerEvents = (graph: Graph) => {
+export const useDisablePointerEvents = (magic: Magic) => {
   const disableUIPointerEvents = ref(false);
 
   /*
@@ -22,13 +22,13 @@ export const useDisablePointerEvents = (graph: Graph) => {
   const startPointerEvents = () => (disableUIPointerEvents.value = false);
 
   onMounted(() => {
-    graph.canvas.events.subscribe('onMouseDown', stopPointerEvents);
-    graph.canvas.events.subscribe('onMouseUp', startPointerEvents);
+    magic.canvas.events.subscribe('onMouseDown', stopPointerEvents);
+    magic.canvas.events.subscribe('onMouseUp', startPointerEvents);
   });
 
   onUnmounted(() => {
-    graph.canvas.events.unsubscribe('onMouseDown', stopPointerEvents);
-    graph.canvas.events.unsubscribe('onMouseUp', startPointerEvents);
+    magic.canvas.events.unsubscribe('onMouseDown', stopPointerEvents);
+    magic.canvas.events.unsubscribe('onMouseUp', startPointerEvents);
   });
 
   return pointerEvents;

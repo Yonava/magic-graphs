@@ -1,5 +1,6 @@
 import { nullThrows } from '@core/utils/assert';
 import { delta } from '@core/utils/delta/index';
+import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 
 import { ComputedRef, computed, ref } from 'vue';
 
@@ -50,7 +51,9 @@ const COMPONENT_IDS = {
 };
 
 export const useSimulationState = (
-  graph: Graph,
+  subscribe: ReadonlyEventHub<{
+    onStructureChange: () => void;
+  }>['subscribe'],
   componentSlotControls: ComponentSlotControls,
   lensControls: LensControls,
 ): SimulationControls => {
@@ -237,7 +240,7 @@ export const useSimulationState = (
     return { previousViolationId, currentViolationId: undefined };
   };
 
-  graph.events.subscribe('onStructureChange', () => {
+  subscribe('onStructureChange', () => {
     const sim = simulation.value;
     if (!sim) return;
 

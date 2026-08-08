@@ -11,12 +11,14 @@ import CursorCoordinates from './debug/CursorCoordinates.vue';
 import { LensChipDefinition } from './lens-chips/types.ts';
 import NavigationMenu from './navigation-menu/NavigationMenu.vue';
 
-export type UIOptions = {
-  lensChips?: (graph: Graph) => LensChipDefinition[] | undefined;
+export type UIOptions<GraphLike> = {
+  lensChips?: (graph: GraphLike) => LensChipDefinition[] | undefined;
   annotations?: boolean;
   debug?: boolean;
   linkSharing?: boolean;
 };
+
+export type GraphUIOptions = UIOptions<Graph>;
 
 export type UIControls = {
   lensChips?: LensChipDefinition[];
@@ -24,10 +26,10 @@ export type UIControls = {
   linkSharing: boolean;
 };
 
-export const useProductUI = (
-  graph: Graph,
+export const useProductUI = <GraphLike>(
+  graph: GraphLike,
   componentSlots: ComponentSlotControls,
-  options: UIOptions = {},
+  options: UIOptions<GraphLike> = {},
 ): UIControls => {
   const lensChips = options.lensChips?.(graph);
 
@@ -62,6 +64,7 @@ export const useProductUI = (
   componentSlots.addMany(definedSlots);
 
   const annotations =
+    // @ts-expect-error expect annotations issues
     options.annotations === false ? undefined : useAnnotationsState(graph);
 
   return {

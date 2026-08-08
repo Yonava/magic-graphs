@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { AggregatorTransformer } from '@graph/plugins/canvas/aggregator/types';
   import { createPhantomAwareEdgeRenderFunction } from '@graph/plugins/phantom/createPhantomAwareEdgeRenderFunction';
-  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
+  import { MagicProduct, useGraphProduct } from '@magic/shared/product';
 
   import { onMounted } from 'vue';
 
@@ -78,5 +78,5 @@
 </script>
 
 <template>
-  <GraphProduct />
+  <MagicProduct />
 </template>
