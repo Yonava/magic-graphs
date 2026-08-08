@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
+  import { MagicProduct, useGraphProduct } from '@magic/shared/product';
 
   import ActionBar from './ActionBar.vue';
 
@@ -8,9 +8,6 @@
     interactive: {
       allowSelfLoops: false,
       allowRepeatConnections: true,
-    },
-    ui: {
-      annotations: true,
     },
   });
 
@@ -22,5 +19,5 @@
 </script>
 
 <template>
-  <GraphProduct />
+  <MagicProduct />
 </template>

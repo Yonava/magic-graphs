@@ -6,19 +6,19 @@
   import DropdownItem from '../../components/dropdown/DropdownItem.vue';
   import VStack from '../../components/layout/VStack.vue';
   import Well from '../../components/layout/Well.vue';
+  import { useProvidedMagic } from '../../product/context.ts';
   import { products } from '../../product/manifests/index.ts';
-  import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
   import ProductCard from '../product-card/ProductCard.vue';
   import { navigateToProduct } from './navigateToProduct.ts';
 
-  const graph = useProvidedGraph();
+  const magic = useProvidedMagic();
 
   const displayedProducts = products.flatMap((product) =>
     product.navigation.card ? [{ product, card: product.navigation.card }] : [],
   );
 
   const activeProduct = nullThrows(
-    products.find((product) => graph.magic.manifest.id === product.id),
+    products.find((product) => magic.manifest.id === product.id),
     'product id not recognized',
   );
 </script>

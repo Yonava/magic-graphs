@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
+  import { MagicProduct, useGraphProduct } from '@magic/shared/product';
 
   import { lensChips } from './lensChips.ts';
 
@@ -11,18 +11,10 @@
     interactive: {
       allowSelfLoops: false,
     },
-    ui: {
-      lensChips,
-    },
+    lensChips,
   });
-
-  // graph.magic.componentSlots.add({
-  //   component: ActiveMST,
-  //   id: 'mst-viewer',
-  //   position: 'bottom-middle',
-  // });
 </script>
 
 <template>
-  <GraphProduct />
+  <MagicProduct />
 </template>

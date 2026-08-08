@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
+  import { MagicProduct, useGraphProduct } from '@magic/shared/product';
 
   import FocusedNodeMenu from './FocusedNodeMenu.vue';
 
@@ -10,7 +10,6 @@
       weighted: false,
     },
     ui: {
-      annotations: true,
       debug: true,
     },
   });
@@ -27,5 +26,5 @@
 </script>
 
 <template>
-  <GraphProduct />
+  <MagicProduct />
 </template>

@@ -1,5 +1,6 @@
+import { getCoordinates } from '@core/utils/canvas/index';
+
 import type { Camera } from './camera/index.ts';
-import { getCoordinates } from './coordinates/index.ts';
 import type { Coordinate, DrawFns } from './types.ts';
 
 const STAGGER = 100;

@@ -53,9 +53,6 @@ importers:
 
   packages/canvas-primitives:
     dependencies:
-      '@canvas/surface':
-        specifier: workspace:*
-        version: link:../canvas-surface
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils
@@ -87,6 +84,9 @@ importers:
 
   packages/canvas-surface:
     dependencies:
+      '@canvas/primitives':
+        specifier: workspace:*
+        version: link:../canvas-primitives
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils
@@ -227,11 +227,7 @@ importers:
         specifier: ^10.2.0
         version: 10.2.1(typescript@6.0.3)
 
-  packages/graph-dev-tools:
-    dependencies:
-      '@core/utils':
-        specifier: workspace:*
-        version: link:../core-utils
+  packages/graph-dev-tools: {}
 
   packages/graph-plugins:
     dependencies:
@@ -360,18 +356,12 @@ importers:
 
   packages/magic-client:
     dependencies:
-      '@core/components':
-        specifier: workspace:*
-        version: link:../core-components
       '@magic/products':
         specifier: workspace:*
         version: link:../magic-products
       '@magic/shared':
         specifier: workspace:*
         version: link:../magic-shared
-      '@mdi/js':
-        specifier: ^7.4.47
-        version: 7.4.47
       nuxt:
         specifier: ^4.1.2
         version: 4.5.0(@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7))(@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7))(@types/node@24.13.3)(@vue/compiler-sfc@3.5.40)(db0@0.3.4)(esbuild@0.28.1)(ioredis@5.11.1)(lightningcss@1.33.0)(magicast@0.5.3)(oxc-parser@0.140.0)(rollup-plugin-visualizer@7.0.1(rolldown@1.2.0)(rollup@4.62.2))(rollup@4.62.2)(srvx@0.11.22)(terser@5.49.0)(tsx@4.23.1)(typescript@6.0.3)(vite@8.1.5(@types/node@24.13.3)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0))(vue-tsc@3.3.8(typescript@6.0.3))(yaml@2.9.0)
@@ -394,18 +384,21 @@ importers:
 
   packages/magic-products:
     dependencies:
+      '@canvas/surface':
+        specifier: workspace:*
+        version: link:../canvas-surface
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils
-      '@graph/core':
-        specifier: workspace:*
-        version: link:../graph-core
       '@graph/plugins':
         specifier: workspace:*
         version: link:../graph-plugins
       '@graph/primitives':
         specifier: workspace:*
         version: link:../graph-primitives
+      '@graph/theme-presets':
+        specifier: workspace:*
+        version: link:../graph-theme-presets
       '@magic/shared':
         specifier: workspace:*
         version: link:../magic-shared

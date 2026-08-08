@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { GraphProduct, useGraphProduct } from '@magic/shared/product';
+  import { MagicProduct, useGraphProduct } from '@magic/shared/product';
 
   import ActionBar from './ActionBar.vue';
   import WelcomeBanner from './WelcomeBanner.vue';
@@ -11,9 +11,7 @@
     core: {
       weighted: false,
     },
-    ui: {
-      annotations: false,
-    },
+    annotations: false,
   });
 
   graph.anchors.lifecycle.disable();
@@ -36,5 +34,5 @@
 </script>
 
 <template>
-  <GraphProduct />
+  <MagicProduct />
 </template>
