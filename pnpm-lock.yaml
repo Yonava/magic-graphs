@@ -227,11 +227,7 @@ importers:
         specifier: ^10.2.0
         version: 10.2.1(typescript@6.0.3)
 
-  packages/graph-dev-tools:
-    dependencies:
-      '@core/utils':
-        specifier: workspace:*
-        version: link:../core-utils
+  packages/graph-dev-tools: {}
 
   packages/graph-plugins:
     dependencies:
@@ -388,18 +384,12 @@ importers:
 
   packages/magic-products:
     dependencies:
-      '@canvas/primitives':
-        specifier: workspace:*
-        version: link:../canvas-primitives
       '@canvas/surface':
         specifier: workspace:*
         version: link:../canvas-surface
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils
-      '@graph/core':
-        specifier: workspace:*
-        version: link:../graph-core
       '@graph/plugins':
         specifier: workspace:*
         version: link:../graph-plugins
