@@ -1,85 +1,11 @@
-import { getCtx } from '@core/utils/ctx/index';
+import { getCoordinates, getCtx } from '@core/utils/canvas/index';
 
 import { type Ref, onMounted, ref } from 'vue';
 
-import { getDevicePixelRatio } from '../camera/utils.ts';
 import { Coordinate } from '../types.ts';
 
-export const getCanvasTransform = (ctx: CanvasRenderingContext2D) => {
-  const { a, e, f } = ctx.getTransform();
-  // TODO investigate why dpr isn't already factored into ctx. Camera should add it with the PZ transform!
-  const dpr = getDevicePixelRatio();
-  const zoom = a / dpr;
-  const panX = e / dpr;
-  const panY = f / dpr;
-  return { panX, panY, zoom };
-};
-
-/**
- * the coordinates in the real world. aka the browser
- */
-export type ClientCoords = Pick<MouseEvent, 'clientX' | 'clientY'>;
-
-/**
- * the coordinates in the magic canvas world
- */
-export type Coords = Coordinate;
-
-export type WithZoom<T> = T & {
-  /**
-   * the scale factor of the canvas
-   */
-  zoom: number;
-};
-
-/**
- * magic coordinates are coordinates transformed by the pan and zoom of the camera.
- *
- * if the user has panned their camera 10px to the left, running this function with
- * `clientCoords` set to (0, 0) will return (-10, 0, 1)
- */
-export const getCoordinates = (
-  clientCoords: ClientCoords,
-  ctx: CanvasRenderingContext2D,
-  /**
-   * the canvas's position on screen. measuring it forces layout, so callers on
-   * the draw path should pass one they already hold and leave the default to
-   * one off callers like event handlers
-   */
-  rect: Pick<DOMRect, 'left' | 'top'> = ctx.canvas.getBoundingClientRect(),
-): WithZoom<Coords> => {
-  const localX = clientCoords.clientX - rect.left;
-  const localY = clientCoords.clientY - rect.top;
-
-  const { panX, panY, zoom } = getCanvasTransform(ctx);
-
-  const x = (localX - panX) / zoom;
-  const y = (localY - panY) / zoom;
-
-  return { x, y, zoom };
-};
-
-/**
- * client coordinates are the raw coordinates corresponding to the clients physical screen.
- *
- * the top left corner is (0, 0) and bottom right corner is (window.innerWidth, window.innerHeight).
- */
-export const getClientCoordinates = (
-  magicCoords: Coords,
-  ctx: CanvasRenderingContext2D,
-): WithZoom<ClientCoords> => {
-  const { panX, panY, zoom } = getCanvasTransform(ctx);
-  const { x, y } = magicCoords;
-
-  return {
-    clientX: x * zoom + panX,
-    clientY: y * zoom + panY,
-    zoom,
-  };
-};
-
 export const useCoordinates = (canvas: Ref<HTMLCanvasElement | undefined>) => {
-  const coordinates = ref<Coords>({ x: 0, y: 0 });
+  const coordinates = ref<Coordinate>({ x: 0, y: 0 });
   const captureCoords = (ev: MouseEvent) =>
     (coordinates.value = getCoordinates(ev, getCtx(canvas)));
 

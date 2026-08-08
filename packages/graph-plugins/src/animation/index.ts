@@ -1,4 +1,4 @@
-import { getCtx } from '@core/utils/ctx/index';
+import { getCtx } from '@core/utils/canvas/index';
 
 import { AnimationPlugin } from './types.ts';
 

@@ -1,4 +1,4 @@
-import { getClientCoordinates } from '@canvas/surface/coordinates/index';
+import { getClientCoordinates } from '@core/utils/canvas/index';
 import type { DeepRequired } from 'ts-essentials';
 
 import { isPointInBoundingBox } from '../helpers.ts';

@@ -1,5 +1,5 @@
 import { circle } from '@canvas/primitives/shapes/circle/index';
-import { scribble } from '@canvas/primitives/shapes/scribble/index';
+import { scribble as scribbleShape } from '@canvas/primitives/shapes/scribble/index';
 import type { ScribbleSchema } from '@canvas/primitives/shapes/scribble/types';
 import type { WithId } from '@canvas/primitives/types/index';
 import type { Coordinate } from '@canvas/primitives/types/utility';
@@ -88,8 +88,8 @@ export const useAnnotationsState = (graph: Graph) => {
         radius: ERASER_BRUSH_RADIUS,
       }).getBoundingBox();
 
-      const erasedScribbles = scribbles.value.filter((_scribble) => {
-        const shape = scribble(_scribble);
+      const erasedScribbles = scribbles.value.filter((scribble) => {
+        const shape = scribbleShape(scribble);
         return shape.overlapsBox(eraserBoundingBox);
       });
 
@@ -121,8 +121,8 @@ export const useAnnotationsState = (graph: Graph) => {
         radius: ERASER_BRUSH_RADIUS,
       }).getBoundingBox();
 
-      const erasedScribbles = scribbles.value.filter((_scribble) => {
-        const shape = scribble(_scribble);
+      const erasedScribbles = scribbles.value.filter((scribble) => {
+        const shape = scribbleShape(scribble);
         return shape.overlapsBox(eraserBoundingBox);
       });
 
@@ -216,7 +216,7 @@ export const useAnnotationsState = (graph: Graph) => {
         priority: 5050,
       });
     } else if (batch.value.length > 0 && isDrawing.value) {
-      const incompleteScribble = scribble({
+      const incompleteScribble = scribbleShape({
         type: 'draw',
         points: batch.value,
         fillColor: selectedColor.value,
@@ -242,13 +242,13 @@ export const useAnnotationsState = (graph: Graph) => {
       });
     }
 
-    for (const _scribble of scribbles.value) {
-      const isErased = erasedScribbleIds.value.has(_scribble.id);
+    for (const scribble of scribbles.value) {
+      const isErased = erasedScribbleIds.value.has(scribble.id);
       aggregator.push({
-        id: _scribble.id,
-        shape: scribble({
-          ..._scribble,
-          fillColor: _scribble.fillColor + (isErased ? '50' : ''),
+        id: scribble.id,
+        shape: scribbleShape({
+          ...scribble,
+          fillColor: scribble.fillColor + (isErased ? '50' : ''),
         }),
         priority: 5000,
       });

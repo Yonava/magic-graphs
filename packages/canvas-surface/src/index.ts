@@ -1,4 +1,4 @@
-import { getCtx } from '@core/utils/ctx/index';
+import { getCtx, getDevicePixelRatio } from '@core/utils/canvas/index';
 import { createEventHub } from '@graph/primitives/events/createEventHub';
 import { useElementSize } from '@vueuse/core';
 
@@ -6,7 +6,6 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import { type DrawPattern, useBackgroundPattern } from './backgroundPattern.ts';
 import { useCamera } from './camera/index.ts';
-import { getDevicePixelRatio } from './camera/utils.ts';
 import { useCoordinates } from './coordinates/index.ts';
 import { createCanvasLifecycleEventRegistry } from './events.ts';
 import type { DrawContent, UseCanvas } from './types.ts';

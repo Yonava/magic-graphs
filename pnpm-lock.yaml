@@ -53,9 +53,6 @@ importers:
 
   packages/canvas-primitives:
     dependencies:
-      '@canvas/surface':
-        specifier: workspace:*
-        version: link:../canvas-surface
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils
@@ -87,6 +84,9 @@ importers:
 
   packages/canvas-surface:
     dependencies:
+      '@canvas/primitives':
+        specifier: workspace:*
+        version: link:../canvas-primitives
       '@core/utils':
         specifier: workspace:*
         version: link:../core-utils

@@ -1,5 +1,5 @@
 import { nullThrows } from '@core/utils/assert';
-import { getCtx } from '@core/utils/ctx/index';
+import { getCtx } from '@core/utils/canvas/index';
 import { getValue } from '@core/utils/maybeGetter/index';
 import Fraction from 'fraction.js';
 

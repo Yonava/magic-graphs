@@ -119,13 +119,15 @@ export const useMagicProduct = (
     history: host.history,
   };
 
-  if (magic.ui.linkSharing) {
-    onMounted(() => loadFromLinkPayload(magic));
-  }
-
+  // ORDER MATTERS!
+  // local storage before link share, otherwise local storage content loads on top of a shared link
   if (options.localStorage) {
     const triggerSave = useLocalStorageSync(magic);
     options.localStorage(triggerSave);
+  }
+
+  if (magic.ui.linkSharing) {
+    onMounted(() => loadFromLinkPayload(magic));
   }
 
   useProductShortcuts(magic);
