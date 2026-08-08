@@ -1,4 +1,5 @@
 import { circle } from '@canvas/primitives/shapes/circle/index';
+import { scribble } from '@canvas/primitives/shapes/scribble/index';
 import type { ScribbleSchema } from '@canvas/primitives/shapes/scribble/types';
 import type { WithId } from '@canvas/primitives/types/index';
 import type { Coordinate } from '@canvas/primitives/types/utility';
@@ -87,8 +88,8 @@ export const useAnnotationsState = (graph: Graph) => {
         radius: ERASER_BRUSH_RADIUS,
       }).getBoundingBox();
 
-      const erasedScribbles = scribbles.value.filter((scribble) => {
-        const shape = graph.canvas.shapes.scribble(scribble);
+      const erasedScribbles = scribbles.value.filter((_scribble) => {
+        const shape = scribble(_scribble);
         return shape.overlapsBox(eraserBoundingBox);
       });
 
@@ -120,8 +121,8 @@ export const useAnnotationsState = (graph: Graph) => {
         radius: ERASER_BRUSH_RADIUS,
       }).getBoundingBox();
 
-      const erasedScribbles = scribbles.value.filter((scribble) => {
-        const shape = graph.canvas.shapes.scribble(scribble);
+      const erasedScribbles = scribbles.value.filter((_scribble) => {
+        const shape = scribble(_scribble);
         return shape.overlapsBox(eraserBoundingBox);
       });
 
@@ -199,8 +200,7 @@ export const useAnnotationsState = (graph: Graph) => {
 
     if (isErasing.value) {
       const eraserId = 'annotation-eraser-cursor';
-      const eraserCursor = graph.canvas.shapes.circle({
-        id: eraserId,
+      const eraserCursor = circle({
         at: graph.canvas.graphUnderCursor.coords,
         radius: ERASER_BRUSH_RADIUS,
         fillColor: colors.TRANSPARENT,
@@ -216,9 +216,7 @@ export const useAnnotationsState = (graph: Graph) => {
         priority: 5050,
       });
     } else if (batch.value.length > 0 && isDrawing.value) {
-      const incompleteAnnotationId = 'annotation-incomplete';
-      const incompleteScribble = graph.canvas.shapes.scribble({
-        id: incompleteAnnotationId,
+      const incompleteScribble = scribble({
         type: 'draw',
         points: batch.value,
         fillColor: selectedColor.value,
@@ -226,33 +224,31 @@ export const useAnnotationsState = (graph: Graph) => {
       });
 
       aggregator.push({
-        id: incompleteAnnotationId,
+        id: 'annotation-incomplete',
         shape: incompleteScribble,
         priority: 5001,
       });
     } else if (isLaserPointing.value) {
-      const laserPointerCursorId = 'laser-pointer-cursor';
-      const laserPointerCursor = graph.canvas.shapes.circle({
-        id: laserPointerCursorId,
+      const laserPointerCursor = circle({
         at: graph.canvas.graphUnderCursor.coords,
         radius: selectedBrushWeight.value,
         fillColor: selectedColor.value,
       });
 
       aggregator.push({
-        id: laserPointerCursorId,
+        id: 'laser-pointer-cursor',
         shape: laserPointerCursor,
         priority: 5050,
       });
     }
 
-    for (const scribble of scribbles.value) {
-      const isErased = erasedScribbleIds.value.has(scribble.id);
+    for (const _scribble of scribbles.value) {
+      const isErased = erasedScribbleIds.value.has(_scribble.id);
       aggregator.push({
-        id: scribble.id,
-        shape: graph.canvas.shapes.scribble({
-          ...scribble,
-          fillColor: scribble.fillColor + (isErased ? '50' : ''),
+        id: _scribble.id,
+        shape: scribble({
+          ..._scribble,
+          fillColor: _scribble.fillColor + (isErased ? '50' : ''),
         }),
         priority: 5000,
       });
