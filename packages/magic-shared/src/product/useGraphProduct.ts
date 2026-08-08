@@ -1,16 +1,23 @@
 import { Graph } from '../graph/types.ts';
 import { UseGraphOptions, useGraph } from '../graph/useGraph.ts';
 import { useGraphProductShortcuts } from '../shortcuts/useProductShortcuts.ts';
+import LensChipGroup from '../ui/lens-chips/LensChipGroup.vue';
+import { LensChipDefinition } from '../ui/lens-chips/types.ts';
 import { UIOptions } from '../ui/useProductUI.ts';
 import { ProductId, useMagicProduct } from './index.ts';
 import { Magic } from './useMagicProduct.ts';
-import { provideGraph, provideMagic } from './useProvidedGraph.ts';
+import { provideGraph } from './useProvidedGraph.ts';
+
+export type GraphLensChipOption = (
+  graph: Graph,
+) => LensChipDefinition[] | undefined;
 
 type GraphProductOptions = UseGraphOptions & {
   productId: ProductId;
   localStorage?: boolean;
   annotations?: boolean;
-  ui?: UIOptions<Graph>;
+  lensChips?: GraphLensChipOption;
+  ui?: UIOptions;
 };
 
 export type MagicGraph = Graph & {
@@ -39,8 +46,15 @@ export const useGraphProduct = (options: GraphProductOptions): MagicGraph => {
         options.localStorage === false ? undefined : handleLocalStorageSave,
       annotations: options.annotations === false ? undefined : graph,
       ui: options.ui,
+      lensChips: options.lensChips?.(graph),
     },
   );
+
+  magic.componentSlots.add({
+    id: 'product/lens-chips',
+    component: LensChipGroup,
+    position: 'top-middle',
+  });
 
   useGraphProductShortcuts(magic, graph);
 

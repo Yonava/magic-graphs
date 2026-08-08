@@ -19,7 +19,7 @@
 <template>
   <HStack>
     <HistoryButtons />
-    <AnnotationToggle v-if="magic.ui.annotations" />
+    <AnnotationToggle v-if="magic.annotations" />
 
     <Well class="p-0 rounded-full overflow-hidden">
       <Dropdown

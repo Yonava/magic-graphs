@@ -12,9 +12,7 @@
     interactive: {
       allowSelfLoops: false,
     },
-    ui: {
-      lensChips,
-    },
+    lensChips,
   });
 
   graph.magic.componentSlots.add({

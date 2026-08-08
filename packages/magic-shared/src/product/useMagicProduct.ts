@@ -1,8 +1,8 @@
-import { CanvasProps, CanvasRef } from '@canvas/surface/types';
+import { CanvasProps } from '@canvas/surface/types';
 import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 import { BasicColorMode } from '@vueuse/core';
 
-import { ComputedRef, Ref, onMounted } from 'vue';
+import { ComputedRef, onMounted } from 'vue';
 
 import { useComponentSlotsState } from '../component-slot/useComponentSlotsState.ts';
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
@@ -21,6 +21,7 @@ import {
   AppearanceControls,
   useProductAppearance,
 } from '../ui/appearance/useProductAppearance.ts';
+import { LensChipDefinition } from '../ui/lens-chips/types.ts';
 import { loadFromLinkPayload } from '../ui/link-sharing/linkPayload.ts';
 import { UIControls, UIOptions, useProductUI } from '../ui/useProductUI.ts';
 import { ProductId, manifests } from './index.ts';
@@ -58,11 +59,12 @@ export type MagicProductHost = {
   history?: HistoryField;
 };
 
-type ProductOptions<GraphLike> = {
+type ProductOptions = {
   productId: ProductId;
   // TODO narrow this down to an host interface so annotations can be adapted to non-graph products
   annotations?: Graph;
-  ui?: UIOptions<GraphLike>;
+  lensChips?: LensChipDefinition[];
+  ui?: UIOptions;
   /** provide a handler for the trigger save function if you want to opt-in to local storage  */
   localStorage?: (triggerSave: () => void) => void;
 };
@@ -79,11 +81,12 @@ export type Magic = {
   transit: TransitField;
   history?: HistoryField;
   annotations?: AnnotationsControls;
+  lensChips?: LensChipDefinition[];
 };
 
 export const useMagicProduct = (
   host: MagicProductHost,
-  options: ProductOptions<MagicProductHost>,
+  options: ProductOptions,
 ) => {
   const componentSlots = useComponentSlotsState();
   const lens = useLensState(componentSlots);
@@ -97,7 +100,7 @@ export const useMagicProduct = (
     ? useAnnotationsState(options.annotations)
     : undefined;
 
-  const ui = useProductUI(host, componentSlots, options.ui);
+  const ui = useProductUI(componentSlots, options.ui);
   const appearance = useProductAppearance(host.setAppearance);
   const shortcuts = useShortcuts();
 
@@ -110,6 +113,7 @@ export const useMagicProduct = (
     appearance,
     shortcuts,
     annotations,
+    lensChips: options.lensChips,
     canvas: host.canvas,
     transit: host.transit,
     history: host.history,

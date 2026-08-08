@@ -11,16 +11,8 @@
     interactive: {
       allowSelfLoops: false,
     },
-    ui: {
-      lensChips,
-    },
+    lensChips,
   });
-
-  // graph.magic.componentSlots.add({
-  //   component: ActiveMST,
-  //   id: 'mst-viewer',
-  //   position: 'bottom-middle',
-  // });
 </script>
 
 <template>
