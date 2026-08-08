@@ -46,6 +46,12 @@ export const welcomeNodes = [
     position: { x: 1280, y: 420 },
     color: colors.SKY_500,
   },
+  {
+    productId: 'sets',
+    label: 'SET',
+    position: { x: 50, y: 420 },
+    color: colors.SKY_500,
+  },
 ] as const satisfies WelcomeNode[];
 
 type Label = (typeof welcomeNodes)[number]['label'];
@@ -60,6 +66,7 @@ export const edges: [Label, Label][] = [
   ['PTH', 'TRV'],
   ['TRV', 'PTH'],
   ['TRV', 'AVL'],
+  ['MST', 'SET'],
 ];
 
 export const NODE_RADIUS = 45;

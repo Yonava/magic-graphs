@@ -6,6 +6,25 @@ import { MagicProductManifest } from './types.ts';
  * are declared together here rather than fragmented beside every product's view
  */
 export const manifests = {
+  sets: {
+    id: 'sets',
+    name: 'Magic Sets',
+    navigation: {
+      slug: 'sets',
+      card: {
+        name: 'Set Theory',
+        description: 'the desmos of set theory!',
+        thumbnail: {
+          light: '/products/thumbnails/set-visualizer.png',
+          dark: '/products/thumbnails/set-visualizer.png',
+        },
+      },
+    },
+    meta: {
+      title: 'Sets',
+      description: 'The Desmos of Set Theory!',
+    },
+  },
   'markov-chains': {
     id: 'markov-chains',
     name: 'Magic Markov Chains',
