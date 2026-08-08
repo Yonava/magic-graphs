@@ -7,7 +7,7 @@
   import { useProvidedGraph } from '../../product/useProvidedGraph.ts';
 
   const graph = useProvidedGraph();
-  const coords = graph.canvas.magicCanvas.cursorCoordinates;
+  const coords = graph.canvas.surface.cursorCoordinates;
   const x = computed(() => Math.round(coords.value.x));
   const y = computed(() => Math.round(coords.value.y));
 </script>

@@ -57,9 +57,10 @@ export const useGraphProduct = (options: GraphProductOptions) => {
       shortcuts,
       canvas: {
         events: graph.canvas.events,
-        surface: graph.canvas.magicCanvas,
+        surface: graph.canvas.surface,
       },
       transit: graph.transit,
+      history: graph.history,
     },
   };
 

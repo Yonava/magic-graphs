@@ -28,7 +28,7 @@ const sameElements = (previous: CanvasElement[], next: CanvasElement[]) => {
 };
 
 export const canvas =
-  (magicCanvas: CanvasProps): CanvasPlugin =>
+  (surface: CanvasProps): CanvasPlugin =>
   ({ controls, getters }) => {
     const canvasEventRegistry = createCanvasEventRegistry();
     const canvasEvents = createEventHub(canvasEventRegistry);
@@ -53,7 +53,7 @@ export const canvas =
       rebuilt, every frame, and only emits when the answer actually changed
     */
     const refreshGraphUnderCursor = () => {
-      const coords = magicCanvas.cursorCoordinates.value;
+      const coords = surface.cursorCoordinates.value;
       const elements = aggregator.getCanvasElementsAtCoordinate(coords);
 
       const changed =
@@ -74,7 +74,7 @@ export const canvas =
     const theme = createThemeController(createCanvasThemeOverrides());
 
     setupCanvasCursor({
-      canvas: magicCanvas.canvas,
+      canvas: surface.canvas,
       getNode: getters.getNode,
       subscribe: canvasEvents.subscribe,
       resolveToken: theme._resolveToken,
@@ -114,7 +114,7 @@ export const canvas =
       native event knows where it happened, so the hit test is redone against it
     */
     const graphMouseEvent = (event: MouseEvent): CanvasGraphMouseEvent => {
-      const { x, y } = getCoordinates(event, getCtx(magicCanvas.canvas));
+      const { x, y } = getCoordinates(event, getCtx(surface.canvas));
       const coords = { x, y };
       const elements = aggregator.getCanvasElementsAtCoordinate(coords);
 
@@ -130,15 +130,15 @@ export const canvas =
 
     const keyboardEvents = emitKeyboardEvents(canvasEvents.emit);
 
-    magicCanvas.lifecycleEvents.subscribe('onMounted', () => {
-      if (!magicCanvas.canvas.value) {
+    surface.lifecycleEvents.subscribe('onMounted', () => {
+      if (!surface.canvas.value) {
         throw new Error('Canvas element not found in DOM');
       }
 
       for (const [event, listeners] of Object.entries(
         mouseEvents,
       ) as MouseEventEntries) {
-        magicCanvas.canvas.value.addEventListener(event, listeners);
+        surface.canvas.value.addEventListener(event, listeners);
       }
 
       for (const [event, listeners] of Object.entries(
@@ -148,15 +148,15 @@ export const canvas =
       }
     });
 
-    magicCanvas.lifecycleEvents.subscribe('onBeforeUnmount', () => {
-      if (!magicCanvas.canvas.value) {
+    surface.lifecycleEvents.subscribe('onBeforeUnmount', () => {
+      if (!surface.canvas.value) {
         throw new Error('Canvas element not found in DOM');
       }
 
       for (const [event, listeners] of Object.entries(
         mouseEvents,
       ) as MouseEventEntries) {
-        magicCanvas.canvas.value.removeEventListener(event, listeners);
+        surface.canvas.value.removeEventListener(event, listeners);
       }
 
       for (const [event, listeners] of Object.entries(
@@ -176,7 +176,7 @@ export const canvas =
       the cross is built at the origin, so that translate is what puts each
       stamp where it belongs
     */
-    magicCanvas.draw.backgroundPattern.value = (ctx, alpha) => {
+    surface.draw.backgroundPattern.value = (ctx, alpha) => {
       const origin = { x: 0, y: 0 };
 
       const cell = cross({
@@ -195,7 +195,7 @@ export const canvas =
     };
 
     canvasEvents.subscribe('onDraw', () => {
-      const canvas = magicCanvas.canvas.value;
+      const canvas = surface.canvas.value;
       if (!canvas) return;
       canvas.style.backgroundColor = theme._resolveToken('canvas.color');
     });
@@ -219,7 +219,7 @@ export const canvas =
         renderer,
         events: canvasEvents,
 
-        magicCanvas,
+        surface,
 
         graphUnderCursor,
 
@@ -235,7 +235,7 @@ export const canvas =
       },
       transit: {
         encode: () => {
-          const camera = magicCanvas.camera.state;
+          const camera = surface.camera.state;
           return {
             panX: camera.panX.value,
             panY: camera.panY.value,
@@ -243,7 +243,7 @@ export const canvas =
           };
         },
         decode: (data) => {
-          const camera = magicCanvas.camera.state;
+          const camera = surface.camera.state;
           camera.panX.value = data.panX;
           camera.panY.value = data.panY;
           camera.zoom.value = data.zoom;

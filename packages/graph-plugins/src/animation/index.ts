@@ -5,9 +5,7 @@ import { AnimationPlugin } from './types.ts';
 export const animation: AnimationPlugin = ({ controls }) => {
   const autoAnimate = () =>
     controls.canvas.renderer.autoAnimate.captureFrame(() =>
-      controls.canvas.aggregator.draw(
-        getCtx(controls.canvas.magicCanvas.canvas),
-      ),
+      controls.canvas.aggregator.draw(getCtx(controls.canvas.surface.canvas)),
     );
 
   // a capture window left open freezes every shape it snapshotted on its pre-mutation

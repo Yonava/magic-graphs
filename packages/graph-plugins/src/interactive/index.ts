@@ -60,7 +60,7 @@ export const interactive =
         return;
       }
 
-      const ctx = getCtx(controls.canvas.magicCanvas.canvas);
+      const ctx = getCtx(controls.canvas.surface.canvas);
 
       topElement.shape.startTextAreaEdit?.(ctx, (textAreaContent) => {
         const edge = nullThrows(

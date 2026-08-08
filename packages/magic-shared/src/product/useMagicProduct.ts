@@ -2,7 +2,7 @@ import { CanvasProps, CanvasRef } from '@canvas/surface/types';
 import { ReadonlyEventHub } from '@graph/primitives/events/createEventHub';
 import { BasicColorMode } from '@vueuse/core';
 
-import { onMounted } from 'vue';
+import { ComputedRef, Ref, onMounted } from 'vue';
 
 import { useComponentSlotsState } from '../component-slot/useComponentSlotsState.ts';
 import { ComponentSlotControls } from '../component-slot/useComponentSlotsState.ts';
@@ -35,6 +35,13 @@ type TransitField = {
   decode: (payload: any) => void;
 };
 
+type HistoryField = {
+  canRedo: ComputedRef<boolean>;
+  canUndo: ComputedRef<boolean>;
+  undo: () => void;
+  redo: () => void;
+};
+
 export type MinimalFields = {
   /** load a payload into state */
   decode: (payload: any) => void;
@@ -42,8 +49,9 @@ export type MinimalFields = {
   events: ReadonlyEventHub<{
     onStructureChange: () => void;
   }>;
-  setAppearance: (color: BasicColorMode) => void;
   canvas: CanvasField;
+  setAppearance: (color: BasicColorMode) => void;
+  history?: HistoryField;
 };
 
 type ProductOptions<GraphLike> = {
@@ -61,6 +69,7 @@ export type Magic = {
   shortcuts: ShortcutControls;
   canvas: CanvasField;
   transit: TransitField;
+  history?: HistoryField;
 };
 
 export const useMagicProduct = (
@@ -89,6 +98,7 @@ export const useMagicProduct = (
     shortcuts,
     canvas: fields.canvas,
     transit: fields.transit,
+    history: fields.history,
   };
 
   if (magic.ui.linkSharing) {
