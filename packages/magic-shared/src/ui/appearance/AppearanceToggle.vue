@@ -13,10 +13,7 @@
   import ToggleButtonGroup from '../../components/toggle-button-group/ToggleButtonGroup.vue';
   import ToggleButtonGroupItem from '../../components/toggle-button-group/ToggleButtonGroupItem.vue';
   import Tooltip from '../../components/tooltip/Tooltip.vue';
-  import {
-    useProvidedGraph,
-    useProvidedMagic,
-  } from '../../product/useProvidedGraph.ts';
+  import { useProvidedMagic } from '../../product/useProvidedGraph.ts';
   import { appearances } from './appearances.ts';
 
   const appearanceToDisplayString: Record<BasicColorSchema, string> = {

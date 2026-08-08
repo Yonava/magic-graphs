@@ -1,5 +1,4 @@
 import { nullThrows } from '@core/utils/assert';
-import { useProvidedGraph } from '@magic/shared/product';
 import { useProvidedMagicGraph } from '@magic/shared/product/useProvidedGraph';
 import { SimulationDefinition } from '@magic/shared/simulation';
 

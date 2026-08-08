@@ -31,6 +31,7 @@
 
   const magic = useMagicProduct(graphLike, {
     productId: 'sets',
+    ui: { linkSharing: false },
   });
 
   useCanvasTheme(magic);

@@ -46,9 +46,7 @@ export const useProductAppearance = (
     state,
   });
 
-  // the theme bridge only ever runs client side, so it reads through the gate
   const setValue = () => {
-    // appearance can be tampered with in local storage so we cant trust its type!
     const appearanceValue = colorMode.state.value;
     if (!validAppearance(appearanceValue)) {
       console.warn(
